@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
-    <title>Mental Wilderness</title>
-    <link href="http://holdenlee.github.io/blog/atom.xml" rel="self" />
-    <link href="http://holdenlee.github.io/blog" />
-    <id>http://holdenlee.github.io/blog/atom.xml</id>
+    <title>Research Notebook</title>
+    <link href="http://holdenlee.github.io/notebook/atom.xml" rel="self" />
+    <link href="http://holdenlee.github.io/notebook" />
+    <id>http://holdenlee.github.io/notebook/atom.xml</id>
     <author>
         <name>Holden Lee</name>
         <email>oldheneel@gmail.com</email>
@@ -11,8 +11,8 @@
     <updated>2016-02-27T00:00:00Z</updated>
     <entry>
     <title>Test</title>
-    <link href="http://holdenlee.github.io/blog/posts/test/test.html" />
-    <id>http://holdenlee.github.io/blog/posts/test/test.html</id>
+    <link href="http://holdenlee.github.io/notebook/posts/test/test.html" />
+    <id>http://holdenlee.github.io/notebook/posts/test/test.html</id>
     <published>2016-02-27T00:00:00Z</published>
     <updated>2016-02-27T00:00:00Z</updated>
     <summary type="html"><![CDATA[

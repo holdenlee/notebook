@@ -93,7 +93,7 @@ main = hakyll $ do
             posts <- recentFirst =<< loadAll (postPattern .&&. hasNoVersion)
             let indexCtx =
                     listField "posts" postCtx (return posts) <>
-                    constField "title" "Mental Wilderness"   <>
+                    constField "title" "Research notebook"   <>
                     basicCtx
 
             getResourceBody
@@ -176,11 +176,11 @@ postCtxWithTags tags = tagsField "tags" tags <>
 {-| Feed configuration -}
 myFeedConfiguration :: FeedConfiguration
 myFeedConfiguration = FeedConfiguration
-    { feedTitle       = "Mental Wilderness"
+    { feedTitle       = "Research Notebook"
     , feedDescription = "Holden Lee's Blog"
     , feedAuthorName  = "Holden Lee"
     , feedAuthorEmail = "oldheneel@gmail.com"
-    , feedRoot        = "http://holdenlee.github.io/blog"
+    , feedRoot        = "http://holdenlee.github.io/notebook"
     }
 
 {-| Compiler for feed -}
