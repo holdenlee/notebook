@@ -1,5 +1,6 @@
 MathJax.Hub.Config({
   TeX: {
+    equationNumbers: { autoNumber: "AMS" },
     extensions: ["AMSmath.js","color.js"],
     Macros: {
       sA: "\\mathscr{A}",
@@ -124,14 +125,8 @@ MathJax.Hub.Config({
       mcv: "*_-",
       dlim: "\\varinjlim",
       ilim: "\\varprojlim",
-      gle: "\\begin{array}{c}
-\\ge\\\\
-\\le
-\\end{array}",
-      lge: "\\begin{array}{c}
-\\le\\\\
-\\ge
-\\end{array}",
+      gle: "\\begin{array}{c} \\ge\\\\ \\le \\end{array}",
+      lge: "\\begin{array}{c} \\le\\\\ \\ge \\end{array}",
       rc: ["\\frac{1}{#1}",1],
       prc: ["\\pa{\\rc{#1}}",1],
       ff: ["\\left\\lfloor\\frac{#1}{#2}\\right\\rfloor",2],
@@ -380,33 +375,12 @@ MathJax.Hub.Config({
       ur: "^{\\text{ur}}",
       urt: "^{\\text{ur}\\times}",
       commsq: ["\\xymatrix{#1\\ar[r]^-{#6}\\ar[d]_{#5} &#2\\ar[d]^{#7} \\\\ #3 \\ar[r]^-{#8} & #4}",8],
-      pull: ["
-#1\\ar@/_/[ddr]_{#2} \\ar@{.>}[rd]^{#3} \\ar@/^/[rrd]^{#4} & &\\\\
-& #5\\ar[r]^{#6}\\ar[d]^{#8} &#7\\ar[d]^{#9} \\\\",9],
+      pull: [" #1\\ar@/_/[ddr]_{#2} \\ar@{.>}[rd]^{#3} \\ar@/^/[rrd]^{#4} & &\\\\ & #5\\ar[r]^{#6}\\ar[d]^{#8} &#7\\ar[d]^{#9} \\\\",9],
       back: ["& #1 \\ar[r]^{#2} & #3",3],
-      cmp: ["
-\\xymatrix{
-#1 \\ar[r]^{#4}{#5} \\ar@/_2pc/[rr]^{#8}_{#9} & #2 \\ar[r]^{#6}_{#7} & #3
-}
-",9],
-      ctr: ["
-\\xymatrix{
-#1 \\ar[rr]^{#4}_{#5}\\ar[rd]^{#6}_{#7} && #2\\ar[ld]_{#8}^{#9}\\\\
-& #3 &
-}
-",9],
-      ctrr: ["
-\\xymatrix{
-#1 \\ar[rr]^{#4}_{#5} && #2\\\\
-& #3 \\ar[lu]_{#6}^{#7}\\ar[ru]_{#8}^{#9}&
-}
-",9],
-      ctri: ["
-\\xymatrix{
-#1 \\ar[rr]^{#4}_{#5}\\ar[rd]^{#6}_{#7} && #2\\\\
-& #3 \\ar[ru]^{#8}_{#9}&
-}
-",9],
+      cmp: [" \\xymatrix{ #1 \\ar[r]^{#4}{#5} \\ar@/_2pc/[rr]^{#8}_{#9} & #2 \\ar[r]^{#6}_{#7} & #3 } ",9],
+      ctr: [" \\xymatrix{ #1 \\ar[rr]^{#4}_{#5}\\ar[rd]^{#6}_{#7} && #2\\ar[ld]_{#8}^{#9}\\\\ & #3 & } ",9],
+      ctrr: [" \\xymatrix{ #1 \\ar[rr]^{#4}_{#5} && #2\\\\ & #3 \\ar[lu]_{#6}^{#7}\\ar[ru]_{#8}^{#9}& } ",9],
+      ctri: [" \\xymatrix{ #1 \\ar[rr]^{#4}_{#5}\\ar[rd]^{#6}_{#7} && #2\\\\ & #3 \\ar[ru]^{#8}_{#9}& } ",9],
       rcommsq: ["\\xymatrix{#1 &#2\\ar[l]_-{#6} \\\\ #3 \\ar[u]^{#5} & #4 \\ar[u]_{#7}\\ar[l]_-{#8}}",8],
       ha: ["\\ar@{^(->}[#1]",1],
       ls: ["\\ar@{-}[#1]",1],
@@ -432,64 +406,15 @@ MathJax.Hub.Config({
       suj: "\\sum_{j=1}^{n}",
       suij: "\\sum_{i,j}",
       limn: "\\lim_{n\\to \\infty}",
-      coltwo: ["
-\\begin{pmatrix}
-{#1}\\\\
-{#2}
-\\end{pmatrix}",2],
-      colthree: ["
-\\begin{pmatrix}
-{#1}\\\\
-{#2}\\\\
-{#3}
-\\end{pmatrix}
-",3],
-      cth: ["
-\\begin{pmatrix}
-{#1}\\\\
-{#2}\\\\
-{#3}
-\\end{pmatrix}
-",3],
-      detm: ["
-\\ab{
-\\begin{matrix}
-{#1}&{#2}\\\\
-{#3}&{#4}
-\\end{matrix}
-}",4],
-      sdetm: ["
-\\ab{
-\\begin{smallmatrix}
-{#1}&{#2}\\\\
-{#3}&{#4}
-\\end{smallmatrix}
-}",4],
-      matt: ["
-\\begin{pmatrix}
-{#1}&{#2}\\\\
-{#3}&{#4}
-\\end{pmatrix}
-",4],
-      smatt: ["
-\\left(\\begin{smallmatrix} 
-{#1}&{#2}\\\\
-{#3}&{#4}
-\\end{smallmatrix}\\right)
-",4],
-      bt: ["
-\\left\\{\\begin{matrix}
-\\text{#1}\\\\
-\\text{#2}
-\\end{matrix}
-\\right\\}",2],
-      bth: ["
-\\left\\{\\begin{matrix}
-\\text{#1}\\\\
-\\text{#2}\\\\
-\\text{#3}
-\\end{matrix}
-\\right\\}",3],
+      coltwo: [" \\begin{pmatrix} {#1}\\\\ {#2} \\end{pmatrix}",2],
+      colthree: [" \\begin{pmatrix} {#1}\\\\ {#2}\\\\ {#3} \\end{pmatrix} ",3],
+      cth: [" \\begin{pmatrix} {#1}\\\\ {#2}\\\\ {#3} \\end{pmatrix} ",3],
+      detm: [" \\ab{ \\begin{matrix} {#1}&{#2}\\\\ {#3}&{#4} \\end{matrix} }",4],
+      sdetm: [" \\ab{ \\begin{smallmatrix} {#1}&{#2}\\\\ {#3}&{#4} \\end{smallmatrix} }",4],
+      matt: [" \\begin{pmatrix} {#1}&{#2}\\\\ {#3}&{#4} \\end{pmatrix} ",4],
+      smatt: [" \\left(\\begin{smallmatrix}  {#1}&{#2}\\\\ {#3}&{#4} \\end{smallmatrix}\\right) ",4],
+      bt: [" \\left\\{\\begin{matrix} \\text{#1}\\\\ \\text{#2} \\end{matrix} \\right\\}",2],
+      bth: [" \\left\\{\\begin{matrix} \\text{#1}\\\\ \\text{#2}\\\\ \\text{#3} \\end{matrix} \\right\\}",3],
       beq: ["\\begin{equation}\\llabel{#1}",1],
       eeq: "\\end{equation}",
       bal: "\\begin{align*}",
@@ -558,11 +483,7 @@ MathJax.Hub.Config({
       summq: ["\\textbf{Summary Question: }#1",1],
       keypt: ["{\\it #1}",1],
       subprob: ["\\noindent\\textbf{#1}\\\\",1],
-      qatable: ["\\begin{center}
-    \\begin{longtable}{ | p{5.5cm} | p{10cm} |}
-#1
-\\end{longtable}
-\\end{center}",1]
+      qatable: ["\\begin{center}     \\begin{longtable}{ | p{5.5cm} | p{10cm} |} #1 \\end{longtable} \\end{center}",1]
     }
   }
 });

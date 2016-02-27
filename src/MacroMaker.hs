@@ -53,7 +53,7 @@ reservedOp= P.reservedOp lexer
 
 convertMacros :: String -> String
 convertMacros str = printf 
-                    "MathJax.Hub.Config({\n  TeX: {\n    extensions: [\"AMSmath.js\",\"color.js\"],\n    Macros: {\n%s\n    }\n  }\n});%s" (intercalate ",\n" $ map lineOut $ makeCommandList (parseLaTeX2 str)) postText
+                    "MathJax.Hub.Config({\n  TeX: {\n    equationNumbers: { autoNumber: \"AMS\" },\n    extensions: [\"AMSmath.js\",\"color.js\"],\n    Macros: {\n%s\n    }\n  }\n});%s" (intercalate ",\n" $ map lineOut $ makeCommandList (parseLaTeX2 str)) postText
 
 parseLaTeX2 :: String -> LaTeX
 parseLaTeX2 str = 
@@ -65,7 +65,7 @@ postText = "\n\nMathJax.Ajax.loadComplete(\"[MathJax]/config/local/local.js\");"
 
 main = do
   let inputF = "C:/Users/Owner/Dropbox/Math/templates/macros.tex"
-  ioFile inputF "local.js" convertMacros
+  ioFile inputF "C:/Users/Owner/Dropbox/website/notes-source/MathJax/config/local/local.js" convertMacros
 
 --takes care of bug where quotes appear
 stripQuotes :: String -> String
@@ -86,6 +86,9 @@ removeSlash s = (if head s == '\\' then tail else id) s
 dupSlash :: String -> String
 dupSlash = replace "\\" "\\\\"
 
+removeNewline :: String -> String
+removeNewline = replace "\n" " "
+
 makeCommandList :: LaTeX -> [(String, Int, String)]
 makeCommandList = \case
       TeXComm str args -> 
@@ -96,7 +99,7 @@ makeCommandList = \case
       _ -> []
 
 lineOut :: (String, Int, String) -> String
-lineOut (macro, n, (dupSlash -> out)) = 
+lineOut (macro, n, (removeNewline . dupSlash -> out)) = 
     case n of
       0 -> printf "      %s: \"%s\"" macro out
       _ -> printf "      %s: [\"%s\",%d]" macro out n
