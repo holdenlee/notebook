@@ -6,7 +6,7 @@ cygstart powershell "chcp 65001; ./site build"
 
 sleep 5
 
-cp -TRv _site/ ../blog/
-gitup2 "$1" hakyll
-cd ../blog
+cp -TRv _site/ ../notebook/
+gitup "$1"
+cd ../notebook
 gitup2 "$1" gh-pages

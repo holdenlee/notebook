@@ -20,7 +20,7 @@ import NestedCategories
 import TableOfContents
 
 siteURL :: String
-siteURL = "http://holdenlee.github.io/blog"
+siteURL = "http://holdenlee.github.io/notebook"
 
 {-| Main method -}
 main :: IO ()
