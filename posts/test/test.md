@@ -18,9 +18,12 @@ $$
 $$
 
 \begin{align}
+\label{eq:1}
 \rc{2} &= \fc 24\\
 &=\fc 48
 \end{align}
+
+Equation \ref{eq:1} above.
 
 $$
 \sA \Pj  \mfp \matt 1001

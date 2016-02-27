@@ -92,7 +92,7 @@ removeNewline = replace "\n" " "
 makeCommandList :: LaTeX -> [(String, Int, String)]
 makeCommandList = \case
       TeXComm str args -> 
-          if str `elem` ["newcommand", "renewcommand"] && (args!!0 /= FixArg (TeXRaw $ pack "cal")) --bug: can't redefine cal.
+          if str `elem` ["newcommand", "renewcommand"] && (args!!0 /= FixArg (TeXCommS "cal")) --bug: can't redefine cal.
           then [getCommandInfo args]
           else []
       TeXSeq latex1 latex2 -> makeCommandList latex1 ++ makeCommandList latex2
