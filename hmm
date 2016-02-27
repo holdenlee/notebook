@@ -1,0 +1,4 @@
+#!/bin/bash
+
+./hc src/MacroMaker
+src/MacroMaker

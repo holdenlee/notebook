@@ -50,8 +50,9 @@
 &amp;=\fc 48
 \end{align}
 <p><span class="math display">\[
-\sA \cA \Pj \one \mfp \gle
+\sA \Pj  \mfp \matt 1001
 \]</span></p>
+<p>Things that don’t work: <code>\cA</code> (mathcal) <span class="math inline">\(\mathcal{A}\)</span>, <code>\mathbbm{1}</code></p>
 
   </div>
 

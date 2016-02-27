@@ -21,7 +21,7 @@ import Data.List
 import Data.Maybe
 import Data.Monoid
 import Data.String.Utils
-import Data.Text (unpack)
+import Data.Text (pack, unpack)
 
 import Text.ParserCombinators.Parsec
 import qualified Text.Parsec.Token as P
@@ -92,7 +92,7 @@ removeNewline = replace "\n" " "
 makeCommandList :: LaTeX -> [(String, Int, String)]
 makeCommandList = \case
       TeXComm str args -> 
-          if str `elem` ["newcommand", "renewcommand"]
+          if str `elem` ["newcommand", "renewcommand"] && (args!!0 /= FixArg (TeXRaw $ pack "cal")) --bug: can't redefine cal.
           then [getCommandInfo args]
           else []
       TeXSeq latex1 latex2 -> makeCommandList latex1 ++ makeCommandList latex2

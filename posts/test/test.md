@@ -23,5 +23,7 @@ $$
 \end{align}
 
 $$
-\sA \cA \Pj \one \mfp \gle
+\sA \Pj  \mfp \matt 1001
 $$
+
+Things that don't work: `\cA` (mathcal) $\mathcal{A}$, `\mathbbm{1}`
