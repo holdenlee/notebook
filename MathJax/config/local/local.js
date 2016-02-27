@@ -362,7 +362,6 @@ MathJax.Hub.Config({
       vcong: "\\operatorname{vcong}",
       Vol: "\\text{Vol}",
       vol: "\\text{vol}",
-      cal: ["\\mathcal{#1}",1],
       bb: ["\\mathbb{#1}",1],
       abe: "^{\\text{ab}}",
       gal: "^{\\text{gal}}",
