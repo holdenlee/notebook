@@ -8,8 +8,90 @@
         <name>Holden Lee</name>
         <email>oldheneel@gmail.com</email>
     </author>
-    <updated>2016-02-27T00:00:00Z</updated>
+    <updated>2016-02-28T00:00:00Z</updated>
     <entry>
+    <title>Censored block model</title>
+    <link href="http://holdenlee.github.io/notebook/posts/tcs/machine_learning/cbm.html" />
+    <id>http://holdenlee.github.io/notebook/posts/tcs/machine_learning/cbm.html</id>
+    <published>2016-02-28T00:00:00Z</published>
+    <updated>2016-02-28T00:00:00Z</updated>
+    <summary type="html"><![CDATA[
+<div class="container">
+  <div id="content">
+    <div class="page header">
+      <h1>Censored block model</h1>
+    </div>
+    <div class="info">
+      
+       
+        <p>Posted: 2016-02-28 
+          , Modified: 2016-02-28 
+	</p>
+      
+       <p>Tags: <a href="/tags/research.html">research</a></p> 
+    </div>
+    
+  </div>
+  <!--/div-->
+
+  
+
+  <div class="blog-main">
+    <p>Model: Graph <span class="math inline">\(G\)</span> is given. Each node is iid red/blue with probability <span class="math inline">\(\rc2\)</span>. An edge is labeled <span class="math display">\[\begin{cases}+&amp;\text{nodes same color}\\-&amp;\text{nodes different color}\end{cases}.\]</span> Each edge is flipped independently with probability <span class="math inline">\(\rc2\)</span>.</p>
+<p>Question: Under what conditions of <span class="math inline">\(G\)</span> can the communities be recovered (up to sign)</p>
+<ul>
+<li>exactly with high (<span class="math inline">\(1-o(1)\)</span>) probability?</li>
+<li>with correlation tending to 1? (whp, the number of correctly classified nodes is <span class="math inline">\(1-o(1)\)</span>)</li>
+<li>weakly (with <span class="math inline">\(\rc2+\Om(1)\)</span> correlation)?</li>
+</ul>
+<p>Past work:</p>
+<ul>
+<li>[ABSS12] For exact recovery
+<ul>
+<li>Necessary: <span class="math inline">\(C_\ep \ln n\)</span> average degree.</li>
+<li>For random graphs <span class="math inline">\(G(n, p)\)</span>, <span class="math inline">\(p\ge \fc{2C_\ep\ln n}{n}\)</span> is sufficient. (Factor of 2 gap, later closed by [??])</li>
+<li>Algorithm is SDP relaxation. Sufficient criteria for it to work is that there is a constant spectral gap in the graph. Up to constants, this is the same as having a large Cheeger constant.</li>
+<li>Spectral criteria are not necessary: for example, for 2 complete graphs with a <span class="math inline">\(\ln n\)</span> sized cut, recovery is possible.</li>
+</ul></li>
+<li>Strong recovery - ?</li>
+<li>Weak recovery - ?</li>
+</ul>
+<p>Suggestion: Let <span class="math inline">\(X\)</span> be the node colors and <span class="math inline">\(Y_\ep\)</span> be the observed edges. Consider the entropy <span class="math inline">\(H(X|Y_\ep)\)</span>. This is like a measure of connectivity “on average.” Ex. When <span class="math inline">\(\ep=0\)</span>, this measures the number of components. Think of it as a average-case Cheeger: rather than look at the proportionally minimal cut, we’re looking at an average cut size. (Related is the probability of success for ML decoding, which is <span class="math inline">\(\E_{X,Y_\ep}P(X|Y)\)</span>.)</p>
+<p>Thoughts: Any nontrivial partition <span class="math inline">\(A\sqcup B= V\)</span> of the vertices is associated with a cut. For a set <span class="math inline">\(S\)</span>, let <span class="math inline">\(X_S\)</span> be <span class="math inline">\(X\)</span> with the colors of vertices in <span class="math inline">\(S\)</span> flipped. Given observed <span class="math inline">\(Y_\ep\)</span>, <span class="math inline">\(P(X_S|Y_\ep)\ge P(X|Y_\ep)\)</span> iff most of the edges of the cut <span class="math inline">\((A,V\bs A)\)</span> are flipped. Thus, the ML decoding is the <span class="math inline">\(X\)</span> such that in no cut is the majority of the edges wrong.</p>
+Let <span class="math inline">\(G_C\)</span> be the (good) event that the majority of edges of cut <span class="math inline">\(C\)</span> are correct. Letting <span class="math inline">\(|C|\)</span> be the number of edges in the cut,
+\begin{align}
+P\pa{\bigwedge_C G_C} &amp; \ge \prod P(G_C) &amp; \text{Correlation inequality} \\
+&amp; = \prod_C P(\Binom(|C|, 1-\ep) &gt; \fc{|C|}2)\\
+&amp; = \prod_C (1-e^{-K_\ep|C|})\\
+&amp; \ge 1-\sum_C e^{-K_\ep|C|}.
+\end{align}
+<p>(By Chernoff, we can take <span class="math inline">\(K_\ep = \fc{(\ep-\rc2)^2}{2\ep(1-\ep)}\)</span>.)</p>
+<p>Question: is there an efficient algorithm to approximate <span class="math inline">\(\sum_C e^{-K|C|}\)</span>? By Karger’s algorithm, we can estimate the number of minimum cuts. By sampling, we can estimate the number of cuts of some size if it’s <span class="math inline">\(&gt;\rc{\poly}\)</span> proportion. But what about all cuts in between?</p>
+<p>Note: The inequalities are not close to sharp because the events are very correlated when the cuts overlap a lot. Somehow it should be more affected by small cuts which <em>don’t</em> share a lot of edges in common.</p>
+
+  </div>
+
+    
+
+    <!-- Extension : Sharing buttons @ www.sharethis.com -->
+    <span class='st_facebook_large' displayText='Facebook'></span>
+    <span class='st_twitter_large' displayText='Tweet'></span>
+    <span class='st_googleplus_large' displayText='Google +'></span>
+    <span class='st_reddit_large' displayText='Reddit'></span>
+    <span class='st__large' displayText=''></span>
+
+    <div id="disqus_thread"></div>
+    
+
+
+  
+    <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+  </div>
+  
+</div>
+]]></summary>
+</entry>
+<entry>
     <title>Test</title>
     <link href="http://holdenlee.github.io/notebook/posts/test/test.html" />
     <id>http://holdenlee.github.io/notebook/posts/test/test.html</id>
@@ -50,11 +132,360 @@
 \rc{2} &amp;= \fc 24\\
 &amp;=\fc 48
 \end{align}
-<p>Equation  above.</p>
+<p>Equation <span class="math inline">\(\eqref{eq:1}\)</span> above.</p>
 <p><span class="math display">\[
 \sA \Pj  \mfp \matt 1001
 \]</span></p>
-<p>Things that don’t work: <code>\cA</code> (mathcal) <span class="math inline">\(\mathcal{A}\)</span>, <code>\mathbbm{1}</code></p>
+<p>Things that don’t work:</p>
+<ul>
+<li><code>\mathbbm{1}</code></li>
+</ul>
+
+  </div>
+
+    
+
+    <!-- Extension : Sharing buttons @ www.sharethis.com -->
+    <span class='st_facebook_large' displayText='Facebook'></span>
+    <span class='st_twitter_large' displayText='Tweet'></span>
+    <span class='st_googleplus_large' displayText='Google +'></span>
+    <span class='st_reddit_large' displayText='Reddit'></span>
+    <span class='st__large' displayText=''></span>
+
+    <div id="disqus_thread"></div>
+    
+
+
+  
+    <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+  </div>
+  
+</div>
+]]></summary>
+</entry>
+<entry>
+    <title>Real channels</title>
+    <link href="http://holdenlee.github.io/notebook/posts/tcs/information_theory/real_channels.html" />
+    <id>http://holdenlee.github.io/notebook/posts/tcs/information_theory/real_channels.html</id>
+    <published>2016-02-27T00:00:00Z</published>
+    <updated>2016-02-27T00:00:00Z</updated>
+    <summary type="html"><![CDATA[
+<div class="container">
+  <div id="content">
+    <div class="page header">
+      <h1>Real channels</h1>
+    </div>
+    <div class="info">
+      
+       
+        <p>Posted: 2016-02-27 
+          , Modified: 2016-02-27 
+	</p>
+      
+       <p>Tags: <a href="/tags/none.html">none</a></p> 
+    </div>
+    
+  </div>
+  <!--/div-->
+
+  <div class="toc"> <ul>
+ <li><a href="#reading">Reading</a><ul>
+ <li><a href="#mckay">McKay</a><ul>
+ <li><a href="#exercises">Exercises</a></li>
+ </ul></li>
+ <li><a href="#cover-thomas">Cover, Thomas</a><ul>
+ <li><a href="#ch.-8">Ch. 8</a></li>
+ <li><a href="#ch.-9">Ch. 9</a></li>
+ </ul></li>
+ </ul></li>
+ <li><a href="#scraps">Scraps</a></li>
+ </ul> </div>
+
+  <div class="blog-main">
+    <p>References:</p>
+<ul>
+<li>McKay Ch. 11</li>
+<li>Cover, Thomas Ch. 9</li>
+</ul>
+<h2 id="reading">Reading</h2>
+<h3 id="mckay">McKay</h3>
+<p>What’s the model?</p>
+<ul>
+<li>Transmit a signal <span class="math inline">\(x(t)\)</span> in a channel with error at every moment in time Gaussian with variance <span class="math inline">\(\si^2\)</span>.</li>
+<li>You are limited to using <span class="math inline">\(v\)</span> power, i.e., <span class="math inline">\(\int_0^T \fc{x(t)^2}{T}\,dt\le v\)</span>.</li>
+<li>You are bandwidth-limited: <span class="math inline">\(x\)</span> must be a sum <span class="math inline">\(x=\sum_{n=1}^{N} x_n\phi_n\)</span> where <span class="math inline">\(\phi_n\)</span> are orthonormal basis. (i.e., <span class="math inline">\(\sum x_n^2=v\)</span>.) Take the functions to be <span class="math inline">\(\cos\pf{2\pi kx}{T}\)</span> and <span class="math inline">\(\sin\)</span> for <span class="math inline">\(1\le k\le TW\)</span>. We have <span class="math inline">\(N=2TW\)</span> where <span class="math inline">\(W\)</span> is the max allowable frequency.</li>
+</ul>
+<p>At what (limiting) rate can you transmit information?</p>
+<p>Note: A sum is like an integral. Take exps instead of sin/cos for simplicity. Then for <span class="math inline">\(x\)</span> a sum of exponentials <span class="math inline">\(\phi_n\)</span>, <span class="math display">\[
+\int_0^1 x(t)\phi_n(t) = a_n = \EE_{t=0}^{N-1}x\pf{t}{N} \phi_n\pf{t}{N}.
+\]</span></p>
+<p>Useful: <span class="math inline">\(N(y;x,\si^2)N(x;0,v) = N\pa{x;\fc{v}{v+\si^2}y, \pa{\rc{v}+\rc{\si^2}}^{-1}}\)</span>. Mean is means harmonically weighted by variances (i.e. weighted by precisions). “Whenever two independent sources contribute information, via Gaussian distributions, about an unknown variable, the precisions add.”</p>
+<p>“Real continuous channel with <span class="math inline">\(W\)</span> and noise <span class="math inline">\(W_0\)</span> is <span class="math inline">\(\fc{N}{T}=2W\)</span> uses per second of Gaussian with <span class="math inline">\(\si^2=N_0/2, \ol{x_n^2}\le \fc{P}{2W}\)</span>.</p>
+<p>(How do you think of discrete bits as encoding a point in real space? Or are you transmitting analog information?)</p>
+<p>Bandwidth is more powerful than low noise.</p>
+<p>(Q: Why does M say that entropy can’t be defined for continuous variables? I guess this should be taken to mean that the definition of <span class="math inline">\(h\)</span> wouldn’t be invariant under change of coordinates.)</p>
+<h4 id="exercises">Exercises</h4>
+<ol type="1">
+<li><p>(Solution p. 189/201) Use Lagrange multipliers with <em>functions</em> (calculus of variations). Use <span class="math inline">\(\fc{\de F}{\de P^*}\int P(x) f(x,P) \dx = f(x^*,P) + \int P(x)\fc{\de f(x,P)}{\de P(x)}\)</span> (cf. normal product rule). Note <span class="math inline">\(P(y|x)\)</span> is fixed (normal), but <span class="math inline">\(P(y)\)</span> depends on <span class="math inline">\(P(x)\)</span>, it is really a function of <span class="math inline">\(P\)</span>, <span class="math inline">\(f(P)\)</span>. Simplify, and then substitute <span class="math inline">\(P(y|x)\)</span>. Match coefficients in Taylor expansion.</p>
+<p>Question: Why does the constraint <span class="math inline">\(\int P\dx=1\)</span> become <span class="math inline">\(\mu\pa{\int P\dx}\)</span> rather than <span class="math inline">\(\mu(\bullet-1)\)</span>? They disappear after differentiation!</p>
+<p>TAKEAWAY: Calculus of variations. Gaussian distributions is best. (Why not 2 points as far as possible?)</p></li>
+<li><p>Just calculate the integral. Mutual info is <span class="math inline">\(\rc2\ln \pa{1+\fc{v}{\si^2}}\)</span>. This is the capacity (explained on p. 182) (?). The more power, the more capacity, scaling by log.</p></li>
+</ol>
+<h3 id="cover-thomas">Cover, Thomas</h3>
+<h4 id="ch.-8">Ch. 8</h4>
+<ul>
+<li><strong>Differential entropy</strong> <span class="math inline">\(h=-\int f\lg f\dx\)</span>. “differential entropy is the logarithm of the equivalent side length of the smallest set that contains most of the probability.”
+<ul>
+<li>How differential entropy and entropy are related: Let <span class="math inline">\(X^{\De}\)</span> be <span class="math inline">\(X\)</span> quantized to <span class="math inline">\(\De\)</span>. Then <span class="math inline">\(\lim_{\De\to 0}H(X^{\De})+\lg \De = h(X)\)</span>.</li>
+<li>Note mutual info is limit of quantized mutual info (the <span class="math inline">\(\lg \De\)</span>’s cancel).</li>
+<li><strong>KL divergence</strong>: <span class="math inline">\(D(f||g)=\int f \lg \fc{f}{g}\ge 0\)</span>.</li>
+</ul></li>
+<li>Basic calculations
+<ul>
+<li><span class="math inline">\(h(N(0,\si^2)) = \rc2 \lg (2\pi e\si^2)\)</span></li>
+<li><span class="math inline">\(\rh\)</span>-correlated Gaussians: <span class="math inline">\(I(X:Y) = -\rc2 \lg(1-\rh^2)\)</span>.</li>
+</ul></li>
+<li>Basic inequalities
+<ul>
+<li>By LoLN, AEP holds for continuous random variables (<span class="math inline">\(\log f\)</span> needs to be <span class="math inline">\(L^1\)</span>?).</li>
+<li>(Hadamard) <span class="math inline">\(\det(K)\le \prod K_{ii}\)</span> by subadditivity of entropy.</li>
+<li><span class="math inline">\(h(AX)=h(X)+\lg |\det(A)|\)</span>.</li>
+</ul></li>
+<li>Normal maximizes entropy over distributions with same variance. Proof: <span class="math inline">\(0\le D(g||\phi_K) = -h(g)+h(\phi_K)\)</span> where the second term follows from the fact that <span class="math inline">\(g,\phi_K\)</span> have the same second moments and <span class="math inline">\(\log \phi_K\)</span> is a quadratic form (write it out!).</li>
+<li>Estimation version of Fano: <span class="math inline">\(\E[(X-\hat X)^2]\ge \rc{2\pi e}e^{2h(X)}\)</span>, equality only if <span class="math inline">\(X\)</span> Gaussian and <span class="math inline">\(\hat X = \E X\)</span>. Proof: use that Gaussian distribution has max entropy for given variance.
+<ul>
+<li>Cor: <span class="math inline">\(\E[(X-\hat X(Y))^2] \ge \rc{2\pi e} e^{2h(X|Y)}\)</span>.</li>
+</ul></li>
+</ul>
+<p>Nice summary on p. 282.</p>
+<h4 id="ch.-9">Ch. 9</h4>
+<ul>
+<li>A Gaussian channel with power <span class="math inline">\(P\)</span> can be converted to a binary symmetric channel with error <span class="math inline">\(1-\Phi\pa{\sfc{P}{\si^2}}\)</span>.</li>
+<li>9.1: A more conceptual way to upper-bound the mutual information: <span class="math inline">\(Y=X+Z\)</span> where <span class="math inline">\(Z\)</span> is noise.
+<ul>
+<li>Theorem 8.6.5: normal maximizes the entropy for a given variance. (cf. entropy-maximizing distributions. Use CoV here?) Then <span class="math inline">\(I(X:Y)=h(Y)-h(Z)\le \rc2 \log \pa{1+\fc PN}\)</span>, equality only when <span class="math inline">\(X\)</span> is Gaussian.</li>
+</ul></li>
+<li>Model of Gaussian channel: Encoding, Gaussian noise, decoding, <span class="math inline">\([M]\xra{x}\mathcal{X}^n \xra{N}\mathcal{Y}^n \xra{g} [M]\)</span>.</li>
+<li><strong>Theorem 9.1.1</strong>: Capacity of Gaussian channel is <span class="math inline">\(\rc 2 \lg\pa{1+\fc{P}N}\)</span>.
+<ul>
+<li>Heuristic proof: Pack spheres of radius <span class="math inline">\(\sqrt{nN}\)</span> in <span class="math inline">\(\sqrt{n(P+N)}\)</span>.</li>
+<li>Think of mutual info as a limit achievable in infinite dimensions. It doesn’t make sense to encode a discrete set with a probability distribution, but in large dimensions you can approximate it!</li>
+<li>Proof of achievability: (1) generate codewords iid (2) search for jointly typical. (3) It’s rare that either it’s far from the codeword, or it’s close to another one.</li>
+<li>Proof of necessity: Take uniform distribution over inputs. Use Fano’s inequality to relate probability of error and mutual info.
+<ul>
+<li><strong>Fano’s inequality</strong> says that for <span class="math inline">\(X\to Y\to \wh X\)</span>, <span class="math inline">\(P_e=\Pj(X\ne \wh X)\)</span>, <span class="math inline">\(H(P_e)+P_e\lg |\mathcal X| \ge H(X|\wh X) \ge H(X|Y)\)</span>.</li>
+<li>Applied here, <span class="math inline">\(H(W|\hat W)\le H(P_e) + P_e\lg |\mathcal X|\le 1 + (nR) P_e^{(n)}=o(n)\)</span>. Since <span class="math inline">\(nR=H(W)\)</span>, we get that <span class="math inline">\(I(W:\hat W) \ge \asymp nR\)</span> and hence <span class="math inline">\(\sum I(X_i:Y_i) \ge \asymp nR\)</span>. But this sum can be bounded by the power (use Jensen on the <span class="math inline">\(P_i\)</span>).</li>
+</ul></li>
+</ul></li>
+<li>6.3 Bandlimited channels: “Rate <span class="math inline">\(\rc{2W}\)</span> is sufficient to reconstruct the signal because it cannot change substantially in <span class="math inline">\(&lt;\rc2\)</span> a cycle.” Proof: Note that the Fourier transform is 0 outside <span class="math inline">\([-W,W]\)</span>. <span class="math inline">\(f\pf{n}{2W}\)</span> are the Fourier coefficients of <span class="math inline">\(F(\om)\)</span>. (“a bandlimited function has only 2W degrees of freedom per second”)<a href="#fn1" class="footnoteRef" id="fnref1"><sup>1</sup></a>
+<ul>
+<li>Note band-limitation can be expressed as convolution by <span class="math inline">\(\mathcal F^{-1} 1_{\le W}\)</span>.</li>
+<li>The characteristic-function basis for sampling at <span class="math inline">\(\fc{n}{2W}\)</span> are the translates of <span class="math inline">\(\text{sinc}(Wt) = \sin(Wt)/(Wt)\)</span>.</li>
+</ul></li>
+<li>Relating the 2 models.
+<ul>
+<li>In the Gaussian noise model, <span class="math inline">\(C=\rc 2 \log\pa{1+\fc{P_G}{N_G}}\)</span> where <span class="math inline">\(P\)</span> is power (average magnitude) and <span class="math inline">\(N\)</span> is variance.</li>
+<li>In the band-limited model, suppose <span class="math inline">\(W\)</span> is bandwidth, <span class="math inline">\(P\)</span> is power, and <span class="math inline">\(\fc{N_0}2\)</span> is variance (power spectral density - I don’t understand this).</li>
+<li>Match up by <span class="math inline">\(P_G=\fc{P}{2W}\)</span> (divide by sampling rate) and <span class="math inline">\(N_G=N_0/2\)</span> to get <span class="math inline">\(\rc2\lg\pa{1+\fc{P}{N_0W}}\)</span> per sample. Multiply by <span class="math inline">\(2W\)</span>. (<span class="math inline">\(\fc{P}{N_0W}\)</span> is SNR.)
+\begin{equation} C= W\lg\pa{1+\fc{P}{N_0W}}.\end{equation}
+With infinite bandwidth, <span class="math inline">\(C=\fc{P}{N_0}\lg e\)</span>.</li>
+</ul></li>
+<li>9.4 Parallel Gaussian channels: set of Gaussian channels in parallel with common (total) power constraint <span class="math inline">\(P\)</span>. How to distribute.
+<ul>
+<li>Maximize <span class="math inline">\(\sum \rc2\lg\pa{1+\fc{P_i}{N_i}}\)</span> subject to <span class="math inline">\(\sum P_i=P\)</span>. By Lagrange multipliers, the best solution is water-filling, p. 277.</li>
+</ul></li>
+<li>9.5 Channels with colored (correlated) Gaussian noise (SKIP)</li>
+<li>9.6 Gaussian channels with feedback: for channels with memory, where the noise is correlated from time instant to time instant, feedback does increase capacity. (SKIP)</li>
+</ul>
+<h5 id="exercises-1">Exercises</h5>
+<p>9.10 looks interesting.</p>
+<h2 id="scraps">Scraps</h2>
+<ul>
+<li>In the presence of noise, doesn’t it help to sample <span class="math inline">\(&gt;2W\)</span> times per second? Can’t you approach the true average with more samples?</li>
+<li></li>
+</ul>
+<section class="footnotes">
+<hr />
+<ol>
+<li id="fn1"><p>I thought that this meant the <span class="math inline">\(f\)</span> live in a finite-dimensional space. No? This confuses me. Are we taking infinitely many samples spaced <span class="math inline">\(\rc{2W}\)</span> apart? Because <span class="math inline">\(F\)</span> is not in a finite dimensional space.<a href="#fnref1">↩</a></p></li>
+</ol>
+</section>
+
+  </div>
+
+    
+
+    <!-- Extension : Sharing buttons @ www.sharethis.com -->
+    <span class='st_facebook_large' displayText='Facebook'></span>
+    <span class='st_twitter_large' displayText='Tweet'></span>
+    <span class='st_googleplus_large' displayText='Google +'></span>
+    <span class='st_reddit_large' displayText='Reddit'></span>
+    <span class='st__large' displayText=''></span>
+
+    <div id="disqus_thread"></div>
+    
+
+
+  
+    <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+  </div>
+  
+</div>
+]]></summary>
+</entry>
+<entry>
+    <title>Calculus formulas</title>
+    <link href="http://holdenlee.github.io/notebook/posts/math/calculus/formulas.html" />
+    <id>http://holdenlee.github.io/notebook/posts/math/calculus/formulas.html</id>
+    <published>2016-02-27T00:00:00Z</published>
+    <updated>2016-02-27T00:00:00Z</updated>
+    <summary type="html"><![CDATA[
+<div class="container">
+  <div id="content">
+    <div class="page header">
+      <h1>Calculus formulas</h1>
+    </div>
+    <div class="info">
+      
+       
+        <p>Posted: 2016-02-27 
+          , Modified: 2016-02-27 
+	</p>
+      
+       <p>Tags: <a href="/tags/none.html">none</a></p> 
+    </div>
+    
+  </div>
+  <!--/div-->
+
+  
+
+  <div class="blog-main">
+    \begin{align}
+\int_{-\iy}^{\iy} e^{-(ax^2+bx+c)}\dx &amp;= e^{\fc{b^2}{4a}-c}\sfc{\pi}a.
+\end{align}
+
+  </div>
+
+    
+
+    <!-- Extension : Sharing buttons @ www.sharethis.com -->
+    <span class='st_facebook_large' displayText='Facebook'></span>
+    <span class='st_twitter_large' displayText='Tweet'></span>
+    <span class='st_googleplus_large' displayText='Google +'></span>
+    <span class='st_reddit_large' displayText='Reddit'></span>
+    <span class='st__large' displayText=''></span>
+
+    <div id="disqus_thread"></div>
+    
+
+
+  
+    <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+  </div>
+  
+</div>
+]]></summary>
+</entry>
+<entry>
+    <title>AI Control References</title>
+    <link href="http://holdenlee.github.io/notebook/posts/cs/ai/control/refs.html" />
+    <id>http://holdenlee.github.io/notebook/posts/cs/ai/control/refs.html</id>
+    <published>2016-02-27T00:00:00Z</published>
+    <updated>2016-02-27T00:00:00Z</updated>
+    <summary type="html"><![CDATA[
+<div class="container">
+  <div id="content">
+    <div class="page header">
+      <h1>AI Control References</h1>
+    </div>
+    <div class="info">
+      
+       
+        <p>Posted: 2016-02-27 
+          , Modified: 2016-02-27 
+	</p>
+      
+       <p>Tags: <a href="/tags/none.html">none</a></p> 
+    </div>
+    
+  </div>
+  <!--/div-->
+
+  <div class="toc"></div>
+
+  <div class="blog-main">
+    <p><a href="https://workflowy.com/#/2e68cce4238f">Workflowy</a></p>
+
+  </div>
+
+    
+
+    <!-- Extension : Sharing buttons @ www.sharethis.com -->
+    <span class='st_facebook_large' displayText='Facebook'></span>
+    <span class='st_twitter_large' displayText='Tweet'></span>
+    <span class='st_googleplus_large' displayText='Google +'></span>
+    <span class='st_reddit_large' displayText='Reddit'></span>
+    <span class='st__large' displayText=''></span>
+
+    <div id="disqus_thread"></div>
+    
+
+
+  
+    <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+  </div>
+  
+</div>
+]]></summary>
+</entry>
+<entry>
+    <title>Conversation with Zeev 2-24-16</title>
+    <link href="http://holdenlee.github.io/notebook/posts/conversations/2016-02-24-zeev.html" />
+    <id>http://holdenlee.github.io/notebook/posts/conversations/2016-02-24-zeev.html</id>
+    <published>2016-02-27T00:00:00Z</published>
+    <updated>2016-02-27T00:00:00Z</updated>
+    <summary type="html"><![CDATA[
+<div class="container">
+  <div id="content">
+    <div class="page header">
+      <h1>Conversation with Zeev 2-24-16</h1>
+    </div>
+    <div class="info">
+      
+       
+        <p>Posted: 2016-02-27 
+          , Modified: 2016-02-27 
+	</p>
+      
+       <p>Tags: <a href="/tags/none.html">none</a></p> 
+    </div>
+    
+  </div>
+  <!--/div-->
+
+  <div class="toc"> <ul>
+ <li><a href="#circuit-lower-bounds-and-extractors">Circuit lower bounds and extractors</a></li>
+ <li><a href="#rigid-matrices">Rigid matrices</a></li>
+ </ul> </div>
+
+  <div class="blog-main">
+    <h2 id="circuit-lower-bounds-and-extractors">Circuit lower bounds and extractors</h2>
+<ul>
+<li>The graph-theoretic argument applied to linear circuits reduces finding hard functions to finding rigid matrices.</li>
+</ul>
+<p>We can reduce the rigidity problem to finding extractors for a certain class of a certain type.</p>
+<p>Find extractors where * sources are: uniform over <span class="math inline">\(\fc n2\)</span>-dimensional (or <span class="math inline">\(\ep n\)</span>) subspaces <span class="math inline">\(V\subeq \F_p^n\)</span> such that <span class="math inline">\(V\)</span> has low-weight (sparse, <span class="math inline">\(n^\ep\)</span>) basis. (Actually, we can also consider average sparsity.) * The extractor is linear <span class="math inline">\(E:\F_p^n\to \F_p^{\fc n4}\)</span>.</p>
+<p>We know deterministic extractors for affine sources, however, here they have to be linear.</p>
+<p>Claim: Let <span class="math inline">\(A\)</span> be such that <span class="math inline">\(O=eA\)</span>. Then <span class="math inline">\(A\)</span> is rigid.</p>
+<p><em>Proof</em>: <span class="math inline">\(A\)</span> has rank <span class="math inline">\(\ge \fc{3n}4\)</span>. Suppose <span class="math inline">\(A=L+S\)</span> where <span class="math inline">\(L\)</span> has <span class="math inline">\(&lt;\fc n4\)</span>-rank and <span class="math inline">\(S\)</span> is <span class="math inline">\(s\)</span>-sparse. <span class="math inline">\(O=EA=EL+ES\)</span> so <span class="math inline">\(-EL=ES\)</span>. However, <span class="math inline">\(-EL\)</span> has low rank and <span class="math inline">\(ES\)</span> has high rank (<span class="math inline">\(\fc n4\)</span>) as <span class="math inline">\(E\)</span> is an extractor.</p>
+<p>Note it suffices to find a condenser; all we need is that <span class="math inline">\(\dim(\spn_s(E(S,s)))=\fc n4\)</span>.</p>
+<p>(cf. no <span class="math inline">\(2s\)</span> columns of <span class="math inline">\(E\)</span> are linearly dependent.)</p>
+<h2 id="rigid-matrices">Rigid matrices</h2>
+<p>Find a small family of rigid matrices. Ex. if you only require linear randomness, then just wire them up too to get a lower bound.</p>
+<p>Gabizon-Raz, Affine extractors: give a family of Vandermonde matrices <span class="math inline">\((x^{ij})\)</span>, <span class="math inline">\(x\in [n^3]\)</span> (?). The hope is to get arithmetic lower bounds. Problem: the degree is too large, so the bounds are trivial. Try to lower the degree.</p>
+<p>Best lower bounds for arithmetic circuits: for <span class="math inline">\(x_1^n,\ldots, x_n^n\)</span>, get <span class="math inline">\(n\lg n\)</span>. Use Bezout: use the highest degree of an algebraic variety made from the polynomials as a complexity measure, need to get to <span class="math inline">\(d^n\)</span>, so need <span class="math inline">\(n\ln d\)</span> steps.</p>
+<p>Zach Remscrim has a nice recent paper.</p>
 
   </div>
 
