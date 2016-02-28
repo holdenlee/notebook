@@ -10,7 +10,7 @@
   <meta name="description" content="Holden Lee's Blog">
   <meta name="author" content="Holden Lee">
     
-  <title>Test</title>
+  <title>Conversation with Zeev 2-24-16</title>
 
   <!-- Bootstrap core CSS -->
   <link href="../../bootstrap/css/bootstrap.min.css" rel="stylesheet">
@@ -66,45 +66,43 @@
 <div class="container">
   <div id="content">
     <div class="page header">
-      <h1>Test</h1>
+      <h1>Conversation with Zeev 2-24-16</h1>
     </div>
     <div class="info">
       
        
         <p>Posted: 2016-02-27 
-          
+          , Modified: 2016-02-27 
 	</p>
       
-       <p>Tags: </p> 
+       <p>Tags: <a href="../../tags/none.html">none</a></p> 
     </div>
     
   </div>
   <!--/div-->
 
-  
+  <div class="toc"> <ul>
+ <li><a href="#circuit-lower-bounds-and-extractors">Circuit lower bounds and extractors</a></li>
+ <li><a href="#rigid-matrices">Rigid matrices</a></li>
+ </ul> </div>
 
   <div class="blog-main">
-    <p>Math equations.</p>
-<p><span class="math inline">\(1\in \R, \infty\nin \R\)</span></p>
-<p>This is math:</p>
-<p><span class="math display">\[ \int_1^x \fc{1}{u}\,du = \ln x.\]</span></p>
-<p>More math:</p>
-<p><span class="math display">\[
-\pi = 4\sum_{n=0}^{\iy} (-1)^n \fc{1}{2n+1}
-\]</span></p>
-\begin{align}
-\label{eq:1}
-\rc{2} &amp;= \fc 24\\
-&amp;=\fc 48
-\end{align}
-<p>Equation <span class="math inline">\(\eqref{eq:1}\)</span> above.</p>
-<p><span class="math display">\[
-\sA \Pj  \mfp \matt 1001
-\]</span></p>
-<p>Things that don’t work:</p>
+    <h2 id="circuit-lower-bounds-and-extractors">Circuit lower bounds and extractors</h2>
 <ul>
-<li><code>\mathbbm{1}</code></li>
+<li>The graph-theoretic argument applied to linear circuits reduces finding hard functions to finding rigid matrices.</li>
 </ul>
+<p>We can reduce the rigidity problem to finding extractors for a certain class of a certain type.</p>
+<p>Find extractors where * sources are: uniform over <span class="math inline">\(\fc n2\)</span>-dimensional (or <span class="math inline">\(\ep n\)</span>) subspaces <span class="math inline">\(V\subeq \F_p^n\)</span> such that <span class="math inline">\(V\)</span> has low-weight (sparse, <span class="math inline">\(n^\ep\)</span>) basis. (Actually, we can also consider average sparsity.) * The extractor is linear <span class="math inline">\(E:\F_p^n\to \F_p^{\fc n4}\)</span>.</p>
+<p>We know deterministic extractors for affine sources, however, here they have to be linear.</p>
+<p>Claim: Let <span class="math inline">\(A\)</span> be such that <span class="math inline">\(O=eA\)</span>. Then <span class="math inline">\(A\)</span> is rigid.</p>
+<p><em>Proof</em>: <span class="math inline">\(A\)</span> has rank <span class="math inline">\(\ge \fc{3n}4\)</span>. Suppose <span class="math inline">\(A=L+S\)</span> where <span class="math inline">\(L\)</span> has <span class="math inline">\(&lt;\fc n4\)</span>-rank and <span class="math inline">\(S\)</span> is <span class="math inline">\(s\)</span>-sparse. <span class="math inline">\(O=EA=EL+ES\)</span> so <span class="math inline">\(-EL=ES\)</span>. However, <span class="math inline">\(-EL\)</span> has low rank and <span class="math inline">\(ES\)</span> has high rank (<span class="math inline">\(\fc n4\)</span>) as <span class="math inline">\(E\)</span> is an extractor.</p>
+<p>Note it suffices to find a condenser; all we need is that <span class="math inline">\(\dim(\spn_s(E(S,s)))=\fc n4\)</span>.</p>
+<p>(cf. no <span class="math inline">\(2s\)</span> columns of <span class="math inline">\(E\)</span> are linearly dependent.)</p>
+<h2 id="rigid-matrices">Rigid matrices</h2>
+<p>Find a small family of rigid matrices. Ex. if you only require linear randomness, then just wire them up too to get a lower bound.</p>
+<p>Gabizon-Raz, Affine extractors: give a family of Vandermonde matrices <span class="math inline">\((x^{ij})\)</span>, <span class="math inline">\(x\in [n^3]\)</span> (?). The hope is to get arithmetic lower bounds. Problem: the degree is too large, so the bounds are trivial. Try to lower the degree.</p>
+<p>Best lower bounds for arithmetic circuits: for <span class="math inline">\(x_1^n,\ldots, x_n^n\)</span>, get <span class="math inline">\(n\lg n\)</span>. Use Bezout: use the highest degree of an algebraic variety made from the polynomials as a complexity measure, need to get to <span class="math inline">\(d^n\)</span>, so need <span class="math inline">\(n\ln d\)</span> steps.</p>
+<p>Zach Remscrim has a nice recent paper.</p>
 
   </div>
 

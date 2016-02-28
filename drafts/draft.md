@@ -1,11 +1,10 @@
 ---
-title: Setting up Hakyll
-subtitle: How I made this blog
-published: 2016-02-07
-modified: 2016-02-07
-tags: haskell, blogging, web design
+title: Something I learned
+published: 2016-02-27
+modified: 2016-02-27
+tags:
+type: notes
 showTOC: True
-inline: True
 ---
 
 footnote.[^f1]

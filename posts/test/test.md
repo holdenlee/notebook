@@ -23,10 +23,12 @@ $$
 &=\fc 48
 \end{align}
 
-Equation \ref{eq:1} above.
+Equation $\eqref{eq:1}$ above.
 
 $$
 \sA \Pj  \mfp \matt 1001
 $$
 
-Things that don't work: `\cA` (mathcal) $\mathcal{A}$, `\mathbbm{1}`
+Things that don't work:
+
+* `\mathbbm{1}`

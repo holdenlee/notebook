@@ -16,5 +16,6 @@ Start the server by
 
 Write in these fields:
 
-* type: paper (notes on a paper), research (cf. Gowers's blog), notes (notes on books or things I learn)
+* type: paper (notes on a paper), research (cf. Gowers's blog), notes (notes on books or things I learn), concept (?)
 ** Have Paper, Research, Notes on the top.
+* bib: for a citation.
