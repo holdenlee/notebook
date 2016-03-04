@@ -1,0 +1,22 @@
+---
+title: LDCs
+published: 2016-03-03
+modified: 2016-03-03
+tags: LDC
+type: notes
+showTOC: True
+---
+
+#Talk with Zeev
+
+Consider a partition of the complete bipartite graph into matchings. What is the worst partition, in the sense that you have to take the union of many ($\Om(\ln n)$) matchings before you get an expander in the sense of the Expander Mixing Lemma?
+
+Now consider if the bipartite graph represents a Cayley graph ($x$ on the left is connected to $gx$ on the right). "Abelian groups are the worst expanders."
+
+If you need $\ge d$ matchings, you get a LDC from $d$ to $n$. 
+
+Consider tripartite hypergraphs, with $n^3$ matchings partitioned into $n^2$. Is the worst partition take $(\ln n)^2$?
+
+#Low-weight LDCs to LDCs
+
+

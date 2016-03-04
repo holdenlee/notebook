@@ -4,7 +4,10 @@ published: 2016-02-28
 modified: 2016-02-28
 tags: research
 type: research
+showTOC: True
 ---
+
+#Summary
 
 Model: Graph $G$ is given. Each node is iid red/blue with probability $\rc2$. An edge is labeled
 $$\begin{cases}+&\text{nodes same color}\\-&\text{nodes different color}\end{cases}.$$
@@ -26,6 +29,17 @@ Past work:
 *   Strong recovery - ?
 *   Weak recovery - ?
 
+#SDP relaxation
+
+Let $\rh_{ij}$ be the edge labels. Relax
+$$ \min_{g_i\in \{\pm 1\}} \sum_{ij\in E}(g_i-\rh_{ij}g_j)^2 $$
+to $\max_{X_{ii}=1,X\succeq0}(WX)$ where $W=A_G-2A_H$.
+
+(Details: we want $\max \rh_{ij}g_ig_j = \max_{g\in \{\pm 1\}^n}Wgg^T$.)
+
+
+#Fixing a graph
+
 Suggestion: Let $X$ be the node colors and $Y_\ep$ be the observed edges. Consider the entropy $H(X|Y_\ep)$. This is like a measure of connectivity "on average." Ex. When $\ep=0$, this measures the number of components. Think of it as a average-case Cheeger: rather than look at the proportionally minimal cut, we're looking at an average cut size. (Related is the probability of success for ML decoding, which is $\E_{X,Y_\ep}P(X|Y)$.)
 
 Thoughts: Any nontrivial partition $A\sqcup B= V$ of the vertices is associated with a cut. For a set $S$, let $X_S$ be $X$ with the colors of vertices in $S$ flipped. Given observed $Y_\ep$, $P(X_S|Y_\ep)\ge P(X|Y_\ep)$ iff most of the edges of the cut $(A,V\bs A)$ are flipped. Thus, the ML decoding is the $X$ such that in no cut is the majority of the edges wrong.
@@ -42,3 +56,4 @@ P\pa{\bigwedge_C G_C} & \ge \prod P(G_C) & \text{Correlation inequality} \\
 Question: is there an efficient algorithm to approximate $\sum_C e^{-K|C|}$? By Karger's algorithm, we can estimate the number of minimum cuts. By sampling, we can estimate the number of cuts of some size if it's $>\rc{\poly}$ proportion. But what about all cuts in between?
 
 Note: The inequalities are not close to sharp because the events are very correlated when the cuts overlap a lot. Somehow it should be more affected by small cuts which *don't* share a lot of edges in common.
+
