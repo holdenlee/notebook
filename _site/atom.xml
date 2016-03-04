@@ -1,0 +1,767 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+    <title>Research Notebook</title>
+    <link href="http://holdenlee.github.io/notebook/atom.xml" rel="self" />
+    <link href="http://holdenlee.github.io/notebook" />
+    <id>http://holdenlee.github.io/notebook/atom.xml</id>
+    <author>
+        <name>Holden Lee</name>
+        <email>oldheneel@gmail.com</email>
+    </author>
+    <updated>2016-03-03T00:00:00Z</updated>
+    <entry>
+    <title>[GRSY15] How Hard is Inference for Structured Prediction?</title>
+    <link href="http://holdenlee.github.io/notebook/posts/tcs/machine_learning/community/GRSY15.html" />
+    <id>http://holdenlee.github.io/notebook/posts/tcs/machine_learning/community/GRSY15.html</id>
+    <published>2016-03-03T00:00:00Z</published>
+    <updated>2016-03-03T00:00:00Z</updated>
+    <summary type="html"><![CDATA[
+<div class="container">
+  <div id="content">
+    <div class="page header">
+      <h1>[GRSY15] How Hard is Inference for Structured Prediction?</h1>
+    </div>
+    <div class="info">
+      
+       
+        <p>Posted: 2016-03-03 
+          , Modified: 2016-03-03 
+	</p>
+      
+       <p>Tags: <a href="/tags/paper.html">paper</a>, <a href="/tags/CBM.html">CBM</a></p> 
+    </div>
+    
+  </div>
+  <!--/div-->
+
+  
+
+  <div class="blog-main">
+    <p>Model: In a <span class="math inline">\(n\times n\)</span> grid, observe <span class="math inline">\(p\)</span>-noisy edges <span class="math inline">\(Y_uY_v\)</span> and <span class="math inline">\(q\)</span>-noisy nodes <span class="math inline">\(Y_u\)</span>. Attempto to recover the original labeling. What is the maximum correlation you can achieve on average?</p>
+<p>Answer: Error <span class="math inline">\(p^2n\)</span> up to a constant.</p>
+<ul>
+<li>Achievable: find the partition that maximizes the cut value <span class="math inline">\(\sum X_{uv}Y_uY_v\)</span>. Now negate all labelings if it would increase the node agreement.
+<ul>
+<li>Claim: this is polynomial time. How? This is max cut with negative weights. (https://en.wikipedia.org/wiki/Maximum_cut, http://cstheory.stackexchange.com/questions/2312/max-cut-with-negative-weight-edges, http://cstheory.stackexchange.com/questions/9323/hardness-of-max-cut-on-sparse-graphs)</li>
+<li>They mention an LP relaxation, but don’t actually give the formula…</li>
+</ul></li>
+<li>Tight: consider the checkerboard graph.</li>
+</ul>
+<p>Applications: Image segmentation. (How would you have both node and edge measurements?)</p>
+<p>More directions:</p>
+<ul>
+<li>Optimal constant?</li>
+<li>If you can pay to get better observations, how would you spend a budget?</li>
+</ul>
+
+  </div>
+
+    
+
+    <!-- Extension : Sharing buttons @ www.sharethis.com -->
+    <span class='st_facebook_large' displayText='Facebook'></span>
+    <span class='st_twitter_large' displayText='Tweet'></span>
+    <span class='st_googleplus_large' displayText='Google +'></span>
+    <span class='st_reddit_large' displayText='Reddit'></span>
+    <span class='st__large' displayText=''></span>
+
+    <div id="disqus_thread"></div>
+    
+
+
+  
+    <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+  </div>
+  
+</div>
+]]></summary>
+</entry>
+<entry>
+    <title>LDCs</title>
+    <link href="http://holdenlee.github.io/notebook/posts/tcs/coding/ldc.html" />
+    <id>http://holdenlee.github.io/notebook/posts/tcs/coding/ldc.html</id>
+    <published>2016-03-03T00:00:00Z</published>
+    <updated>2016-03-03T00:00:00Z</updated>
+    <summary type="html"><![CDATA[
+<div class="container">
+  <div id="content">
+    <div class="page header">
+      <h1>LDCs</h1>
+    </div>
+    <div class="info">
+      
+       
+        <p>Posted: 2016-03-03 
+          , Modified: 2016-03-03 
+	</p>
+      
+       <p>Tags: <a href="/tags/LDC.html">LDC</a></p> 
+    </div>
+    
+  </div>
+  <!--/div-->
+
+  <div class="toc"> <ul>
+ <li><a href="#talk-with-zeev">Talk with Zeev</a></li>
+ </ul> </div>
+
+  <div class="blog-main">
+    <h2 id="talk-with-zeev">Talk with Zeev</h2>
+<p>Consider a partition of the complete bipartite graph into matchings. What is the worst partition, in the sense that you have to take the union of many (<span class="math inline">\(\Om(\ln n)\)</span>) matchings before you get an expander in the sense of the Expander Mixing Lemma?</p>
+<p>Now consider if the bipartite graph represents a Cayley graph (<span class="math inline">\(x\)</span> on the left is connected to <span class="math inline">\(gx\)</span> on the right). “Abelian groups are the worst expanders.”</p>
+<p>If you need <span class="math inline">\(\ge d\)</span> matchings, you get a LDC from <span class="math inline">\(d\)</span> to <span class="math inline">\(n\)</span>.</p>
+<p>Consider tripartite hypergraphs, with <span class="math inline">\(n^3\)</span> matchings partitioned into <span class="math inline">\(n^2\)</span>. Is the worst partition take <span class="math inline">\((\ln n)^2\)</span>?</p>
+
+  </div>
+
+    
+
+    <!-- Extension : Sharing buttons @ www.sharethis.com -->
+    <span class='st_facebook_large' displayText='Facebook'></span>
+    <span class='st_twitter_large' displayText='Tweet'></span>
+    <span class='st_googleplus_large' displayText='Google +'></span>
+    <span class='st_reddit_large' displayText='Reddit'></span>
+    <span class='st__large' displayText=''></span>
+
+    <div id="disqus_thread"></div>
+    
+
+
+  
+    <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+  </div>
+  
+</div>
+]]></summary>
+</entry>
+<entry>
+    <title>Perron-Frobenius Theorem</title>
+    <link href="http://holdenlee.github.io/notebook/posts/math/algebra/linear/perron-frobenius.html" />
+    <id>http://holdenlee.github.io/notebook/posts/math/algebra/linear/perron-frobenius.html</id>
+    <published>2016-03-03T00:00:00Z</published>
+    <updated>2016-03-03T00:00:00Z</updated>
+    <summary type="html"><![CDATA[
+<div class="container">
+  <div id="content">
+    <div class="page header">
+      <h1>Perron-Frobenius Theorem</h1>
+    </div>
+    <div class="info">
+      
+       
+        <p>Posted: 2016-03-03 
+          , Modified: 2016-03-03 
+	</p>
+      
+       <p>Tags: <a href="/tags/eigenvalue.html">eigenvalue</a>, <a href="/tags/theorem.html">theorem</a></p> 
+    </div>
+    
+  </div>
+  <!--/div-->
+
+  
+
+  <div class="blog-main">
+    <h2 id="statement">Statement</h2>
+<p>Let <span class="math inline">\(A\)</span> be a matrix with (strictly) positive entries. Then the eigenvalue with maximal absolute value is positive and simple. The corresponding eigenvector is (strictly) positive.</p>
+<p><a href="https://en.wikipedia.org/wiki/Perron%E2%80%93Frobenius_theorem">Wikipedia</a></p>
+
+  </div>
+
+    
+
+    <!-- Extension : Sharing buttons @ www.sharethis.com -->
+    <span class='st_facebook_large' displayText='Facebook'></span>
+    <span class='st_twitter_large' displayText='Tweet'></span>
+    <span class='st_googleplus_large' displayText='Google +'></span>
+    <span class='st_reddit_large' displayText='Reddit'></span>
+    <span class='st__large' displayText=''></span>
+
+    <div id="disqus_thread"></div>
+    
+
+
+  
+    <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+  </div>
+  
+</div>
+]]></summary>
+</entry>
+<entry>
+    <title>[SD15] Minimax rates for memory-bounded sparse linear regression</title>
+    <link href="http://holdenlee.github.io/notebook/posts/tcs/machine_learning/SD15.html" />
+    <id>http://holdenlee.github.io/notebook/posts/tcs/machine_learning/SD15.html</id>
+    <published>2016-02-29T00:00:00Z</published>
+    <updated>2016-02-29T00:00:00Z</updated>
+    <summary type="html"><![CDATA[
+<div class="container">
+  <div id="content">
+    <div class="page header">
+      <h1>[SD15] Minimax rates for memory-bounded sparse linear regression</h1>
+    </div>
+    <div class="info">
+      
+       
+        <p>Posted: 2016-02-29 
+          , Modified: 2016-02-29 
+	</p>
+      
+       <p>Tags: <a href="/tags/none.html">none</a></p> 
+    </div>
+    
+  </div>
+  <!--/div-->
+
+  
+
+  <div class="blog-main">
+    
+
+  </div>
+
+    
+
+    <!-- Extension : Sharing buttons @ www.sharethis.com -->
+    <span class='st_facebook_large' displayText='Facebook'></span>
+    <span class='st_twitter_large' displayText='Tweet'></span>
+    <span class='st_googleplus_large' displayText='Google +'></span>
+    <span class='st_reddit_large' displayText='Reddit'></span>
+    <span class='st__large' displayText=''></span>
+
+    <div id="disqus_thread"></div>
+    
+
+
+  
+    <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+  </div>
+  
+</div>
+]]></summary>
+</entry>
+<entry>
+    <title>Scraps</title>
+    <link href="http://holdenlee.github.io/notebook/posts/tcs/complexity/scraps.html" />
+    <id>http://holdenlee.github.io/notebook/posts/tcs/complexity/scraps.html</id>
+    <published>2016-02-29T00:00:00Z</published>
+    <updated>2016-02-29T00:00:00Z</updated>
+    <summary type="html"><![CDATA[
+<div class="container">
+  <div id="content">
+    <div class="page header">
+      <h1>Scraps</h1>
+    </div>
+    <div class="info">
+      
+       
+        <p>Posted: 2016-02-29 
+          , Modified: 2016-02-29 
+	</p>
+      
+       <p>Tags: <a href="/tags/scratch.html">scratch</a></p> 
+    </div>
+    
+  </div>
+  <!--/div-->
+
+  
+
+  <div class="blog-main">
+    <p>Known that there is <span class="math inline">\(A\)</span>, <span class="math inline">\(BQP^A\nsubeq MA^A\)</span>, but not for <span class="math inline">\(AM\)</span>. AM, MA, NP?</p>
+
+  </div>
+
+    
+
+    <!-- Extension : Sharing buttons @ www.sharethis.com -->
+    <span class='st_facebook_large' displayText='Facebook'></span>
+    <span class='st_twitter_large' displayText='Tweet'></span>
+    <span class='st_googleplus_large' displayText='Google +'></span>
+    <span class='st_reddit_large' displayText='Reddit'></span>
+    <span class='st__large' displayText=''></span>
+
+    <div id="disqus_thread"></div>
+    
+
+
+  
+    <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+  </div>
+  
+</div>
+]]></summary>
+</entry>
+<entry>
+    <title>[Rem16] The Hilbert Function, Algebraic Extractors, and Recursive Fourier Sampling</title>
+    <link href="http://holdenlee.github.io/notebook/posts/tcs/complexity/Rem16.html" />
+    <id>http://holdenlee.github.io/notebook/posts/tcs/complexity/Rem16.html</id>
+    <published>2016-02-29T00:00:00Z</published>
+    <updated>2016-02-29T00:00:00Z</updated>
+    <summary type="html"><![CDATA[
+<div class="container">
+  <div id="content">
+    <div class="page header">
+      <h1>[Rem16] The Hilbert Function, Algebraic Extractors, and Recursive Fourier Sampling</h1>
+    </div>
+    <div class="info">
+      
+       
+        <p>Posted: 2016-02-29 
+          , Modified: 2016-02-29 
+	</p>
+      
+       <p>Tags: <a href="/tags/none.html">none</a></p> 
+    </div>
+    
+  </div>
+  <!--/div-->
+
+  <div class="toc"> <ul>
+ <li><a href="#recursive-fourier-sampling">Recursive Fourier sampling</a></li>
+ <li><a href="#vc-dimension">VC dimension</a></li>
+ <li><a href="#algebraic-geometry">Algebraic geometry</a></li>
+ <li><a href="#versatile-functions">Versatile functions</a></li>
+ <li><a href="#rfs">RFS</a></li>
+ <li><a href="#todo">Todo</a></li>
+ </ul> </div>
+
+  <div class="blog-main">
+    <p>Summary: Define an algebraic measure of randomness (<span class="math inline">\(\de\)</span>-versatility for <span class="math inline">\(U\)</span>), such that a versatile function is an algebraic extractor. RFS is versatile, with applications to <span class="math inline">\(BQP^A\stackrel{?}{\subeq} ?^A\)</span>. #Extractors</p>
+<p>Problem: Find extractors for algebraic sets of degree <span class="math inline">\(d\)</span> and density <span class="math inline">\(\ge \rh\)</span>, i.e., for sources uniform over sets of the form <span class="math inline">\(V(f_1,\ldots, f_t)\)</span> (common zeros), <span class="math inline">\(\deg(f_i)\le d\)</span>.</p>
+<p>Previous results: [Dvi12] gives explicit extractors for</p>
+<ul>
+<li><span class="math inline">\(|\F|=\poly(d)\)</span>, <span class="math inline">\(\rh=2^{-\fc n2}\)</span>,</li>
+<li><span class="math inline">\(|\F|=d^{\Om(n^2)}\)</span>, small density.</li>
+<li>[CT13] degree 2, at most <span class="math inline">\((\ln \ln n)^{\rc{2e}}\)</span> polynomials; disperser for <span class="math inline">\(t\)</span> polys of degree <span class="math inline">\(\le (1-o(1))\fc{\ln\pf nt}{\ln^{0.9}n}\)</span>.</li>
+</ul>
+<p><strong>Theorem 1</strong>: Any <span class="math inline">\(\de\)</span>-versatile function is an extractor for algebraic sets. Parameters: <span class="math inline">\(\de\ge \fc n2-n^{\ga}\)</span>, <span class="math inline">\(d\le n^\al\)</span>, <span class="math inline">\(\rh\ge 2^{-n^{\be}}\)</span>, bias <span class="math inline">\(O\pf{n^\ga+d\ln \pf{\sqrt n}{\rh}}{\sqrt n}\)</span>. Proof exploits structure of sets of zeros.</p>
+<h2 id="recursive-fourier-sampling">Recursive Fourier sampling</h2>
+<p>Used to find <span class="math inline">\(A\)</span>, <span class="math inline">\(BQP^A\nsubeq \NP^A\)</span>.</p>
+<p>Problem: Find larger class <span class="math inline">\(C\)</span> for which <span class="math inline">\(BQP^A\nsubeq C^A\)</span>.</p>
+<p>Technique: connection between relativized separations from the polynomial hierarchy and lower bounds against constant depth circuits [FSS84],[Yao85]. “Here, the key idea is to reinterpret the 9 and 8 quantifiers of a PH machine as OR and AND gates.”</p>
+<p>?: Don’t understand the part on poly approx.</p>
+<p>Problem: What is the lowest degree polynomial <span class="math inline">\(/\F_2\)</span> representing <a href="RFS.html">recursive Fourier sampling</a>?</p>
+<p><strong>Theorem 2</strong>: <span class="math inline">\(n=2^k-1\)</span>. No poly of degree <span class="math inline">\(&lt;\pf{n+1}2^h\)</span> can nontrivally one-sided agree (soundness) with <span class="math inline">\(RFS_{n,h}^{\Maj}\)</span>. (Similar statement for GIP.)</p>
+<h2 id="vc-dimension">VC dimension</h2>
+<p>Interpolation degree <span class="math inline">\(\text{reg}(C)\)</span> is min <span class="math inline">\(d\)</span> such that every <span class="math inline">\(f\)</span> is a multilinear poly of degree <span class="math inline">\(\le d\)</span>.</p>
+<p>Problem: Characterize sets with interpolation degree <span class="math inline">\(r\)</span>.</p>
+<p><strong>Theorem 4</strong>: <span class="math inline">\(\text{reg}(C)=r\)</span> iff <span class="math inline">\(r\)</span> is smallest so <span class="math inline">\(\rank \mathcal M(C, \binom{[n]}{\le r})=|C|\)</span>.</p>
+<h2 id="algebraic-geometry">Algebraic geometry</h2>
+<ul>
+<li>Affine Hilbert function <span class="math inline">\(h^a(R,d) = \dim(R_{\le d})\)</span> where <span class="math inline">\(R_{\le d}=\F[\mx]_{\le d}/I(V)_{\le d}\)</span>.</li>
+<li>Leading monomials of an ideal. Standard monomials are the complement. (Don’t know why they’re named like this. “Missing monomials” makes more sense.)
+<ul>
+<li>Hilbert function is a sum of sizes of SM’s: $h^a(V,d)=_{i=0}^d |SM(V,i)|.</li>
+<li>Regularity is maximum degree of standard monomial of <span class="math inline">\(V\)</span>.</li>
+</ul></li>
+<li><span class="math inline">\(a(I)\)</span> is the min degree of <span class="math inline">\(g\in I\)</span> such that <span class="math inline">\(g\)</span> consists only of monomials from <span class="math inline">\(SM(V)\)</span>. (If says <span class="math inline">\(SM(\F^n)\)</span>, but this doesn’t make sense.)
+<ul>
+<li><span class="math inline">\(V\subeq \F^n\)</span> a nonempty zero-dimensional algebraic set. (What does zero-dim mean here?) Then <span class="math inline">\(a(\ol V)+\text{reg}(V)=n\)</span>.</li>
+</ul></li>
+<li>How to calculate Hilbert function? Inclusion matrix <span class="math inline">\(M(\mathcal F,\mathcal G)\)</span> has <span class="math inline">\(M_{F,G} = 1_{F\subeq G}\)</span>. Calculate Hilbert function by <span class="math inline">\(h^a(V,d) =\rank M\pa{V,\binom{[n]}{\le d}}\)</span>.</li>
+</ul>
+<h2 id="versatile-functions">Versatile functions</h2>
+<ul>
+<li>Versatile: <span class="math inline">\(\forall g, \exists \deg(u),\deg(v)\le \fc n2\)</span> and <span class="math inline">\(g=uf+v\)</span>.
+<ul>
+<li>Question: isn’t this always true for <span class="math inline">\(\deg g=\fc n2\)</span> by division? Yes, but there are other functions that are versatile too!</li>
+<li>Observation: when <span class="math inline">\(f(x)=0, g=v\)</span>. When <span class="math inline">\(f(x)=1\)</span>, <span class="math inline">\(g=u+v\)</span>. Let <span class="math inline">\(U_i=\set{x}{f(x)=i}\)</span>. (Lemma 4) This shows that any poly can be collapsed to one of degree <span class="math inline">\(\le \fc n2\)</span> on <span class="math inline">\(U_0\)</span> and <span class="math inline">\(U_1\)</span>, i.e. <span class="math inline">\(\text{reg}(U_i)\le \fc n2\)</span>. Converse also holds. (How is regularity related to max degree of defining function?)</li>
+</ul></li>
+</ul>
+<p>Example: the standard monomials (those missed by leading monomials) of Maj are those with weight <span class="math inline">\(&lt;\fc n2\)</span>. (Proof: any product of <span class="math inline">\(\ge \fc n2\)</span> variables vanishes on Maj.)</p>
+<p>Generalize: <span class="math inline">\(\de\)</span>-versatile on <span class="math inline">\(U\)</span> if <span class="math inline">\(\de \le \text{reg}(U)-\text{reg}(U_i)\)</span>. (A versatile function is <span class="math inline">\(\fc n2\)</span>-versatile on <span class="math inline">\(\F_2^n\)</span>.)</p>
+<p>Lemmas:</p>
+<ul>
+<li>6: A <span class="math inline">\(\de\)</span>-versatile function on <span class="math inline">\(U\)</span> cannot be represented on <span class="math inline">\(U\)</span> by degree <span class="math inline">\(&lt;\de\)</span>. (Note how we changed the degree and the set!)</li>
+<li>7: If <span class="math inline">\(q\)</span> has degree <span class="math inline">\(&lt;\de\)</span> and <span class="math inline">\(q\)</span> vanishes on <span class="math inline">\(U_i\)</span>, then it vanishes on <span class="math inline">\(U_{1-i}\)</span>. (This gives failure of one-sided computation.) Necessary is that <span class="math inline">\(U\)</span> be critical algebraic, <span class="math inline">\(a(\ol V)=\deg(1_U)\)</span>. I don’t understand this condition.</li>
+<li>8: The LM’s for <span class="math inline">\(U\cap G,U_i\cap G\)</span> for <span class="math inline">\(G\)</span> a union of hypersurfaces of degree <span class="math inline">\(&lt;d\)</span>, are the same up to degree <span class="math inline">\(\le \de -d\)</span>.</li>
+<li>9: Bound the difference between 2 evaluations of the Hilbert function at around <span class="math inline">\(\text{reg}(V)\)</span>. Q: Why do we expect this to be small, and why do we care?</li>
+</ul>
+<h2 id="rfs">RFS</h2>
+<h2 id="todo">Todo</h2>
+<ul>
+<li>Go through proof of Theorem 1.</li>
+<li>Understand recursive Fourier sampling. Read another source for this.</li>
+</ul>
+<p>Questions</p>
+<ul>
+<li>How to construct a versatile set?</li>
+</ul>
+
+  </div>
+
+    
+
+    <!-- Extension : Sharing buttons @ www.sharethis.com -->
+    <span class='st_facebook_large' displayText='Facebook'></span>
+    <span class='st_twitter_large' displayText='Tweet'></span>
+    <span class='st_googleplus_large' displayText='Google +'></span>
+    <span class='st_reddit_large' displayText='Reddit'></span>
+    <span class='st__large' displayText=''></span>
+
+    <div id="disqus_thread"></div>
+    
+
+
+  
+    <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+  </div>
+  
+</div>
+]]></summary>
+</entry>
+<entry>
+    <title>Recursive Fourier Sampling</title>
+    <link href="http://holdenlee.github.io/notebook/posts/tcs/complexity/RFS.html" />
+    <id>http://holdenlee.github.io/notebook/posts/tcs/complexity/RFS.html</id>
+    <published>2016-02-29T00:00:00Z</published>
+    <updated>2016-02-29T00:00:00Z</updated>
+    <summary type="html"><![CDATA[
+<div class="container">
+  <div id="content">
+    <div class="page header">
+      <h1>Recursive Fourier Sampling</h1>
+    </div>
+    <div class="info">
+      
+       
+        <p>Posted: 2016-02-29 
+          , Modified: 2016-02-29 
+	</p>
+      
+       <p>Tags: <a href="/tags/none.html">none</a></p> 
+    </div>
+    
+  </div>
+  <!--/div-->
+
+  
+
+  <div class="blog-main">
+    <h2 id="definition">Definition</h2>
+<h3 id="fs">FS</h3>
+<p><span class="math inline">\(FS_n:B^{2^{n+1}} \to \{0,1,*\}\)</span> is defined by <span class="math display">\[
+FS_n(f,g)=\begin{cases}
+g(s),&amp;\text{if }\exists s\in B^n, f(x)=x\cdot s\\
+*,&amp;\text{else.}
+\end{cases}
+\]</span> <span class="math inline">\(FS_n^g\)</span> is where <span class="math inline">\(g\)</span> is fixed.</p>
+<h3 id="rfs">RFS</h3>
+<p>Define by recurrence</p>
+\begin{align}
+RFS_{n,1}(s,g)&amp;=g(s)\\
+RFS_{n,h}&amp;: B^{n2^{n(h-1)} +\sumo j{h-1}} \to \{0,1,*\}\\
+RFS_{n,h}(R_0,\ldots, R_{2^n-1},g) &amp;=\begin{cases}
+g(s),&amp;\exists s\in B^n, \forall \si\in B^n, RFS_{n,h-1}(R_\si)=\si \cdot s\\
+*,&amp;\text{else}.
+\end{cases}\\
+\pat{Example}\; RFS_{n,2}(R_0,\ldots, R_{2^n-1},g) &amp;=\begin{cases}
+g(s),&amp;\exists s\in B^n, \forall \si\in B^n, g(R_\si) = \si \cdot s\\
+*,&amp;\text{else}.
+\end{cases}
+\end{align}
+
+  </div>
+
+    
+
+    <!-- Extension : Sharing buttons @ www.sharethis.com -->
+    <span class='st_facebook_large' displayText='Facebook'></span>
+    <span class='st_twitter_large' displayText='Tweet'></span>
+    <span class='st_googleplus_large' displayText='Google +'></span>
+    <span class='st_reddit_large' displayText='Reddit'></span>
+    <span class='st__large' displayText=''></span>
+
+    <div id="disqus_thread"></div>
+    
+
+
+  
+    <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+  </div>
+  
+</div>
+]]></summary>
+</entry>
+<entry>
+    <title>MAT529 notes</title>
+    <link href="http://holdenlee.github.io/notebook/posts/math/analysis/metric/MAT529.html" />
+    <id>http://holdenlee.github.io/notebook/posts/math/analysis/metric/MAT529.html</id>
+    <published>2016-02-29T00:00:00Z</published>
+    <updated>2016-02-29T00:00:00Z</updated>
+    <summary type="html"><![CDATA[
+<div class="container">
+  <div id="content">
+    <div class="page header">
+      <h1>MAT529 notes</h1>
+    </div>
+    <div class="info">
+      
+       
+        <p>Posted: 2016-02-29 
+          , Modified: 2016-02-29 
+	</p>
+      
+       <p>Tags: <a href="/tags/none.html">none</a></p> 
+    </div>
+    
+  </div>
+  <!--/div-->
+
+  
+
+  <div class="blog-main">
+    <h2 id="questions">Questions</h2>
+<h2 id="research-questions">Research questions</h2>
+<h2 id="scraps">Scraps</h2>
+
+  </div>
+
+    
+
+    <!-- Extension : Sharing buttons @ www.sharethis.com -->
+    <span class='st_facebook_large' displayText='Facebook'></span>
+    <span class='st_twitter_large' displayText='Tweet'></span>
+    <span class='st_googleplus_large' displayText='Google +'></span>
+    <span class='st_reddit_large' displayText='Reddit'></span>
+    <span class='st__large' displayText=''></span>
+
+    <div id="disqus_thread"></div>
+    
+
+
+  
+    <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+  </div>
+  
+</div>
+]]></summary>
+</entry>
+<entry>
+    <title>Censored block model</title>
+    <link href="http://holdenlee.github.io/notebook/posts/tcs/machine_learning/community/cbm.html" />
+    <id>http://holdenlee.github.io/notebook/posts/tcs/machine_learning/community/cbm.html</id>
+    <published>2016-02-28T00:00:00Z</published>
+    <updated>2016-02-28T00:00:00Z</updated>
+    <summary type="html"><![CDATA[
+<div class="container">
+  <div id="content">
+    <div class="page header">
+      <h1>Censored block model</h1>
+    </div>
+    <div class="info">
+      
+       
+        <p>Posted: 2016-02-28 
+          , Modified: 2016-02-28 
+	</p>
+      
+       <p>Tags: <a href="/tags/research.html">research</a></p> 
+    </div>
+    
+  </div>
+  <!--/div-->
+
+  <div class="toc"> <ul>
+ <li><a href="#summary">Summary</a></li>
+ <li><a href="#sdp-relaxation">SDP relaxation</a></li>
+ <li><a href="#fixing-a-graph">Fixing a graph</a></li>
+ </ul> </div>
+
+  <div class="blog-main">
+    <h2 id="summary">Summary</h2>
+<p>Model: Graph <span class="math inline">\(G\)</span> is given. Each node is iid red/blue with probability <span class="math inline">\(\rc2\)</span>. An edge is labeled <span class="math display">\[\begin{cases}+&amp;\text{nodes same color}\\-&amp;\text{nodes different color}\end{cases}.\]</span> Each edge is flipped independently with probability <span class="math inline">\(\rc2\)</span>.</p>
+<p>Question: Under what conditions of <span class="math inline">\(G\)</span> can the communities be recovered (up to sign)</p>
+<ul>
+<li>exactly with high (<span class="math inline">\(1-o(1)\)</span>) probability?</li>
+<li>with correlation tending to 1? (whp, the number of correctly classified nodes is <span class="math inline">\(1-o(1)\)</span>)</li>
+<li>weakly (with <span class="math inline">\(\rc2+\Om(1)\)</span> correlation)?</li>
+</ul>
+<p>Past work:</p>
+<ul>
+<li>[ABSS12] For exact recovery
+<ul>
+<li>Necessary: <span class="math inline">\(C_\ep \ln n\)</span> average degree.</li>
+<li>For random graphs <span class="math inline">\(G(n, p)\)</span>, <span class="math inline">\(p\ge \fc{2C_\ep\ln n}{n}\)</span> is sufficient. (Factor of 2 gap, later closed by [??])</li>
+<li>Algorithm is SDP relaxation. Sufficient criteria for it to work is that there is a constant spectral gap in the graph. Up to constants, this is the same as having a large Cheeger constant.</li>
+<li>Spectral criteria are not necessary: for example, for 2 complete graphs with a <span class="math inline">\(\ln n\)</span> sized cut, recovery is possible.</li>
+</ul></li>
+<li>Strong recovery - ?</li>
+<li>Weak recovery - ?</li>
+</ul>
+<h2 id="sdp-relaxation">SDP relaxation</h2>
+<p>Let <span class="math inline">\(\rh_{ij}\)</span> be the edge labels. Relax <span class="math display">\[ \min_{g_i\in \{\pm 1\}} \sum_{ij\in E}(g_i-\rh_{ij}g_j)^2 \]</span> to <span class="math inline">\(\max_{X_{ii}=1,X\succeq0}(WX)\)</span> where <span class="math inline">\(W=A_G-2A_H\)</span>.</p>
+<p>(Details: we want <span class="math inline">\(\max \rh_{ij}g_ig_j = \max_{g\in \{\pm 1\}^n}Wgg^T\)</span>.)</p>
+<h2 id="fixing-a-graph">Fixing a graph</h2>
+<p>Suggestion: Let <span class="math inline">\(X\)</span> be the node colors and <span class="math inline">\(Y_\ep\)</span> be the observed edges. Consider the entropy <span class="math inline">\(H(X|Y_\ep)\)</span>. This is like a measure of connectivity “on average.” Ex. When <span class="math inline">\(\ep=0\)</span>, this measures the number of components. Think of it as a average-case Cheeger: rather than look at the proportionally minimal cut, we’re looking at an average cut size. (Related is the probability of success for ML decoding, which is <span class="math inline">\(\E_{X,Y_\ep}P(X|Y)\)</span>.)</p>
+<p>Thoughts: Any nontrivial partition <span class="math inline">\(A\sqcup B= V\)</span> of the vertices is associated with a cut. For a set <span class="math inline">\(S\)</span>, let <span class="math inline">\(X_S\)</span> be <span class="math inline">\(X\)</span> with the colors of vertices in <span class="math inline">\(S\)</span> flipped. Given observed <span class="math inline">\(Y_\ep\)</span>, <span class="math inline">\(P(X_S|Y_\ep)\ge P(X|Y_\ep)\)</span> iff most of the edges of the cut <span class="math inline">\((A,V\bs A)\)</span> are flipped. Thus, the ML decoding is the <span class="math inline">\(X\)</span> such that in no cut is the majority of the edges wrong.</p>
+Let <span class="math inline">\(G_C\)</span> be the (good) event that the majority of edges of cut <span class="math inline">\(C\)</span> are correct. Letting <span class="math inline">\(|C|\)</span> be the number of edges in the cut,
+\begin{align}
+P\pa{\bigwedge_C G_C} &amp; \ge \prod P(G_C) &amp; \text{Correlation inequality} \\
+&amp; = \prod_C P(\Binom(|C|, 1-\ep) &gt; \fc{|C|}2)\\
+&amp; = \prod_C (1-e^{-K_\ep|C|})\\
+&amp; \ge 1-\sum_C e^{-K_\ep|C|}.
+\end{align}
+<p>(By Chernoff, we can take <span class="math inline">\(K_\ep = \fc{(\ep-\rc2)^2}{2\ep(1-\ep)}\)</span>.)</p>
+<p>Question: is there an efficient algorithm to approximate <span class="math inline">\(\sum_C e^{-K|C|}\)</span>? By Karger’s algorithm, we can estimate the number of minimum cuts. By sampling, we can estimate the number of cuts of some size if it’s <span class="math inline">\(&gt;\rc{\poly}\)</span> proportion. But what about all cuts in between?</p>
+<p>Note: The inequalities are not close to sharp because the events are very correlated when the cuts overlap a lot. Somehow it should be more affected by small cuts which <em>don’t</em> share a lot of edges in common.</p>
+
+  </div>
+
+    
+
+    <!-- Extension : Sharing buttons @ www.sharethis.com -->
+    <span class='st_facebook_large' displayText='Facebook'></span>
+    <span class='st_twitter_large' displayText='Tweet'></span>
+    <span class='st_googleplus_large' displayText='Google +'></span>
+    <span class='st_reddit_large' displayText='Reddit'></span>
+    <span class='st__large' displayText=''></span>
+
+    <div id="disqus_thread"></div>
+    
+
+
+  
+    <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+  </div>
+  
+</div>
+]]></summary>
+</entry>
+<entry>
+    <title>[MNS12]</title>
+    <link href="http://holdenlee.github.io/notebook/posts/tcs/machine_learning/MNS12.html" />
+    <id>http://holdenlee.github.io/notebook/posts/tcs/machine_learning/MNS12.html</id>
+    <published>2016-02-28T00:00:00Z</published>
+    <updated>2016-02-28T00:00:00Z</updated>
+    <summary type="html"><![CDATA[
+<div class="container">
+  <div id="content">
+    <div class="page header">
+      <h1>[MNS12]</h1>
+    </div>
+    <div class="info">
+      
+       
+        <p>Posted: 2016-02-28 
+          , Modified: 2016-02-28 
+	</p>
+      
+       <p>Tags: <a href="/tags/abbe.html">abbe</a></p> 
+    </div>
+    
+  </div>
+  <!--/div-->
+
+  <div class="toc"> <ul>
+ <li><a href="#summary">Summary</a></li>
+ <li><a href="#proofs">Proofs</a><ul>
+ <li><a href="#estimation">Estimation</a></li>
+ <li><a href="#non-recovery">Non-recovery</a></li>
+ <li><a href="#non-estimation">Non-estimation</a></li>
+ </ul></li>
+ <li><a href="#questions">Questions</a><ul>
+ <li><a href="#minor">Minor</a></li>
+ </ul></li>
+ </ul> </div>
+
+  <div class="blog-main">
+    <h2 id="summary">Summary</h2>
+<p>Mossel, Elchanan, Joe Neeman, and Allan Sly. “Stochastic block models and reconstruction.” arXiv preprint arXiv:1202.1499 (2012).</p>
+<p>Model: Given a stochastic block model <span class="math inline">\(G(n, \fc an, \fc bn)\)</span>, recover the communities and estimate <span class="math inline">\(a\)</span> and <span class="math inline">\(b\)</span>.</p>
+<p>They prove 3/4 of the problem. The conjectured threshold is <span class="math inline">\((a-b)^2&gt;2(a+b)\)</span>.</p>
+<ol type="1">
+<li>When $(a-b)^2&gt;2(a+b),
+<ol type="1">
+<li>Recovery: can we recover the communities efficiently? (Still open.)</li>
+<li>Estimate <span class="math inline">\(a,b\)</span> (w.h.p. get <span class="math inline">\(a(1+o(1))\)</span> as <span class="math inline">\(n\to \iy\)</span>). (Theorem 2.5)</li>
+</ol></li>
+<li>When <span class="math inline">\((a-b)^2\le 2(a+b)\)</span>,
+<ol type="1">
+<li>Non-recovery: we can recover communities exactly (with probability <span class="math inline">\(1-o(1)\)</span>). (Theorem 2.1)</li>
+<li>Non-estimation: we cannot estimate <span class="math inline">\(a,b\)</span>. (Theorem 2.4)</li>
+</ol></li>
+</ol>
+<p>Note that recovery seems stronger than estimation (is this true formally?).</p>
+<p>Details of the theorems: Let <span class="math inline">\(\Pj_n=\cal G(n,\fc an, \fc bn)\)</span>, <span class="math inline">\(\Pj_n' = \cal G(n,\fc{a+b}{2n})\)</span>.</p>
+<ul>
+<li>2.1: Show something stronger: for fixed vertices, <span class="math inline">\(\Pj_n(\si_u=+|G,\si_v=+)\to \rc2\)</span> a.a.s. This means no algorithm can tell whether 2 vertices have the same label.<a href="#fn1" class="footnoteRef" id="fnref1"><sup>1</sup></a></li>
+<li>2.4: Show that <span class="math inline">\(\Pj_n,\Pj_n'\)</span> are mutually continuous.
+<ul>
+<li>Mutually contiguous means that <span class="math inline">\(\Pj_n(A_n)\to 0\iff \Pj_n'(A_n)\to 0\)</span>. This is weaker than being statistically indistinguishable.</li>
+<li>Mutual continiguity is a transitive relation, so it’s indistinguishable from all <span class="math inline">\(\cal G(n,\fc{a'+b'}{2n})\)</span> also satisfying the same inequality, with the same sum.</li>
+</ul></li>
+<li>2.5: There are consistent estimators for <span class="math inline">\(a,b\)</span> depending on the number of <span class="math inline">\(k_n\)</span>-cycles (<span class="math inline">\(k_n=\fl{\ln^{\rc 4}n}\)</span>).
+<ul>
+<li><span class="math inline">\(\Pj_n,\Pj_n'\)</span> are asymptotically orthogonal, i.e., there is <span class="math inline">\(A_n\)</span>, <span class="math inline">\(\Pj_n(A_n)\to 1, \Pj_n'(A_n)\to 0\)</span>.</li>
+</ul></li>
+</ul>
+<h2 id="proofs">Proofs</h2>
+<h3 id="estimation">Estimation</h3>
+<p>Idea: The number of cycles for <span class="math inline">\(\Pj_n,\Pj_n'\)</span> follow a Poisson distribution. They are spaced farther apart than their standard deviation exactly when <span class="math inline">\((a-b)^2&gt;2(a+b)\)</span>.</p>
+<ol type="1">
+<li>Calculation of number of <span class="math inline">\(k\)</span>-cycles: <span class="math display">\[ X_{k,n}\xra{d} \Pois\pa{\rc{k2^{k+1}}((a+b)^k + (a-b)^k)}.\]</span> (For the Erdos-Renyi random graph <span class="math inline">\(a'=b'=\fc{a+b}{2}\)</span>, there is no 2nd term.) To calculate this,
+<ol type="1">
+<li>Expected value: Use linearity of <span class="math inline">\(\E\)</span> over all <span class="math inline">\(\binom nk\)</span> cycles. The probability of the cycle depends on the number of sign changes. Get <span class="math inline">\(n^{-k}2^{-k+1}\sum_{m\text{ even}} \binom km a^{k-m}b^m\)</span>.</li>
+<li>Higher moments: We’re counting number of <span class="math inline">\(m\)</span>-cycles. It suffices to show the expected number of non-vertex disjoint <span class="math inline">\(m\)</span>-types converges to 0.<a href="#fn2" class="footnoteRef" id="fnref2"><sup>2</sup></a> Then it’s Poisson.</li>
+</ol></li>
+<li>Parameters. <span class="math inline">\(a+b\)</span> can be estimated from average degree. Estimate <span class="math inline">\(a-b\)</span> using the estimate for <span class="math inline">\(a+b\)</span> and <span class="math inline">\(X_{k_n}\)</span>.</li>
+<li>Algorithm. This is Proposition 3.2 which I don’t understand!<a href="#fn3" class="footnoteRef" id="fnref3"><sup>3</sup></a></li>
+</ol>
+<h3 id="non-recovery">Non-recovery</h3>
+<p>First consider a problem on trees.</p>
+<p>Model: A Galton-Watson tree has <span class="math inline">\(\Pois(d)\)</span> offspring. An offspring is flipped with probability <span class="math inline">\(\ep\)</span>. Can you deduce the sign of the root from the sign of the depth-<span class="math inline">\(R\)</span> signs?</p>
+<p>Answer: There is threshold.</p>
+<p>Idea of non-recovery: On neighborhoods, the distribution of signs is close to that of the model. The posterior distribution of the signs given the graph is approximately a Markov.</p>
+<ol type="1">
+<li><strong>Theorem 4.1</strong>: <span class="math inline">\(d(1-2\ep)^2\le 1 \iff \lim_{R\to \iy} \Pj(\tau_p=+|\tau_{\pl T_R})=\rc2\)</span> a.s.<a href="#fn4" class="footnoteRef" id="fnref4"><sup>4</sup></a></li>
+<li><strong>Pr. 4.2</strong>: The distribution of a small neighborhood of a given vertex is statistically close the the distribution for the tree model. Take the radius to be <span class="math inline">\(\rc{C} \log_{\fc{a+b}2} n\)</span>, so that the expected number of nodes is <span class="math inline">\(O(n^{\rc C})\)</span>. Think of this as a coupling argument. Do an inductive argument on the depth, the distance between distributions grows a little each time. Bound the probability of the bad event of having too many children—if this doesn’t happen, there are still approximately <span class="math inline">\(\fc n2\)</span> <span class="math inline">\(+\)</span>’s and <span class="math inline">\(-\)</span>’s left, and the appromate number of children that switch/don’t switch will be close to <span class="math inline">\(\fc a2, \fc b2\)</span>. (See lemmas 4.3-6.)</li>
+<li>Consider <span class="math inline">\(\Pj(\si|G)\)</span>. This is not a Markov field because the probability (multiplying factor) of non-edge is different for if the vertices are same/different. But the ratio is <span class="math inline">\(\fc{1-\fc an}{1-\fc bn}\approx 1\)</span>, so it shouldn’t have much effect. We show we still have approximate independence in the sense of <strong>Lemma 4.7</strong>: <span class="math inline">\(\Pj(\si_A|\si_{B\cup C,G} = (1+o(1))\Pj(\si_A|\si_B,G)\)</span> for a.a.e. <span class="math inline">\(G,\si\)</span>,<a href="#fn5" class="footnoteRef" id="fnref5"><sup>5</sup></a> when <span class="math inline">\(A,B,C\)</span> is a partition with <span class="math inline">\(|A\cup B|=o(\sqrt n)\)</span>. (This condition is necessary to make sure we’re not multiplying too many <span class="math inline">\((1-\fc an)\)</span> and <span class="math inline">\((1-\fc bn)\)</span>’s.) Take <span class="math inline">\(A\)</span> to be <span class="math inline">\(B_{R-1}(v)\)</span>, <span class="math inline">\(B\)</span> to be <span class="math inline">\(\pl G_R\)</span>, and <span class="math inline">\(C\)</span> to be the rest. This gives that <span class="math inline">\(\si_v,\si_\rh\)</span> are conditionally independent given the boundary.</li>
+<li>Use 1 with <span class="math inline">\(\ep = \fc{b}{a+b}, d=\fc{a+b}{2}\)</span> (proportion of edges corresponding to flipping). The variance approaches the variance without conditioning on <span class="math inline">\(\si_v\)</span>. The variance without conditioning <span class="math inline">\(\Var(\si_\rh|G_,\si_v)\)</span> is close to tht for the tree model, which is 1 (the nonrecovery regime) when <span class="math inline">\(d(1-2\ep)^2\le 1\)</span>, which is exactly the condition. From the variance going to 1, the expectation goes to 0;probability goes to <span class="math inline">\(\rc2\)</span>.</li>
+</ol>
+<h3 id="non-estimation">Non-estimation</h3>
+<p>(Unfinished)</p>
+<p>Define <span class="math inline">\(\Pj_n(\si|G)\)</span> to be the same as <span class="math inline">\(\Pj_n'(\si|G)\)</span>. The joint distribution is not the same because the marginal distribution over the graphs is different.</p>
+<p>Use a criteria for contiguity, <strong>Theorem 5.1</strong><a href="#fn6" class="footnoteRef" id="fnref6"><sup>6</sup></a>. See this as a black box. Calculate moments, etc. of <span class="math inline">\(Y_n=\fc{\Pj_n}{\Pj_n'}\)</span>. Using independence of edges given <span class="math inline">\(\si\)</span>, you can decompose this as a product nicely.</p>
+<h2 id="questions">Questions</h2>
+<h3 id="minor">Minor</h3>
+<ul>
+<li>What is a.a.s.?</li>
+</ul>
+<section class="footnotes">
+<hr />
+<ol>
+<li id="fn1"><p>Note that the “a.s.” is with respect to <span class="math inline">\((\si,G)\)</span>. Two neighboring vertices will have a lot of information on each other, but two vertices will be neighboring with low probability with respect to the distribution over <span class="math inline">\(G\)</span>.<a href="#fnref1">↩</a></p></li>
+<li id="fn2"><p>? (How? Reference given is Bollobas, Ch. 4. Need <span class="math inline">\(k=O(\ln^{\rc 4}n)\)</span>.)<a href="#fnref2">↩</a></p></li>
+<li id="fn3"><p>?<a href="#fnref3">↩</a></p></li>
+<li id="fn4"><p>It would be good to understand this proof for <span class="math inline">\(d\)</span>-ary trees (without the GW complication).<a href="#fnref4">↩</a></p></li>
+<li id="fn5"><p>I don’t understand what it means by random partition.<a href="#fnref5">↩</a></p></li>
+<li id="fn6"><p>I don’t understand the motivation/theory behind this. Reference is [35], Wormald, Models of random regular graphs.<a href="#fnref6">↩</a></p></li>
+</ol>
+</section>
+
+  </div>
+
+    
+
+    <!-- Extension : Sharing buttons @ www.sharethis.com -->
+    <span class='st_facebook_large' displayText='Facebook'></span>
+    <span class='st_twitter_large' displayText='Tweet'></span>
+    <span class='st_googleplus_large' displayText='Google +'></span>
+    <span class='st_reddit_large' displayText='Reddit'></span>
+    <span class='st__large' displayText=''></span>
+
+    <div id="disqus_thread"></div>
+    
+
+
+  
+    <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+  </div>
+  
+</div>
+]]></summary>
+</entry>
+
+</feed>
