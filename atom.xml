@@ -8,8 +8,345 @@
         <name>Holden Lee</name>
         <email>oldheneel@gmail.com</email>
     </author>
-    <updated>2016-03-03T00:00:00Z</updated>
+    <updated>2016-03-04T00:00:00Z</updated>
     <entry>
+    <title>SDP duality</title>
+    <link href="http://holdenlee.github.io/notebook/posts/tcs/machine_learning/optimization/sdp-duality.html" />
+    <id>http://holdenlee.github.io/notebook/posts/tcs/machine_learning/optimization/sdp-duality.html</id>
+    <published>2016-03-04T00:00:00Z</published>
+    <updated>2016-03-04T00:00:00Z</updated>
+    <summary type="html"><![CDATA[
+<div class="container">
+  <div id="content">
+    <div class="page header">
+      <h1>SDP duality</h1>
+    </div>
+    <div class="info">
+      
+       
+        <p>Posted: 2016-03-04 
+          , Modified: 2016-03-04 
+	</p>
+      
+       <p>Tags: <a href="/tags/SDP.html">SDP</a>, <a href="/tags/duality.html">duality</a></p> 
+    </div>
+    
+  </div>
+  <!--/div-->
+
+  
+
+  <div class="blog-main">
+    <p><a href="duality.html">Duality</a></p>
+<h2 id="summary">Summary</h2>
+<p>The following SDP’s are dual: <span class="math display">\[
+\max_{X\succeq 0,\an{A_i,X}=b_i}\an{C,X} \lra \min_{\nu, \sum \nu_iA_i\succeq C} \nu^Tb.
+\]</span> (When are they equal? When there is a strictly feasible point.)</p>
+<h2 id="derivation">Derivation</h2>
+<ol type="1">
+<li>First write as a convex program. Replace the condition <span class="math inline">\(X\succeq 0\)</span> by <span class="math display">\[
+ \la_{\min}(X)=\min_{\Tr(A)=1, A\succeq 0}\an{A,X}\ge 0.
+ \]</span> (Use (2) in <a href="duality.html">duality</a>.)</li>
+<li>Simplify, using minimax as a key step.
+\begin{align}
+ g(\la,\nu) &amp;= \max_X(\an{C,X} + \la \min_{\Tr(A)=1, A\succeq 0}\an{A,X} - \sum \nu_i (\an{A_i,X}-b_i)\\
+ &amp;=\max_X\min_{\Tr(A)=1}\an{\ub{C-\sum \nu_iA_i}{Z}+\la A,X} + \nu^Tb\\
+ &amp;=\max_X\min_{\Tr(A)=\la}\an{Z + A,X} + \nu^Tb\\
+ &amp;= \min_{\Tr(A)=\la}\max_X \an{Z+A,X}\\
+ &amp;=\pa{\begin{cases}
+ 0,&amp;\Tr(Z)=-\la, Z\preceq 0\\
+ \iy,&amp;\text{else.}
+ \end{cases}}-\nu^Tb
+ \end{align}
+using minimax, then noting the inside <span class="math inline">\(\max\)</span> forces the condition <span class="math inline">\(Z=-A\)</span>.</li>
+<li>Taking <span class="math inline">\(\min\)</span> of this, <span class="math inline">\(Z\preceq 0\)</span> turns into a constraint.</li>
+</ol>
+<p>See <a href="http://www.eecs.berkeley.edu/~wainwrig/ee227a/SDP_Duality.pdf">notes</a>.</p>
+
+  </div>
+
+    
+
+    <!-- Extension : Sharing buttons @ www.sharethis.com -->
+    <span class='st_facebook_large' displayText='Facebook'></span>
+    <span class='st_twitter_large' displayText='Tweet'></span>
+    <span class='st_googleplus_large' displayText='Google +'></span>
+    <span class='st_reddit_large' displayText='Reddit'></span>
+    <span class='st__large' displayText=''></span>
+
+    <div id="disqus_thread"></div>
+    
+
+
+  
+    <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+  </div>
+  
+</div>
+]]></summary>
+</entry>
+<entry>
+    <title>Duality</title>
+    <link href="http://holdenlee.github.io/notebook/posts/tcs/machine_learning/optimization/duality.html" />
+    <id>http://holdenlee.github.io/notebook/posts/tcs/machine_learning/optimization/duality.html</id>
+    <published>2016-03-04T00:00:00Z</published>
+    <updated>2016-03-04T00:00:00Z</updated>
+    <summary type="html"><![CDATA[
+<div class="container">
+  <div id="content">
+    <div class="page header">
+      <h1>Duality</h1>
+    </div>
+    <div class="info">
+      
+       
+        <p>Posted: 2016-03-04 
+          , Modified: 2016-03-04 
+	</p>
+      
+       <p>Tags: <a href="/tags/duality.html">duality</a></p> 
+    </div>
+    
+  </div>
+  <!--/div-->
+
+  <div class="toc"> <ul>
+ <li><a href="#summary">Summary</a><ul>
+ <li><a href="#duality">Duality</a></li>
+ <li><a href="#kkt-conditions">KKT conditions</a></li>
+ </ul></li>
+ <li><a href="#questions">Questions</a></li>
+ </ul> </div>
+
+  <div class="blog-main">
+    <h2 id="summary">Summary</h2>
+<h3 id="duality">Duality</h3>
+These problems are dual.
+\begin{align}
+\min_{f_i\le 0, Ax=b} f &amp; \lra \max_{\la \ge 0,\nu} \ub{\min_x \ub{f+\la^T\vec{f} + \nu^T (Ax-b)}{\cal L(x,\la,\nu)}}{g(\la,\nu)}\\
+\max_{f_i\ge 0, Ax=b} f &amp; \lra \min_{\la \ge 0,\nu} \ub{\max_x \ub{f+\la^T\vec{f} - \nu^T (Ax-b)}{\cal L(x,\la,\nu)}}{g(\la,\nu)}
+\end{align}
+<p>In (1) the <span class="math inline">\(f_i\)</span> are convex; in (2) they are concave.</p>
+<p><strong>Slater’s constraints</strong>: Equality holds if the problem is strictly feasible: there exists <span class="math inline">\(x\)</span> such that <span class="math inline">\(f_i(x)&lt;0, Ax=b\)</span>.</p>
+<h3 id="kkt-conditions">KKT conditions</h3>
+<p>The KKT conditions are (here <span class="math inline">\(h=Ax-b\)</span>)</p>
+<ol type="1">
+<li>(derivative 0) <span class="math inline">\(\nb f+\sum \la_i \nb f_i + \nu^TA=0\)</span>.</li>
+<li>(constraints satisfied) <span class="math inline">\(\la \ge 0, f_i\le 0, h_i=0\)</span>.</li>
+<li>(complementary slackness) <span class="math inline">\(\la f_i=0\)</span>.</li>
+</ol>
+<p>Interpretation:</p>
+<ul>
+<li>If <span class="math inline">\(x,\la,\nu\)</span> satisfy the conditions, then <span class="math inline">\(x\)</span> and <span class="math inline">\((\la,\nu)\)</span> are primal and dual optimal and the optimal values are equal.</li>
+<li>if Slater’s condition is satisfied, <span class="math inline">\(x\)</span> is optimal if and only if there exist, <span class="math inline">\(\la,\nu\)</span> that satisfy KKT conditions</li>
+</ul>
+<h2 id="questions">Questions</h2>
+<p>If <span class="math inline">\(x\)</span> is a primal optimal, is there necessarily a <span class="math inline">\((\la,\nu)\)</span> that satisfies the equations? I think if <span class="math inline">\(x\)</span> is primal optimal and <span class="math inline">\((\la,\nu)\)</span> is dual optimal, <span class="math inline">\((x,\la,\nu)\)</span> does not necessarily satisfy. Check this.</p>
+
+  </div>
+
+    
+
+    <!-- Extension : Sharing buttons @ www.sharethis.com -->
+    <span class='st_facebook_large' displayText='Facebook'></span>
+    <span class='st_twitter_large' displayText='Tweet'></span>
+    <span class='st_googleplus_large' displayText='Google +'></span>
+    <span class='st_reddit_large' displayText='Reddit'></span>
+    <span class='st__large' displayText=''></span>
+
+    <div id="disqus_thread"></div>
+    
+
+
+  
+    <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+  </div>
+  
+</div>
+]]></summary>
+</entry>
+<entry>
+    <title>Convex optimization</title>
+    <link href="http://holdenlee.github.io/notebook/posts/tcs/machine_learning/optimization/convex_optimization.html" />
+    <id>http://holdenlee.github.io/notebook/posts/tcs/machine_learning/optimization/convex_optimization.html</id>
+    <published>2016-03-04T00:00:00Z</published>
+    <updated>2016-03-04T00:00:00Z</updated>
+    <summary type="html"><![CDATA[
+<div class="container">
+  <div id="content">
+    <div class="page header">
+      <h1>Convex optimization</h1>
+    </div>
+    <div class="info">
+      
+       
+        <p>Posted: 2016-03-04 
+          , Modified: 2016-03-04 
+	</p>
+      
+       <p>Tags: <a href="/tags/convex%20optimization.html">convex optimization</a></p> 
+    </div>
+    
+  </div>
+  <!--/div-->
+
+  <div class="toc"></div>
+
+  <div class="blog-main">
+    <p>Notes:</p>
+<ul>
+<li><a href="duality.html">Duality</a></li>
+<li></li>
+</ul>
+
+  </div>
+
+    
+
+    <!-- Extension : Sharing buttons @ www.sharethis.com -->
+    <span class='st_facebook_large' displayText='Facebook'></span>
+    <span class='st_twitter_large' displayText='Tweet'></span>
+    <span class='st_googleplus_large' displayText='Google +'></span>
+    <span class='st_reddit_large' displayText='Reddit'></span>
+    <span class='st__large' displayText=''></span>
+
+    <div id="disqus_thread"></div>
+    
+
+
+  
+    <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+  </div>
+  
+</div>
+]]></summary>
+</entry>
+<entry>
+    <title>Gradient descent</title>
+    <link href="http://holdenlee.github.io/notebook/posts/tcs/machine_learning/optimization/GD.html" />
+    <id>http://holdenlee.github.io/notebook/posts/tcs/machine_learning/optimization/GD.html</id>
+    <published>2016-03-04T00:00:00Z</published>
+    <updated>2016-03-04T00:00:00Z</updated>
+    <summary type="html"><![CDATA[
+<div class="container">
+  <div id="content">
+    <div class="page header">
+      <h1>Gradient descent</h1>
+    </div>
+    <div class="info">
+      
+       
+        <p>Posted: 2016-03-04 
+          , Modified: 2016-03-04 
+	</p>
+      
+       <p>Tags: <a href="/tags/gradient.html">gradient</a></p> 
+    </div>
+    
+  </div>
+  <!--/div-->
+
+  
+
+  <div class="blog-main">
+    <p>(See 10/15 notebook for detailed notes.)</p>
+<h2 id="summary">Summary</h2>
+<table style="width:25%;">
+<colgroup>
+<col style="width: 5%" />
+<col style="width: 5%" />
+<col style="width: 5%" />
+<col style="width: 5%" />
+<col style="width: 5%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Algorithm</th>
+<th style="text-align: left;">General</th>
+<th style="text-align: left;"><span class="math inline">\(\al\)</span>-strongly convex</th>
+<th style="text-align: left;"><span class="math inline">\(\be\)</span>-smooth</th>
+<th style="text-align: left;"><span class="math inline">\(\ga\)</span>-convex</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Gradient descent</td>
+<td style="text-align: left;"><span class="math inline">\(\rc{\sqrt{T}}\)</span></td>
+<td style="text-align: left;"><span class="math inline">\(\rc{\al T}\)</span></td>
+<td style="text-align: left;"><span class="math inline">\(\fc{\be}T\)</span></td>
+<td style="text-align: left;"><span class="math inline">\(e^{-\ga T}\)</span></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Accelerated gradient descent</td>
+<td style="text-align: left;"><span class="math inline">\(\fc{d}{T}\)</span></td>
+<td style="text-align: left;"><span class="math inline">\(\rc{\al T^2}\)</span></td>
+<td style="text-align: left;"><span class="math inline">\(\fc{\be}{T^2}\)</span></td>
+<td style="text-align: left;"><span class="math inline">\(e^{-\sqrt{\ga} T}\)</span></td>
+</tr>
+</tbody>
+</table>
+<h3 id="gradient-descent-main-points">Gradient descent main points</h3>
+<ul>
+<li>What is the general framework?
+<ol type="1">
+<li>Pick a descent direction <span class="math inline">\(\De x\)</span>.</li>
+<li>Choose a step size <span class="math inline">\(\tau&gt;0\)</span>: <span class="math display">\[x^{(t+1)} \leftarrow x+\tau \De x.\]</span></li>
+<li>Continue until stop criterion.</li>
+</ol></li>
+<li>What is vanilla (one shot) gradient descent?
+<ul>
+<li>Gradient descent lemma: Suppose <span class="math inline">\(f\)</span> is convex and <span class="math inline">\(L\)</span>-smooth, <span class="math inline">\(\ve{\nb f(x)-\nb f(y)}\le L\ve{x-y}\)</span>.
+\begin{align}
+ x':&amp;=x-\rc L \nb f(x)\\
+ \implies f(x')&amp;\le f(x) - \rc{2L}\ve{\nb f(x)}^2.
+ \end{align}</li>
+<li>There’s no guarantee on smoothness unless we assume <span class="math inline">\(f\)</span> is <span class="math inline">\(l\)</span>-strongly convex, <span class="math inline">\(\ve{\nb f(x)-\nb f(y)}\le l\ve{x-y}\)</span>. Let <span class="math inline">\(\ka=\fc{L}{l}, t = \fc{2}{L+l}\)</span>.<a href="#fn1" class="footnoteRef" id="fnref1"><sup>1</sup></a> Then linear convergence holds:
+\begin{align}
+ \ve{x_{k+1}-x^*} \le \pf{\ka-1}{\ka+1} \ve{x_k-x^*}
+ \end{align}</li>
+</ul></li>
+<li>What is gradient descent with backtracking?
+<ul>
+<li>Parameters <span class="math inline">\(\al\in (0,0.5)\)</span>, step size, <span class="math inline">\(\be\in (0,1)\)</span> scaling factor.</li>
+<li>Choose <span class="math inline">\(\De x=\nb f(x)\)</span>.</li>
+<li>Choose <span class="math inline">\(\tau\)</span> by backtracking: Set <span class="math inline">\(t=1\)</span>. While <span class="math inline">\(f(x+t\De x)&gt;f(x)+\al \nb f^T\De x\)</span>, <span class="math display">\[\De x\leftarrow \al \De x.\]</span></li>
+<li>Lemma: suppose <span class="math inline">\(mI \preceq \nb^2 f \preceq MI\)</span>. Then <span class="math display">\[\fc{f(x_t)-f(p^*)}{f(x_{t-1})-f(p^*)}\le 1-\min\bc{\fc{2\al \be m}{M}, 2m\al}.\]</span></li>
+</ul></li>
+<li></li>
+</ul>
+<h2 id="proofs">Proofs</h2>
+<p>Gradient descent lemma: Let <span class="math inline">\(D=\nb f(x)\)</span>. Move to origin. Upper bound is <span class="math display">\[f(x) \le \fc{L}2 x^2 + Dx.\]</span> The minimum is at <span class="math inline">\(-\fc{D}{L}\)</span> and is <span class="math inline">\(\fc{-b^2}{4a} = -\fc{D^2}{2L}.\)</span></p>
+<p>For strongly convex: Choose <span class="math inline">\(s\)</span> to maximize the minimum progress in terms of <span class="math inline">\(x\)</span>. <span class="math display">\[\fc{s-\rc{l}}{\rc{l}} = \fc{\rc L-s}{\rc L} \implies s = \fc{2}{L+l}.\]</span></p>
+<section class="footnotes">
+<hr />
+<ol>
+<li id="fn1"><p>Think of this as the harmonic average of how much to move to get to the minima of the upper and lower-bounding quadratics.<a href="#fnref1">↩</a></p></li>
+</ol>
+</section>
+
+  </div>
+
+    
+
+    <!-- Extension : Sharing buttons @ www.sharethis.com -->
+    <span class='st_facebook_large' displayText='Facebook'></span>
+    <span class='st_twitter_large' displayText='Tweet'></span>
+    <span class='st_googleplus_large' displayText='Google +'></span>
+    <span class='st_reddit_large' displayText='Reddit'></span>
+    <span class='st__large' displayText=''></span>
+
+    <div id="disqus_thread"></div>
+    
+
+
+  
+    <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+  </div>
+  
+</div>
+]]></summary>
+</entry>
+<entry>
     <title>[GRSY15] How Hard is Inference for Structured Prediction?</title>
     <link href="http://holdenlee.github.io/notebook/posts/tcs/machine_learning/community/GRSY15.html" />
     <id>http://holdenlee.github.io/notebook/posts/tcs/machine_learning/community/GRSY15.html</id>
@@ -103,6 +440,7 @@
 
   <div class="toc"> <ul>
  <li><a href="#talk-with-zeev">Talk with Zeev</a></li>
+ <li><a href="#low-weight-ldcs-to-ldcs">Low-weight LDCs to LDCs</a></li>
  </ul> </div>
 
   <div class="blog-main">
@@ -111,6 +449,7 @@
 <p>Now consider if the bipartite graph represents a Cayley graph (<span class="math inline">\(x\)</span> on the left is connected to <span class="math inline">\(gx\)</span> on the right). “Abelian groups are the worst expanders.”</p>
 <p>If you need <span class="math inline">\(\ge d\)</span> matchings, you get a LDC from <span class="math inline">\(d\)</span> to <span class="math inline">\(n\)</span>.</p>
 <p>Consider tripartite hypergraphs, with <span class="math inline">\(n^3\)</span> matchings partitioned into <span class="math inline">\(n^2\)</span>. Is the worst partition take <span class="math inline">\((\ln n)^2\)</span>?</p>
+<h2 id="low-weight-ldcs-to-ldcs">Low-weight LDCs to LDCs</h2>
 
   </div>
 
@@ -190,8 +529,8 @@
 </entry>
 <entry>
     <title>[SD15] Minimax rates for memory-bounded sparse linear regression</title>
-    <link href="http://holdenlee.github.io/notebook/posts/tcs/machine_learning/SD15.html" />
-    <id>http://holdenlee.github.io/notebook/posts/tcs/machine_learning/SD15.html</id>
+    <link href="http://holdenlee.github.io/notebook/posts/tcs/machine_learning/community/SD15.html" />
+    <id>http://holdenlee.github.io/notebook/posts/tcs/machine_learning/community/SD15.html</id>
     <published>2016-02-29T00:00:00Z</published>
     <updated>2016-02-29T00:00:00Z</updated>
     <summary type="html"><![CDATA[
@@ -388,358 +727,6 @@
 <ul>
 <li>How to construct a versatile set?</li>
 </ul>
-
-  </div>
-
-    
-
-    <!-- Extension : Sharing buttons @ www.sharethis.com -->
-    <span class='st_facebook_large' displayText='Facebook'></span>
-    <span class='st_twitter_large' displayText='Tweet'></span>
-    <span class='st_googleplus_large' displayText='Google +'></span>
-    <span class='st_reddit_large' displayText='Reddit'></span>
-    <span class='st__large' displayText=''></span>
-
-    <div id="disqus_thread"></div>
-    
-
-
-  
-    <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
-  </div>
-  
-</div>
-]]></summary>
-</entry>
-<entry>
-    <title>Recursive Fourier Sampling</title>
-    <link href="http://holdenlee.github.io/notebook/posts/tcs/complexity/RFS.html" />
-    <id>http://holdenlee.github.io/notebook/posts/tcs/complexity/RFS.html</id>
-    <published>2016-02-29T00:00:00Z</published>
-    <updated>2016-02-29T00:00:00Z</updated>
-    <summary type="html"><![CDATA[
-<div class="container">
-  <div id="content">
-    <div class="page header">
-      <h1>Recursive Fourier Sampling</h1>
-    </div>
-    <div class="info">
-      
-       
-        <p>Posted: 2016-02-29 
-          , Modified: 2016-02-29 
-	</p>
-      
-       <p>Tags: <a href="/tags/none.html">none</a></p> 
-    </div>
-    
-  </div>
-  <!--/div-->
-
-  
-
-  <div class="blog-main">
-    <h2 id="definition">Definition</h2>
-<h3 id="fs">FS</h3>
-<p><span class="math inline">\(FS_n:B^{2^{n+1}} \to \{0,1,*\}\)</span> is defined by <span class="math display">\[
-FS_n(f,g)=\begin{cases}
-g(s),&amp;\text{if }\exists s\in B^n, f(x)=x\cdot s\\
-*,&amp;\text{else.}
-\end{cases}
-\]</span> <span class="math inline">\(FS_n^g\)</span> is where <span class="math inline">\(g\)</span> is fixed.</p>
-<h3 id="rfs">RFS</h3>
-<p>Define by recurrence</p>
-\begin{align}
-RFS_{n,1}(s,g)&amp;=g(s)\\
-RFS_{n,h}&amp;: B^{n2^{n(h-1)} +\sumo j{h-1}} \to \{0,1,*\}\\
-RFS_{n,h}(R_0,\ldots, R_{2^n-1},g) &amp;=\begin{cases}
-g(s),&amp;\exists s\in B^n, \forall \si\in B^n, RFS_{n,h-1}(R_\si)=\si \cdot s\\
-*,&amp;\text{else}.
-\end{cases}\\
-\pat{Example}\; RFS_{n,2}(R_0,\ldots, R_{2^n-1},g) &amp;=\begin{cases}
-g(s),&amp;\exists s\in B^n, \forall \si\in B^n, g(R_\si) = \si \cdot s\\
-*,&amp;\text{else}.
-\end{cases}
-\end{align}
-
-  </div>
-
-    
-
-    <!-- Extension : Sharing buttons @ www.sharethis.com -->
-    <span class='st_facebook_large' displayText='Facebook'></span>
-    <span class='st_twitter_large' displayText='Tweet'></span>
-    <span class='st_googleplus_large' displayText='Google +'></span>
-    <span class='st_reddit_large' displayText='Reddit'></span>
-    <span class='st__large' displayText=''></span>
-
-    <div id="disqus_thread"></div>
-    
-
-
-  
-    <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
-  </div>
-  
-</div>
-]]></summary>
-</entry>
-<entry>
-    <title>MAT529 notes</title>
-    <link href="http://holdenlee.github.io/notebook/posts/math/analysis/metric/MAT529.html" />
-    <id>http://holdenlee.github.io/notebook/posts/math/analysis/metric/MAT529.html</id>
-    <published>2016-02-29T00:00:00Z</published>
-    <updated>2016-02-29T00:00:00Z</updated>
-    <summary type="html"><![CDATA[
-<div class="container">
-  <div id="content">
-    <div class="page header">
-      <h1>MAT529 notes</h1>
-    </div>
-    <div class="info">
-      
-       
-        <p>Posted: 2016-02-29 
-          , Modified: 2016-02-29 
-	</p>
-      
-       <p>Tags: <a href="/tags/none.html">none</a></p> 
-    </div>
-    
-  </div>
-  <!--/div-->
-
-  
-
-  <div class="blog-main">
-    <h2 id="questions">Questions</h2>
-<h2 id="research-questions">Research questions</h2>
-<h2 id="scraps">Scraps</h2>
-
-  </div>
-
-    
-
-    <!-- Extension : Sharing buttons @ www.sharethis.com -->
-    <span class='st_facebook_large' displayText='Facebook'></span>
-    <span class='st_twitter_large' displayText='Tweet'></span>
-    <span class='st_googleplus_large' displayText='Google +'></span>
-    <span class='st_reddit_large' displayText='Reddit'></span>
-    <span class='st__large' displayText=''></span>
-
-    <div id="disqus_thread"></div>
-    
-
-
-  
-    <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
-  </div>
-  
-</div>
-]]></summary>
-</entry>
-<entry>
-    <title>Censored block model</title>
-    <link href="http://holdenlee.github.io/notebook/posts/tcs/machine_learning/community/cbm.html" />
-    <id>http://holdenlee.github.io/notebook/posts/tcs/machine_learning/community/cbm.html</id>
-    <published>2016-02-28T00:00:00Z</published>
-    <updated>2016-02-28T00:00:00Z</updated>
-    <summary type="html"><![CDATA[
-<div class="container">
-  <div id="content">
-    <div class="page header">
-      <h1>Censored block model</h1>
-    </div>
-    <div class="info">
-      
-       
-        <p>Posted: 2016-02-28 
-          , Modified: 2016-02-28 
-	</p>
-      
-       <p>Tags: <a href="/tags/research.html">research</a></p> 
-    </div>
-    
-  </div>
-  <!--/div-->
-
-  <div class="toc"> <ul>
- <li><a href="#summary">Summary</a></li>
- <li><a href="#sdp-relaxation">SDP relaxation</a></li>
- <li><a href="#fixing-a-graph">Fixing a graph</a></li>
- </ul> </div>
-
-  <div class="blog-main">
-    <h2 id="summary">Summary</h2>
-<p>Model: Graph <span class="math inline">\(G\)</span> is given. Each node is iid red/blue with probability <span class="math inline">\(\rc2\)</span>. An edge is labeled <span class="math display">\[\begin{cases}+&amp;\text{nodes same color}\\-&amp;\text{nodes different color}\end{cases}.\]</span> Each edge is flipped independently with probability <span class="math inline">\(\rc2\)</span>.</p>
-<p>Question: Under what conditions of <span class="math inline">\(G\)</span> can the communities be recovered (up to sign)</p>
-<ul>
-<li>exactly with high (<span class="math inline">\(1-o(1)\)</span>) probability?</li>
-<li>with correlation tending to 1? (whp, the number of correctly classified nodes is <span class="math inline">\(1-o(1)\)</span>)</li>
-<li>weakly (with <span class="math inline">\(\rc2+\Om(1)\)</span> correlation)?</li>
-</ul>
-<p>Past work:</p>
-<ul>
-<li>[ABSS12] For exact recovery
-<ul>
-<li>Necessary: <span class="math inline">\(C_\ep \ln n\)</span> average degree.</li>
-<li>For random graphs <span class="math inline">\(G(n, p)\)</span>, <span class="math inline">\(p\ge \fc{2C_\ep\ln n}{n}\)</span> is sufficient. (Factor of 2 gap, later closed by [??])</li>
-<li>Algorithm is SDP relaxation. Sufficient criteria for it to work is that there is a constant spectral gap in the graph. Up to constants, this is the same as having a large Cheeger constant.</li>
-<li>Spectral criteria are not necessary: for example, for 2 complete graphs with a <span class="math inline">\(\ln n\)</span> sized cut, recovery is possible.</li>
-</ul></li>
-<li>Strong recovery - ?</li>
-<li>Weak recovery - ?</li>
-</ul>
-<h2 id="sdp-relaxation">SDP relaxation</h2>
-<p>Let <span class="math inline">\(\rh_{ij}\)</span> be the edge labels. Relax <span class="math display">\[ \min_{g_i\in \{\pm 1\}} \sum_{ij\in E}(g_i-\rh_{ij}g_j)^2 \]</span> to <span class="math inline">\(\max_{X_{ii}=1,X\succeq0}(WX)\)</span> where <span class="math inline">\(W=A_G-2A_H\)</span>.</p>
-<p>(Details: we want <span class="math inline">\(\max \rh_{ij}g_ig_j = \max_{g\in \{\pm 1\}^n}Wgg^T\)</span>.)</p>
-<h2 id="fixing-a-graph">Fixing a graph</h2>
-<p>Suggestion: Let <span class="math inline">\(X\)</span> be the node colors and <span class="math inline">\(Y_\ep\)</span> be the observed edges. Consider the entropy <span class="math inline">\(H(X|Y_\ep)\)</span>. This is like a measure of connectivity “on average.” Ex. When <span class="math inline">\(\ep=0\)</span>, this measures the number of components. Think of it as a average-case Cheeger: rather than look at the proportionally minimal cut, we’re looking at an average cut size. (Related is the probability of success for ML decoding, which is <span class="math inline">\(\E_{X,Y_\ep}P(X|Y)\)</span>.)</p>
-<p>Thoughts: Any nontrivial partition <span class="math inline">\(A\sqcup B= V\)</span> of the vertices is associated with a cut. For a set <span class="math inline">\(S\)</span>, let <span class="math inline">\(X_S\)</span> be <span class="math inline">\(X\)</span> with the colors of vertices in <span class="math inline">\(S\)</span> flipped. Given observed <span class="math inline">\(Y_\ep\)</span>, <span class="math inline">\(P(X_S|Y_\ep)\ge P(X|Y_\ep)\)</span> iff most of the edges of the cut <span class="math inline">\((A,V\bs A)\)</span> are flipped. Thus, the ML decoding is the <span class="math inline">\(X\)</span> such that in no cut is the majority of the edges wrong.</p>
-Let <span class="math inline">\(G_C\)</span> be the (good) event that the majority of edges of cut <span class="math inline">\(C\)</span> are correct. Letting <span class="math inline">\(|C|\)</span> be the number of edges in the cut,
-\begin{align}
-P\pa{\bigwedge_C G_C} &amp; \ge \prod P(G_C) &amp; \text{Correlation inequality} \\
-&amp; = \prod_C P(\Binom(|C|, 1-\ep) &gt; \fc{|C|}2)\\
-&amp; = \prod_C (1-e^{-K_\ep|C|})\\
-&amp; \ge 1-\sum_C e^{-K_\ep|C|}.
-\end{align}
-<p>(By Chernoff, we can take <span class="math inline">\(K_\ep = \fc{(\ep-\rc2)^2}{2\ep(1-\ep)}\)</span>.)</p>
-<p>Question: is there an efficient algorithm to approximate <span class="math inline">\(\sum_C e^{-K|C|}\)</span>? By Karger’s algorithm, we can estimate the number of minimum cuts. By sampling, we can estimate the number of cuts of some size if it’s <span class="math inline">\(&gt;\rc{\poly}\)</span> proportion. But what about all cuts in between?</p>
-<p>Note: The inequalities are not close to sharp because the events are very correlated when the cuts overlap a lot. Somehow it should be more affected by small cuts which <em>don’t</em> share a lot of edges in common.</p>
-
-  </div>
-
-    
-
-    <!-- Extension : Sharing buttons @ www.sharethis.com -->
-    <span class='st_facebook_large' displayText='Facebook'></span>
-    <span class='st_twitter_large' displayText='Tweet'></span>
-    <span class='st_googleplus_large' displayText='Google +'></span>
-    <span class='st_reddit_large' displayText='Reddit'></span>
-    <span class='st__large' displayText=''></span>
-
-    <div id="disqus_thread"></div>
-    
-
-
-  
-    <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
-  </div>
-  
-</div>
-]]></summary>
-</entry>
-<entry>
-    <title>[MNS12]</title>
-    <link href="http://holdenlee.github.io/notebook/posts/tcs/machine_learning/MNS12.html" />
-    <id>http://holdenlee.github.io/notebook/posts/tcs/machine_learning/MNS12.html</id>
-    <published>2016-02-28T00:00:00Z</published>
-    <updated>2016-02-28T00:00:00Z</updated>
-    <summary type="html"><![CDATA[
-<div class="container">
-  <div id="content">
-    <div class="page header">
-      <h1>[MNS12]</h1>
-    </div>
-    <div class="info">
-      
-       
-        <p>Posted: 2016-02-28 
-          , Modified: 2016-02-28 
-	</p>
-      
-       <p>Tags: <a href="/tags/abbe.html">abbe</a></p> 
-    </div>
-    
-  </div>
-  <!--/div-->
-
-  <div class="toc"> <ul>
- <li><a href="#summary">Summary</a></li>
- <li><a href="#proofs">Proofs</a><ul>
- <li><a href="#estimation">Estimation</a></li>
- <li><a href="#non-recovery">Non-recovery</a></li>
- <li><a href="#non-estimation">Non-estimation</a></li>
- </ul></li>
- <li><a href="#questions">Questions</a><ul>
- <li><a href="#minor">Minor</a></li>
- </ul></li>
- </ul> </div>
-
-  <div class="blog-main">
-    <h2 id="summary">Summary</h2>
-<p>Mossel, Elchanan, Joe Neeman, and Allan Sly. “Stochastic block models and reconstruction.” arXiv preprint arXiv:1202.1499 (2012).</p>
-<p>Model: Given a stochastic block model <span class="math inline">\(G(n, \fc an, \fc bn)\)</span>, recover the communities and estimate <span class="math inline">\(a\)</span> and <span class="math inline">\(b\)</span>.</p>
-<p>They prove 3/4 of the problem. The conjectured threshold is <span class="math inline">\((a-b)^2&gt;2(a+b)\)</span>.</p>
-<ol type="1">
-<li>When $(a-b)^2&gt;2(a+b),
-<ol type="1">
-<li>Recovery: can we recover the communities efficiently? (Still open.)</li>
-<li>Estimate <span class="math inline">\(a,b\)</span> (w.h.p. get <span class="math inline">\(a(1+o(1))\)</span> as <span class="math inline">\(n\to \iy\)</span>). (Theorem 2.5)</li>
-</ol></li>
-<li>When <span class="math inline">\((a-b)^2\le 2(a+b)\)</span>,
-<ol type="1">
-<li>Non-recovery: we can recover communities exactly (with probability <span class="math inline">\(1-o(1)\)</span>). (Theorem 2.1)</li>
-<li>Non-estimation: we cannot estimate <span class="math inline">\(a,b\)</span>. (Theorem 2.4)</li>
-</ol></li>
-</ol>
-<p>Note that recovery seems stronger than estimation (is this true formally?).</p>
-<p>Details of the theorems: Let <span class="math inline">\(\Pj_n=\cal G(n,\fc an, \fc bn)\)</span>, <span class="math inline">\(\Pj_n' = \cal G(n,\fc{a+b}{2n})\)</span>.</p>
-<ul>
-<li>2.1: Show something stronger: for fixed vertices, <span class="math inline">\(\Pj_n(\si_u=+|G,\si_v=+)\to \rc2\)</span> a.a.s. This means no algorithm can tell whether 2 vertices have the same label.<a href="#fn1" class="footnoteRef" id="fnref1"><sup>1</sup></a></li>
-<li>2.4: Show that <span class="math inline">\(\Pj_n,\Pj_n'\)</span> are mutually continuous.
-<ul>
-<li>Mutually contiguous means that <span class="math inline">\(\Pj_n(A_n)\to 0\iff \Pj_n'(A_n)\to 0\)</span>. This is weaker than being statistically indistinguishable.</li>
-<li>Mutual continiguity is a transitive relation, so it’s indistinguishable from all <span class="math inline">\(\cal G(n,\fc{a'+b'}{2n})\)</span> also satisfying the same inequality, with the same sum.</li>
-</ul></li>
-<li>2.5: There are consistent estimators for <span class="math inline">\(a,b\)</span> depending on the number of <span class="math inline">\(k_n\)</span>-cycles (<span class="math inline">\(k_n=\fl{\ln^{\rc 4}n}\)</span>).
-<ul>
-<li><span class="math inline">\(\Pj_n,\Pj_n'\)</span> are asymptotically orthogonal, i.e., there is <span class="math inline">\(A_n\)</span>, <span class="math inline">\(\Pj_n(A_n)\to 1, \Pj_n'(A_n)\to 0\)</span>.</li>
-</ul></li>
-</ul>
-<h2 id="proofs">Proofs</h2>
-<h3 id="estimation">Estimation</h3>
-<p>Idea: The number of cycles for <span class="math inline">\(\Pj_n,\Pj_n'\)</span> follow a Poisson distribution. They are spaced farther apart than their standard deviation exactly when <span class="math inline">\((a-b)^2&gt;2(a+b)\)</span>.</p>
-<ol type="1">
-<li>Calculation of number of <span class="math inline">\(k\)</span>-cycles: <span class="math display">\[ X_{k,n}\xra{d} \Pois\pa{\rc{k2^{k+1}}((a+b)^k + (a-b)^k)}.\]</span> (For the Erdos-Renyi random graph <span class="math inline">\(a'=b'=\fc{a+b}{2}\)</span>, there is no 2nd term.) To calculate this,
-<ol type="1">
-<li>Expected value: Use linearity of <span class="math inline">\(\E\)</span> over all <span class="math inline">\(\binom nk\)</span> cycles. The probability of the cycle depends on the number of sign changes. Get <span class="math inline">\(n^{-k}2^{-k+1}\sum_{m\text{ even}} \binom km a^{k-m}b^m\)</span>.</li>
-<li>Higher moments: We’re counting number of <span class="math inline">\(m\)</span>-cycles. It suffices to show the expected number of non-vertex disjoint <span class="math inline">\(m\)</span>-types converges to 0.<a href="#fn2" class="footnoteRef" id="fnref2"><sup>2</sup></a> Then it’s Poisson.</li>
-</ol></li>
-<li>Parameters. <span class="math inline">\(a+b\)</span> can be estimated from average degree. Estimate <span class="math inline">\(a-b\)</span> using the estimate for <span class="math inline">\(a+b\)</span> and <span class="math inline">\(X_{k_n}\)</span>.</li>
-<li>Algorithm. This is Proposition 3.2 which I don’t understand!<a href="#fn3" class="footnoteRef" id="fnref3"><sup>3</sup></a></li>
-</ol>
-<h3 id="non-recovery">Non-recovery</h3>
-<p>First consider a problem on trees.</p>
-<p>Model: A Galton-Watson tree has <span class="math inline">\(\Pois(d)\)</span> offspring. An offspring is flipped with probability <span class="math inline">\(\ep\)</span>. Can you deduce the sign of the root from the sign of the depth-<span class="math inline">\(R\)</span> signs?</p>
-<p>Answer: There is threshold.</p>
-<p>Idea of non-recovery: On neighborhoods, the distribution of signs is close to that of the model. The posterior distribution of the signs given the graph is approximately a Markov.</p>
-<ol type="1">
-<li><strong>Theorem 4.1</strong>: <span class="math inline">\(d(1-2\ep)^2\le 1 \iff \lim_{R\to \iy} \Pj(\tau_p=+|\tau_{\pl T_R})=\rc2\)</span> a.s.<a href="#fn4" class="footnoteRef" id="fnref4"><sup>4</sup></a></li>
-<li><strong>Pr. 4.2</strong>: The distribution of a small neighborhood of a given vertex is statistically close the the distribution for the tree model. Take the radius to be <span class="math inline">\(\rc{C} \log_{\fc{a+b}2} n\)</span>, so that the expected number of nodes is <span class="math inline">\(O(n^{\rc C})\)</span>. Think of this as a coupling argument. Do an inductive argument on the depth, the distance between distributions grows a little each time. Bound the probability of the bad event of having too many children—if this doesn’t happen, there are still approximately <span class="math inline">\(\fc n2\)</span> <span class="math inline">\(+\)</span>’s and <span class="math inline">\(-\)</span>’s left, and the appromate number of children that switch/don’t switch will be close to <span class="math inline">\(\fc a2, \fc b2\)</span>. (See lemmas 4.3-6.)</li>
-<li>Consider <span class="math inline">\(\Pj(\si|G)\)</span>. This is not a Markov field because the probability (multiplying factor) of non-edge is different for if the vertices are same/different. But the ratio is <span class="math inline">\(\fc{1-\fc an}{1-\fc bn}\approx 1\)</span>, so it shouldn’t have much effect. We show we still have approximate independence in the sense of <strong>Lemma 4.7</strong>: <span class="math inline">\(\Pj(\si_A|\si_{B\cup C,G} = (1+o(1))\Pj(\si_A|\si_B,G)\)</span> for a.a.e. <span class="math inline">\(G,\si\)</span>,<a href="#fn5" class="footnoteRef" id="fnref5"><sup>5</sup></a> when <span class="math inline">\(A,B,C\)</span> is a partition with <span class="math inline">\(|A\cup B|=o(\sqrt n)\)</span>. (This condition is necessary to make sure we’re not multiplying too many <span class="math inline">\((1-\fc an)\)</span> and <span class="math inline">\((1-\fc bn)\)</span>’s.) Take <span class="math inline">\(A\)</span> to be <span class="math inline">\(B_{R-1}(v)\)</span>, <span class="math inline">\(B\)</span> to be <span class="math inline">\(\pl G_R\)</span>, and <span class="math inline">\(C\)</span> to be the rest. This gives that <span class="math inline">\(\si_v,\si_\rh\)</span> are conditionally independent given the boundary.</li>
-<li>Use 1 with <span class="math inline">\(\ep = \fc{b}{a+b}, d=\fc{a+b}{2}\)</span> (proportion of edges corresponding to flipping). The variance approaches the variance without conditioning on <span class="math inline">\(\si_v\)</span>. The variance without conditioning <span class="math inline">\(\Var(\si_\rh|G_,\si_v)\)</span> is close to tht for the tree model, which is 1 (the nonrecovery regime) when <span class="math inline">\(d(1-2\ep)^2\le 1\)</span>, which is exactly the condition. From the variance going to 1, the expectation goes to 0;probability goes to <span class="math inline">\(\rc2\)</span>.</li>
-</ol>
-<h3 id="non-estimation">Non-estimation</h3>
-<p>(Unfinished)</p>
-<p>Define <span class="math inline">\(\Pj_n(\si|G)\)</span> to be the same as <span class="math inline">\(\Pj_n'(\si|G)\)</span>. The joint distribution is not the same because the marginal distribution over the graphs is different.</p>
-<p>Use a criteria for contiguity, <strong>Theorem 5.1</strong><a href="#fn6" class="footnoteRef" id="fnref6"><sup>6</sup></a>. See this as a black box. Calculate moments, etc. of <span class="math inline">\(Y_n=\fc{\Pj_n}{\Pj_n'}\)</span>. Using independence of edges given <span class="math inline">\(\si\)</span>, you can decompose this as a product nicely.</p>
-<h2 id="questions">Questions</h2>
-<h3 id="minor">Minor</h3>
-<ul>
-<li>What is a.a.s.?</li>
-</ul>
-<section class="footnotes">
-<hr />
-<ol>
-<li id="fn1"><p>Note that the “a.s.” is with respect to <span class="math inline">\((\si,G)\)</span>. Two neighboring vertices will have a lot of information on each other, but two vertices will be neighboring with low probability with respect to the distribution over <span class="math inline">\(G\)</span>.<a href="#fnref1">↩</a></p></li>
-<li id="fn2"><p>? (How? Reference given is Bollobas, Ch. 4. Need <span class="math inline">\(k=O(\ln^{\rc 4}n)\)</span>.)<a href="#fnref2">↩</a></p></li>
-<li id="fn3"><p>?<a href="#fnref3">↩</a></p></li>
-<li id="fn4"><p>It would be good to understand this proof for <span class="math inline">\(d\)</span>-ary trees (without the GW complication).<a href="#fnref4">↩</a></p></li>
-<li id="fn5"><p>I don’t understand what it means by random partition.<a href="#fnref5">↩</a></p></li>
-<li id="fn6"><p>I don’t understand the motivation/theory behind this. Reference is [35], Wormald, Models of random regular graphs.<a href="#fnref6">↩</a></p></li>
-</ol>
-</section>
 
   </div>
 
