@@ -10,7 +10,7 @@
   <meta name="description" content="Holden Lee's Research Notebook">
   <meta name="author" content="Holden Lee">
     
-  <title>Posts in category "tcs/machine_learning/optimization"</title>
+  <title>Analysis of neural networks</title>
 
   <!-- Bootstrap core CSS -->
   <link href="../../../../bootstrap/css/bootstrap.min.css" rel="stylesheet">
@@ -66,12 +66,16 @@
 <div class="container">
   <div id="content">
     <div class="page header">
-      <h1>Posts in category "tcs/machine_learning/optimization"</h1>
+      <h1>Analysis of neural networks</h1>
     </div>
     <div class="info">
       
+       
+        <p>Posted: 2016-03-05 
+          , Modified: 2016-03-05 
+	</p>
       
-      
+       <p>Tags: <a href="../../../../tags/neural%20net.html">neural net</a></p> 
     </div>
     
   </div>
@@ -80,41 +84,53 @@
   
 
   <div class="blog-main">
-    <ul>
-    
-        <li>
-            <a href="../../../../posts/tcs/machine_learning/optimization/mirror-descent.html">Mirror descent</a> (2016-03-05)
-        </li>
-    
-        <li>
-            <a href="../../../../posts/tcs/machine_learning/optimization/AGD.html">Accelerated Gradient descent</a> (2016-03-05)
-        </li>
-    
-        <li>
-            <a href="../../../../posts/tcs/machine_learning/optimization/sdp-duality.html">SDP duality</a> (2016-03-04)
-        </li>
-    
-        <li>
-            <a href="../../../../posts/tcs/machine_learning/optimization/duality.html">Duality</a> (2016-03-04)
-        </li>
-    
-        <li>
-            <a href="../../../../posts/tcs/machine_learning/optimization/convex_optimization.html">Convex optimization</a> (2016-03-04)
-        </li>
-    
-        <li>
-            <a href="../../../../posts/tcs/machine_learning/optimization/GD.html">Gradient descent</a> (2016-03-04)
-        </li>
-    
+    <h2 id="research-brainstorm">Research brainstorm</h2>
+<ul>
+<li>Complexity theorety point of view: What can be calculated by depth <span class="math inline">\(n\)</span> threshold circuits? Each gate is a function <span class="math inline">\(\sgn(\sum \al_ix_i)\)</span>.</li>
+<li>It doesn’t make sense to assume the ground truth is a neural net. How can we model the ground truth?
+<ul>
+<li>As a set on the boolean cube <span class="math inline">\(\{0,1\}^n\)</span> or <span class="math inline">\([0,1]^n\)</span>. Model 1: Ising model on the Boolean cube.
+<ul>
+<li>Understand such a distribution qualitatively. Ex. what is the average noise sensitivity? Fourier spectra? (What’s the boundary look like?) Are these questions answered for random k-SAT? Might other models (ex. DNF’s, CNF’s) be better?</li>
+<li>Another layer: There is a probability distribution over inputs as well (you don’t sample uniformly from the whole boolean cube. Makes sense because of next point).</li>
+<li>Note that the set of pictures that make sense is probably very small.</li>
+<li>What if you want the learned function to be noise stable? What is the noise stability of learned functions? Are threshold circuits noise stable?</li>
+</ul></li>
+<li>How does this compare to known algorithms for learning boolean functions with low weight? What additional structure do we need to assume? (Low degree algorithm. Lower bounds (min sample complexity, by info theory) for learning b/c of number of functions.)</li>
+</ul></li>
+<li>“It doesn’t make sense to assume the ground truth is a neural net,” so the approach above is to consider a class of functions and show the class can be learned by neural nets. Is there reason to think of ground truth as a neural net?</li>
+<li>Explain me:
+<ul>
+<li>adversarial phenomena</li>
+<li>the distribution of local minima follows laws from statistical physics. Getting to global optima can actually hurt generalization.</li>
+</ul></li>
 </ul>
-
-
+<h2 id="people-to-talk-to">People to talk to</h2>
+<ul>
+<li>ML: Tengyu, Elad, Arora</li>
+<li>Zeev: threshold circuits, what’s known. (See Kane’s paper?)</li>
+<li>Aizenmann, Abbe: intuition for Ising model over <span class="math inline">\(B^n\)</span>, or other models that make sense (ex. 3SAT).</li>
+<li>Fefferman, analysis/geometry students: approximation theory</li>
+</ul>
 
   </div>
 
     
 
+    <!-- Extension : Sharing buttons @ www.sharethis.com -->
+    <span class="st_facebook_large" displayText="Facebook"></span>
+    <span class="st_twitter_large" displayText="Tweet"></span>
+    <span class="st_googleplus_large" displayText="Google +"></span>
+    <span class="st_reddit_large" displayText="Reddit"></span>
+    <span class="st__large" displayText></span>
 
+    <div id="disqus_thread"></div>
+    
+
+
+  
+    <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+  </div>
   
 </div>
 
@@ -159,6 +175,9 @@
 
 <!-- Extension : Disqus @ http://disqus.com -->
 <!-- Extension : InlineDisqussions @ https://github.com/tsi/inlineDisqussions -->
+
+<script src="../../../../disqus/js/disqus.js"></script>
+
 
 
 <!-- Extension : Google Analytics -->

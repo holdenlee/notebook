@@ -8,8 +8,214 @@
         <name>Holden Lee</name>
         <email>oldheneel@gmail.com</email>
     </author>
-    <updated>2016-03-04T00:00:00Z</updated>
+    <updated>2016-03-05T00:00:00Z</updated>
     <entry>
+    <title>Mirror descent</title>
+    <link href="http://holdenlee.github.io/notebook/posts/tcs/machine_learning/optimization/mirror-descent.html" />
+    <id>http://holdenlee.github.io/notebook/posts/tcs/machine_learning/optimization/mirror-descent.html</id>
+    <published>2016-03-05T00:00:00Z</published>
+    <updated>2016-03-05T00:00:00Z</updated>
+    <summary type="html"><![CDATA[
+<div class="container">
+  <div id="content">
+    <div class="page header">
+      <h1>Mirror descent</h1>
+    </div>
+    <div class="info">
+      
+       
+        <p>Posted: 2016-03-05 
+          , Modified: 2016-03-05 
+	</p>
+      
+       <p>Tags: <a href="/tags/gradient.html">gradient</a></p> 
+    </div>
+    
+  </div>
+  <!--/div-->
+
+  
+
+  <div class="blog-main">
+    <h2 id="summary">Summary</h2>
+<p>Mirror descent lemma <span class="math display">\[
+\al\an{\nb f(z_k), z_k-u}\le \fc{\al^2}{2}\ve{\nb f(z_k)}^2 + \rc2\ve{z_k-u}^2 - \rc2 \ve{z_{k+1}-u}^2.
+\]</span></p>
+
+  </div>
+
+    
+
+    <!-- Extension : Sharing buttons @ www.sharethis.com -->
+    <span class='st_facebook_large' displayText='Facebook'></span>
+    <span class='st_twitter_large' displayText='Tweet'></span>
+    <span class='st_googleplus_large' displayText='Google +'></span>
+    <span class='st_reddit_large' displayText='Reddit'></span>
+    <span class='st__large' displayText=''></span>
+
+    <div id="disqus_thread"></div>
+    
+
+
+  
+    <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+  </div>
+  
+</div>
+]]></summary>
+</entry>
+<entry>
+    <title>Accelerated Gradient descent</title>
+    <link href="http://holdenlee.github.io/notebook/posts/tcs/machine_learning/optimization/AGD.html" />
+    <id>http://holdenlee.github.io/notebook/posts/tcs/machine_learning/optimization/AGD.html</id>
+    <published>2016-03-05T00:00:00Z</published>
+    <updated>2016-03-05T00:00:00Z</updated>
+    <summary type="html"><![CDATA[
+<div class="container">
+  <div id="content">
+    <div class="page header">
+      <h1>Accelerated Gradient descent</h1>
+    </div>
+    <div class="info">
+      
+       
+        <p>Posted: 2016-03-05 
+          , Modified: 2016-03-05 
+	</p>
+      
+       <p>Tags: <a href="/tags/gradient.html">gradient</a></p> 
+    </div>
+    
+  </div>
+  <!--/div-->
+
+  
+
+  <div class="blog-main">
+    <h2 id="questions">Questions</h2>
+<ul>
+<li>Lanczos method</li>
+<li>Chebyshev approach</li>
+<li>Lower bound</li>
+<li>Dependence on dimension?</li>
+<li>Ellipsoid method</li>
+</ul>
+<h2 id="references">References</h2>
+<p>Keywords: accelerated gradient descent, Chebyshev polynomials, mirror descent</p>
+<ul>
+<li>http://blog.mrtz.org/2013/09/07/the-zen-of-gradient-descent.html</li>
+<li>https://en.wikipedia.org/wiki/Chebyshev_polynomials</li>
+<li>http://people.csail.mit.edu/zeyuan/publications.htm</li>
+<li>https://blogs.princeton.edu/imabandit/2013/04/01/acceleratedgradientdescent/</li>
+<li>https://blogs.princeton.edu/imabandit/2015/06/30/revisiting-nesterovs-acceleration/</li>
+<li>https://www.cs.cmu.edu/~ggordon/10725-F12/slides/09-acceleration.pdf</li>
+<li>http://statweb.stanford.edu/~candes/math301/Lectures/acc_nesterov.pdf</li>
+<li>http://www.asc.tuwien.ac.at/~winfried/teaching/106.079/SS2011/downloads/script-p-046-060.pdf</li>
+<li>http://msekce.karlin.mff.cuni.cz/~strakos/download/2012_GerStr.pdf</li>
+</ul>
+
+  </div>
+
+    
+
+    <!-- Extension : Sharing buttons @ www.sharethis.com -->
+    <span class='st_facebook_large' displayText='Facebook'></span>
+    <span class='st_twitter_large' displayText='Tweet'></span>
+    <span class='st_googleplus_large' displayText='Google +'></span>
+    <span class='st_reddit_large' displayText='Reddit'></span>
+    <span class='st__large' displayText=''></span>
+
+    <div id="disqus_thread"></div>
+    
+
+
+  
+    <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+  </div>
+  
+</div>
+]]></summary>
+</entry>
+<entry>
+    <title>Analysis of neural networks</title>
+    <link href="http://holdenlee.github.io/notebook/posts/tcs/machine_learning/neural_nets/analysis.html" />
+    <id>http://holdenlee.github.io/notebook/posts/tcs/machine_learning/neural_nets/analysis.html</id>
+    <published>2016-03-05T00:00:00Z</published>
+    <updated>2016-03-05T00:00:00Z</updated>
+    <summary type="html"><![CDATA[
+<div class="container">
+  <div id="content">
+    <div class="page header">
+      <h1>Analysis of neural networks</h1>
+    </div>
+    <div class="info">
+      
+       
+        <p>Posted: 2016-03-05 
+          , Modified: 2016-03-05 
+	</p>
+      
+       <p>Tags: <a href="/tags/neural%20net.html">neural net</a></p> 
+    </div>
+    
+  </div>
+  <!--/div-->
+
+  
+
+  <div class="blog-main">
+    <h2 id="research-brainstorm">Research brainstorm</h2>
+<ul>
+<li>Complexity theorety point of view: What can be calculated by depth <span class="math inline">\(n\)</span> threshold circuits? Each gate is a function <span class="math inline">\(\sgn(\sum \al_ix_i)\)</span>.</li>
+<li>It doesn’t make sense to assume the ground truth is a neural net. How can we model the ground truth?
+<ul>
+<li>As a set on the boolean cube <span class="math inline">\(\{0,1\}^n\)</span> or <span class="math inline">\([0,1]^n\)</span>. Model 1: Ising model on the Boolean cube.
+<ul>
+<li>Understand such a distribution qualitatively. Ex. what is the average noise sensitivity? Fourier spectra? (What’s the boundary look like?) Are these questions answered for random k-SAT? Might other models (ex. DNF’s, CNF’s) be better?</li>
+<li>Another layer: There is a probability distribution over inputs as well (you don’t sample uniformly from the whole boolean cube. Makes sense because of next point).</li>
+<li>Note that the set of pictures that make sense is probably very small.</li>
+<li>What if you want the learned function to be noise stable? What is the noise stability of learned functions? Are threshold circuits noise stable?</li>
+</ul></li>
+<li>How does this compare to known algorithms for learning boolean functions with low weight? What additional structure do we need to assume? (Low degree algorithm. Lower bounds (min sample complexity, by info theory) for learning b/c of number of functions.)</li>
+</ul></li>
+<li>“It doesn’t make sense to assume the ground truth is a neural net,” so the approach above is to consider a class of functions and show the class can be learned by neural nets. Is there reason to think of ground truth as a neural net?</li>
+<li>Explain me:
+<ul>
+<li>adversarial phenomena</li>
+<li>the distribution of local minima follows laws from statistical physics. Getting to global optima can actually hurt generalization.</li>
+</ul></li>
+</ul>
+<h2 id="people-to-talk-to">People to talk to</h2>
+<ul>
+<li>ML: Tengyu, Elad, Arora</li>
+<li>Zeev: threshold circuits, what’s known. (See Kane’s paper?)</li>
+<li>Aizenmann, Abbe: intuition for Ising model over <span class="math inline">\(B^n\)</span>, or other models that make sense (ex. 3SAT).</li>
+<li>Fefferman, analysis/geometry students: approximation theory</li>
+</ul>
+
+  </div>
+
+    
+
+    <!-- Extension : Sharing buttons @ www.sharethis.com -->
+    <span class='st_facebook_large' displayText='Facebook'></span>
+    <span class='st_twitter_large' displayText='Tweet'></span>
+    <span class='st_googleplus_large' displayText='Google +'></span>
+    <span class='st_reddit_large' displayText='Reddit'></span>
+    <span class='st__large' displayText=''></span>
+
+    <div id="disqus_thread"></div>
+    
+
+
+  
+    <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+  </div>
+  
+</div>
+]]></summary>
+</entry>
+<entry>
     <title>SDP duality</title>
     <link href="http://holdenlee.github.io/notebook/posts/tcs/machine_learning/optimization/sdp-duality.html" />
     <id>http://holdenlee.github.io/notebook/posts/tcs/machine_learning/optimization/sdp-duality.html</id>
@@ -114,6 +320,14 @@ using minimax, then noting the inside <span class="math inline">\(\max\)</span> 
  <li><a href="#summary">Summary</a><ul>
  <li><a href="#duality">Duality</a></li>
  <li><a href="#kkt-conditions">KKT conditions</a></li>
+ <li><a href="#examples">Examples</a><ul>
+ <li><a href="#dual-functions">Dual functions</a></li>
+ </ul></li>
+ </ul></li>
+ <li><a href="#proofs-and-intuition">Proofs and intuition</a><ul>
+ <li><a href="#weak-duality">Weak duality</a></li>
+ <li><a href="#strong-duality">Strong duality</a></li>
+ <li><a href="#intuition">Intuition</a></li>
  </ul></li>
  <li><a href="#questions">Questions</a></li>
  </ul> </div>
@@ -126,8 +340,10 @@ These problems are dual.
 \min_{f_i\le 0, Ax=b} f &amp; \lra \max_{\la \ge 0,\nu} \ub{\min_x \ub{f+\la^T\vec{f} + \nu^T (Ax-b)}{\cal L(x,\la,\nu)}}{g(\la,\nu)}\\
 \max_{f_i\ge 0, Ax=b} f &amp; \lra \min_{\la \ge 0,\nu} \ub{\max_x \ub{f+\la^T\vec{f} - \nu^T (Ax-b)}{\cal L(x,\la,\nu)}}{g(\la,\nu)}
 \end{align}
-<p>In (1) the <span class="math inline">\(f_i\)</span> are convex; in (2) they are concave.</p>
-<p><strong>Slater’s constraints</strong>: Equality holds if the problem is strictly feasible: there exists <span class="math inline">\(x\)</span> such that <span class="math inline">\(f_i(x)&lt;0, Ax=b\)</span>.</p>
+<p>In (1) the <span class="math inline">\(f_i\)</span> are convex; in (2) they are concave. In (1), we have dual<span class="math inline">\(\le\)</span>primal: <span class="math display">\[
+\min_{f_i\le 0, Ax=b} f \ge \max_{\la \ge 0,\nu} \ub{\min_x \ub{f+\la^T\vec{f} + \nu^T (Ax-b)}{\cal L(x,\la,\nu)}}{g(\la,\nu)}
+\]</span> Note: <span class="math inline">\(f^*(y)=\sup y^T - f(x)\)</span> is the conjugate or <strong>Legendre transform</strong>. It is convex, and for convex functions, the double conjugate is the original function.</p>
+<p><strong>Slater’s constraints</strong>: Equality holds if the problem is strictly feasible: there exists <span class="math inline">\(x\)</span> such that <span class="math inline">\(f_i(x)&lt;0, Ax=b\)</span>. Linear inequalities are allowed to be non-strict, <span class="math inline">\(f_i(x)\le 0\)</span>.</p>
 <h3 id="kkt-conditions">KKT conditions</h3>
 <p>The KKT conditions are (here <span class="math inline">\(h=Ax-b\)</span>)</p>
 <ol type="1">
@@ -140,8 +356,60 @@ These problems are dual.
 <li>If <span class="math inline">\(x,\la,\nu\)</span> satisfy the conditions, then <span class="math inline">\(x\)</span> and <span class="math inline">\((\la,\nu)\)</span> are primal and dual optimal and the optimal values are equal.</li>
 <li>if Slater’s condition is satisfied, <span class="math inline">\(x\)</span> is optimal if and only if there exist, <span class="math inline">\(\la,\nu\)</span> that satisfy KKT conditions</li>
 </ul>
+<h3 id="examples">Examples</h3>
+<ol type="1">
+<li>Linear programming (equality when there exists a feasible solution)
+\begin{align}
+\min_{Ax=b,x\ge 0} c^Tx &amp;= \max_{\la\ge 0, A^T\nu\ge -c} -b^T\nu\\
+\min_{Ax\le b} c^Tx &amp;= \max_{\la\ge 0, A^T\nu=-c} -b^T\nu.
+\end{align}</li>
+</ol>
+<h4 id="dual-functions">Dual functions</h4>
+<p>(Check this.)</p>
+<table>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Function</th>
+<th style="text-align: left;">Dual</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;"><span class="math inline">\(u\ln u\)</span></td>
+<td style="text-align: left;"><span class="math inline">\(e^{v-1}\)</span></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><span class="math inline">\(\ve{x}\)</span></td>
+<td style="text-align: left;"><span class="math inline">\(\begin{cases}0,&amp;\ve{y}_*\le 1\\ \iy,&amp;\text{else}\end{cases}\)</span></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><span class="math inline">\(\ln \det(X^{-1})\)</span></td>
+<td style="text-align: left;"><span class="math inline">\(\ln \det(-Y)^{-1}-n\)</span></td>
+</tr>
+</tbody>
+</table>
+<h2 id="proofs-and-intuition">Proofs and intuition</h2>
+<h3 id="weak-duality">Weak duality</h3>
+<p>Given a dual feasible <span class="math inline">\(\la,\nu\)</span>, choose <span class="math inline">\(x=x^*\)</span>. Then <span class="math display">\[
+g(\la,\nu) = f(x^*) + \sum \la_i \ub{f_i(x^*)}_{\le 0} + \nu^T \ub{(Ax^*-b)}{=0}\le f(x^*).
+\]</span></p>
+<h3 id="strong-duality">Strong duality</h3>
+<h3 id="intuition">Intuition</h3>
+<p>Think of the dual as (1) relaxing the strict conditions that <span class="math inline">\(f_i\le 0\)</span> and (2) being a game. If you fail to meet the constraint <span class="math inline">\(f_i\le 0\)</span>, you are penalized by cost <span class="math inline">\(\la_if_i\)</span> (and you gain money from constraints that are met). The adversary first sets “shadow prices” <span class="math inline">\(\la_i,\nu_i\)</span>, the cost for violating the constraints, and then you choose <span class="math inline">\(x^*\)</span>. Duality says you can’t do better in this game. (You can do just as well by choosing your original <span class="math inline">\(x^*\)</span>; this is weak duality.</p>
+Let <span class="math inline">\(p^*(u,v)\)</span> be the optima under constraints <span class="math inline">\(f_i\le u_i,h_i=v_i\)</span>. The sensitivity to the constraints are given by the dual optima. We have the following (the derivative equations hold if <span class="math inline">\(p^*\)</span> is differentiable.<a href="#fn1" class="footnoteRef" id="fnref1"><sup>1</sup></a>
+\begin{align}
+p^*(u,v) &amp;\ge p^*(0,0)-\la^{*T} u - \nu^{*T} v\\
+\pd{p^*}{v_i} &amp;= -\nu_i\\
+\pd{p^*}{u_i} &amp;= -\la_i.
+\end{align}
 <h2 id="questions">Questions</h2>
 <p>If <span class="math inline">\(x\)</span> is a primal optimal, is there necessarily a <span class="math inline">\((\la,\nu)\)</span> that satisfies the equations? I think if <span class="math inline">\(x\)</span> is primal optimal and <span class="math inline">\((\la,\nu)\)</span> is dual optimal, <span class="math inline">\((x,\la,\nu)\)</span> does not necessarily satisfy. Check this.</p>
+<section class="footnotes">
+<hr />
+<ol>
+<li id="fn1"><p>Otherwise maybe an inequality? Multiple dual optima are possible.<a href="#fnref1">↩</a></p></li>
+</ol>
+</section>
 
   </div>
 
@@ -504,229 +772,6 @@ These problems are dual.
     <h2 id="statement">Statement</h2>
 <p>Let <span class="math inline">\(A\)</span> be a matrix with (strictly) positive entries. Then the eigenvalue with maximal absolute value is positive and simple. The corresponding eigenvector is (strictly) positive.</p>
 <p><a href="https://en.wikipedia.org/wiki/Perron%E2%80%93Frobenius_theorem">Wikipedia</a></p>
-
-  </div>
-
-    
-
-    <!-- Extension : Sharing buttons @ www.sharethis.com -->
-    <span class='st_facebook_large' displayText='Facebook'></span>
-    <span class='st_twitter_large' displayText='Tweet'></span>
-    <span class='st_googleplus_large' displayText='Google +'></span>
-    <span class='st_reddit_large' displayText='Reddit'></span>
-    <span class='st__large' displayText=''></span>
-
-    <div id="disqus_thread"></div>
-    
-
-
-  
-    <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
-  </div>
-  
-</div>
-]]></summary>
-</entry>
-<entry>
-    <title>[SD15] Minimax rates for memory-bounded sparse linear regression</title>
-    <link href="http://holdenlee.github.io/notebook/posts/tcs/machine_learning/community/SD15.html" />
-    <id>http://holdenlee.github.io/notebook/posts/tcs/machine_learning/community/SD15.html</id>
-    <published>2016-02-29T00:00:00Z</published>
-    <updated>2016-02-29T00:00:00Z</updated>
-    <summary type="html"><![CDATA[
-<div class="container">
-  <div id="content">
-    <div class="page header">
-      <h1>[SD15] Minimax rates for memory-bounded sparse linear regression</h1>
-    </div>
-    <div class="info">
-      
-       
-        <p>Posted: 2016-02-29 
-          , Modified: 2016-02-29 
-	</p>
-      
-       <p>Tags: <a href="/tags/none.html">none</a></p> 
-    </div>
-    
-  </div>
-  <!--/div-->
-
-  
-
-  <div class="blog-main">
-    
-
-  </div>
-
-    
-
-    <!-- Extension : Sharing buttons @ www.sharethis.com -->
-    <span class='st_facebook_large' displayText='Facebook'></span>
-    <span class='st_twitter_large' displayText='Tweet'></span>
-    <span class='st_googleplus_large' displayText='Google +'></span>
-    <span class='st_reddit_large' displayText='Reddit'></span>
-    <span class='st__large' displayText=''></span>
-
-    <div id="disqus_thread"></div>
-    
-
-
-  
-    <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
-  </div>
-  
-</div>
-]]></summary>
-</entry>
-<entry>
-    <title>Scraps</title>
-    <link href="http://holdenlee.github.io/notebook/posts/tcs/complexity/scraps.html" />
-    <id>http://holdenlee.github.io/notebook/posts/tcs/complexity/scraps.html</id>
-    <published>2016-02-29T00:00:00Z</published>
-    <updated>2016-02-29T00:00:00Z</updated>
-    <summary type="html"><![CDATA[
-<div class="container">
-  <div id="content">
-    <div class="page header">
-      <h1>Scraps</h1>
-    </div>
-    <div class="info">
-      
-       
-        <p>Posted: 2016-02-29 
-          , Modified: 2016-02-29 
-	</p>
-      
-       <p>Tags: <a href="/tags/scratch.html">scratch</a></p> 
-    </div>
-    
-  </div>
-  <!--/div-->
-
-  
-
-  <div class="blog-main">
-    <p>Known that there is <span class="math inline">\(A\)</span>, <span class="math inline">\(BQP^A\nsubeq MA^A\)</span>, but not for <span class="math inline">\(AM\)</span>. AM, MA, NP?</p>
-
-  </div>
-
-    
-
-    <!-- Extension : Sharing buttons @ www.sharethis.com -->
-    <span class='st_facebook_large' displayText='Facebook'></span>
-    <span class='st_twitter_large' displayText='Tweet'></span>
-    <span class='st_googleplus_large' displayText='Google +'></span>
-    <span class='st_reddit_large' displayText='Reddit'></span>
-    <span class='st__large' displayText=''></span>
-
-    <div id="disqus_thread"></div>
-    
-
-
-  
-    <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
-  </div>
-  
-</div>
-]]></summary>
-</entry>
-<entry>
-    <title>[Rem16] The Hilbert Function, Algebraic Extractors, and Recursive Fourier Sampling</title>
-    <link href="http://holdenlee.github.io/notebook/posts/tcs/complexity/Rem16.html" />
-    <id>http://holdenlee.github.io/notebook/posts/tcs/complexity/Rem16.html</id>
-    <published>2016-02-29T00:00:00Z</published>
-    <updated>2016-02-29T00:00:00Z</updated>
-    <summary type="html"><![CDATA[
-<div class="container">
-  <div id="content">
-    <div class="page header">
-      <h1>[Rem16] The Hilbert Function, Algebraic Extractors, and Recursive Fourier Sampling</h1>
-    </div>
-    <div class="info">
-      
-       
-        <p>Posted: 2016-02-29 
-          , Modified: 2016-02-29 
-	</p>
-      
-       <p>Tags: <a href="/tags/none.html">none</a></p> 
-    </div>
-    
-  </div>
-  <!--/div-->
-
-  <div class="toc"> <ul>
- <li><a href="#recursive-fourier-sampling">Recursive Fourier sampling</a></li>
- <li><a href="#vc-dimension">VC dimension</a></li>
- <li><a href="#algebraic-geometry">Algebraic geometry</a></li>
- <li><a href="#versatile-functions">Versatile functions</a></li>
- <li><a href="#rfs">RFS</a></li>
- <li><a href="#todo">Todo</a></li>
- </ul> </div>
-
-  <div class="blog-main">
-    <p>Summary: Define an algebraic measure of randomness (<span class="math inline">\(\de\)</span>-versatility for <span class="math inline">\(U\)</span>), such that a versatile function is an algebraic extractor. RFS is versatile, with applications to <span class="math inline">\(BQP^A\stackrel{?}{\subeq} ?^A\)</span>. #Extractors</p>
-<p>Problem: Find extractors for algebraic sets of degree <span class="math inline">\(d\)</span> and density <span class="math inline">\(\ge \rh\)</span>, i.e., for sources uniform over sets of the form <span class="math inline">\(V(f_1,\ldots, f_t)\)</span> (common zeros), <span class="math inline">\(\deg(f_i)\le d\)</span>.</p>
-<p>Previous results: [Dvi12] gives explicit extractors for</p>
-<ul>
-<li><span class="math inline">\(|\F|=\poly(d)\)</span>, <span class="math inline">\(\rh=2^{-\fc n2}\)</span>,</li>
-<li><span class="math inline">\(|\F|=d^{\Om(n^2)}\)</span>, small density.</li>
-<li>[CT13] degree 2, at most <span class="math inline">\((\ln \ln n)^{\rc{2e}}\)</span> polynomials; disperser for <span class="math inline">\(t\)</span> polys of degree <span class="math inline">\(\le (1-o(1))\fc{\ln\pf nt}{\ln^{0.9}n}\)</span>.</li>
-</ul>
-<p><strong>Theorem 1</strong>: Any <span class="math inline">\(\de\)</span>-versatile function is an extractor for algebraic sets. Parameters: <span class="math inline">\(\de\ge \fc n2-n^{\ga}\)</span>, <span class="math inline">\(d\le n^\al\)</span>, <span class="math inline">\(\rh\ge 2^{-n^{\be}}\)</span>, bias <span class="math inline">\(O\pf{n^\ga+d\ln \pf{\sqrt n}{\rh}}{\sqrt n}\)</span>. Proof exploits structure of sets of zeros.</p>
-<h2 id="recursive-fourier-sampling">Recursive Fourier sampling</h2>
-<p>Used to find <span class="math inline">\(A\)</span>, <span class="math inline">\(BQP^A\nsubeq \NP^A\)</span>.</p>
-<p>Problem: Find larger class <span class="math inline">\(C\)</span> for which <span class="math inline">\(BQP^A\nsubeq C^A\)</span>.</p>
-<p>Technique: connection between relativized separations from the polynomial hierarchy and lower bounds against constant depth circuits [FSS84],[Yao85]. “Here, the key idea is to reinterpret the 9 and 8 quantifiers of a PH machine as OR and AND gates.”</p>
-<p>?: Don’t understand the part on poly approx.</p>
-<p>Problem: What is the lowest degree polynomial <span class="math inline">\(/\F_2\)</span> representing <a href="RFS.html">recursive Fourier sampling</a>?</p>
-<p><strong>Theorem 2</strong>: <span class="math inline">\(n=2^k-1\)</span>. No poly of degree <span class="math inline">\(&lt;\pf{n+1}2^h\)</span> can nontrivally one-sided agree (soundness) with <span class="math inline">\(RFS_{n,h}^{\Maj}\)</span>. (Similar statement for GIP.)</p>
-<h2 id="vc-dimension">VC dimension</h2>
-<p>Interpolation degree <span class="math inline">\(\text{reg}(C)\)</span> is min <span class="math inline">\(d\)</span> such that every <span class="math inline">\(f\)</span> is a multilinear poly of degree <span class="math inline">\(\le d\)</span>.</p>
-<p>Problem: Characterize sets with interpolation degree <span class="math inline">\(r\)</span>.</p>
-<p><strong>Theorem 4</strong>: <span class="math inline">\(\text{reg}(C)=r\)</span> iff <span class="math inline">\(r\)</span> is smallest so <span class="math inline">\(\rank \mathcal M(C, \binom{[n]}{\le r})=|C|\)</span>.</p>
-<h2 id="algebraic-geometry">Algebraic geometry</h2>
-<ul>
-<li>Affine Hilbert function <span class="math inline">\(h^a(R,d) = \dim(R_{\le d})\)</span> where <span class="math inline">\(R_{\le d}=\F[\mx]_{\le d}/I(V)_{\le d}\)</span>.</li>
-<li>Leading monomials of an ideal. Standard monomials are the complement. (Don’t know why they’re named like this. “Missing monomials” makes more sense.)
-<ul>
-<li>Hilbert function is a sum of sizes of SM’s: $h^a(V,d)=_{i=0}^d |SM(V,i)|.</li>
-<li>Regularity is maximum degree of standard monomial of <span class="math inline">\(V\)</span>.</li>
-</ul></li>
-<li><span class="math inline">\(a(I)\)</span> is the min degree of <span class="math inline">\(g\in I\)</span> such that <span class="math inline">\(g\)</span> consists only of monomials from <span class="math inline">\(SM(V)\)</span>. (If says <span class="math inline">\(SM(\F^n)\)</span>, but this doesn’t make sense.)
-<ul>
-<li><span class="math inline">\(V\subeq \F^n\)</span> a nonempty zero-dimensional algebraic set. (What does zero-dim mean here?) Then <span class="math inline">\(a(\ol V)+\text{reg}(V)=n\)</span>.</li>
-</ul></li>
-<li>How to calculate Hilbert function? Inclusion matrix <span class="math inline">\(M(\mathcal F,\mathcal G)\)</span> has <span class="math inline">\(M_{F,G} = 1_{F\subeq G}\)</span>. Calculate Hilbert function by <span class="math inline">\(h^a(V,d) =\rank M\pa{V,\binom{[n]}{\le d}}\)</span>.</li>
-</ul>
-<h2 id="versatile-functions">Versatile functions</h2>
-<ul>
-<li>Versatile: <span class="math inline">\(\forall g, \exists \deg(u),\deg(v)\le \fc n2\)</span> and <span class="math inline">\(g=uf+v\)</span>.
-<ul>
-<li>Question: isn’t this always true for <span class="math inline">\(\deg g=\fc n2\)</span> by division? Yes, but there are other functions that are versatile too!</li>
-<li>Observation: when <span class="math inline">\(f(x)=0, g=v\)</span>. When <span class="math inline">\(f(x)=1\)</span>, <span class="math inline">\(g=u+v\)</span>. Let <span class="math inline">\(U_i=\set{x}{f(x)=i}\)</span>. (Lemma 4) This shows that any poly can be collapsed to one of degree <span class="math inline">\(\le \fc n2\)</span> on <span class="math inline">\(U_0\)</span> and <span class="math inline">\(U_1\)</span>, i.e. <span class="math inline">\(\text{reg}(U_i)\le \fc n2\)</span>. Converse also holds. (How is regularity related to max degree of defining function?)</li>
-</ul></li>
-</ul>
-<p>Example: the standard monomials (those missed by leading monomials) of Maj are those with weight <span class="math inline">\(&lt;\fc n2\)</span>. (Proof: any product of <span class="math inline">\(\ge \fc n2\)</span> variables vanishes on Maj.)</p>
-<p>Generalize: <span class="math inline">\(\de\)</span>-versatile on <span class="math inline">\(U\)</span> if <span class="math inline">\(\de \le \text{reg}(U)-\text{reg}(U_i)\)</span>. (A versatile function is <span class="math inline">\(\fc n2\)</span>-versatile on <span class="math inline">\(\F_2^n\)</span>.)</p>
-<p>Lemmas:</p>
-<ul>
-<li>6: A <span class="math inline">\(\de\)</span>-versatile function on <span class="math inline">\(U\)</span> cannot be represented on <span class="math inline">\(U\)</span> by degree <span class="math inline">\(&lt;\de\)</span>. (Note how we changed the degree and the set!)</li>
-<li>7: If <span class="math inline">\(q\)</span> has degree <span class="math inline">\(&lt;\de\)</span> and <span class="math inline">\(q\)</span> vanishes on <span class="math inline">\(U_i\)</span>, then it vanishes on <span class="math inline">\(U_{1-i}\)</span>. (This gives failure of one-sided computation.) Necessary is that <span class="math inline">\(U\)</span> be critical algebraic, <span class="math inline">\(a(\ol V)=\deg(1_U)\)</span>. I don’t understand this condition.</li>
-<li>8: The LM’s for <span class="math inline">\(U\cap G,U_i\cap G\)</span> for <span class="math inline">\(G\)</span> a union of hypersurfaces of degree <span class="math inline">\(&lt;d\)</span>, are the same up to degree <span class="math inline">\(\le \de -d\)</span>.</li>
-<li>9: Bound the difference between 2 evaluations of the Hilbert function at around <span class="math inline">\(\text{reg}(V)\)</span>. Q: Why do we expect this to be small, and why do we care?</li>
-</ul>
-<h2 id="rfs">RFS</h2>
-<h2 id="todo">Todo</h2>
-<ul>
-<li>Go through proof of Theorem 1.</li>
-<li>Understand recursive Fourier sampling. Read another source for this.</li>
-</ul>
-<p>Questions</p>
-<ul>
-<li>How to construct a versatile set?</li>
-</ul>
 
   </div>
 

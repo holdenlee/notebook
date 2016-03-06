@@ -85,6 +85,14 @@
  <li><a href="#summary">Summary</a><ul>
  <li><a href="#duality">Duality</a></li>
  <li><a href="#kkt-conditions">KKT conditions</a></li>
+ <li><a href="#examples">Examples</a><ul>
+ <li><a href="#dual-functions">Dual functions</a></li>
+ </ul></li>
+ </ul></li>
+ <li><a href="#proofs-and-intuition">Proofs and intuition</a><ul>
+ <li><a href="#weak-duality">Weak duality</a></li>
+ <li><a href="#strong-duality">Strong duality</a></li>
+ <li><a href="#intuition">Intuition</a></li>
  </ul></li>
  <li><a href="#questions">Questions</a></li>
  </ul> </div>
@@ -97,8 +105,10 @@ These problems are dual.
 \min_{f_i\le 0, Ax=b} f &amp; \lra \max_{\la \ge 0,\nu} \ub{\min_x \ub{f+\la^T\vec{f} + \nu^T (Ax-b)}{\cal L(x,\la,\nu)}}{g(\la,\nu)}\\
 \max_{f_i\ge 0, Ax=b} f &amp; \lra \min_{\la \ge 0,\nu} \ub{\max_x \ub{f+\la^T\vec{f} - \nu^T (Ax-b)}{\cal L(x,\la,\nu)}}{g(\la,\nu)}
 \end{align}
-<p>In (1) the <span class="math inline">\(f_i\)</span> are convex; in (2) they are concave.</p>
-<p><strong>Slater’s constraints</strong>: Equality holds if the problem is strictly feasible: there exists <span class="math inline">\(x\)</span> such that <span class="math inline">\(f_i(x)&lt;0, Ax=b\)</span>.</p>
+<p>In (1) the <span class="math inline">\(f_i\)</span> are convex; in (2) they are concave. In (1), we have dual<span class="math inline">\(\le\)</span>primal: <span class="math display">\[
+\min_{f_i\le 0, Ax=b} f \ge \max_{\la \ge 0,\nu} \ub{\min_x \ub{f+\la^T\vec{f} + \nu^T (Ax-b)}{\cal L(x,\la,\nu)}}{g(\la,\nu)}
+\]</span> Note: <span class="math inline">\(f^*(y)=\sup y^T - f(x)\)</span> is the conjugate or <strong>Legendre transform</strong>. It is convex, and for convex functions, the double conjugate is the original function.</p>
+<p><strong>Slater’s constraints</strong>: Equality holds if the problem is strictly feasible: there exists <span class="math inline">\(x\)</span> such that <span class="math inline">\(f_i(x)&lt;0, Ax=b\)</span>. Linear inequalities are allowed to be non-strict, <span class="math inline">\(f_i(x)\le 0\)</span>.</p>
 <h3 id="kkt-conditions">KKT conditions</h3>
 <p>The KKT conditions are (here <span class="math inline">\(h=Ax-b\)</span>)</p>
 <ol type="1">
@@ -111,8 +121,60 @@ These problems are dual.
 <li>If <span class="math inline">\(x,\la,\nu\)</span> satisfy the conditions, then <span class="math inline">\(x\)</span> and <span class="math inline">\((\la,\nu)\)</span> are primal and dual optimal and the optimal values are equal.</li>
 <li>if Slater’s condition is satisfied, <span class="math inline">\(x\)</span> is optimal if and only if there exist, <span class="math inline">\(\la,\nu\)</span> that satisfy KKT conditions</li>
 </ul>
+<h3 id="examples">Examples</h3>
+<ol type="1">
+<li>Linear programming (equality when there exists a feasible solution)
+\begin{align}
+\min_{Ax=b,x\ge 0} c^Tx &amp;= \max_{\la\ge 0, A^T\nu\ge -c} -b^T\nu\\
+\min_{Ax\le b} c^Tx &amp;= \max_{\la\ge 0, A^T\nu=-c} -b^T\nu.
+\end{align}</li>
+</ol>
+<h4 id="dual-functions">Dual functions</h4>
+<p>(Check this.)</p>
+<table>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Function</th>
+<th style="text-align: left;">Dual</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;"><span class="math inline">\(u\ln u\)</span></td>
+<td style="text-align: left;"><span class="math inline">\(e^{v-1}\)</span></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><span class="math inline">\(\ve{x}\)</span></td>
+<td style="text-align: left;"><span class="math inline">\(\begin{cases}0,&amp;\ve{y}_*\le 1\\ \iy,&amp;\text{else}\end{cases}\)</span></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><span class="math inline">\(\ln \det(X^{-1})\)</span></td>
+<td style="text-align: left;"><span class="math inline">\(\ln \det(-Y)^{-1}-n\)</span></td>
+</tr>
+</tbody>
+</table>
+<h2 id="proofs-and-intuition">Proofs and intuition</h2>
+<h3 id="weak-duality">Weak duality</h3>
+<p>Given a dual feasible <span class="math inline">\(\la,\nu\)</span>, choose <span class="math inline">\(x=x^*\)</span>. Then <span class="math display">\[
+g(\la,\nu) = f(x^*) + \sum \la_i \ub{f_i(x^*)}_{\le 0} + \nu^T \ub{(Ax^*-b)}{=0}\le f(x^*).
+\]</span></p>
+<h3 id="strong-duality">Strong duality</h3>
+<h3 id="intuition">Intuition</h3>
+<p>Think of the dual as (1) relaxing the strict conditions that <span class="math inline">\(f_i\le 0\)</span> and (2) being a game. If you fail to meet the constraint <span class="math inline">\(f_i\le 0\)</span>, you are penalized by cost <span class="math inline">\(\la_if_i\)</span> (and you gain money from constraints that are met). The adversary first sets “shadow prices” <span class="math inline">\(\la_i,\nu_i\)</span>, the cost for violating the constraints, and then you choose <span class="math inline">\(x^*\)</span>. Duality says you can’t do better in this game. (You can do just as well by choosing your original <span class="math inline">\(x^*\)</span>; this is weak duality.</p>
+Let <span class="math inline">\(p^*(u,v)\)</span> be the optima under constraints <span class="math inline">\(f_i\le u_i,h_i=v_i\)</span>. The sensitivity to the constraints are given by the dual optima. We have the following (the derivative equations hold if <span class="math inline">\(p^*\)</span> is differentiable.<a href="#fn1" class="footnoteRef" id="fnref1"><sup>1</sup></a>
+\begin{align}
+p^*(u,v) &amp;\ge p^*(0,0)-\la^{*T} u - \nu^{*T} v\\
+\pd{p^*}{v_i} &amp;= -\nu_i\\
+\pd{p^*}{u_i} &amp;= -\la_i.
+\end{align}
 <h2 id="questions">Questions</h2>
 <p>If <span class="math inline">\(x\)</span> is a primal optimal, is there necessarily a <span class="math inline">\((\la,\nu)\)</span> that satisfies the equations? I think if <span class="math inline">\(x\)</span> is primal optimal and <span class="math inline">\((\la,\nu)\)</span> is dual optimal, <span class="math inline">\((x,\la,\nu)\)</span> does not necessarily satisfy. Check this.</p>
+<section class="footnotes">
+<hr />
+<ol>
+<li id="fn1"><p>Otherwise maybe an inequality? Multiple dual optima are possible.<a href="#fnref1">↩</a></p></li>
+</ol>
+</section>
 
   </div>
 
