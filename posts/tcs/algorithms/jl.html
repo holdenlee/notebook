@@ -10,7 +10,7 @@
   <meta name="description" content="Holden Lee's Research Notebook">
   <meta name="author" content="Holden Lee">
     
-  <title>Posts in category "tcs/machine_learning"</title>
+  <title>Algorithms</title>
 
   <!-- Bootstrap core CSS -->
   <link href="../../../bootstrap/css/bootstrap.min.css" rel="stylesheet">
@@ -66,87 +66,73 @@
 <div class="container">
   <div id="content">
     <div class="page header">
-      <h1>Posts in category "tcs/machine_learning"</h1>
+      <h1>Algorithms</h1>
     </div>
     <div class="info">
       
+       
+        <p>Posted: 2016-03-03 
+          , Modified: 2016-03-03 
+	</p>
       
-      
+       <p>Tags: <a href="../../../tags/LDC.html">LDC</a></p> 
     </div>
     
   </div>
   <!--/div-->
 
-  
+  <div class="toc"> <ul>
+ <li><a href="#summary">Summary</a></li>
+ <li><a href="#proofs-and-intuition">Proofs and intuition</a></li>
+ <li><a href="#further-questions">Further questions</a></li>
+ <li><a href="#generalities">Generalities</a><ul>
+ <li><a href="#applications">Applications</a></li>
+ </ul></li>
+ </ul> </div>
 
   <div class="blog-main">
-    <ul>
-    
-        <li>
-            <a href="../../../posts/tcs/machine_learning/neural_nets/CHMAL15.html">[CHMAL15] The Loss Surfaces of Multilayer Networks</a> (2016-03-07)
-        </li>
-    
-        <li>
-            <a href="../../../posts/tcs/machine_learning/optimization/AO15.html">[AO15] Linear coupling</a> (2016-03-06)
-        </li>
-    
-        <li>
-            <a href="../../../posts/tcs/machine_learning/optimization/mirror-descent.html">Mirror descent</a> (2016-03-05)
-        </li>
-    
-        <li>
-            <a href="../../../posts/tcs/machine_learning/optimization/AGD.html">Accelerated Gradient descent</a> (2016-03-05)
-        </li>
-    
-        <li>
-            <a href="../../../posts/tcs/machine_learning/neural_nets/analysis.html">Analysis of neural networks</a> (2016-03-05)
-        </li>
-    
-        <li>
-            <a href="../../../posts/tcs/machine_learning/optimization/sdp-duality.html">SDP duality</a> (2016-03-04)
-        </li>
-    
-        <li>
-            <a href="../../../posts/tcs/machine_learning/optimization/duality.html">Duality</a> (2016-03-04)
-        </li>
-    
-        <li>
-            <a href="../../../posts/tcs/machine_learning/optimization/convex_optimization.html">Convex optimization</a> (2016-03-04)
-        </li>
-    
-        <li>
-            <a href="../../../posts/tcs/machine_learning/optimization/GD.html">Gradient descent</a> (2016-03-04)
-        </li>
-    
-        <li>
-            <a href="../../../posts/tcs/machine_learning/community/GRSY15.html">[GRSY15] How Hard is Inference for Structured Prediction?</a> (2016-03-03)
-        </li>
-    
-        <li>
-            <a href="../../../posts/tcs/machine_learning/community/SD15.html">[SD15] Minimax rates for memory-bounded sparse linear regression</a> (2016-02-29)
-        </li>
-    
-        <li>
-            <a href="../../../posts/tcs/machine_learning/community/cbm.html">Censored block model</a> (2016-02-28)
-        </li>
-    
-        <li>
-            <a href="../../../posts/tcs/machine_learning/community/MNS12.html">[MNS12]</a> (2016-02-28)
-        </li>
-    
-        <li>
-            <a href="../../../posts/tcs/machine_learning/draft.html">Something I learned</a> (2016-02-27)
-        </li>
-    
+    <h2 id="summary">Summary</h2>
+<p>(Taken from lecture 11 of algorithms)</p>
+<ol type="1">
+<li>Given <span class="math inline">\(\ep\)</span> there are <span class="math inline">\(e^{c_\ep d}\)</span> vectors in <span class="math inline">\(\R^d\)</span> that are almost orthogonal (up to <span class="math inline">\(\ep\)</span>). In fact, a random collection of vectors will do.</li>
+<li>(Johnson-Lindenstrauss) Given <span class="math inline">\(n\)</span> points <span class="math inline">\(z_i\in \R^n\)</span>, there is a projection onto <span class="math inline">\(m=C_1\fc{\ln n}{\ep^2}\)</span> dimensions such that the metric restricted to the points is almost preserved: <span class="math inline">\(d(u_i,u_j)\in [1,1+\ep]d(z_i,z_j)\)</span>.</li>
+</ol>
+<h2 id="proofs-and-intuition">Proofs and intuition</h2>
+<ol type="1">
+<li>Choose vectors in <span class="math inline">\(\{-1,1\}^d\)</span> at random and normalize. By Chernoff, <span class="math inline">\(\Pj(|\cos \te_{x,y}|&gt;\sfc{\ln (2c)}{n})&lt;\rc c\)</span>. We can choose <span class="math inline">\(\sqrt{c}\)</span> vectors such that this doesn’t hold between any pair.</li>
+<li>The choice of <span class="math inline">\(m\)</span> is so we can use Chernoff and union. Choose <span class="math inline">\(x^i\in \{\pm 1\}\sfc{1+\ep}{m}\)</span> randomly, take the linear mapping <span class="math inline">\(z\mapsto z[x^1\quad \cdots \quad x^m]\)</span>. Now use Chernoff and union bound.</li>
+</ol>
+<p>Distance being preserved up to <span class="math inline">\(\ep\)</span> is the same as saying that <span class="math display">\[|\an{Mv_i,Mv_j} -\an{v_i,v_j}|\le \ep \ve{v_i}\ve{v_j}.\]</span> This is good for vectors with large <span class="math inline">\(L^1/L^2\)</span> ratio, and not good for sparse vectors.</p>
+<h2 id="further-questions">Further questions</h2>
+<ul>
+<li>Derandomizing JL.</li>
 </ul>
-
-
+<h2 id="generalities">Generalities</h2>
+<p>Because many algorithms rely on finding a closest neighbor—nearest neighbor, minimum spanning tree, point location etc.—have a running time depending upon exp(d).</p>
+<p>In machine learning and statistics sometimes the term refers to the fact that available data is too sparse in high dimensions; it takes exp(d) amount of data (say, points on the sphere)to ensure that each new sample is close to an existing sample</p>
+<p>Blessing of dimensionality. This refers to the fact that many phenomena become much clearer and easier to think about in high dimensions because one can use simple rules of thumb (e.g., Chernoff bounds, measure concentration) which don’t hold in low dimensions.</p>
+<h3 id="applications">Applications</h3>
+<p>Suppose we wish to hash high-dimensional vectors so that nearby vectors tend to hash into the same bucket. To do this we can do a random projection into say the cube in 5 dimensions. We discretise the cube into smaller cubes of size <span class="math inline">\(\ep\)</span>. Then there are 1/<span class="math inline">\(\ep^5\)</span> smaller cubes; these can be the buckets.</p>
+<p>Can reduce dimension while keeping the margin!</p>
 
   </div>
 
     
 
+    <!-- Extension : Sharing buttons @ www.sharethis.com -->
+    <span class="st_facebook_large" displayText="Facebook"></span>
+    <span class="st_twitter_large" displayText="Tweet"></span>
+    <span class="st_googleplus_large" displayText="Google +"></span>
+    <span class="st_reddit_large" displayText="Reddit"></span>
+    <span class="st__large" displayText></span>
 
+    <div id="disqus_thread"></div>
+    
+
+
+  
+    <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+  </div>
   
 </div>
 
@@ -191,6 +177,9 @@
 
 <!-- Extension : Disqus @ http://disqus.com -->
 <!-- Extension : InlineDisqussions @ https://github.com/tsi/inlineDisqussions -->
+
+<script src="../../../disqus/js/disqus.js"></script>
+
 
 
 <!-- Extension : Google Analytics -->

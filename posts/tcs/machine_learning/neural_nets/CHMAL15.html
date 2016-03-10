@@ -10,7 +10,7 @@
   <meta name="description" content="Holden Lee's Research Notebook">
   <meta name="author" content="Holden Lee">
     
-  <title>Posts in category "tcs/machine_learning/neural_nets"</title>
+  <title>[CHMAL15] The Loss Surfaces of Multilayer Networks</title>
 
   <!-- Bootstrap core CSS -->
   <link href="../../../../bootstrap/css/bootstrap.min.css" rel="stylesheet">
@@ -66,39 +66,75 @@
 <div class="container">
   <div id="content">
     <div class="page header">
-      <h1>Posts in category "tcs/machine_learning/neural_nets"</h1>
+      <h1>[CHMAL15] The Loss Surfaces of Multilayer Networks</h1>
     </div>
     <div class="info">
       
+       
+        <p>Posted: 2016-03-07 
+          , Modified: 2016-03-07 
+	</p>
       
-      
+       <p>Tags: <a href="../../../../tags/none.html">none</a></p> 
     </div>
     
   </div>
   <!--/div-->
 
-  
+  <div class="toc"> <ul>
+ <li><a href="#initial">Initial</a></li>
+ <li><a href="#what">What?</a></li>
+ </ul> </div>
 
   <div class="blog-main">
-    <ul>
-    
-        <li>
-            <a href="../../../../posts/tcs/machine_learning/neural_nets/CHMAL15.html">[CHMAL15] The Loss Surfaces of Multilayer Networks</a> (2016-03-07)
-        </li>
-    
-        <li>
-            <a href="../../../../posts/tcs/machine_learning/neural_nets/analysis.html">Analysis of neural networks</a> (2016-03-05)
-        </li>
-    
+    <h2 id="initial">Initial</h2>
+<ul>
+<li>Relate to random matrix theory</li>
+<li>Relate to spherical spin-glass model</li>
+<li>Global minima lead to overfitting</li>
 </ul>
-
-
+<p>Phenomenon: While multilayer nets do have many local minima, the result of multiple experiments consistently give very similar performance</p>
+<p>We rst establish that the loss function of a typical multilayer net with ReLUs can be expressed as a polynomial function of the weights in the network, whose degree is the number of layers, and whose number of monomials is the number of paths from inputs to output.</p>
+<p>piecewise, continuous polynomial whose monomials are switched in and out at the boundaries between pieces.</p>
+<p>first work to give a “theoretical description of the optimization paradigm with neural networks in the presence of large number of parameters.”</p>
+Let <span class="math inline">\(\si(x)=\max(0,x)\)</span>. The random network is
+\begin{align}
+Y&amp;= q \si(W_H^T\si(\cdots (W_1^TX)\cdots))\\
+&amp;=q\sumo i{n_0} \sum_{j=1}^{\ga (=\prod n_i)} X_{ij}\prod_{k=1}^H w_{i,j}^{(k)}.
+\end{align}
+<p>where <span class="math inline">\(A_{i,j}\)</span> is whether the path is active, <span class="math inline">\(X_{i,j}=X_i\)</span> is starting, and <span class="math inline">\(w_{i,j}^{(k)}\)</span> re weights.</p>
+<p>Assumptions</p>
+<ul>
+<li><span class="math inline">\(X_{i,j}\)</span> independent (so we’re not taking <span class="math inline">\(X_{i,j}=X_i\)</span>?)</li>
+<li>Paths: <span class="math inline">\(A_{i,j}\)</span> are Bernoulli. (?)</li>
+</ul>
+<p><span class="math inline">\((s,\ep)\)</span> reduction image: has only <span class="math inline">\(s\)</span> unique weights but prediction accuracy differs by <span class="math inline">\(\le \ep\)</span>. Some kind of approximation!</p>
+<p>ReLU’s.</p>
+<h2 id="what">What?</h2>
+<ul>
+<li>“fully decoupled”</li>
+<li>“critical values” of loss function</li>
+<li>simulated annealing for neural nets</li>
+</ul>
 
   </div>
 
     
 
+    <!-- Extension : Sharing buttons @ www.sharethis.com -->
+    <span class="st_facebook_large" displayText="Facebook"></span>
+    <span class="st_twitter_large" displayText="Tweet"></span>
+    <span class="st_googleplus_large" displayText="Google +"></span>
+    <span class="st_reddit_large" displayText="Reddit"></span>
+    <span class="st__large" displayText></span>
 
+    <div id="disqus_thread"></div>
+    
+
+
+  
+    <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+  </div>
   
 </div>
 
@@ -143,6 +179,9 @@
 
 <!-- Extension : Disqus @ http://disqus.com -->
 <!-- Extension : InlineDisqussions @ https://github.com/tsi/inlineDisqussions -->
+
+<script src="../../../../disqus/js/disqus.js"></script>
+
 
 
 <!-- Extension : Google Analytics -->
