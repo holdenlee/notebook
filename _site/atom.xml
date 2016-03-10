@@ -8,8 +8,206 @@
         <name>Holden Lee</name>
         <email>oldheneel@gmail.com</email>
     </author>
-    <updated>2016-03-05T00:00:00Z</updated>
+    <updated>2016-03-08T00:00:00Z</updated>
     <entry>
+    <title>Spectral Bounds for Stochastic Diffusion Model in Networks</title>
+    <link href="http://holdenlee.github.io/notebook/posts/tcs/networks/pacm-3-8-16.html" />
+    <id>http://holdenlee.github.io/notebook/posts/tcs/networks/pacm-3-8-16.html</id>
+    <published>2016-03-08T00:00:00Z</published>
+    <updated>2016-03-08T00:00:00Z</updated>
+    <summary type="html"><![CDATA[
+<div class="container">
+  <div id="content">
+    <div class="page header">
+      <h1>Spectral Bounds for Stochastic Diffusion Model in Networks</h1>
+    </div>
+    <div class="info">
+      
+       
+        <p>Posted: 2016-03-08 
+          , Modified: 2016-03-08 
+	</p>
+      
+       <p>Tags: <a href="/tags/pacm.html">pacm</a>, <a href="/tags/GSS.html">GSS</a>, <a href="/tags/networks.html">networks</a></p> 
+    </div>
+    
+  </div>
+  <!--/div-->
+
+  <div class="toc"></div>
+
+  <div class="blog-main">
+    <p>Eun Jun Lee</p>
+<p>This work studies stochastic diffusion model where influence propagates in networks from seed-nodes along edges with independent probabilities. Specifically, we propose spectral bounds for the expected number of nodes that are influenced at the end of propagation. The proposed bounds show significant improvements over the existing bounds in the presence of sensitive edges such as bottlenecks, seed adjacent, and high probability edges.</p>
+
+  </div>
+
+    
+
+    <!-- Extension : Sharing buttons @ www.sharethis.com -->
+    <span class='st_facebook_large' displayText='Facebook'></span>
+    <span class='st_twitter_large' displayText='Tweet'></span>
+    <span class='st_googleplus_large' displayText='Google +'></span>
+    <span class='st_reddit_large' displayText='Reddit'></span>
+    <span class='st__large' displayText=''></span>
+
+    <div id="disqus_thread"></div>
+    
+
+
+  
+    <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+  </div>
+  
+</div>
+]]></summary>
+</entry>
+<entry>
+    <title>[CHMAL15] The Loss Surfaces of Multilayer Networks</title>
+    <link href="http://holdenlee.github.io/notebook/posts/tcs/machine_learning/neural_nets/CHMAL15.html" />
+    <id>http://holdenlee.github.io/notebook/posts/tcs/machine_learning/neural_nets/CHMAL15.html</id>
+    <published>2016-03-07T00:00:00Z</published>
+    <updated>2016-03-07T00:00:00Z</updated>
+    <summary type="html"><![CDATA[
+<div class="container">
+  <div id="content">
+    <div class="page header">
+      <h1>[CHMAL15] The Loss Surfaces of Multilayer Networks</h1>
+    </div>
+    <div class="info">
+      
+       
+        <p>Posted: 2016-03-07 
+          , Modified: 2016-03-07 
+	</p>
+      
+       <p>Tags: <a href="/tags/none.html">none</a></p> 
+    </div>
+    
+  </div>
+  <!--/div-->
+
+  <div class="toc"> <ul>
+ <li><a href="#initial">Initial</a></li>
+ <li><a href="#what">What?</a></li>
+ </ul> </div>
+
+  <div class="blog-main">
+    <h2 id="initial">Initial</h2>
+<ul>
+<li>Relate to random matrix theory</li>
+<li>Relate to spherical spin-glass model</li>
+<li>Global minima lead to overfitting</li>
+</ul>
+<p>Phenomenon: While multilayer nets do have many local minima, the result of multiple experiments consistently give very similar performance</p>
+<p>We rst establish that the loss function of a typical multilayer net with ReLUs can be expressed as a polynomial function of the weights in the network, whose degree is the number of layers, and whose number of monomials is the number of paths from inputs to output.</p>
+<p>piecewise, continuous polynomial whose monomials are switched in and out at the boundaries between pieces.</p>
+<p>first work to give a “theoretical description of the optimization paradigm with neural networks in the presence of large number of parameters.”</p>
+Let <span class="math inline">\(\si(x)=\max(0,x)\)</span>. The random network is
+\begin{align}
+Y&amp;= q \si(W_H^T\si(\cdots (W_1^TX)\cdots))\\
+&amp;=q\sumo i{n_0} \sum_{j=1}^{\ga (=\prod n_i)} X_{ij}\prod_{k=1}^H w_{i,j}^{(k)}.
+\end{align}
+<p>where <span class="math inline">\(A_{i,j}\)</span> is whether the path is active, <span class="math inline">\(X_{i,j}=X_i\)</span> is starting, and <span class="math inline">\(w_{i,j}^{(k)}\)</span> re weights.</p>
+<p>Assumptions</p>
+<ul>
+<li><span class="math inline">\(X_{i,j}\)</span> independent (so we’re not taking <span class="math inline">\(X_{i,j}=X_i\)</span>?)</li>
+<li>Paths: <span class="math inline">\(A_{i,j}\)</span> are Bernoulli. (?)</li>
+</ul>
+<p><span class="math inline">\((s,\ep)\)</span> reduction image: has only <span class="math inline">\(s\)</span> unique weights but prediction accuracy differs by <span class="math inline">\(\le \ep\)</span>. Some kind of approximation!</p>
+<p>ReLU’s.</p>
+<h2 id="what">What?</h2>
+<ul>
+<li>“fully decoupled”</li>
+<li>“critical values” of loss function</li>
+<li>simulated annealing for neural nets</li>
+</ul>
+
+  </div>
+
+    
+
+    <!-- Extension : Sharing buttons @ www.sharethis.com -->
+    <span class='st_facebook_large' displayText='Facebook'></span>
+    <span class='st_twitter_large' displayText='Tweet'></span>
+    <span class='st_googleplus_large' displayText='Google +'></span>
+    <span class='st_reddit_large' displayText='Reddit'></span>
+    <span class='st__large' displayText=''></span>
+
+    <div id="disqus_thread"></div>
+    
+
+
+  
+    <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+  </div>
+  
+</div>
+]]></summary>
+</entry>
+<entry>
+    <title>[AO15] Linear coupling</title>
+    <link href="http://holdenlee.github.io/notebook/posts/tcs/machine_learning/optimization/AO15.html" />
+    <id>http://holdenlee.github.io/notebook/posts/tcs/machine_learning/optimization/AO15.html</id>
+    <published>2016-03-06T00:00:00Z</published>
+    <updated>2016-03-06T00:00:00Z</updated>
+    <summary type="html"><![CDATA[
+<div class="container">
+  <div id="content">
+    <div class="page header">
+      <h1>[AO15] Linear coupling</h1>
+    </div>
+    <div class="info">
+      
+       
+        <p>Posted: 2016-03-06 
+          , Modified: 2016-03-06 
+	</p>
+      
+       <p>Tags: <a href="/tags/gradient.html">gradient</a></p> 
+    </div>
+    
+  </div>
+  <!--/div-->
+
+  
+
+  <div class="blog-main">
+    <h2 id="summary">Summary</h2>
+<h2 id="page-notes">Page notes</h2>
+<ol type="1">
+<li></li>
+<li></li>
+<li></li>
+<li></li>
+<li>estimation sequence? Thought experiment. Cutoff <span class="math inline">\(K\)</span> for <span class="math inline">\(\ve{\nb f(x)}_2\)</span>. Equate gradient and mirror: <span class="math display">\[\fc{\ep L}{K^2}=\fc{K^2}{\ep^2}.\]</span></li>
+<li></li>
+<li>Gradient descent guarantee. <span class="math inline">\(f(x_T)-f(x^*) \le O\pf{L\ve{x_0-x^*}_2^2}{T}\)</span>. Distance generating function, Bregman divergence.</li>
+</ol>
+
+  </div>
+
+    
+
+    <!-- Extension : Sharing buttons @ www.sharethis.com -->
+    <span class='st_facebook_large' displayText='Facebook'></span>
+    <span class='st_twitter_large' displayText='Tweet'></span>
+    <span class='st_googleplus_large' displayText='Google +'></span>
+    <span class='st_reddit_large' displayText='Reddit'></span>
+    <span class='st__large' displayText=''></span>
+
+    <div id="disqus_thread"></div>
+    
+
+
+  
+    <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+  </div>
+  
+</div>
+]]></summary>
+</entry>
+<entry>
     <title>Mirror descent</title>
     <link href="http://holdenlee.github.io/notebook/posts/tcs/machine_learning/optimization/mirror-descent.html" />
     <id>http://holdenlee.github.io/notebook/posts/tcs/machine_learning/optimization/mirror-descent.html</id>
@@ -591,187 +789,6 @@ p^*(u,v) &amp;\ge p^*(0,0)-\la^{*T} u - \nu^{*T} v\\
 <li id="fn1"><p>Think of this as the harmonic average of how much to move to get to the minima of the upper and lower-bounding quadratics.<a href="#fnref1">↩</a></p></li>
 </ol>
 </section>
-
-  </div>
-
-    
-
-    <!-- Extension : Sharing buttons @ www.sharethis.com -->
-    <span class='st_facebook_large' displayText='Facebook'></span>
-    <span class='st_twitter_large' displayText='Tweet'></span>
-    <span class='st_googleplus_large' displayText='Google +'></span>
-    <span class='st_reddit_large' displayText='Reddit'></span>
-    <span class='st__large' displayText=''></span>
-
-    <div id="disqus_thread"></div>
-    
-
-
-  
-    <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
-  </div>
-  
-</div>
-]]></summary>
-</entry>
-<entry>
-    <title>[GRSY15] How Hard is Inference for Structured Prediction?</title>
-    <link href="http://holdenlee.github.io/notebook/posts/tcs/machine_learning/community/GRSY15.html" />
-    <id>http://holdenlee.github.io/notebook/posts/tcs/machine_learning/community/GRSY15.html</id>
-    <published>2016-03-03T00:00:00Z</published>
-    <updated>2016-03-03T00:00:00Z</updated>
-    <summary type="html"><![CDATA[
-<div class="container">
-  <div id="content">
-    <div class="page header">
-      <h1>[GRSY15] How Hard is Inference for Structured Prediction?</h1>
-    </div>
-    <div class="info">
-      
-       
-        <p>Posted: 2016-03-03 
-          , Modified: 2016-03-03 
-	</p>
-      
-       <p>Tags: <a href="/tags/paper.html">paper</a>, <a href="/tags/CBM.html">CBM</a></p> 
-    </div>
-    
-  </div>
-  <!--/div-->
-
-  
-
-  <div class="blog-main">
-    <p>Model: In a <span class="math inline">\(n\times n\)</span> grid, observe <span class="math inline">\(p\)</span>-noisy edges <span class="math inline">\(Y_uY_v\)</span> and <span class="math inline">\(q\)</span>-noisy nodes <span class="math inline">\(Y_u\)</span>. Attempto to recover the original labeling. What is the maximum correlation you can achieve on average?</p>
-<p>Answer: Error <span class="math inline">\(p^2n\)</span> up to a constant.</p>
-<ul>
-<li>Achievable: find the partition that maximizes the cut value <span class="math inline">\(\sum X_{uv}Y_uY_v\)</span>. Now negate all labelings if it would increase the node agreement.
-<ul>
-<li>Claim: this is polynomial time. How? This is max cut with negative weights. (https://en.wikipedia.org/wiki/Maximum_cut, http://cstheory.stackexchange.com/questions/2312/max-cut-with-negative-weight-edges, http://cstheory.stackexchange.com/questions/9323/hardness-of-max-cut-on-sparse-graphs)</li>
-<li>They mention an LP relaxation, but don’t actually give the formula…</li>
-</ul></li>
-<li>Tight: consider the checkerboard graph.</li>
-</ul>
-<p>Applications: Image segmentation. (How would you have both node and edge measurements?)</p>
-<p>More directions:</p>
-<ul>
-<li>Optimal constant?</li>
-<li>If you can pay to get better observations, how would you spend a budget?</li>
-</ul>
-
-  </div>
-
-    
-
-    <!-- Extension : Sharing buttons @ www.sharethis.com -->
-    <span class='st_facebook_large' displayText='Facebook'></span>
-    <span class='st_twitter_large' displayText='Tweet'></span>
-    <span class='st_googleplus_large' displayText='Google +'></span>
-    <span class='st_reddit_large' displayText='Reddit'></span>
-    <span class='st__large' displayText=''></span>
-
-    <div id="disqus_thread"></div>
-    
-
-
-  
-    <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
-  </div>
-  
-</div>
-]]></summary>
-</entry>
-<entry>
-    <title>LDCs</title>
-    <link href="http://holdenlee.github.io/notebook/posts/tcs/coding/ldc.html" />
-    <id>http://holdenlee.github.io/notebook/posts/tcs/coding/ldc.html</id>
-    <published>2016-03-03T00:00:00Z</published>
-    <updated>2016-03-03T00:00:00Z</updated>
-    <summary type="html"><![CDATA[
-<div class="container">
-  <div id="content">
-    <div class="page header">
-      <h1>LDCs</h1>
-    </div>
-    <div class="info">
-      
-       
-        <p>Posted: 2016-03-03 
-          , Modified: 2016-03-03 
-	</p>
-      
-       <p>Tags: <a href="/tags/LDC.html">LDC</a></p> 
-    </div>
-    
-  </div>
-  <!--/div-->
-
-  <div class="toc"> <ul>
- <li><a href="#talk-with-zeev">Talk with Zeev</a></li>
- <li><a href="#low-weight-ldcs-to-ldcs">Low-weight LDCs to LDCs</a></li>
- </ul> </div>
-
-  <div class="blog-main">
-    <h2 id="talk-with-zeev">Talk with Zeev</h2>
-<p>Consider a partition of the complete bipartite graph into matchings. What is the worst partition, in the sense that you have to take the union of many (<span class="math inline">\(\Om(\ln n)\)</span>) matchings before you get an expander in the sense of the Expander Mixing Lemma?</p>
-<p>Now consider if the bipartite graph represents a Cayley graph (<span class="math inline">\(x\)</span> on the left is connected to <span class="math inline">\(gx\)</span> on the right). “Abelian groups are the worst expanders.”</p>
-<p>If you need <span class="math inline">\(\ge d\)</span> matchings, you get a LDC from <span class="math inline">\(d\)</span> to <span class="math inline">\(n\)</span>.</p>
-<p>Consider tripartite hypergraphs, with <span class="math inline">\(n^3\)</span> matchings partitioned into <span class="math inline">\(n^2\)</span>. Is the worst partition take <span class="math inline">\((\ln n)^2\)</span>?</p>
-<h2 id="low-weight-ldcs-to-ldcs">Low-weight LDCs to LDCs</h2>
-
-  </div>
-
-    
-
-    <!-- Extension : Sharing buttons @ www.sharethis.com -->
-    <span class='st_facebook_large' displayText='Facebook'></span>
-    <span class='st_twitter_large' displayText='Tweet'></span>
-    <span class='st_googleplus_large' displayText='Google +'></span>
-    <span class='st_reddit_large' displayText='Reddit'></span>
-    <span class='st__large' displayText=''></span>
-
-    <div id="disqus_thread"></div>
-    
-
-
-  
-    <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
-  </div>
-  
-</div>
-]]></summary>
-</entry>
-<entry>
-    <title>Perron-Frobenius Theorem</title>
-    <link href="http://holdenlee.github.io/notebook/posts/math/algebra/linear/perron-frobenius.html" />
-    <id>http://holdenlee.github.io/notebook/posts/math/algebra/linear/perron-frobenius.html</id>
-    <published>2016-03-03T00:00:00Z</published>
-    <updated>2016-03-03T00:00:00Z</updated>
-    <summary type="html"><![CDATA[
-<div class="container">
-  <div id="content">
-    <div class="page header">
-      <h1>Perron-Frobenius Theorem</h1>
-    </div>
-    <div class="info">
-      
-       
-        <p>Posted: 2016-03-03 
-          , Modified: 2016-03-03 
-	</p>
-      
-       <p>Tags: <a href="/tags/eigenvalue.html">eigenvalue</a>, <a href="/tags/theorem.html">theorem</a></p> 
-    </div>
-    
-  </div>
-  <!--/div-->
-
-  
-
-  <div class="blog-main">
-    <h2 id="statement">Statement</h2>
-<p>Let <span class="math inline">\(A\)</span> be a matrix with (strictly) positive entries. Then the eigenvalue with maximal absolute value is positive and simple. The corresponding eigenvector is (strictly) positive.</p>
-<p><a href="https://en.wikipedia.org/wiki/Perron%E2%80%93Frobenius_theorem">Wikipedia</a></p>
 
   </div>
 
