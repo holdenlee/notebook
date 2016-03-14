@@ -10,7 +10,7 @@
   <meta name="description" content="Holden Lee's Research Notebook">
   <meta name="author" content="Holden Lee">
     
-  <title>Analysis of neural networks</title>
+  <title>Neural nets basics</title>
 
   <!-- Bootstrap core CSS -->
   <link href="../../../../bootstrap/css/bootstrap.min.css" rel="stylesheet">
@@ -66,13 +66,13 @@
 <div class="container">
   <div id="content">
     <div class="page header">
-      <h1>Analysis of neural networks</h1>
+      <h1>Neural nets basics</h1>
     </div>
     <div class="info">
       
        
-        <p>Posted: 2016-03-05 
-          , Modified: 2016-03-05 
+        <p>Posted: 2016-03-13 
+          , Modified: 2016-03-13 
 	</p>
       
        <p>Tags: <a href="../../../../tags/neural%20net.html">neural net</a></p> 
@@ -84,33 +84,30 @@
   
 
   <div class="blog-main">
-    <h2 id="research-brainstorm">Research brainstorm</h2>
+    <h2 id="types">Types</h2>
 <ul>
-<li>Complexity theorety point of view: What can be calculated by depth <span class="math inline">\(n\)</span> threshold circuits? Each gate is a function <span class="math inline">\(\sgn(\sum \al_ix_i)\)</span>.</li>
-<li>It doesn’t make sense to assume the ground truth is a neural net. How can we model the ground truth?
+<li>neural net (vanilla)</li>
+<li>convolutional neural net</li>
+<li>recurrent neural nets
 <ul>
-<li>As a set on the boolean cube <span class="math inline">\(\{0,1\}^n\)</span> or <span class="math inline">\([0,1]^n\)</span>. Model 1: Ising model on the Boolean cube.
-<ul>
-<li>Understand such a distribution qualitatively. Ex. what is the average noise sensitivity? Fourier spectra? (What’s the boundary look like?) Are these questions answered for random k-SAT? Might other models (ex. DNF’s, CNF’s) be better?</li>
-<li>Another layer: There is a probability distribution over inputs as well (you don’t sample uniformly from the whole boolean cube. Makes sense because of next point).</li>
-<li>Note that the set of pictures that make sense is probably very small.</li>
-<li>What if you want the learned function to be noise stable? What is the noise stability of learned functions? Are threshold circuits noise stable?</li>
+<li>LSTM</li>
 </ul></li>
-<li>How does this compare to known algorithms for learning boolean functions with low weight? What additional structure do we need to assume? (Low degree algorithm. Lower bounds (min sample complexity, by info theory) for learning b/c of number of functions.)</li>
-</ul></li>
-<li>“It doesn’t make sense to assume the ground truth is a neural net,” so the approach above is to consider a class of functions and show the class can be learned by neural nets. Is there reason to think of ground truth as a neural net?</li>
-<li>Explain me:
+<li>A <strong>Boltzmann machine</strong> has joint distribution of two adjacent layers to be <span class="math inline">\(\exp(x^TAh)\)</span>. If it has only two layers it is reversible, i.e., <span class="math inline">\(\Pj(x|h),\Pj(h|x)\)</span> are both easy to calculate. (A regularized version would be <span class="math inline">\(\exp(x^TAh - hh^T)\)</span>. (?))
 <ul>
-<li>adversarial phenomena</li>
-<li>the distribution of local minima follows laws from statistical physics. Getting to global optima can actually hurt generalization.</li>
+<li>A <strong>DBM</strong> stacks these units (so that the probability of a configuration is now <span class="math inline">\(\exp\pa{\sum x_i^TA_ix^{i+1}}\)</span>). It loses reversibility.</li>
+<li>This is a graphical model. It’s a probability distribution rather than a deterministic function as in a vanilla neural net.</li>
 </ul></li>
 </ul>
-<h2 id="people-to-talk-to">People to talk to</h2>
+<h2 id="functions">Functions</h2>
 <ul>
-<li>ML: Tengyu, Elad, Arora</li>
-<li>Zeev: threshold circuits, what’s known. (See Kane’s paper?)</li>
-<li>Aizenmann, Abbe: intuition for Ising model over <span class="math inline">\(B^n\)</span>, or other models that make sense (ex. 3SAT).</li>
-<li>Fefferman, analysis/geometry students: approximation theory</li>
+<li>RELU <span class="math inline">\((x\ge 0) x\)</span>.</li>
+</ul>
+<h2 id="features">Features</h2>
+<ul>
+<li>Dropout
+<ul>
+<li>On nodes: zero out each node in a layer with probability <span class="math inline">\(1-\rh\)</span>.</li>
+</ul></li>
 </ul>
 
   </div>
