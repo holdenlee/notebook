@@ -8,8 +8,74 @@
         <name>Holden Lee</name>
         <email>oldheneel@gmail.com</email>
     </author>
-    <updated>2016-03-13T00:00:00Z</updated>
+    <updated>2016-03-14T00:00:00Z</updated>
     <entry>
+    <title>Type and Cotype</title>
+    <link href="http://holdenlee.github.io/notebook/posts/math/analysis/metric/type.html" />
+    <id>http://holdenlee.github.io/notebook/posts/math/analysis/metric/type.html</id>
+    <published>2016-03-14T00:00:00Z</published>
+    <updated>2016-03-14T00:00:00Z</updated>
+    <summary type="html"><![CDATA[
+<div class="container">
+  <div id="content">
+    <div class="page header">
+      <h1>Type and Cotype</h1>
+    </div>
+    <div class="info">
+      
+       
+        <p>Posted: 2016-03-14 
+          , Modified: 2016-03-14 
+	</p>
+      
+       <p>Tags: <a href="/tags/none.html">none</a></p> 
+    </div>
+    
+  </div>
+  <!--/div-->
+
+  
+
+  <div class="blog-main">
+    <ol type="1">
+<li>Say that <span class="math inline">\(X\)</span> has <strong>type</strong> <span class="math inline">\(p\)</span> if there exists <span class="math inline">\(C&gt;0\)</span> such that for every <span class="math inline">\(n, y_1,\ldots, y_n\in X\)</span>, [ _{{1}^n} _XC^{p}. ]
+<ul>
+<li>This is always true for <span class="math inline">\(p=1\)</span> by the triangle inquality.</li>
+<li>The RHS decreases as <span class="math inline">\(p\)</span> increases.</li>
+<li>Let <span class="math inline">\(T_p(X)\)</span> be the infimum of valid <span class="math inline">\(T\)</span>.</li>
+<li><span class="math inline">\(X\)</span> has <strong>nontrivial type</strong> if it has type <span class="math inline">\(&gt;1\)</span>.</li>
+</ul></li>
+<li>Say that <span class="math inline">\(X\)</span> has <strong>cotype</strong> <span class="math inline">\(r\)</span> if there exists <span class="math inline">\(C&gt;0\)</span> such that for every <span class="math inline">\(n, x_1,\ldots, x_n\in Y\)</span>, [ _{{1}^n} _YC^{p}. ]
+<ul>
+<li>This is always true for <span class="math inline">\(p=\iy\)</span> by Jensen.</li>
+<li>Let <span class="math inline">\(C_r(X)\)</span> be the infimum of valid <span class="math inline">\(C\)</span>.</li>
+<li><span class="math inline">\(X\)</span> has <strong>finite cotype</strong> if it has type <span class="math inline">\(&lt;\iy\)</span>.</li>
+</ul></li>
+</ol>
+
+  </div>
+
+    
+
+    <!-- Extension : Sharing buttons @ www.sharethis.com -->
+    <span class='st_facebook_large' displayText='Facebook'></span>
+    <span class='st_twitter_large' displayText='Tweet'></span>
+    <span class='st_googleplus_large' displayText='Google +'></span>
+    <span class='st_reddit_large' displayText='Reddit'></span>
+    <span class='st__large' displayText=''></span>
+
+    <div id="disqus_thread"></div>
+    
+
+
+  
+    <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+  </div>
+  
+</div>
+]]></summary>
+</entry>
+<entry>
     <title>Neural nets basics</title>
     <link href="http://holdenlee.github.io/notebook/posts/tcs/machine_learning/neural_nets/basics.html" />
     <id>http://holdenlee.github.io/notebook/posts/tcs/machine_learning/neural_nets/basics.html</id>
@@ -725,96 +791,6 @@ Y&amp;= q \si(W_H^T\si(\cdots (W_1^TX)\cdots))\\
 <li>http://statweb.stanford.edu/~candes/math301/Lectures/acc_nesterov.pdf</li>
 <li>http://www.asc.tuwien.ac.at/~winfried/teaching/106.079/SS2011/downloads/script-p-046-060.pdf</li>
 <li>http://msekce.karlin.mff.cuni.cz/~strakos/download/2012_GerStr.pdf</li>
-</ul>
-
-  </div>
-
-    
-
-    <!-- Extension : Sharing buttons @ www.sharethis.com -->
-    <span class='st_facebook_large' displayText='Facebook'></span>
-    <span class='st_twitter_large' displayText='Tweet'></span>
-    <span class='st_googleplus_large' displayText='Google +'></span>
-    <span class='st_reddit_large' displayText='Reddit'></span>
-    <span class='st__large' displayText=''></span>
-
-    <div id="disqus_thread"></div>
-    
-
-
-  
-    <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
-  </div>
-  
-</div>
-]]></summary>
-</entry>
-<entry>
-    <title>Analysis of neural networks</title>
-    <link href="http://holdenlee.github.io/notebook/posts/tcs/machine_learning/neural_nets/nn_modeling.html" />
-    <id>http://holdenlee.github.io/notebook/posts/tcs/machine_learning/neural_nets/nn_modeling.html</id>
-    <published>2016-03-05T00:00:00Z</published>
-    <updated>2016-03-05T00:00:00Z</updated>
-    <summary type="html"><![CDATA[
-<div class="container">
-  <div id="content">
-    <div class="page header">
-      <h1>Analysis of neural networks</h1>
-    </div>
-    <div class="info">
-      
-       
-        <p>Posted: 2016-03-05 
-          , Modified: 2016-03-05 
-	</p>
-      
-       <p>Tags: <a href="/tags/neural%20net.html">neural net</a></p> 
-    </div>
-    
-  </div>
-  <!--/div-->
-
-  
-
-  <div class="blog-main">
-    <h2 id="overarching-questions">Overarching questions</h2>
-<ul>
-<li>Why do (deep) neural nets work? What provable guarantees can we obtain from them? How is the distribution of natural images, etc., conducive to learning?
-<ul>
-<li>What are the limitations of neural nets and how to overcome them?</li>
-</ul></li>
-<li>How can we leverage this distribution (ex. symmetry) to come up with better algorithms?</li>
-<li>How can we combing neural nets with logical approaches (cf. DeepMind’s alphago combines NN with Monte Carlo tree search)? (Ex. grammar, CFGs, programming language parsing) How to model logical certainty within a neural net? How to extract an algorithm from a neural net? In what sense is a neural net “following an algorithm”?</li>
-</ul>
-<h2 id="research-brainstorm">Research brainstorm</h2>
-<ul>
-<li>Complexity theorety point of view: What can be calculated by depth <span class="math inline">\(n\)</span> threshold circuits? Each gate is a function <span class="math inline">\(\sgn(\sum \al_ix_i)\)</span>.</li>
-<li>It doesn’t make sense to assume the ground truth is a neural net. How can we model the ground truth?
-<ul>
-<li>As a set on the boolean cube <span class="math inline">\(\{0,1\}^n\)</span> or <span class="math inline">\([0,1]^n\)</span>. Model 1: Ising model on the Boolean cube.
-<ul>
-<li>Understand such a distribution qualitatively. Ex. what is the average noise sensitivity? Fourier spectra? (What’s the boundary look like?) Are these questions answered for random k-SAT? Might other models (ex. DNF’s, CNF’s) be better?</li>
-<li>Another layer: There is a probability distribution over inputs as well (you don’t sample uniformly from the whole boolean cube. Makes sense because of next point).</li>
-<li>Note that the set of pictures that make sense is probably very small.</li>
-<li>What if you want the learned function to be noise stable? What is the noise stability of learned functions? Are threshold circuits noise stable?</li>
-</ul></li>
-<li>How does this compare to known algorithms for learning boolean functions with low weight? What additional structure do we need to assume? (Low degree algorithm. Lower bounds (min sample complexity, by info theory) for learning b/c of number of functions.)</li>
-</ul></li>
-<li>“It doesn’t make sense to assume the ground truth is a neural net,” so the approach above is to consider a class of functions and show the class can be learned by neural nets. Is there reason to think of ground truth as a neural net?</li>
-<li>Explain me:
-<ul>
-<li>adversarial phenomena</li>
-<li>the distribution of local minima follows laws from statistical physics. Getting to global optima can actually hurt generalization.</li>
-</ul></li>
-</ul>
-<h2 id="previous-work">Previous work</h2>
-<p>See <a href="http://www.scrible.com/contentview/page/64G21C041IKS82NH20O741000I60MGAV:206493171/index.html?utm_source=tb_permalink&amp;utm_medium=permalink&amp;utm_campaign=tb_buttons&amp;_sti=2847545">Bubeck’s post</a> for a good list.</p>
-<h2 id="people-to-talk-to">People to talk to</h2>
-<ul>
-<li>ML: Tengyu, Elad, Arora</li>
-<li>Zeev: threshold circuits, what’s known. (See Kane’s paper?)</li>
-<li>Aizenmann, Abbe: intuition for Ising model over <span class="math inline">\(B^n\)</span>, or other models that make sense (ex. 3SAT).</li>
-<li>Fefferman, analysis/geometry students: approximation theory</li>
 </ul>
 
   </div>
