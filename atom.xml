@@ -8,8 +8,423 @@
         <name>Holden Lee</name>
         <email>oldheneel@gmail.com</email>
     </author>
-    <updated>2016-03-08T00:00:00Z</updated>
+    <updated>2016-03-13T00:00:00Z</updated>
     <entry>
+    <title>Neural nets basics</title>
+    <link href="http://holdenlee.github.io/notebook/posts/tcs/machine_learning/neural_nets/basics.html" />
+    <id>http://holdenlee.github.io/notebook/posts/tcs/machine_learning/neural_nets/basics.html</id>
+    <published>2016-03-13T00:00:00Z</published>
+    <updated>2016-03-13T00:00:00Z</updated>
+    <summary type="html"><![CDATA[
+<div class="container">
+  <div id="content">
+    <div class="page header">
+      <h1>Neural nets basics</h1>
+    </div>
+    <div class="info">
+      
+       
+        <p>Posted: 2016-03-13 
+          , Modified: 2016-03-13 
+	</p>
+      
+       <p>Tags: <a href="/tags/neural%20net.html">neural net</a></p> 
+    </div>
+    
+  </div>
+  <!--/div-->
+
+  
+
+  <div class="blog-main">
+    <h2 id="types">Types</h2>
+<ul>
+<li>neural net (vanilla)</li>
+<li>convolutional neural net</li>
+<li>recurrent neural nets
+<ul>
+<li>LSTM</li>
+</ul></li>
+<li>A <strong>Boltzmann machine</strong> has joint distribution of two adjacent layers to be <span class="math inline">\(\exp(x^TAh)\)</span>. If it has only two layers it is reversible, i.e., <span class="math inline">\(\Pj(x|h),\Pj(h|x)\)</span> are both easy to calculate. (A regularized version would be <span class="math inline">\(\exp(x^TAh - hh^T)\)</span>. (?))
+<ul>
+<li>A <strong>DBM</strong> stacks these units (so that the probability of a configuration is now <span class="math inline">\(\exp\pa{\sum x_i^TA_ix^{i+1}}\)</span>). It loses reversibility.</li>
+<li>This is a graphical model. It’s a probability distribution rather than a deterministic function as in a vanilla neural net.</li>
+</ul></li>
+</ul>
+<h2 id="functions">Functions</h2>
+<ul>
+<li>RELU <span class="math inline">\((x\ge 0) x\)</span>.</li>
+</ul>
+<h2 id="features">Features</h2>
+<ul>
+<li>Dropout
+<ul>
+<li>On nodes: zero out each node in a layer with probability <span class="math inline">\(1-\rh\)</span>.</li>
+</ul></li>
+</ul>
+
+  </div>
+
+    
+
+    <!-- Extension : Sharing buttons @ www.sharethis.com -->
+    <span class='st_facebook_large' displayText='Facebook'></span>
+    <span class='st_twitter_large' displayText='Tweet'></span>
+    <span class='st_googleplus_large' displayText='Google +'></span>
+    <span class='st_reddit_large' displayText='Reddit'></span>
+    <span class='st__large' displayText=''></span>
+
+    <div id="disqus_thread"></div>
+    
+
+
+  
+    <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+  </div>
+  
+</div>
+]]></summary>
+</entry>
+<entry>
+    <title>[ALM16] WHY ARE DEEP NETS REVERSIBLE: A SIMPLE THEORY, WITH IMPLICATIONS FOR TRAINING</title>
+    <link href="http://holdenlee.github.io/notebook/posts/tcs/machine_learning/neural_nets/ALM16.html" />
+    <id>http://holdenlee.github.io/notebook/posts/tcs/machine_learning/neural_nets/ALM16.html</id>
+    <published>2016-03-13T00:00:00Z</published>
+    <updated>2016-03-13T00:00:00Z</updated>
+    <summary type="html"><![CDATA[
+<div class="container">
+  <div id="content">
+    <div class="page header">
+      <h1>[ALM16] WHY ARE DEEP NETS REVERSIBLE: A SIMPLE THEORY, WITH IMPLICATIONS FOR TRAINING</h1>
+    </div>
+    <div class="info">
+      
+       
+        <p>Posted: 2016-03-13 
+          , Modified: 2016-03-13 
+	</p>
+      
+       <p>Tags: <a href="/tags/neural%20net.html">neural net</a></p> 
+    </div>
+    
+  </div>
+  <!--/div-->
+
+  <div class="toc"> <ul>
+ <li><a href="#summary">Summary</a></li>
+ <li><a href="#model">Model</a><ul>
+ <li><a href="#boltzmann-machine">Boltzmann machine</a></li>
+ <li><a href="#layer-neural-net">1-layer neural net</a></li>
+ <li><a href="#multi-layer-neural-net">Multi-layer neural net</a></li>
+ </ul></li>
+ <li><a href="#theorems-and-proof-sketches">Theorems and proof sketches</a><ul>
+ <li><a href="#baby-theorem">Baby theorem</a></li>
+ <li><a href="#reversibility-of-one-layer-nets-with-dropout-and-relu">Reversibility of one-layer nets with dropout and ReLU</a></li>
+ <li><a href="#reversibility-for-2-layers">Reversibility for 2+ layers</a></li>
+ </ul></li>
+ <li><a href="#experiments">Experiments</a></li>
+ <li><a href="#questions">Questions</a></li>
+ </ul> </div>
+
+  <div class="blog-main">
+    <p>Arora, Sanjeev, Yingyu Liang, and Tengyu Ma. “Why are deep nets reversible: A simple theory, with implications for training.” arXiv preprint arXiv:1511.05653 (2015).</p>
+<p>http://arxiv.org/pdf/1511.05653</p>
+<h2 id="summary">Summary</h2>
+<p>Consider a feedforward net with input <span class="math inline">\(x\)</span> and output <span class="math inline">\(h\)</span>. ALM give a model under which a neural net can be said to be predicting the output distribution. This also gives a theoretical explanation of why it’s possible to use a neural net to do the following: given <span class="math inline">\(h\)</span>, generate some <span class="math inline">\(x\)</span> that could have given rise to that <span class="math inline">\(h\)</span> (cf. neural net dreams).</p>
+<p>Their theoretical explanation has two important ingredients for theoretical explanations:</p>
+<ol type="1">
+<li>It specifies a joint distribution of <span class="math inline">\(x,h\)</span>. (Specifying <span class="math inline">\(x|h\)</span> may also be good enough).</li>
+<li>It gives a proof that the deep net does compute the most likely <span class="math inline">\(h\)</span> given <span class="math inline">\(x\)</span> (in some sense, up to some error).</li>
+</ol>
+<h2 id="model">Model</h2>
+<p>(See <a href="basics.html">neural net basics</a>.)</p>
+<p>We want to model (input, output) by a probability distribution, and prove that a neural net is predicting the output given the input, with respect to that probability distribution.</p>
+<h3 id="boltzmann-machine">Boltzmann machine</h3>
+<p>A <strong>Boltzmann machine</strong> is a joint distribution of random variables <span class="math inline">\(x,h \in \R^{m\times n}\)</span> given by <span class="math display">\[\Pj(x,h) \approx \exp(-x^TAh + \pat{regularization}).\]</span> It is reversible because <span class="math inline">\(\Pj(x|h),\Pj(h|x)\)</span> are both easy to calculate. (Deep Boltzmann machines are much less nice—they lose reversibility.)</p>
+<p>Compare this to a 2-layer neural net. Note a Boltzmann machine is a probabilistic model, not a neural net. A neural net and a Boltzmann machine both model the relationship between an input vector and an output vector, but do it differently: A neural net deterministically computes an output as a function of its input, while a Boltzmann machine gives a probability distribution on (input, output). A Boltzmann machine is trivially reversible; our hope is that a neural net is also reversible. <!-- How are these models related? A Boltzmann machine is one of the most natural generative models for neural nets; one hope is that a neural net is predicting a distribution given by a Boltzmann machine.
+Note by this reversibility, there is not much to prove --></p>
+<p>Think of <span class="math inline">\(x\)</span> as the observed layer and <span class="math inline">\(h\)</span> as the hidden layer. (For example, think of it as the middle layer of an autoencoder. Because we’re not considering any layers put on top of <span class="math inline">\(h\)</span>, we also think of it as the output.)</p>
+<p>We don’t worry about learning (ex. gradient descent) here. We just consider a neural net statically.</p>
+<!-- Note we're *not* actually using the Boltzmann machine model.-->
+<h3 id="layer-neural-net">1-layer neural net</h3>
+<p>The model is the following. Key aspects of the model are modeling weights by random matrices<a href="#fn1" class="footnoteRef" id="fnref1"><sup>1</sup></a>, hypothesizing/enforcing sparsity, and allowing dropout (this is a standard training technique, so we want the theoretical results to hold in this setting).<a href="#fn2" class="footnoteRef" id="fnref2"><sup>2</sup></a></p>
+<p>Here <span class="math inline">\(x\in \R^n,h\in \R^m\)</span> and <span class="math inline">\(m&lt;n\)</span>. The hidden layer has fewer nodes, so the forward map <span class="math inline">\(x\mapsto h\)</span> is many-to-one. This is necessary if we want to be able to reconstruct <span class="math inline">\(h\)</span> from <span class="math inline">\(x\)</span> with high probability.</p>
+<ul>
+<li>Generate <span class="math inline">\(h\sim D_h\)</span> where <span class="math inline">\(D_h\)</span> is any distribution on <span class="math inline">\(\R^n_{\ge 0}\)</span> satisfying the following: With <span class="math inline">\(1-\text{neg}(n)\)</span> probability,
+<ul>
+<li>(Sparsity) <span class="math inline">\(\ve{h}_0\le k\)</span>.</li>
+<li>(No coordinate much larger than the average) <span class="math inline">\(\ve{h}_{\iy}\le \be \ve{h}\)</span> where <span class="math inline">\(\be = O\sfc{\ln k}{k}\)</span>.</li>
+</ul></li>
+<li>Let <span class="math inline">\(W\in \R^{n\times m}\)</span> be a matrix with random <span class="math inline">\(N(0,1)\)</span> entries.</li>
+<li>Generate the observed variable by <span class="math display">\[ x \sim r(\al W h)\odot n_{\rh}, \]</span> where
+<ul>
+<li><span class="math inline">\(n_{\rh}\)</span> is a vector of iid draws from Bernoulli<span class="math inline">\((\rh)\)</span>, and <span class="math inline">\(\odot\)</span> is componentwise multiplication, i.e., entries are zeroed out with probability <span class="math inline">\(1-\rh\)</span>.</li>
+<li><span class="math inline">\(\al=\fc{2}{\rh n}\)</span>, so that it normalizes the effect of dropout. (Why factor of 2?)</li>
+</ul></li>
+</ul>
+<p>The feedforward neural net does the following operation. For some <span class="math inline">\(b\)</span>,</p>
+<ul>
+<li>Given <span class="math inline">\(x\)</span>, compute <span class="math inline">\(\hat h = r(W^Tx+b)\)</span>, where <span class="math inline">\(r(x)=\sgn(x)\cdot (x\ge 0)\)</span><a href="#fn3" class="footnoteRef" id="fnref3"><sup>3</sup></a> is the <strong>ReLU (rectified linear unit)</strong> function.
+<ul>
+<li>If we’re using dropout (with parameter <span class="math inline">\(\rc2\)</span>, say), replace <span class="math inline">\(x\)</span> by <span class="math inline">\(x \odot n_{\rc 2}\)</span> before doing this.</li>
+</ul></li>
+</ul>
+<p>The hope is that <span class="math inline">\(\hat h \approx h\)</span>. Why do we take the matrix in the proposed inverse map to be <span class="math inline">\(W^T\)</span>? For random matrices, the transpose is like an inverse, because <span class="math inline">\(\ve{W^TW-I}_2\)</span> will be small.</p>
+<h3 id="multi-layer-neural-net">Multi-layer neural net</h3>
+<p>Let <span class="math inline">\(W_t,\ldots, W_1\)</span> be random matrices. Basically just iterate the construction <span class="math inline">\(t\)</span> times in both the generative model and the feedforward net (from <span class="math inline">\(h^{(t)}\)</span> get <span class="math inline">\(h^{(t-1)},\ldots, h^{(0)}=x\)</span> and from <span class="math inline">\(x\)</span> generate <span class="math inline">\(\wh h^{(1)}, \ldots , \wh h^{(t)}\)</span>). In the dropout case, do dropout on each layer.</p>
+<h2 id="theorems-and-proof-sketches">Theorems and proof sketches</h2>
+<h3 id="baby-theorem">Baby theorem</h3>
+<p>To get an idea of why reversibility might hold, let’s consider a random one-layer neural net without nonlinearities (or bias), which is just multiplying by a random matrix. In this case <span class="math inline">\(x=\rc nWh\)</span>, <span class="math inline">\(\wh h = W^Tx=\rc n W^TWh\)</span>.</p>
+<p><strong>Theorem (Baby version)</strong>: Let <span class="math inline">\(h\in \{0,1\}^m\)</span> be fixed, <span class="math inline">\(m&lt;n\)</span>. Suppose <span class="math inline">\(W\in \R^{n\times m}\)</span> has <span class="math inline">\(N(0,1)\)</span> entries. Then for any polynomial <span class="math inline">\(p(n)\)</span> there is <span class="math inline">\(C\)</span> so that <span class="math display">\[\Pj_{W}\ba{\ve{W^TWh - h}_{\iy}\le C\ln(mn)\sfc{m}{n}}\ge 1-\rc{p(n)}.\]</span></p>
+<em>Proof</em>: We have
+\begin{align}
+(W^TWh)_i &amp;= (w_{i\bullet})^TW h\\
+&amp;=\rc n (w_{i\bullet})^T w_{i\bullet}h + \ub{\rc n\sum_{j\ne i} (w_{i\bullet})^T w_{j\bullet} h}{\text{noise}}\\
+&amp;=\rc n (w_{i\bullet})^T w_{i\bullet} h +  \rc n\sum_{k=1}^m w_{ik} \sum_{j\ne i} W_{jk} h_k.
+\end{align}
+<p>By Chernoff, <span class="math inline">\(\rc n w_{i\bullet}^T w_{i\bullet}\)</span>, as a sum of <span class="math inline">\(n\)</span> variables distributed as <span class="math inline">\(\chi_1^2\)</span>, is <span class="math inline">\(\rc{\sqrt{n}}\)</span>-concentrated around 1. There are <span class="math inline">\(&lt;mn\)</span> terms in the noise term, so it is <span class="math inline">\(\fc{\sqrt{mn}}{n}\)</span> concentrated around 0 (a little work is needed here—details left to the reader). Thus we get <span class="math inline">\(\sfc{m}{n}\)</span>-concentration around 0.</p>
+<p>If we bound by <span class="math inline">\(\ln(mn)\)</span> times this quantity, then we can use the union bound to finish. <span class="math inline">\(\square\)</span></p>
+<p>Before moving on, we note two things.</p>
+<ol type="1">
+<li>To get a good bound here, we need <span class="math inline">\(n\gg m\)</span>, i.e., the hidden layer needs to be much smaller. Often this is not true in practice.</li>
+<li>We get a <span class="math inline">\(L^{\iy}\)</span> bound which naively doesn’t give a good <span class="math inline">\(L^2\)</span> bound.</li>
+</ol>
+<p>The key next step is to assume that <span class="math inline">\(h\)</span> is sparse. It turns out then having a sigmoid function (ReLU) can be naturally interpreted as picking out the nonzero coordinates, ``recovering&quot; the sparse <span class="math inline">\(h\)</span>. Thus, <em>thresholding has a denoising effect</em>. This allows better recovery (in the <span class="math inline">\(L^2\)</span> norm).</p>
+<h3 id="reversibility-of-one-layer-nets-with-dropout-and-relu">Reversibility of one-layer nets with dropout and ReLU</h3>
+<p><strong>Theorem 2.3</strong>: (Formulation in appendix A.) Let <span class="math inline">\(W,h,x\)</span> be generated as in the model. Suppose <span class="math inline">\(k\)</span> is such that <span class="math inline">\(k&lt;\rh n&lt;k^2\)</span> (the number of non-dropped entries greater than the minimum sparsity, but also not too much). Then <span class="math display">\[
+\ab{\Pj_{x,h,W}\ba{\ve{r(W^T x+b) - h}^2\le \wt O\pf{k}{\rh n}\ve{h}^2}} \ge 1-\rc{\poly(n)}.
+\]</span></p>
+<p><em>Proof (Theorem 2.3)</em>:</p>
+<ol type="1">
+<li><p><strong>Lemma 2.5</strong>: For <span class="math inline">\(\de=\wt O\prc{\sqrt m}\)</span>, <span class="math display">\[\Pj_{W,h,x}\ba{\ve{W^Tx - h}_\iy\le \de\ve{h}^2} \ge 1-\rc{\poly(n)}.\]</span></p>
+<em>Proof of (2.5)<span class="math inline">\(\implies\)</span>(2.3):</em> If we used the naive <span class="math inline">\(L^\iy-L^2\)</span> bound, we get that w.h.p. the <span class="math inline">\(L^2\)</span> norm is at most <span class="math inline">\(m(\de\ve{h})^2 = \wt O\pf{m\ve{h}^2}{t}\)</span>, which is too large. We need to use sparsity to get a good bound. The idea is to zero out the entries with <span class="math inline">\(h_i=0\)</span> by adding a bias term <span class="math inline">\(b\)</span> and thresholding using <span class="math inline">\(r\)</span>. The <span class="math inline">\(L^{\iy}\)</span> bound in Lemma 2.3 tells us the offset necessary to zero out the entries where <span class="math inline">\(h_i=0\)</span>, <span class="math inline">\(b=-\de \ve{h}_1\)</span>. With this value of <span class="math inline">\(b\)</span>,
+\begin{align}
+h_i&amp;=0 &amp;\implies ((W^Tx)_i+b_i)&amp;\in [-2\de \ve{h},0]&amp;\implies \hat h_i&amp;=r((W^T)x_i + b_i) &amp;= h_i = 0\\
+h_i&amp;\ne 0 &amp; \implies |\wt h_i-h_i| &amp;\le 2\de\ve{h}.
+\end{align}
+Square and multiply by <span class="math inline">\(k\)</span>.</li>
+<li><em>Proof of Lemma 2.5:</em> We have
+\begin{align}
+x_j &amp;= r\pa{\al \sumo im W_{ji} h_i} (n_\rh)_j\\
+\hat h_i &amp;= \sumo jn (W^T)_{ij} x_j\\
+&amp;= \sumo jn \ub{W_{ji} r\pa{\al \sumo km W_{jk} h_k}}{=:Z_j} (n_\rh)_j.
+\end{align}
+As before, think of the sum inside <span class="math inline">\(r\)</span> as a main term plus noise: <span class="math display">\[\sumo km W_{jk} h_k = W_{ji} h_i + \sum_{k\ne i} W_{jk} h_k.\]</span> We want to compute <span class="math inline">\(\E[\hat h_i|h]\)</span>. To do this we need to understand the distribution of expressions that look like <span class="math inline">\(Z_j\)</span>.
+<ul>
+<li><strong>Lemma (Technical)</strong>: Let <span class="math inline">\(w\sim N(0,1), \xi \sim N(0,\si^2), \si=\Om(1), 0\le h\le \ln \si\)</span>. Then
+\begin{align}
+\EE_{w,\xi} [w\cdot r(wh+\xi)] &amp; = \fc h2 \pm \wt O\prc{\si^3}\\
+\EE_{w,\xi} [w^2\cdot r(wh+\xi)] &amp; \le 3h^2 + \si^2.
+\end{align}
+<em>Proof:</em> To calculate the expectation, take the integral over <span class="math inline">\(\xi\)</span> first and then <span class="math inline">\(w\)</span>. <span class="math inline">\(w,\xi\)</span> are Gaussians, so we can evaluate the expectation <span class="math display">\[ \E[\E[w\cdot r(wh+\xi)|w]] = \fc{h}2+\E[G(w)]\]</span> for some calculable error <span class="math inline">\(G\)</span>. Estimate <span class="math inline">\(G\)</span> with its Taylor expansion (of degree 4). Now calculate <span class="math inline">\(\E[G(w)]\)</span> by estimating it for values below and above a cutoff. Using the lemma on the terms and noting <span class="math inline">\(\E\ve{n_j}_0=\rh n\)</span>, and the normalizing constant <span class="math inline">\(\al=\fc{2}{\rh n}\)</span>, we have <span class="math display">\[ \E[\wh h_i|h] = h_i \pm \wt O\prc{k^{\fc 32}}.\]</span></li>
+<li>Show that <span class="math inline">\(\wh h_i|h_i\)</span> concentrates with high probability. The <span class="math inline">\(Z_j\)</span> are independent so we can use a version of Matrix Bernstein. Technically it seems we have to use a version for subexponential random variables, in terms of Orlicz norms, and check that <span class="math inline">\(Z_j\)</span> hve small norm in expectation. See Theorem D1.</li>
+</ul></li>
+</ol>
+<!--Write
+\begin{align}
+x_j &= r(W_{ji} h_i + \ub{\sum_{l=1}^m W_{jl} h_l}{=:\eta_j}) (j\in T),\\
+h_i &= \sum_{j=1}^n W_{ji}x_j
+\end{align}
+where $T$ is the set of non-zeroed out coordinates. We have $h_i = $. 
+We want to show this is close to $h_j$ with high probability. 
+-->
+<h3 id="reversibility-for-2-layers">Reversibility for 2+ layers</h3>
+<p><strong>Theorem </strong>: Similar theorems hold for 2 and 3 layers, in a weaker sense.</p>
+<p>(I haven’t gone through this.)</p>
+<h2 id="experiments">Experiments</h2>
+<p>The theory gives a way to improve training. Take a labeled data point <span class="math inline">\(x\)</span>, use the current feedforward net to compute the label <span class="math inline">\(h\)</span>, and use the <strong>shadow distribution</strong> <span class="math inline">\(p(x|h)\)</span> to create a synthetic data point <span class="math inline">\(\wt x\)</span>, and use <span class="math inline">\((\wt x,z)\)</span> as a training pair.</p>
+<h2 id="questions">Questions</h2>
+<ul>
+<li>How realistic is the sparsity assumption? How realistic is the model?</li>
+<li>Can we use Boltzmann machines as the model instead?</li>
+<li>What complications come up for 2+ layers? Is there a proof for any constant number of layers without loss?</li>
+</ul>
+<!---
+Show that feedforward deep nets compute z|x in this model. (You can define this by
+MLE, MAP, etc.)
+-->
+<section class="footnotes">
+<hr />
+<ol>
+<li id="fn1"><p>Because we use properties such as eigenvalue concentration, this suggests that the theorem will still hold for “random-like” matrices, i.e., matrices having these properties.<a href="#fnref1">↩</a></p></li>
+<li id="fn2"><p>Dropout encourages all of the nodes to learn useful features, because the neural net will essentially rely on a subset of them to make a prediction. (Think of nodes as taking a “majority vote” over inputs; dropout makes sure this still works even if you only take a subset.)<a href="#fnref2">↩</a></p></li>
+<li id="fn3"><p>We use the notation <span class="math inline">\((P)=\begin{cases} 1,&amp;P\text{ true}\\ 0,&amp;P\text{ false}. \end{cases}\)</span><a href="#fnref3">↩</a></p></li>
+</ol>
+</section>
+
+  </div>
+
+    
+
+    <!-- Extension : Sharing buttons @ www.sharethis.com -->
+    <span class='st_facebook_large' displayText='Facebook'></span>
+    <span class='st_twitter_large' displayText='Tweet'></span>
+    <span class='st_googleplus_large' displayText='Google +'></span>
+    <span class='st_reddit_large' displayText='Reddit'></span>
+    <span class='st__large' displayText=''></span>
+
+    <div id="disqus_thread"></div>
+    
+
+
+  
+    <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+  </div>
+  
+</div>
+]]></summary>
+</entry>
+<entry>
+    <title>Interests</title>
+    <link href="http://holdenlee.github.io/notebook/posts/tcs/machine_learning/interests.html" />
+    <id>http://holdenlee.github.io/notebook/posts/tcs/machine_learning/interests.html</id>
+    <published>2016-03-13T00:00:00Z</published>
+    <updated>2016-03-13T00:00:00Z</updated>
+    <summary type="html"><![CDATA[
+<div class="container">
+  <div id="content">
+    <div class="page header">
+      <h1>Interests</h1>
+    </div>
+    <div class="info">
+      
+       
+        <p>Posted: 2016-03-13 
+          , Modified: 2016-03-13 
+	</p>
+      
+       <p>Tags: <a href="/tags/none.html">none</a></p> 
+    </div>
+    
+  </div>
+  <!--/div-->
+
+  <div class="toc"> <ul>
+ <li><a href="#standard-topics">“Standard” topics</a><ul>
+ <li><a href="#links">Links</a></li>
+ </ul></li>
+ <li><a href="#other-topics">Other topics</a></li>
+ <li><a href="#sanjeev-aroras-group">Sanjeev Arora’s group</a></li>
+ </ul> </div>
+
+  <div class="blog-main">
+    <h2 id="standard-topics">“Standard” topics</h2>
+<ol type="1">
+<li>How can we give theoretical guarantees for machine learning? <a href="http://unsupervised.cs.princeton.edu/index.html">Sanjeev Arora’s page</a>.
+<ul>
+<li>Model the input distribution (e.g. sparsity).</li>
+<li>Explain why standard approaches (e.g. neural nets) work (e.g., with respect to the input distribution). <a href="neural_nets/nn_modeling.html">Neural net modeling</a></li>
+<li>Use the theoretical understanding to obtain better algorithms.</li>
+</ul></li>
+<li>Apply math (analysis, geometry, probability) to machine learning problems.
+<ul>
+<li>For example, understand threshold phenomenon in community detection and other graph problems.</li>
+<li>Many problems in convex optimization can be understood in terms of choosing a right kernel, doing random walks, convex geometry, simulated annealing (cf. statistical physics), etc. “Manifold learning,” etc.</li>
+<li>Understand the “random” case of objects like graphs and neural nets and analyze using ideas from statistical physics, random matrix theory, etc.</li>
+<li>Questions in data science can involve topology, differential geometry, etc.</li>
+</ul></li>
+</ol>
+<h3 id="links">Links</h3>
+<ul>
+<li><a href="http://www.cs.princeton.edu/~ehazan/">Elad Hazan</a></li>
+<li><a href="http://www.scrible.com/contentview/page/64G21C041IKS82NH20O741000I60MGAV:206493171/index.html?utm_source=tb_permalink&amp;utm_medium=permalink&amp;utm_campaign=tb_buttons&amp;_sti=2847545">“Deep stuff about deep learning”</a></li>
+</ul>
+<h2 id="other-topics">Other topics</h2>
+<ol type="1">
+<li>How can we obtain theoretical guarantees for behavior of an AI (e.g. on the level of logic)? See <a href="http://cstheory.stackexchange.com/questions/32445/program-reasoning-about-own-source-code">my question</a>. Formulate the question of AI control mathematically and prove theorems. <a href="https://medium.com/ai-control">Paul Christiano</a>.</li>
+<li>How can we combine ML/data and logical approaches in domains that require modeling with logic, ex. automated theorem proving, NLP (ex. combine CFG-based approaches with neural net approaches), reasoning about series of events with causality, etc.? What are the structure of these problems that allow tractable inference (ex. sentences in natural language are “mostly unambiguous” if you understand them semantically, unlike worst-case).</li>
+<li>Build modular AI systems. Ex. how to make AlphaGo something that anyone can implement a baby version of?</li>
+<li>Explore creativity. Ex. make a program that writes poetry or stories, or generates maps for a RPG. cf. Neural net dreams. cf. Hofstadter’s FARG.</li>
+<li>How do humans reason? What are the learning problems that humans face, and how are our neural algorithms optimized or not for those problems? How does “bounded computation” come into play? cf. Jacob Steinhardt. Ref: Rationally Speaking #154, Tom Griffiths.</li>
+</ol>
+<h2 id="sanjeev-aroras-group">Sanjeev Arora’s group</h2>
+<ul>
+<li><a href="http://www.cs.princeton.edu/~yingyul/">Yingyu Liang</a></li>
+<li><a href="http://www.cs.princeton.edu/~tengyu/">Tengyu Ma</a></li>
+<li><a href="http://www.cs.princeton.edu/~risteski/">Andrej Risteski</a></li>
+</ul>
+<p>Summaries/thoughts on the papers.</p>
+<!---
+Composite of these smaller questions
+-->
+
+  </div>
+
+    
+
+    <!-- Extension : Sharing buttons @ www.sharethis.com -->
+    <span class='st_facebook_large' displayText='Facebook'></span>
+    <span class='st_twitter_large' displayText='Tweet'></span>
+    <span class='st_googleplus_large' displayText='Google +'></span>
+    <span class='st_reddit_large' displayText='Reddit'></span>
+    <span class='st__large' displayText=''></span>
+
+    <div id="disqus_thread"></div>
+    
+
+
+  
+    <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+  </div>
+  
+</div>
+]]></summary>
+</entry>
+<entry>
+    <title>Matrix concentration</title>
+    <link href="http://holdenlee.github.io/notebook/posts/math/probability/random_matrices/concentration.html" />
+    <id>http://holdenlee.github.io/notebook/posts/math/probability/random_matrices/concentration.html</id>
+    <published>2016-03-13T00:00:00Z</published>
+    <updated>2016-03-13T00:00:00Z</updated>
+    <summary type="html"><![CDATA[
+<div class="container">
+  <div id="content">
+    <div class="page header">
+      <h1>Matrix concentration</h1>
+    </div>
+    <div class="info">
+      
+       
+        <p>Posted: 2016-03-13 
+          , Modified: 2016-03-13 
+	</p>
+      
+       <p>Tags: <a href="/tags/random%20matrix.html">random matrix</a></p> 
+    </div>
+    
+  </div>
+  <!--/div-->
+
+  
+
+  <div class="blog-main">
+    <p>See <a href="https://en.wikipedia.org/wiki/Matrix_Chernoff_bound">wikipedia</a>.</p>
+<p><strong>Theorem (Matrix Bernstein)</strong>: Let <span class="math inline">\(\{X_k\}_{k=1}^n\)</span> be a sequence of independent random <span class="math inline">\(d\times d\)</span> matrices with <span class="math display">\[ \E X_k = 0, \quad \la_{\max}(X_k)\le R\text{ a.s.}\]</span> Then for all <span class="math inline">\(t\ge 0\)</span>, <span class="math display">\[ \Pj \ba{\la_{\max}\pa{\sumo kn X_k}} \le de^{-\fc{t^2}{2\si^2+\fc 23 Rt}}\]</span> where <span class="math inline">\(\si^2 = \ve{\sumo kn \E(X_k^2)}\)</span>.</p>
+<p>(I don’t understand what a.s. means here. The second inequality is for a finite sum—so we need to quantify the probability that <span class="math inline">\(\la_{\max}(X_i)&gt;R\)</span>. a.s. means with probability 1 so we have to truncate the probability distribution of the <span class="math inline">\(X_i\)</span>? But we can’t do this when there are many <span class="math inline">\(X_i\)</span>.)</p>
+
+  </div>
+
+    
+
+    <!-- Extension : Sharing buttons @ www.sharethis.com -->
+    <span class='st_facebook_large' displayText='Facebook'></span>
+    <span class='st_twitter_large' displayText='Tweet'></span>
+    <span class='st_googleplus_large' displayText='Google +'></span>
+    <span class='st_reddit_large' displayText='Reddit'></span>
+    <span class='st__large' displayText=''></span>
+
+    <div id="disqus_thread"></div>
+    
+
+
+  
+    <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+  </div>
+  
+</div>
+]]></summary>
+</entry>
+<entry>
     <title>Spectral Bounds for Stochastic Diffusion Model in Networks</title>
     <link href="http://holdenlee.github.io/notebook/posts/tcs/networks/pacm-3-8-16.html" />
     <id>http://holdenlee.github.io/notebook/posts/tcs/networks/pacm-3-8-16.html</id>
@@ -336,8 +751,8 @@ Y&amp;= q \si(W_H^T\si(\cdots (W_1^TX)\cdots))\\
 </entry>
 <entry>
     <title>Analysis of neural networks</title>
-    <link href="http://holdenlee.github.io/notebook/posts/tcs/machine_learning/neural_nets/analysis.html" />
-    <id>http://holdenlee.github.io/notebook/posts/tcs/machine_learning/neural_nets/analysis.html</id>
+    <link href="http://holdenlee.github.io/notebook/posts/tcs/machine_learning/neural_nets/nn_modeling.html" />
+    <id>http://holdenlee.github.io/notebook/posts/tcs/machine_learning/neural_nets/nn_modeling.html</id>
     <published>2016-03-05T00:00:00Z</published>
     <updated>2016-03-05T00:00:00Z</updated>
     <summary type="html"><![CDATA[
@@ -362,7 +777,16 @@ Y&amp;= q \si(W_H^T\si(\cdots (W_1^TX)\cdots))\\
   
 
   <div class="blog-main">
-    <h2 id="research-brainstorm">Research brainstorm</h2>
+    <h2 id="overarching-questions">Overarching questions</h2>
+<ul>
+<li>Why do (deep) neural nets work? What provable guarantees can we obtain from them? How is the distribution of natural images, etc., conducive to learning?
+<ul>
+<li>What are the limitations of neural nets and how to overcome them?</li>
+</ul></li>
+<li>How can we leverage this distribution (ex. symmetry) to come up with better algorithms?</li>
+<li>How can we combing neural nets with logical approaches (cf. DeepMind’s alphago combines NN with Monte Carlo tree search)? (Ex. grammar, CFGs, programming language parsing) How to model logical certainty within a neural net? How to extract an algorithm from a neural net? In what sense is a neural net “following an algorithm”?</li>
+</ul>
+<h2 id="research-brainstorm">Research brainstorm</h2>
 <ul>
 <li>Complexity theorety point of view: What can be calculated by depth <span class="math inline">\(n\)</span> threshold circuits? Each gate is a function <span class="math inline">\(\sgn(\sum \al_ix_i)\)</span>.</li>
 <li>It doesn’t make sense to assume the ground truth is a neural net. How can we model the ground truth?
@@ -383,6 +807,8 @@ Y&amp;= q \si(W_H^T\si(\cdots (W_1^TX)\cdots))\\
 <li>the distribution of local minima follows laws from statistical physics. Getting to global optima can actually hurt generalization.</li>
 </ul></li>
 </ul>
+<h2 id="previous-work">Previous work</h2>
+<p>See <a href="http://www.scrible.com/contentview/page/64G21C041IKS82NH20O741000I60MGAV:206493171/index.html?utm_source=tb_permalink&amp;utm_medium=permalink&amp;utm_campaign=tb_buttons&amp;_sti=2847545">Bubeck’s post</a> for a good list.</p>
 <h2 id="people-to-talk-to">People to talk to</h2>
 <ul>
 <li>ML: Tengyu, Elad, Arora</li>
@@ -390,405 +816,6 @@ Y&amp;= q \si(W_H^T\si(\cdots (W_1^TX)\cdots))\\
 <li>Aizenmann, Abbe: intuition for Ising model over <span class="math inline">\(B^n\)</span>, or other models that make sense (ex. 3SAT).</li>
 <li>Fefferman, analysis/geometry students: approximation theory</li>
 </ul>
-
-  </div>
-
-    
-
-    <!-- Extension : Sharing buttons @ www.sharethis.com -->
-    <span class='st_facebook_large' displayText='Facebook'></span>
-    <span class='st_twitter_large' displayText='Tweet'></span>
-    <span class='st_googleplus_large' displayText='Google +'></span>
-    <span class='st_reddit_large' displayText='Reddit'></span>
-    <span class='st__large' displayText=''></span>
-
-    <div id="disqus_thread"></div>
-    
-
-
-  
-    <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
-  </div>
-  
-</div>
-]]></summary>
-</entry>
-<entry>
-    <title>SDP duality</title>
-    <link href="http://holdenlee.github.io/notebook/posts/tcs/machine_learning/optimization/sdp-duality.html" />
-    <id>http://holdenlee.github.io/notebook/posts/tcs/machine_learning/optimization/sdp-duality.html</id>
-    <published>2016-03-04T00:00:00Z</published>
-    <updated>2016-03-04T00:00:00Z</updated>
-    <summary type="html"><![CDATA[
-<div class="container">
-  <div id="content">
-    <div class="page header">
-      <h1>SDP duality</h1>
-    </div>
-    <div class="info">
-      
-       
-        <p>Posted: 2016-03-04 
-          , Modified: 2016-03-04 
-	</p>
-      
-       <p>Tags: <a href="/tags/SDP.html">SDP</a>, <a href="/tags/duality.html">duality</a></p> 
-    </div>
-    
-  </div>
-  <!--/div-->
-
-  
-
-  <div class="blog-main">
-    <p><a href="duality.html">Duality</a></p>
-<h2 id="summary">Summary</h2>
-<p>The following SDP’s are dual: <span class="math display">\[
-\max_{X\succeq 0,\an{A_i,X}=b_i}\an{C,X} \lra \min_{\nu, \sum \nu_iA_i\succeq C} \nu^Tb.
-\]</span> (When are they equal? When there is a strictly feasible point.)</p>
-<h2 id="derivation">Derivation</h2>
-<ol type="1">
-<li>First write as a convex program. Replace the condition <span class="math inline">\(X\succeq 0\)</span> by <span class="math display">\[
- \la_{\min}(X)=\min_{\Tr(A)=1, A\succeq 0}\an{A,X}\ge 0.
- \]</span> (Use (2) in <a href="duality.html">duality</a>.)</li>
-<li>Simplify, using minimax as a key step.
-\begin{align}
- g(\la,\nu) &amp;= \max_X(\an{C,X} + \la \min_{\Tr(A)=1, A\succeq 0}\an{A,X} - \sum \nu_i (\an{A_i,X}-b_i)\\
- &amp;=\max_X\min_{\Tr(A)=1}\an{\ub{C-\sum \nu_iA_i}{Z}+\la A,X} + \nu^Tb\\
- &amp;=\max_X\min_{\Tr(A)=\la}\an{Z + A,X} + \nu^Tb\\
- &amp;= \min_{\Tr(A)=\la}\max_X \an{Z+A,X}\\
- &amp;=\pa{\begin{cases}
- 0,&amp;\Tr(Z)=-\la, Z\preceq 0\\
- \iy,&amp;\text{else.}
- \end{cases}}-\nu^Tb
- \end{align}
-using minimax, then noting the inside <span class="math inline">\(\max\)</span> forces the condition <span class="math inline">\(Z=-A\)</span>.</li>
-<li>Taking <span class="math inline">\(\min\)</span> of this, <span class="math inline">\(Z\preceq 0\)</span> turns into a constraint.</li>
-</ol>
-<p>See <a href="http://www.eecs.berkeley.edu/~wainwrig/ee227a/SDP_Duality.pdf">notes</a>.</p>
-
-  </div>
-
-    
-
-    <!-- Extension : Sharing buttons @ www.sharethis.com -->
-    <span class='st_facebook_large' displayText='Facebook'></span>
-    <span class='st_twitter_large' displayText='Tweet'></span>
-    <span class='st_googleplus_large' displayText='Google +'></span>
-    <span class='st_reddit_large' displayText='Reddit'></span>
-    <span class='st__large' displayText=''></span>
-
-    <div id="disqus_thread"></div>
-    
-
-
-  
-    <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
-  </div>
-  
-</div>
-]]></summary>
-</entry>
-<entry>
-    <title>Duality</title>
-    <link href="http://holdenlee.github.io/notebook/posts/tcs/machine_learning/optimization/duality.html" />
-    <id>http://holdenlee.github.io/notebook/posts/tcs/machine_learning/optimization/duality.html</id>
-    <published>2016-03-04T00:00:00Z</published>
-    <updated>2016-03-04T00:00:00Z</updated>
-    <summary type="html"><![CDATA[
-<div class="container">
-  <div id="content">
-    <div class="page header">
-      <h1>Duality</h1>
-    </div>
-    <div class="info">
-      
-       
-        <p>Posted: 2016-03-04 
-          , Modified: 2016-03-04 
-	</p>
-      
-       <p>Tags: <a href="/tags/duality.html">duality</a></p> 
-    </div>
-    
-  </div>
-  <!--/div-->
-
-  <div class="toc"> <ul>
- <li><a href="#summary">Summary</a><ul>
- <li><a href="#duality">Duality</a></li>
- <li><a href="#kkt-conditions">KKT conditions</a></li>
- <li><a href="#examples">Examples</a><ul>
- <li><a href="#dual-functions">Dual functions</a></li>
- </ul></li>
- </ul></li>
- <li><a href="#proofs-and-intuition">Proofs and intuition</a><ul>
- <li><a href="#weak-duality">Weak duality</a></li>
- <li><a href="#strong-duality">Strong duality</a></li>
- <li><a href="#intuition">Intuition</a></li>
- </ul></li>
- <li><a href="#questions">Questions</a></li>
- </ul> </div>
-
-  <div class="blog-main">
-    <h2 id="summary">Summary</h2>
-<h3 id="duality">Duality</h3>
-These problems are dual.
-\begin{align}
-\min_{f_i\le 0, Ax=b} f &amp; \lra \max_{\la \ge 0,\nu} \ub{\min_x \ub{f+\la^T\vec{f} + \nu^T (Ax-b)}{\cal L(x,\la,\nu)}}{g(\la,\nu)}\\
-\max_{f_i\ge 0, Ax=b} f &amp; \lra \min_{\la \ge 0,\nu} \ub{\max_x \ub{f+\la^T\vec{f} - \nu^T (Ax-b)}{\cal L(x,\la,\nu)}}{g(\la,\nu)}
-\end{align}
-<p>In (1) the <span class="math inline">\(f_i\)</span> are convex; in (2) they are concave. In (1), we have dual<span class="math inline">\(\le\)</span>primal: <span class="math display">\[
-\min_{f_i\le 0, Ax=b} f \ge \max_{\la \ge 0,\nu} \ub{\min_x \ub{f+\la^T\vec{f} + \nu^T (Ax-b)}{\cal L(x,\la,\nu)}}{g(\la,\nu)}
-\]</span> Note: <span class="math inline">\(f^*(y)=\sup y^T - f(x)\)</span> is the conjugate or <strong>Legendre transform</strong>. It is convex, and for convex functions, the double conjugate is the original function.</p>
-<p><strong>Slater’s constraints</strong>: Equality holds if the problem is strictly feasible: there exists <span class="math inline">\(x\)</span> such that <span class="math inline">\(f_i(x)&lt;0, Ax=b\)</span>. Linear inequalities are allowed to be non-strict, <span class="math inline">\(f_i(x)\le 0\)</span>.</p>
-<h3 id="kkt-conditions">KKT conditions</h3>
-<p>The KKT conditions are (here <span class="math inline">\(h=Ax-b\)</span>)</p>
-<ol type="1">
-<li>(derivative 0) <span class="math inline">\(\nb f+\sum \la_i \nb f_i + \nu^TA=0\)</span>.</li>
-<li>(constraints satisfied) <span class="math inline">\(\la \ge 0, f_i\le 0, h_i=0\)</span>.</li>
-<li>(complementary slackness) <span class="math inline">\(\la f_i=0\)</span>.</li>
-</ol>
-<p>Interpretation:</p>
-<ul>
-<li>If <span class="math inline">\(x,\la,\nu\)</span> satisfy the conditions, then <span class="math inline">\(x\)</span> and <span class="math inline">\((\la,\nu)\)</span> are primal and dual optimal and the optimal values are equal.</li>
-<li>if Slater’s condition is satisfied, <span class="math inline">\(x\)</span> is optimal if and only if there exist, <span class="math inline">\(\la,\nu\)</span> that satisfy KKT conditions</li>
-</ul>
-<h3 id="examples">Examples</h3>
-<ol type="1">
-<li>Linear programming (equality when there exists a feasible solution)
-\begin{align}
-\min_{Ax=b,x\ge 0} c^Tx &amp;= \max_{\la\ge 0, A^T\nu\ge -c} -b^T\nu\\
-\min_{Ax\le b} c^Tx &amp;= \max_{\la\ge 0, A^T\nu=-c} -b^T\nu.
-\end{align}</li>
-</ol>
-<h4 id="dual-functions">Dual functions</h4>
-<p>(Check this.)</p>
-<table>
-<thead>
-<tr class="header">
-<th style="text-align: left;">Function</th>
-<th style="text-align: left;">Dual</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td style="text-align: left;"><span class="math inline">\(u\ln u\)</span></td>
-<td style="text-align: left;"><span class="math inline">\(e^{v-1}\)</span></td>
-</tr>
-<tr class="even">
-<td style="text-align: left;"><span class="math inline">\(\ve{x}\)</span></td>
-<td style="text-align: left;"><span class="math inline">\(\begin{cases}0,&amp;\ve{y}_*\le 1\\ \iy,&amp;\text{else}\end{cases}\)</span></td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;"><span class="math inline">\(\ln \det(X^{-1})\)</span></td>
-<td style="text-align: left;"><span class="math inline">\(\ln \det(-Y)^{-1}-n\)</span></td>
-</tr>
-</tbody>
-</table>
-<h2 id="proofs-and-intuition">Proofs and intuition</h2>
-<h3 id="weak-duality">Weak duality</h3>
-<p>Given a dual feasible <span class="math inline">\(\la,\nu\)</span>, choose <span class="math inline">\(x=x^*\)</span>. Then <span class="math display">\[
-g(\la,\nu) = f(x^*) + \sum \la_i \ub{f_i(x^*)}_{\le 0} + \nu^T \ub{(Ax^*-b)}{=0}\le f(x^*).
-\]</span></p>
-<h3 id="strong-duality">Strong duality</h3>
-<h3 id="intuition">Intuition</h3>
-<p>Think of the dual as (1) relaxing the strict conditions that <span class="math inline">\(f_i\le 0\)</span> and (2) being a game. If you fail to meet the constraint <span class="math inline">\(f_i\le 0\)</span>, you are penalized by cost <span class="math inline">\(\la_if_i\)</span> (and you gain money from constraints that are met). The adversary first sets “shadow prices” <span class="math inline">\(\la_i,\nu_i\)</span>, the cost for violating the constraints, and then you choose <span class="math inline">\(x^*\)</span>. Duality says you can’t do better in this game. (You can do just as well by choosing your original <span class="math inline">\(x^*\)</span>; this is weak duality.</p>
-Let <span class="math inline">\(p^*(u,v)\)</span> be the optima under constraints <span class="math inline">\(f_i\le u_i,h_i=v_i\)</span>. The sensitivity to the constraints are given by the dual optima. We have the following (the derivative equations hold if <span class="math inline">\(p^*\)</span> is differentiable.<a href="#fn1" class="footnoteRef" id="fnref1"><sup>1</sup></a>
-\begin{align}
-p^*(u,v) &amp;\ge p^*(0,0)-\la^{*T} u - \nu^{*T} v\\
-\pd{p^*}{v_i} &amp;= -\nu_i\\
-\pd{p^*}{u_i} &amp;= -\la_i.
-\end{align}
-<h2 id="questions">Questions</h2>
-<p>If <span class="math inline">\(x\)</span> is a primal optimal, is there necessarily a <span class="math inline">\((\la,\nu)\)</span> that satisfies the equations? I think if <span class="math inline">\(x\)</span> is primal optimal and <span class="math inline">\((\la,\nu)\)</span> is dual optimal, <span class="math inline">\((x,\la,\nu)\)</span> does not necessarily satisfy. Check this.</p>
-<section class="footnotes">
-<hr />
-<ol>
-<li id="fn1"><p>Otherwise maybe an inequality? Multiple dual optima are possible.<a href="#fnref1">↩</a></p></li>
-</ol>
-</section>
-
-  </div>
-
-    
-
-    <!-- Extension : Sharing buttons @ www.sharethis.com -->
-    <span class='st_facebook_large' displayText='Facebook'></span>
-    <span class='st_twitter_large' displayText='Tweet'></span>
-    <span class='st_googleplus_large' displayText='Google +'></span>
-    <span class='st_reddit_large' displayText='Reddit'></span>
-    <span class='st__large' displayText=''></span>
-
-    <div id="disqus_thread"></div>
-    
-
-
-  
-    <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
-  </div>
-  
-</div>
-]]></summary>
-</entry>
-<entry>
-    <title>Convex optimization</title>
-    <link href="http://holdenlee.github.io/notebook/posts/tcs/machine_learning/optimization/convex_optimization.html" />
-    <id>http://holdenlee.github.io/notebook/posts/tcs/machine_learning/optimization/convex_optimization.html</id>
-    <published>2016-03-04T00:00:00Z</published>
-    <updated>2016-03-04T00:00:00Z</updated>
-    <summary type="html"><![CDATA[
-<div class="container">
-  <div id="content">
-    <div class="page header">
-      <h1>Convex optimization</h1>
-    </div>
-    <div class="info">
-      
-       
-        <p>Posted: 2016-03-04 
-          , Modified: 2016-03-04 
-	</p>
-      
-       <p>Tags: <a href="/tags/convex%20optimization.html">convex optimization</a></p> 
-    </div>
-    
-  </div>
-  <!--/div-->
-
-  <div class="toc"></div>
-
-  <div class="blog-main">
-    <p>Notes:</p>
-<ul>
-<li><a href="duality.html">Duality</a></li>
-<li></li>
-</ul>
-
-  </div>
-
-    
-
-    <!-- Extension : Sharing buttons @ www.sharethis.com -->
-    <span class='st_facebook_large' displayText='Facebook'></span>
-    <span class='st_twitter_large' displayText='Tweet'></span>
-    <span class='st_googleplus_large' displayText='Google +'></span>
-    <span class='st_reddit_large' displayText='Reddit'></span>
-    <span class='st__large' displayText=''></span>
-
-    <div id="disqus_thread"></div>
-    
-
-
-  
-    <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
-  </div>
-  
-</div>
-]]></summary>
-</entry>
-<entry>
-    <title>Gradient descent</title>
-    <link href="http://holdenlee.github.io/notebook/posts/tcs/machine_learning/optimization/GD.html" />
-    <id>http://holdenlee.github.io/notebook/posts/tcs/machine_learning/optimization/GD.html</id>
-    <published>2016-03-04T00:00:00Z</published>
-    <updated>2016-03-04T00:00:00Z</updated>
-    <summary type="html"><![CDATA[
-<div class="container">
-  <div id="content">
-    <div class="page header">
-      <h1>Gradient descent</h1>
-    </div>
-    <div class="info">
-      
-       
-        <p>Posted: 2016-03-04 
-          , Modified: 2016-03-04 
-	</p>
-      
-       <p>Tags: <a href="/tags/gradient.html">gradient</a></p> 
-    </div>
-    
-  </div>
-  <!--/div-->
-
-  
-
-  <div class="blog-main">
-    <p>(See 10/15 notebook for detailed notes.)</p>
-<h2 id="summary">Summary</h2>
-<table style="width:25%;">
-<colgroup>
-<col style="width: 5%" />
-<col style="width: 5%" />
-<col style="width: 5%" />
-<col style="width: 5%" />
-<col style="width: 5%" />
-</colgroup>
-<thead>
-<tr class="header">
-<th style="text-align: left;">Algorithm</th>
-<th style="text-align: left;">General</th>
-<th style="text-align: left;"><span class="math inline">\(\al\)</span>-strongly convex</th>
-<th style="text-align: left;"><span class="math inline">\(\be\)</span>-smooth</th>
-<th style="text-align: left;"><span class="math inline">\(\ga\)</span>-convex</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td style="text-align: left;">Gradient descent</td>
-<td style="text-align: left;"><span class="math inline">\(\rc{\sqrt{T}}\)</span></td>
-<td style="text-align: left;"><span class="math inline">\(\rc{\al T}\)</span></td>
-<td style="text-align: left;"><span class="math inline">\(\fc{\be}T\)</span></td>
-<td style="text-align: left;"><span class="math inline">\(e^{-\ga T}\)</span></td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Accelerated gradient descent</td>
-<td style="text-align: left;"><span class="math inline">\(\fc{d}{T}\)</span></td>
-<td style="text-align: left;"><span class="math inline">\(\rc{\al T^2}\)</span></td>
-<td style="text-align: left;"><span class="math inline">\(\fc{\be}{T^2}\)</span></td>
-<td style="text-align: left;"><span class="math inline">\(e^{-\sqrt{\ga} T}\)</span></td>
-</tr>
-</tbody>
-</table>
-<h3 id="gradient-descent-main-points">Gradient descent main points</h3>
-<ul>
-<li>What is the general framework?
-<ol type="1">
-<li>Pick a descent direction <span class="math inline">\(\De x\)</span>.</li>
-<li>Choose a step size <span class="math inline">\(\tau&gt;0\)</span>: <span class="math display">\[x^{(t+1)} \leftarrow x+\tau \De x.\]</span></li>
-<li>Continue until stop criterion.</li>
-</ol></li>
-<li>What is vanilla (one shot) gradient descent?
-<ul>
-<li>Gradient descent lemma: Suppose <span class="math inline">\(f\)</span> is convex and <span class="math inline">\(L\)</span>-smooth, <span class="math inline">\(\ve{\nb f(x)-\nb f(y)}\le L\ve{x-y}\)</span>.
-\begin{align}
- x':&amp;=x-\rc L \nb f(x)\\
- \implies f(x')&amp;\le f(x) - \rc{2L}\ve{\nb f(x)}^2.
- \end{align}</li>
-<li>There’s no guarantee on smoothness unless we assume <span class="math inline">\(f\)</span> is <span class="math inline">\(l\)</span>-strongly convex, <span class="math inline">\(\ve{\nb f(x)-\nb f(y)}\le l\ve{x-y}\)</span>. Let <span class="math inline">\(\ka=\fc{L}{l}, t = \fc{2}{L+l}\)</span>.<a href="#fn1" class="footnoteRef" id="fnref1"><sup>1</sup></a> Then linear convergence holds:
-\begin{align}
- \ve{x_{k+1}-x^*} \le \pf{\ka-1}{\ka+1} \ve{x_k-x^*}
- \end{align}</li>
-</ul></li>
-<li>What is gradient descent with backtracking?
-<ul>
-<li>Parameters <span class="math inline">\(\al\in (0,0.5)\)</span>, step size, <span class="math inline">\(\be\in (0,1)\)</span> scaling factor.</li>
-<li>Choose <span class="math inline">\(\De x=\nb f(x)\)</span>.</li>
-<li>Choose <span class="math inline">\(\tau\)</span> by backtracking: Set <span class="math inline">\(t=1\)</span>. While <span class="math inline">\(f(x+t\De x)&gt;f(x)+\al \nb f^T\De x\)</span>, <span class="math display">\[\De x\leftarrow \al \De x.\]</span></li>
-<li>Lemma: suppose <span class="math inline">\(mI \preceq \nb^2 f \preceq MI\)</span>. Then <span class="math display">\[\fc{f(x_t)-f(p^*)}{f(x_{t-1})-f(p^*)}\le 1-\min\bc{\fc{2\al \be m}{M}, 2m\al}.\]</span></li>
-</ul></li>
-<li></li>
-</ul>
-<h2 id="proofs">Proofs</h2>
-<p>Gradient descent lemma: Let <span class="math inline">\(D=\nb f(x)\)</span>. Move to origin. Upper bound is <span class="math display">\[f(x) \le \fc{L}2 x^2 + Dx.\]</span> The minimum is at <span class="math inline">\(-\fc{D}{L}\)</span> and is <span class="math inline">\(\fc{-b^2}{4a} = -\fc{D^2}{2L}.\)</span></p>
-<p>For strongly convex: Choose <span class="math inline">\(s\)</span> to maximize the minimum progress in terms of <span class="math inline">\(x\)</span>. <span class="math display">\[\fc{s-\rc{l}}{\rc{l}} = \fc{\rc L-s}{\rc L} \implies s = \fc{2}{L+l}.\]</span></p>
-<section class="footnotes">
-<hr />
-<ol>
-<li id="fn1"><p>Think of this as the harmonic average of how much to move to get to the minima of the upper and lower-bounding quadratics.<a href="#fnref1">↩</a></p></li>
-</ol>
-</section>
 
   </div>
 
