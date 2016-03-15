@@ -8,8 +8,223 @@
         <name>Holden Lee</name>
         <email>oldheneel@gmail.com</email>
     </author>
-    <updated>2016-03-14T00:00:00Z</updated>
+    <updated>2016-03-15T00:00:00Z</updated>
     <entry>
+    <title>[ALLMR16] RAND-WALK: A latent variable model approach to word embeddings</title>
+    <link href="http://holdenlee.github.io/notebook/posts/tcs/machine_learning/nlp/randwalk.html" />
+    <id>http://holdenlee.github.io/notebook/posts/tcs/machine_learning/nlp/randwalk.html</id>
+    <published>2016-03-15T00:00:00Z</published>
+    <updated>2016-03-15T00:00:00Z</updated>
+    <summary type="html"><![CDATA[
+<div class="container">
+  <div id="content">
+    <div class="page header">
+      <h1>[ALLMR16] RAND-WALK: A latent variable model approach to word embeddings</h1>
+    </div>
+    <div class="info">
+      
+       
+        <p>Posted: 2016-03-15 
+          , Modified: 2016-03-15 
+	</p>
+      
+       <p>Tags: <a href="/tags/nlp.html">nlp</a>, <a href="/tags/word%20embeddings.html">word embeddings</a></p> 
+    </div>
+    
+  </div>
+  <!--/div-->
+
+  <div class="toc"> <ul>
+ <li><a href="#task">Task</a></li>
+ <li><a href="#previous-work-observed-phenomena">Previous work, observed phenomena</a><ul>
+ <li><a href="#mysteries">Mysteries</a></li>
+ </ul></li>
+ <li><a href="#model">Model</a></li>
+ <li><a href="#explanation">Explanation</a></li>
+ <li><a href="#algorithm">Algorithm</a></li>
+ <li><a href="#followup">Followup</a></li>
+ </ul> </div>
+
+  <div class="blog-main">
+    <h2 id="task">Task</h2>
+<p>Given a corpus (a long sequence of words, e.g. the text of Wikipedia) to learn from, answer analogy questions such as ?:queen::man:woman.</p>
+<h2 id="previous-work-observed-phenomena">Previous work, observed phenomena</h2>
+<p>The usual approach is to learn “word vectors.”</p>
+<p>Define a context of a word <span class="math inline">\(w\)</span> in the corpus to be the two words (say) on either side of <span class="math inline">\(w\)</span>. (Thus, for a context <span class="math inline">\(\chi=(w_{-2},w_{-1},w_1,w_2)\)</span>, <span class="math inline">\(\Pj(\chi|w)\)</span> means the probability of observing the words of <span class="math inline">\(\chi\)</span> in a window of length 2, given that the middle word is <span class="math inline">\(w\)</span>.) (Mikolov)</p>
+<p>Pennington et al. and Levy and Goldberg posit the following approach.</p>
+<ul>
+<li>Model: If <span class="math inline">\(a:b::c:d\)</span> is an analogy, then <span class="math display">\[ \fc{\Pj(\chi|a)}{\Pj(\chi|b)} \approx \fc{\Pj(\chi|a)}{\Pj(\chi|b)}.\]</span></li>
+<li>Thus, the solution to the analogy <span class="math inline">\(?:b::c:d\)</span>$ is <span class="math display">\[ \amin_w \sum_\chi \pa{ \ln \pf{\Pj(\chi|w)}{\Pj(\chi|b)} - \ln \pf{\Pj(\chi|c)}{\Pj(\chi|d)} }^2.\]</span></li>
+<li>Define probability-mutual-information <span class="math display">\[ PMI(w,\chi) = \ln \pf{\Pj(w,\chi)}{\Pj(w)\Pj(\chi)} = \ln \pf{\Pj(\chi|w)}{\Pj(\chi)}.\]</span> Let <span class="math inline">\(C\)</span> be the set of possible contexts. For a word <span class="math inline">\(w\)</span>, let <span class="math inline">\(v_w\)</span> be the vector indexed by contexts <span class="math inline">\(\chi \in C\)</span>, <!--containing the empirical estimate of PMI from the corpus,
+    $$ v_w(\chi)= \wh{PMI}(w,\chi) = \ln \pf{\wh \Pj(w,\chi)}{\wh \Pj(w)\wh \Pj(\chi)} = \ln \pf{\wh \Pj(\chi|w)}{\wh \Pj(\chi)}.$$--> <span class="math display">\[ v_w(\chi)= {PMI}(w,\chi) = \ln \pf{ \Pj(w,\chi)}{\Pj(w) \Pj(\chi)} = \ln \pf{ \Pj(\chi|w)}{\Pj(\chi)}.\]</span> Under this embedding, the summand equals <span class="math inline">\(v_a-v_b-v_c+v_d\)</span>. To find <span class="math inline">\(a\)</span>, solve <span class="math display">\[ \amin_a \ve{v_a-v_b-v_c+v_d}^2.\]</span></li>
+<li>Algorithm: GloVe (global vector) method (Pennington) Let <span class="math inline">\(X_{w,w'}\)</span> be the co-occurrence for words <span class="math inline">\(w,w'\)</span>. Find low-dimensional <span class="math inline">\(\wt v_w, \wt v_{w'}, \wt b_w, \wt b_{w'}\)</span> to minimize <span class="math display">\[ \sum_{w,w'} f(X_{w,w'}) (\an{\wt v_w, \wt v_{w'}} - \wt b_w- \wt b_{w'} - \ln X_{w,w'})^2\]</span> for some function <span class="math inline">\(f\)</span>. They choose <span class="math inline">\(f(x) = \min\bc{\pf{x}{x_{\max}}^{.75}, 1}, x_{\max}=100\)</span> from experiments.</li>
+</ul>
+<p>(How to optimize this?)</p>
+<h3 id="mysteries">Mysteries</h3>
+<ol type="1">
+<li>There is a disconnect between the definition of <span class="math inline">\(v_w\)</span> and the estimate <span class="math inline">\(\wt v_w\)</span>. Namely, the <span class="math inline">\(v_w\)</span> are vectors giving the PMI with all <em>contexts</em> while <span class="math inline">\(\wt v_w\)</span> are the vectors such that <span class="math inline">\(\an{\wt v_w,\wt v_{w'}}\)</span> give the <em>word-word co-occurences</em>. Why do the learned <span class="math inline">\(\wt v_w\)</span> help in solving analogies? Why is the optimization problem in the algorithm a good proxy?</li>
+<li>Why is this method stable to noise? <!--Why would we suspect noise is bad?--></li>
+</ol>
+<h2 id="model">Model</h2>
+<p>Let the dimension of the underlying space be <span class="math inline">\(d\)</span>.</p>
+<ul>
+<li>There are <span class="math inline">\(n\)</span> words <span class="math inline">\(w\)</span> in the dictionary <span class="math inline">\(W\)</span>, and they are associated with vectors <span class="math inline">\(v_w\in \R^d\)</span>.
+<ul>
+<li>The vectors <span class="math inline">\(v_w\)</span> are iid generated by <span class="math inline">\(v=s\cdot \wh v\)</span> where <!--$\wh v$ is uniform on the sphere and -->
+<ul>
+<li><span class="math inline">\(\wh v\sim N(0,I_d)\)</span>,</li>
+<li><span class="math inline">\(s\)</span> is a random scalar with <span class="math inline">\(\si^2\le d\)</span> and <span class="math inline">\(|s|\le \ka \sqrt d\)</span> for some constant <span class="math inline">\(\ka\)</span>.<a href="#fn1" class="footnoteRef" id="fnref1"><sup>1</sup></a></li>
+</ul></li>
+</ul></li>
+<li>At each time <span class="math inline">\(t\in \N\)</span>, there is a context vector <span class="math inline">\(c_t\in \R^d\)</span>.
+<ul>
+<li>The vectors <span class="math inline">\(c_t\)</span> follow a random walk, satisfying the following:
+<ul>
+<li>(Uniform stationary distribution) The stationary distribution is <span class="math inline">\([-\rc{\sqrt d},\rc{\sqrt d}]^d\)</span>.</li>
+<li>(Small drift) The drift in the context vector is <span class="math inline">\(\ve{c_{t+1}-c_t}_1\le \rc{\ln n}\)</span>. (There are more complicated general conditions under which the theorems work; take this for simplicity.) <!--  * (small drift) $\ve{\De_t}_1\le \rc{\ln n}$.
+*--></li>
+</ul></li>
+</ul></li>
+<li>At each time <span class="math inline">\(t\)</span>, word <span class="math inline">\(w\)</span> is emitted with probability
+\begin{align}
+\Pj[w|c_t] &amp;= \rc{Z_{c_t}} \exp(\an{v_w,c_t})\\
+\text{where} Z_{c}:&amp;= \sum_w \exp(\an{v_w,c}).
+\end{align}</li>
+</ul>
+<h2 id="explanation">Explanation</h2>
+<p>Let <span class="math inline">\(\Pj(w,w')\)</span> be the probability that <span class="math inline">\(w,w'\)</span> appear consecutively at time <span class="math inline">\(t,t+1\)</span> when <span class="math inline">\(c_t\sim U_{[-\rc{\sqrt d},\rc{\sqrt d}]^d}\)</span> is drawn from the stationary distribution. Then the following hold.</p>
+<strong>Theorem 1</strong>: With high probability over choice of <span class="math inline">\(v_w\)</span>’s,
+\begin{align}
+\forall &amp;w,w', &amp;
+\ln \Pj (w,w')&amp;\approx \rc{2d}|v_w+v_w'|^2 - 2\lg Z - o(1)\\
+\forall &amp; w,&amp;
+\lg \Pj(w) &amp;\approx \rc{2d} |v_w|^2 - \lg Z -o(1)\\
+\therefore &amp;&amp; \lg \fc{\Pj[w,w']}{\Pj[w]\Pj[w']} &amp;\approx \rc d \an{v_w,v_w'}\pm o(1).
+\end{align}
+<p>This is exactly the PMI, so the theorem “explains” Mystery 1.</p>
+<p><em>Proof idea</em>:</p>
+<p>Let <span class="math inline">\(c\)</span> be the context vector at time <span class="math inline">\(t\)</span> and <span class="math inline">\(c'\)</span> be the vector at time <span class="math inline">\(t+1\)</span>.</p>
+<ol type="1">
+<li>The main difficulty is that <span class="math inline">\(Z_c\)</span> is intractable to compute. However, because the <span class="math inline">\(v_w\)</span> are random (or isotropic), so <span class="math inline">\(Z_c\)</span> concentrates around its mean, and we can approximate it by a constant <span class="math inline">\(Z\)</span> (Theorem 2 in the paper).</li>
+<li>Because drift is small, we can make the approximation <span class="math inline">\(c'\approx c\)</span>. Then
+\begin{align}
+\Pj(w,w') &amp;= \int_{c,c'} \Pj(w|c)\Pj(w'|c_{t+1})\Pj(c,c')\,dc\,dc'\\
+&amp;\sim \rc{Z^2} \EE_{c} \exp(\an{v_w+v_w',c})\\
+&amp;\sim \rc{Z^2}\exp\pf{|v_w+v_{w'}|^2}{2}
+\end{align}
+using some calculus in the last step (exercise). <!--check this--></li>
+</ol>
+<p>The calculation for <span class="math inline">\(\Pj(w)\)</span> is even simpler.</p>
+<h2 id="algorithm">Algorithm</h2>
+<p>What algorithm does the theory suggest to estimate the <span class="math inline">\(v_w\)</span>’s?</p>
+<p>It suggests minimizing an objective as in GloVe. The weights <span class="math inline">\(f_{w,w'}\)</span> re selected to compensate noise in <span class="math inline">\(X_{w,w'}\)</span>; when <span class="math inline">\(X_{w,w'}\)</span> is on the average larger, it has lower variance, and the weight <span class="math inline">\(f_{w,w'}\)</span> is larger.</p>
+<p>(What improvement does it suggest?)</p>
+<h2 id="followup">Followup</h2>
+<ul>
+<li>Polysemy</li>
+<li>Weighted SVD (Yuanzhi Li)</li>
+</ul>
+<section class="footnotes">
+<hr />
+<ol>
+<li id="fn1"><p>The results in the paper are stated as “with high probability over the choice of <span class="math inline">\(v_w\)</span>”. This can probably be relaxed to “For all <span class="math inline">\(v_w\)</span> that are isotropic”, where <strong>isotropic</strong> means <span class="math inline">\(\EE_w [v_wv_w^T]\)</span> has all eigenvalues in <span class="math inline">\([1,1+\de]\)</span>.<a href="#fnref1">↩</a></p></li>
+</ol>
+</section>
+
+  </div>
+
+    
+
+    <!-- Extension : Sharing buttons @ www.sharethis.com -->
+    <span class='st_facebook_large' displayText='Facebook'></span>
+    <span class='st_twitter_large' displayText='Tweet'></span>
+    <span class='st_googleplus_large' displayText='Google +'></span>
+    <span class='st_reddit_large' displayText='Reddit'></span>
+    <span class='st__large' displayText=''></span>
+
+    <div id="disqus_thread"></div>
+    
+
+
+  
+    <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+  </div>
+  
+</div>
+]]></summary>
+</entry>
+<entry>
+    <title>Thoughts on LDC's</title>
+    <link href="http://holdenlee.github.io/notebook/posts/tcs/coding/3-14-16.html" />
+    <id>http://holdenlee.github.io/notebook/posts/tcs/coding/3-14-16.html</id>
+    <published>2016-03-14T00:00:00Z</published>
+    <updated>2016-03-14T00:00:00Z</updated>
+    <summary type="html"><![CDATA[
+<div class="container">
+  <div id="content">
+    <div class="page header">
+      <h1>Thoughts on LDC's</h1>
+    </div>
+    <div class="info">
+      
+       
+        <p>Posted: 2016-03-14 
+          , Modified: 2016-03-14 
+	</p>
+      
+       <p>Tags: <a href="/tags/LDC.html">LDC</a></p> 
+    </div>
+    
+  </div>
+  <!--/div-->
+
+  <div class="toc"> <ul>
+ <li><a href="#section">3-14-16</a></li>
+ </ul> </div>
+
+  <div class="blog-main">
+    <h2 id="section">3-14-16</h2>
+<ul>
+<li>Why the lower bound for 3-query LCC’s doesn’t extend to LDC’s.</li>
+<li>We aren’t using anything about the form of <span class="math inline">\(\phi\)</span> other than small dual Gowers uniformity…</li>
+<li>An interpretation of the AP differences <span class="math inline">\(y\)</span>: it fails to be an LDC if you can’t arbitrarily specify the (relative) density of AP’s in those directions.</li>
+<li>A MVC is linear on <span class="math inline">\(\F_p\)</span>, not <span class="math inline">\(\Z/m\)</span>. The coefficients and evaluations are in <span class="math inline">\(\F_p\)</span> even though the vectors aren’t. (Could we do better with codes on <span class="math inline">\(\Z/m\)</span>?) A linear code on <span class="math inline">\(\F_p\)</span> can be converted to a code on <span class="math inline">\(\F_2\)</span> but it loses linearity.
+<ul>
+<li>However, a MVC is NOT captured by the “query at an AP formalism.” Although the codeword index space is <span class="math inline">\(\F_p^N\)</span>, we’re not using that group structure for querying. Rather, we’re using the group structure of <span class="math inline">\(\F_p^{\times N}\)</span>. So it could still be possible to prove a lower bound querying AP’s.</li>
+<li>That is false, it IS captured. The group can be different! There is a group, and there is a field. Two different things!</li>
+</ul></li>
+<li>Q4.14 in “APs and LDCs”: When <span class="math inline">\(N\)</span> grows large, there doesn’t even exist a degree 1 polynomial for which this holds. This doesn’t seem promising; the only interesting case is for <span class="math inline">\(n\)</span> constant or small.</li>
+<li>Variations on the poly method:
+<ul>
+<li>How to use it for small finite fields? (In Kakeya, <span class="math inline">\(p\to \iy\)</span>.)</li>
+<li>How about considering polynomials with multiple outputs, ex. <span class="math inline">\(\F_p^n\to \F_p^{n-2}\)</span> to capture vanishing on a plane?</li>
+</ul></li>
+<li>To study: Guth’s course. Does the idea for the plane/regulus theorem help in thinking about <span class="math inline">\(\de\)</span>-SG configurations and LDC’s?</li>
+</ul>
+
+  </div>
+
+    
+
+    <!-- Extension : Sharing buttons @ www.sharethis.com -->
+    <span class='st_facebook_large' displayText='Facebook'></span>
+    <span class='st_twitter_large' displayText='Tweet'></span>
+    <span class='st_googleplus_large' displayText='Google +'></span>
+    <span class='st_reddit_large' displayText='Reddit'></span>
+    <span class='st__large' displayText=''></span>
+
+    <div id="disqus_thread"></div>
+    
+
+
+  
+    <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+  </div>
+  
+</div>
+]]></summary>
+</entry>
+<entry>
     <title>Type and Cotype</title>
     <link href="http://holdenlee.github.io/notebook/posts/math/analysis/metric/type.html" />
     <id>http://holdenlee.github.io/notebook/posts/math/analysis/metric/type.html</id>
@@ -665,133 +880,6 @@ Y&amp;= q \si(W_H^T\si(\cdots (W_1^TX)\cdots))\\
 <li></li>
 <li>Gradient descent guarantee. <span class="math inline">\(f(x_T)-f(x^*) \le O\pf{L\ve{x_0-x^*}_2^2}{T}\)</span>. Distance generating function, Bregman divergence.</li>
 </ol>
-
-  </div>
-
-    
-
-    <!-- Extension : Sharing buttons @ www.sharethis.com -->
-    <span class='st_facebook_large' displayText='Facebook'></span>
-    <span class='st_twitter_large' displayText='Tweet'></span>
-    <span class='st_googleplus_large' displayText='Google +'></span>
-    <span class='st_reddit_large' displayText='Reddit'></span>
-    <span class='st__large' displayText=''></span>
-
-    <div id="disqus_thread"></div>
-    
-
-
-  
-    <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
-  </div>
-  
-</div>
-]]></summary>
-</entry>
-<entry>
-    <title>Mirror descent</title>
-    <link href="http://holdenlee.github.io/notebook/posts/tcs/machine_learning/optimization/mirror-descent.html" />
-    <id>http://holdenlee.github.io/notebook/posts/tcs/machine_learning/optimization/mirror-descent.html</id>
-    <published>2016-03-05T00:00:00Z</published>
-    <updated>2016-03-05T00:00:00Z</updated>
-    <summary type="html"><![CDATA[
-<div class="container">
-  <div id="content">
-    <div class="page header">
-      <h1>Mirror descent</h1>
-    </div>
-    <div class="info">
-      
-       
-        <p>Posted: 2016-03-05 
-          , Modified: 2016-03-05 
-	</p>
-      
-       <p>Tags: <a href="/tags/gradient.html">gradient</a></p> 
-    </div>
-    
-  </div>
-  <!--/div-->
-
-  
-
-  <div class="blog-main">
-    <h2 id="summary">Summary</h2>
-<p>Mirror descent lemma <span class="math display">\[
-\al\an{\nb f(z_k), z_k-u}\le \fc{\al^2}{2}\ve{\nb f(z_k)}^2 + \rc2\ve{z_k-u}^2 - \rc2 \ve{z_{k+1}-u}^2.
-\]</span></p>
-
-  </div>
-
-    
-
-    <!-- Extension : Sharing buttons @ www.sharethis.com -->
-    <span class='st_facebook_large' displayText='Facebook'></span>
-    <span class='st_twitter_large' displayText='Tweet'></span>
-    <span class='st_googleplus_large' displayText='Google +'></span>
-    <span class='st_reddit_large' displayText='Reddit'></span>
-    <span class='st__large' displayText=''></span>
-
-    <div id="disqus_thread"></div>
-    
-
-
-  
-    <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
-  </div>
-  
-</div>
-]]></summary>
-</entry>
-<entry>
-    <title>Accelerated Gradient descent</title>
-    <link href="http://holdenlee.github.io/notebook/posts/tcs/machine_learning/optimization/AGD.html" />
-    <id>http://holdenlee.github.io/notebook/posts/tcs/machine_learning/optimization/AGD.html</id>
-    <published>2016-03-05T00:00:00Z</published>
-    <updated>2016-03-05T00:00:00Z</updated>
-    <summary type="html"><![CDATA[
-<div class="container">
-  <div id="content">
-    <div class="page header">
-      <h1>Accelerated Gradient descent</h1>
-    </div>
-    <div class="info">
-      
-       
-        <p>Posted: 2016-03-05 
-          , Modified: 2016-03-05 
-	</p>
-      
-       <p>Tags: <a href="/tags/gradient.html">gradient</a></p> 
-    </div>
-    
-  </div>
-  <!--/div-->
-
-  
-
-  <div class="blog-main">
-    <h2 id="questions">Questions</h2>
-<ul>
-<li>Lanczos method</li>
-<li>Chebyshev approach</li>
-<li>Lower bound</li>
-<li>Dependence on dimension?</li>
-<li>Ellipsoid method</li>
-</ul>
-<h2 id="references">References</h2>
-<p>Keywords: accelerated gradient descent, Chebyshev polynomials, mirror descent</p>
-<ul>
-<li>http://blog.mrtz.org/2013/09/07/the-zen-of-gradient-descent.html</li>
-<li>https://en.wikipedia.org/wiki/Chebyshev_polynomials</li>
-<li>http://people.csail.mit.edu/zeyuan/publications.htm</li>
-<li>https://blogs.princeton.edu/imabandit/2013/04/01/acceleratedgradientdescent/</li>
-<li>https://blogs.princeton.edu/imabandit/2015/06/30/revisiting-nesterovs-acceleration/</li>
-<li>https://www.cs.cmu.edu/~ggordon/10725-F12/slides/09-acceleration.pdf</li>
-<li>http://statweb.stanford.edu/~candes/math301/Lectures/acc_nesterov.pdf</li>
-<li>http://www.asc.tuwien.ac.at/~winfried/teaching/106.079/SS2011/downloads/script-p-046-060.pdf</li>
-<li>http://msekce.karlin.mff.cuni.cz/~strakos/download/2012_GerStr.pdf</li>
-</ul>
 
   </div>
 

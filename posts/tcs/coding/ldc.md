@@ -170,7 +170,7 @@ Question: Generalize this to
 
 #Scraps
 
-Smooth decoding: For $C:\{\pm 1\}^k\to (B^n)^N$ a $(q,\de,\ep)$-LDC, for each $i\in [k]$ there exists a probability distribution $\mu_i$ over $[N}^q$ and functions $f_S^i,S\in [N]^q$,
+Smooth decoding: For $C:\{\pm 1\}^k\to (B^n)^N$ a $(q,\de,\ep)$-LDC, for each $i\in [k]$ there exists a probability distribution $\mu_i$ over $[N]^q$ and functions $f_S^i,S\in [N]^q$,
 
 * (Good probability of success when choose sets according to $\mu_i$) For every $x$, $x_i\EE_{s\sim \mu_i}[f_S^i(C(x)_S)]\ge 2\ep$.
 * (No entry queried too much) For all $s\in [N]$, $\Pj_{S\sim \mu_i} [s\in S]\le \fc{2q}{\de N}$.
