@@ -1,0 +1,12 @@
+By [Matrix Bernstein](../../../math/probability/random_matrices/concentration.html), using $W=\sum_{i=1}^n w_{i\bullet}^T w_{i\bullet}$, $\E w_{i\bullet}^T w_{i\bullet}=I$ (off-diagonal entries have $\E=0$, and the diagonal entries are $\chi_1^2$)
+<!--, and that a.s. $\la_{\max}{w_i\bullet}^T w_{i\bullet}\prec n$,-->
+\begin{align}
+\Pj\ba{
+\la_{\max}(W^TW-I)\ge \fc{t}{\sqrt m}
+}&\le m\exp\pa{-\fc{\pf{t}{\sqrt m}^2}{2\si^2 + \fc 23 Rt}} \\
+&\le m \exp\pa{-\fc{t^2}{2nm}}.
+\end{align}
+[^f4]
+Take $t = \Om(\sqrt{mn}\ln m)$. (**I'm doing something wrong here---I'm off by a factor of $n$.**)
+
+[^f4]: Technically I think we have to truncate the random variable, or use a different version of the inequality---I'm ignoring these technicalities (basically ignoring $R$).
