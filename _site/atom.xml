@@ -8,8 +8,205 @@
         <name>Holden Lee</name>
         <email>oldheneel@gmail.com</email>
     </author>
-    <updated>2016-03-15T00:00:00Z</updated>
+    <updated>2016-03-19T00:00:00Z</updated>
     <entry>
+    <title>LSTM Programming</title>
+    <link href="http://holdenlee.github.io/notebook/posts/tcs/machine_learning/neural_nets/lstm_code.html" />
+    <id>http://holdenlee.github.io/notebook/posts/tcs/machine_learning/neural_nets/lstm_code.html</id>
+    <published>2016-03-19T00:00:00Z</published>
+    <updated>2016-03-19T00:00:00Z</updated>
+    <summary type="html"><![CDATA[
+<div class="container">
+  <div id="content">
+    <div class="page header">
+      <h1>LSTM Programming</h1>
+    </div>
+    <div class="info">
+      
+       
+        <p>Posted: 2016-03-19 
+          , Modified: 2016-03-19 
+	</p>
+      
+       <p>Tags: <a href="/tags/programming.html">programming</a></p> 
+    </div>
+    
+  </div>
+  <!--/div-->
+
+  
+
+  <div class="blog-main">
+    <h2 id="math">Math</h2>
+<p>Here are the equations for LSTM.</p>
+\begin{align}
+f_t&amp;=\si(W_f \coltwo{h_{t-1}}{x_t} + b_f)\\
+i_t&amp;=\si(W_i \coltwo{h_{t-1}}{x_t} + b_i)\\
+\wt{C}_t &amp;= \tanh (W_C\coltwo{h_{t-1}}{x_t}+b_C)\\
+C_t &amp;= f_t \odot C_{t-1} + i_t \odot \wt{C}_t\\
+o_t &amp;= \si(W_o\coltwo{h_{t-1}}{x_t} + b_o)\\
+h_t &amp;= o_t\odot \tanh(C_t)\\
+\wh y &amp;= \text{softmax}(Wh_t + b).
+\end{align}
+<p>References:</p>
+<ul>
+<li>http://colah.github.io/posts/2015-08-Understanding-LSTMs/</li>
+<li>http://colah.github.io/posts/2015-09-NN-Types-FP/</li>
+</ul>
+<h2 id="lstm-layer">LSTM layer</h2>
+<p>We define functions</p>
+<ul>
+<li><code>step_lstm</code> :: <span class="math inline">\(\R^n\times \R^m\times \R^m \to \R^m\times \R^m\)</span> sending <span class="math display">\[(i_t, C_{t-1}, h_{t-1}) \mapsto (C_t, h_t).\]</span></li>
+<li><code>sequence_lstm</code> :: <span class="math inline">\((\R^n)^s \times \R^m\times \R^m \to (\R^m)^s\)</span> sending <span class="math display">\[((i_t)_{t=1}^T, C_0, h_0)\mapsto (h_t)_{t=1}^T.\]</span> (This is essentially “scanl” of step_lstm.)</li>
+<li><code>step_multiple_lstm</code> :: <span class="math inline">\((\R^n)^k\times (\R^m)^k \times (\R^m)^k \to (\R^m)^k \times (\R^m)^k\)</span>. The mapped vrsion of step_lstm. This we can implement efficiently as a matrix multiplication.</li>
+<li><code>sequence_multiple_lstm</code> :: <span class="math inline">\(((\R^n)^s)^k\times (\R^m)^k \times (\R^m)^k \to (\R^m)^k \times (\R^m)^k \to ((\R^m)^s)^k\)</span>. There are two ways to write this:
+<ul>
+<li>As the mapped version of <code>sequence_lstm</code> (i.e., scan, then map).</li>
+<li>As the scanned version of <code>step_multiple</code> (i.e., map, then scan). This is more efficient since we can implement the “map” as a matrix multiplication.</li>
+</ul></li>
+</ul>
+<p>(Actually these functions will involve the parameters as well, which we omitted here.)</p>
+<h3 id="implementation">Implementation</h3>
+<p>Define <code>step_lstm1</code> by</p>
+<div class="sourceCode"><pre class="sourceCode python"><code class="sourceCode python"><span class="kw">def</span> step_lstm1(x, C, h, Wf, bf, Wi, bi, WC, bC, Wo, bo):
+    hx <span class="op">=</span> T.concatenate([h,x]) <span class="co">#dimension m+n</span>
+    f <span class="op">=</span> sigmoid(T.dot(hx, Wf) <span class="op">+</span> bf) <span class="co">#dimension m</span>
+    i <span class="op">=</span> sigmoid(T.dot(hx, Wi) <span class="op">+</span> bi) <span class="co">#dimension m</span>
+    C_add <span class="op">=</span> T.tanh(T.dot(hx, WC) <span class="op">+</span> bC) <span class="co">#dimension m</span>
+    C1 <span class="op">=</span> f <span class="op">*</span> C <span class="op">+</span> i <span class="op">*</span> C_add <span class="co">#dimension m</span>
+    o <span class="op">=</span> sigmoid(T.dot(hx, Wo) <span class="op">+</span> bo) <span class="co">#dimension m</span>
+    h1 <span class="op">=</span> o <span class="op">*</span> T.tanh(C1) <span class="co">#dimension m</span>
+    <span class="cf">return</span> [C1, h1] <span class="co">#dimension 2m</span></code></pre></div>
+<p>Now define <code>step_lstm</code> as the version with parameters grouped together.</p>
+<pre class="py"><code>def step_lstm(x, C, h, tparams): 
+    Wf, bf, Wi, bi, WC, bC, Wo, bo = unpack_params(tparams, [&quot;Wf&quot;, &quot;bf&quot;, &quot;Wi&quot;, &quot;bi&quot;, &quot;WC&quot;, &quot;bC&quot;, &quot;Wo&quot;, &quot;bo&quot;])
+    return step_lstm1(x, C, h, Wf, bf, Wi, bi, WC, bC, Wo, bo)</code></pre>
+<p>To define <code>sequence_lstm</code> we use Theano’s can function. The arguments are</p>
+<ul>
+<li><code>fn</code> is the function</li>
+<li><code>outputs_info</code> are the initial values in the recursion</li>
+<li><code>non_sequences</code> are fixed values that are not involved in the recursion.</li>
+</ul>
+<p>Thus to create a scanned function like so</p>
+<div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="ot">scan' ::</span> ((a,b,c) <span class="ot">-&gt;</span> b) <span class="ot">-&gt;</span> [a] <span class="ot">-&gt;</span> b <span class="ot">-&gt;</span> c <span class="ot">-&gt;</span> [b]
+scan' f a's init fixed <span class="fu">=</span></code></pre></div>
+<p>we call</p>
+<pre class="py"><code>theano.scan(fn=f, sequences=a's, outputs_info=init, non_sequences=fixed)</code></pre>
+<p>Note here a, b, c can encompass multiple arguments, in which case you pass a list to <code>sequences</code>, <code>outputs_info</code>, and <code>non_sequences</code>. However, a, b, c must appear in that order.</p>
+<pre class="py"><code>def sequence_lstm(C0, h0, xs, tparams):.
+    Wf, bf, Wi, bi, WC, bC, Wo, bo = unpack_params(tparams, [&quot;Wf&quot;, &quot;bf&quot;, &quot;Wi&quot;, &quot;bi&quot;, &quot;WC&quot;, &quot;bC&quot;, &quot;Wo&quot;, &quot;bo&quot;])
+    #the function fn should have arguments in the following order:
+    #sequences, outputs_info (accumulators), non_sequences
+    #(x, C, h, Wf, bf, Wi, bi, WC, bC, Wo, bo)
+    ([C_vals, h_vals], updates) = theano.scan(fn=step_lstm1,
+                                          sequences = xs, 
+                                          outputs_info=[C0, h0], #initial values of the memory/accumulator
+                                          non_sequences=[Wf, bf, Wi, bi, WC, bC, Wo, bo], #fixed parameters
+                                          strict=True)
+    return [C_vals, h_vals]</code></pre>
+<p>Note this will map automatically; to define <code>sequence_multiple_lstm</code> all we have to do is swap two axes.</p>
+<p>(Note on Theano list in scan.)</p>
+<h2 id="neural-net-functions">Neural net functions</h2>
+<p>A vanilla neural net layer is</p>
+<pre class="py"><code>def nn_layer1(x, W, b):
+    return x * W + b
+
+def nn_layer(x, tparams):
+    W, b = unpack_params(tparams, [&quot;W&quot;, &quot;b&quot;])
+    return nn_layer1(x, W, b)</code></pre>
+<p>We define functions</p>
+<ul>
+<li><code>nn_layer</code> :: <span class="math inline">\(\R^n\times \R^n\)</span></li>
+<li><code>logloss</code> :: <span class="math inline">\(\R^n\times \R^n\)</span> given by <span class="math display">\[\text{logloss}(x,y) = -\sum_i x_i \ln' (y_i)\]</span> where we use <code>corrected_log</code>, <span class="math inline">\(\ln'(y) = \ln(\max(10^{-6}, x))\)</span> to avoid blowup at small probabilities.</li>
+</ul>
+<p>Now we can combine these with our LSTM to make the evaluation, prediction, and loss function. Evaluation will give the probabilities of each output, prediction will give the output with max probability, and loss is the logloss on the expected and actual outcomes. We also include a accuracy function that outputs 1 if the prediction is correct and 0 otherwise.</p>
+<p>Note <code>fns_lstm</code> returns a list of Theano variables (depending on the input lists/parameters) representing the activations, predictions, losses and accuracy. We haven’t compiled these variables into a function yet.</p>
+<!--
+We include a flag saying if we just want the output for the last in the sequence, or every time step. We also want versions that are mapped over sequences (to do them in batch).
+-->
+<p>(Add code here)</p>
+<p>Some other functions:</p>
+<ul>
+<li><code>init_params_with_f_lstm(n,m,f,g)</code></li>
+<li><code>train_lstm</code></li>
+<li><code>weight_decay</code> :: <span class="math inline">\(\R\)</span> -&gt; Dict String TheanoVars -&gt; [String] -&gt; <span class="math inline">\(\R\)</span>. For the parameters in the list, sum the squares of their norms and multiply by the decay constant.</li>
+</ul>
+<p>(A further speedup is to concatenate the matrices.)</p>
+<h2 id="data-processing-functions">Data processing functions</h2>
+<p>We’ll keep parameters in a dictionary, and unpack them as needed.</p>
+<div class="sourceCode"><pre class="sourceCode python"><code class="sourceCode python"><span class="kw">def</span> unpack_params(tparams, li):
+    <span class="cf">return</span> [tparams[name] <span class="cf">for</span> name <span class="op">in</span> li]</code></pre></div>
+<ul>
+<li><code>wrap_theano_dict</code> and <code>unwrap_theano_dict</code>.</li>
+<li><code>get_minibatches_idx</code> (::Int -&gt; Int -&gt; Bool -&gt; [(Int, [Int])]) will give an enumerated list of minibatch indices, given <code>n</code>, the size of the list, and <code>minibatch_size</code>. It will make a minibatch out of the remainder.</li>
+<li><code>oneHot(choices, n)</code> gives a way to encode one-hot vectors within Theano.</li>
+</ul>
+<h2 id="optimization-functions">Optimization functions</h2>
+<p>These are taken from…</p>
+<p>The arguments of each are</p>
+<ul>
+<li>lr: learning rate</li>
+<li>tparams: dictionary of parameters (not Theano variables)</li>
+<li>grads: gradient of function to optimize</li>
+<li>cost:</li>
+<li>args: args to cost function (e.g., neural net inputs)</li>
+</ul>
+<p>Retrns</p>
+<ul>
+<li><code>f_grad_shared</code></li>
+<li><code>f_update</code></li>
+</ul>
+<p>What does the train function need?</p>
+<ul>
+<li>Epochs: An epoch is going through all the data once. Stop after <code>patience</code> number of epochs have passed without progress, or after <code>max_epochs</code>.</li>
+<li>Optimizer
+<ul>
+<li>Cost function to optimize
+<ul>
+<li>Arguments to cost function</li>
+</ul></li>
+</ul></li>
+<li>Batch:
+<ul>
+<li>batch size during training</li>
+<li>batch size for validation</li>
+</ul></li>
+<li>Initial parameters</li>
+<li>Frequency (after how many updates do you…)
+<ul>
+<li>validate?</li>
+<li>save data? (to where?)</li>
+</ul></li>
+<li>Data (train, validation, test): What’s the difference between validation and test?</li>
+<li>Batch-maker: Given the data, make a list of batches. One epoch consists of going through all the batches.</li>
+</ul>
+<!-- Scraps
+while I wait for someone to write a frontend in haskell...
+-->
+
+  </div>
+
+    
+
+    <!-- Extension : Sharing buttons @ www.sharethis.com -->
+    <span class='st_facebook_large' displayText='Facebook'></span>
+    <span class='st_twitter_large' displayText='Tweet'></span>
+    <span class='st_googleplus_large' displayText='Google +'></span>
+    <span class='st_reddit_large' displayText='Reddit'></span>
+    <span class='st__large' displayText=''></span>
+
+    <div id="disqus_thread"></div>
+    
+
+
+  
+    <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+  </div>
+  
+</div>
+]]></summary>
+</entry>
+<entry>
     <title>[ALLMR16] RAND-WALK: A latent variable model approach to word embeddings</title>
     <link href="http://holdenlee.github.io/notebook/posts/tcs/machine_learning/nlp/randwalk.html" />
     <id>http://holdenlee.github.io/notebook/posts/tcs/machine_learning/nlp/randwalk.html</id>
@@ -818,189 +1015,6 @@ Y&amp;= q \si(W_H^T\si(\cdots (W_1^TX)\cdots))\\
 <li>“critical values” of loss function</li>
 <li>simulated annealing for neural nets</li>
 </ul>
-
-  </div>
-
-    
-
-    <!-- Extension : Sharing buttons @ www.sharethis.com -->
-    <span class='st_facebook_large' displayText='Facebook'></span>
-    <span class='st_twitter_large' displayText='Tweet'></span>
-    <span class='st_googleplus_large' displayText='Google +'></span>
-    <span class='st_reddit_large' displayText='Reddit'></span>
-    <span class='st__large' displayText=''></span>
-
-    <div id="disqus_thread"></div>
-    
-
-
-  
-    <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
-  </div>
-  
-</div>
-]]></summary>
-</entry>
-<entry>
-    <title>[AO15] Linear coupling</title>
-    <link href="http://holdenlee.github.io/notebook/posts/tcs/machine_learning/optimization/AO15.html" />
-    <id>http://holdenlee.github.io/notebook/posts/tcs/machine_learning/optimization/AO15.html</id>
-    <published>2016-03-06T00:00:00Z</published>
-    <updated>2016-03-06T00:00:00Z</updated>
-    <summary type="html"><![CDATA[
-<div class="container">
-  <div id="content">
-    <div class="page header">
-      <h1>[AO15] Linear coupling</h1>
-    </div>
-    <div class="info">
-      
-       
-        <p>Posted: 2016-03-06 
-          , Modified: 2016-03-06 
-	</p>
-      
-       <p>Tags: <a href="/tags/gradient.html">gradient</a></p> 
-    </div>
-    
-  </div>
-  <!--/div-->
-
-  
-
-  <div class="blog-main">
-    <h2 id="gradient-descent">Gradient Descent</h2>
-<p><strong>Definition</strong>: A convex function is <span class="math inline">\(L\)</span>-smooth if <span class="math display">\[ f(y) \le \blu{f(x)+\an{\nb f(x),y-x}}+\redd{\fc L2 \ve{y-x}^2}\]</span> or equivalently <span class="math display">\[ \ve{\nb f(x)-\nb f(y)}_*\le L\ve{x-y}.\]</span></p>
-<p>Assume <span class="math inline">\(f\)</span> is <span class="math inline">\(L\)</span>-smooth.</p>
-<ul>
-<li>Update:
-\begin{align}
-x_{k+1} &amp;= \amin_y \ba{\fc{L}{2} \ve{y-x_k}^2 + \an{\nb f(x),y-x_k}}\\
-&amp;= x_k - \rc{L}\nb f(x_k)&amp;\text{for $\ell_2$ norm}.
-\end{align}</li>
-<li><strong>Lemma</strong>: <span class="math display">\[f(x')\le f(x)  - \fc{\ve{\nb f(x)}_*^2}{2L}.\]</span></li>
-<li>Guarantee: Let <span class="math inline">\(R=\max_{x:f(x)\le f(x_0)}\ve{x-x^*}_*\)</span>. <span class="math display">\[f(x_T)-f(x^*) \le O\pf{LR^2}{T}.\]</span> Obtain an <span class="math inline">\(\ep\)</span>-approximation in <span class="math inline">\(\fc{LR^2}{\ep}\)</span> steps.</li>
-</ul>
-<h3 id="proof">Proof</h3>
-<p>See also <a href="GD.html">gradient descent</a>.</p>
-<ul>
-<li>Bound the difference from optimal by the distance to the optimal times the gradient (using convexity and CS).</li>
-<li>Bound the gradient by the progress.</li>
-<li>Now let <span class="math inline">\(D_k = f(x_k)-f(x^*)\)</span>. Measure progress by <span class="math inline">\(\rc{D_k}\)</span> whose differences telescope.</li>
-</ul>
-\begin{align}
-\ub{f(x_k)-f(x^*)}{D_k}&amp;\le \an{\nb f(x_k),x_k-x^*} \le \ve{\nb f(x_k)} \ve{x_k-x^*}\le \sqrt{2L}\ub{(f(x_k)-f(x_{k+1}))}{D_k-D_{k+1}}R\\
-\rc{D_{k+1}}-\rc{D_k} &amp;\ge \rc{2LR^2}\fc{D_k}{D_{k+1}} \ge \rc{2LR^2}\\
-\implies \rc{D_T}&amp;\ge T.
-\end{align}
-<h2 id="mirror-descent">Mirror descent</h2>
-<strong>Definition</strong>: <span class="math inline">\(w(x):Q\to \R\)</span> (<span class="math inline">\(Q\)</span> convex) is a <strong>distance generating function</strong> if the following holds. Then define <strong>Bregman divergence</strong> as follows. For all <span class="math inline">\(x\in Q\bs \pl Q, y\in Q\)</span>,
-\begin{align}
-w(y) &amp;\ge w(x) + \an{\nb w(x),y-x} + \rc2\ve{x-y}^2\\
-\end{align}
-<p>Note we can replace the gradient by a subgradient below.</p>
-<ul>
-<li>Update:
-\begin{align}
- \wt x &amp;= \text{Mirr}(\al\nb f(x))\\
- \text{where }\text{Mirr}_x(\xi) &amp;= \amin_{y\in Q} V_x(y)+\an{\xi,y-x}.
- \end{align}</li>
-<li><strong>Lemma</strong>: For all <span class="math inline">\(u\)</span>,
-\begin{align}
-\al (f(x_k)-f(u))
-&amp;\le \al\an{\nb f(x_k),x_k-u}\\
-&amp;\le \fc{\al^2}2\ve{\nb f(x_k)}^2 +V_{x_k}(u) - V_{x_{k+1}}(u)\\
-&amp;=  \fc{\al^2}2\ve{\nb f(x_k)}^2 +\rc 2 \ve{z_k-u}^2 -\rc2 \ve{z_{k+1}-u}^2 &amp; \text{for }\ell^2.
-\end{align}
-Generalization:
-\begin{align}
-\al (f(x_k)-f(u))
-&amp;\le \al\an{\nb f(x_k),x_k-u}\\
-&amp;\le \fc{\al^2}2\ve{\nb f(x_k)}^2 +V_{x_k}(u) - V_{x_{k+1}}(u)
-\end{align}</li>
-<li>Guarantee: When <span class="math inline">\(V_{x_0}(x^*)\le \Te, \ve{\nb f(x)}_*\le \rh\)</span> everywhere, <span class="math display">\[ f(\ol x) - f(x^*) \le \fc{\sqrt{2\Te}\rh}{\sqrt T}.\]</span> Obtain an <span class="math inline">\(\ep\)</span>-approximation in <span class="math inline">\(\fc{2\Te\rh^2}{\ep^2}\)</span> steps.</li>
-</ul>
-<h3 id="examples">Examples</h3>
-\begin{align}
-w(y) &amp;= \rc2 \ve{y}_2^2\\
-V_x(y) &amp;= \rc2\ve{x-y}_2^2\\
-w(y) &amp;= \sum_i y_i \ln y_i &amp;\text{w.r.t. }\ell_1\text{ over }\De\\
-V_x(y) &amp;= \sum_{y_i} \ln \pf{y_i}{x_i} \ge \prc{x-y}_1^2.
-\end{align}
-<h3 id="intuition">Intuition</h3>
-<p>Note for <span class="math inline">\(\ved_2\)</span> MD is the same as GD except for a factor <span class="math inline">\(\al\)</span>.</p>
-<p>Note 3 formulations of mirror descent.</p>
-<ol type="1">
-<li>Above.</li>
-<li>Set <span class="math display">\[\nb w(x_{k+1}) \leftarrow  \nb w(x_k) - \al \nb f(x_{k}).\]</span> (By this we mean take the value of <span class="math inline">\(x_{k+1}\)</span> that makes this true.)</li>
-<li><strong>Regularized follow the leader (RFTL)</strong>: Take <span class="math display">\[x_{k+1} = \amin_y w(y)+ \al \an{y, \sum_{i=0}^k \nb f(x_i)}.\]</span></li>
-</ol>
-<p>(1)<span class="math inline">\(\iff\)</span>(2): The min is when the gradient is 0.</p>
-(2)<span class="math inline">\(\iff\)</span>(3): The min is when the gradient is 0. Write this out for <span class="math inline">\(k,k-1\)</span>and subtract.
-\begin{align}
-\nb w(x_{k+1}) + \al \sum_{i=0}^k \nb f(x_i) &amp;=0\\
-\nb w(x_k) + \al \sum_{i=0}^{k-1} \nb f(x_i) &amp;=0\\
-\nb w(x_{k+1})-w(x_k) + \nb f(x_k)&amp;=0
-\end{align}
-<h2 id="coupling">Coupling</h2>
-<h3 id="unconstrained-version-qr">Unconstrained version (Q=R)</h3>
-<ul>
-<li>Update:
-\begin{align}
-\label{eq:weighted}
-x_{k+1} &amp;= \tau z_k + (1-\tau) y_k\\
-y_{k+1} &amp;= \text{Grad}(x_{k+1})\\
-z_{k+1} &amp;= \text{Mirr}_{z_k}(\al \nb f(x_{k+1})).
-\end{align}</li>
-<li><strong>Lemma</strong>: If <span class="math inline">\(\rc{1-\tau}{\tau}=\al L\)</span>, then <span class="math display">\[
-\al \an{\nb f(x_{k+1}), x_{k+1}-u} \le \al^2L (f(y_k)-f(y_{k+1}))+V_{z_k}(u) - V_{z_{k+1}}(u).
-\]</span></li>
-<li>Guarantee: <span class="math display">\[f(\ol x) - f(x^*) \le \fc{\sqrt{2\Te}\rh}{T}.\]</span> Starting at <span class="math inline">\(f(x_0)-f(x^*)\le d\)</span>, <span class="math inline">\(V_{x_0}(x^*)\le \Te)\)</span>, in <span class="math inline">\(T=4\sfc{L\Te}{d}\)</span> steps, obtain <span class="math inline">\(f(\ol x)-f(x^*)\le \fc d2\)</span>. Hence, get an <span class="math inline">\(\ep\)</span>-approximate solution in <span class="math inline">\(O(\sfc{L\Te}{\ep})\)</span> iterations.</li>
-</ul>
-<h2 id="proof-1">Proof</h2>
-<ol type="1">
-<li>Why the weird definition for <span class="math inline">\(x_{k+1}\)</span>? If we defined <span class="math inline">\(z_{k+1}=\text{Mirr}_{x_{k+1}}(\al \nb f(x_{k+1}))\)</span>, the expressions involve <span class="math inline">\(x_{k+1},z_{k+1}\)</span> and do not telescope.</li>
-<li>Thus, do the mirror descent starting from <span class="math inline">\(z_k\)</span> instead. If we try to bound the regret now,
-\begin{align}
-\al \an{\nb f(x_{k+1}), x_{k+1}-u} &amp;\le \fc{\al^2}{2} \ve{\nb f(x_k)}^2 + V_{x_{k+1}}(u) - V_{z_{k+1}}(u)\\
-&amp;\le \al^2 L (\nb f(x_{k+1}) - \nb f(y_{k+1})) + V_{x_{k+1}}(u) - V_{z_{k+1}}(u).
-\end{align}
-which still does not telescope.</li>
-<li>We want <span class="math inline">\(z_k\)</span> to take the place of <span class="math inline">\(x_{k+1}\)</span>.</li>
-<li>Now write the real as the fake regret plus another term.</li>
-</ol>
-\begin{align}
-\al \an{\nb f(x_{k+1}), z_{k}-u} &amp; \le \fc{\al^2}{2} \ve{\nb f(x_k)}^2 + V_{z_k}(u) - V_{z_{k+1}}(u)\\
-&amp;\le \al^2 L (\nb f(x_{k+1}) - \nb f(y_{k+1})) + V_{z_k}(u) - V_{z_{k+1}}(u) \label{eq:lem3-2}\\
-\al \an{\nb f(x_{k+1}),x_{k+1}-u}
-&amp;\le \al \an{\nb f(x_{k+1}), z_{k}-u} + \al \an{\nb f(x_{k+1}), x_{k+1}-z_k}\\
-&amp;\le \al \an{\nb f(x_{k+1}), z_{k}-u} + \fc{(1-\tau)\al}{\tau} \an{\nb f(x_{k+1}), y_{k}-x_{k+1}}&amp;\text{by \eqref{eq:weighted}}\\
-&amp;\le \al^2 L (\nb f(x_{k+1}) - \nb f(y_{k+1})) + V_{z_k}(u) - V_{z_{k+1}}(u) + \fc{(1-\tau)\al}{\tau}\an{\nb f(x_{k+1}), y_k-x_{k+1}}&amp;\eqref{eq:lem3-2},\text{ convexity}\\
-&amp;\le \al^2L(f(y_{k})-f(y_{k+1})) + V_{z_k}(u) - V_{z_{k+1}(u)}.
-\end{align}
-<p>Telescoping, balancing <span class="math inline">\(\al^2Ld=\Te\implies \al = \sfc{\Te}{Ld}\)</span>, we get error <span class="math inline">\(\fc{2\sqrt{L\Te d}}{T}\)</span>. It takes <span class="math inline">\(T=4\sfc{L\Te}{d}\)</span> steps to halve error from <span class="math inline">\(\fc d2\)</span>, and <span class="math inline">\(O\pa{\sfc{L\Te}{\ep}}\)</span> time to go to <span class="math inline">\(\ep\)</span> error.</p>
-<h2 id="index-cards">Index cards:</h2>
-<ul>
-<li>Gradient lemma</li>
-<li>Gradient guarantee</li>
-<li>DGF and Bregman divergence</li>
-<li>Mirror step</li>
-<li>Mirror lemma</li>
-<li>Mirror guarantee</li>
-<li>Linear coupling</li>
-<li>Linear coupling lemma</li>
-<li>Linear coupling guarantee</li>
-</ul>
-<h2 id="page-notes">Page notes</h2>
-<ol type="1">
-<li></li>
-<li></li>
-<li></li>
-<li></li>
-<li>estimation sequence? Thought experiment. Cutoff <span class="math inline">\(K\)</span> for <span class="math inline">\(\ve{\nb f(x)}_2\)</span>. Equate gradient and mirror: <span class="math display">\[\fc{\ep L}{K^2}=\fc{K^2}{\ep^2}.\]</span></li>
-<li></li>
-<li>Gradient descent guarantee. <span class="math inline">\(f(x_T)-f(x^*) \le O\pf{L\ve{x_0-x^*}_2^2}{T}\)</span>. Distance generating function, Bregman divergence.</li>
-</ol>
 
   </div>
 
