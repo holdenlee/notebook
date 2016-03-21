@@ -95,11 +95,13 @@
  <li><a href="#basic-definitions">Basic definitions</a><ul>
  <li><a href="#ldcs-1">LDC’s</a></li>
  <li><a href="#notation">Notation</a></li>
- <li><a href="#approach">Approach</a></li>
+ </ul></li>
+ <li><a href="#lower-bound">Lower bound</a><ul>
  <li><a href="#toy-problem">Toy problem</a></li>
  <li><a href="#abelian-group">Abelian group</a></li>
  <li><a href="#matrices">Matrices</a></li>
  </ul></li>
+ <li><a href="#upper-bound">Upper bound</a></li>
  <li><a href="#scraps">Scraps</a></li>
  <li><a href="#directions">Directions</a><ul>
  <li><a href="#section">3/10</a></li>
@@ -195,7 +197,7 @@ What is the relationship between hypercontractivity and type?
 <ul>
 <li><span class="math inline">\(\La_M(f_1,\dots, f_q) :=\EE_{y\sim M_x}(D_{x,y}(f_1,\ldots,f_q) = \EE_{y\sim M_x} \prod_{i=1}^q f(y_i)\)</span>.</li>
 </ul>
-<h3 id="approach">Approach</h3>
+<h2 id="lower-bound">Lower bound</h2>
 <p>It is necessary for <span class="math inline">\(\im \mu\)</span> to have a large <span class="math inline">\(\ep\)</span>-net. Otherwise it can’t contin <span class="math inline">\(\{-1,1\}^k\)</span>. Thus we can show lower bounds by showing any <span class="math inline">\(\im\mu\)</span> has a small <span class="math inline">\(\ep\)</span>-net. Think of this as a communication complexity problem: Alice wants to communicate <span class="math inline">\(\mu(y)\)</span> to Bob with <span class="math inline">\(\ep\)</span> accuracy without sending many bits. (Be careful about <span class="math inline">\(\ep\)</span> vs. <span class="math inline">\(\eph\)</span> here.)</p>
 <p><strong>Lemma</strong>: If there is an <span class="math inline">\(\ep\)</span>-net of size <span class="math inline">\(s\)</span>, then <span class="math inline">\(\ln s \ge \pa{1-H\pa{\eph}}k\)</span>. (Generalization <span class="math inline">\(p\)</span>-norm: <span class="math inline">\(\ge \pa{1-H\pf{\ep^p}2}\)</span>.)</p>
 <p>Thus if <span class="math inline">\(s= n^{O_\ep(1)}\)</span> then we get an exponential lower bound.</p>
@@ -224,6 +226,41 @@ What is the relationship between hypercontractivity and type?
 <li>non-AP’s <span class="math inline">\(x,x+y,x+z\)</span> (can be hard because you’re only taking <span class="math inline">\(n/n^2\)</span> now…)</li>
 </ul>
 <h3 id="matrices">Matrices</h3>
+<h2 id="upper-bound">Upper bound</h2>
+Let
+\begin{align}
+\La_D(f_1,\ldots, f_q)&amp;= \sum_{d\in D}\sum_{g\in G} f_1(g)\cdots f_q(g+(q-1)d)\\
+\ve{A} &amp;= \sup\set{\fc{A(f_1,\ldots, f_q)}{\prod_i\ve{f_i}_{\ell_q}}}{f_i\in \R^n\bs 0}\\
+\la(D) &amp;= \ve{\rc{|D|}\La_D-\rc{|G|}\La_G}\\
+\ka(\ep) &amp;= \max\set{k\in \N}{\E[\la(D)]\le \ep}.
+\end{align}
+<p>(Use the <span class="math inline">\(q\)</span>-norm for <span class="math inline">\(q\)</span>-linear forms because scaling is good?)</p>
+<p><strong>Theorem 3.3</strong>: For all <span class="math inline">\(\ep&gt;0\)</span> there exists <span class="math inline">\(\al,\be\in(0,1]\)</span>, <span class="math inline">\(C:\{-1,1\}^k\to \{-1,1\}^n\)</span> (where <span class="math inline">\(k=\al \ka(\ep)\)</span>, <span class="math inline">\(n=q|G|\)</span>), <span class="math inline">\(M_i\)</span> matchings of size <span class="math inline">\(\fc nq\)</span>, such that for all <span class="math inline">\(x\in \{-1,1\}^k\)</span>, <span class="math display">\[\EE_{i\in [k],(j_1,\ldots,j_q)\in M_i}[C(x)_{j_1}\cdots C(x)_{j_q}=x_i] \ge\be,\]</span> i.e.,there is a average case LDC with <span class="math inline">\((r,\fc{\be}2, q)\)</span>.<a href="#fn7" class="footnoteRef" id="fnref7"><sup>7</sup></a></p>
+<em>Proof</em>: Let <span class="math inline">\(K=\ka(\ep)\)</span> and <span class="math inline">\(D=(d_1,\ldots, d_K)\sub G\)</span> be a random multiset. Let <span class="math display">\[A_i=\rc{K} \La_{d_i} - \rc{K|G|}\La_G.\]</span> Then
+\begin{align}
+\ep&amp;\le \EE_D\ba{\ve{\rc K\La_D-\rc{|G|}\La_G}}\\
+&amp;=\EE_{\mathcal A} \ba{\ve{\sumo ik \pa{A_i-\EE_{\mathcal A'}A_i'}}}\\
+&amp;\le \EE_{\mathcal A, \mathcal A'}\ba{\ve{ \sumo ik (A_i-A_i')}} &amp; \text{Jensen}\\
+&amp;=\EE_{x_i}\EE_{\mathcal A,\mathcal A'} \ba{\ve{\sumo ik x_i(A_i-A_i')}}&amp; \text{symmetrization}\\
+&amp;\le 2 \EE_{x_i,\mathcal A} \ba{\ve{\sumo ik x_iA_i}} &amp;\text{Jensen}\\
+&amp;\le \fc 2K \EE_{D,D',x_i} \ba{\ve{\sumo ik \La_{d_i} - \La_{d_i'}}}&amp;\text{symmetrization}\\
+&amp;\le \fc 4K \EE_{D,x_i} \ve{\sumo ik x_i\La_{d_i}}&amp; \text{Jensen}\\
+\implies \exists D^*, \quad \rc{K}\ve{\sumo ik x_i \La_{d_i^*}}&amp;\ge \fc \ep4.
+\end{align}
+By Elton’s theorem there exists <span class="math inline">\(k\ge \fc{cK\ep^2}{16}\)</span>, <span class="math inline">\(E\subeq D^*\)</span> of size <span class="math inline">\(k\)</span>, for all <span class="math inline">\(x\in \{-1,1\}^E\)</span>, <span class="math display">\[\rc{k}\ve{\sum_{d\in E} \sum x_d \La_{d}}\ge \fc{c\ep}{4}.\]</span> For each <span class="math inline">\(x\)</span> there exists <span class="math inline">\(f^x\)</span>, <span class="math inline">\(\ve{f^x}=1\)</span> with <span class="math display">\[\rc k \ve{\sum_{d\in E} x_d \La_d(f_1^x,\ldots, f_q^x)} \ge \fc{c\ep}4.\]</span> We define the LDC by
+\begin{align}
+C:\{-1,1\}^E &amp;\to (\R^q)^G\\
+C(x) &amp;=(f_1^x,\ldots, f_q^x).
+\end{align}
+Then <span class="math inline">\(\La\)</span> exactly gives the correlation of the decoded bit:
+\begin{align}
+\La_d((f_i^x)_i) &amp;= \sum_{g\in G}\prod_i f_i^x(g+(i-1)d)\\
+&amp;=\sum_{(j_i)\in M_d} \prod_i C(x)_{j_i}.
+\end{align}
+<p>Defining <span class="math inline">\(C'(x)=\fc{C(x)}e\)</span> so that <span class="math inline">\(\ve{C'(x)}\le \fc{q^{\rc q}}e\le 1\)</span>, we get <span class="math display">\[
+\rc k \sum_{d\in E} \sum_{(j_i)\in M_d} x_d C'(x)_{j_1}\cdots C'(x)_{j_q}\ge \fc{c\ep}{4e^q},
+\]</span> the theorem with <span class="math inline">\(\al=\fc{c\ep^2}{16}\)</span> and <span class="math inline">\(\be = \fc{c\ep}{4e^q}\)</span>. <span class="math inline">\(\square\)</span></p>
+<p>Note there is a quadratic loss in going from average-case LDC to LDC (using Chernoff).</p>
 <h2 id="scraps">Scraps</h2>
 <p>Smooth decoding: For <span class="math inline">\(C:\{\pm 1\}^k\to (B^n)^N\)</span> a <span class="math inline">\((q,\de,\ep)\)</span>-LDC, for each <span class="math inline">\(i\in [k]\)</span> there exists a probability distribution <span class="math inline">\(\mu_i\)</span> over <span class="math inline">\([N]^q\)</span> and functions <span class="math inline">\(f_S^i,S\in [N]^q\)</span>,</p>
 <ul>
@@ -260,6 +297,7 @@ What is the relationship between hypercontractivity and type?
 <li id="fn4"><p>Why do these have to be matchings? The fact they are matchings means it’s an LDC with parameters <span class="math inline">\(\de n q\)</span> for error <span class="math inline">\(\de q\)</span>.<a href="#fnref4">↩</a></p></li>
 <li id="fn5"><p>This doesn’t make much of a difference for the <span class="math inline">\(\ep\)</span>-net argument? So for simplicity we just assume <span class="math inline">\(\{-1,1\}^k\sub \im C\)</span>?<a href="#fnref5">↩</a></p></li>
 <li id="fn6"><p>(Do we just need <span class="math inline">\(f*f\)</span>?)<a href="#fnref6">↩</a></p></li>
+<li id="fn7"><p>Here by <span class="math inline">\((q,\ep,\de)\)</span>-average case LDC, the parameter <span class="math inline">\(\de\)</span> means each entry is queried with probability <span class="math inline">\(\le \fc{\de}{n}\)</span>. In my definition of LDC, it’s a <span class="math inline">\((r,\fc{\be}2-\de q, \de)\)</span>-LDC.<a href="#fnref7">↩</a></p></li>
 </ol>
 </section>
 
