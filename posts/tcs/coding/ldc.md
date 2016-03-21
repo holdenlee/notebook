@@ -125,7 +125,7 @@ $$\{\pm 1\}^k \xra{C} \{\pm 1\}^n \xra{\text{noise}}  \{\pm 1\}^n \xra{\mu} [-1,
 
 * $\La_M(f_1,\dots, f_q) :=\EE_{y\sim M_x}(D_{x,y}(f_1,\ldots,f_q) = \EE_{y\sim M_x} \prod_{i=1}^q f(y_i)$.
 
-##Approach
+#Lower bound
 
 It is necessary for $\im \mu$ to have a large $\ep$-net. Otherwise it can't contin $\{-1,1\}^k$. Thus we can show lower bounds by showing any $\im\mu$ has a small $\ep$-net. Think of this as a communication complexity problem: Alice wants to communicate $\mu(y)$ to Bob with $\ep$ accuracy without sending many bits. (Be careful about $\ep$ vs. $\eph$ here.)
 
@@ -167,6 +167,58 @@ Question: Generalize this to
 * non-AP's $x,x+y,x+z$ (can be hard because you're only taking $n/n^2$ now...)
 
 ##Matrices
+
+#Upper bound
+
+Let
+\begin{align}
+\La_D(f_1,\ldots, f_q)&= \sum_{d\in D}\sum_{g\in G} f_1(g)\cdots f_q(g+(q-1)d)\\
+\ve{A} &= \sup\set{\fc{A(f_1,\ldots, f_q)}{\prod_i\ve{f_i}_{\ell_q}}}{f_i\in \R^n\bs 0}\\
+\la(D) &= \ve{\rc{|D|}\La_D-\rc{|G|}\La_G}\\
+\ka(\ep) &= \max\set{k\in \N}{\E[\la(D)]\le \ep}.
+\end{align}
+(Use the $q$-norm for $q$-linear forms because scaling is good?)
+
+**Theorem 3.3**: For all $\ep>0$ there exists $\al,\be\in(0,1]$, $C:\{-1,1\}^k\to \{-1,1\}^n$ (where $k=\al \ka(\ep)$, $n=q|G|$), $M_i$ matchings of size $\fc nq$, such that for all $x\in \{-1,1\}^k$,
+$$\EE_{i\in [k],(j_1,\ldots,j_q)\in M_i}[C(x)_{j_1}\cdots C(x)_{j_q}=x_i] \ge\be,$$
+i.e.,there is a average case LDC with $(r,\fc{\be}2, q)$.[^avg]
+
+*Proof*: Let $K=\ka(\ep)$ and $D=(d_1,\ldots, d_K)\sub G$ be a random multiset. Let
+$$A_i=\rc{K} \La_{d_i} - \rc{K|G|}\La_G.$$
+Then
+\begin{align}
+\ep&\le \EE_D\ba{\ve{\rc K\La_D-\rc{|G|}\La_G}}\\
+&=\EE_{\mathcal A} \ba{\ve{\sumo ik \pa{A_i-\EE_{\mathcal A'}A_i'}}}\\
+&\le \EE_{\mathcal A, \mathcal A'}\ba{\ve{ \sumo ik (A_i-A_i')}} & \text{Jensen}\\
+&=\EE_{x_i}\EE_{\mathcal A,\mathcal A'} \ba{\ve{\sumo ik x_i(A_i-A_i')}}& \text{symmetrization}\\
+&\le 2 \EE_{x_i,\mathcal A} \ba{\ve{\sumo ik x_iA_i}} &\text{Jensen}\\
+&\le \fc 2K \EE_{D,D',x_i} \ba{\ve{\sumo ik \La_{d_i} - \La_{d_i'}}}&\text{symmetrization}\\
+&\le \fc 4K \EE_{D,x_i} \ve{\sumo ik x_i\La_{d_i}}& \text{Jensen}\\
+\implies \exists D^*, \quad \rc{K}\ve{\sumo ik x_i \La_{d_i^*}}&\ge \fc \ep4.
+\end{align}
+By Elton's theorem there exists $k\ge \fc{cK\ep^2}{16}$, $E\subeq D^*$ of size $k$, for all $x\in \{-1,1\}^E$,
+$$\rc{k}\ve{\sum_{d\in E} \sum x_d \La_{d}}\ge \fc{c\ep}{4}.$$
+For each $x$ there exists $f^x$, $\ve{f^x}=1$ with
+$$\rc k \ve{\sum_{d\in E} x_d \La_d(f_1^x,\ldots, f_q^x)} \ge \fc{c\ep}4.$$
+We define the LDC by
+\begin{align}
+C:\{-1,1\}^E &\to (\R^q)^G\\
+C(x) &=(f_1^x,\ldots, f_q^x).
+\end{align}
+Then $\La$ exactly gives the correlation of the decoded bit:
+\begin{align}
+\La_d((f_i^x)_i) &= \sum_{g\in G}\prod_i f_i^x(g+(i-1)d)\\
+&=\sum_{(j_i)\in M_d} \prod_i C(x)_{j_i}.
+\end{align}
+Defining $C'(x)=\fc{C(x)}e$ so that $\ve{C'(x)}\le \fc{q^{\rc q}}e\le 1$, we get
+$$
+\rc k \sum_{d\in E} \sum_{(j_i)\in M_d} x_d C'(x)_{j_1}\cdots C'(x)_{j_q}\ge \fc{c\ep}{4e^q},
+$$
+the theorem with $\al=\fc{c\ep^2}{16}$ and $\be = \fc{c\ep}{4e^q}$. $\square$
+
+[^avg]: Here by $(q,\ep,\de)$-average case LDC, the parameter $\de$ means each entry is queried with probability $\le \fc{\de}{n}$. In my definition of LDC, it's a $(r,\fc{\be}2-\de q, \de)$-LDC.
+
+Note there is a quadratic loss in going from average-case LDC to LDC (using Chernoff).
 
 #Scraps
 
