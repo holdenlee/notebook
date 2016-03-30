@@ -8,8 +8,580 @@
         <name>Holden Lee</name>
         <email>oldheneel@gmail.com</email>
     </author>
-    <updated>2016-03-19T00:00:00Z</updated>
+    <updated>2016-03-26T00:00:00Z</updated>
     <entry>
+    <title>Non-negative matrix factorization</title>
+    <link href="http://holdenlee.github.io/notebook/posts/tcs/machine_learning/NMF.html" />
+    <id>http://holdenlee.github.io/notebook/posts/tcs/machine_learning/NMF.html</id>
+    <published>2016-03-26T00:00:00Z</published>
+    <updated>2016-03-26T00:00:00Z</updated>
+    <summary type="html"><![CDATA[
+<div class="container">
+  <div id="content">
+    <div class="page header">
+      <h1>Non-negative matrix factorization</h1>
+    </div>
+    <div class="info">
+      
+       
+        <p>Posted: 2016-03-26 
+          , Modified: 2016-03-26 
+	</p>
+      
+       <p>Tags: <a href="/tags/NMF.html">NMF</a></p> 
+    </div>
+    
+  </div>
+  <!--/div-->
+
+  <div class="toc"> <ul>
+ <li><a href="#problem">Problem</a></li>
+ <li><a href="#previous-work">Previous work</a></li>
+ <li><a href="#open-problems-directions">Open problems, directions</a></li>
+ </ul> </div>
+
+  <div class="blog-main">
+    <p>Notes: See S3 in 598D, Ch. 1 in Moitra’s notes, and Rong Ge’s thesis.</p>
+<h2 id="problem">Problem</h2>
+<p>Given <span class="math inline">\(M\)</span>, write <span class="math inline">\(M=AW\)</span>, <span class="math inline">\(A,W\ge 0\)</span>.</p>
+<p>Say <span class="math inline">\(M\)</span> is <strong>separable</strong> if it has a NMF <span class="math inline">\(M=AW\)</span>, and for every column <span class="math inline">\(i\)</span> of <span class="math inline">\(A\)</span>, there is a row where there is a single nonzero entry and it is in column <span class="math inline">\(i\)</span>.</p>
+<h2 id="previous-work">Previous work</h2>
+<p>Hardness</p>
+<ul>
+<li>If there exists a <span class="math inline">\(n^{o(r)}\)</span> time algorithm, then there exists a <span class="math inline">\(2^{o(n)}\)</span> algorithm for 3SAT.</li>
+</ul>
+<p>Algorithms</p>
+<ul>
+<li>[AGKM12, M14] Given that the rank equals the nonnegative rank, there is a <span class="math inline">\(n^{O(r)}\)</span> time algorithm for NMF. (Relies on solving polynomial inequalities.)</li>
+<li>[AGKM12] Under separability, NMF can be solved in polynomial time in <span class="math inline">\(n\)</span>. (Use the geometry.)</li>
+<li>[AGM14] Dictionary learning</li>
+</ul>
+<h2 id="open-problems-directions">Open problems, directions</h2>
+<ul>
+<li>Give an algorithm for approximate NMF. (Suppose <span class="math inline">\(\ve{M-AW}_F^2\le \ep\ve{M}_F^2\)</span>.)</li>
+</ul>
+<p>(What is the prediction task?)</p>
+
+  </div>
+
+    
+
+    <!-- Extension : Sharing buttons @ www.sharethis.com -->
+    <span class='st_facebook_large' displayText='Facebook'></span>
+    <span class='st_twitter_large' displayText='Tweet'></span>
+    <span class='st_googleplus_large' displayText='Google +'></span>
+    <span class='st_reddit_large' displayText='Reddit'></span>
+    <span class='st__large' displayText=''></span>
+
+    <div id="disqus_thread"></div>
+    
+
+
+  
+    <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+  </div>
+  
+</div>
+]]></summary>
+</entry>
+<entry>
+    <title>[AGMM15] Simple, efficient, and neural algorithms for sparse coding</title>
+    <link href="http://holdenlee.github.io/notebook/posts/tcs/machine_learning/AGMM15.html" />
+    <id>http://holdenlee.github.io/notebook/posts/tcs/machine_learning/AGMM15.html</id>
+    <published>2016-03-25T00:00:00Z</published>
+    <updated>2016-03-25T00:00:00Z</updated>
+    <summary type="html"><![CDATA[
+<div class="container">
+  <div id="content">
+    <div class="page header">
+      <h1>[AGMM15] Simple, efficient, and neural algorithms for sparse coding</h1>
+    </div>
+    <div class="info">
+      
+       
+        <p>Posted: 2016-03-25 
+          , Modified: 2016-03-25 
+	</p>
+      
+       <p>Tags: <a href="/tags/dictionary%20learning.html">dictionary learning</a>, <a href="/tags/sparse%20coding.html">sparse coding</a></p> 
+    </div>
+    
+  </div>
+  <!--/div-->
+
+  <div class="toc"> <ul>
+ <li><a href="#problemmodel-and-assumptions">Problem/Model and Assumptions</a></li>
+ <li><a href="#algorithm">Algorithm</a><ul>
+ <li><a href="#instantiation">Instantiation</a><ul>
+ <li><a href="#version-1">Version 1</a></li>
+ <li><a href="#version-2">Version 2</a></li>
+ <li><a href="#instantiation-1">Instantiation</a></li>
+ </ul></li>
+ </ul></li>
+ <li><a href="#approximate-gradient-descent">Approximate gradient descent</a></li>
+ <li><a href="#theorems">Theorems</a></li>
+ <li><a href="#proofs">Proofs</a><ul>
+ <li><a href="#initialization">Initialization</a></li>
+ </ul></li>
+ <li><a href="#birds-eye-view">Bird’s eye view</a></li>
+ <li><a href="#questions">Questions</a></li>
+ </ul> </div>
+
+  <div class="blog-main">
+    <h2 id="problemmodel-and-assumptions">Problem/Model and Assumptions</h2>
+<p>Given many independent samples <span class="math inline">\(y=A^*x^*+N\)</span>, recover <span class="math inline">\((A^*,x^*)\)</span>. Here,</p>
+<ol type="1">
+<li><span class="math inline">\(A^*\in \R^{n\times m}\)</span> is a fixed matrix. We assume:
+<ul>
+<li><span class="math inline">\(A\)</span> has unit norm columns.</li>
+<li>(Norm is like that of a random matrix) <span class="math inline">\(\ve{A^*}=O\pa{\sfc{m}{n}}\)</span>.</li>
+<li><span class="math inline">\(A\)</span> is <span class="math inline">\(\mu\)</span>-incoherent, i.e., <span class="math inline">\(\an{A_i,A_j}\le \fc{\mu}{\sqrt n}\)</span>.</li>
+</ul></li>
+<li><span class="math inline">\(x^*\)</span> is drawn from a sparse distribution. Specifically, <span class="math inline">\(x^*\sim D\)</span> where
+<ul>
+<li>Always, <span class="math inline">\(\Supp(x^*)\le k\)</span>.</li>
+<li><span class="math inline">\(\Pj(i\in S)=\Te\pf{k}{m}\)</span>.</li>
+<li><span class="math inline">\(\Pj(i,j\in S) = \Te\pf{k^2}{m^2}\)</span>.</li>
+<li><span class="math inline">\(\E[x_i^*|x_j^*\ne 0]=0\)</span> (why do we care about the conditioning here?) and <span class="math inline">\(\E[x_i^{*2}| x_i^*\ne0]=1\)</span>.</li>
+<li>When <span class="math inline">\(x_i^*\ne 0\)</span>, <span class="math inline">\(|x_i^*|\ge C\)</span> for some constant <span class="math inline">\(C\le 1\)</span>. (This is an unreasonable assumption, but it makes sure the thresholding doesn’t cut off actual coordinates.)</li>
+<li>Conditioned on the support, the nonzero entries are pairwise independent and subgaussian. Subgaussian means <span class="math inline">\(\exists C,v&gt;0, \Pj(|X|&gt;t)\le Ce^{-vt^2}\)</span> or equivalently <span class="math inline">\(\exists b, \E e^{tX}\le e^{b^2t^2/2}\)</span>.</li>
+</ul></li>
+<li>The noise <span class="math inline">\(N\)</span> is Gaussian and independent.<a href="#fn1" class="footnoteRef" id="fnref1"><sup>1</sup></a></li>
+</ol>
+<h2 id="algorithm">Algorithm</h2>
+<p>The algorithm is alternating minimization. In alternating minimization, we want to minimize a function <span class="math inline">\(f(x,y)\)</span>. It is difficult to minimize with respect to <span class="math inline">\((x,y)\)</span> together (e.g., because <span class="math inline">\(f\)</span> is nonconvex when taken as a joint function of <span class="math inline">\(x,y\)</span>) but easy to minimize with respect to <span class="math inline">\(x\)</span> or <span class="math inline">\(y\)</span> while keeping the other fixed (e.g., because <span class="math inline">\(f\)</span> is convex in <span class="math inline">\(x\)</span> and in <span class="math inline">\(y\)</span>). Alternate between</p>
+<ul>
+<li>minimizing with respect to <span class="math inline">\(x\)</span>, and</li>
+<li>minimizing with respect to <span class="math inline">\(y\)</span>.</li>
+</ul>
+<p>For example, we can take gradient steps.</p>
+<p>There are no results for general nonconvex <span class="math inline">\(f\)</span>; theoretical results tend to be ad hoc (for specific <span class="math inline">\(f\)</span>). AGMM make a general technique that can be used to analyze alternating minimization algorithms, <strong>approximate gradient descent</strong>.</p>
+<h3 id="instantiation">Instantiation</h3>
+<h4 id="version-1">Version 1</h4>
+<p>The algorithm is</p>
+<ul>
+<li>Input: initial guess <span class="math inline">\(A^0\)</span>, step size <span class="math inline">\(\eta\)</span>.</li>
+<li>At step <span class="math inline">\(s\)</span>, take <span class="math inline">\(p\)</span> samples <span class="math inline">\(y^{(i)}\)</span> and let
+<ul>
+<li>(Decode) Let <span class="math inline">\(x^{(i)}=1_{\ge \fc C2}((A^s)^Ty^{(i)})\)</span>.</li>
+<li>(Update)
+\begin{align}
+\wh g^s &amp;=\rc p \sumo ip (y^{(i)} - A^{(s)}x^{(i)}) \sign(x^{(i)})^T\\
+A^{s+1} &amp;= A^s - \eta \wh g^s
+\end{align}</li>
+</ul></li>
+</ul>
+<p>The decoding step is doing a minimization with respect to <span class="math inline">\(x\)</span><a href="#fn2" class="footnoteRef" id="fnref2"><sup>2</sup></a>. Intuitively, since <span class="math inline">\(A^*\)</span> is incoherent (random-like), <span class="math inline">\((A^*)^TA^*\approx I\)</span>, so multiplying by <span class="math inline">\((A^*)^T\)</span> has the effect of inverting. The threshold acts as a denoiser.</p>
+<p>Note that we don’t quite take the gradient step: the gradient is <span class="math inline">\(2(y^{(i)} - Ax^{(i)})^T x^{(i)}\)</span>; we only take the sign of <span class="math inline">\(x^{(i)}\)</span>.<a href="#fn3" class="footnoteRef" id="fnref3"><sup>3</sup></a></p>
+<p>(There’s no regularization here?)</p>
+<h4 id="version-2">Version 2</h4>
+<p>A better version of the above is to use gradient descent (Olshausen-Field), rather than just the sign of the difference. Let <span class="math inline">\(A'=A - \eta g\)</span> where <span class="math inline">\(g=\E [(y-Ax) x^T]\)</span>. The complication is that this may not prserver <span class="math inline">\((\de,2)\)</span>-nearness, so the update rule is replaced by</p>
+\begin{align}
+\wh g^s &amp;=\rc p \sumo ip (y^{(i)} - A^{(s)}x^{(i)}) \sign(x^{(i)})^T\\
+A^{s+1} &amp;= \Proj_B(A^s - \eta \wh g^s)
+\end{align}
+<p>where <span class="math inline">\(B\)</span> is the set of <span class="math inline">\((\de_0,2)\)</span>-close matrices to <span class="math inline">\(A^*\)</span>.</p>
+<h4 id="instantiation-1">Instantiation</h4>
+<p>The algorithms above require a matrix that is <span class="math inline">\(O^*\prc{\log n}\)</span>-close to the true matrix. Algorithm 3 gives such a matrix.</p>
+<ul>
+<li>Set <span class="math inline">\(L=\phi\)</span>.</li>
+<li>While <span class="math inline">\(|L|&lt;m\)</span> choose samples <span class="math inline">\(u,v\)</span>. (We will need <span class="math inline">\(p_1\)</span> of these samples.)
+<ul>
+<li>Set <span class="math inline">\(\wh M_{u,v} - \EE_{i\in p_2}\)</span> y<sup>{(i)}y</sup>{(i)T}$. (Average over <span class="math inline">\(p_2\)</span> fresh samples.)</li>
+<li>Compute the top two singular values <span class="math inline">\(\si_1,\si_2\)</span> and top singular vector <span class="math inline">\(z\)</span> of <span class="math inline">\(\wh M_{u,v}\)</span>.</li>
+<li>If <span class="math inline">\(\si_1\ge \Om\pf{k}{m}, \si_2&lt;O^*\pf{k}{m\log m}\)</span>, and <span class="math inline">\(\pm z\)</span> is not within distance <span class="math inline">\(\rc{\log m}\)</span> of any vector in <span class="math inline">\(L\)</span>, add <span class="math inline">\(z\)</span> to <span class="math inline">\(L\)</span>.</li>
+</ul></li>
+<li>Let <span class="math inline">\(z\in L\)</span> be the columns of <span class="math inline">\(\wt A\)</span>. Let <span class="math inline">\(A=\Proj_B\wt A\)</span>.</li>
+</ul>
+<h2 id="approximate-gradient-descent">Approximate gradient descent</h2>
+<p>A general condition for a “descent”-type algorithm to work is that we make a step correlated with the direction to the optimum each time.</p>
+<p><strong>Definition</strong>: <span class="math inline">\(g\)</span> is <span class="math inline">\((\al,\be,\ep)\)</span>-correlated with <span class="math inline">\(z^*\)</span> if <span class="math display">\[\an{g,z-z^*} \ge \al\ve{z-z^*}^2 + \be \ve{g}^2 - \ep.\]</span></p>
+<p>An algorithm which makes correlated steps has geometric convergence. For example, gradient descent on strongly convex, smooth functions gives geometric convergence.</p>
+<p><strong>Proposition</strong>: If <span class="math inline">\(f\)</span> is <span class="math inline">\(2\al\)</span>-strongly convex and <span class="math inline">\(\rc{2\be}\)</span>-smooth, then <span class="math inline">\(\nb f(z)\)</span> is <span class="math inline">\((\al,\be,0)\)</span>-correlated with <span class="math inline">\(z^*\)</span>.</p>
+<em>Proof</em>: Note that <span class="math inline">\(L\)</span>-smooth means <span class="math inline">\(f(x) - f(x^*) \ge \rc{2L} \ve{\nb f(x)}^2\)</span> (cf. gradient descent lemma). Then
+\begin{align}
+\an{g,x-x^*} &amp;\ge f(x)-f(x^*) + \al\ve{x-x^*}^2\\
+&amp;\ge \be \ve{\nb f}^2 + \al\ve{x-x^*}^2.
+\end{align}
+<p><strong>Theorem</strong> (Theorem 6): If <span class="math inline">\(g\)</span> is <span class="math inline">\((\al,\be,\ep)\)</span>-correlated with <span class="math inline">\(z^*\)</span> and <span class="math inline">\(z'=z-\eta g\)</span> and <span class="math inline">\(0&lt;\eta\le 2\be\)</span>, then <span class="math display">\[\ve{z'-z^*}^2 \le (1-2\al \eta)\ve{z-z^*}^2 + 2\eta \ep.\]</span> If <span class="math inline">\(z_{t+1}=z_t - \eta g_t\)</span> and each <span class="math inline">\(g_t\)</span> is <span class="math inline">\((\al,\be,\ep)\)</span>-correlated with <span class="math inline">\(z^*\)</span>, <span class="math display">\[\ve{z_t-z^*}^2\le (1-\al \eta)^t \ve{z_0-z^*}^2.\]</span></p>
+<p>(Note the usual gradient step size for <span class="math inline">\(\rc{2\be}\)</span>-smooth functions is <span class="math inline">\(2\be\)</span>.)</p>
+<em>Proof</em>: Break up <span class="math inline">\(z'-z^* = (z-z^*) - \eta g\)</span> in order to use the correlation.
+\begin{align}
+\ve{z'-z^*}^2 &amp;=\ve{z-z^*} - 2\an{z-z^*, \eta g} + \eta^2\ve{g}^2\\
+&amp;\le \ve{z-z^*}^2 - 2\eta (\al\ve{z-z^*}^2+\be \ve{g}^2-\ep) + \eta^2\ve{g}^2\\
+&amp;= (1-2\eta \al)\ve{z-z^*}^2 +\ub{ \eta (\eta - 2\be) \ve{g}^2}{\le 0} + 2\eta \ep.
+\end{align}
+<p>In actuality, we’ll need a weaker form of this, “<span class="math inline">\((\al,\be,\ep_s)\)</span>-correlated with high probability” (Definition 38). There is an analogue of the theorem in this setting (Theorem 40).</p>
+<h2 id="theorems">Theorems</h2>
+<ul>
+<li>Theorem 2, 9 give the convergence of the main alternating minimization algorithm for sparse coding, given good initialization. Theorem 14 is the simpler case where we have an infinite number of samples in each step (so we can actually minimize in <span class="math inline">\(A\)</span> at each step, rather than just take a step towards the minimum). We show Theorem 14.</li>
+<li>Theorem 3, 13 give the convergence of a more sophisticated algorithm which achieves better additive error.</li>
+<li>Theorem 4, 19 give an algorithm to initialize <span class="math inline">\(A\)</span> (using SVD).</li>
+</ul>
+<p>Say <span class="math inline">\(A\)</span> is <span class="math inline">\((\de,\ka)\)</span>-near to <span class="math inline">\(A^*\)</span> if</p>
+<ul>
+<li>there is a permutation <span class="math inline">\(\pi\in S_m\)</span> and <span class="math inline">\(\si:[m]\to \{\pm1\}\)</span> such that <span class="math inline">\(\ve{\si(i)A_{\pi(i)}-A_i^*}\le \de\)</span> for all <span class="math inline">\(i\)</span>.</li>
+<li><span class="math inline">\(\ve{A-A^*}\le \ka \ve{A^*}\)</span>.</li>
+</ul>
+<p>In detail: Let <span class="math inline">\(\de = O^*\prc{\log n}\)</span>. (Here <span class="math inline">\(x=O^*(y)\)</span> means there exists <span class="math inline">\(c\)</span> such that the statement is true for <span class="math inline">\(x\le cy\)</span>.<a href="#fn4" class="footnoteRef" id="fnref4"><sup>4</sup></a>)</p>
+<ul>
+<li>(Theorem 14, 9) Suppose <span class="math inline">\(A^0\)</span> is <span class="math inline">\((2\de,2)\)</span>-near to <span class="math inline">\(A^*\)</span> and <span class="math inline">\(\eta = \Te\pf{m}{k}\)</span>. If each update step uses an infinite (<span class="math inline">\(\wt \Om(mk)\)</span>) samples, there is <span class="math inline">\(0&lt;\tau&lt;\rc2\)</span> such that <span class="math display">\[\ve{A_i^s - A_i^*}^2\le \ve{A_i^0 - A_i^*}^2 + \begin{cases}O\pf{k^2}{n^2}&amp;\\
+O\pf{k}n&amp;\\\end{cases},\]</span> respectively.<a href="#fn5" class="footnoteRef" id="fnref5"><sup>5</sup></a></li>
+<li>(Theorem 13) We can improve the algorithm to get additive error <span class="math inline">\(n^{-\om(1)}\)</span>.</li>
+<li>(Theorem 19) If the instantiation algorithm is given <span class="math inline">\(p_1=\wt\Om(m)\)</span> and <span class="math inline">\(p_2=\wt\Om(mk)\)</span> fresh samples, and
+<ul>
+<li><span class="math inline">\(A^*\)</span> is <span class="math inline">\(\mu=O^*\pf{\sqrt n}{k(\log n)^3}\)</span>-incoherent,</li>
+<li><span class="math inline">\(m=O(n)\)</span></li>
+<li><span class="math inline">\(\ve{A^*} \le O\pa{\sfc{m}{n}}\)</span>, then w.h.p. <span class="math inline">\(A\)</span> is <span class="math inline">\((O^*\prc{\log n},2)\)</span>-near to <span class="math inline">\(A^*\)</span>.</li>
+</ul></li>
+</ul>
+<h2 id="proofs">Proofs</h2>
+<p>We cheat in this proof; for the correct version see Appendix D. We calculate <span class="math inline">\(\E g\)</span>, the expected value of the gradient step, and pretend that is the actual gradient step (this is OK for infinite sample size). For the real version, we’d have to consider concentration around <span class="math inline">\(\E g\)</span>.</p>
+<p>The strategy is to show that step is correlated with the actual minimum, and then use the theorem on approximate gradient descent. First, we need to show that the minimum <span class="math inline">\(x\)</span> will have the right support with high probability.</p>
+<ul>
+<li>(Lemma 10, 23) Suppose <span class="math inline">\(A\)</span> is <span class="math inline">\(\de\)</span>-close to <span class="math inline">\(A^*\)</span>. Then with high probability over <span class="math inline">\(y=A^*x^*\)</span> (randomness is over <span class="math inline">\(x\sim D\)</span>), <span class="math display">\[\sign(1_{\ge \fc C2} (A^Ty)) = \sign(x^*).\]</span> (Decoding gives the right sign. This uses crucially that <span class="math inline">\(A\)</span> is already close enough.) We rely on the assumption that when <span class="math inline">\(x_i\ne 0\)</span>, it is bounded away on 0. (It would be interesting to remove this condition.)
+<ul>
+<li><strong>Lemma</strong>: If <span class="math inline">\(\fc{\mu}{\sqrt{n}}\le \rc{2k}\)</span> and <span class="math inline">\(k=\Om^*(\log m)\)</span> and <span class="math inline">\(\de=O^*\prc{\sqrt{\log m}}\)</span>, then w.h.p over <span class="math inline">\(x^*\)</span>, <span class="math inline">\(S:=\Supp(x^*)=\set{i}{|\an{A_i, y}|&gt;\fc C2}\)</span>, and <span class="math inline">\(\sign(\an{A_i,y})=\sign(x_i^*)\)</span>. <em>Proof</em>: Write <span class="math display">\[\an{A_i, A^*x^*}=\ub{\an{A_i,A_i^*}x_i^*}{\ad\ge 1-\fc{\de^2}2} + \sum_{j\ne i} \ub{\an{A_i,A_j^*}}{(\cdot)^2 \le 2\mu^2 + \an{A_i-A_i^*,A_j^*}}x_j^*\]</span> where we use closeness of <span class="math inline">\(A_i,A_i^*\)</span> and incoherence of <span class="math inline">\(A^*\)</span>. The sum is <span class="math display">\[\le 2\mu^2 + \ve{A_{S\be \{i\}}^{*T}(A_i-A_i^*)}^2.\]</span> Bound <span class="math inline">\(\ve{A_{S\bs\{i\}}}^2\)</span> by bounding <span class="math display">\[\ve{A_{S\bs\{i\}}}^2 =\sqrt{\ve{A_{S\bs\{i\}}^TA_{S\bs\{i\}}}} \le \sqrt{1+k\fc{\mu}{2\sqrt n}}.\]</span></li>
+</ul></li>
+<li>(Lemma 11) Now derive an expression for the expected value of the next value of <span class="math inline">\(A\)</span>. Let <span class="math inline">\(A'=A-\eta g\)</span>. We write it in the form <span class="math inline">\(\al (A-A^*)+\pat{error terms}\)</span>.
+<ul>
+<li><strong>Lemma</strong>: Let <span class="math inline">\(A'=A-\eta g\)</span>. Then <span class="math display">\[\E g_i = p_iq_i (\ub{\an{A_i' , A_i^*}}{=:\la_i}A_i - A_i^*+O\pf{k}n).\]</span><a href="#fn6" class="footnoteRef" id="fnref6"><sup>6</sup></a> <em>Proof</em>: With high probability, <span class="math inline">\(g\)</span> has the right sign as <span class="math inline">\(x\)</span>, so in calculating the expected value, we can assume it always has the right sign—its support is always <span class="math inline">\(\Supp(x)\)</span>. Then we can restrict to the support of <span class="math inline">\(x\)</span>. We separate the term <span class="math inline">\(i\)</span> because that will have the main contribution (recall incoherence means <span class="math inline">\(AA^T \approx I\)</span>).
+\begin{align}
+\E g_i &amp;= \E[(y-Ax)\sgn(x_i)]\\
+&amp;\approx \E[(y-A_SA_S^Ty) \sgn(x_i)]\\
+&amp;=\E[(I-A_SA_S^T)A^* x \sgn(x_i)]\\
+&amp;=\E[(I-A_iA_i^T)A^* x \sgn(x_i)] - \E[A_{S\bs\{i\}} A_{S\bs\{i\}}^T A^* x \sgn(x_i)]\\
+&amp;= \ub{\E[x_i^*\sgn(x_i^*)|S]}{p_i} \ub{\Pj(i\in S)}{q_i} (I-A_iA_i^T) A_i^* - p_i A_{-i} \diag(\ub{\Pj(i,j\in S)}{q_{i,j}}) A_{-i} A_i^*.
+\end{align}
+The error is <span class="math inline">\(\ve{A_{-i}}^2\max\fc{q_{ij}}{q_i} = \fc mn O\pf km = O\pf kn\)</span>, as needed.</li>
+</ul></li>
+<li>(Lemma 15-18) Bound the error term to show that at each step of the algorithm, the step is correlated, and maintains nearness.
+<ul>
+<li>Lemma 11 gives the following. Let <span class="math inline">\(k=p_iq_i\)</span>. We show the bound indicated below. <span class="math display">\[\E g_i  = \ub{p_iq_i}{=:k}(A_i - A^*) + \ub{p_iq_i ((1-\la_i) A_i + \ep_i + \ga)}{\ved \le \fc k4 \ve{A_i - A_i^*} + \ze}\]</span> where <span class="math inline">\(\ze=O\pf{k^2}{mn}\)</span>. Then <span class="math display">\[\an{g_i,A_i-A_i^*} \ge k\ve{A_i - A_i^*}^2 - \fc k4 \ve{A_i - A_i^*}^2 - \ze\ve{A_i - A_i^*}.\]</span> Using the inequality <span class="math inline">\(ax^2-bx \ge cx^2 + \fc{b^2}{4(a-c)}\)</span> with <span class="math inline">\(a=\fc 34k\)</span>, <span class="math inline">\(b=\ze\)</span>, <span class="math inline">\(c=\fc k4\)</span>, we get this is <span class="math inline">\(\ge \rc 4 k\ve{A_i-A_i^*}^2 + \fc{\ze^2}{2k}\)</span>.</li>
+<li>Thus <span class="math inline">\(\E g_i\)</span> is <span class="math inline">\((\Om\pf km, \Om\pf mk, O\pf{k^3}{mn^2})\)</span>-correlated with <span class="math inline">\(A^*\)</span>. The last term comes from <span class="math inline">\(\fc{\ep}{\al} = \fc{k^3/(mn^2)}{k/m}\)</span>.</li>
+<li>Note we need to maintain nearness in order to apply the estimates that gave correlation. (Where do we use 2-nearness in Lemma 11?) We show nearness is preserved. The natural way to decompose <span class="math inline">\(A_i'\)</span> is as follows.
+\begin{align}
+\E(A_i' - A_i^*) &amp;= \E[(A_i' - A_i)+(A_i-A_i^*)]\\
+&amp;=-\eta p_iq_i (\la_i^s A_i^s - A_i^*+\ep_i +\ga) + A_i - A_i^*\\
+&amp;=\diag(1-\eta p_iq_i) (A_i-A_i^*) + (1-\la_i) \eta p_iq_i A_i - \eta p_iq_i(\ep_i+\ga).
+\end{align}
+Now bound the two error terms by bounding the spectral norm.</li>
+</ul></li>
+<li>Finish.
+<ul>
+<li>At each step the step is <span class="math inline">\((\Om\pf{k}m,\Om \pf mk, O\pf{k^3}{mn^2})\)</span>-correlated with <span class="math inline">\(A_i^*\)</span>. By the approximate gradient descent theorem, this gives the result.</li>
+</ul></li>
+</ul>
+<h3 id="initialization">Initialization</h3>
+<ul>
+<li>(Lemma 20) Write <span class="math inline">\(M_{u,v}=\EE[\an{u,y}\an{v,y}yy^T]\)</span> as a main term plus error terms. (Why does this only give up to <span class="math inline">\(\rc{\log n}\)</span>?) <span class="math display">\[ M_{u,v} = \sum_{i\in U\cap V} q_ic_i\be_i\be_i' A_i^*,A_i^{*T}+E_1+E_2+E_3\]</span> where <span class="math inline">\(\be = A^{*T},\be'=A^{*T}v,q_i=\Pj(i\in S), c_i=\E[x_i^{*4}|i\nin S]\)</span>, <span class="math inline">\(U=\Supp(u),V=\Supp(v)\)</span>. The main term comes from the indices in ths support of both vectors. To calculate this, expand in terms of <span class="math inline">\(x_i^*\)</span>, and note that because they have mean 0, the terms that contribute are <span class="math inline">\(x_i^{*4},x_i^{*2}x_j^{*2}\)</span>. Bound the spectral norm of <span class="math inline">\(E_1+E_2+E_3\)</span> by <span class="math inline">\(O^*\pf{k}{m\log n}\)</span>.
+<ul>
+<li>(Lemma 36) If <span class="math inline">\(U\cap V=\{i\}\)</span>, then the top singular vector of <span class="math inline">\(M_{u,v}\)</span> is <span class="math inline">\(O^*\prc{\log n}\)</span>-close to <span class="math inline">\(A_i^*\)</span>. Proof: Use Wedin’s Theorem. (Let <span class="math inline">\(v_1(A)\)</span> be the top eigenvector of <span class="math inline">\(A\)</span>. If <span class="math inline">\(\de=|\la_1(A)-\la_2(A)|\)</span>, then <span class="math inline">\(\sin(\angle (v_1(A), v_1(A+E)))\le \fc{\ve{E}_2}{\de}\)</span>.)</li>
+<li>(Lemma 37) If there is a gap between the largest and second largest singular values as in the algorithm, then w.h.p. <span class="math inline">\(u,v\)</span> share a unique dictionary element. (Proof uses Weyl’s Theorem, HJ90—check this out.)</li>
+<li>Finally, <span class="math inline">\(\Pj(|U\cap V|=\{i\}) = \Om\pf{k^2}{m^2}\)</span>.</li>
+</ul></li>
+</ul>
+<h2 id="birds-eye-view">Bird’s eye view</h2>
+<ul>
+<li>Main technique: Alternating minimization. Crystallize out a weaker form of gradient descent, what is <em>actually</em> needed.</li>
+<li>Threshold to denoise and cancel out the vectors that are 0.</li>
+<li>For initialization, try to find the columns as the largest eigenvector of some matrix (SVD). Which matrix? <span class="math inline">\(\E\an{y,u}\an{y,v}yy^T\)</span>, because intuitively the large singular values will correspond to indices shared by <span class="math inline">\(u,v\)</span>, and with good probability <span class="math inline">\(u,v\)</span> have only one index in common in their support.</li>
+</ul>
+<h2 id="questions">Questions</h2>
+<ul>
+<li>Presence of multiple local minima?</li>
+</ul>
+<section class="footnotes">
+<hr />
+<ol>
+<li id="fn1"><p>What is the magnitude? I think this is responsible for the <span class="math inline">\(\ga\)</span>’s that appear, but which are swept under the rug.<a href="#fnref1">↩</a></p></li>
+<li id="fn2"><p>Is it the minimum?<a href="#fnref2">↩</a></p></li>
+<li id="fn3"><p>Is this important, or just for simplicity of analysis?<a href="#fnref3">↩</a></p></li>
+<li id="fn4"><p>This is to disambiguate from the other meaning of <span class="math inline">\(O\)</span>, which is “whenever <span class="math inline">\(x\le cy\)</span> for some <span class="math inline">\(c\)</span>, there are constants such that the result holds.”<a href="#fnref4">↩</a></p></li>
+<li id="fn5"><p>Are we implicitly reordering the columns here?<a href="#fnref5">↩</a></p></li>
+<li id="fn6"><p>Do we need concentration too?<a href="#fnref6">↩</a></p></li>
+</ol>
+</section>
+
+  </div>
+
+    
+
+    <!-- Extension : Sharing buttons @ www.sharethis.com -->
+    <span class='st_facebook_large' displayText='Facebook'></span>
+    <span class='st_twitter_large' displayText='Tweet'></span>
+    <span class='st_googleplus_large' displayText='Google +'></span>
+    <span class='st_reddit_large' displayText='Reddit'></span>
+    <span class='st__large' displayText=''></span>
+
+    <div id="disqus_thread"></div>
+    
+
+
+  
+    <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+  </div>
+  
+</div>
+]]></summary>
+</entry>
+<entry>
+    <title>Sum of squares</title>
+    <link href="http://holdenlee.github.io/notebook/posts/tcs/complexity/sos.html" />
+    <id>http://holdenlee.github.io/notebook/posts/tcs/complexity/sos.html</id>
+    <published>2016-03-24T00:00:00Z</published>
+    <updated>2016-03-24T00:00:00Z</updated>
+    <summary type="html"><![CDATA[
+<div class="container">
+  <div id="content">
+    <div class="page header">
+      <h1>Sum of squares</h1>
+    </div>
+    <div class="info">
+      
+       
+        <p>Posted: 2016-03-24 
+          , Modified: 2016-03-24 
+	</p>
+      
+       <p>Tags: <a href="/tags/SoS.html">SoS</a>, <a href="/tags/SDP.html">SDP</a>, <a href="/tags/maxcut.html">maxcut</a></p> 
+    </div>
+    
+  </div>
+  <!--/div-->
+
+  <div class="toc"> <ul>
+ <li><a href="#introduction">Introduction</a></li>
+ <li><a href="#definitions">Definitions</a><ul>
+ <li><a href="#equivalence">Equivalence</a></li>
+ </ul></li>
+ <li><a href="#sum-of-squares-as-semidefinite-programs">Sum-of-squares as semidefinite programs</a></li>
+ <li><a href="#exercises">Exercises</a><ul>
+ <li><a href="#chapter-1">Chapter 1</a></li>
+ <li><a href="#chapter-2">Chapter 2</a></li>
+ </ul></li>
+ <li><a href="#misc.">Misc.</a></li>
+ </ul> </div>
+
+  <div class="blog-main">
+    <p>Reference: Barak’s notes. Barak and Steurer’s survey.</p>
+<h2 id="introduction">Introduction</h2>
+<p>“Sum-of-squares” is an algorithm that attempts to find feasible solutions to systems of polynomial inequalities, or a proof that there is no solution. It is widely applicable because many computational problems can naturally be put into the form of polynomial inequalities (ex. <span class="math inline">\(k\)</span>-SAT can be encoded with degree <span class="math inline">\(k\)</span>). The degree <span class="math inline">\(d\)</span> of sum-of-squares is a tunable parameter; the algorithm runs in <span class="math inline">\(n^d\)</span> time. We can look at</p>
+<ul>
+<li>lower bounds: sum-of-squares of degree <span class="math inline">\(d\)</span> cannot solve a certain problem. This is necessary, e.g., to show a problem has no polynomial-time algorithm - but very little is known about lower bounds even though sum-of-squares is a <em>single</em> algorithm, not a class of algorithms!</li>
+<li>upper bounds: use sum-of-squares of higher constant degree (e.g., <span class="math inline">\(d=4\)</span>) to get better approximation algorithms, etc.</li>
+</ul>
+<p>Why is SoS a natural notion?</p>
+<ul>
+<li><span class="math inline">\(d=1\)</span> is linear programming, <span class="math inline">\(d=2\)</span> is semidefinite programming, and <span class="math inline">\(d=n\)</span> is brute-force-search. Everything in the middle is “dark matter” which we don’t understand. In many cases it seems like you don’t get better algorithms by looking t <span class="math inline">\(d&gt;2\)</span>, but there are also exceptions. Compare to how most natural problems seem to be either polynomial time or NP-hard/conjectured exponential time. By Ladner’s Theorem (time hierarchy) there are problems of essentially any time complexity, but these aren’t natural.</li>
+<li>The quest for optimal algorithms: In complexity theory the hope is to find a property <span class="math inline">\(P\)</span> such that easy problems have property <span class="math inline">\(P\)</span> while hard problems do not. Even more ambitiously, one hopes for a <em>single</em> “optimal algorithm” for all problems in a large class, in the sense that when a problem has an efficient algorithm, then this single optimal algorithm will solve it. SoS comes the closest to being such an algorithm. (Thus it’s interesting to see what kinds of techniques are encompassed by the SoS framework, i.e., what facts have “SoS proofs”, because then they will be solvable by the SoS algorithm.)</li>
+</ul>
+<h2 id="definitions">Definitions</h2>
+<p>There are many equivalent notions of sum-of-squares; we give 4. The first definition introduces an algorithm that searches for a pseudo-expectation operator; on the boolean cube this is essentially equivalent to a pseudo-distribution. We also give equivalences to a sum-of-squares proof and sum-of-squares representation.</p>
+<p>In the next section we will motivate these definitions and show equivalences.</p>
+<p>Let <span class="math inline">\(x=(x_1,\ldots, x_n)\)</span> and <span class="math inline">\(\R[x]_{\le d}\)</span> denote polynomials in <span class="math inline">\(x_1,\ldots, x_n\)</span> of degree <span class="math inline">\(\le d\)</span>.</p>
+<ol type="1">
+<li>(Convex optimization) A degree-<span class="math inline">\(l\)</span> pseudo-expectation operator satisfying <span class="math inline">\(p_1=\cdots =p_m=0\)</span>, where <span class="math inline">\(\deg p_i\le d, 2d\mid l\)</span>, is a bilinear form <span class="math inline">\(M:\R[x]_{\le l/2}\times \R[x]_{\le l/2}\to \R\)</span> such that
+<ul>
+<li>(Normalization) <span class="math inline">\(M(1,1)=1\)</span>.</li>
+<li>(Consistency) If <span class="math inline">\(p,q,r,s\in \R[x]_{\le l/2}\)</span> and <span class="math inline">\(pq=rs\)</span>, then <span class="math inline">\(M(p,q)=M(r,s)\)</span>.</li>
+<li>(Non-negativity) <span class="math inline">\(M(p,p)\ge 0\)</span>.</li>
+<li>(Feasibility) For all <span class="math inline">\(p_i\)</span> and <span class="math inline">\(q\in \R[x]_{\le l/2-d}\)</span>, <span class="math inline">\(M(p_iq,p)=0\)</span>. In other words, <span class="math inline">\(M\)</span> is a positive semidefinite quadratic form that, as a bilinear form, factors through <span class="math inline">\((\R[x]/\an{p_i})_{\le l}\)</span>, <span class="math display">\[\R[x]_{\le l/2}\times \R[x]_{\le l/2} \to (\R[x]/\an{p_i})_{\le l} \to \R.\]</span> The degree-<span class="math inline">\(l\)</span> SoS algorithm is the algorithm that solves the feasibility problem for this semidefinite program.</li>
+</ul></li>
+<li>(Pseudo-expectation) For a function <span class="math inline">\(\mu:\{\pm 1\}^n\to \R\)</span> <span class="math display">\[\wt{\EE_\mu} p(x) = \sum_x \mu(x)p(x).\]</span> We say <span class="math inline">\(\mu\)</span> is a degree-<span class="math inline">\(l\)</span> <strong>pseudo-expectation</strong> if
+<ul>
+<li>(Normalization) <span class="math inline">\(\sum_x\mu(x)=1\)</span>.</li>
+<li>(Restricted non-negativity) For all <span class="math inline">\(p\in \R[x]_{\le l/2}\)</span>, <span class="math inline">\(\wt{\EE_\mu} p(x) \ge 0\)</span>.</li>
+</ul></li>
+<li>(Sum-of-square refutation) A <strong>sum-of-squares refutation</strong> for the system of polynomial equations <span class="math inline">\(p_i\ge 0\)</span><a href="#fn1" class="footnoteRef" id="fnref1"><sup>1</sup></a> is a proof of <span class="math inline">\(-1\ge 0\)</span> from deduction system starting with <span class="math inline">\(p_i\ge 0\)</span> with the following rules
+<ul>
+<li><span class="math inline">\(p\ge 0, q\ge 0\vDash p+q\ge 0\)</span>.</li>
+<li><span class="math inline">\(p\ge 0, q\ge 0\vDash pq\ge 0\)</span>.</li>
+<li><span class="math inline">\(\vDash p^2\ge 0\)</span>. It is degree <span class="math inline">\(l\)</span> if the <em>syntactic</em> degree of each expression is at most <span class="math inline">\(l\)</span>. (Explain.)</li>
+</ul></li>
+<li>(Sum-of-square representation) A degree-<span class="math inline">\(l\)</span> <strong>sum-of-squares representation</strong> for the infeasibility of <span class="math inline">\(p_1=0,\ldots, p_m=0\)</span> is <span class="math display">\[\sum_i p_i q_i = 1+\sum_i r_i^2, \quad \deg(p_i),\deg(r_i)\le l.\]</span></li>
+</ol>
+<h3 id="equivalence">Equivalence</h3>
+<p>1$$2: See exercise 1.7.</p>
+<p>2$$3: This is the SOS Theorem. It encompasses the Positivstellensatz, which says that every unsatisfiable system of equalities has a finite degre proof of unsatisfiability. (See exercise 1.14, 15 for part of the theorem.)</p>
+<p>3$$4: See exercise 1.11.</p>
+<h2 id="sum-of-squares-as-semidefinite-programs">Sum-of-squares as semidefinite programs</h2>
+<p>The most common use of sum-of-squares is in SDP relaxations of combinatorial problems, as follows. Let <span class="math inline">\(f\)</span> be a convex function. The goal is to find <span class="math display">\[
+\min_{x\in \{-1,1\}^n}f(x).
+\]</span> One way to relax this is to write <span class="math inline">\(f(x)=g(x^Tx/n)\)</span>, and find <span class="math display">\[
+\min_{M\succeq 0, M_{ii}=1} g(M).
+\]</span> This is a relaxation because if <span class="math inline">\(x\)</span> is the optimal solution to the first problem, <span class="math inline">\(x^Tx/n\)</span> is a feasible point for the second problem achieving the same value.<a href="#fn2" class="footnoteRef" id="fnref2"><sup>2</sup></a></p>
+<p>Think of <span class="math inline">\(M_{ii}=1\)</span> as degree-2 constraints that shrink the space we’re minizing over to be closer to just the set <span class="math inline">\(\set{x^Tx/n}{x\in \{-1,1\}^n}\)</span>.</p>
+<p>Note this is the degree-2 SoS relaxation of this problem! The degree-<span class="math inline">\(l\)</span> SoS relaxation is the optimization problem <span class="math display">\[\min_{M\text{ pseudo-expectation satisfying }x_i^2=1} h(M)\]</span> (note we showed that the set of pseudo-expectations is convex; it is defined by <span class="math inline">\(M\succeq 0\)</span> and some linear equations). (<span class="math inline">\(x_i^2=1\)</span> corresponds to <span class="math inline">\(M_{ii}=1\)</span>.) In the equation above we thought of <span class="math inline">\(M\)</span> as a bilinear form on <span class="math inline">\(\R^n\times \R^n = \R[x]_{=1}\times \R[x]_{=1}\)</span>; here we’re just adding 1 to the vector space to get <span class="math inline">\(\R[x]_{\le 1}\times \R[x]_{\le 1}\)</span> and stipulating <span class="math inline">\(M(1,1)=1\)</span>, which doesn’t change anything.</p>
+<p>(If <span class="math inline">\(f\)</span> is a linear function <span class="math inline">\(f(x_1,\ldots, x_n,x_1^2,x_1x_2,\ldots, x_1^3,\ldots)\)</span>, then <span class="math inline">\(g(M)\)</span> is the function <span class="math inline">\(f(M(x_1,1),\ldots, M(x_n,1), M(x_1,x_1),\ldots)\)</span>.</p>
+<p>For example, the degree-4 SoS relaxation would correspond to optimizing over <span class="math inline">\((\R^2,\R^1,\R)^{\ot 2}\)</span>, where the solutions corresponding to solutions of the original problem are in the form <span class="math inline">\((x^{\ot 2},x,1)^{\ot 2},x\in \{-1,1\}^n\)</span>. For $M<span class="math inline">\((\R^2,\R^1,\R)^{\ot 2}\)</span>, the solutions satisfy equations like <span class="math inline">\(M_{ii,jk}=1, M_{i,ij}=1\)</span>, etc.—corresponding to multiples of polynomials <span class="math inline">\(x_i^2-1\)</span>.</p>
+<h2 id="exercises">Exercises</h2>
+<h3 id="chapter-1">Chapter 1</h3>
+<ol type="1">
+<li></li>
+<li>Use linearity.</li>
+<li><span class="math inline">\(M(p,p)\ge 0\)</span> is semidefiniteness; all the other constraints are linear.</li>
+<li></li>
+<li>Let <span class="math inline">\(p=\sum_{y\ne y^0} \prod_i (x_i-y_i)^2\)</span>; note <span class="math inline">\(p(y^0)\ne 0\)</span>. Then <span class="math inline">\(\wt{\EE_{x\sim \mu}} [p(x)^2] = \mu(y^0)p(y^0)\)</span>. Thus <span class="math inline">\(\mu(y^0)\ge 0\)</span>.</li>
+<li>Note the problem should say “degree <span class="math inline">\(l\)</span> polynomials”. Write <span class="math inline">\(\mu(x)\)</span> as a multilinear polynomial. First, mod out by <span class="math inline">\(x_i^2-x_i\)</span>. Now note that for every degree <span class="math inline">\(\ge l+1\)</span> monomial <span class="math inline">\(x^L\)</span>, in <span class="math inline">\(\wt{\EE_{x\sim x^L}} q(x)\)</span>, if <span class="math inline">\(\deg q\le l\)</span> is a monomial, then one term will be uncancelled and average out to 0. Now use linearity.</li>
+<li>The map is <span class="math inline">\(\mu \mapsto ((p,q) \mapsto \wt{\EE_\mu pq})\)</span>. We have <span class="math inline">\(\sum \mu(x) (x_i^2-1)pq=0\)</span>. (Where do we use 6?)</li>
+<li></li>
+<li>?</li>
+<li>?</li>
+<li>Induct to say that at each stage, we have an expression in the form <span class="math inline">\(\sum r_i^2 + \sum q_ip_i\)</span>. At the end we get <span class="math inline">\(\sum r_i^2 + \sum q_ip_i = -1\ge 0\)</span>, which re-arranges to a SoS representation.</li>
+<li></li>
+<li></li>
+<li></li>
+<li></li>
+</ol>
+<h3 id="chapter-2">Chapter 2</h3>
+<ol type="1">
+<li>Imitate the proof of CS. We have <span class="math inline">\(\wt{\EE_{\mu}} t^2P^2-2tPQ+Q^2\)</span>. Now set the discriminant to be <span class="math inline">\(\le 0\)</span>.</li>
+</ol>
+<h2 id="misc.">Misc.</h2>
+<ul>
+<li>SoS in universal learning (Paul Christiano)</li>
+</ul>
+<section class="footnotes">
+<hr />
+<ol>
+<li id="fn1"><p>There is another way to relax this kind of problem, by changing the values <span class="math inline">\(x_i\)</span> could take from <span class="math inline">\(\pm1\)</span> to vectors, like in Goemans-Williamson. We don’t consider this kind of relaxation here. (Though we can do GW here too…?)<a href="#fnref1">↩</a></p></li>
+<li id="fn2"><p>There is another way to relax this kind of problem, by changing the values <span class="math inline">\(x_i\)</span> could take from <span class="math inline">\(\pm1\)</span> to vectors, like in Goemans-Williamson. We don’t consider this kind of relaxation here. (Though we can do GW here too…?)<a href="#fnref2">↩</a></p></li>
+</ol>
+</section>
+
+  </div>
+
+    
+
+    <!-- Extension : Sharing buttons @ www.sharethis.com -->
+    <span class='st_facebook_large' displayText='Facebook'></span>
+    <span class='st_twitter_large' displayText='Tweet'></span>
+    <span class='st_googleplus_large' displayText='Google +'></span>
+    <span class='st_reddit_large' displayText='Reddit'></span>
+    <span class='st__large' displayText=''></span>
+
+    <div id="disqus_thread"></div>
+    
+
+
+  
+    <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+  </div>
+  
+</div>
+]]></summary>
+</entry>
+<entry>
+    <title>Thoughts on LDC's</title>
+    <link href="http://holdenlee.github.io/notebook/posts/tcs/coding/ldc-ideas.html" />
+    <id>http://holdenlee.github.io/notebook/posts/tcs/coding/ldc-ideas.html</id>
+    <published>2016-03-24T00:00:00Z</published>
+    <updated>2016-03-24T00:00:00Z</updated>
+    <summary type="html"><![CDATA[
+<div class="container">
+  <div id="content">
+    <div class="page header">
+      <h1>Thoughts on LDC's</h1>
+    </div>
+    <div class="info">
+      
+       
+        <p>Posted: 2016-03-24 
+          , Modified: 2016-03-24 
+	</p>
+      
+       <p>Tags: <a href="/tags/LDC.html">LDC</a></p> 
+    </div>
+    
+  </div>
+  <!--/div-->
+
+  <div class="toc"></div>
+
+  <div class="blog-main">
+    
+
+  </div>
+
+    
+
+    <!-- Extension : Sharing buttons @ www.sharethis.com -->
+    <span class='st_facebook_large' displayText='Facebook'></span>
+    <span class='st_twitter_large' displayText='Tweet'></span>
+    <span class='st_googleplus_large' displayText='Google +'></span>
+    <span class='st_reddit_large' displayText='Reddit'></span>
+    <span class='st__large' displayText=''></span>
+
+    <div id="disqus_thread"></div>
+    
+
+
+  
+    <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+  </div>
+  
+</div>
+]]></summary>
+</entry>
+<entry>
+    <title>Thoughts on LDC's</title>
+    <link href="http://holdenlee.github.io/notebook/posts/tcs/coding/3-21-16.html" />
+    <id>http://holdenlee.github.io/notebook/posts/tcs/coding/3-21-16.html</id>
+    <published>2016-03-21T00:00:00Z</published>
+    <updated>2016-03-21T00:00:00Z</updated>
+    <summary type="html"><![CDATA[
+<div class="container">
+  <div id="content">
+    <div class="page header">
+      <h1>Thoughts on LDC's</h1>
+    </div>
+    <div class="info">
+      
+       
+        <p>Posted: 2016-03-21 
+          , Modified: 2016-03-21 
+	</p>
+      
+       <p>Tags: <a href="/tags/LDC.html">LDC</a></p> 
+    </div>
+    
+  </div>
+  <!--/div-->
+
+  <div class="toc"> <ul>
+ <li><a href="#zeevs-thoughts">Zeev’s thoughts</a></li>
+ </ul> </div>
+
+  <div class="blog-main">
+    <h2 id="zeevs-thoughts">Zeev’s thoughts</h2>
+<p>I was thinking a bit about the 2 query case (proving lower bounds). If we define the decoding map for 2-LCC we get a quadratic map Q from R^n to R^n sending the codewords (in +-1) to themselves. Now, the Jacobian of this map can be written (I think) as a combination of permutation matrices with coefficients that are the x_i. Using standard matrix chernoff/Bernstein bounds (see here: http://users.cms.caltech.edu/~jtropp/books/Tro14-Introduction-Matrix-FnTML-rev.pdf) I think you can show that the Jacobian has tiny norm almost everywhere. Which means that, to contain all the codewords, the image of Q must look very `spiky’ (it has small volume but contains a code). But then I started thinking that maybe we can use the fact that it is a low degree mapping to show that it cannot be too spiky. A quick google search came up with this paper:</p>
+<p>http://www.math.lsa.umich.edu/~barvinok/product.pdf</p>
+<p>Which is not exactly what we need, but seems in the right direction (and uses tools we already discussed before). If it works, this has some chance to generalize to degree 3 maps as well (not using the same tools but maybe something more sophisticated from real AG).</p>
+
+  </div>
+
+    
+
+    <!-- Extension : Sharing buttons @ www.sharethis.com -->
+    <span class='st_facebook_large' displayText='Facebook'></span>
+    <span class='st_twitter_large' displayText='Tweet'></span>
+    <span class='st_googleplus_large' displayText='Google +'></span>
+    <span class='st_reddit_large' displayText='Reddit'></span>
+    <span class='st__large' displayText=''></span>
+
+    <div id="disqus_thread"></div>
+    
+
+
+  
+    <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+  </div>
+  
+</div>
+]]></summary>
+</entry>
+<entry>
     <title>LSTM Programming</title>
     <link href="http://holdenlee.github.io/notebook/posts/tcs/machine_learning/neural_nets/lstm_code.html" />
     <id>http://holdenlee.github.io/notebook/posts/tcs/machine_learning/neural_nets/lstm_code.html</id>
@@ -352,63 +924,6 @@ using some calculus in the last step (exercise). <!--check this--></li>
 </entry>
 <entry>
     <title>Thoughts on LDC's</title>
-    <link href="http://holdenlee.github.io/notebook/posts/tcs/coding/3-21-16.html" />
-    <id>http://holdenlee.github.io/notebook/posts/tcs/coding/3-21-16.html</id>
-    <published>2016-03-14T00:00:00Z</published>
-    <updated>2016-03-14T00:00:00Z</updated>
-    <summary type="html"><![CDATA[
-<div class="container">
-  <div id="content">
-    <div class="page header">
-      <h1>Thoughts on LDC's</h1>
-    </div>
-    <div class="info">
-      
-       
-        <p>Posted: 2016-03-14 
-          , Modified: 2016-03-14 
-	</p>
-      
-       <p>Tags: <a href="/tags/LDC.html">LDC</a></p> 
-    </div>
-    
-  </div>
-  <!--/div-->
-
-  <div class="toc"> <ul>
- <li><a href="#zeevs-thoughts">Zeev’s thoughts</a></li>
- </ul> </div>
-
-  <div class="blog-main">
-    <h2 id="zeevs-thoughts">Zeev’s thoughts</h2>
-<p>I was thinking a bit about the 2 query case (proving lower bounds). If we define the decoding map for 2-LCC we get a quadratic map Q from R^n to R^n sending the codewords (in +-1) to themselves. Now, the Jacobian of this map can be written (I think) as a combination of permutation matrices with coefficients that are the x_i. Using standard matrix chernoff/Bernstein bounds (see here: http://users.cms.caltech.edu/~jtropp/books/Tro14-Introduction-Matrix-FnTML-rev.pdf) I think you can show that the Jacobian has tiny norm almost everywhere. Which means that, to contain all the codewords, the image of Q must look very `spiky’ (it has small volume but contains a code). But then I started thinking that maybe we can use the fact that it is a low degree mapping to show that it cannot be too spiky. A quick google search came up with this paper:</p>
-<p>http://www.math.lsa.umich.edu/~barvinok/product.pdf</p>
-<p>Which is not exactly what we need, but seems in the right direction (and uses tools we already discussed before). If it works, this has some chance to generalize to degree 3 maps as well (not using the same tools but maybe something more sophisticated from real AG).</p>
-
-  </div>
-
-    
-
-    <!-- Extension : Sharing buttons @ www.sharethis.com -->
-    <span class='st_facebook_large' displayText='Facebook'></span>
-    <span class='st_twitter_large' displayText='Tweet'></span>
-    <span class='st_googleplus_large' displayText='Google +'></span>
-    <span class='st_reddit_large' displayText='Reddit'></span>
-    <span class='st__large' displayText=''></span>
-
-    <div id="disqus_thread"></div>
-    
-
-
-  
-    <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
-  </div>
-  
-</div>
-]]></summary>
-</entry>
-<entry>
-    <title>Thoughts on LDC's</title>
     <link href="http://holdenlee.github.io/notebook/posts/tcs/coding/3-14-16.html" />
     <id>http://holdenlee.github.io/notebook/posts/tcs/coding/3-14-16.html</id>
     <published>2016-03-14T00:00:00Z</published>
@@ -597,398 +1112,6 @@ using some calculus in the last step (exercise). <!--check this--></li>
 <li>On nodes: zero out each node in a layer with probability <span class="math inline">\(1-\rh\)</span>.</li>
 </ul></li>
 </ul>
-
-  </div>
-
-    
-
-    <!-- Extension : Sharing buttons @ www.sharethis.com -->
-    <span class='st_facebook_large' displayText='Facebook'></span>
-    <span class='st_twitter_large' displayText='Tweet'></span>
-    <span class='st_googleplus_large' displayText='Google +'></span>
-    <span class='st_reddit_large' displayText='Reddit'></span>
-    <span class='st__large' displayText=''></span>
-
-    <div id="disqus_thread"></div>
-    
-
-
-  
-    <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
-  </div>
-  
-</div>
-]]></summary>
-</entry>
-<entry>
-    <title>[ALM16] WHY ARE DEEP NETS REVERSIBLE: A SIMPLE THEORY, WITH IMPLICATIONS FOR TRAINING</title>
-    <link href="http://holdenlee.github.io/notebook/posts/tcs/machine_learning/neural_nets/ALM16.html" />
-    <id>http://holdenlee.github.io/notebook/posts/tcs/machine_learning/neural_nets/ALM16.html</id>
-    <published>2016-03-13T00:00:00Z</published>
-    <updated>2016-03-13T00:00:00Z</updated>
-    <summary type="html"><![CDATA[
-<div class="container">
-  <div id="content">
-    <div class="page header">
-      <h1>[ALM16] WHY ARE DEEP NETS REVERSIBLE: A SIMPLE THEORY, WITH IMPLICATIONS FOR TRAINING</h1>
-    </div>
-    <div class="info">
-      
-       
-        <p>Posted: 2016-03-13 
-          , Modified: 2016-03-13 
-	</p>
-      
-       <p>Tags: <a href="/tags/neural%20net.html">neural net</a></p> 
-    </div>
-    
-  </div>
-  <!--/div-->
-
-  <div class="toc"> <ul>
- <li><a href="#summary">Summary</a></li>
- <li><a href="#model">Model</a><ul>
- <li><a href="#boltzmann-machine">Boltzmann machine</a></li>
- <li><a href="#layer-neural-net">1-layer neural net</a></li>
- <li><a href="#multi-layer-neural-net">Multi-layer neural net</a></li>
- </ul></li>
- <li><a href="#theorems-and-proof-sketches">Theorems and proof sketches</a><ul>
- <li><a href="#baby-theorem">Baby theorem</a></li>
- <li><a href="#reversibility-of-one-layer-nets-with-dropout-and-relu">Reversibility of one-layer nets with dropout and ReLU</a></li>
- <li><a href="#reversibility-for-2-layers">Reversibility for 2+ layers</a></li>
- </ul></li>
- <li><a href="#experiments">Experiments</a></li>
- <li><a href="#questions">Questions</a></li>
- </ul> </div>
-
-  <div class="blog-main">
-    <p>Arora, Sanjeev, Yingyu Liang, and Tengyu Ma. “Why are deep nets reversible: A simple theory, with implications for training.” arXiv preprint arXiv:1511.05653 (2015).</p>
-<p>http://arxiv.org/pdf/1511.05653</p>
-<h2 id="summary">Summary</h2>
-<p>Consider a feedforward net with input <span class="math inline">\(x\)</span> and output <span class="math inline">\(h\)</span>. ALM give a model under which a neural net can be said to be predicting the output distribution. This also gives a theoretical explanation of why it’s possible to use a neural net to do the following: given <span class="math inline">\(h\)</span>, generate some <span class="math inline">\(x\)</span> that could have given rise to that <span class="math inline">\(h\)</span> (cf. neural net dreams).</p>
-<p>Their theoretical explanation has two important ingredients for theoretical explanations:</p>
-<ol type="1">
-<li>It specifies a joint distribution of <span class="math inline">\(x,h\)</span>. (Specifying <span class="math inline">\(x|h\)</span> may also be good enough).</li>
-<li>It gives a proof that the deep net does compute the most likely <span class="math inline">\(h\)</span> given <span class="math inline">\(x\)</span> (in some sense, up to some error).</li>
-</ol>
-<h2 id="model">Model</h2>
-<p>(See <a href="basics.html">neural net basics</a>.)</p>
-<p>We want to model (input, output) by a probability distribution, and prove that a neural net is predicting the output given the input, with respect to that probability distribution.</p>
-<h3 id="boltzmann-machine">Boltzmann machine</h3>
-<p>A <strong>Boltzmann machine</strong> is a joint distribution of random variables <span class="math inline">\(x,h \in \R^{m\times n}\)</span> given by <span class="math display">\[\Pj(x,h) \approx \exp(-x^TAh + \pat{regularization}).\]</span> It is reversible because <span class="math inline">\(\Pj(x|h),\Pj(h|x)\)</span> are both easy to calculate. (Deep Boltzmann machines are much less nice—they lose reversibility.)</p>
-<p>Compare this to a 2-layer neural net. Note a Boltzmann machine is a probabilistic model, not a neural net. A neural net and a Boltzmann machine both model the relationship between an input vector and an output vector, but do it differently: A neural net deterministically computes an output as a function of its input, while a Boltzmann machine gives a probability distribution on (input, output). A Boltzmann machine is trivially reversible; our hope is that a neural net is also reversible. <!-- How are these models related? A Boltzmann machine is one of the most natural generative models for neural nets; one hope is that a neural net is predicting a distribution given by a Boltzmann machine.
-Note by this reversibility, there is not much to prove --></p>
-<p>Think of <span class="math inline">\(x\)</span> as the observed layer and <span class="math inline">\(h\)</span> as the hidden layer. (For example, think of it as the middle layer of an autoencoder. Because we’re not considering any layers put on top of <span class="math inline">\(h\)</span>, we also think of it as the output.)</p>
-<p>We don’t worry about learning (ex. gradient descent) here. We just consider a neural net statically.</p>
-<!-- Note we're *not* actually using the Boltzmann machine model.-->
-<h3 id="layer-neural-net">1-layer neural net</h3>
-<p>The model is the following. Key aspects of the model are modeling weights by random matrices<a href="#fn1" class="footnoteRef" id="fnref1"><sup>1</sup></a>, hypothesizing/enforcing sparsity, and allowing dropout (this is a standard training technique, so we want the theoretical results to hold in this setting).<a href="#fn2" class="footnoteRef" id="fnref2"><sup>2</sup></a></p>
-<p>Here <span class="math inline">\(x\in \R^n,h\in \R^m\)</span> and <span class="math inline">\(m&lt;n\)</span>. The hidden layer has fewer nodes, so the forward map <span class="math inline">\(x\mapsto h\)</span> is many-to-one. This is necessary if we want to be able to reconstruct <span class="math inline">\(h\)</span> from <span class="math inline">\(x\)</span> with high probability.</p>
-<ul>
-<li>Generate <span class="math inline">\(h\sim D_h\)</span> where <span class="math inline">\(D_h\)</span> is any distribution on <span class="math inline">\(\R^n_{\ge 0}\)</span> satisfying the following: With <span class="math inline">\(1-\text{neg}(n)\)</span> probability,
-<ul>
-<li>(Sparsity) <span class="math inline">\(\ve{h}_0\le k\)</span>.</li>
-<li>(No coordinate much larger than the average) <span class="math inline">\(\ve{h}_{\iy}\le \be \ve{h}\)</span> where <span class="math inline">\(\be = O\sfc{\ln k}{k}\)</span>.</li>
-</ul></li>
-<li>Let <span class="math inline">\(W\in \R^{n\times m}\)</span> be a matrix with random <span class="math inline">\(N(0,1)\)</span> entries.</li>
-<li>Generate the observed variable by <span class="math display">\[ x \sim r(\al W h)\odot n_{\rh}, \]</span> where
-<ul>
-<li><span class="math inline">\(n_{\rh}\)</span> is a vector of iid draws from Bernoulli<span class="math inline">\((\rh)\)</span>, and <span class="math inline">\(\odot\)</span> is componentwise multiplication, i.e., entries are zeroed out with probability <span class="math inline">\(1-\rh\)</span>.</li>
-<li><span class="math inline">\(\al=\fc{2}{\rh n}\)</span>, so that it normalizes the effect of dropout. (Why factor of 2?)</li>
-</ul></li>
-</ul>
-<p>The feedforward neural net does the following operation. For some <span class="math inline">\(b\)</span>,</p>
-<ul>
-<li>Given <span class="math inline">\(x\)</span>, compute <span class="math inline">\(\hat h = r(W^Tx+b)\)</span>, where <span class="math inline">\(r(x)=\sgn(x)\cdot (x\ge 0)\)</span><a href="#fn3" class="footnoteRef" id="fnref3"><sup>3</sup></a> is the <strong>ReLU (rectified linear unit)</strong> function.
-<ul>
-<li>If we’re using dropout (with parameter <span class="math inline">\(\rc2\)</span>, say), replace <span class="math inline">\(x\)</span> by <span class="math inline">\(x \odot n_{\rc 2}\)</span> before doing this.</li>
-</ul></li>
-</ul>
-<p>The hope is that <span class="math inline">\(\hat h \approx h\)</span>. Why do we take the matrix in the proposed inverse map to be <span class="math inline">\(W^T\)</span>? For random matrices, the transpose is like an inverse, because <span class="math inline">\(\ve{W^TW-I}_2\)</span> will be small.</p>
-<h3 id="multi-layer-neural-net">Multi-layer neural net</h3>
-<p>Let <span class="math inline">\(W_t,\ldots, W_1\)</span> be random matrices. Basically just iterate the construction <span class="math inline">\(t\)</span> times in both the generative model and the feedforward net (from <span class="math inline">\(h^{(t)}\)</span> get <span class="math inline">\(h^{(t-1)},\ldots, h^{(0)}=x\)</span> and from <span class="math inline">\(x\)</span> generate <span class="math inline">\(\wh h^{(1)}, \ldots , \wh h^{(t)}\)</span>). In the dropout case, do dropout on each layer.</p>
-<h2 id="theorems-and-proof-sketches">Theorems and proof sketches</h2>
-<h3 id="baby-theorem">Baby theorem</h3>
-<p>To get an idea of why reversibility might hold, let’s consider a random one-layer neural net without nonlinearities (or bias), which is just multiplying by a random matrix. In this case <span class="math inline">\(x=\rc nWh\)</span>, <span class="math inline">\(\wh h = W^Tx=\rc n W^TWh\)</span>.</p>
-<p><strong>Theorem (Baby version)</strong>: Let <span class="math inline">\(h\in \{0,1\}^m\)</span> be fixed, <span class="math inline">\(m&lt;n\)</span>. Suppose <span class="math inline">\(W\in \R^{n\times m}\)</span> has <span class="math inline">\(N(0,1)\)</span> entries. Then for any polynomial <span class="math inline">\(p(n)\)</span> there is <span class="math inline">\(C\)</span> so that <span class="math display">\[\Pj_{W}\ba{\ve{W^TWh - h}_{\iy}\le C\ln(mn)\sfc{m}{n}}\ge 1-\rc{p(n)}.\]</span></p>
-<em>Proof</em>: We have
-\begin{align}
-(W^TWh)_i &amp;= (w_{i\bullet})^TW h\\
-&amp;=\rc n (w_{i\bullet})^T w_{i\bullet}h + \ub{\rc n\sum_{j\ne i} (w_{i\bullet})^T w_{j\bullet} h}{\text{noise}}\\
-&amp;=\rc n (w_{i\bullet})^T w_{i\bullet} h +  \rc n\sum_{k=1}^m w_{ik} \sum_{j\ne i} W_{jk} h_k.
-\end{align}
-<p>By Chernoff, <span class="math inline">\(\rc n w_{i\bullet}^T w_{i\bullet}\)</span>, as a sum of <span class="math inline">\(n\)</span> variables distributed as <span class="math inline">\(\chi_1^2\)</span>, is <span class="math inline">\(\rc{\sqrt{n}}\)</span>-concentrated around 1. There are <span class="math inline">\(&lt;mn\)</span> terms in the noise term, so it is <span class="math inline">\(\fc{\sqrt{mn}}{n}\)</span> concentrated around 0 (a little work is needed here—details left to the reader). Thus we get <span class="math inline">\(\sfc{m}{n}\)</span>-concentration around 0.</p>
-<p>If we bound by <span class="math inline">\(\ln(mn)\)</span> times this quantity, then we can use the union bound to finish. <span class="math inline">\(\square\)</span></p>
-<p>Before moving on, we note two things.</p>
-<ol type="1">
-<li>To get a good bound here, we need <span class="math inline">\(n\gg m\)</span>, i.e., the hidden layer needs to be much smaller. Often this is not true in practice.</li>
-<li>We get a <span class="math inline">\(L^{\iy}\)</span> bound which naively doesn’t give a good <span class="math inline">\(L^2\)</span> bound.</li>
-</ol>
-<p>The key next step is to assume that <span class="math inline">\(h\)</span> is sparse. It turns out then having a sigmoid function (ReLU) can be naturally interpreted as picking out the nonzero coordinates, ``recovering&quot; the sparse <span class="math inline">\(h\)</span>. Thus, <em>thresholding has a denoising effect</em>. This allows better recovery (in the <span class="math inline">\(L^2\)</span> norm).</p>
-<h3 id="reversibility-of-one-layer-nets-with-dropout-and-relu">Reversibility of one-layer nets with dropout and ReLU</h3>
-<p><strong>Theorem 2.3</strong>: (Formulation in appendix A.) Let <span class="math inline">\(W,h,x\)</span> be generated as in the model. Suppose <span class="math inline">\(k\)</span> is such that <span class="math inline">\(k&lt;\rh n&lt;k^2\)</span> (the number of non-dropped entries greater than the minimum sparsity, but also not too much). Then <span class="math display">\[
-\ab{\Pj_{x,h,W}\ba{\ve{r(W^T x+b) - h}^2\le \wt O\pf{k}{\rh n}\ve{h}^2}} \ge 1-\rc{\poly(n)}.
-\]</span></p>
-<p><em>Proof (Theorem 2.3)</em>:</p>
-<ol type="1">
-<li><p><strong>Lemma 2.5</strong>: For <span class="math inline">\(\de=\wt O\prc{\sqrt m}\)</span>, <span class="math display">\[\Pj_{W,h,x}\ba{\ve{W^Tx - h}_\iy\le \de\ve{h}^2} \ge 1-\rc{\poly(n)}.\]</span></p>
-<em>Proof of (2.5)<span class="math inline">\(\implies\)</span>(2.3):</em> If we used the naive <span class="math inline">\(L^\iy-L^2\)</span> bound, we get that w.h.p. the <span class="math inline">\(L^2\)</span> norm is at most <span class="math inline">\(m(\de\ve{h})^2 = \wt O\pf{m\ve{h}^2}{t}\)</span>, which is too large. We need to use sparsity to get a good bound. The idea is to zero out the entries with <span class="math inline">\(h_i=0\)</span> by adding a bias term <span class="math inline">\(b\)</span> and thresholding using <span class="math inline">\(r\)</span>. The <span class="math inline">\(L^{\iy}\)</span> bound in Lemma 2.3 tells us the offset necessary to zero out the entries where <span class="math inline">\(h_i=0\)</span>, <span class="math inline">\(b=-\de \ve{h}_1\)</span>. With this value of <span class="math inline">\(b\)</span>,
-\begin{align}
-h_i&amp;=0 &amp;\implies ((W^Tx)_i+b_i)&amp;\in [-2\de \ve{h},0]&amp;\implies \hat h_i&amp;=r((W^T)x_i + b_i) &amp;= h_i = 0\\
-h_i&amp;\ne 0 &amp; \implies |\wt h_i-h_i| &amp;\le 2\de\ve{h}.
-\end{align}
-Square and multiply by <span class="math inline">\(k\)</span>.</li>
-<li><em>Proof of Lemma 2.5:</em> We have
-\begin{align}
-x_j &amp;= r\pa{\al \sumo im W_{ji} h_i} (n_\rh)_j\\
-\hat h_i &amp;= \sumo jn (W^T)_{ij} x_j\\
-&amp;= \sumo jn \ub{W_{ji} r\pa{\al \sumo km W_{jk} h_k}}{=:Z_j} (n_\rh)_j.
-\end{align}
-As before, think of the sum inside <span class="math inline">\(r\)</span> as a main term plus noise: <span class="math display">\[\sumo km W_{jk} h_k = W_{ji} h_i + \sum_{k\ne i} W_{jk} h_k.\]</span> We want to compute <span class="math inline">\(\E[\hat h_i|h]\)</span>. To do this we need to understand the distribution of expressions that look like <span class="math inline">\(Z_j\)</span>.
-<ul>
-<li><strong>Lemma (Technical)</strong>: Let <span class="math inline">\(w\sim N(0,1), \xi \sim N(0,\si^2), \si=\Om(1), 0\le h\le \ln \si\)</span>. Then
-\begin{align}
-\EE_{w,\xi} [w\cdot r(wh+\xi)] &amp; = \fc h2 \pm \wt O\prc{\si^3}\\
-\EE_{w,\xi} [w^2\cdot r(wh+\xi)] &amp; \le 3h^2 + \si^2.
-\end{align}
-<em>Proof:</em> To calculate the expectation, take the integral over <span class="math inline">\(\xi\)</span> first and then <span class="math inline">\(w\)</span>. <span class="math inline">\(w,\xi\)</span> are Gaussians, so we can evaluate the expectation <span class="math display">\[ \E[\E[w\cdot r(wh+\xi)|w]] = \fc{h}2+\E[G(w)]\]</span> for some calculable error <span class="math inline">\(G\)</span>. Estimate <span class="math inline">\(G\)</span> with its Taylor expansion (of degree 4). Now calculate <span class="math inline">\(\E[G(w)]\)</span> by estimating it for values below and above a cutoff. Using the lemma on the terms and noting <span class="math inline">\(\E\ve{n_j}_0=\rh n\)</span>, and the normalizing constant <span class="math inline">\(\al=\fc{2}{\rh n}\)</span>, we have <span class="math display">\[ \E[\wh h_i|h] = h_i \pm \wt O\prc{k^{\fc 32}}.\]</span></li>
-<li>Show that <span class="math inline">\(\wh h_i|h_i\)</span> concentrates with high probability. The <span class="math inline">\(Z_j\)</span> are independent so we can use a version of Matrix Bernstein. Technically it seems we have to use a version for subexponential random variables, in terms of Orlicz norms, and check that <span class="math inline">\(Z_j\)</span> hve small norm in expectation. See Theorem D1.</li>
-</ul></li>
-</ol>
-<!--Write
-\begin{align}
-x_j &= r(W_{ji} h_i + \ub{\sum_{l=1}^m W_{jl} h_l}{=:\eta_j}) (j\in T),\\
-h_i &= \sum_{j=1}^n W_{ji}x_j
-\end{align}
-where $T$ is the set of non-zeroed out coordinates. We have $h_i = $. 
-We want to show this is close to $h_j$ with high probability. 
--->
-<h3 id="reversibility-for-2-layers">Reversibility for 2+ layers</h3>
-<p><strong>Theorem </strong>: Similar theorems hold for 2 and 3 layers, in a weaker sense.</p>
-<p>(I haven’t gone through this.)</p>
-<h2 id="experiments">Experiments</h2>
-<p>The theory gives a way to improve training. Take a labeled data point <span class="math inline">\(x\)</span>, use the current feedforward net to compute the label <span class="math inline">\(h\)</span>, and use the <strong>shadow distribution</strong> <span class="math inline">\(p(x|h)\)</span> to create a synthetic data point <span class="math inline">\(\wt x\)</span>, and use <span class="math inline">\((\wt x,z)\)</span> as a training pair.</p>
-<h2 id="questions">Questions</h2>
-<ul>
-<li>How realistic is the sparsity assumption? How realistic is the model?</li>
-<li>Can we use Boltzmann machines as the model instead?</li>
-<li>What complications come up for 2+ layers? Is there a proof for any constant number of layers without loss?</li>
-</ul>
-<!---
-Show that feedforward deep nets compute z|x in this model. (You can define this by
-MLE, MAP, etc.)
--->
-<section class="footnotes">
-<hr />
-<ol>
-<li id="fn1"><p>Because we use properties such as eigenvalue concentration, this suggests that the theorem will still hold for “random-like” matrices, i.e., matrices having these properties.<a href="#fnref1">↩</a></p></li>
-<li id="fn2"><p>Dropout encourages all of the nodes to learn useful features, because the neural net will essentially rely on a subset of them to make a prediction. (Think of nodes as taking a “majority vote” over inputs; dropout makes sure this still works even if you only take a subset.)<a href="#fnref2">↩</a></p></li>
-<li id="fn3"><p>We use the notation <span class="math inline">\((P)=\begin{cases} 1,&amp;P\text{ true}\\ 0,&amp;P\text{ false}. \end{cases}\)</span><a href="#fnref3">↩</a></p></li>
-</ol>
-</section>
-
-  </div>
-
-    
-
-    <!-- Extension : Sharing buttons @ www.sharethis.com -->
-    <span class='st_facebook_large' displayText='Facebook'></span>
-    <span class='st_twitter_large' displayText='Tweet'></span>
-    <span class='st_googleplus_large' displayText='Google +'></span>
-    <span class='st_reddit_large' displayText='Reddit'></span>
-    <span class='st__large' displayText=''></span>
-
-    <div id="disqus_thread"></div>
-    
-
-
-  
-    <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
-  </div>
-  
-</div>
-]]></summary>
-</entry>
-<entry>
-    <title>Interests</title>
-    <link href="http://holdenlee.github.io/notebook/posts/tcs/machine_learning/interests.html" />
-    <id>http://holdenlee.github.io/notebook/posts/tcs/machine_learning/interests.html</id>
-    <published>2016-03-13T00:00:00Z</published>
-    <updated>2016-03-13T00:00:00Z</updated>
-    <summary type="html"><![CDATA[
-<div class="container">
-  <div id="content">
-    <div class="page header">
-      <h1>Interests</h1>
-    </div>
-    <div class="info">
-      
-       
-        <p>Posted: 2016-03-13 
-          , Modified: 2016-03-13 
-	</p>
-      
-       <p>Tags: <a href="/tags/none.html">none</a></p> 
-    </div>
-    
-  </div>
-  <!--/div-->
-
-  <div class="toc"> <ul>
- <li><a href="#standard-topics">“Standard” topics</a><ul>
- <li><a href="#links">Links</a></li>
- </ul></li>
- <li><a href="#other-topics">Other topics</a></li>
- <li><a href="#sanjeev-aroras-group">Sanjeev Arora’s group</a></li>
- </ul> </div>
-
-  <div class="blog-main">
-    <h2 id="standard-topics">“Standard” topics</h2>
-<ol type="1">
-<li>How can we give theoretical guarantees for machine learning? <a href="http://unsupervised.cs.princeton.edu/index.html">Sanjeev Arora’s page</a>.
-<ul>
-<li>Model the input distribution (e.g. sparsity).</li>
-<li>Explain why standard approaches (e.g. neural nets) work (e.g., with respect to the input distribution). <a href="neural_nets/nn_modeling.html">Neural net modeling</a></li>
-<li>Use the theoretical understanding to obtain better algorithms.</li>
-</ul></li>
-<li>Apply math (analysis, geometry, probability) to machine learning problems.
-<ul>
-<li>For example, understand threshold phenomenon in community detection and other graph problems.</li>
-<li>Many problems in convex optimization can be understood in terms of choosing a right kernel, doing random walks, convex geometry, simulated annealing (cf. statistical physics), etc. “Manifold learning,” etc.</li>
-<li>Understand the “random” case of objects like graphs and neural nets and analyze using ideas from statistical physics, random matrix theory, etc.</li>
-<li>Questions in data science can involve topology, differential geometry, etc.</li>
-</ul></li>
-</ol>
-<h3 id="links">Links</h3>
-<ul>
-<li><a href="http://www.cs.princeton.edu/~ehazan/">Elad Hazan</a></li>
-<li><a href="http://www.scrible.com/contentview/page/64G21C041IKS82NH20O741000I60MGAV:206493171/index.html?utm_source=tb_permalink&amp;utm_medium=permalink&amp;utm_campaign=tb_buttons&amp;_sti=2847545">“Deep stuff about deep learning”</a></li>
-</ul>
-<h2 id="other-topics">Other topics</h2>
-<ol type="1">
-<li>How can we obtain theoretical guarantees for behavior of an AI (e.g. on the level of logic)? See <a href="http://cstheory.stackexchange.com/questions/32445/program-reasoning-about-own-source-code">my question</a>. Formulate the question of AI control mathematically and prove theorems. <a href="https://medium.com/ai-control">Paul Christiano</a>.</li>
-<li>How can we combine ML/data and logical approaches in domains that require modeling with logic, ex. automated theorem proving, NLP (ex. combine CFG-based approaches with neural net approaches), reasoning about series of events with causality, etc.? What are the structure of these problems that allow tractable inference (ex. sentences in natural language are “mostly unambiguous” if you understand them semantically, unlike worst-case).</li>
-<li>Build modular AI systems. Ex. how to make AlphaGo something that anyone can implement a baby version of?</li>
-<li>Explore creativity. Ex. make a program that writes poetry or stories, or generates maps for a RPG. cf. Neural net dreams. cf. Hofstadter’s FARG.</li>
-<li>How do humans reason? What are the learning problems that humans face, and how are our neural algorithms optimized or not for those problems? How does “bounded computation” come into play? cf. Jacob Steinhardt. Ref: Rationally Speaking #154, Tom Griffiths.</li>
-</ol>
-<h2 id="sanjeev-aroras-group">Sanjeev Arora’s group</h2>
-<ul>
-<li><a href="http://www.cs.princeton.edu/~yingyul/">Yingyu Liang</a></li>
-<li><a href="http://www.cs.princeton.edu/~tengyu/">Tengyu Ma</a></li>
-<li><a href="http://www.cs.princeton.edu/~risteski/">Andrej Risteski</a></li>
-</ul>
-<p>Summaries/thoughts on the papers.</p>
-<!---
-Composite of these smaller questions
--->
-
-  </div>
-
-    
-
-    <!-- Extension : Sharing buttons @ www.sharethis.com -->
-    <span class='st_facebook_large' displayText='Facebook'></span>
-    <span class='st_twitter_large' displayText='Tweet'></span>
-    <span class='st_googleplus_large' displayText='Google +'></span>
-    <span class='st_reddit_large' displayText='Reddit'></span>
-    <span class='st__large' displayText=''></span>
-
-    <div id="disqus_thread"></div>
-    
-
-
-  
-    <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
-  </div>
-  
-</div>
-]]></summary>
-</entry>
-<entry>
-    <title>Matrix concentration</title>
-    <link href="http://holdenlee.github.io/notebook/posts/math/probability/random_matrices/concentration.html" />
-    <id>http://holdenlee.github.io/notebook/posts/math/probability/random_matrices/concentration.html</id>
-    <published>2016-03-13T00:00:00Z</published>
-    <updated>2016-03-13T00:00:00Z</updated>
-    <summary type="html"><![CDATA[
-<div class="container">
-  <div id="content">
-    <div class="page header">
-      <h1>Matrix concentration</h1>
-    </div>
-    <div class="info">
-      
-       
-        <p>Posted: 2016-03-13 
-          , Modified: 2016-03-13 
-	</p>
-      
-       <p>Tags: <a href="/tags/random%20matrix.html">random matrix</a></p> 
-    </div>
-    
-  </div>
-  <!--/div-->
-
-  
-
-  <div class="blog-main">
-    <p>See <a href="https://en.wikipedia.org/wiki/Matrix_Chernoff_bound">wikipedia</a>.</p>
-<p><strong>Theorem (Matrix Bernstein)</strong>: Let <span class="math inline">\(\{X_k\}_{k=1}^n\)</span> be a sequence of independent random <span class="math inline">\(d\times d\)</span> matrices with <span class="math display">\[ \E X_k = 0, \quad \la_{\max}(X_k)\le R\text{ a.s.}\]</span> Then for all <span class="math inline">\(t\ge 0\)</span>, <span class="math display">\[ \Pj \ba{\la_{\max}\pa{\sumo kn X_k}} \le de^{-\fc{t^2}{2\si^2+\fc 23 Rt}}\]</span> where <span class="math inline">\(\si^2 = \ve{\sumo kn \E(X_k^2)}\)</span>.</p>
-<p>(I don’t understand what a.s. means here. The second inequality is for a finite sum—so we need to quantify the probability that <span class="math inline">\(\la_{\max}(X_i)&gt;R\)</span>. a.s. means with probability 1 so we have to truncate the probability distribution of the <span class="math inline">\(X_i\)</span>? But we can’t do this when there are many <span class="math inline">\(X_i\)</span>.)</p>
-
-  </div>
-
-    
-
-    <!-- Extension : Sharing buttons @ www.sharethis.com -->
-    <span class='st_facebook_large' displayText='Facebook'></span>
-    <span class='st_twitter_large' displayText='Tweet'></span>
-    <span class='st_googleplus_large' displayText='Google +'></span>
-    <span class='st_reddit_large' displayText='Reddit'></span>
-    <span class='st__large' displayText=''></span>
-
-    <div id="disqus_thread"></div>
-    
-
-
-  
-    <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
-  </div>
-  
-</div>
-]]></summary>
-</entry>
-<entry>
-    <title>Spectral Bounds for Stochastic Diffusion Model in Networks</title>
-    <link href="http://holdenlee.github.io/notebook/posts/tcs/networks/pacm-3-8-16.html" />
-    <id>http://holdenlee.github.io/notebook/posts/tcs/networks/pacm-3-8-16.html</id>
-    <published>2016-03-08T00:00:00Z</published>
-    <updated>2016-03-08T00:00:00Z</updated>
-    <summary type="html"><![CDATA[
-<div class="container">
-  <div id="content">
-    <div class="page header">
-      <h1>Spectral Bounds for Stochastic Diffusion Model in Networks</h1>
-    </div>
-    <div class="info">
-      
-       
-        <p>Posted: 2016-03-08 
-          , Modified: 2016-03-08 
-	</p>
-      
-       <p>Tags: <a href="/tags/pacm.html">pacm</a>, <a href="/tags/GSS.html">GSS</a>, <a href="/tags/networks.html">networks</a></p> 
-    </div>
-    
-  </div>
-  <!--/div-->
-
-  <div class="toc"></div>
-
-  <div class="blog-main">
-    <p>Eun Jun Lee</p>
-<p>This work studies stochastic diffusion model where influence propagates in networks from seed-nodes along edges with independent probabilities. Specifically, we propose spectral bounds for the expected number of nodes that are influenced at the end of propagation. The proposed bounds show significant improvements over the existing bounds in the presence of sensitive edges such as bottlenecks, seed adjacent, and high probability edges.</p>
 
   </div>
 
