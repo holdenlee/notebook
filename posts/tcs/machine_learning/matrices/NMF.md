@@ -18,15 +18,7 @@ $A$, there is a row where there is a single nonzero entry and it is in column $i
 
 #Previous work
 
-Hardness
-
-* If there exists a $n^{o(r)}$ time algorithm, then there exists a $2^{o(n)}$ algorithm for 3SAT.
-
-Algorithms
-
-* [AGKM12, M14] Given that the rank equals the nonnegative rank, there is a $n^{O(r)}$ time algorithm for NMF. (Relies on solving polynomial inequalities.)
-* [AGKM12] Under separability, NMF can be solved in polynomial time in $n$. (Use the geometry.)
-* [AGM14] Dictionary learning 
+See [matrix factorization](matrix-factorization.html).
 
 #Open problems, directions
 

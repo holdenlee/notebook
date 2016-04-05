@@ -10,7 +10,7 @@
   <meta name="description" content="Holden Lee's Research Notebook">
   <meta name="author" content="Holden Lee">
     
-  <title>Posts in category "tcs/machine_learning"</title>
+  <title>LCC lower bounds by geometry</title>
 
   <!-- Bootstrap core CSS -->
   <link href="../../../bootstrap/css/bootstrap.min.css" rel="stylesheet">
@@ -66,123 +66,72 @@
 <div class="container">
   <div id="content">
     <div class="page header">
-      <h1>Posts in category "tcs/machine_learning"</h1>
+      <h1>LCC lower bounds by geometry</h1>
     </div>
     <div class="info">
       
+       
+        <p>Posted: 2016-04-02 
+          , Modified: 2016-04-02 
+	</p>
       
-      
+       <p>Tags: <a href="../../../tags/none.html">none</a></p> 
     </div>
     
   </div>
   <!--/div-->
 
-  
+  <div class="toc"> <ul>
+ <li><a href="#general-plan">General plan</a></li>
+ <li><a href="#convex-hull-of-image-is-large">Convex hull of image is large</a></li>
+ <li><a href="#image-close-to-convex">Image close to convex</a></li>
+ <li><a href="#volume-of-image-small">Volume of image small</a></li>
+ </ul> </div>
 
   <div class="blog-main">
-    <ul>
-    
-        <li>
-            <a href="../../../posts/tcs/machine_learning/matrices/matrix-factorization.html">Matrix factorizations</a> (2016-04-04)
-        </li>
-    
-        <li>
-            <a href="../../../posts/tcs/machine_learning/matrices/arora-topic-models.html">[A16] Provable algorithms for inference in topic models</a> (2016-04-04)
-        </li>
-    
-        <li>
-            <a href="../../../posts/tcs/machine_learning/matrices/AGM14.html">[AGM14] New algorithms for learning incoherent and overcomplete dictionaries</a> (2016-04-02)
-        </li>
-    
-        <li>
-            <a href="../../../posts/tcs/machine_learning/matrices/NMF.html">Non-negative matrix factorization</a> (2016-03-26)
-        </li>
-    
-        <li>
-            <a href="../../../posts/tcs/machine_learning/matrices/AGMM15.html">[AGMM15] Simple, efficient, and neural algorithms for sparse coding</a> (2016-03-25)
-        </li>
-    
-        <li>
-            <a href="../../../posts/tcs/machine_learning/neural_nets/lstm_code.html">LSTM Programming</a> (2016-03-19)
-        </li>
-    
-        <li>
-            <a href="../../../posts/tcs/machine_learning/nlp/randwalk.html">[ALLMR16] RAND-WALK: A latent variable model approach to word embeddings</a> (2016-03-15)
-        </li>
-    
-        <li>
-            <a href="../../../posts/tcs/machine_learning/neural_nets/basics.html">Neural nets basics</a> (2016-03-13)
-        </li>
-    
-        <li>
-            <a href="../../../posts/tcs/machine_learning/neural_nets/ALM16.html">[ALM16] WHY ARE DEEP NETS REVERSIBLE: A SIMPLE THEORY, WITH IMPLICATIONS FOR TRAINING</a> (2016-03-13)
-        </li>
-    
-        <li>
-            <a href="../../../posts/tcs/machine_learning/interests.html">Interests</a> (2016-03-13)
-        </li>
-    
-        <li>
-            <a href="../../../posts/tcs/machine_learning/neural_nets/CHMAL15.html">[CHMAL15] The Loss Surfaces of Multilayer Networks</a> (2016-03-07)
-        </li>
-    
-        <li>
-            <a href="../../../posts/tcs/machine_learning/optimization/AO15.html">[AO15] Linear coupling</a> (2016-03-06)
-        </li>
-    
-        <li>
-            <a href="../../../posts/tcs/machine_learning/optimization/mirror-descent.html">Mirror descent</a> (2016-03-05)
-        </li>
-    
-        <li>
-            <a href="../../../posts/tcs/machine_learning/optimization/AGD.html">Accelerated Gradient descent</a> (2016-03-05)
-        </li>
-    
-        <li>
-            <a href="../../../posts/tcs/machine_learning/neural_nets/nn_modeling.html">Analysis of neural networks</a> (2016-03-05)
-        </li>
-    
-        <li>
-            <a href="../../../posts/tcs/machine_learning/optimization/sdp-duality.html">SDP duality</a> (2016-03-04)
-        </li>
-    
-        <li>
-            <a href="../../../posts/tcs/machine_learning/optimization/duality.html">Duality</a> (2016-03-04)
-        </li>
-    
-        <li>
-            <a href="../../../posts/tcs/machine_learning/optimization/convex_optimization.html">Convex optimization</a> (2016-03-04)
-        </li>
-    
-        <li>
-            <a href="../../../posts/tcs/machine_learning/optimization/GD.html">Gradient descent</a> (2016-03-04)
-        </li>
-    
-        <li>
-            <a href="../../../posts/tcs/machine_learning/community/GRSY15.html">[GRSY15] How Hard is Inference for Structured Prediction?</a> (2016-03-03)
-        </li>
-    
-        <li>
-            <a href="../../../posts/tcs/machine_learning/community/SD15.html">[SD15] Minimax rates for memory-bounded sparse linear regression</a> (2016-02-29)
-        </li>
-    
-        <li>
-            <a href="../../../posts/tcs/machine_learning/community/cbm.html">Censored block model</a> (2016-02-28)
-        </li>
-    
-        <li>
-            <a href="../../../posts/tcs/machine_learning/community/MNS12.html">[MNS12]</a> (2016-02-28)
-        </li>
-    
+    <h2 id="general-plan">General plan</h2>
+<p>See <a href="ldc.html">LDCs</a> for basics.</p>
+<p>Suppose the LCC is large.</p>
+<ul>
+<li>The image of the decoding map <span class="math inline">\(D:[-1,1]^n\to [0,1]^n\)</span> contains many points that are far apart, corresponding to the codewords. This gives that the convex hull of the image has large volume or a large <span class="math inline">\(\ep\)</span>-net.</li>
+<li>The image is close to convex, so the image is also large.</li>
+<li>However, the Jacobian of the map is small, so the volume of the image is small, contradiction.</li>
 </ul>
-
-
+<h2 id="convex-hull-of-image-is-large">Convex hull of image is large</h2>
+<p>?</p>
+<p>Intuitively this can work: consider a simplexification; if each simplex is large the volume grows rapidly in terms of the number of vertices.</p>
+<h2 id="image-close-to-convex">Image close to convex</h2>
+<p>The idea is from <a href="Bar13.html">Bar13</a>.</p>
+<p>We modify it to give a bound on <span class="math inline">\(L^2\)</span> distance instead of KL-divergence, and to look at the image of the unit ball instead. (Normalize the domain by <span class="math inline">\(\rc{\sqrt{n}}\)</span>.) The image is of size on the order <span class="math inline">\(\sqrt{n}\)</span>, and we get <span class="math inline">\(\ep\sqrt{n}\)</span> approximations.</p>
+<p><em>Problem</em>: Is this enough?</p>
+<ul>
+<li>This compares the volume of the convex hull to the volume of the <span class="math inline">\(\ep\)</span>-expanded set, which may be much larger than the volume of the set.</li>
+<li>To show it’s not much larger, it seems necessary to show the surface area is small, and inductively the surface area in each dimension is small.</li>
+<li>If we use “<span class="math inline">\(\ep\)</span>-net size” instead of volume, we don’t have this problem—but then we have to bound the size of an <span class="math inline">\(\ep\)</span>-net of the convex hull in the first step.</li>
+</ul>
+<h2 id="volume-of-image-small">Volume of image small</h2>
+<p>For <span class="math inline">\(q=2\)</span>, get <span class="math inline">\(\pf{C}{\sqrt n}^n\)</span>.</p>
+<p>For <span class="math inline">\(q&gt;2\)</span>, use the matrix Efron-Stein inequality.</p>
+<p>We might want to look at surface areas, etc. I think 1-dimensional length between code-words gives a ECC condition.</p>
 
   </div>
 
     
 
+    <!-- Extension : Sharing buttons @ www.sharethis.com -->
+    <span class="st_facebook_large" displayText="Facebook"></span>
+    <span class="st_twitter_large" displayText="Tweet"></span>
+    <span class="st_googleplus_large" displayText="Google +"></span>
+    <span class="st_reddit_large" displayText="Reddit"></span>
+    <span class="st__large" displayText></span>
 
+    <div id="disqus_thread"></div>
+    
+
+
+  
+    <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+  </div>
   
 </div>
 
@@ -227,6 +176,9 @@
 
 <!-- Extension : Disqus @ http://disqus.com -->
 <!-- Extension : InlineDisqussions @ https://github.com/tsi/inlineDisqussions -->
+
+<script src="../../../disqus/js/disqus.js"></script>
+
 
 
 <!-- Extension : Google Analytics -->

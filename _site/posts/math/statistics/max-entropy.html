@@ -10,7 +10,7 @@
   <meta name="description" content="Holden Lee's Research Notebook">
   <meta name="author" content="Holden Lee">
     
-  <title>Posts in category "tcs/machine_learning"</title>
+  <title>Maximum entropy distributions</title>
 
   <!-- Bootstrap core CSS -->
   <link href="../../../bootstrap/css/bootstrap.min.css" rel="stylesheet">
@@ -66,123 +66,66 @@
 <div class="container">
   <div id="content">
     <div class="page header">
-      <h1>Posts in category "tcs/machine_learning"</h1>
+      <h1>Maximum entropy distributions</h1>
     </div>
     <div class="info">
       
+       
+        <p>Posted: 2016-04-04 
+          , Modified: 2016-04-04 
+	</p>
       
-      
+       <p>Tags: <a href="../../../tags/none.html">none</a></p> 
     </div>
     
   </div>
   <!--/div-->
 
-  
+  <div class="toc"> <ul>
+ <li><a href="#references">References</a><ul>
+ <li><a href="#constraint-distribution-entropy-base-e">Constraint | Distribution | Entropy (base e)</a></li>
+ </ul></li>
+ </ul> </div>
 
   <div class="blog-main">
-    <ul>
-    
-        <li>
-            <a href="../../../posts/tcs/machine_learning/matrices/matrix-factorization.html">Matrix factorizations</a> (2016-04-04)
-        </li>
-    
-        <li>
-            <a href="../../../posts/tcs/machine_learning/matrices/arora-topic-models.html">[A16] Provable algorithms for inference in topic models</a> (2016-04-04)
-        </li>
-    
-        <li>
-            <a href="../../../posts/tcs/machine_learning/matrices/AGM14.html">[AGM14] New algorithms for learning incoherent and overcomplete dictionaries</a> (2016-04-02)
-        </li>
-    
-        <li>
-            <a href="../../../posts/tcs/machine_learning/matrices/NMF.html">Non-negative matrix factorization</a> (2016-03-26)
-        </li>
-    
-        <li>
-            <a href="../../../posts/tcs/machine_learning/matrices/AGMM15.html">[AGMM15] Simple, efficient, and neural algorithms for sparse coding</a> (2016-03-25)
-        </li>
-    
-        <li>
-            <a href="../../../posts/tcs/machine_learning/neural_nets/lstm_code.html">LSTM Programming</a> (2016-03-19)
-        </li>
-    
-        <li>
-            <a href="../../../posts/tcs/machine_learning/nlp/randwalk.html">[ALLMR16] RAND-WALK: A latent variable model approach to word embeddings</a> (2016-03-15)
-        </li>
-    
-        <li>
-            <a href="../../../posts/tcs/machine_learning/neural_nets/basics.html">Neural nets basics</a> (2016-03-13)
-        </li>
-    
-        <li>
-            <a href="../../../posts/tcs/machine_learning/neural_nets/ALM16.html">[ALM16] WHY ARE DEEP NETS REVERSIBLE: A SIMPLE THEORY, WITH IMPLICATIONS FOR TRAINING</a> (2016-03-13)
-        </li>
-    
-        <li>
-            <a href="../../../posts/tcs/machine_learning/interests.html">Interests</a> (2016-03-13)
-        </li>
-    
-        <li>
-            <a href="../../../posts/tcs/machine_learning/neural_nets/CHMAL15.html">[CHMAL15] The Loss Surfaces of Multilayer Networks</a> (2016-03-07)
-        </li>
-    
-        <li>
-            <a href="../../../posts/tcs/machine_learning/optimization/AO15.html">[AO15] Linear coupling</a> (2016-03-06)
-        </li>
-    
-        <li>
-            <a href="../../../posts/tcs/machine_learning/optimization/mirror-descent.html">Mirror descent</a> (2016-03-05)
-        </li>
-    
-        <li>
-            <a href="../../../posts/tcs/machine_learning/optimization/AGD.html">Accelerated Gradient descent</a> (2016-03-05)
-        </li>
-    
-        <li>
-            <a href="../../../posts/tcs/machine_learning/neural_nets/nn_modeling.html">Analysis of neural networks</a> (2016-03-05)
-        </li>
-    
-        <li>
-            <a href="../../../posts/tcs/machine_learning/optimization/sdp-duality.html">SDP duality</a> (2016-03-04)
-        </li>
-    
-        <li>
-            <a href="../../../posts/tcs/machine_learning/optimization/duality.html">Duality</a> (2016-03-04)
-        </li>
-    
-        <li>
-            <a href="../../../posts/tcs/machine_learning/optimization/convex_optimization.html">Convex optimization</a> (2016-03-04)
-        </li>
-    
-        <li>
-            <a href="../../../posts/tcs/machine_learning/optimization/GD.html">Gradient descent</a> (2016-03-04)
-        </li>
-    
-        <li>
-            <a href="../../../posts/tcs/machine_learning/community/GRSY15.html">[GRSY15] How Hard is Inference for Structured Prediction?</a> (2016-03-03)
-        </li>
-    
-        <li>
-            <a href="../../../posts/tcs/machine_learning/community/SD15.html">[SD15] Minimax rates for memory-bounded sparse linear regression</a> (2016-02-29)
-        </li>
-    
-        <li>
-            <a href="../../../posts/tcs/machine_learning/community/cbm.html">Censored block model</a> (2016-02-28)
-        </li>
-    
-        <li>
-            <a href="../../../posts/tcs/machine_learning/community/MNS12.html">[MNS12]</a> (2016-02-28)
-        </li>
-    
+    <h2 id="references">References</h2>
+<ul>
+<li><a href="http://www.math.uconn.edu/~kconrad/blurbs/analysis/entropypost.pdf">Keith Conrad’s notes</a></li>
+<li><a href="http://www.ski.org/Rehab/Coughlan_lab/General/TutorialsandReference/MaxEnt.pdf">ML vs. ME</a></li>
+<li><a href="https://en.wikipedia.org/wiki/Maximum_entropy_probability_distribution">Wikipedia</a></li>
 </ul>
-
-
+<p>Many naturally occurring distributions are the maximal entropy distribution under some constraint. Here is a table.</p>
+<h3 id="constraint-distribution-entropy-base-e">Constraint | Distribution | Entropy (base e)</h3>
+<p>Mean <span class="math inline">\(\mu\)</span>, variance <span class="math inline">\(\si^2\)</span> | Normal<span class="math inline">\((\mu,\si^2)\)</span> | <span class="math inline">\(\rc2 (1+\ln (2\pi \si^2))\)</span> Support <span class="math inline">\([0,\iy)\)</span>, mean <span class="math inline">\(la\)</span> | Exponential <span class="math inline">\(\rc{\la} e^{-\fc x\la}\)</span> | <span class="math inline">\(1+\ln \la\)</span> <span class="math inline">\(\E X= \mu\)</span>, <span class="math inline">\(\E |X - \E X| = \la\)</span> | Laplace<span class="math inline">\((\mu,2\la^2)\)</span> | <span class="math inline">\(1+\ln(2\la)\)</span> Energy <span class="math inline">\(\sum p_iE_i = \ol E\)</span> | Boltzmann <span class="math inline">\(\Pj(i) = \fc{e^{-\be E_i}}{Z}\)</span>, <span class="math inline">\(Z=\sum_i e^{-\be E_i}\)</span> | <span class="math inline">\(\E(-\be E) - \ln Z\)</span></p>
+<p>Note that in the continuous case, the Boltzmann formula encompasses everything! For example, for the normal distribution, energy is <span class="math inline">\((x-\mu)^2\)</span>.</p>
+<p>A systematic way to show this is Lagrange multipliers.</p>
+<p>A more elegant way is to do the following:</p>
+<ul>
+<li>Note that by nonnegativity of KL divergence, <span class="math display">\[\int_{\Om} p \ln p \ge \int_{\Om} p \ln q.\]</span></li>
+<li>For <span class="math inline">\(F(p)\)</span> the property of the distribution you’re interested in and <span class="math inline">\(q\)</span> equal to the maximizing distribution, find that <span class="math display">\[-\int_{\Om} p \ln q = g(F(p))\]</span> for some function <span class="math inline">\(g\)</span>.</li>
+<li>Conclude that if <span class="math inline">\(F(p)=F(q)\)</span> then <span class="math inline">\(-\int_{\Om} p\ln q = -\int_{\Om} q\ln q\)</span>. Hence <span class="math display">\[H(p) = -\int p\ln p \ge -\int p\ln q = -\int q\ln q = H(q).\]</span></li>
+</ul>
+<p>Here is an example. For <span class="math inline">\(q=\rc{\sqrt{2\pi}}e^{-\fc{x^2}{2\si^2}}\)</span>, <span class="math display">\[-\int_{\R} p \ln q \dx = \rc2 \ln(2\pi \si^2) + \int_{\R}p\cdot \rc2 \pf{x}{\si^2}^2\dx = \rc2 \ln(2\pi \si^2) + \rc{2}\fc{\Var(q)}{\si^2}.\]</span></p>
+<p>Question: why is the maximum entropy distribution the best choice in statistical problems?</p>
 
   </div>
 
     
 
+    <!-- Extension : Sharing buttons @ www.sharethis.com -->
+    <span class="st_facebook_large" displayText="Facebook"></span>
+    <span class="st_twitter_large" displayText="Tweet"></span>
+    <span class="st_googleplus_large" displayText="Google +"></span>
+    <span class="st_reddit_large" displayText="Reddit"></span>
+    <span class="st__large" displayText></span>
 
+    <div id="disqus_thread"></div>
+    
+
+
+  
+    <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+  </div>
   
 </div>
 
@@ -227,6 +170,9 @@
 
 <!-- Extension : Disqus @ http://disqus.com -->
 <!-- Extension : InlineDisqussions @ https://github.com/tsi/inlineDisqussions -->
+
+<script src="../../../disqus/js/disqus.js"></script>
+
 
 
 <!-- Extension : Google Analytics -->

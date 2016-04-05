@@ -87,9 +87,15 @@
  <li><a href="#equivalence">Equivalence</a></li>
  </ul></li>
  <li><a href="#sum-of-squares-as-semidefinite-programs">Sum-of-squares as semidefinite programs</a></li>
+ <li><a href="#chapter-2">Chapter 2</a><ul>
+ <li><a href="#cut-problems">Cut problems</a></li>
+ <li><a href="#quadratic-sampling-lemma">Quadratic sampling lemma</a></li>
+ <li><a href="#goemans-williamson">Goemans-Williamson</a></li>
+ <li><a href="#degree-4-sos-breaks-this-hard-instance">Degree 4 SoS breaks this hard instance</a></li>
+ </ul></li>
  <li><a href="#exercises">Exercises</a><ul>
  <li><a href="#chapter-1">Chapter 1</a></li>
- <li><a href="#chapter-2">Chapter 2</a></li>
+ <li><a href="#chapter-2-1">Chapter 2</a></li>
  </ul></li>
  <li><a href="#misc.">Misc.</a></li>
  </ul> </div>
@@ -143,9 +149,40 @@
 \min_{M\succeq 0, M_{ii}=1} g(M).
 \]</span> This is a relaxation because if <span class="math inline">\(x\)</span> is the optimal solution to the first problem, <span class="math inline">\(x^Tx/n\)</span> is a feasible point for the second problem achieving the same value.<a href="#fn2" class="footnoteRef" id="fnref2"><sup>2</sup></a></p>
 <p>Think of <span class="math inline">\(M_{ii}=1\)</span> as degree-2 constraints that shrink the space we’re minizing over to be closer to just the set <span class="math inline">\(\set{x^Tx/n}{x\in \{-1,1\}^n}\)</span>.</p>
-<p>Note this is the degree-2 SoS relaxation of this problem! The degree-<span class="math inline">\(l\)</span> SoS relaxation is the optimization problem <span class="math display">\[\min_{M\text{ pseudo-expectation satisfying }x_i^2=1} h(M)\]</span> (note we showed that the set of pseudo-expectations is convex; it is defined by <span class="math inline">\(M\succeq 0\)</span> and some linear equations). (<span class="math inline">\(x_i^2=1\)</span> corresponds to <span class="math inline">\(M_{ii}=1\)</span>.) In the equation above we thought of <span class="math inline">\(M\)</span> as a bilinear form on <span class="math inline">\(\R^n\times \R^n = \R[x]_{=1}\times \R[x]_{=1}\)</span>; here we’re just adding 1 to the vector space to get <span class="math inline">\(\R[x]_{\le 1}\times \R[x]_{\le 1}\)</span> and stipulating <span class="math inline">\(M(1,1)=1\)</span>, which doesn’t change anything.</p>
-<p>(If <span class="math inline">\(f\)</span> is a linear function <span class="math inline">\(f(x_1,\ldots, x_n,x_1^2,x_1x_2,\ldots, x_1^3,\ldots)\)</span>, then <span class="math inline">\(g(M)\)</span> is the function <span class="math inline">\(f(M(x_1,1),\ldots, M(x_n,1), M(x_1,x_1),\ldots)\)</span>.</p>
+<p>Note this is the degree-2 SoS relaxation of this problem!<a href="#fn3" class="footnoteRef" id="fnref3"><sup>3</sup></a> The degree-<span class="math inline">\(l\)</span> SoS relaxation is the optimization problem <span class="math display">\[\min_{M\text{ pseudo-expectation satisfying }x_i^2=1} h(M)\]</span> (note we showed that the set of pseudo-expectations is convex; it is defined by <span class="math inline">\(M\succeq 0\)</span> and some linear equations). (<span class="math inline">\(x_i^2=1\)</span> corresponds to <span class="math inline">\(M_{ii}=1\)</span>.) In the equation above we thought of <span class="math inline">\(M\)</span> as a bilinear form on <span class="math inline">\(\R^n\times \R^n = \R[x]_{=1}\times \R[x]_{=1}\)</span>; here we’re just adding 1 to the vector space to get <span class="math inline">\(\R[x]_{\le 1}\times \R[x]_{\le 1}\)</span> and stipulating <span class="math inline">\(M(1,1)=1\)</span>, which doesn’t change anything.</p>
+<p>(If <span class="math inline">\(f\)</span> is a linear function <span class="math inline">\(f(x_1,\ldots, x_n,x_1^2,x_1x_2,\ldots, x_1^3,\ldots)\)</span>, then <span class="math inline">\(g(M)\)</span> is the function <span class="math inline">\(f(M(x_1,1),\ldots, M(x_n,1), M(x_1,x_1),\ldots)\)</span>.)</p>
 <p>For example, the degree-4 SoS relaxation would correspond to optimizing over <span class="math inline">\((\R^2,\R^1,\R)^{\ot 2}\)</span>, where the solutions corresponding to solutions of the original problem are in the form <span class="math inline">\((x^{\ot 2},x,1)^{\ot 2},x\in \{-1,1\}^n\)</span>. For $M<span class="math inline">\((\R^2,\R^1,\R)^{\ot 2}\)</span>, the solutions satisfy equations like <span class="math inline">\(M_{ii,jk}=1, M_{i,ij}=1\)</span>, etc.—corresponding to multiples of polynomials <span class="math inline">\(x_i^2-1\)</span>.</p>
+<h2 id="chapter-2">Chapter 2</h2>
+<h3 id="cut-problems">Cut problems</h3>
+<p>Define</p>
+<ul>
+<li><strong>expansion/conductance</strong>
+\begin{align}
+\phi(S) &amp;= \fc{E(S,\ol S)}{d\min\{|S|,n-|S|\}}\\
+\phi(S) &amp;= \min_S \phi(S).
+\end{align}
+(which is at most a factor of 2 from <span class="math inline">\(\fc{n E(S,\ol S)}{d|S||\ol S|}\)</span>). This is the <strong>sparsest cut</strong> problem.</li>
+<li>(fractional) <strong>cut size</strong>
+\begin{align}
+\text{cut}(S) &amp;= \fc{E(S,\ol S)}{|E|}\\
+\text{maxcut}(G) &amp;= \max_S \text{cut}(S).
+\end{align}
+This is the <strong>max-cut</strong> problem.</li>
+</ul>
+<p>We can express this in terms of the characteristic function <span class="math inline">\(x\)</span> of <span class="math inline">\(S\)</span> defined as <span class="math inline">\(x_i=(i\in S)-(i\nin S)\)</span> by <span class="math display">\[ \an{x,Lx} = \rc{2d}\sum_{i\sim j} (x_i-x_j)^2 =\fc{4E(S,\ol S)}{d} = 2n\text{cut}(S). \]</span></p>
+<h3 id="quadratic-sampling-lemma">Quadratic sampling lemma</h3>
+<p><strong>Lemma</strong>: Let <span class="math inline">\(\wt{\E}\)</span> be a degree-2 pseudo-expectation operator. Then there is a Gaussian distribution <span class="math inline">\(N\)</span> such that <span class="math display">\[\wt{\E_{x\sim\mu}} p(x) = \E_{y\sim N} p(y).\]</span> The pseudo-expectation operator is a bilinear form on <span class="math inline">\(\R[x]_{\le 1}\times \R[x]_{\le 1}\)</span> is associated with a matrix <span class="math inline">\(A=B^2\)</span>. Then <span class="math inline">\(y=Bx\)</span> where <span class="math inline">\(x\sim N(0,1)\)</span>, i.e., <span class="math inline">\(y\)</span> is the Gaussian with covariance matrix <span class="math inline">\(B\)</span>.</p>
+<p>A lemma about Gaussians.</p>
+<p><strong>Lemma</strong>: If <span class="math inline">\((x,y)\)</span> are <span class="math inline">\(1-\ep\)</span>-correlated Gaussians, then <span class="math inline">\((x,y)^T =Av\)</span> where <span class="math inline">\(A=\rc2 \smatt{\sqrt\ep+\sqrt{2-\ep}}{\sqrt{\ep}-\sqrt{2-\ep}}{\sqrt{\ep}-\sqrt{2-\ep}}{\sqrt{\ep}+\sqrt{2-\ep}}\)</span>, <span class="math inline">\(v\sim N(0,I)\)</span>. In other words, if <span class="math inline">\((x,y)\)</span> are <span class="math inline">\(\cos(\te)\)</span>-correlated Gaussians, then <span class="math inline">\(A=\smatt{\sin(\fc\pi4-\fc\te2)}{\sin(\fc\pi4+\fc\te2)}{\cos(\fc\pi4-\fc\te2)}{\cos(\fc\pi4+\fc\te2)}\)</span> (I might have gotten cos/sin switched).</p>
+<p>(Sanity check: when <span class="math inline">\(\te=0\)</span> they point in <span class="math inline">\(\pi/4\)</span>, when <span class="math inline">\(\te=\fc \pi2\)</span> they point in <span class="math inline">\(0,\fc\pi2\)</span>.)</p>
+<p><strong>Lemma</strong>: Let <span class="math inline">\(y,y'\)</span> be Gaussians with variance 1 such that <span class="math display">\[\E(y-y')^2 \ge 4(1-\de) = 2+2\cos(\te).\]</span> Then <span class="math display">\[\Pj(\sgn(y) = \sgn(y')) = \fc{\te}{\pi} = O(\sqrt{\de}).\]</span></p>
+<h3 id="goemans-williamson">Goemans-Williamson</h3>
+<p><strong>Theorem</strong>: There is a polynomial-time algorithm which given a <span class="math inline">\(n\)</span>-vertex <span class="math inline">\(d\)</span>-regular graph <span class="math inline">\(G=(V,E)\)</span> and a degree 2 pseudo-distribution with <span class="math inline">\(\wt E_{x\sim \mu} x_i^2=1\)</span>, <span class="math inline">\(\wt E\an{x,Lx} \ge 2n(1-\ep)\)</span>, outputs <span class="math inline">\(z\in \{\pm1\}^n\)</span> such that <span class="math inline">\(\an{z,Lz} \ge (1-f_{GW}(\ep))=O(\sqrt \ep)\)</span>. (Add the precise form of <span class="math inline">\(f\)</span>.)</p>
+<p><em>Proof</em>: Let <span class="math inline">\(z_i=\sgn(y_i)\)</span> and use Lemma on Gaussian variables on each term.</p>
+<p>This is optimal. To see optimality in order of magnitude, take the odd cycle on <span class="math inline">\(n=\rc{\sqrt{\ep}}\)</span> vertices, or a union of these. To see optimality in an additive sense, use the Feige-Schectman graph (random points on sphere connected in <span class="math inline">\(\an{v_i,v_j}\le -1+\ep\)</span>).</p>
+<h3 id="degree-4-sos-breaks-this-hard-instance">Degree 4 SoS breaks this hard instance</h3>
+<p>Show that the FS graph can be solved by a degree 4 SoS. This is the same as saying there is no degree-4 distribution over <span class="math inline">\(\R^n\)</span> consistent with <span class="math inline">\(\{x_i^2=1\}\)</span> such that <span class="math display">\[\wt E\sum (x_i-x_{i+1})^2&gt;4(n-1).\]</span> (We had a degree-2 distribution with <span class="math inline">\(\wt E&gt;4n\pa{1-O\prc{n^2}}\)</span>, which gave the gap.)</p>
+<p>Proof: The squared triangle inequality holds for degree-4 pseudodistributions. Sum up inequalities <span class="math inline">\(\wt E(x_i-x_{i+1})^2 \le \sum_{j\ne i} \wt E(x_j+x_{j+1})^2\)</span>.</p>
 <h2 id="exercises">Exercises</h2>
 <h3 id="chapter-1">Chapter 1</h3>
 <ol type="1">
@@ -165,7 +202,7 @@
 <li></li>
 <li></li>
 </ol>
-<h3 id="chapter-2">Chapter 2</h3>
+<h3 id="chapter-2-1">Chapter 2</h3>
 <ol type="1">
 <li>Imitate the proof of CS. We have <span class="math inline">\(\wt{\EE_{\mu}} t^2P^2-2tPQ+Q^2\)</span>. Now set the discriminant to be <span class="math inline">\(\le 0\)</span>.</li>
 </ol>
@@ -178,6 +215,7 @@
 <ol>
 <li id="fn1"><p>There is another way to relax this kind of problem, by changing the values <span class="math inline">\(x_i\)</span> could take from <span class="math inline">\(\pm1\)</span> to vectors, like in Goemans-Williamson. We don’t consider this kind of relaxation here. (Though we can do GW here too…?)<a href="#fnref1">↩</a></p></li>
 <li id="fn2"><p>There is another way to relax this kind of problem, by changing the values <span class="math inline">\(x_i\)</span> could take from <span class="math inline">\(\pm1\)</span> to vectors, like in Goemans-Williamson. We don’t consider this kind of relaxation here. (Though we can do GW here too…?)<a href="#fnref2">↩</a></p></li>
+<li id="fn3"><p>Not really. I’m confused here: why don’t we factor through <span class="math inline">\((\R[x]/I)_{\le l}\)</span> instead of <span class="math inline">\((\R[x]/I)_{\le l/2}\times (\R[x]/I)_{\le l/2}\)</span>?<a href="#fnref3">↩</a></p></li>
 </ol>
 </section>
 

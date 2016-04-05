@@ -76,11 +76,68 @@ This is a relaxation because if $x$ is the optimal solution to the first problem
 
 Think of $M_{ii}=1$ as degree-2 constraints that shrink the space we're minizing over to be closer to just the set $\set{x^Tx/n}{x\in \{-1,1\}^n}$. 
 
-Note this is the degree-2 SoS relaxation of this problem! The degree-$l$ SoS relaxation is the optimization problem $$\min_{M\text{ pseudo-expectation satisfying }x_i^2=1} h(M)$$ (note we showed that the set of pseudo-expectations is convex; it is defined by $M\succeq 0$ and some linear equations). ($x_i^2=1$ corresponds to $M_{ii}=1$.) In the equation above we thought of $M$ as a bilinear form on $\R^n\times \R^n = \R[x]_{=1}\times \R[x]_{=1}$; here we're just adding 1 to the vector space  to get $\R[x]_{\le 1}\times \R[x]_{\le 1}$ and stipulating $M(1,1)=1$, which doesn't change anything.
+Note this is the degree-2 SoS relaxation of this problem![^f0] The degree-$l$ SoS relaxation is the optimization problem $$\min_{M\text{ pseudo-expectation satisfying }x_i^2=1} h(M)$$ (note we showed that the set of pseudo-expectations is convex; it is defined by $M\succeq 0$ and some linear equations). ($x_i^2=1$ corresponds to $M_{ii}=1$.) In the equation above we thought of $M$ as a bilinear form on $\R^n\times \R^n = \R[x]_{=1}\times \R[x]_{=1}$; here we're just adding 1 to the vector space  to get $\R[x]_{\le 1}\times \R[x]_{\le 1}$ and stipulating $M(1,1)=1$, which doesn't change anything.
 
-(If $f$ is a linear function $f(x_1,\ldots, x_n,x_1^2,x_1x_2,\ldots, x_1^3,\ldots)$, then $g(M)$ is the function $f(M(x_1,1),\ldots, M(x_n,1), M(x_1,x_1),\ldots)$.
+[^f0]: Not really. I'm confused here: why don't we factor through $(\R[x]/I)_{\le l}$ instead of $(\R[x]/I)_{\le l/2}\times (\R[x]/I)_{\le l/2}$?
+
+(If $f$ is a linear function $f(x_1,\ldots, x_n,x_1^2,x_1x_2,\ldots, x_1^3,\ldots)$, then $g(M)$ is the function $f(M(x_1,1),\ldots, M(x_n,1), M(x_1,x_1),\ldots)$.)
 
 For example, the degree-4 SoS relaxation would correspond to optimizing over $(\R^2,\R^1,\R)^{\ot 2}$, where the solutions corresponding to solutions of the original problem are in the form $(x^{\ot 2},x,1)^{\ot 2},x\in \{-1,1\}^n$. For $M\in $(\R^2,\R^1,\R)^{\ot 2}$, the solutions satisfy equations like $M_{ii,jk}=1, M_{i,ij}=1$, etc.---corresponding to multiples of polynomials $x_i^2-1$.
+
+#Chapter 2
+
+##Cut problems
+
+Define
+
+*   **expansion/conductance**
+    \begin{align}
+	\phi(S) &= \fc{E(S,\ol S)}{d\min\{|S|,n-|S|\}}\\
+	\phi(S) &= \min_S \phi(S).
+	\end{align}
+    (which is at most a factor of 2 from $\fc{n E(S,\ol S)}{d|S||\ol S|}$). This is the **sparsest cut** problem.
+*   (fractional) **cut size**
+	\begin{align}
+	\text{cut}(S) &= \fc{E(S,\ol S)}{|E|}\\
+	\text{maxcut}(G) &= \max_S \text{cut}(S).
+	\end{align}
+	This is the **max-cut** problem.
+
+We can express this in terms of the characteristic function $x$ of $S$ defined as $x_i=(i\in S)-(i\nin S)$ by
+$$ \an{x,Lx} = \rc{2d}\sum_{i\sim j} (x_i-x_j)^2 =\fc{4E(S,\ol S)}{d} = 2n\text{cut}(S). $$
+
+##Quadratic sampling lemma
+
+**Lemma**: Let $\wt{\E}$ be a degree-2 pseudo-expectation operator. Then there is a Gaussian distribution $N$ such that
+$$\wt{\E_{x\sim\mu}} p(x) = \E_{y\sim N} p(y).$$
+The pseudo-expectation operator is a bilinear form on $\R[x]_{\le 1}\times \R[x]_{\le 1}$ is associated with a matrix $A=B^2$. Then $y=Bx$ where $x\sim N(0,1)$, i.e., $y$ is the Gaussian with covariance matrix $B$.
+
+A lemma about Gaussians.
+
+**Lemma**: If $(x,y)$ are $1-\ep$-correlated Gaussians, then $(x,y)^T =Av$ where $A=\rc2 \smatt{\sqrt\ep+\sqrt{2-\ep}}{\sqrt{\ep}-\sqrt{2-\ep}}{\sqrt{\ep}-\sqrt{2-\ep}}{\sqrt{\ep}+\sqrt{2-\ep}}$, $v\sim N(0,I)$. In other words, if $(x,y)$ are $\cos(\te)$-correlated Gaussians, then $A=\smatt{\sin(\fc\pi4-\fc\te2)}{\sin(\fc\pi4+\fc\te2)}{\cos(\fc\pi4-\fc\te2)}{\cos(\fc\pi4+\fc\te2)}$ (I might have gotten cos/sin switched).
+
+(Sanity check: when $\te=0$ they point in $\pi/4$, when $\te=\fc \pi2$ they point in $0,\fc\pi2$.)
+
+**Lemma**: Let $y,y'$ be Gaussians with variance 1 such that
+$$\E(y-y')^2 \ge 4(1-\de) = 2+2\cos(\te).$$
+Then
+$$\Pj(\sgn(y) = \sgn(y')) = \fc{\te}{\pi} = O(\sqrt{\de}).$$
+
+##Goemans-Williamson
+
+**Theorem**: There is a polynomial-time algorithm which given a $n$-vertex $d$-regular graph $G=(V,E)$ and a degree 2 pseudo-distribution with $\wt E_{x\sim \mu} x_i^2=1$, $\wt E\an{x,Lx} \ge 2n(1-\ep)$, outputs $z\in \{\pm1\}^n$ such that $\an{z,Lz} \ge (1-f_{GW}(\ep))=O(\sqrt \ep)$. (Add the precise form of $f$.)
+
+*Proof*: Let $z_i=\sgn(y_i)$ and use Lemma on Gaussian variables on each term.
+
+This is optimal. To see optimality in order of magnitude, take the odd cycle on $n=\rc{\sqrt{\ep}}$ vertices, or a union of these. To see optimality in an additive sense, use the Feige-Schectman graph (random points on sphere connected in $\an{v_i,v_j}\le -1+\ep$).
+
+##Degree 4 SoS breaks this hard instance
+
+Show that the FS graph can be solved by a degree 4 SoS. This is the same as saying there is no degree-4 distribution over $\R^n$ consistent with $\{x_i^2=1\}$ such that
+$$\wt E\sum (x_i-x_{i+1})^2>4(n-1).$$
+(We had a degree-2 distribution with $\wt E>4n\pa{1-O\prc{n^2}}$, which gave the gap.)
+
+Proof: The squared triangle inequality holds for degree-4 pseudodistributions. Sum up inequalities $\wt E(x_i-x_{i+1})^2 \le \sum_{j\ne i} \wt E(x_j+x_{j+1})^2$.
 
 #Exercises
 

@@ -41,7 +41,7 @@ MathJax.Hub.Config({
       sO: "\\mathscr{O}",
       Q: "\\mathbb{Q}",
       R: "\\mathbb{R}",
-      bS: "\\mathbb{bS}",
+      bS: "\\mathbb{S}",
       T: "\\mathbb{T}",
       X: "\\mathfrak{X}",
       Z: "\\mathbb{Z}",
