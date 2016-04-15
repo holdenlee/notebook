@@ -167,7 +167,7 @@ The arguments of each are
 *   cost:
 *   args: args to cost function (e.g., neural net inputs)
 
-Retrns
+Returns
 
 *   `f_grad_shared`
 *   `f_update`
@@ -188,7 +188,23 @@ What does the train function need?
 * Data (train, validation, test): What's the difference between validation and test?
 * Batch-maker: Given the data, make a list of batches. One epoch consists of going through all the batches.
 
-	
+Pseudocode for `train`:
+
+* Take the union of the parameters.
+* Compile the cost and gradient functions.
+* Get the `f_grad_shared` and `f_update` functions from the optimizer.
+* Make batches from the validation data.
+* In an epoch:
+    * Make batches from the training data.
+	* For each batch:
+		* Increment number of updates by 1.
+		* Calculate the cost of the batch.
+		* Make an update based on the batch.
+		* Display (epoch/update number and cost on current batch) and save if necessary.
+		* If it's time to validate (every validFreq times), calculate the training error (over the WHOLE batch) and validation error (over the entire validation dataset). (NOTE: Do we want to calculate the training error over the whole batch? Perhaps just sample from it.)
+		* If the validation error is the best so far, replace `best_p`.
+		* If it has been `patience` iterations since validation error improved, stop.
+* Calculate the training and validation error one final time.
 
 <!-- Scraps
 while I wait for someone to write a frontend in haskell...

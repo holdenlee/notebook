@@ -8,8 +8,189 @@
         <name>Holden Lee</name>
         <email>oldheneel@gmail.com</email>
     </author>
-    <updated>2016-04-04T00:00:00Z</updated>
+    <updated>2016-04-13T00:00:00Z</updated>
     <entry>
+    <title>Perfect LCCs</title>
+    <link href="http://holdenlee.github.io/notebook/posts/tcs/coding/perfect_lcc.html" />
+    <id>http://holdenlee.github.io/notebook/posts/tcs/coding/perfect_lcc.html</id>
+    <published>2016-04-13T00:00:00Z</published>
+    <updated>2016-04-13T00:00:00Z</updated>
+    <summary type="html"><![CDATA[
+<div class="container">
+  <div id="content">
+    <div class="page header">
+      <h1>Perfect LCCs</h1>
+    </div>
+    <div class="info">
+      
+       
+        <p>Posted: 2016-04-13 
+          , Modified: 2016-04-13 
+	</p>
+      
+       <p>Tags: <a href="/tags/none.html">none</a></p> 
+    </div>
+    
+  </div>
+  <!--/div-->
+
+  <div class="toc"> <ul>
+ <li><a href="#proof-1">Proof 1</a></li>
+ <li><a href="#proof-2">Proof 2</a></li>
+ </ul> </div>
+
+  <div class="blog-main">
+    <p>There are many proofs showing we must have <span class="math inline">\(n=2^k\)</span> for perfect 2 LCCs. Can we extend these methods to give</p>
+<ul>
+<li>exponential lower bounds for LCCs?</li>
+<li>lower bounds for perfect <span class="math inline">\(q\)</span>-LCCs, <span class="math inline">\(q&gt;2\)</span>?</li>
+</ul>
+<p>A perfect <span class="math inline">\(q\)</span>-LCC of input length <span class="math inline">\(k\)</span> in <span class="math inline">\(n\)</span> dimensions is a set of <span class="math inline">\(2^k\)</span> points in <span class="math inline">\(\{\pm 1\}^n\)</span>, together with <span class="math inline">\(n\)</span> unions of perfect <span class="math inline">\(q\)</span>-matchings <span class="math inline">\(M_i\)</span> (or just matchings) and a sign <span class="math inline">\(s_m\)</span> for each <span class="math inline">\(m\in M_i\)</span>, such that on codewords, the decoding process defined by taking any <span class="math inline">\(m\in M_i\)</span> and taking <span class="math inline">\(s_m \prod_{j\in m}x_i\)</span> recovers <span class="math inline">\(x_i\)</span> with probability 1. In other words, <span class="math display">\[\EE_{m\in M_i} s_m\prod_{j\in m} x_j = 1.\]</span></p>
+<h2 id="proof-1">Proof 1</h2>
+<p>For <span class="math inline">\(q=2\)</span>, these are quadratic forms <span class="math inline">\(Q_i\)</span>, with associated matrices <span class="math inline">\(A_i\)</span>. The fact that they are matchings means that <span class="math inline">\(A_i = \rc nS_i\)</span> where <span class="math inline">\(S_i\)</span> is (doubly) stochastic. (In fact, we can deal more generally with perfectly smooth LCCs that recover perfectly on codewords.) The codewords are those with <span class="math display">\[Q_i(x)=x \iff \an{x,A_ix}=x_i.\]</span> Now <span class="math inline">\(S\)</span>, being stochastic, satisfies <span class="math inline">\(\ve{S}_{\iy\to \iy} \le 1\)</span>. Now <span class="math inline">\(\ve{x}_{\iy}\le 1\)</span> so <span class="math inline">\(\ve{A_i x}_{\iy}\le \rc{n}\)</span>. We have <span class="math display">\[n=\ve{x}_1 =\sum_i |\an{x,A_ix}|\le \sum_i \ve{A_ix}_{\iy}\ve{x}_1=n,\]</span> so equality holds and <span class="math inline">\(A_ix = x_ix\)</span>.</p>
+<p>This means the <span class="math inline">\(x\in C\)</span> are simultaneous eigenvalues for the <span class="math inline">\(A_i\)</span>. The sequences of eigenvectors are different, so <span class="math inline">\(|C|\le n\)</span>, i.e., <span class="math inline">\(2^k\le n\)</span>. Equality is acheived for the Hadamard code.</p>
+<p>To extend this: some notion of “approximate eigenvector,” “well-conditioned linear dependency”?</p>
+<h2 id="proof-2">Proof 2</h2>
+<p>For LDCs whose matching correspond to a group action, every <span class="math inline">\(i\)</span> corresponds to a matching <span class="math inline">\(M_i=\{(y, y+x_i)\}\)</span>. Now for any <span class="math inline">\(\ep\in \{-1,1\}^k\)</span>, there must exist a set <span class="math inline">\(S\)</span>, the support of the codeword <span class="math inline">\(x=C(\ep)\)</span>, for which <span class="math inline">\(M_i\)</span> only has edges in <span class="math inline">\(S\)</span> if <span class="math inline">\(\ep_i=1\)</span>, and <span class="math inline">\(M_i\)</span> only has edges between <span class="math inline">\(S,S^c\)</span> if <span class="math inline">\(\ep_i=-1\)</span>. We must have <span class="math inline">\(|S|=\fc n2\)</span>.</p>
+<p>Now if <span class="math inline">\(x_k=\sum_{i=1}^{k-1} a_ix_i\)</span>, consider the set <span class="math inline">\(S\)</span> where <span class="math inline">\(\ep_i=1\)</span> iff <span class="math inline">\(a_i=1\)</span>, but <span class="math inline">\(\ep_{k}=-1\)</span>. Then <span class="math inline">\(S = S+x_i\)</span> for all <span class="math inline">\(i\)</span>, and <span class="math inline">\(S\ne S+x_k\)</span>, contradiction.</p>
+<p>This is very much related to the first proof. There, one can use a linear dependency argument to show there can’t be more than <span class="math inline">\(n\)</span> eigenvectors with distinct sequences of eigenvalues. (Make this relationship more explicit?)</p>
+
+  </div>
+
+    
+
+    <!-- Extension : Sharing buttons @ www.sharethis.com -->
+    <span class='st_facebook_large' displayText='Facebook'></span>
+    <span class='st_twitter_large' displayText='Tweet'></span>
+    <span class='st_googleplus_large' displayText='Google +'></span>
+    <span class='st_reddit_large' displayText='Reddit'></span>
+    <span class='st__large' displayText=''></span>
+
+    <div id="disqus_thread"></div>
+    
+
+
+  
+    <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+  </div>
+  
+</div>
+]]></summary>
+</entry>
+<entry>
+    <title>Notes index</title>
+    <link href="http://holdenlee.github.io/notebook/posts/summaries/notes_index.html" />
+    <id>http://holdenlee.github.io/notebook/posts/summaries/notes_index.html</id>
+    <published>2016-04-08T00:00:00Z</published>
+    <updated>2016-04-08T00:00:00Z</updated>
+    <summary type="html"><![CDATA[
+<div class="container">
+  <div id="content">
+    <div class="page header">
+      <h1>Notes index</h1>
+    </div>
+    <div class="info">
+      
+       
+        <p>Posted: 2016-04-08 
+          , Modified: 2016-04-08 
+	</p>
+      
+       <p>Tags: <a href="/tags/none.html">none</a></p> 
+    </div>
+    
+  </div>
+  <!--/div-->
+
+  
+
+  <div class="blog-main">
+    
+
+  </div>
+
+    
+
+    <!-- Extension : Sharing buttons @ www.sharethis.com -->
+    <span class='st_facebook_large' displayText='Facebook'></span>
+    <span class='st_twitter_large' displayText='Tweet'></span>
+    <span class='st_googleplus_large' displayText='Google +'></span>
+    <span class='st_reddit_large' displayText='Reddit'></span>
+    <span class='st__large' displayText=''></span>
+
+    <div id="disqus_thread"></div>
+    
+
+
+  
+    <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+  </div>
+  
+</div>
+]]></summary>
+</entry>
+<entry>
+    <title>Martingales</title>
+    <link href="http://holdenlee.github.io/notebook/posts/math/probability/martingales.html" />
+    <id>http://holdenlee.github.io/notebook/posts/math/probability/martingales.html</id>
+    <published>2016-04-08T00:00:00Z</published>
+    <updated>2016-04-08T00:00:00Z</updated>
+    <summary type="html"><![CDATA[
+<div class="container">
+  <div id="content">
+    <div class="page header">
+      <h1>Martingales</h1>
+    </div>
+    <div class="info">
+      
+       
+        <p>Posted: 2016-04-08 
+          , Modified: 2016-04-08 
+	</p>
+      
+       <p>Tags: <a href="/tags/none.html">none</a></p> 
+    </div>
+    
+  </div>
+  <!--/div-->
+
+  <div class="toc"> <ul>
+ <li><a href="#conditional-expectation">Conditional expectation</a></li>
+ <li><a href="#martingales-almost-sure-convergence">Martingales, Almost Sure Convergence</a></li>
+ <li><a href="#examples">Examples</a></li>
+ <li><a href="#doobs-inequality-lp-convergence">Doob’s inequality, <span class="math inline"><em>L</em><sup><em>p</em></sup></span> convergence</a></li>
+ </ul> </div>
+
+  <div class="blog-main">
+    <p>Durrett Ch. 5</p>
+<h2 id="conditional-expectation">Conditional expectation</h2>
+<h2 id="martingales-almost-sure-convergence">Martingales, Almost Sure Convergence</h2>
+<h2 id="examples">Examples</h2>
+<h2 id="doobs-inequality-lp-convergence">Doob’s inequality, <span class="math inline">\(L^p\)</span> convergence</h2>
+
+  </div>
+
+    
+
+    <!-- Extension : Sharing buttons @ www.sharethis.com -->
+    <span class='st_facebook_large' displayText='Facebook'></span>
+    <span class='st_twitter_large' displayText='Tweet'></span>
+    <span class='st_googleplus_large' displayText='Google +'></span>
+    <span class='st_reddit_large' displayText='Reddit'></span>
+    <span class='st__large' displayText=''></span>
+
+    <div id="disqus_thread"></div>
+    
+
+
+  
+    <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+  </div>
+  
+</div>
+]]></summary>
+</entry>
+<entry>
     <title>Matrix factorizations</title>
     <link href="http://holdenlee.github.io/notebook/posts/tcs/machine_learning/matrices/matrix-factorization.html" />
     <id>http://holdenlee.github.io/notebook/posts/tcs/machine_learning/matrices/matrix-factorization.html</id>
@@ -683,222 +864,6 @@ N :&amp;= (A^TA)_{S_1\times S_2}.
 <li><span class="math inline">\(\fc{3k^3(a+b+c)}{m^2}\)</span> comes from intersecting two together and the other separately.</li>
 </ul></li>
 </ul>
-
-  </div>
-
-    
-
-    <!-- Extension : Sharing buttons @ www.sharethis.com -->
-    <span class='st_facebook_large' displayText='Facebook'></span>
-    <span class='st_twitter_large' displayText='Tweet'></span>
-    <span class='st_googleplus_large' displayText='Google +'></span>
-    <span class='st_reddit_large' displayText='Reddit'></span>
-    <span class='st__large' displayText=''></span>
-
-    <div id="disqus_thread"></div>
-    
-
-
-  
-    <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
-  </div>
-  
-</div>
-]]></summary>
-</entry>
-<entry>
-    <title>LCC lower bounds by geometry</title>
-    <link href="http://holdenlee.github.io/notebook/posts/tcs/coding/lcc_geometry.html" />
-    <id>http://holdenlee.github.io/notebook/posts/tcs/coding/lcc_geometry.html</id>
-    <published>2016-04-02T00:00:00Z</published>
-    <updated>2016-04-02T00:00:00Z</updated>
-    <summary type="html"><![CDATA[
-<div class="container">
-  <div id="content">
-    <div class="page header">
-      <h1>LCC lower bounds by geometry</h1>
-    </div>
-    <div class="info">
-      
-       
-        <p>Posted: 2016-04-02 
-          , Modified: 2016-04-02 
-	</p>
-      
-       <p>Tags: <a href="/tags/none.html">none</a></p> 
-    </div>
-    
-  </div>
-  <!--/div-->
-
-  <div class="toc"> <ul>
- <li><a href="#general-plan">General plan</a></li>
- <li><a href="#convex-hull-of-image-is-large">Convex hull of image is large</a></li>
- <li><a href="#image-close-to-convex">Image close to convex</a></li>
- <li><a href="#volume-of-image-small">Volume of image small</a></li>
- </ul> </div>
-
-  <div class="blog-main">
-    <h2 id="general-plan">General plan</h2>
-<p>See <a href="ldc.html">LDCs</a> for basics.</p>
-<p>Suppose the LCC is large.</p>
-<ul>
-<li>The image of the decoding map <span class="math inline">\(D:[-1,1]^n\to [0,1]^n\)</span> contains many points that are far apart, corresponding to the codewords. This gives that the convex hull of the image has large volume or a large <span class="math inline">\(\ep\)</span>-net.</li>
-<li>The image is close to convex, so the image is also large.</li>
-<li>However, the Jacobian of the map is small, so the volume of the image is small, contradiction.</li>
-</ul>
-<h2 id="convex-hull-of-image-is-large">Convex hull of image is large</h2>
-<p>?</p>
-<p>Intuitively this can work: consider a simplexification; if each simplex is large the volume grows rapidly in terms of the number of vertices.</p>
-<h2 id="image-close-to-convex">Image close to convex</h2>
-<p>The idea is from <a href="Bar13.html">Bar13</a>.</p>
-<p>We modify it to give a bound on <span class="math inline">\(L^2\)</span> distance instead of KL-divergence, and to look at the image of the unit ball instead. (Normalize the domain by <span class="math inline">\(\rc{\sqrt{n}}\)</span>.) The image is of size on the order <span class="math inline">\(\sqrt{n}\)</span>, and we get <span class="math inline">\(\ep\sqrt{n}\)</span> approximations.</p>
-<p><em>Problem</em>: Is this enough?</p>
-<ul>
-<li>This compares the volume of the convex hull to the volume of the <span class="math inline">\(\ep\)</span>-expanded set, which may be much larger than the volume of the set.</li>
-<li>To show it’s not much larger, it seems necessary to show the surface area is small, and inductively the surface area in each dimension is small.</li>
-<li>If we use “<span class="math inline">\(\ep\)</span>-net size” instead of volume, we don’t have this problem—but then we have to bound the size of an <span class="math inline">\(\ep\)</span>-net of the convex hull in the first step.</li>
-</ul>
-<h2 id="volume-of-image-small">Volume of image small</h2>
-<p>For <span class="math inline">\(q=2\)</span>, get <span class="math inline">\(\pf{C}{\sqrt n}^n\)</span>.</p>
-<p>For <span class="math inline">\(q&gt;2\)</span>, use the matrix Efron-Stein inequality.</p>
-<p>We might want to look at surface areas, etc. I think 1-dimensional length between code-words gives a ECC condition.</p>
-
-  </div>
-
-    
-
-    <!-- Extension : Sharing buttons @ www.sharethis.com -->
-    <span class='st_facebook_large' displayText='Facebook'></span>
-    <span class='st_twitter_large' displayText='Tweet'></span>
-    <span class='st_googleplus_large' displayText='Google +'></span>
-    <span class='st_reddit_large' displayText='Reddit'></span>
-    <span class='st__large' displayText=''></span>
-
-    <div id="disqus_thread"></div>
-    
-
-
-  
-    <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
-  </div>
-  
-</div>
-]]></summary>
-</entry>
-<entry>
-    <title>[Bar13] Convexity of the image of a quadratic map via the relative entropy distance</title>
-    <link href="http://holdenlee.github.io/notebook/posts/tcs/coding/Bar13.html" />
-    <id>http://holdenlee.github.io/notebook/posts/tcs/coding/Bar13.html</id>
-    <published>2016-04-02T00:00:00Z</published>
-    <updated>2016-04-02T00:00:00Z</updated>
-    <summary type="html"><![CDATA[
-<div class="container">
-  <div id="content">
-    <div class="page header">
-      <h1>[Bar13] Convexity of the image of a quadratic map via the relative entropy distance</h1>
-    </div>
-    <div class="info">
-      
-       
-        <p>Posted: 2016-04-02 
-          , Modified: 2016-04-02 
-	</p>
-      
-       <p>Tags: <a href="/tags/none.html">none</a></p> 
-    </div>
-    
-  </div>
-  <!--/div-->
-
-  <div class="toc"> <ul>
- <li><a href="#dines-theorem">Dines Theorem</a></li>
- <li><a href="#proof-sketch">Proof sketch</a></li>
- </ul> </div>
-
-  <div class="blog-main">
-    <p><strong>Theorem</strong>: Let <span class="math inline">\(q_1,\ldots, q_k:\R^n\to \R\)</span> be positive definite quadratic forms, <span class="math inline">\(\psi = (q_1,\ldots, q_k)\)</span>. Let <span class="math inline">\(a\in \conv(\psi(\R^n))\cap \De\)</span>, where <span class="math inline">\(\De\)</span> is the probability simplex. There exists <span class="math inline">\(b\in \psi(\R^n)\cap \De\)</span> that is at most 4.8 away in KL divergence.</p>
-<h2 id="dines-theorem">Dines Theorem</h2>
-<p>(Just for some motivation here)</p>
-<p>When <span class="math inline">\(k=2\)</span>, <span class="math inline">\(\psi(\R^n)\)</span> is convex. Proof: When system of linear equations in <span class="math inline">\(X\succeq 0\)</span> have a solution, and the number of equations is small, there is in fact a low-rank solution. Here, look for a rank 1 solution.</p>
-<h2 id="proof-sketch">Proof sketch</h2>
-<p>Note KL-divergence is easier to deal with—the logs mean that scaling comes out as constants—and is stronger than <span class="math inline">\(L^p\)</span> norms.</p>
-<ol type="1">
-<li>Write down what it means for <span class="math inline">\(a\)</span> to be in the convex hull. This means there is <span class="math inline">\(\ga_1,\ldots, \ga_n\)</span>, <span class="math inline">\(x_1,\ldots, x_n\)</span> such that <span class="math display">\[a_i = \sum_j \ga_j \an{Q_i, x_jx_j^T}, \quad \sum\ga_j=1.\]</span> Let <span class="math inline">\(X=\sum_j \ga_j x_jx_j^T\)</span>. This is <span class="math display">\[a_i = \an{Q_i, X}.\]</span> Let <span class="math inline">\(b=\psi(x)\)</span> be the approximation we want to find. Then the KL divergence is <span class="math display">\[\sum_i a_i\ln \fc{a_i}{q_i(x)},\]</span> so we want to maximize <span class="math display">\[\sum_i a_i \ln q_i(x).\]</span> We want a bound that looks like something like the following <span class="math display">\[\sum_i a_i \ln q_i(x)\ge \pa{\max_{X\succeq 0} \sumo ik a_i\ln a_i} - \be. \]</span> However, we need to make sure we normalize everything consistently. A simple way to do this is to use a similarity transformation to make <span class="math inline">\(\sum Q_i = I\)</span>, possible since the <span class="math inline">\(Q_i\)</span> are positive definite. Then the condition <span class="math inline">\(\sum a_i=1\)</span> becomes <span class="math inline">\(1=\sum_i \an{Q_i, X}= \Tr(X)\)</span>. We maximize over all <span class="math inline">\(X\)</span> satisfying this. We would like the <span class="math inline">\(b=\psi(x)\)</span> we get to have <span class="math inline">\(\sum b_i=x^Tx = 1\)</span> as well. Thus, we would like to show (Theorem 3.2) <span class="math display">\[\max_{x\in \bS^{n-1}} \sum_i a_i \ln q_i(x)\ge \pa{\max_{X\succeq 0, \Tr(X)=1} \sumo ik a_i\ln \an{Q_i,X}} - \be.\]</span></li>
-<li><p>Prove Theorem 3.2 by SDP rounding. Let <span class="math inline">\(X\)</span> be the optimal solution, write <span class="math inline">\(X=T^2\)</span>. In SDP rounding, take <span class="math inline">\(x\sim N(0,I)\)</span>, <span class="math inline">\(y=Tx\)</span>, and hope that <span class="math inline">\(y\)</span> is a good solution to the original problem. (If <span class="math inline">\(X=xx^T\)</span>, then <span class="math inline">\(T\)</span> would be a projection.) We use the Quadratic Sampling Lemma—the expectation of <span class="math inline">\(q(y)\)</span> for any quadratic <span class="math inline">\(q\)</span> is the same as the <span class="math inline">\(\an{Q,X}\)</span>.</p>
-<p>Thus <span class="math inline">\(\E q_i(y) = \an{Q_i,X}=1\)</span>.</p>
-Now do some calculations (Lemma 2.1). Calculate that
-\begin{align}
-\E |\ln q_i(y)| &amp; \le C_1 \implies \E\ab{\sumo ik a_i \ln q_i(y)}\le C\\
-\Pj( \ve{y}^2 \ge C_2) &amp; \le \ep_3
-\end{align}
-<p>for some <span class="math inline">\(C_1,C_2,\ep_3\)</span>. Use Markov’s inequality on the first inequality. Find there is a point with <span class="math inline">\(\ve{y}^2&lt;C_2\)</span>, <span class="math inline">\(\sumo ik a_i\ln q_i(y)&gt;-C_4\)</span>. Let <span class="math inline">\(y' = \wh y\)</span> be the solution.</p></li>
-</ol>
-
-  </div>
-
-    
-
-    <!-- Extension : Sharing buttons @ www.sharethis.com -->
-    <span class='st_facebook_large' displayText='Facebook'></span>
-    <span class='st_twitter_large' displayText='Tweet'></span>
-    <span class='st_googleplus_large' displayText='Google +'></span>
-    <span class='st_reddit_large' displayText='Reddit'></span>
-    <span class='st__large' displayText=''></span>
-
-    <div id="disqus_thread"></div>
-    
-
-
-  
-    <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
-  </div>
-  
-</div>
-]]></summary>
-</entry>
-<entry>
-    <title>Goemans-Williamson</title>
-    <link href="http://holdenlee.github.io/notebook/posts/tcs/algorithms/gw.html" />
-    <id>http://holdenlee.github.io/notebook/posts/tcs/algorithms/gw.html</id>
-    <published>2016-04-02T00:00:00Z</published>
-    <updated>2016-04-02T00:00:00Z</updated>
-    <summary type="html"><![CDATA[
-<div class="container">
-  <div id="content">
-    <div class="page header">
-      <h1>Goemans-Williamson</h1>
-    </div>
-    <div class="info">
-      
-       
-        <p>Posted: 2016-04-02 
-          , Modified: 2016-04-02 
-	</p>
-      
-       <p>Tags: <a href="/tags/none.html">none</a></p> 
-    </div>
-    
-  </div>
-  <!--/div-->
-
-  
-
-  <div class="blog-main">
-    <p>See also <a href="../complexity/sos.html">SoS</a>.</p>
-<p>(From Algorithms 15)</p>
-<p>Relaxing a combinatorial optimization to a SDP: let <span class="math inline">\(x_i\)</span> be unit vectors instead of <span class="math inline">\(-1,1\)</span>. Recover by partitioning with a random hyperplane. Ex. for min-cut, <span class="math inline">\(\sum_{\{i,j\}\in E}\rc 4|v_i-v_j|^2\)</span>.</p>
-<p>We find <span class="math display">\[
-\E(\text{cut edges})=\sum_{ij\in E}\fc{\te_{ij}}{\pi}\ge\ub{\min_{\te\in [0,\pi]}\fc{2\te}{\pi(1-\cos\te)}}{\approx .878} \sum_{ij\in E} \rc2(1-\cos\te_{ij}).
-\]</span></p>
-For MAX-2SAT, have a dummy vector <span class="math inline">\(u_0\)</span> for true (so that variable assignments correspond to <span class="math inline">\(u_i=\pm u_0\)</span>), maximize
-\begin{align}
-OPT=\sum1-\rc4(u_0-u_{k1})(u_0-u_{k2})&amp;=\sum \rc 4(1+u_0\cdot u_{k1})+\rc 4(1+u_0\cdot u_{k2})+\rc 4(1 - u_{k1}\cdot u_{k2})\\
-&amp;=\sum \rc4(1 +\cos \fc{\te_{0,k1}}{\pi})+\cdots \\
-\E&amp;=\sum\rc 4(1-\fc{\te_{0,k1}}{\pi})+\cdots\\
-&amp;\ge \min_{\te\in[0,\pi]}\fc{2(\pi-\te)}{\pi(1+\cos\te)}\cdot OPT,
-\end{align}
-<p>so we get .878-approximation.</p>
 
   </div>
 
