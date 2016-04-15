@@ -198,7 +198,7 @@ We include a flag saying if we just want the output for the last in the sequence
 <li>cost:</li>
 <li>args: args to cost function (e.g., neural net inputs)</li>
 </ul>
-<p>Retrns</p>
+<p>Returns</p>
 <ul>
 <li><code>f_grad_shared</code></li>
 <li><code>f_update</code></li>
@@ -226,6 +226,28 @@ We include a flag saying if we just want the output for the last in the sequence
 </ul></li>
 <li>Data (train, validation, test): What’s the difference between validation and test?</li>
 <li>Batch-maker: Given the data, make a list of batches. One epoch consists of going through all the batches.</li>
+</ul>
+<p>Pseudocode for <code>train</code>:</p>
+<ul>
+<li>Take the union of the parameters.</li>
+<li>Compile the cost and gradient functions.</li>
+<li>Get the <code>f_grad_shared</code> and <code>f_update</code> functions from the optimizer.</li>
+<li>Make batches from the validation data.</li>
+<li>In an epoch:
+<ul>
+<li>Make batches from the training data.</li>
+<li>For each batch:
+<ul>
+<li>Increment number of updates by 1.</li>
+<li>Calculate the cost of the batch.</li>
+<li>Make an update based on the batch.</li>
+<li>Display (epoch/update number and cost on current batch) and save if necessary.</li>
+<li>If it’s time to validate (every validFreq times), calculate the training error (over the WHOLE batch) and validation error (over the entire validation dataset). (NOTE: Do we want to calculate the training error over the whole batch? Perhaps just sample from it.)</li>
+<li>If the validation error is the best so far, replace <code>best_p</code>.</li>
+<li>If it has been <code>patience</code> iterations since validation error improved, stop.</li>
+</ul></li>
+</ul></li>
+<li>Calculate the training and validation error one final time.</li>
 </ul>
 <!-- Scraps
 while I wait for someone to write a frontend in haskell...
