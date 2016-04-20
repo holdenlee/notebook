@@ -83,6 +83,8 @@
 
   <div class="toc"> <ul>
  <li><a href="#parsec">Parsec</a></li>
+ <li><a href="#many-ways-to-write-a-for-loop">Many ways to write a for loop</a></li>
+ <li><a href="#useful-things">Useful things</a></li>
  </ul> </div>
 
   <div class="blog-main">
@@ -108,6 +110,40 @@ parseLISP' <span class="fu">=</span> parseExpr genWord
 
 <span class="ot">parseLISP ::</span> <span class="dt">String</span> <span class="ot">-&gt;</span> <span class="dt">Maybe</span> (<span class="dt">LeafTree</span> <span class="dt">String</span>)
 parseLISP <span class="fu">=</span> fromRight <span class="fu">.</span> parse parseLISP' <span class="st">&quot;&quot;</span></code></pre></div>
+<h2 id="many-ways-to-write-a-for-loop">Many ways to write a for loop</h2>
+<ol type="1">
+<li><p><code>foldl</code>, shuffle the arguments around to your preference. <code>foldl::foldl :: Foldable t =&gt; (a -&gt; b -&gt; a) -&gt; a -&gt; t b -&gt; a</code>.</p>
+<div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="ot">for' ::</span> [a] <span class="ot">-&gt;</span> b <span class="ot">-&gt;</span> (a <span class="ot">-&gt;</span> b <span class="ot">-&gt;</span> b) <span class="ot">-&gt;</span> b
+for' li x0 f <span class="fu">=</span> foldl (flip f) x0 li
+
+<span class="co">--simple for loop</span>
+for' [<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">3</span>] <span class="dv">0</span> (\y i <span class="ot">-&gt;</span> i <span class="fu">+</span> y)
+
+<span class="co">--nested for loop</span>
+for' [<span class="dv">1</span><span class="fu">..</span><span class="dv">5</span>] <span class="dv">0</span> (\x i <span class="ot">-&gt;</span>
+	for' [<span class="dv">1</span><span class="fu">..</span>x] i (\y j <span class="ot">-&gt;</span> j<span class="fu">+</span>y))
+<span class="co">-- same as (in other languages): s=0; for x in [1..5] {for y in [1..x]{s = s+y}}; return y</span></code></pre></div></li>
+<li><p>Use Haskell’s built-in for! <code>forM</code> on State:</p>
+<div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell">execState (forM_ [<span class="dv">1</span><span class="fu">..</span><span class="dv">5</span>] (\x <span class="ot">-&gt;</span>
+	forM_ [<span class="dv">1</span><span class="fu">..</span>x] (\y <span class="ot">-&gt;</span>
+		modify (<span class="fu">+</span>y)
+	)
+)) <span class="dv">0</span></code></pre></div></li>
+</ol>
+<ul>
+<li><a href="https://hackage.haskell.org/package/base-4.8.2.0/docs/Control-Monad-ST.html">ST</a></li>
+<li><a href="http://stackoverflow.com/questions/20439316/when-to-use-stref-or-ioref">IO vs. ST</a></li>
+<li><a href="https://hackage.haskell.org/package/base-4.8.2.0/docs/Data-STRef.html">STRef</a></li>
+<li><a href="http://hackage.haskell.org/package/loop-while-1.0.0/docs/Control-Monad-LoopWhile.html">LoopWhile</a></li>
+</ul>
+<p>See <code>C:\Users\Owner\Dropbox\CS\hs\learning</code>.</p>
+<h2 id="useful-things">Useful things</h2>
+<ul>
+<li><a href="http://hackage.haskell.org/package/monad-memo">Memoization</a> (dynamic programming)</li>
+</ul>
+<!--
+When you want every feature, vs. just include features you want.
+-->
 
   </div>
 

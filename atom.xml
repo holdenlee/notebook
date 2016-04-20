@@ -158,7 +158,9 @@
  <li><a href="#conditional-expectation">Conditional expectation</a></li>
  <li><a href="#martingales-almost-sure-convergence">Martingales, Almost Sure Convergence</a></li>
  <li><a href="#examples">Examples</a></li>
- <li><a href="#doobs-inequality-lp-convergence">Doob’s inequality, <span class="math inline"><em>L</em><sup><em>p</em></sup></span> convergence</a></li>
+ <li><a href="#doobs-inequality-lp-convergence">Doob’s inequality, <span class="math inline"><em>L</em><sup><em>p</em></sup></span> convergence</a><ul>
+ <li><a href="#exercises">Exercises</a></li>
+ </ul></li>
  </ul> </div>
 
   <div class="blog-main">
@@ -167,6 +169,41 @@
 <h2 id="martingales-almost-sure-convergence">Martingales, Almost Sure Convergence</h2>
 <h2 id="examples">Examples</h2>
 <h2 id="doobs-inequality-lp-convergence">Doob’s inequality, <span class="math inline">\(L^p\)</span> convergence</h2>
+<ol type="1">
+<li>If <span class="math inline">\(X_n\)</span> is a submartingale and <span class="math inline">\(N\)</span> is a stopping time with <span class="math inline">\(\Pj(N\le k)=1\)</span>, then <span class="math display">\[ \E X_0\le \E X_N \le \E X_k.\]</span> (Note the first inequality is not true in general if <span class="math inline">\(N\)</span> is unbounded.) <em>Proof.</em>
+<ol type="1">
+<li>Show that <span class="math inline">\(X_n - X_{N\wedge n}\)</span> is a submartingale. To see this, wrie it as a dot product with a predictable sequence, <span class="math inline">\(X_n-X_{N\wedge n} = (1_{\{n-1 \ge N\}}\cdot X\)</span>.<a href="#fn1" class="footnoteRef" id="fnref1"><sup>1</sup></a></li>
+<li>(Alternative) Condition on <span class="math inline">\(N\)</span> and use the submartingale property. See exercise 1.</li>
+</ol></li>
+<li><p><strong>Doob’s inequality</strong>: Let <span class="math inline">\(X_m\)</span> be a submartingale, <span class="math inline">\(\ol X_n = \max_{0\le m\le n} X_m^+\)</span>, <span class="math inline">\(\la&gt;0\)</span>. Then <span class="math display">\[ \la \Pj(A) \le \E X_n 1_A \le \E X_n^+.\]</span></p>
+<p><em>Proof.</em> Interpret the event <span class="math inline">\(A\)</span> as early stopping by defining the stopping time <span class="math inline">\(N=\inf \set{m}{X_m\ge \la \text{ or }m=n}\)</span>. Now apply 1.</p>
+<em>Corollary</em>: Kolmogorov’s inequality</li>
+<li><strong><span class="math inline">\(L^p\)</span> maximum inequality</strong>: If <span class="math inline">\(X_n\)</span> is a submartingale then for <span class="math inline">\(p&gt;1\)</span>, <span class="math display">\[ \E (\ol X_n^p) \le \pf{p}{p-1}^p \E(X_n^+)^p.\]</span> <em>Proof.</em> Our “only tool” is to use Doob’s inequality to bound <span class="math inline">\(\Pj(\ol X_n\ge \la)\)</span> (actually, <span class="math inline">\(\ol X_n\wedge M\)</span>). To make this term appear, bound <span class="math inline">\(\E[(\ol X_n\wedge M)^p]\)</span> by <span class="math inline">\(\int_0^{\iy} p\la^{p-1}\Pj(\ol X_n\wedge M \ge \la)\)</span>. We get one less power of <span class="math inline">\(\ol X_n \wedge M\)</span> on the RHS. Use Holder and bootstrap.</li>
+<li>(<span class="math inline">\(L^1\)</span> version)</li>
+<li><strong><span class="math inline">\(L^p\)</span> convergence theorem</strong>: If <span class="math inline">\(X_n\)</span> is a matringale with <span class="math inline">\(\sup \E|X_n|^p&lt;\iy\)</span> when <span class="math inline">\(p&gt;1\)</span>, then <span class="math inline">\(X_n\to X\)</span> a.s. and in <span class="math inline">\(L^p\)</span>. <em>Proof.</em> The hypothesis implies <span class="math inline">\((\E X_n^+)\)</span> is bounded so a.s. follows from martingale convergence. To show <span class="math inline">\(X_n\to X\)</span> in <span class="math inline">\(L^p\)</span>, it suffices to show that <span class="math inline">\(|X_n-X|^p\le Y\)</span> with <span class="math inline">\(\E|Y|&lt;\iy\)</span> and <span class="math inline">\(X_n\to X\)</span> a.s. (Dominated convergence theorem.) Bound <span class="math inline">\(|X_n-X|^p\le (2\sup |X_n|^p)\)</span> and use <span class="math inline">\(L^p\)</span> maximal inequality to bound the RHS (use MCT on <span class="math inline">\(\sup_{0\le m\le n}X_n\)</span>).</li>
+<li><strong>Orthogonality of martingale increments</strong>: Let <span class="math inline">\(X_n\)</span> be a martingale with <span class="math inline">\(\E X_n^2&lt;\iy\)</span> for all <span class="math inline">\(n\)</span>. If <span class="math inline">\(m\le n, Y\in \cal F_m, \E Y^2&lt;\iy\)</span>, then <span class="math display">\[ \E[(X_n - X_m)Y]=0. \]</span> <em>Proof.</em> Cauchy Schwarz gives this is <span class="math inline">\(L^1\)</span>. Now just use the martingale property.</li>
+<li><strong>Conditional variance formula</strong>: If <span class="math inline">\(X_n\)</span> is a <span class="math inline">\(L^2\)</span> martingale, <span class="math inline">\(\E[(X_n-X_m)^2|\cal F_m]=\E [X_n^2|\cal F_m]-X_m^2\)</span>.</li>
+<li><p><strong>Branching processes</strong>: Letting <span class="math inline">\(X_n=Z_n/\mu^2\)</span>, use 7 to get an expression for <span class="math inline">\(\E[X_n^2|\cal F_{n-1}]\)</span> and <span class="math inline">\(\E X_n^2\)</span>. This shows <span class="math inline">\(\sup \E X_n^2&lt;\iy\)</span>, so <span class="math inline">\(X_n\to X\)</span> in <span class="math inline">\(L^2\)</span>.</p></li>
+</ol>
+<h3 id="exercises">Exercises</h3>
+<ol type="1">
+<li>Use submartingale property with the fact that <span class="math inline">\(N=j\)</span> is in <span class="math inline">\(\cal F_j\)</span>. Now sum over <span class="math inline">\(N\)</span>.</li>
+<li></li>
+<li></li>
+<li>?</li>
+<li></li>
+</ol>
+<p>A good counterexample is the 1-D simple random walk starting at 1 with absorbing barrier at 0.</p>
+<ol type="1">
+<li>We have <span class="math inline">\(\E X_0=1&gt;\E S_N\)</span> where <span class="math inline">\(N=\inf\set{n}{S_n=0}\)</span>.</li>
+<li>We have <span class="math inline">\(\E(\max_m X_m) = \iy\)</span>, so no <span class="math inline">\(L^1\)</span> maximal inequality holds.</li>
+</ol>
+<section class="footnotes">
+<hr />
+<ol>
+<li id="fn1"><p>Recall this means dot product with the differences.<a href="#fnref1">↩</a></p></li>
+</ol>
+</section>
 
   </div>
 
@@ -719,6 +756,8 @@ Proof: just expand $g$ using $g'$.
 
   <div class="toc"> <ul>
  <li><a href="#parsec">Parsec</a></li>
+ <li><a href="#many-ways-to-write-a-for-loop">Many ways to write a for loop</a></li>
+ <li><a href="#useful-things">Useful things</a></li>
  </ul> </div>
 
   <div class="blog-main">
@@ -744,6 +783,40 @@ parseLISP' <span class="fu">=</span> parseExpr genWord
 
 <span class="ot">parseLISP ::</span> <span class="dt">String</span> <span class="ot">-&gt;</span> <span class="dt">Maybe</span> (<span class="dt">LeafTree</span> <span class="dt">String</span>)
 parseLISP <span class="fu">=</span> fromRight <span class="fu">.</span> parse parseLISP' <span class="st">&quot;&quot;</span></code></pre></div>
+<h2 id="many-ways-to-write-a-for-loop">Many ways to write a for loop</h2>
+<ol type="1">
+<li><p><code>foldl</code>, shuffle the arguments around to your preference. <code>foldl::foldl :: Foldable t =&gt; (a -&gt; b -&gt; a) -&gt; a -&gt; t b -&gt; a</code>.</p>
+<div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="ot">for' ::</span> [a] <span class="ot">-&gt;</span> b <span class="ot">-&gt;</span> (a <span class="ot">-&gt;</span> b <span class="ot">-&gt;</span> b) <span class="ot">-&gt;</span> b
+for' li x0 f <span class="fu">=</span> foldl (flip f) x0 li
+
+<span class="co">--simple for loop</span>
+for' [<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">3</span>] <span class="dv">0</span> (\y i <span class="ot">-&gt;</span> i <span class="fu">+</span> y)
+
+<span class="co">--nested for loop</span>
+for' [<span class="dv">1</span><span class="fu">..</span><span class="dv">5</span>] <span class="dv">0</span> (\x i <span class="ot">-&gt;</span>
+	for' [<span class="dv">1</span><span class="fu">..</span>x] i (\y j <span class="ot">-&gt;</span> j<span class="fu">+</span>y))
+<span class="co">-- same as (in other languages): s=0; for x in [1..5] {for y in [1..x]{s = s+y}}; return y</span></code></pre></div></li>
+<li><p>Use Haskell’s built-in for! <code>forM</code> on State:</p>
+<div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell">execState (forM_ [<span class="dv">1</span><span class="fu">..</span><span class="dv">5</span>] (\x <span class="ot">-&gt;</span>
+	forM_ [<span class="dv">1</span><span class="fu">..</span>x] (\y <span class="ot">-&gt;</span>
+		modify (<span class="fu">+</span>y)
+	)
+)) <span class="dv">0</span></code></pre></div></li>
+</ol>
+<ul>
+<li><a href="https://hackage.haskell.org/package/base-4.8.2.0/docs/Control-Monad-ST.html">ST</a></li>
+<li><a href="http://stackoverflow.com/questions/20439316/when-to-use-stref-or-ioref">IO vs. ST</a></li>
+<li><a href="https://hackage.haskell.org/package/base-4.8.2.0/docs/Data-STRef.html">STRef</a></li>
+<li><a href="http://hackage.haskell.org/package/loop-while-1.0.0/docs/Control-Monad-LoopWhile.html">LoopWhile</a></li>
+</ul>
+<p>See <code>C:\Users\Owner\Dropbox\CS\hs\learning</code>.</p>
+<h2 id="useful-things">Useful things</h2>
+<ul>
+<li><a href="http://hackage.haskell.org/package/monad-memo">Memoization</a> (dynamic programming)</li>
+</ul>
+<!--
+When you want every feature, vs. just include features you want.
+-->
 
   </div>
 
