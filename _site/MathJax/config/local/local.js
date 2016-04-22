@@ -1,7 +1,7 @@
 MathJax.Hub.Config({
   TeX: {
     equationNumbers: { autoNumber: "AMS" },
-    extensions: ["AMSmath.js","color.js"],
+    extensions: ["AMSmath.js","color.js", "cancel.js"],
     Macros: {
       sA: "\\mathscr{A}",
       cA: "\\mathcal{A}",
