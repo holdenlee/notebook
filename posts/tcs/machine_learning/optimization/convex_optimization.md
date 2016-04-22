@@ -9,5 +9,7 @@ showTOC: True
 
 Notes: 
 
-* [Duality](duality.html)
-* 
+* [Duality](duality.html) (BV Ch. 5)
+* [Gradient descent](GD.html) (BV Ch. 9)
+* [Newton's method](second-order.html) (BV Ch. 9)
+
