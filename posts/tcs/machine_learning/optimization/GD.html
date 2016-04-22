@@ -120,12 +120,17 @@
 </tr>
 </tbody>
 </table>
+<p>“<span class="math inline">\(\ga\)</span>-convex” is also called “condition number <span class="math inline">\(\ka\)</span>” (<span class="math inline">\(\ka= \ga\)</span>).</p>
 <h3 id="gradient-descent-main-points">Gradient descent main points</h3>
 <ul>
 <li>What is the general framework?
 <ol type="1">
 <li>Pick a descent direction <span class="math inline">\(\De x\)</span>.</li>
-<li>Choose a step size <span class="math inline">\(\tau&gt;0\)</span>: <span class="math display">\[x^{(t+1)} \leftarrow x+\tau \De x.\]</span></li>
+<li>Choose a step size <span class="math inline">\(\tau&gt;0\)</span>: <span class="math display">\[x^{(t+1)} \leftarrow x+\tau \De x.\]</span>
+<ul>
+<li>Backtracking OR</li>
+<li>Exact line search</li>
+</ul></li>
 <li>Continue until stop criterion.</li>
 </ol></li>
 <li>What is vanilla (one shot) gradient descent?
@@ -135,10 +140,11 @@
  x':&amp;=x-\rc L \nb f(x)\\
  \implies f(x')&amp;\le f(x) - \rc{2L}\ve{\nb f(x)}^2.
  \end{align}</li>
-<li>There’s no guarantee on smoothness unless we assume <span class="math inline">\(f\)</span> is <span class="math inline">\(l\)</span>-strongly convex, <span class="math inline">\(\ve{\nb f(x)-\nb f(y)}\le l\ve{x-y}\)</span>. Let <span class="math inline">\(\ka=\fc{L}{l}, t = \fc{2}{L+l}\)</span>.<a href="#fn1" class="footnoteRef" id="fnref1"><sup>1</sup></a> Then linear convergence holds:
+<li>There’s no guarantee for linear convergence unless we assume <span class="math inline">\(f\)</span> is <span class="math inline">\(l\)</span>-strongly convex, <span class="math inline">\(\ve{\nb f(x)-\nb f(y)}\le l\ve{x-y}\)</span>. Let <span class="math inline">\(\ka=\fc{L}{l}, t = \fc{2}{L+l}\)</span>.<a href="#fn1" class="footnoteRef" id="fnref1"><sup>1</sup></a> Then linear convergence holds:
 \begin{align}
  \ve{x_{k+1}-x^*} \le \pf{\ka-1}{\ka+1} \ve{x_k-x^*}
  \end{align}</li>
+<li>This requires knowing the condition number. If we don’t know the condition number, use something like backtracking to get similar convergence guarantees.</li>
 </ul></li>
 <li>What is gradient descent with backtracking?
 <ul>
@@ -150,8 +156,14 @@
 <li></li>
 </ul>
 <h2 id="proofs">Proofs</h2>
-<p>Gradient descent lemma: Let <span class="math inline">\(D=\nb f(x)\)</span>. Move to origin. Upper bound is <span class="math display">\[f(x) \le \fc{L}2 x^2 + Dx.\]</span> The minimum is at <span class="math inline">\(-\fc{D}{L}\)</span> and is <span class="math inline">\(\fc{-b^2}{4a} = -\fc{D^2}{2L}.\)</span></p>
+<p><strong>Gradient descent lemma:</strong> Let <span class="math inline">\(D=\nb f(x)\)</span>. Move to origin. Upper bound is <span class="math display">\[f(x) \le \fc{L}2 x^2 + Dx.\]</span> The minimum is at <span class="math inline">\(-\fc{D}{L}\)</span> and is <span class="math inline">\(\fc{-b^2}{4a} = -\fc{D^2}{2L}.\)</span></p>
 <p>For strongly convex: Choose <span class="math inline">\(s\)</span> to maximize the minimum progress in terms of <span class="math inline">\(x\)</span>. <span class="math display">\[\fc{s-\rc{l}}{\rc{l}} = \fc{\rc L-s}{\rc L} \implies s = \fc{2}{L+l}.\]</span></p>
+<strong>Backtracking analysis:</strong> * Translate to <span class="math inline">\((0,0)\)</span> and look at 1-D slice. Then <span class="math inline">\(f\le b x + \rc2 M x^2\)</span>, <span class="math inline">\(b = \ve{\nb f(x)}\)</span>. The quadratic equals $bx $ at <span class="math inline">\(x=\fc{2b(1-\al)}{M}\)</span>. * One of the following holds.
+\begin{align}
+	f(x+t_0\De x) &amp;&gt; f(x) + \al \nb f^T \De x\\
+	t &amp;= \fc{2\nb f^T\De x (1-\al)\be}{M} \ge \fc{\nb f^T \De x \be}{M}
+	\end{align}
+<p>where the last inequality follows from <span class="math inline">\(\al&lt;0.5\)</span>. * What’s the right measure of progress? * It shouldn’t be the absolute progress; it should depend on what the minimum actually is. Closer to <span class="math inline">\(x^*\)</span>, we make a smaller step size but <em>more progress proportionally</em>. The right measure is <span class="math inline">\(\fc{f(x_{n+1}) - f(x^*)}{f(x_n)-f(x^*)}\)</span>. * Abstractly, given a quadratic upper and lower bound for <span class="math inline">\(f\)</span>, make progress towards minimum. * Consider the 1-D case at <span class="math inline">\((0,0)\)</span>. We have <span class="math inline">\(\wt f(t) \in - d^2 t + \rc 2 (m,M) d^2 t^2.\)</span> * The minimum possible is <span class="math inline">\(-\rc 2 \fc{d^2}{M}\)</span>. * 1st case: <span class="math inline">\(\wt f(1) &gt; - \al d^2 t_0\)</span>. * Progress <span class="math inline">\(2m\al\)</span>. * 2nd case: <span class="math inline">\(\wt f(t) &gt; - \fc{2\al \be (1-\al)d^2}{M}\)</span> * Progress <span class="math inline">\(\fc{2\al \be m}{M}\)</span>. * Convergence <span class="math inline">\(\fc{f(x_t) - f(x^*)}{f(x_{t-1}) - f(x^*)} \le 1-\min\pa{\fc{2\al \be (1-\al)d^2}{M}, 2m\al}\)</span>.</p>
 <section class="footnotes">
 <hr />
 <ol>

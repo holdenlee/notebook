@@ -10,7 +10,7 @@
   <meta name="description" content="Holden Lee's Research Notebook">
   <meta name="author" content="Holden Lee">
     
-  <title>Matrix concentration</title>
+  <title>Second-order methods</title>
 
   <!-- Bootstrap core CSS -->
   <link href="../../../../bootstrap/css/bootstrap.min.css" rel="stylesheet">
@@ -66,37 +66,94 @@
 <div class="container">
   <div id="content">
     <div class="page header">
-      <h1>Matrix concentration</h1>
+      <h1>Second-order methods</h1>
     </div>
     <div class="info">
       
        
-        <p>Posted: 2016-03-13 
-          , Modified: 2016-03-13 
+        <p>Posted: 2016-04-22 
+          , Modified: 2016-04-22 
 	</p>
       
-       <p>Tags: <a href="../../../../tags/random%20matrix.html">random matrix</a></p> 
+       <p>Tags: <a href="../../../../tags/Newton.html">Newton</a>, <a href="../../../../tags/second-order.html">second-order</a></p> 
     </div>
     
   </div>
   <!--/div-->
 
-  
+  <div class="toc"> <ul>
+ <li><a href="#main-points">Main points</a></li>
+ <li><a href="#proofs">Proofs</a></li>
+ <li><a href="#scraps">Scraps</a></li>
+ </ul> </div>
 
   <div class="blog-main">
-    <p>See <a href="https://en.wikipedia.org/wiki/Matrix_Chernoff_bound">wikipedia</a>.</p>
-<p><strong>Theorem (Matrix Bernstein)</strong>: Let <span class="math inline">\(\{X_k\}_{k=1}^n\)</span> be a sequence of independent random <span class="math inline">\(d\times d\)</span> matrices with <span class="math display">\[ \E X_k = 0, \quad \la_{\max}(X_k)\le R\text{ a.s.}\]</span> Then for all <span class="math inline">\(t\ge 0\)</span>, <span class="math display">\[ \Pj \ba{\la_{\max}\pa{\sumo kn X_k}} \le de^{-\fc{t^2}{2\si^2+\fc 23 Rt}}\]</span> where <span class="math inline">\(\si^2 = \ve{\sumo kn \E(X_k^2)}\)</span>.</p>
-<p>(Note that requiring <span class="math inline">\(X_i\le R\)</span> can be restrictive. If this doesn’t hold use the following instead.)</p>
-<p>Reference: THE EXPECTED NORM OF A SUM OF INDEPENDENT RANDOM MATRICES: AN ELEMENTARY APPROACH</p>
-<strong>Theorem (Matrix Rosenthal)</strong>: Let <span class="math inline">\(S_1,\ldots, S_n\)</span> be random <span class="math inline">\(d_1\times d_2\)</span> complex-valued matrices with <span class="math inline">\(\E S_i=O\)</span>, and <span class="math inline">\(Z:=\sumo in S_i\)</span>. Let
+    <p>See <a href="GD.html">gradient descent</a>.</p>
+<ul>
+<li>What is the general framework?
+<ol type="1">
+<li>Pick a descent direction <span class="math inline">\(\De x\)</span>.</li>
+<li>Choose a step size <span class="math inline">\(\tau&gt;0\)</span>: <span class="math display">\[x^{(t+1)} \leftarrow x+\tau \De x.\]</span></li>
+<li>Continue until stop criterion.</li>
+</ol></li>
+</ul>
+<h2 id="main-points">Main points</h2>
+<ul>
+<li>What’s the shortcoming of gradient descent that we want to fix?
+<ul>
+<li>It is not invariant under linear transformation.</li>
+<li>When the condition number of the Hessian is large, it has bad convergence.</li>
+</ul></li>
+<li>Steepest descent
+<ul>
+<li>For a norm <span class="math inline">\(\ved\)</span>, the steepest descent direction is (sd = steepest descent, nsd = normalized steepest descent)
 \begin{align}
-v(X):&amp;= \max\bc{\ve{\sum_i \E[S_iS_i^*]}, \ve{\sum_i \E [S_i^*S_i]}}\\
-L:&amp;= \pa{\E \max_i \ve{S_i}^2}^{\rc 2}\\
-C(d_1,d_2):&amp;= 4(1+2\ce{\ln(d_1+d_2)})\\
-c:&amp;=\rc4.
+\De x_{sd} &amp;= \min_{\ve{y}} \nb f(x)^T y.
+\end{align}</li>
+</ul></li>
+<li>Newton method
+<ul>
+<li>Let
+\begin{align}
+\De x_{sd} &amp;= -H^{-1}\nb f\\
+\De x_{nsd} &amp;=\fc{H^{-1} \nb f}{\ve{H^{-\rc 2} \nb f}} = \fc{H^{-1} \nb f}{\la(x)^2}\\
+\la(x) &amp;= \ve{H^{-\rc 2}\nb f}^{\rc 2} = (\nb f^T H^{-1} \nb f)^{\rc 2}.
 \end{align}
-<p>Then <span class="math display">\[\sqrt{c v(Z)} + cL \le \pa{\E \ve{Z}^2}^{\rc 2} \le \sqrt{C(d) v(Z)} + C(d)L  \]</span></p>
-<p><em>Proof</em>: pg. 9 of NB 13.</p>
+Here <span class="math inline">\(\la(x)\)</span> is the Newton decrement.</li>
+</ul></li>
+<li>What are the drawbacks of Newton’s method and how to fix them?
+<ul>
+<li>Naively it requires computing</li>
+</ul></li>
+</ul>
+<h2 id="proofs">Proofs</h2>
+<ul>
+<li>Newton method is steepest descent for <span class="math inline">\(H\)</span>:
+<ul>
+<li>Let <span class="math inline">\(A\)</span> be a symmetric positive definite matrix. Defining <span class="math inline">\(\ved_A\)</span> as follows, we note that the dual norm is the norm corresponding to the inverse.
+\begin{align}
+\ve{A} :&amp;= x^TAx = \ve{\sqrt A}_2\\
+\ve{x}_{A}^* &amp; = \ve{x}_{A^{-1}}.
+\end{align}
+<ul>
+<li><em>Proof.</em> <span class="math display">\[\ve{x}_A^* = \max_{\ve{y}_A=1} x^Ty \stackrel{z = \sqrt{A}y}{=} \max_{\ve{z}=1} x^T A^{-\rc 2} z = \ve{A^{-\rc 2}x^T}  = \ve{x}_{A^{-1}}.\]</span></li>
+<li>This calculation also shows that <span class="math display">\[\amin_{\ve{y}_A=1} v^Ty = \fc{A^{-1} x}{\ve{A^{-\rc 2}x}}.\]</span></li>
+<li>Thus,
+\begin{align}
+\De x_{nsd} &amp;= \fc{H^{-1} \nb f(x)}{\ve{H^{-\rc 2} \nb f}}.
+\end{align}</li>
+</ul></li>
+<li>Why is <span class="math inline">\(\De x_{nsd}\)</span> the right normalization? <span class="math display">\[ f\pa{x - t\fc{H^{-1} \nb f(x)}{\ve{H^{-\rc 2} \nb f}}} \approx f(x) + (-t+\fc{t^2}2) \fc{H^{-1} \nb f(x)}{\ve{H^{-\rc 2} \nb f}}\]</span> and <span class="math inline">\(t=1\)</span> minimizes this.</li>
+</ul></li>
+<li>Why do we use <span class="math inline">\(\ved_H\)</span>?
+<ul>
+<li>It appears in the second-order Taylor approximation. <span class="math inline">\(f(x) + \nb f^T v + \rc 2 v^T \nb^2 f v\)</span> has a minimum at <span class="math inline">\(\fc{H^{-1}f}{\ve{H^{-\rc 2}f}}\)</span>, not in the gradient direction!</li>
+<li>It is invariant to linear transformation: <span class="math inline">\(\De x_{nsd} (f\circ A) = \De x_{nsd} f\)</span>.</li>
+</ul></li>
+<li>Give an example where gradient descent performs poorly compared to Newton. <span class="math inline">\(f = x_1^2 + \ep x_2^\)</span>, <span class="math inline">\(-\nb f = (-2x_1,-2\ep x_2)\)</span>.</li>
+</ul>
+<h2 id="scraps">Scraps</h2>
+<p>estimating Hessian?</p>
 
   </div>
 
