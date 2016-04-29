@@ -20,7 +20,7 @@ In (1) the $f_i$ are convex; in (2) they are concave. In (1), we have dual$\le$p
 $$
 \min_{f_i\le 0, Ax=b} f \ge \max_{\la \ge 0,\nu} \ub{\min_x \ub{f+\la^T\vec{f} + \nu^T (Ax-b)}{\cal L(x,\la,\nu)}}{g(\la,\nu)}
 $$
-Note: $f^*(y)=\sup y^T - f(x)$ is the conjugate or **Legendre transform**. It is convex, and for convex functions, the double conjugate is the original function.
+Note: $f^*(y)=\sup_x y^Tx - f(x)$ is the conjugate or **Legendre transform**. It is convex, and for convex functions, the double conjugate is the original function.
 
 **Slater's constraints**: Equality holds if the problem is strictly feasible: there exists $x$ such that $f_i(x)<0, Ax=b$. Linear inequalities are allowed to be non-strict, $f_i(x)\le 0$.
 

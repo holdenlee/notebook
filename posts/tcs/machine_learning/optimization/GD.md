@@ -60,6 +60,7 @@ For strongly convex: Choose $s$ to maximize the minimum progress in terms of $x$
 $$\fc{s-\rc{l}}{\rc{l}} = \fc{\rc L-s}{\rc L} \implies s = \fc{2}{L+l}.$$
 
 **Backtracking analysis:**
+
 * Translate to $(0,0)$ and look at 1-D slice. Then $f\le b x + \rc2 M x^2$, $b = \ve{\nb f(x)}$. The quadratic equals $\al bx $ at $x=\fc{2b(1-\al)}{M}$. 
 *   One of the following holds.
     \begin{align}
