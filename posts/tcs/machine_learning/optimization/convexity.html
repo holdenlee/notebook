@@ -10,7 +10,7 @@
   <meta name="description" content="Holden Lee's Research Notebook">
   <meta name="author" content="Holden Lee">
     
-  <title>Posts in category "tcs/machine_learning/matrices"</title>
+  <title>Convexity</title>
 
   <!-- Bootstrap core CSS -->
   <link href="../../../../bootstrap/css/bootstrap.min.css" rel="stylesheet">
@@ -66,55 +66,65 @@
 <div class="container">
   <div id="content">
     <div class="page header">
-      <h1>Posts in category "tcs/machine_learning/matrices"</h1>
+      <h1>Convexity</h1>
     </div>
     <div class="info">
       
+       
+        <p>Posted: 2016-04-23 
+          , Modified: 2016-04-23 
+	</p>
       
-      
+       <p>Tags: <a href="../../../../tags/convex%20optimization.html">convex optimization</a></p> 
     </div>
     
   </div>
   <!--/div-->
 
-  
+  <div class="toc"> <ul>
+ <li><a href="#questions">Questions</a></li>
+ <li><a href="#answers">Answers</a></li>
+ </ul> </div>
 
   <div class="blog-main">
-    <ul>
-    
-        <li>
-            <a href="../../../../posts/tcs/machine_learning/matrices/nmf_algorithm.html">NMF algorithm</a> (2016-04-22)
-        </li>
-    
-        <li>
-            <a href="../../../../posts/tcs/machine_learning/matrices/matrix-factorization.html">Matrix factorizations</a> (2016-04-04)
-        </li>
-    
-        <li>
-            <a href="../../../../posts/tcs/machine_learning/matrices/arora-topic-models.html">[A16] Provable algorithms for inference in topic models</a> (2016-04-04)
-        </li>
-    
-        <li>
-            <a href="../../../../posts/tcs/machine_learning/matrices/AGM14.html">[AGM14] New algorithms for learning incoherent and overcomplete dictionaries</a> (2016-04-02)
-        </li>
-    
-        <li>
-            <a href="../../../../posts/tcs/machine_learning/matrices/NMF.html">Non-negative matrix factorization</a> (2016-03-26)
-        </li>
-    
-        <li>
-            <a href="../../../../posts/tcs/machine_learning/matrices/AGMM15.html">[AGMM15] Simple, efficient, and neural algorithms for sparse coding</a> (2016-03-25)
-        </li>
-    
+    <h2 id="questions">Questions</h2>
+<ul>
+<li>Define strongly convex. What estimates can you make using strong convexity? Why is it useful?</li>
+<li>Define smoothness. What does it give you?</li>
+<li>Define condition number for sets and matrices. What is the relationship? What do bounds on <span class="math inline">\(\nb^2\)</span> give on condition number?</li>
 </ul>
-
-
+<h2 id="answers">Answers</h2>
+<ul>
+<li>Strongly convex means <span class="math display">\[ f(y) \ge f(x) + \nb f(x)^T (y-x) + \fc m2 \ve{y-x}_2^2. \]</span> For twice-differentiable functions, this is equivalent to <span class="math inline">\(\nb^2 f\succeq mI\)</span>. Strong convexity lower-bounds suboptimality: if the gradient is small, then you are not too far from the minimum, because the gradient changes fast. (Ex. for <span class="math inline">\(c+dx+\fc m2x^2\)</span>, the minimum is at <span class="math inline">\(-\fc dm = -\rc m \nb f\)</span>.) The following inequality hold: (bound the optimal value in terms of the gradient, and bound the distance in terms of the gradient.
+\begin{align}
+p^* &amp;\ge f(x) - \rc{2m}\ve{\nb f(x)}_2^2\\
+\ve{x-x^*}_2 &amp; \le \fc 2m \ve{\nb f}_2^2.
+\end{align}</li>
+<li>Smoothness means <span class="math display">\[ f(y) \le f(x) + \nb f(x)^T (y-x) + \fc M2 \ve{y-x}_2^2. \]</span> For twice-differentiable functions, this is equivalent to <span class="math inline">\(\nb^2 f\preceq MI\)</span>. Smoothness upper-bounds suboptimality, and ensures that step sizes don’t overshoot the minimum (much)
+\begin{align}
+p^* &amp;\le f(x) - \rc{2M}\ve{\nb f}_2^2.
+\end{align}</li>
+<li>The condition number of a convex body <span class="math inline">\(C\)</span> is (<span class="math inline">\(W_{\max},W_{\min}\)</span> are max and min width) <span class="math display">\[ \text{cond} (C) = \fc{W_{\max}^2}{W_{\min}^2}.\]</span> For an ellipsoid defined by <span class="math inline">\(x^TA^{-1}x\le 1\)</span>, <span class="math display">\[ \text{cond} (\mathcal E) = \fc{\la_{\max}(A)}{\la_{\min}(A)} = \ka(A).\]</span> Strong convexity and smoothness together bound the condition number of sublevel sets <span class="math inline">\(C_\al =\set{x}{f(x)\le \al}\)</span>. We have for <span class="math inline">\(p^*&lt;\al\)</span>, <span class="math display">\[B_{\sfc{2(\al-p^*)}{M}}\subeq C_\al \subeq B_{\sfc{2(\al-p^*)}{m}},\]</span> <span class="math inline">\(\text{cond}(C_\al)\le \fc{M}{m}\)</span>. Moreover, <span class="math inline">\(\lim_{\al\to 0^+} \text{cond}(C_\al) = \ka (\nb f(x^*))\)</span>.</li>
+</ul>
 
   </div>
 
     
 
+    <!-- Extension : Sharing buttons @ www.sharethis.com -->
+    <span class="st_facebook_large" displayText="Facebook"></span>
+    <span class="st_twitter_large" displayText="Tweet"></span>
+    <span class="st_googleplus_large" displayText="Google +"></span>
+    <span class="st_reddit_large" displayText="Reddit"></span>
+    <span class="st__large" displayText></span>
 
+    <div id="disqus_thread"></div>
+    
+
+
+  
+    <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+  </div>
   
 </div>
 
@@ -159,6 +169,9 @@
 
 <!-- Extension : Disqus @ http://disqus.com -->
 <!-- Extension : InlineDisqussions @ https://github.com/tsi/inlineDisqussions -->
+
+<script src="../../../../disqus/js/disqus.js"></script>
+
 
 
 <!-- Extension : Google Analytics -->

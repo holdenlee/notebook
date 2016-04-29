@@ -8,8 +8,239 @@
         <name>Holden Lee</name>
         <email>oldheneel@gmail.com</email>
     </author>
-    <updated>2016-04-22T00:00:00Z</updated>
+    <updated>2016-04-28T00:00:00Z</updated>
     <entry>
+    <title>Constrained optimization</title>
+    <link href="http://holdenlee.github.io/notebook/posts/tcs/machine_learning/optimization/constrained.html" />
+    <id>http://holdenlee.github.io/notebook/posts/tcs/machine_learning/optimization/constrained.html</id>
+    <published>2016-04-28T00:00:00Z</published>
+    <updated>2016-04-28T00:00:00Z</updated>
+    <summary type="html"><![CDATA[
+<div class="container">
+  <div id="content">
+    <div class="page header">
+      <h1>Constrained optimization</h1>
+    </div>
+    <div class="info">
+      
+       
+        <p>Posted: 2016-04-28 
+          , Modified: 2016-04-28 
+	</p>
+      
+       <p>Tags: <a href="/tags/convex%20optimization.html">convex optimization</a></p> 
+    </div>
+    
+  </div>
+  <!--/div-->
+
+  <div class="toc"> <ul>
+ <li><a href="#setup">Setup</a></li>
+ <li><a href="#newton">Newton</a><ul>
+ <li><a href="#feasible-start">Feasible start</a></li>
+ <li><a href="#infeasible-start">Infeasible start</a></li>
+ </ul></li>
+ </ul> </div>
+
+  <div class="blog-main">
+    <h2 id="setup">Setup</h2>
+<p>Consider <span class="math inline">\(\min_{Ax=b}f\)</span>.</p>
+<ul>
+<li>How can we reduce this problem to one without inequality constraints? Let <span class="math inline">\(x_0+Fu\)</span> parametrize <span class="math inline">\(\set{x}{Ax=b}\)</span>.</li>
+<li>Why wouldn’t you want to do this? It can be inefficient—somehow the equality constraint captures more of the problem’s structure.</li>
+</ul>
+Give the example for quadratic minimization. What do the KKT equations say?
+\begin{align}
+\min_{Ax=b} \rc 2 x^T P x + q^T x + r &amp; \\
+Px^* + q + A^T \nu^*&amp;=0\\
+\iff \matt{P}{A^T}{A}0 \coltwo{x^*}{\nu^*} &amp;= \coltwo{-1}{b}.\label{eq:kkt-mat}
+\end{align}
+<p>This is unbounded below if there exist <span class="math inline">\(v,w\)</span> such that <span class="math inline">\(Pv+A^Tw=0\)</span>, <span class="math inline">\(Av=0\)</span>, <span class="math inline">\(-q^Tv+b^Tw&gt;0\)</span> (left-multiply by <span class="math inline">\((v^T\,w^T)\)</span>) to see that the equation above doesn’t have a solution).</p>
+<p>Recall the dual function. Why do we care about it? <span class="math display">\[g(\la,\nu) = \min_x f+\nu^T (Ax-b) = -\nu^Tb - f^*(-\nu^TA), \qquad f^(y)=\max y^Tx - f(x).\]</span> Equality constraints disappear in the dual. If the dual is nice, we can just solve an unconstrained problem <span class="math inline">\(\max_{\la \ge 0} g(\la,\nu)\)</span>.</p>
+<h2 id="newton">Newton</h2>
+<h3 id="feasible-start">Feasible start</h3>
+<p>Describe the Newton method starting with a feasible <span class="math inline">\(x, Ax=b\)</span>. The Newton step is the minimizer for the quadratic approximation under the constraint. (Finding the minimum of a quadratic amounts to solving a linear equation.) Using  <span class="math display">\[\matt{\nb^2 f}{A^T}A0 \coltwo{\De x_{nt}}w = \coltwo{-\nb f}{0}.\]</span> Define <span class="math display">\[\la(x) = (\De x_{nt}^T \nb^2 f \De x_{nt})^{\rc 2}\]</span>.</p>
+<p>Note this <em>is</em> normal Newton if you use a parametrization.</p>
+<p>(Convexity makes the KKT matrix invertible.)</p>
+<h3 id="infeasible-start">Infeasible start</h3>
+<p>Describe the infeasible start Newton method. Approximate <span class="math inline">\(f\)</span> by a quadratic using <span class="math inline">\(P=\nb^2 f\)</span> in  and find <span class="math inline">\(\De x_{nt}\)</span> so that <span class="math inline">\(x+\De x_{nt}\)</span> satisfies the KKT conditions. The equation for <span class="math inline">\(\De x_{nt}\)</span> is <span class="math display">\[\matt{\nb^2 f}{A^T}A0 \coltwo{\De x_{nt}}w = \coltwo{-\nb f}{b-Ax}.\]</span></p>
+<p>Note here we’re just updating <span class="math inline">\(x\)</span> by solving for <span class="math inline">\(\De x_{nt}\)</span>. Ech time <span class="math inline">\(w\)</span> is treated just as an auxiliary variable. But <span class="math inline">\(w\)</span> comes from the dual solution <span class="math inline">\(\nu\)</span>. Can we look at <span class="math inline">\((x,\nu)\)</span> together as a primal-dual pair and update both of them?</p>
+Let the residual be
+\begin{align}
+r &amp;= (\nb f + A^T \nu, Ax-b).
+\end{align}
+<p>Instead of minimizing <span class="math inline">\(f\)</span>, we minimize the residual for the KKT conditions. The residual has a component for minimizing <span class="math inline">\(f\)</span>, and a component for trying to satisfy <span class="math inline">\(Ax=b\)</span>.</p>
+<p>Here is the algorithm.</p>
+<ol type="1">
+<li>Start with <span class="math inline">\(x\)</span> (not necessarily satisfying <span class="math inline">\(Ax=b\)</span>).</li>
+<li>Calculate <span class="math inline">\(\De x_{nt}\)</span>, keeping track of <span class="math inline">\(\nu\)</span>. Backtrack (by multiplying by <span class="math inline">\(\be\)</span>) until you find <span class="math inline">\(t\)</span> such that <span class="math display">\[\ve{r(x+t\De x_{nt}, \nu + t\De \nu_{nt})}_2\le (1-\al t) \ve{r}_2.\]</span></li>
+<li>Repeat until <span class="math inline">\(Ax=b\)</span>, <span class="math inline">\(\ve{r}_2\le \ep\)</span>.</li>
+</ol>
+
+  </div>
+
+    
+
+    <!-- Extension : Sharing buttons @ www.sharethis.com -->
+    <span class='st_facebook_large' displayText='Facebook'></span>
+    <span class='st_twitter_large' displayText='Tweet'></span>
+    <span class='st_googleplus_large' displayText='Google +'></span>
+    <span class='st_reddit_large' displayText='Reddit'></span>
+    <span class='st__large' displayText=''></span>
+
+    <div id="disqus_thread"></div>
+    
+
+
+  
+    <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+  </div>
+  
+</div>
+]]></summary>
+</entry>
+<entry>
+    <title>Convexity</title>
+    <link href="http://holdenlee.github.io/notebook/posts/tcs/machine_learning/optimization/convexity.html" />
+    <id>http://holdenlee.github.io/notebook/posts/tcs/machine_learning/optimization/convexity.html</id>
+    <published>2016-04-23T00:00:00Z</published>
+    <updated>2016-04-23T00:00:00Z</updated>
+    <summary type="html"><![CDATA[
+<div class="container">
+  <div id="content">
+    <div class="page header">
+      <h1>Convexity</h1>
+    </div>
+    <div class="info">
+      
+       
+        <p>Posted: 2016-04-23 
+          , Modified: 2016-04-23 
+	</p>
+      
+       <p>Tags: <a href="/tags/convex%20optimization.html">convex optimization</a></p> 
+    </div>
+    
+  </div>
+  <!--/div-->
+
+  <div class="toc"> <ul>
+ <li><a href="#questions">Questions</a></li>
+ <li><a href="#answers">Answers</a></li>
+ </ul> </div>
+
+  <div class="blog-main">
+    <h2 id="questions">Questions</h2>
+<ul>
+<li>Define strongly convex. What estimates can you make using strong convexity? Why is it useful?</li>
+<li>Define smoothness. What does it give you?</li>
+<li>Define condition number for sets and matrices. What is the relationship? What do bounds on <span class="math inline">\(\nb^2\)</span> give on condition number?</li>
+</ul>
+<h2 id="answers">Answers</h2>
+<ul>
+<li>Strongly convex means <span class="math display">\[ f(y) \ge f(x) + \nb f(x)^T (y-x) + \fc m2 \ve{y-x}_2^2. \]</span> For twice-differentiable functions, this is equivalent to <span class="math inline">\(\nb^2 f\succeq mI\)</span>. Strong convexity lower-bounds suboptimality: if the gradient is small, then you are not too far from the minimum, because the gradient changes fast. (Ex. for <span class="math inline">\(c+dx+\fc m2x^2\)</span>, the minimum is at <span class="math inline">\(-\fc dm = -\rc m \nb f\)</span>.) The following inequality hold: (bound the optimal value in terms of the gradient, and bound the distance in terms of the gradient.
+\begin{align}
+p^* &amp;\ge f(x) - \rc{2m}\ve{\nb f(x)}_2^2\\
+\ve{x-x^*}_2 &amp; \le \fc 2m \ve{\nb f}_2^2.
+\end{align}</li>
+<li>Smoothness means <span class="math display">\[ f(y) \le f(x) + \nb f(x)^T (y-x) + \fc M2 \ve{y-x}_2^2. \]</span> For twice-differentiable functions, this is equivalent to <span class="math inline">\(\nb^2 f\preceq MI\)</span>. Smoothness upper-bounds suboptimality, and ensures that step sizes don’t overshoot the minimum (much)
+\begin{align}
+p^* &amp;\le f(x) - \rc{2M}\ve{\nb f}_2^2.
+\end{align}</li>
+<li>The condition number of a convex body <span class="math inline">\(C\)</span> is (<span class="math inline">\(W_{\max},W_{\min}\)</span> are max and min width) <span class="math display">\[ \text{cond} (C) = \fc{W_{\max}^2}{W_{\min}^2}.\]</span> For an ellipsoid defined by <span class="math inline">\(x^TA^{-1}x\le 1\)</span>, <span class="math display">\[ \text{cond} (\mathcal E) = \fc{\la_{\max}(A)}{\la_{\min}(A)} = \ka(A).\]</span> Strong convexity and smoothness together bound the condition number of sublevel sets <span class="math inline">\(C_\al =\set{x}{f(x)\le \al}\)</span>. We have for <span class="math inline">\(p^*&lt;\al\)</span>, <span class="math display">\[B_{\sfc{2(\al-p^*)}{M}}\subeq C_\al \subeq B_{\sfc{2(\al-p^*)}{m}},\]</span> <span class="math inline">\(\text{cond}(C_\al)\le \fc{M}{m}\)</span>. Moreover, <span class="math inline">\(\lim_{\al\to 0^+} \text{cond}(C_\al) = \ka (\nb f(x^*))\)</span>.</li>
+</ul>
+
+  </div>
+
+    
+
+    <!-- Extension : Sharing buttons @ www.sharethis.com -->
+    <span class='st_facebook_large' displayText='Facebook'></span>
+    <span class='st_twitter_large' displayText='Tweet'></span>
+    <span class='st_googleplus_large' displayText='Google +'></span>
+    <span class='st_reddit_large' displayText='Reddit'></span>
+    <span class='st__large' displayText=''></span>
+
+    <div id="disqus_thread"></div>
+    
+
+
+  
+    <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+  </div>
+  
+</div>
+]]></summary>
+</entry>
+<entry>
+    <title>Convex problems</title>
+    <link href="http://holdenlee.github.io/notebook/posts/tcs/machine_learning/optimization/convex_problems.html" />
+    <id>http://holdenlee.github.io/notebook/posts/tcs/machine_learning/optimization/convex_problems.html</id>
+    <published>2016-04-23T00:00:00Z</published>
+    <updated>2016-04-23T00:00:00Z</updated>
+    <summary type="html"><![CDATA[
+<div class="container">
+  <div id="content">
+    <div class="page header">
+      <h1>Convex problems</h1>
+    </div>
+    <div class="info">
+      
+       
+        <p>Posted: 2016-04-23 
+          , Modified: 2016-04-23 
+	</p>
+      
+       <p>Tags: <a href="/tags/convex%20optimization.html">convex optimization</a></p> 
+    </div>
+    
+  </div>
+  <!--/div-->
+
+  <div class="toc"></div>
+
+  <div class="blog-main">
+    <p>Express the following as convex optimization problems.</p>
+<ul>
+<li>Quadratic minimization
+<ul>
+<li>Least squares</li>
+</ul></li>
+<li>Geometric programming</li>
+<li>Analytic center</li>
+</ul>
+\begin{align}
+&amp; \min \rc 2 x^T P x + q^T x + r, &amp;P\in S_+^h\\
+&amp; \min \ve{Ax-b}_262, &amp;P=A^TA, q=A^Tb \text{ matching with above}\\
+&amp; (\text{optimality conditions: } Px^*+q=0, \quad A^TAx^* = A^Tb\\
+&amp; \min \ln \pa{\sum \exp(a_i^Tx+b_i)}\\
+&amp; \min - \sum \ln(b_i - a_i^Tx)\\
+&amp; \min \ln \det(F(x)^{-1}),&amp; F(x) = F_0+\sum_i x_i F_i.
+\end{align}
+
+  </div>
+
+    
+
+    <!-- Extension : Sharing buttons @ www.sharethis.com -->
+    <span class='st_facebook_large' displayText='Facebook'></span>
+    <span class='st_twitter_large' displayText='Tweet'></span>
+    <span class='st_googleplus_large' displayText='Google +'></span>
+    <span class='st_reddit_large' displayText='Reddit'></span>
+    <span class='st__large' displayText=''></span>
+
+    <div id="disqus_thread"></div>
+    
+
+
+  
+    <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+  </div>
+  
+</div>
+]]></summary>
+</entry>
+<entry>
     <title>Second-order methods</title>
     <link href="http://holdenlee.github.io/notebook/posts/tcs/machine_learning/optimization/second-order.html" />
     <id>http://holdenlee.github.io/notebook/posts/tcs/machine_learning/optimization/second-order.html</id>
@@ -37,6 +268,9 @@
   <div class="toc"> <ul>
  <li><a href="#main-points">Main points</a></li>
  <li><a href="#proofs">Proofs</a></li>
+ <li><a href="#convergence">Convergence</a></li>
+ <li><a href="#more-intuition">More intuition</a></li>
+ <li><a href="#implementation-issues">Implementation issues</a></li>
  <li><a href="#scraps">Scraps</a></li>
  </ul> </div>
 
@@ -61,7 +295,7 @@
 <ul>
 <li>For a norm <span class="math inline">\(\ved\)</span>, the steepest descent direction is (sd = steepest descent, nsd = normalized steepest descent)
 \begin{align}
-\De x_{sd} &amp;= \min_{\ve{y}} \nb f(x)^T y.
+\De x_{sd} &amp;= \min_{\ve{y}\le 1} \nb f(x)^T y.
 \end{align}</li>
 </ul></li>
 <li>Newton method
@@ -74,9 +308,11 @@
 \end{align}
 Here <span class="math inline">\(\la(x)\)</span> is the Newton decrement.</li>
 </ul></li>
+<li>Newton for functions with Lipschitz Hessian: The number of steps to reach <span class="math inline">\(\ep\)</span> is <span class="math display">\[\fc{f(x^{(0)}-p^*)}{\ga} + \ln\ln \fc{\ep_0}{\ep}, \ep_0=\fc{2m^3}{L^2}.\]</span></li>
+<li><span class="math inline">\(f\)</span> is <strong>self-concordant</strong> if for all <span class="math inline">\(v\)</span>, <span class="math inline">\(\an{\nb^3 f, \De x^{\ot 3}} \le 2 \an{\nb^2 f, \De x^{\ot2}}^{\fc 32}\)</span>. For self-concordant functions, the number of steps to reach <span class="math inline">\(\ep\)</span> is <span class="math display">\[\fc{f(x^{(0)}-p^*)}{\ga} + \log_2\log_2\prc{\ep}\]</span> where <span class="math inline">\(\ga = \fc{\al \be (1-2\al)^2}{20-8\al}\)</span>.</li>
 <li>What are the drawbacks of Newton’s method and how to fix them?
 <ul>
-<li>Naively it requires computing</li>
+<li>Naively it requires computing <span class="math inline">\(H^{-1}\)</span> which (naively?) takes <span class="math inline">\(n^3\)</span> time each iteration, where <span class="math inline">\(n\)</span> is the dimension. <em>For large <span class="math inline">\(n\)</span> this is prohibitive.</em></li>
 </ul></li>
 </ul>
 <h2 id="proofs">Proofs</h2>
@@ -98,14 +334,103 @@ Here <span class="math inline">\(\la(x)\)</span> is the Newton decrement.</li>
 </ul></li>
 <li>Why is <span class="math inline">\(\De x_{nsd}\)</span> the right normalization? <span class="math display">\[ f\pa{x - t\fc{H^{-1} \nb f(x)}{\ve{H^{-\rc 2} \nb f}}} \approx f(x) + (-t+\fc{t^2}2) \fc{H^{-1} \nb f(x)}{\ve{H^{-\rc 2} \nb f}}\]</span> and <span class="math inline">\(t=1\)</span> minimizes this.</li>
 </ul></li>
+</ul>
+<h2 id="convergence">Convergence</h2>
+<ul>
+<li>What is the main idea of Newton descent? Why/how do we get quadratic convergence?
+<ul>
+<li>Go in the direction of the minimum suggested by the Hessian (second order approximation).</li>
+<li>The proof is organized as follows. If <span class="math inline">\(\ve{\nb f(x^{(k)})^2}\)</span> is
+<ul>
+<li>large (<span class="math inline">\(\ge \eta\)</span>), then make constant progress by <span class="math inline">\(\ga\)</span>. This is the dampled phase; steps are small. Steps are small because the default Newton step <span class="math inline">\(t=1\)</span> is bad, and backtracking will choose a smaller <span class="math inline">\(t\)</span>. (?) (It’s “slow” in the sense it’s not quadratically convergent, but it makes constant progress.)</li>
+<li>small (<span class="math inline">\(&lt;\eta\)</span>), then make quadratic progress, <span class="math inline">\(\fc{L}{2m^2}\ve{\nb f(x^{(k+1)})}_2\le \ve{\nb f(x^{(k)})}_2^2\)</span>.</li>
+</ul></li>
+</ul></li>
+<li>What should <span class="math inline">\(\eta\)</span> depend on? <span class="math inline">\(\al\)</span> (the slope for backtracking), <span class="math inline">\(m\)</span> (strong convexity parameter), <span class="math inline">\(L\)</span> (Lipschitz constant on Hessian).</li>
+</ul>
+<em>Proof (for Lipschitz)</em>. We do the calculations for 1 dimension. The calculations are the same, except we have to use matrices and vectors. Let <span class="math inline">\(\te(y)\)</span> be a quantity in <span class="math inline">\([-y,y]\)</span>. Suppose we are at <span class="math inline">\((0,0)\)</span>. Let <span class="math inline">\(d=f'(0), a=f''(0), \la = \fc{d}{a^{\rc 2}}\)</span>, <span class="math inline">\(\De x_{nt} = \fc{d}{a} = \fc{\la}{a^{\rc 2}}\)</span>.
+\begin{align}
+f(x) &amp;= dx + \rc 2 ax^2 + \te\pa{\rc 6 Lx^3}\\
+f\pa{-\fc da} &amp;= -\rc 2 \fc{d^2}a\\
+&amp;\le -\fc{d^2}{a} ]ub{\pa{\rc 2 - \rc 6 L \fc{d}{a^2}}}{\ge \al}.
+\end{align}
+<p>In order for the quantity to be <span class="math inline">\(\ge \al\)</span>, noting <span class="math inline">\(\fc{d}{a^2} = \fc{d}{a^{\fc 32}}\)</span>, we want <span class="math inline">\(\la \le \fc{3(1-2\al) a^{\fc 32}}L\)</span>; it’s sufficient for <span class="math inline">\(f'\le \fc{3(1-2\al)m^2}{L}\)</span>.</p>
+Note that unlike for linear convergence, we don’t prove something like <span class="math inline">\(f(x') - f(x^*)\le \cdots\)</span>. We have to work with the gradients to get quadratic convergence. (Gradients also control the distance to the optimum.) We have
+\begin{align}
+f'(x) &amp;= d+ ax + \te\pa{\rc L x^2}\\
+f'\pa{-\fc da} &amp; \le \rc 2 L\fc{d^2}{a^2} \le \fc{L}{2m^2}f'(0).
+\end{align}
+<em>Proof (for self-concordant)</em>. Work in 1-D. Instead of integrating <span class="math inline">\(\int f'''=\int (f'')^{\fc 32}\)</span>, we let <span class="math inline">\(F(y)=y^{-\rc 2}\)</span> and integrate <span class="math inline">\(\int (F(f''))'\)</span>.
+\begin{align}
+|(f'')^{-\rc 2} (t)| &amp;= \ab{\int_0^t ((f'')^{-\rc 2})'} =\int_0^t \ab{-\rc 2 (f'')^{-\fc 32} f'''}\le t\\
+\label{eq:f''}
+\implies
+\rc{(-t + f''(0)^{-\rc 2})^2} &amp;\ge f''(t) \ge \rc{(t+f''(0)^{-\rc 2})^2}\\
+\implies
+\rc{-t+f''(0)^{-\rc 2}} - f''(0)^{\rc 2} &amp; \ge f'(t)-f'(0) \ge \rc{t+f''(0)^{-\rc 2}} + f''(0)^{\rc 2}\\
+\implies f(t) &amp;\le f(0) + (f'(0) - f''(0)^{\rc 2}) t + \ln \pf{f''(0)^{-\rc 2}}{t + f''(0)^{-\rc 2}}\\
+\implies f\pa{-\fc{f'}{f''}t} &amp; \le f(0) - \la^2 t + \la t - \ln (1-t\la(x)).
+\end{align}
+<p>Now consider 2 cases.</p>
+<ul>
+<li><span class="math inline">\(\la(x^{(k)})&gt;\eta\)</span>. We show <span class="math inline">\(f(x^{(k+1)}) - f(x^{(k)}) \le -\ga\)</span>.
+<ul>
+<li>Using <span class="math inline">\(-x + \ln (1+x) + \fc{x^2}{2(1+x)}\le 0\)</span>, for <span class="math inline">\(t=\rc{1+\la(x)}\)</span>,
+\begin{align}
+f(-\fc{f'}{f''} t) &amp; \le f(0) - \al \la(x)^2 t\\
+t=\rc{1+\la(x)^2}\implies f(-\fc{f'}{f''} t) &amp; \le f(0) - \al \la(x)^2 t
+\end{align}
+so backtracking line search chooses <span class="math inline">\(t\ge \fc{\be}{1+\la(x)}\)</span> with <span class="math display">\[f(-\fc{f'}{f''} t)  \le -\al \be \fc{\la^2}{1+\la} \le -\al \be \fc{\eta^2}{1+\eta}.\]</span></li>
+</ul></li>
+<li><span class="math inline">\(\la(x^{(k)})\le \eta\)</span>. We show <span class="math inline">\(2\la(x^{(k+1)})\le (2\la(x^{(k)}))^2\)</span>. (Note we are not getting a bound on <span class="math inline">\(f'(x_{k+1})\)</span> like before because we don’t have strong convexity, which upper-bounds <span class="math inline">\(f''(x)^{-\rc 2}\)</span>.)
+<ul>
+<li>We take a unit step because <span class="math display">\[f(-\fc{f'}{f''})   = f(0) - \la^2 + \la - \ln (1-\la(x))\le f(0)-\al \la(x)^2\]</span> when <span class="math inline">\(\la(x) \le \fc{1-2\al}{2}\)</span>.</li>
+<li>Self-concordance gives multiplicative bound on how <span class="math inline">\(H\)</span> changes, <span class="math inline">\((1-t\al)^2 H \preceq H(x+tv) \preceq \rc{(1-t\al)^2} H(x)\)</span>, where <span class="math inline">\(\al=\ve{v}_{H^{\rc 2}}\)</span>. Proof:
+\begin{align}
+\ln f''(t) - \ln f''(0) &amp; = \int_0^t (\ln f'')' \\
+&amp; \le \int_0^t (2f'')^{\rc 2}\\
+&amp;\le \int_0^t \fc{2}{-x+(f'')^{-\rc 2}} &amp;\eqref{eq:f''}\\
+&amp;\le 2\ln (-t (f'')^{\rc 2} + 1).
+\end{align}</li>
+<li>Now we show <span class="math inline">\(\la(x-\fc{f'}{f''}) \le \fc{\la^2}{(1-\la)^2}\)</span>. Using the multiplicative bound (here <span class="math inline">\(t=1\)</span>, <span class="math inline">\(v=-\fc{f'}{f''}\)</span>, <span class="math inline">\(\al=\la\)</span>.
+\begin{align}
+f''(x_{k+1})&amp;\in f''(x_k) [1-\la, \rc{1-\la}]\\
+f'(x_{k+1}) &amp; \in f'(x_k) + \ba{-\rc{\fc{f'}{f''} + \rc{(f'')^{\rc 2}}} + (f'')^{\rc 2}, \rc{-\fc{f'}{f''}+\rc{(f'')^{\rc2}}} - (f'')^{\rc 2}}\\
+&amp;= f'(x_k) \ba{\fc{\la}{-\la + 1}, \fc{\la}{\la+1}}\\
+\la(x_{k+1})&amp;\le \fc{\la(x_k)^2}{(1-\la(x_k))^2} \\ &amp; \le 2\la^2
+\end{align}
+where the last inequality is when <span class="math inline">\(\la\le \rc 4\)</span>.</li>
+</ul></li>
+<li>Finally, bound the distance to optimum by <span class="math inline">\(\la\)</span>, <span class="math inline">\(f(x^{(l)})-p^* \le \la(x^{(l)})^2\)</span>.</li>
+</ul>
+<h2 id="more-intuition">More intuition</h2>
+<ul>
 <li>Why do we use <span class="math inline">\(\ved_H\)</span>?
 <ul>
 <li>It appears in the second-order Taylor approximation. <span class="math inline">\(f(x) + \nb f^T v + \rc 2 v^T \nb^2 f v\)</span> has a minimum at <span class="math inline">\(\fc{H^{-1}f}{\ve{H^{-\rc 2}f}}\)</span>, not in the gradient direction!</li>
 <li>It is invariant to linear transformation: <span class="math inline">\(\De x_{nsd} (f\circ A) = \De x_{nsd} f\)</span>.</li>
 </ul></li>
-<li>Give an example where gradient descent performs poorly compared to Newton. <span class="math inline">\(f = x_1^2 + \ep x_2^\)</span>, <span class="math inline">\(-\nb f = (-2x_1,-2\ep x_2)\)</span>.</li>
+<li>What is the relationship to Newton’s method of finding zeros?
+<ul>
+<li>The Newton’s method here is the Newton zero-finding method applied to <span class="math inline">\(f'\)</span>.</li>
+</ul></li>
+<li>Does order <span class="math inline">\(c\)</span> give <span class="math inline">\(2^{-n^c}\)</span> convergence?
+<ul>
+<li>Probably. But it’s rare to get <span class="math inline">\(&gt;2\)</span> order information.</li>
+</ul></li>
+<li>Give an example where gradient descent performs poorly compared to Newton. <span class="math inline">\(f = x_1^2 + \ep x_2^2\)</span>, <span class="math inline">\(-\nb f = (-2x_1,-2\ep x_2)\)</span>.</li>
+<li>Intuition for self-concordance
+<ul>
+<li>We relax the requirement that <span class="math inline">\(f\)</span> is strongly convex and has Lipschitz Hessian. We’re allowed to have <span class="math inline">\(f''\to 0\)</span>; the requirement is that when <span class="math inline">\(f''\)</span> is small so is <span class="math inline">\(f'''\)</span>. Note <span class="math inline">\(\fc{(f'')^{\fc 32}}{f'''}\)</span> is dimensionless.</li>
+</ul></li>
 </ul>
+<h2 id="implementation-issues">Implementation issues</h2>
+<ol type="1">
+<li>Precompute line searches: it can be more efficient to simultaneously compute <span class="math inline">\(f(x+t\De x)\)</span> for many values of <span class="math inline">\(t\)</span>, e.g., if it involves a linear/matrix function.</li>
+<li>Computing <span class="math inline">\(\De x_{nt}=H^{-1}\nb f(x)\)</span> is more efficient if <span class="math inline">\(H\)</span> has band structure, sparsity, etc.</li>
+</ol>
 <h2 id="scraps">Scraps</h2>
+<p>? 9.31,</p>
 <p>estimating Hessian?</p>
 
   </div>
@@ -131,7 +456,7 @@ Here <span class="math inline">\(\la(x)\)</span> is the Newton decrement.</li>
 ]]></summary>
 </entry>
 <entry>
-    <title>Non-negative matrix factorization</title>
+    <title>NMF algorithm</title>
     <link href="http://holdenlee.github.io/notebook/posts/tcs/machine_learning/matrices/nmf_algorithm.html" />
     <id>http://holdenlee.github.io/notebook/posts/tcs/machine_learning/matrices/nmf_algorithm.html</id>
     <published>2016-04-22T00:00:00Z</published>
@@ -140,7 +465,7 @@ Here <span class="math inline">\(\la(x)\)</span> is the Newton decrement.</li>
 <div class="container">
   <div id="content">
     <div class="page header">
-      <h1>Non-negative matrix factorization</h1>
+      <h1>NMF algorithm</h1>
     </div>
     <div class="info">
       
@@ -158,6 +483,7 @@ Here <span class="math inline">\(\la(x)\)</span> is the Newton decrement.</li>
   <div class="toc"> <ul>
  <li><a href="#setup">Setup</a></li>
  <li><a href="#preliminary-calculations">Preliminary calculations</a></li>
+ <li><a href="#actual-calculations">Actual calculations</a></li>
  </ul> </div>
 
   <div class="blog-main">
@@ -199,10 +525,25 @@ Now relax <span class="math inline">\(y\approx A^*x\)</span>, We get
 <p>using <span class="math inline">\(\E y = A^* x\)</span>.</p>
 Now relax <span class="math inline">\(x\approx x^*\)</span>. (Warning: <span class="math inline">\(x^*\)</span> simply being close may not imply convergence to <span class="math inline">\(A^*\)</span> without additional assumptions on <span class="math inline">\(A^*\)</span>, because of nonuniqueness.)
 \begin{align}
-\EE_{x,y} \an{-y^T D x^T, A-A^*}
-&amp;= \EE_{x,y} [-y^T D(A-A^*) x].
+\EE_{x,y} \an{-D yx^T, A-A^*}
+&amp;= \EE_{x,y} [-y^T D(A-A^*) x]\\
+&amp;= \EE_{x,y} [-y^T DA^*x]-1\\
 \end{align}
 <p>The dependencies of the random variables are <span class="math inline">\(x^* \to y \to x\)</span> (<span class="math inline">\(\E_y = A^*x^*\)</span>). We can’t simply replace <span class="math inline">\(\E y = A^*x^*\)</span> because we have to average over <span class="math inline">\(x\)</span> first, which depends on the decoding. (If we could replace <span class="math inline">\(y\)</span> like that, we get <span class="math inline">\(\an{x,x-x^*}_M\)</span>.)</p>
+<h2 id="actual-calculations">Actual calculations</h2>
+<p>Recall that if we’re decoding by multiplying by <span class="math inline">\(B\)</span>, we also have to threshold, <span class="math inline">\(\text{Th}(Bx)\)</span>.</p>
+In Theorem 4.1, if <span class="math inline">\(A\)</span> is biased, then we instead obtain a bound <span class="math display">\[ (By)_i - \E (By)_i = \ub{(By)_i - BA^*x}{\text{w.h.p. }\le 2\la(A) \sfc{\ln r}{n}} + B(A-A^*) x^*. \]</span> For the second term, <span class="math display">\[ \ve{B(A-A^*)x}_{\iy} \le |B|_{\iy} \max_i \ve{A_{\cdot i} - A_{\cdot i}^*}_1 \le \la \ep.\]</span> We want to lower bound
+\begin{align}
+\an{\nb A, A-A^*}
+&amp;= \sum \fc{y_iA_{ij}^*}{(Ax)_i} - 1\\
+&amp;= \sum_i \fc{y_i(A^*x)_i}{(Ax)_i} - 1\\
+&amp;= \sum \fc{b_i(A^* x)_i}{(Ax)_i} + \sum_i \fc{(A^*(x^*-x))_i (A^*)_i}{(Ax)_i} + \sum_{i,j} \pa{(A^*x)_i\sfc{(Ax)_j}{(Ax)_i} - (A^*x)_j\sfc{(Ax)_i}{(Ax)_j}}^2.
+\end{align}
+<p>We may suppose <span class="math inline">\(\ve{A_{\bullet i} - A_{\bullet i}^*}\le \rc{\poly\log(n)}\)</span>, or something like this.</p>
+<p>Try 2: <span class="math display">\[\an{\nb A, A-A^*} = \an{\pa{y_i \sfc{(Ax)_j}{(Ax)_i} - y_j \sfc{(Ax)_i}{(Ax)_j}}_{ij}, \pa{A^*x_i  \sfc{(Ax)_j}{(Ax)_i} - A^*x_j  \sfc{(Ax)_i}{(Ax)_j}}_{ij}}.
+\]</span> It’s tempting to take <span class="math inline">\(\E_y\)</span> first, but we can’t do that.</p>
+<p>We want to lower-bound by <span class="math display">\[ \al \ve{A-A^*}_F^2 + \be \ve{\pf{y_i}{(Ax)_i}}_2^2 \ve{x}_2^2 - \ep.
+\]</span></p>
 
   </div>
 
@@ -635,245 +976,6 @@ q\ge 2\implies \ell_{\ell_q^n} &amp;= c(\ep) q n^{\fc 2q}&amp;\implies k(\ell_q^
 </ul></li>
 </ul></li>
 </ul>
-
-  </div>
-
-    
-
-    <!-- Extension : Sharing buttons @ www.sharethis.com -->
-    <span class='st_facebook_large' displayText='Facebook'></span>
-    <span class='st_twitter_large' displayText='Tweet'></span>
-    <span class='st_googleplus_large' displayText='Google +'></span>
-    <span class='st_reddit_large' displayText='Reddit'></span>
-    <span class='st__large' displayText=''></span>
-
-    <div id="disqus_thread"></div>
-    
-
-
-  
-    <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
-  </div>
-  
-</div>
-]]></summary>
-</entry>
-<entry>
-    <title>[A16] Provable algorithms for inference in topic models</title>
-    <link href="http://holdenlee.github.io/notebook/posts/tcs/machine_learning/matrices/arora-topic-models.html" />
-    <id>http://holdenlee.github.io/notebook/posts/tcs/machine_learning/matrices/arora-topic-models.html</id>
-    <published>2016-04-04T00:00:00Z</published>
-    <updated>2016-04-04T00:00:00Z</updated>
-    <summary type="html"><![CDATA[
-<div class="container">
-  <div id="content">
-    <div class="page header">
-      <h1>[A16] Provable algorithms for inference in topic models</h1>
-    </div>
-    <div class="info">
-      
-       
-        <p>Posted: 2016-04-04 
-          , Modified: 2016-04-04 
-	</p>
-      
-       <p>Tags: <a href="/tags/topic%20models.html">topic models</a></p> 
-    </div>
-    
-  </div>
-  <!--/div-->
-
-  <div class="toc"> <ul>
- <li><a href="#model">Model</a><ul>
- <li><a href="#definitions">Definitions</a></li>
- <li><a href="#model-1">Model</a></li>
- </ul></li>
- <li><a href="#algorithm">Algorithm</a></li>
- <li><a href="#analysis">Analysis</a><ul>
- <li><a href="#thresholded-linear-inverse-algorithm">Thresholded linear inverse algorithm</a></li>
- <li><a href="#mle-estimate">MLE estimate</a></li>
- <li><a href="#sample-complexity-lower-bounds">Sample complexity lower bounds</a></li>
- </ul></li>
- </ul> </div>
-
-  <div class="blog-main">
-    <h2 id="model">Model</h2>
-<h3 id="definitions">Definitions</h3>
-<p>Define</p>
-<ul>
-<li>the <span class="math inline">\(\ell_1\)</span> condition number <span class="math display">\[\ka(A) = \min \set{\ka}{\forall x\in \R^k, \ve{Ax}_1\ge \rc{\ka}\ve{x}_1}\]</span></li>
-<li>the <span class="math inline">\(\ell_\iy\to \ell_1\)</span> condition number <span class="math display">\[\la(A) = \min \set{\la}{\forall x\in \R^k, \ve{Ax}_1\ge \rc{\la}\ve{x}_\iy}\]</span></li>
-<li>the <span class="math inline">\(\de\)</span>-biased <span class="math inline">\(\ell_\iy\to \ell_1\)</span> condition number
-\begin{align}
-\la_\de&amp;=\min_{|BA-I_k|\le \de, B\in \R^{k\times D}} |B|_{\iy}\\
-&amp;=\max_{\ve{Ax}_1\le 1} \ve{x}_{\iy} - \de\ve{x}_1.
-\end{align}
-(The equality follows from a duality calculation.)</li>
-<li>the restricted <span class="math inline">\(\ell_1\to \ell_1\)</span> condition number is <span class="math display">\[\ol{\ka}_r(A) = \min\set{\ol{\ka}}{\forall \ve{v}_0, \ve{Av}_1\ge \rc{\ol \ka}\ve{v}}.\]</span></li>
-</ul>
-<p>Note <span class="math display">\[\la_\de\le \la_0=\la \le \ka.\]</span> (To see this, take <span class="math inline">\(x=By\)</span>.)</p>
-<h3 id="model-1">Model</h3>
-<ul>
-<li><span class="math inline">\(A\)</span> is a fixed <span class="math inline">\(n\times k\)</span> matrix with <span class="math inline">\(\de\)</span>-biased condition number <span class="math inline">\(\la_\de(A)\)</span>. (We want this to be small.)</li>
-<li><span class="math inline">\(x\in \De_k\)</span> is <span class="math inline">\(r\)</span>-sparse.</li>
-<li><span class="math inline">\(y\sim Ax\)</span> (<span class="math inline">\(Ax\)</span> is treated as a probability vector).</li>
-</ul>
-<h2 id="algorithm">Algorithm</h2>
-<p>Given <span class="math inline">\(y\sim Ax\)</span> and <span class="math inline">\(A\)</span>,</p>
-<ul>
-<li>Thresholded linear inverse
-<ul>
-<li>Let <span class="math inline">\(B=\amin_{|BA-I_k|\le \de, B\in \R^{k\times D}} |B|_{\iy}\)</span> be a <span class="math inline">\(\de\)</span>-biased minimum variance inverse.</li>
-<li>Compute <span class="math inline">\(\wh x = \rc n By\)</span>.</li>
-<li>Let <span class="math display">\[x_i = \wh x_i (\wh x_i \ge \ub{2\la_\de(A) \sfc{\ln k}{n} + \de}{\tau}).\]</span></li>
-</ul></li>
-<li>TLI finds the support of <span class="math inline">\(x^*\)</span> with high probability. Now find the MLE <span class="math inline">\(x^*\)</span> given the support. (This is a convex problem.)</li>
-</ul>
-<h2 id="analysis">Analysis</h2>
-<h3 id="thresholded-linear-inverse-algorithm">Thresholded linear inverse algorithm</h3>
-<p>We have <span class="math display">\[ \E \wh x_i  =x_j^* + \sumo jk ((BA)_{ij} - \de_{i,j}) x_j^*.\]</span> <em>This is why it’s natural to consider the <span class="math inline">\(\de\)</span>-biased inverse</em>: we don’t need <span class="math inline">\(B=A^+\)</span> exactly, we can relax this to each <span class="math inline">\((BA)_{ij} - \de_{i,j}\)</span> being small. Now use Bernstein’s inequality to get concentration on the order of <span class="math inline">\(\tau\)</span>. Finally use union bound. <!--check this--></p>
-<h3 id="mle-estimate">MLE estimate</h3>
-<p>If</p>
-<ul>
-<li><span class="math inline">\(x^*\in \De_k\)</span> is <span class="math inline">\(r\)</span>-sparse</li>
-<li><span class="math inline">\(x_i^*\ge \fc{\tau}r\)</span> for any <span class="math inline">\(i\in R\)</span>,</li>
-<li><span class="math inline">\(A\)</span> has <span class="math inline">\(\le \ol{\ka}\)</span> restricted <span class="math inline">\(\ell_1\to \ell_1\)</span> condition number (a bound on <span class="math inline">\(\ka\)</span> is sufficient as <span class="math inline">\(\ol\ka\le \ka\)</span>)</li>
-<li><span class="math inline">\(n\ge c\ol{\ka}^2 r^2 \fc{\log k}{\tau^2}\)</span></li>
-</ul>
-then with high probability
-\begin{align}
-\ve{Ax_{MLE}-Ax^*}_1 &amp;\le \wt O\pa{\sfc rn}\\
-\ve{x_{MLE}-x^*}_1 &amp;\le \wt O\pa{\ol \ka \sfc rn}
-\end{align}
-<p>The proof is like the <a href="../../math/statistics/fisher-info.html">proof of asymptotic normality of MLE</a>, but with matrix concentration to get a finite sample bound.</p>
-<h3 id="sample-complexity-lower-bounds">Sample complexity lower bounds</h3>
-<p>These exist!</p>
-
-  </div>
-
-    
-
-    <!-- Extension : Sharing buttons @ www.sharethis.com -->
-    <span class='st_facebook_large' displayText='Facebook'></span>
-    <span class='st_twitter_large' displayText='Tweet'></span>
-    <span class='st_googleplus_large' displayText='Google +'></span>
-    <span class='st_reddit_large' displayText='Reddit'></span>
-    <span class='st__large' displayText=''></span>
-
-    <div id="disqus_thread"></div>
-    
-
-
-  
-    <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
-  </div>
-  
-</div>
-]]></summary>
-</entry>
-<entry>
-    <title>Weekly summary 4-9-16</title>
-    <link href="http://holdenlee.github.io/notebook/posts/summaries/2016-04-09.html" />
-    <id>http://holdenlee.github.io/notebook/posts/summaries/2016-04-09.html</id>
-    <published>2016-04-04T00:00:00Z</published>
-    <updated>2016-04-04T00:00:00Z</updated>
-    <summary type="html"><![CDATA[
-<div class="container">
-  <div id="content">
-    <div class="page header">
-      <h1>Weekly summary 4-9-16</h1>
-    </div>
-    <div class="info">
-      
-       
-        <p>Posted: 2016-04-04 
-          , Modified: 2016-04-04 
-	</p>
-      
-       <p>Tags: <a href="/tags/none.html">none</a></p> 
-    </div>
-    
-  </div>
-  <!--/div-->
-
-  <div class="toc"></div>
-
-  <div class="blog-main">
-    
-
-  </div>
-
-    
-
-    <!-- Extension : Sharing buttons @ www.sharethis.com -->
-    <span class='st_facebook_large' displayText='Facebook'></span>
-    <span class='st_twitter_large' displayText='Tweet'></span>
-    <span class='st_googleplus_large' displayText='Google +'></span>
-    <span class='st_reddit_large' displayText='Reddit'></span>
-    <span class='st__large' displayText=''></span>
-
-    <div id="disqus_thread"></div>
-    
-
-
-  
-    <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
-  </div>
-  
-</div>
-]]></summary>
-</entry>
-<entry>
-    <title>Maximum entropy distributions</title>
-    <link href="http://holdenlee.github.io/notebook/posts/math/statistics/max-entropy.html" />
-    <id>http://holdenlee.github.io/notebook/posts/math/statistics/max-entropy.html</id>
-    <published>2016-04-04T00:00:00Z</published>
-    <updated>2016-04-04T00:00:00Z</updated>
-    <summary type="html"><![CDATA[
-<div class="container">
-  <div id="content">
-    <div class="page header">
-      <h1>Maximum entropy distributions</h1>
-    </div>
-    <div class="info">
-      
-       
-        <p>Posted: 2016-04-04 
-          , Modified: 2016-04-04 
-	</p>
-      
-       <p>Tags: <a href="/tags/none.html">none</a></p> 
-    </div>
-    
-  </div>
-  <!--/div-->
-
-  <div class="toc"> <ul>
- <li><a href="#references">References</a><ul>
- <li><a href="#constraint-distribution-entropy-base-e">Constraint | Distribution | Entropy (base e)</a></li>
- </ul></li>
- </ul> </div>
-
-  <div class="blog-main">
-    <h2 id="references">References</h2>
-<ul>
-<li><a href="http://www.math.uconn.edu/~kconrad/blurbs/analysis/entropypost.pdf">Keith Conrad’s notes</a></li>
-<li><a href="http://www.ski.org/Rehab/Coughlan_lab/General/TutorialsandReference/MaxEnt.pdf">ML vs. ME</a></li>
-<li><a href="https://en.wikipedia.org/wiki/Maximum_entropy_probability_distribution">Wikipedia</a></li>
-</ul>
-<p>Many naturally occurring distributions are the maximal entropy distribution under some constraint. Here is a table.</p>
-<h3 id="constraint-distribution-entropy-base-e">Constraint | Distribution | Entropy (base e)</h3>
-<p>Mean <span class="math inline">\(\mu\)</span>, variance <span class="math inline">\(\si^2\)</span> | Normal<span class="math inline">\((\mu,\si^2)\)</span> | <span class="math inline">\(\rc2 (1+\ln (2\pi \si^2))\)</span> Support <span class="math inline">\([0,\iy)\)</span>, mean <span class="math inline">\(la\)</span> | Exponential <span class="math inline">\(\rc{\la} e^{-\fc x\la}\)</span> | <span class="math inline">\(1+\ln \la\)</span> <span class="math inline">\(\E X= \mu\)</span>, <span class="math inline">\(\E |X - \E X| = \la\)</span> | Laplace<span class="math inline">\((\mu,2\la^2)\)</span> | <span class="math inline">\(1+\ln(2\la)\)</span> Energy <span class="math inline">\(\sum p_iE_i = \ol E\)</span> | Boltzmann <span class="math inline">\(\Pj(i) = \fc{e^{-\be E_i}}{Z}\)</span>, <span class="math inline">\(Z=\sum_i e^{-\be E_i}\)</span> | <span class="math inline">\(\E(-\be E) - \ln Z\)</span></p>
-<p>Note that in the continuous case, the Boltzmann formula encompasses everything! For example, for the normal distribution, energy is <span class="math inline">\((x-\mu)^2\)</span>.</p>
-<p>A systematic way to show this is Lagrange multipliers.</p>
-<p>A more elegant way is to do the following:</p>
-<ul>
-<li>Note that by nonnegativity of KL divergence, <span class="math display">\[\int_{\Om} p \ln p \ge \int_{\Om} p \ln q.\]</span></li>
-<li>For <span class="math inline">\(F(p)\)</span> the property of the distribution you’re interested in and <span class="math inline">\(q\)</span> equal to the maximizing distribution, find that <span class="math display">\[-\int_{\Om} p \ln q = g(F(p))\]</span> for some function <span class="math inline">\(g\)</span>.</li>
-<li>Conclude that if <span class="math inline">\(F(p)=F(q)\)</span> then <span class="math inline">\(-\int_{\Om} p\ln q = -\int_{\Om} q\ln q\)</span>. Hence <span class="math display">\[H(p) = -\int p\ln p \ge -\int p\ln q = -\int q\ln q = H(q).\]</span></li>
-</ul>
-<p>Here is an example. For <span class="math inline">\(q=\rc{\sqrt{2\pi}}e^{-\fc{x^2}{2\si^2}}\)</span>, <span class="math display">\[-\int_{\R} p \ln q \dx = \rc2 \ln(2\pi \si^2) + \int_{\R}p\cdot \rc2 \pf{x}{\si^2}^2\dx = \rc2 \ln(2\pi \si^2) + \rc{2}\fc{\Var(q)}{\si^2}.\]</span></p>
-<p>Question: why is the maximum entropy distribution the best choice in statistical problems?</p>
 
   </div>
 

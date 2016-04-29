@@ -10,7 +10,7 @@
   <meta name="description" content="Holden Lee's Research Notebook">
   <meta name="author" content="Holden Lee">
     
-  <title>Non-negative matrix factorization</title>
+  <title>NMF algorithm</title>
 
   <!-- Bootstrap core CSS -->
   <link href="../../../../bootstrap/css/bootstrap.min.css" rel="stylesheet">
@@ -66,7 +66,7 @@
 <div class="container">
   <div id="content">
     <div class="page header">
-      <h1>Non-negative matrix factorization</h1>
+      <h1>NMF algorithm</h1>
     </div>
     <div class="info">
       
@@ -84,6 +84,7 @@
   <div class="toc"> <ul>
  <li><a href="#setup">Setup</a></li>
  <li><a href="#preliminary-calculations">Preliminary calculations</a></li>
+ <li><a href="#actual-calculations">Actual calculations</a></li>
  </ul> </div>
 
   <div class="blog-main">
@@ -125,10 +126,25 @@ Now relax <span class="math inline">\(y\approx A^*x\)</span>, We get
 <p>using <span class="math inline">\(\E y = A^* x\)</span>.</p>
 Now relax <span class="math inline">\(x\approx x^*\)</span>. (Warning: <span class="math inline">\(x^*\)</span> simply being close may not imply convergence to <span class="math inline">\(A^*\)</span> without additional assumptions on <span class="math inline">\(A^*\)</span>, because of nonuniqueness.)
 \begin{align}
-\EE_{x,y} \an{-y^T D x^T, A-A^*}
-&amp;= \EE_{x,y} [-y^T D(A-A^*) x].
+\EE_{x,y} \an{-D yx^T, A-A^*}
+&amp;= \EE_{x,y} [-y^T D(A-A^*) x]\\
+&amp;= \EE_{x,y} [-y^T DA^*x]-1\\
 \end{align}
 <p>The dependencies of the random variables are <span class="math inline">\(x^* \to y \to x\)</span> (<span class="math inline">\(\E_y = A^*x^*\)</span>). We can’t simply replace <span class="math inline">\(\E y = A^*x^*\)</span> because we have to average over <span class="math inline">\(x\)</span> first, which depends on the decoding. (If we could replace <span class="math inline">\(y\)</span> like that, we get <span class="math inline">\(\an{x,x-x^*}_M\)</span>.)</p>
+<h2 id="actual-calculations">Actual calculations</h2>
+<p>Recall that if we’re decoding by multiplying by <span class="math inline">\(B\)</span>, we also have to threshold, <span class="math inline">\(\text{Th}(Bx)\)</span>.</p>
+In Theorem 4.1, if <span class="math inline">\(A\)</span> is biased, then we instead obtain a bound <span class="math display">\[ (By)_i - \E (By)_i = \ub{(By)_i - BA^*x}{\text{w.h.p. }\le 2\la(A) \sfc{\ln r}{n}} + B(A-A^*) x^*. \]</span> For the second term, <span class="math display">\[ \ve{B(A-A^*)x}_{\iy} \le |B|_{\iy} \max_i \ve{A_{\cdot i} - A_{\cdot i}^*}_1 \le \la \ep.\]</span> We want to lower bound
+\begin{align}
+\an{\nb A, A-A^*}
+&amp;= \sum \fc{y_iA_{ij}^*}{(Ax)_i} - 1\\
+&amp;= \sum_i \fc{y_i(A^*x)_i}{(Ax)_i} - 1\\
+&amp;= \sum \fc{b_i(A^* x)_i}{(Ax)_i} + \sum_i \fc{(A^*(x^*-x))_i (A^*)_i}{(Ax)_i} + \sum_{i,j} \pa{(A^*x)_i\sfc{(Ax)_j}{(Ax)_i} - (A^*x)_j\sfc{(Ax)_i}{(Ax)_j}}^2.
+\end{align}
+<p>We may suppose <span class="math inline">\(\ve{A_{\bullet i} - A_{\bullet i}^*}\le \rc{\poly\log(n)}\)</span>, or something like this.</p>
+<p>Try 2: <span class="math display">\[\an{\nb A, A-A^*} = \an{\pa{y_i \sfc{(Ax)_j}{(Ax)_i} - y_j \sfc{(Ax)_i}{(Ax)_j}}_{ij}, \pa{A^*x_i  \sfc{(Ax)_j}{(Ax)_i} - A^*x_j  \sfc{(Ax)_i}{(Ax)_j}}_{ij}}.
+\]</span> It’s tempting to take <span class="math inline">\(\E_y\)</span> first, but we can’t do that.</p>
+<p>We want to lower-bound by <span class="math display">\[ \al \ve{A-A^*}_F^2 + \be \ve{\pf{y_i}{(Ax)_i}}_2^2 \ve{x}_2^2 - \ep.
+\]</span></p>
 
   </div>
 

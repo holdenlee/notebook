@@ -158,12 +158,34 @@
 <h2 id="proofs">Proofs</h2>
 <p><strong>Gradient descent lemma:</strong> Let <span class="math inline">\(D=\nb f(x)\)</span>. Move to origin. Upper bound is <span class="math display">\[f(x) \le \fc{L}2 x^2 + Dx.\]</span> The minimum is at <span class="math inline">\(-\fc{D}{L}\)</span> and is <span class="math inline">\(\fc{-b^2}{4a} = -\fc{D^2}{2L}.\)</span></p>
 <p>For strongly convex: Choose <span class="math inline">\(s\)</span> to maximize the minimum progress in terms of <span class="math inline">\(x\)</span>. <span class="math display">\[\fc{s-\rc{l}}{\rc{l}} = \fc{\rc L-s}{\rc L} \implies s = \fc{2}{L+l}.\]</span></p>
-<strong>Backtracking analysis:</strong> * Translate to <span class="math inline">\((0,0)\)</span> and look at 1-D slice. Then <span class="math inline">\(f\le b x + \rc2 M x^2\)</span>, <span class="math inline">\(b = \ve{\nb f(x)}\)</span>. The quadratic equals $bx $ at <span class="math inline">\(x=\fc{2b(1-\al)}{M}\)</span>. * One of the following holds.
+<p><strong>Backtracking analysis:</strong></p>
+<ul>
+<li>Translate to <span class="math inline">\((0,0)\)</span> and look at 1-D slice. Then <span class="math inline">\(f\le b x + \rc2 M x^2\)</span>, <span class="math inline">\(b = \ve{\nb f(x)}\)</span>. The quadratic equals $bx $ at <span class="math inline">\(x=\fc{2b(1-\al)}{M}\)</span>.</li>
+<li>One of the following holds.
 \begin{align}
-	f(x+t_0\De x) &amp;&gt; f(x) + \al \nb f^T \De x\\
-	t &amp;= \fc{2\nb f^T\De x (1-\al)\be}{M} \ge \fc{\nb f^T \De x \be}{M}
-	\end{align}
-<p>where the last inequality follows from <span class="math inline">\(\al&lt;0.5\)</span>. * What’s the right measure of progress? * It shouldn’t be the absolute progress; it should depend on what the minimum actually is. Closer to <span class="math inline">\(x^*\)</span>, we make a smaller step size but <em>more progress proportionally</em>. The right measure is <span class="math inline">\(\fc{f(x_{n+1}) - f(x^*)}{f(x_n)-f(x^*)}\)</span>. * Abstractly, given a quadratic upper and lower bound for <span class="math inline">\(f\)</span>, make progress towards minimum. * Consider the 1-D case at <span class="math inline">\((0,0)\)</span>. We have <span class="math inline">\(\wt f(t) \in - d^2 t + \rc 2 (m,M) d^2 t^2.\)</span> * The minimum possible is <span class="math inline">\(-\rc 2 \fc{d^2}{M}\)</span>. * 1st case: <span class="math inline">\(\wt f(1) &gt; - \al d^2 t_0\)</span>. * Progress <span class="math inline">\(2m\al\)</span>. * 2nd case: <span class="math inline">\(\wt f(t) &gt; - \fc{2\al \be (1-\al)d^2}{M}\)</span> * Progress <span class="math inline">\(\fc{2\al \be m}{M}\)</span>. * Convergence <span class="math inline">\(\fc{f(x_t) - f(x^*)}{f(x_{t-1}) - f(x^*)} \le 1-\min\pa{\fc{2\al \be (1-\al)d^2}{M}, 2m\al}\)</span>.</p>
+f(x+t_0\De x) &amp;&gt; f(x) + \al \nb f^T \De x\\
+t &amp;= \fc{2\nb f^T\De x (1-\al)\be}{M} \ge \fc{\nb f^T \De x \be}{M}
+\end{align}
+where the last inequality follows from <span class="math inline">\(\al&lt;0.5\)</span>.</li>
+<li>What’s the right measure of progress?
+<ul>
+<li>It shouldn’t be the absolute progress; it should depend on what the minimum actually is. Closer to <span class="math inline">\(x^*\)</span>, we make a smaller step size but <em>more progress proportionally</em>. The right measure is <span class="math inline">\(\fc{f(x_{n+1}) - f(x^*)}{f(x_n)-f(x^*)}\)</span>.</li>
+<li>Abstractly, given a quadratic upper and lower bound for <span class="math inline">\(f\)</span>, make progress towards minimum.</li>
+<li>Consider the 1-D case at <span class="math inline">\((0,0)\)</span>. We have <span class="math inline">\(\wt f(t) \in - d^2 t + \rc 2 (m,M) d^2 t^2.\)</span>
+<ul>
+<li>The minimum possible is <span class="math inline">\(-\rc 2 \fc{d^2}{M}\)</span>.</li>
+<li>1st case: <span class="math inline">\(\wt f(1) &gt; - \al d^2 t_0\)</span>.
+<ul>
+<li>Progress <span class="math inline">\(2m\al\)</span>.</li>
+</ul></li>
+<li>2nd case: <span class="math inline">\(\wt f(t) &gt; - \fc{2\al \be (1-\al)d^2}{M}\)</span>
+<ul>
+<li>Progress <span class="math inline">\(\fc{2\al \be m}{M}\)</span>.</li>
+</ul></li>
+<li>Convergence <span class="math inline">\(\fc{f(x_t) - f(x^*)}{f(x_{t-1}) - f(x^*)} \le 1-\min\pa{\fc{2\al \be (1-\al)d^2}{M}, 2m\al}\)</span>.</li>
+</ul></li>
+</ul></li>
+</ul>
 <section class="footnotes">
 <hr />
 <ol>

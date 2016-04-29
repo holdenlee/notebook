@@ -107,7 +107,7 @@ These problems are dual.
 \end{align}
 <p>In (1) the <span class="math inline">\(f_i\)</span> are convex; in (2) they are concave. In (1), we have dual<span class="math inline">\(\le\)</span>primal: <span class="math display">\[
 \min_{f_i\le 0, Ax=b} f \ge \max_{\la \ge 0,\nu} \ub{\min_x \ub{f+\la^T\vec{f} + \nu^T (Ax-b)}{\cal L(x,\la,\nu)}}{g(\la,\nu)}
-\]</span> Note: <span class="math inline">\(f^*(y)=\sup y^T - f(x)\)</span> is the conjugate or <strong>Legendre transform</strong>. It is convex, and for convex functions, the double conjugate is the original function.</p>
+\]</span> Note: <span class="math inline">\(f^*(y)=\sup_x y^Tx - f(x)\)</span> is the conjugate or <strong>Legendre transform</strong>. It is convex, and for convex functions, the double conjugate is the original function.</p>
 <p><strong>Slater’s constraints</strong>: Equality holds if the problem is strictly feasible: there exists <span class="math inline">\(x\)</span> such that <span class="math inline">\(f_i(x)&lt;0, Ax=b\)</span>. Linear inequalities are allowed to be non-strict, <span class="math inline">\(f_i(x)\le 0\)</span>.</p>
 <h3 id="kkt-conditions">KKT conditions</h3>
 <p>The KKT conditions are (here <span class="math inline">\(h=Ax-b\)</span>)</p>
