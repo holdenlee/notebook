@@ -7,6 +7,8 @@ type: research
 showTOC: True
 ---
 
+[Notes](https://www.sharelatex.com/project/57169ca0b1d6259757ce842d).
+
 #Learning/reading
 
 * Understand the inequalities from convex geometry.
