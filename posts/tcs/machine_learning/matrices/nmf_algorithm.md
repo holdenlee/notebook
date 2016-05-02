@@ -67,7 +67,7 @@ The dependencies of the random variables are $x^* \to y \to x$ ($\E_y = A^*x^*$)
 Recall that if we're decoding by multiplying by $B$, we also have to threshold, $\text{Th}(Bx)$.
 
 In Theorem 4.1, if $A$ is biased, then we instead obtain a bound
-$$ (By)_i - \E (By)_i = \ub{(By)_i - BA^*x}{\text{w.h.p. }\le 2\la(A) \sfc{\ln r}{n}} + B(A-A^*) x^*. $$
+$$ (By)_i - \E x_i = \ub{(By)_i - BA^*x}{\text{w.h.p. }\le 2\la(A) \sfc{\ln r}{n}} + B(A^*-A) x^*. $$
 For the second term,
 $$ \ve{B(A-A^*)x}_{\iy} \le |B|_{\iy} \max_i \ve{A_{\cdot i} - A_{\cdot i}^*}_1 \le \la \ep.$$
 We want to lower bound
@@ -75,16 +75,19 @@ We want to lower bound
 \an{\nb A, A-A^*}
 &= \sum \fc{y_iA_{ij}^*}{(Ax)_i} - 1\\
 &= \sum_i \fc{y_i(A^*x)_i}{(Ax)_i} - 1\\
-&= \sum \fc{b_i(A^* x)_i}{(Ax)_i} + \sum_i \fc{(A^*(x^*-x))_i (A^*)_i}{(Ax)_i} + \sum_{i,j} \pa{(A^*x)_i\sfc{(Ax)_j}{(Ax)_i} - (A^*x)_j\sfc{(Ax)_i}{(Ax)_j}}^2.
+&= \sum \fc{b_i(A^* x)_i}{(Ax)_i} +
+\sum_i \fc{(A^*(x^*-x))_i (A^*x)_i}{(Ax)_i} + \sum_{i,j} \pa{(A^*x)_i\sfc{(Ax)_j}{(Ax)_i} - (A^*x)_j\sfc{(Ax)_i}{(Ax)_j}}^2.
 \end{align}
 We may suppose $\ve{A_{\bullet i} - A_{\bullet i}^*}\le \rc{\poly\log(n)}$, or something like this.
 
 Try 2:
-$$\an{\nb A, A-A^*} = \an{\pa{y_i \sfc{(Ax)_j}{(Ax)_i} - y_j \sfc{(Ax)_i}{(Ax)_j}}_{ij}, \pa{A^*x_i  \sfc{(Ax)_j}{(Ax)_i} - A^*x_j  \sfc{(Ax)_i}{(Ax)_j}}_{ij}}.
+INCORRECT: I mixed up $x,x^*$ here.
+$$\an{\nb A, A-A^*} = \an{\pa{y_i \sfc{(Ax)_j}{(Ax)_i} - y_j \sfc{(Ax)_i}{(Ax)_j}}_{ij}, \pa{(A^*x)_i  \sfc{(Ax)_j}{(Ax)_i} - (A^*x)_j  \sfc{(Ax)_i}{(Ax)_j}}_{ij}}.
 $$
 It's tempting to take $\E_y$ first, but we can't do that.
+
+If $x=x^*, y= A^*x^*$ then we write this as a sum of squares above. (This is probably the same as writing $\ve{x}_M^2$ from the previous section...) This is Lagrange's identity.
 
 We want to lower-bound by
 $$ \al \ve{A-A^*}_F^2 + \be \ve{\pf{y_i}{(Ax)_i}}_2^2 \ve{x}_2^2 - \ep.
 $$
-

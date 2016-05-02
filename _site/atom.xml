@@ -8,8 +8,155 @@
         <name>Holden Lee</name>
         <email>oldheneel@gmail.com</email>
     </author>
-    <updated>2016-04-28T00:00:00Z</updated>
+    <updated>2016-05-01T00:00:00Z</updated>
     <entry>
+    <title>LDC's: directions</title>
+    <link href="http://holdenlee.github.io/notebook/posts/tcs/coding/directions.html" />
+    <id>http://holdenlee.github.io/notebook/posts/tcs/coding/directions.html</id>
+    <published>2016-05-01T00:00:00Z</published>
+    <updated>2016-05-01T00:00:00Z</updated>
+    <summary type="html"><![CDATA[
+<div class="container">
+  <div id="content">
+    <div class="page header">
+      <h1>LDC's: directions</h1>
+    </div>
+    <div class="info">
+      
+       
+        <p>Posted: 2016-05-01 
+          , Modified: 2016-05-01 
+	</p>
+      
+       <p>Tags: <a href="/tags/LDC.html">LDC</a></p> 
+    </div>
+    
+  </div>
+  <!--/div-->
+
+  <div class="toc"> <ul>
+ <li><a href="#learningreading">Learning/reading</a></li>
+ <li><a href="#approaches">Approaches</a></li>
+ </ul> </div>
+
+  <div class="blog-main">
+    <h2 id="learningreading">Learning/reading</h2>
+<ul>
+<li>Understand the inequalities from convex geometry.</li>
+<li>Approximating the norm with a polynomial.</li>
+<li>Understand the relationship with tensor eigenvectors.</li>
+<li>Metric geometry.</li>
+</ul>
+<h2 id="approaches">Approaches</h2>
+<ul>
+<li>Any lower bound for a <em>perfect</em> LCC.</li>
+<li>Some kind of SoS relaxation—understand ARV first.</li>
+<li>Zeev’s conjecture on covering the image of a polynomial map of fixed degree with convex sets.</li>
+<li>Comparison to convex hull. See <a href="lcc_geometry.html">LCC geometry</a>.
+<ul>
+<li>The image of the decoding map <span class="math inline">\(D:[-1,1]^n\to [0,1]^n\)</span> contains many points that are far apart, corresponding to the codewords. This gives that the convex hull of the image has large volume or a large <span class="math inline">\(\ep\)</span>-net.</li>
+<li>The image is close to convex, so the image is also large.</li>
+<li>However, the Jacobian of the map is small, so the volume of the image is small, contradiction.</li>
+</ul></li>
+<li>Directly bound convex hull. Ex. for 2-query, upper bound uses matrix concentration. More general concentration? (Ex. for tensors)</li>
+<li>Use differential geometry. Some notion of curvature?</li>
+<li>Phrase in terms of eigenvectors (or almost-eigenvectors) for higher-order tensors.</li>
+<li>Vague
+<ul>
+<li>Reduce to a problem of geometry.</li>
+</ul></li>
+</ul>
+
+  </div>
+
+    
+
+    <!-- Extension : Sharing buttons @ www.sharethis.com -->
+    <span class='st_facebook_large' displayText='Facebook'></span>
+    <span class='st_twitter_large' displayText='Tweet'></span>
+    <span class='st_googleplus_large' displayText='Google +'></span>
+    <span class='st_reddit_large' displayText='Reddit'></span>
+    <span class='st__large' displayText=''></span>
+
+    <div id="disqus_thread"></div>
+    
+
+
+  
+    <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+  </div>
+  
+</div>
+]]></summary>
+</entry>
+<entry>
+    <title>Weekly summary 4-30-16</title>
+    <link href="http://holdenlee.github.io/notebook/posts/summaries/2016-04-30.html" />
+    <id>http://holdenlee.github.io/notebook/posts/summaries/2016-04-30.html</id>
+    <published>2016-04-30T00:00:00Z</published>
+    <updated>2016-04-30T00:00:00Z</updated>
+    <summary type="html"><![CDATA[
+<div class="container">
+  <div id="content">
+    <div class="page header">
+      <h1>Weekly summary 4-30-16</h1>
+    </div>
+    <div class="info">
+      
+       
+        <p>Posted: 2016-04-30 
+          , Modified: 2016-04-30 
+	</p>
+      
+       <p>Tags: <a href="/tags/none.html">none</a></p> 
+    </div>
+    
+  </div>
+  <!--/div-->
+
+  <div class="toc"></div>
+
+  <div class="blog-main">
+    <p>Machine learning</p>
+<ul>
+<li>Talk with Arora on NMF. Suggestions/directions:
+<ul>
+<li>Consider adding smoothing (regularizer). Smoothing is widely used in NLP. It would keep gradient updates from blowing up near the edge of <span class="math inline">\(\De_n\)</span>.</li>
+</ul></li>
+<li>TODO: Read Mike Collins’s notes on NLP.</li>
+<li>Nicolaus Boumal sent me references on optimization on manifolds, which I glanced through. TODO: Spend a day, or a few days reading through Optimization on Manifolds.</li>
+<li>Started reading Vishnoi’s slime mold paper. TODO: keep going.</li>
+<li>Reviewed Ch. 9-10 of Convex Optimization by BV.</li>
+<li>TODO: Make sure I have a good understanding of intro convex opt (ex. look at a course), and find more advanced books.</li>
+</ul>
+<p>Math</p>
+<ul>
+<li>Convex bodies and isotropicity.</li>
+</ul>
+
+  </div>
+
+    
+
+    <!-- Extension : Sharing buttons @ www.sharethis.com -->
+    <span class='st_facebook_large' displayText='Facebook'></span>
+    <span class='st_twitter_large' displayText='Tweet'></span>
+    <span class='st_googleplus_large' displayText='Google +'></span>
+    <span class='st_reddit_large' displayText='Reddit'></span>
+    <span class='st__large' displayText=''></span>
+
+    <div id="disqus_thread"></div>
+    
+
+
+  
+    <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+  </div>
+  
+</div>
+]]></summary>
+</entry>
+<entry>
     <title>Constrained optimization</title>
     <link href="http://holdenlee.github.io/notebook/posts/tcs/machine_learning/optimization/constrained.html" />
     <id>http://holdenlee.github.io/notebook/posts/tcs/machine_learning/optimization/constrained.html</id>
@@ -532,16 +679,18 @@ Now relax <span class="math inline">\(x\approx x^*\)</span>. (Warning: <span cla
 <p>The dependencies of the random variables are <span class="math inline">\(x^* \to y \to x\)</span> (<span class="math inline">\(\E_y = A^*x^*\)</span>). We can’t simply replace <span class="math inline">\(\E y = A^*x^*\)</span> because we have to average over <span class="math inline">\(x\)</span> first, which depends on the decoding. (If we could replace <span class="math inline">\(y\)</span> like that, we get <span class="math inline">\(\an{x,x-x^*}_M\)</span>.)</p>
 <h2 id="actual-calculations">Actual calculations</h2>
 <p>Recall that if we’re decoding by multiplying by <span class="math inline">\(B\)</span>, we also have to threshold, <span class="math inline">\(\text{Th}(Bx)\)</span>.</p>
-In Theorem 4.1, if <span class="math inline">\(A\)</span> is biased, then we instead obtain a bound <span class="math display">\[ (By)_i - \E (By)_i = \ub{(By)_i - BA^*x}{\text{w.h.p. }\le 2\la(A) \sfc{\ln r}{n}} + B(A-A^*) x^*. \]</span> For the second term, <span class="math display">\[ \ve{B(A-A^*)x}_{\iy} \le |B|_{\iy} \max_i \ve{A_{\cdot i} - A_{\cdot i}^*}_1 \le \la \ep.\]</span> We want to lower bound
+In Theorem 4.1, if <span class="math inline">\(A\)</span> is biased, then we instead obtain a bound <span class="math display">\[ (By)_i - \E x_i = \ub{(By)_i - BA^*x}{\text{w.h.p. }\le 2\la(A) \sfc{\ln r}{n}} + B(A^*-A) x^*. \]</span> For the second term, <span class="math display">\[ \ve{B(A-A^*)x}_{\iy} \le |B|_{\iy} \max_i \ve{A_{\cdot i} - A_{\cdot i}^*}_1 \le \la \ep.\]</span> We want to lower bound
 \begin{align}
 \an{\nb A, A-A^*}
 &amp;= \sum \fc{y_iA_{ij}^*}{(Ax)_i} - 1\\
 &amp;= \sum_i \fc{y_i(A^*x)_i}{(Ax)_i} - 1\\
-&amp;= \sum \fc{b_i(A^* x)_i}{(Ax)_i} + \sum_i \fc{(A^*(x^*-x))_i (A^*)_i}{(Ax)_i} + \sum_{i,j} \pa{(A^*x)_i\sfc{(Ax)_j}{(Ax)_i} - (A^*x)_j\sfc{(Ax)_i}{(Ax)_j}}^2.
+&amp;= \sum \fc{b_i(A^* x)_i}{(Ax)_i} +
+\sum_i \fc{(A^*(x^*-x))_i (A^*x)_i}{(Ax)_i} + \sum_{i,j} \pa{(A^*x)_i\sfc{(Ax)_j}{(Ax)_i} - (A^*x)_j\sfc{(Ax)_i}{(Ax)_j}}^2.
 \end{align}
 <p>We may suppose <span class="math inline">\(\ve{A_{\bullet i} - A_{\bullet i}^*}\le \rc{\poly\log(n)}\)</span>, or something like this.</p>
-<p>Try 2: <span class="math display">\[\an{\nb A, A-A^*} = \an{\pa{y_i \sfc{(Ax)_j}{(Ax)_i} - y_j \sfc{(Ax)_i}{(Ax)_j}}_{ij}, \pa{A^*x_i  \sfc{(Ax)_j}{(Ax)_i} - A^*x_j  \sfc{(Ax)_i}{(Ax)_j}}_{ij}}.
+<p>Try 2: INCORRECT: I mixed up <span class="math inline">\(x,x^*\)</span> here. <span class="math display">\[\an{\nb A, A-A^*} = \an{\pa{y_i \sfc{(Ax)_j}{(Ax)_i} - y_j \sfc{(Ax)_i}{(Ax)_j}}_{ij}, \pa{(A^*x)_i  \sfc{(Ax)_j}{(Ax)_i} - (A^*x)_j  \sfc{(Ax)_i}{(Ax)_j}}_{ij}}.
 \]</span> It’s tempting to take <span class="math inline">\(\E_y\)</span> first, but we can’t do that.</p>
+<p>If <span class="math inline">\(x=x^*, y= A^*x^*\)</span> then we write this as a sum of squares above. (This is probably the same as writing <span class="math inline">\(\ve{x}_M^2\)</span> from the previous section…) This is Lagrange’s identity.</p>
 <p>We want to lower-bound by <span class="math display">\[ \al \ve{A-A^*}_F^2 + \be \ve{\pf{y_i}{(Ax)_i}}_2^2 \ve{x}_2^2 - \ep.
 \]</span></p>
 
@@ -784,198 +933,6 @@ q\ge 2\implies \ell_{\ell_q^n} &amp;= c(\ep) q n^{\fc 2q}&amp;\implies k(\ell_q^
 
   <div class="blog-main">
     
-
-  </div>
-
-    
-
-    <!-- Extension : Sharing buttons @ www.sharethis.com -->
-    <span class='st_facebook_large' displayText='Facebook'></span>
-    <span class='st_twitter_large' displayText='Tweet'></span>
-    <span class='st_googleplus_large' displayText='Google +'></span>
-    <span class='st_reddit_large' displayText='Reddit'></span>
-    <span class='st__large' displayText=''></span>
-
-    <div id="disqus_thread"></div>
-    
-
-
-  
-    <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
-  </div>
-  
-</div>
-]]></summary>
-</entry>
-<entry>
-    <title>Martingales</title>
-    <link href="http://holdenlee.github.io/notebook/posts/math/probability/martingales.html" />
-    <id>http://holdenlee.github.io/notebook/posts/math/probability/martingales.html</id>
-    <published>2016-04-08T00:00:00Z</published>
-    <updated>2016-04-08T00:00:00Z</updated>
-    <summary type="html"><![CDATA[
-<div class="container">
-  <div id="content">
-    <div class="page header">
-      <h1>Martingales</h1>
-    </div>
-    <div class="info">
-      
-       
-        <p>Posted: 2016-04-08 
-          , Modified: 2016-04-08 
-	</p>
-      
-       <p>Tags: <a href="/tags/none.html">none</a></p> 
-    </div>
-    
-  </div>
-  <!--/div-->
-
-  <div class="toc"> <ul>
- <li><a href="#conditional-expectation">Conditional expectation</a></li>
- <li><a href="#martingales-almost-sure-convergence">Martingales, Almost Sure Convergence</a></li>
- <li><a href="#examples">Examples</a></li>
- <li><a href="#doobs-inequality-lp-convergence">Doob’s inequality, <span class="math inline"><em>L</em><sup><em>p</em></sup></span> convergence</a><ul>
- <li><a href="#exercises">Exercises</a></li>
- </ul></li>
- </ul> </div>
-
-  <div class="blog-main">
-    <p>Durrett Ch. 5</p>
-<h2 id="conditional-expectation">Conditional expectation</h2>
-<h2 id="martingales-almost-sure-convergence">Martingales, Almost Sure Convergence</h2>
-<h2 id="examples">Examples</h2>
-<h2 id="doobs-inequality-lp-convergence">Doob’s inequality, <span class="math inline">\(L^p\)</span> convergence</h2>
-<ol type="1">
-<li>If <span class="math inline">\(X_n\)</span> is a submartingale and <span class="math inline">\(N\)</span> is a stopping time with <span class="math inline">\(\Pj(N\le k)=1\)</span>, then <span class="math display">\[ \E X_0\le \E X_N \le \E X_k.\]</span> (Note the first inequality is not true in general if <span class="math inline">\(N\)</span> is unbounded.) <em>Proof.</em>
-<ol type="1">
-<li>Show that <span class="math inline">\(X_n - X_{N\wedge n}\)</span> is a submartingale. To see this, wrie it as a dot product with a predictable sequence, <span class="math inline">\(X_n-X_{N\wedge n} = (1_{\{n-1 \ge N\}}\cdot X\)</span>.<a href="#fn1" class="footnoteRef" id="fnref1"><sup>1</sup></a></li>
-<li>(Alternative) Condition on <span class="math inline">\(N\)</span> and use the submartingale property. See exercise 1.</li>
-</ol></li>
-<li><p><strong>Doob’s inequality</strong>: Let <span class="math inline">\(X_m\)</span> be a submartingale, <span class="math inline">\(\ol X_n = \max_{0\le m\le n} X_m^+\)</span>, <span class="math inline">\(\la&gt;0\)</span>. Then <span class="math display">\[ \la \Pj(A) \le \E X_n 1_A \le \E X_n^+.\]</span></p>
-<p><em>Proof.</em> Interpret the event <span class="math inline">\(A\)</span> as early stopping by defining the stopping time <span class="math inline">\(N=\inf \set{m}{X_m\ge \la \text{ or }m=n}\)</span>. Now apply 1.</p>
-<em>Corollary</em>: Kolmogorov’s inequality</li>
-<li><strong><span class="math inline">\(L^p\)</span> maximum inequality</strong>: If <span class="math inline">\(X_n\)</span> is a submartingale then for <span class="math inline">\(p&gt;1\)</span>, <span class="math display">\[ \E (\ol X_n^p) \le \pf{p}{p-1}^p \E(X_n^+)^p.\]</span> <em>Proof.</em> Our “only tool” is to use Doob’s inequality to bound <span class="math inline">\(\Pj(\ol X_n\ge \la)\)</span> (actually, <span class="math inline">\(\ol X_n\wedge M\)</span>). To make this term appear, bound <span class="math inline">\(\E[(\ol X_n\wedge M)^p]\)</span> by <span class="math inline">\(\int_0^{\iy} p\la^{p-1}\Pj(\ol X_n\wedge M \ge \la)\)</span>. We get one less power of <span class="math inline">\(\ol X_n \wedge M\)</span> on the RHS. Use Holder and bootstrap.</li>
-<li>(<span class="math inline">\(L^1\)</span> version)</li>
-<li><strong><span class="math inline">\(L^p\)</span> convergence theorem</strong>: If <span class="math inline">\(X_n\)</span> is a matringale with <span class="math inline">\(\sup \E|X_n|^p&lt;\iy\)</span> when <span class="math inline">\(p&gt;1\)</span>, then <span class="math inline">\(X_n\to X\)</span> a.s. and in <span class="math inline">\(L^p\)</span>. <em>Proof.</em> The hypothesis implies <span class="math inline">\((\E X_n^+)\)</span> is bounded so a.s. follows from martingale convergence. To show <span class="math inline">\(X_n\to X\)</span> in <span class="math inline">\(L^p\)</span>, it suffices to show that <span class="math inline">\(|X_n-X|^p\le Y\)</span> with <span class="math inline">\(\E|Y|&lt;\iy\)</span> and <span class="math inline">\(X_n\to X\)</span> a.s. (Dominated convergence theorem.) Bound <span class="math inline">\(|X_n-X|^p\le (2\sup |X_n|^p)\)</span> and use <span class="math inline">\(L^p\)</span> maximal inequality to bound the RHS (use MCT on <span class="math inline">\(\sup_{0\le m\le n}X_n\)</span>).</li>
-<li><strong>Orthogonality of martingale increments</strong>: Let <span class="math inline">\(X_n\)</span> be a martingale with <span class="math inline">\(\E X_n^2&lt;\iy\)</span> for all <span class="math inline">\(n\)</span>. If <span class="math inline">\(m\le n, Y\in \cal F_m, \E Y^2&lt;\iy\)</span>, then <span class="math display">\[ \E[(X_n - X_m)Y]=0. \]</span> <em>Proof.</em> Cauchy Schwarz gives this is <span class="math inline">\(L^1\)</span>. Now just use the martingale property.</li>
-<li><strong>Conditional variance formula</strong>: If <span class="math inline">\(X_n\)</span> is a <span class="math inline">\(L^2\)</span> martingale, <span class="math inline">\(\E[(X_n-X_m)^2|\cal F_m]=\E [X_n^2|\cal F_m]-X_m^2\)</span>.</li>
-<li><p><strong>Branching processes</strong>: Letting <span class="math inline">\(X_n=Z_n/\mu^2\)</span>, use 7 to get an expression for <span class="math inline">\(\E[X_n^2|\cal F_{n-1}]\)</span> and <span class="math inline">\(\E X_n^2\)</span>. This shows <span class="math inline">\(\sup \E X_n^2&lt;\iy\)</span>, so <span class="math inline">\(X_n\to X\)</span> in <span class="math inline">\(L^2\)</span>.</p></li>
-</ol>
-<h3 id="exercises">Exercises</h3>
-<ol type="1">
-<li>Use submartingale property with the fact that <span class="math inline">\(N=j\)</span> is in <span class="math inline">\(\cal F_j\)</span>. Now sum over <span class="math inline">\(N\)</span>.</li>
-<li></li>
-<li></li>
-<li>?</li>
-<li></li>
-</ol>
-<p>A good counterexample is the 1-D simple random walk starting at 1 with absorbing barrier at 0.</p>
-<ol type="1">
-<li>We have <span class="math inline">\(\E X_0=1&gt;\E S_N\)</span> where <span class="math inline">\(N=\inf\set{n}{S_n=0}\)</span>.</li>
-<li>We have <span class="math inline">\(\E(\max_m X_m) = \iy\)</span>, so no <span class="math inline">\(L^1\)</span> maximal inequality holds.</li>
-</ol>
-<section class="footnotes">
-<hr />
-<ol>
-<li id="fn1"><p>Recall this means dot product with the differences.<a href="#fnref1">↩</a></p></li>
-</ol>
-</section>
-
-  </div>
-
-    
-
-    <!-- Extension : Sharing buttons @ www.sharethis.com -->
-    <span class='st_facebook_large' displayText='Facebook'></span>
-    <span class='st_twitter_large' displayText='Tweet'></span>
-    <span class='st_googleplus_large' displayText='Google +'></span>
-    <span class='st_reddit_large' displayText='Reddit'></span>
-    <span class='st__large' displayText=''></span>
-
-    <div id="disqus_thread"></div>
-    
-
-
-  
-    <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
-  </div>
-  
-</div>
-]]></summary>
-</entry>
-<entry>
-    <title>Matrix factorizations</title>
-    <link href="http://holdenlee.github.io/notebook/posts/tcs/machine_learning/matrices/matrix-factorization.html" />
-    <id>http://holdenlee.github.io/notebook/posts/tcs/machine_learning/matrices/matrix-factorization.html</id>
-    <published>2016-04-04T00:00:00Z</published>
-    <updated>2016-04-04T00:00:00Z</updated>
-    <summary type="html"><![CDATA[
-<div class="container">
-  <div id="content">
-    <div class="page header">
-      <h1>Matrix factorizations</h1>
-    </div>
-    <div class="info">
-      
-       
-        <p>Posted: 2016-04-04 
-          , Modified: 2016-04-04 
-	</p>
-      
-       <p>Tags: <a href="/tags/none.html">none</a></p> 
-    </div>
-    
-  </div>
-  <!--/div-->
-
-  <div class="toc"> <ul>
- <li><a href="#flavors">Flavors</a></li>
- <li><a href="#previous-work">Previous work</a></li>
- </ul> </div>
-
-  <div class="blog-main">
-    <h2 id="flavors">Flavors</h2>
-<ul>
-<li><strong>Sparse coding/Dictionary learning</strong>: Write <span class="math inline">\(M=AX\)</span> where the columns of <span class="math inline">\(X\)</span> are sparse. Assume some properties on <span class="math inline">\(A\)</span> (e.g., incoherence) and on the distribution of <span class="math inline">\(X\)</span>.</li>
-<li><strong>Nonnegative matrix factorization</strong>: Sparse coding with the caveat that <span class="math inline">\(A,X\)</span> are positive. Write <span class="math inline">\(M=AW\)</span> where <span class="math inline">\(A,W\)</span> have nonnegative entries. <span class="math inline">\(A\)</span> is fixed (assume some properties on <span class="math inline">\(A\)</span>) and <span class="math inline">\(W\)</span> consists of random samples. I.e., we are given many samples <span class="math inline">\(y=Ax\)</span>.</li>
-<li><strong>Topic modeling</strong>: Given <span class="math inline">\(x\)</span>, we see samples from the probability vector <span class="math inline">\(Ax\)</span> (rather than <span class="math inline">\(Ax\)</span>). Learn <span class="math inline">\(A\)</span> and infer the <span class="math inline">\(x\)</span>’s. ??</li>
-</ul>
-<p>NMF is the least understood.</p>
-<h2 id="previous-work">Previous work</h2>
-<ul>
-<li>NMF
-<ul>
-<li>Hardness: If there exists a <span class="math inline">\(n^{o(r)}\)</span> time algorithm, then there exists a <span class="math inline">\(2^{o(n)}\)</span> algorithm for 3SAT.</li>
-<li>[AGKM12, M14] Given that the rank equals the nonnegative rank, there is a <span class="math inline">\(n^{O(r)}\)</span> time algorithm for NMF. (Relies on solving polynomial inequalities.)</li>
-<li>[AGKM12] Under separability, NMF can be solved in polynomial time in <span class="math inline">\(n\)</span>. (Use the geometry.)</li>
-<li>Inference: <a href="arora-topic-models.html">A16</a> Given <span class="math inline">\(A\)</span>, recover <span class="math inline">\(x\)</span> from <span class="math inline">\(Ax\)</span> if <span class="math inline">\(x\)</span> is sparse and <span class="math inline">\(A\)</span> has small <span class="math inline">\(\ell_\iy\to \ell_1\)</span> condition number. (“Parameter learning” is learning <span class="math inline">\(A\)</span>, “inference” is finding <span class="math inline">\(x\)</span>.)</li>
-</ul></li>
-<li>Topic modeling
-<ul>
-<li>… see p. 23 in new_thread.pdf.</li>
-<li>[AGHMMSWZ12] A Practical Algorithm for Topic Modeling with Provable Guarantees:</li>
-</ul></li>
-<li>Sparse coding/ Dictionary learning
-<ul>
-<li><a href="SW08.html">SW08</a>: Algorithm for full-rank matrices (no noise).
-<ul>
-<li>Apply a <span class="math inline">\(\ved_0\to \ved_1\)</span> relaxation.</li>
-</ul></li>
-<li><a href="AGM14.html">AGM14</a>: Fixed-parameter tractable algorithm for overcomplete (incoherent) dictionaries, up to sparsity <span class="math inline">\(n^{\rc 2-\ep}\)</span>.
-<ul>
-<li>Use the fact that high dot product between two vectors indicates intersection of supports to reduce to a <strong>overlapping community detection</strong> problem.</li>
-<li>Run <strong>SVD</strong> within communities.</li>
-</ul></li>
-<li><a href="AGMM15.html">AGMM15</a>: Efficient polytime algorithm for overcomplete (incoherent) dictionaries, that works up to sparsity <span class="math inline">\(\fc{\sqrt{n}}{\mu\poly\log n}\)</span>.
-<ul>
-<li>Initialize with <strong>SVD</strong>, noting that with good probability the <strong>intersection of supports</strong> of two vectors <span class="math inline">\(x,x'\)</span> will have one index in common.</li>
-<li>Apply <strong>alternating minimization</strong> and analyze using <strong>approximate gradient descent</strong> (correlation with the right direction).</li>
-<li>To get a sparse decoding, apply <strong>thresholding</strong> in the decoding step of AM.</li>
-</ul></li>
-</ul></li>
-</ul>
 
   </div>
 

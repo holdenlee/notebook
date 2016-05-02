@@ -133,16 +133,18 @@ Now relax <span class="math inline">\(x\approx x^*\)</span>. (Warning: <span cla
 <p>The dependencies of the random variables are <span class="math inline">\(x^* \to y \to x\)</span> (<span class="math inline">\(\E_y = A^*x^*\)</span>). We can’t simply replace <span class="math inline">\(\E y = A^*x^*\)</span> because we have to average over <span class="math inline">\(x\)</span> first, which depends on the decoding. (If we could replace <span class="math inline">\(y\)</span> like that, we get <span class="math inline">\(\an{x,x-x^*}_M\)</span>.)</p>
 <h2 id="actual-calculations">Actual calculations</h2>
 <p>Recall that if we’re decoding by multiplying by <span class="math inline">\(B\)</span>, we also have to threshold, <span class="math inline">\(\text{Th}(Bx)\)</span>.</p>
-In Theorem 4.1, if <span class="math inline">\(A\)</span> is biased, then we instead obtain a bound <span class="math display">\[ (By)_i - \E (By)_i = \ub{(By)_i - BA^*x}{\text{w.h.p. }\le 2\la(A) \sfc{\ln r}{n}} + B(A-A^*) x^*. \]</span> For the second term, <span class="math display">\[ \ve{B(A-A^*)x}_{\iy} \le |B|_{\iy} \max_i \ve{A_{\cdot i} - A_{\cdot i}^*}_1 \le \la \ep.\]</span> We want to lower bound
+In Theorem 4.1, if <span class="math inline">\(A\)</span> is biased, then we instead obtain a bound <span class="math display">\[ (By)_i - \E x_i = \ub{(By)_i - BA^*x}{\text{w.h.p. }\le 2\la(A) \sfc{\ln r}{n}} + B(A^*-A) x^*. \]</span> For the second term, <span class="math display">\[ \ve{B(A-A^*)x}_{\iy} \le |B|_{\iy} \max_i \ve{A_{\cdot i} - A_{\cdot i}^*}_1 \le \la \ep.\]</span> We want to lower bound
 \begin{align}
 \an{\nb A, A-A^*}
 &amp;= \sum \fc{y_iA_{ij}^*}{(Ax)_i} - 1\\
 &amp;= \sum_i \fc{y_i(A^*x)_i}{(Ax)_i} - 1\\
-&amp;= \sum \fc{b_i(A^* x)_i}{(Ax)_i} + \sum_i \fc{(A^*(x^*-x))_i (A^*)_i}{(Ax)_i} + \sum_{i,j} \pa{(A^*x)_i\sfc{(Ax)_j}{(Ax)_i} - (A^*x)_j\sfc{(Ax)_i}{(Ax)_j}}^2.
+&amp;= \sum \fc{b_i(A^* x)_i}{(Ax)_i} +
+\sum_i \fc{(A^*(x^*-x))_i (A^*x)_i}{(Ax)_i} + \sum_{i,j} \pa{(A^*x)_i\sfc{(Ax)_j}{(Ax)_i} - (A^*x)_j\sfc{(Ax)_i}{(Ax)_j}}^2.
 \end{align}
 <p>We may suppose <span class="math inline">\(\ve{A_{\bullet i} - A_{\bullet i}^*}\le \rc{\poly\log(n)}\)</span>, or something like this.</p>
-<p>Try 2: <span class="math display">\[\an{\nb A, A-A^*} = \an{\pa{y_i \sfc{(Ax)_j}{(Ax)_i} - y_j \sfc{(Ax)_i}{(Ax)_j}}_{ij}, \pa{A^*x_i  \sfc{(Ax)_j}{(Ax)_i} - A^*x_j  \sfc{(Ax)_i}{(Ax)_j}}_{ij}}.
+<p>Try 2: INCORRECT: I mixed up <span class="math inline">\(x,x^*\)</span> here. <span class="math display">\[\an{\nb A, A-A^*} = \an{\pa{y_i \sfc{(Ax)_j}{(Ax)_i} - y_j \sfc{(Ax)_i}{(Ax)_j}}_{ij}, \pa{(A^*x)_i  \sfc{(Ax)_j}{(Ax)_i} - (A^*x)_j  \sfc{(Ax)_i}{(Ax)_j}}_{ij}}.
 \]</span> It’s tempting to take <span class="math inline">\(\E_y\)</span> first, but we can’t do that.</p>
+<p>If <span class="math inline">\(x=x^*, y= A^*x^*\)</span> then we write this as a sum of squares above. (This is probably the same as writing <span class="math inline">\(\ve{x}_M^2\)</span> from the previous section…) This is Lagrange’s identity.</p>
 <p>We want to lower-bound by <span class="math display">\[ \al \ve{A-A^*}_F^2 + \be \ve{\pf{y_i}{(Ax)_i}}_2^2 \ve{x}_2^2 - \ep.
 \]</span></p>
 
