@@ -8,8 +8,284 @@
         <name>Holden Lee</name>
         <email>oldheneel@gmail.com</email>
     </author>
-    <updated>2016-05-01T00:00:00Z</updated>
+    <updated>2016-05-04T00:00:00Z</updated>
     <entry>
+    <title>Percy Liang's papers</title>
+    <link href="http://holdenlee.github.io/notebook/posts/tcs/machine_learning/nlp/percy_liang.html" />
+    <id>http://holdenlee.github.io/notebook/posts/tcs/machine_learning/nlp/percy_liang.html</id>
+    <published>2016-05-04T00:00:00Z</published>
+    <updated>2016-05-04T00:00:00Z</updated>
+    <summary type="html"><![CDATA[
+<div class="container">
+  <div id="content">
+    <div class="page header">
+      <h1>Percy Liang's papers</h1>
+    </div>
+    <div class="info">
+      
+       
+        <p>Posted: 2016-05-04 
+          , Modified: 2016-05-04 
+	</p>
+      
+       <p>Tags: <a href="/tags/nlp.html">nlp</a></p> 
+    </div>
+    
+  </div>
+  <!--/div-->
+
+  <div class="toc"> <ul>
+ <li><a href="#l16-learning-executable-semantic-parsers-for-natural-language-understanding">[L16] Learning Executable Semantic Parsers for Natural Language Understanding</a><ul>
+ <li><a href="#framework">Framework</a></li>
+ <li><a href="#qs">Qs</a></li>
+ </ul></li>
+ <li><a href="#scraps">Scraps</a></li>
+ </ul> </div>
+
+  <div class="blog-main">
+    <h2 id="l16-learning-executable-semantic-parsers-for-natural-language-understanding">[L16] Learning Executable Semantic Parsers for Natural Language Understanding</h2>
+<p>Goal: Map natural language into logical forms (which can be executed).</p>
+<p>We must use <em>logic</em> and <em>statistics/machine learning</em>. Early systems were very rule-based (hand-crafted); we want to use ML to learn without hand-crated rules.</p>
+<p>The field is called <strong>statistical semantic parsing</strong>.</p>
+<p>Two ideas:</p>
+<ul>
+<li>Model theory: expressions are symbols which obtain meaning only from execution with respect to a model.</li>
+<li>Compositionality: Denotation of an expression is defined recursively in terms of denotations of subexpressions.</li>
+</ul>
+<p>Recent developments:</p>
+<ul>
+<li>Previous work relies on having annotated logical forms. Now works rely on weak supervision (just answers).</li>
+<li>Scaling up from a specific domain (e.g. geography) to larger domains (with Freebase, etc.).</li>
+</ul>
+<p>There are linguistic, statistical (generalization), and computational challenges.</p>
+<h3 id="framework">Framework</h3>
+<p>Example: What is the largest prime less than 10? becomes <span class="math inline">\(\max(\text{primes}\cap (-\iy,10))\)</span>.</p>
+<p>5 components</p>
+<ul>
+<li>Executor—first-order logic with lambda calculus. Use lambda DCS, which eliminates variables, giving a good interface to NL. “A <code>x</code> that satisfies blah” is <span class="math inline">\(\la x. blah(x)\)</span>—lift functions to truth values.</li>
+<li>Grammar</li>
+<li>Model (distribution over derivations)—loglinear model</li>
+<li>Parser (search for high probability derivations)—agenda-based parsing, uses beam search. (Can’t use DP because we need to add constraint that the execution is correct?)</li>
+<li>Learner (estimate parameters/rules)</li>
+</ul>
+<p>Note the grammar can be coarse, and application-specific.</p>
+<h3 id="qs">Qs</h3>
+<p>Chart parsing? Builds derivations in fixed order, causing parser to waste resources.</p>
+<h2 id="scraps">Scraps</h2>
+<p>Look at CCG, it’s interesting! Number less than…</p>
+
+  </div>
+
+    
+
+    <!-- Extension : Sharing buttons @ www.sharethis.com -->
+    <span class='st_facebook_large' displayText='Facebook'></span>
+    <span class='st_twitter_large' displayText='Tweet'></span>
+    <span class='st_googleplus_large' displayText='Google +'></span>
+    <span class='st_reddit_large' displayText='Reddit'></span>
+    <span class='st__large' displayText=''></span>
+
+    <div id="disqus_thread"></div>
+    
+
+
+  
+    <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+  </div>
+  
+</div>
+]]></summary>
+</entry>
+<entry>
+    <title>NLP</title>
+    <link href="http://holdenlee.github.io/notebook/posts/tcs/machine_learning/nlp/nlp.html" />
+    <id>http://holdenlee.github.io/notebook/posts/tcs/machine_learning/nlp/nlp.html</id>
+    <published>2016-05-04T00:00:00Z</published>
+    <updated>2016-05-04T00:00:00Z</updated>
+    <summary type="html"><![CDATA[
+<div class="container">
+  <div id="content">
+    <div class="page header">
+      <h1>NLP</h1>
+    </div>
+    <div class="info">
+      
+       
+        <p>Posted: 2016-05-04 
+          , Modified: 2016-05-04 
+	</p>
+      
+       <p>Tags: <a href="/tags/nlp.html">nlp</a></p> 
+    </div>
+    
+  </div>
+  <!--/div-->
+
+  <div class="toc"> <ul>
+ <li><a href="#language-models">Language models</a></li>
+ <li><a href="#hmms-and-tagging">HMMs and tagging</a></li>
+ <li><a href="#pcfgs">PCFGs</a></li>
+ <li><a href="#lexicalized-pcfgs">Lexicalized PCFGs</a></li>
+ <li><a href="#ibm">IBM</a></li>
+ <li><a href="#section">6</a></li>
+ <li><a href="#log-linear-models">7 Log-linear models</a></li>
+ <li><a href="#memms-maximum-entropy-markov-models-log-linear-tagging-models">MEMMs (Maximum entropy Markov models = Log-linear tagging models)</a></li>
+ <li><a href="#crfs">CRFs</a></li>
+ <li><a href="#scraps">Scraps</a></li>
+ </ul> </div>
+
+  <div class="blog-main">
+    <ul>
+<li><a href="http://www.cs.columbia.edu/~mcollins/">Notes by Mike Collins</a>.</li>
+<li><a href="http://cs224d.stanford.edu/syllabus.html">Deep learning for NLP</a></li>
+</ul>
+<h2 id="language-models">Language models</h2>
+<p>A language model is a probability distribution over sentences consisting of words from a finite set <span class="math inline">\(\mathcal V\)</span>.</p>
+<blockquote>
+<p>in speech recognition the language model is combined with an acoustic model that models the pronunciation of different words: one way to think about it is that the acoustic model generates a large number of candidate sentences, together with probabilities; the language model is then used to reorder these possibilities based on how likely they are to be a sentence in the language.</p>
+</blockquote>
+<p>A <span class="math inline">\(t\)</span>th order Markov model (<span class="math inline">\(n+1\)</span>-grams) assumes the probability distribution of the next word depends only on the previous <span class="math inline">\(t\)</span>. To model variable-length sentences, include STOP as a word. Treat the <span class="math inline">\(0,\ldots,-(t-1)\)</span> words as <span class="math inline">\(*\)</span>.</p>
+<p>The most naive estimate is to let <span class="math display">\[wh p_{x_{t+1}|x_1\ldots x_t} = \fc{\#(x_1,\ldots, x_{t+1})}{\#(x_1,\ldots, x_t)}\]</span> but this requires lots of computations and makes many counts 0.</p>
+<p>Let <span class="math inline">\(x^{(i)}\)</span> be the test sentences. Letting <span class="math inline">\(l=\rc{M} \sumo im \lg p(x^{(i)})\)</span> (average log probability), the <strong>perplexity</strong> is <span class="math inline">\(2^{-l}\)</span> (geometric mean of probabilities).</p>
+<ol type="1">
+<li><strong>Linear interpolation</strong> is <span class="math display">\[ \wh p(x_{t+1}|x_1\cdots x_t) = \sumo i{t+1} \la_i p(x_i|x_{[1,i-1]}).\]</span> Find <span class="math inline">\(\amax_{\la} L(\la)\)</span> over the development data (separate from training and test data).</li>
+<li><strong>Bucketing</strong> is replacing <span class="math inline">\(\la_{t+1} = \fc{\#(x_1,\ldots, x_{t+1})}{#+\ga}\)</span>, <span class="math inline">\(\la_{t} = (1-\la_{t+1}) \fc{\#(x_1,\ldots, x_t)}{\#(x_1,\ldots, x_{t-1})+\ga}\)</span>,…</li>
+<li><strong>Discount counts</strong> by <span class="math inline">\(c^(\mathbf x) = c(\mathbf x) - \be\)</span>, <span class="math inline">\(\be\in [0,1]\)</span>, let <span class="math inline">\(\wh p = \fc{c^*(\cdots)}{c(\cdots)}\)</span>. Spread the missing mass evenly over those that have not appeared.</li>
+<li><strong>Linear interpolation with bucketing</strong>: Let <span class="math inline">\(\Pi: \mathcal V^{t} \to [K]\)</span> depending on counts seen in the training data. Now make the smoothing parameters depend on <span class="math inline">\(\Pi(u,v)\)</span>.</li>
+</ol>
+<p>Note that bucketing and discounting only have 1 parameter.</p>
+<h2 id="hmms-and-tagging">HMMs and tagging</h2>
+<h2 id="pcfgs">PCFGs</h2>
+<p>A CFG is <span class="math inline">\(G=(N,\Si,R,S)\)</span> where</p>
+<ul>
+<li><span class="math inline">\(N\)</span> has non-terminals</li>
+<li><span class="math inline">\(\Si\)</span> has terminals</li>
+<li><span class="math inline">\(R\)</span> has rules <span class="math inline">\(X\to Y_1\ldots, Y_n\)</span>.</li>
+<li><span class="math inline">\(S\in N\)</span> is te start symbol.</li>
+</ul>
+<p>A leftmost derivation is one where we choose to replace the leftmost nonterminal each time.</p>
+<p>Strings can be ambiguous under a CFG.</p>
+<p>Notation:</p>
+<ul>
+<li><span class="math inline">\(\mathcal T_G\)</span> is the set of possible leftmost derivations (parse trees).</li>
+<li>For <span class="math inline">\(t\in \mathcal T_G\)</span>, yield<span class="math inline">\((t)\)</span> is the yield.</li>
+<li><span class="math inline">\(\mathcal T_G(s)\)</span> is the set of possible parse trees for <span class="math inline">\(s\)</span>.</li>
+<li>A sentence is ambiguous/grammatical if <span class="math inline">\(|\mathcal T_G(s)|&gt;1\)</span> and grammatical if <span class="math inline">\(&gt;0\)</span>.</li>
+</ul>
+<p>We want * define a probability distribution <span class="math inline">\(p\)</span> on parse trees * learn parameters * find <span class="math inline">\(\amax_{t\in \mathcal T_G(s)}p(t)\)</span> (decoding/parsing)</p>
+<p>A <strong>PCFG</strong> has probabilities with <span class="math inline">\(\sum_{X\to \be\in R} a(X\to \be)=1\)</span>. The probability is the product of the probabilities of the derivations.</p>
+<p>To learn parameters given <em>parse trees</em>, let <span class="math inline">\(\wh p (\al \to \be) = \fc{\#(\al\to \be)}{\#\al}\)</span>.</p>
+<p><strong>Chomsky normal form</strong> has rules in the form <span class="math inline">\(X\to Y_1Y_2\)</span> and <span class="math inline">\(X\to Y\)</span> where <span class="math inline">\(Y_1,Y_2\)</span> are nonterminal and <span class="math inline">\(Y\)</span> is terminal.</p>
+<ul>
+<li>Parsing: The CKY algorithm is a dynamic programming algorithm. For a CFG, just keep track of possibility. For a PCFG, keep track of the max and argmax at each level.</li>
+<li>Finding probability: The inside-outside algorithm is a dynamic program that takes the sum at each step.</li>
+</ul>
+<h2 id="lexicalized-pcfgs">Lexicalized PCFGs</h2>
+<p>These have much higher parsing accuracy.</p>
+<p>Weaknesses of PCFG’s are</p>
+<ol type="1">
+<li><p>Lack of sensitivity to lexical information: PCFGs make a strong independence assumption. The identity of each lexical item depends only on the part-of-speech (POS) above that lexical item, but does not depend directly on other information in the tree.</p>
+<p>Example: Workers dumped sacks into a bin. What parsing is picked depends only on comparing <span class="math inline">\(q(VP\to VP,PP), q(NP\to NP, PP)\)</span>.</p>
+<p><code>Into</code> is 9 times more likely to attach to a VP rather than NP.</p>
+Example (coordination ambiguity): Dogs in houses and cats.</li>
+<li><p>Lack of sensitivity to structural preferences.</p>
+<p>Ex. President of a company in Africa.</p>
+<p>President of a (company in Africa) is <em>close attachment</em>. Close attachment is twice as frequent.</p>
+<p>When a PP can attach to 2 potential verbs, it is 20 times more likely to attach to the most recent verb.</p></li>
+</ol>
+<p>To lexicalize a treebank,</p>
+<ul>
+<li>label terminal words with lexical information (POS).</li>
+<li>For each <span class="math inline">\(X\to Y_1\ldots Y_n\)</span> identify <span class="math inline">\(h\in [n]\)</span> the head of the rule, the most important child. (In CNF, <span class="math inline">\(n=2\)</span>.) Do this recursively to get a word associated with the POS. Now label the POS with that word. (See p. 12 for an example.) Write <span class="math inline">\(\to_h\)</span> to specify that the <span class="math inline">\(h\)</span>th child is the head.</li>
+<li>Overline the heads.</li>
+</ul>
+<p>Thus, each node in the parse tree is now POS(word). Note the number of non-terminals is now much larger.</p>
+<p>For a rule <span class="math inline">\(X(H) \to_2 Y_1(M) Y_2(H)\)</span> corresponding to <span class="math inline">\(R:X\to_2 Y_1Y_2\)</span>, factor the probability <span class="math display">\[\Pj(X\to_2 Y_1Y_2, M|X, H) = \Pj(X \to_2 Y_1Y_2 |X, H) \Pj(M|S\to_2 Y_1Y_2, X, H)\]</span> and estimate each of the factors with counts.</p>
+<ul>
+<li>For <span class="math inline">\(\Pj(X \to_2 Y_1Y_2 |X, H)\)</span>, estimate by linearly interpolating <span class="math inline">\(\wh p(X\to_2 Y_1Y_2|X)\)</span> and <span class="math inline">\(\wh p(X\to_2 Y_1Y_2|X,H)\)</span>.</li>
+<li>For the other model, linearly interpolate <span class="math inline">\(M|R,H\)</span> and <span class="math inline">\(M|R\)</span>.</li>
+</ul>
+<p>For DP, include also the head position <span class="math inline">\(h\in [i,j]\)</span>. Complexity goes up to <span class="math inline">\(O(n^4)\)</span>!</p>
+<h2 id="ibm">IBM</h2>
+<h2 id="section">6</h2>
+<h2 id="log-linear-models">7 Log-linear models</h2>
+<p>Log-linear models are more flexible; they allow a rich set of features. We can combine a much larger set of estimates with <span class="math inline">\(\la\)</span> parameters. Linear interpolation becomes unwieldy.</p>
+<p>We want to model the conditional probability <span class="math inline">\(p(y|x)\)</span>, <span class="math inline">\(x\in \mathcal X\)</span>, <span class="math inline">\(y\in \mathcal Y\)</span>. For example, <span class="math inline">\(\mathcal Y=\mathcal V\)</span>, <span class="math inline">\(\mathcal X = \mathcal Y^{i-1}\)</span>. Or <span class="math inline">\(\mathcal Y=\mathcal T\)</span>, the set of tags.</p>
+<p>A loglinear model has <span class="math display">\[\Pj_v(y|x) =\Pj(y|x;v) \propto e^{v\cdot f(x,y)}\]</span> with <span class="math inline">\(f:\mathcal X\times \mathcal Y\to \R^d\)</span>.</p>
+<p>Often features are indicator functions. Features can include all bigrams, trigrams… Other features include</p>
+<ul>
+<li>skip-grams (skip words)</li>
+<li>part-of-speech of previous word(s)</li>
+<li>suffixes, etc.</li>
+</ul>
+<p>A key idea is <strong>feature templates</strong>.</p>
+<p>For any trigram <em>seen in training data</em>, create an indicator feature. Hash each <span class="math inline">\((u,v,w)\)</span> to a unique integer (for trigrams). We can do the same for suffixes, etc.</p>
+<p>Models can have millions of features.</p>
+<p>Key observation: for any pair <span class="math inline">\((x,y)\)</span>, the number of values for <span class="math inline">\(k\)</span> in <span class="math inline">\([d]\)</span> such that <span class="math inline">\(f_k(x,y)=1\)</span> is often very small.</p>
+<p>Implementation: for any pair <span class="math inline">\((x,y)\)</span>, compute indices of nonzero features (ex. use hash functions).</p>
+<p>ML estimates are bad because they overfit—ex. give 0 probability to <span class="math inline">\(n\)</span>-grams that haven’t appeared. Include a regularization term like <span class="math inline">\(\ve{v}^2\)</span>, <span class="math display">\[L(v) = \sumo in \ln p(y^{(i)}|x^{(i)};v) - \fc\la2\ve{v}^2.\]</span> This is convex. Use gradient ascent. LBFGs is a gradient method that makes a more intelligent choice of search direction.</p>
+<p>The gradient is <span class="math display">\[\nb L(v) = \sumo in \pa{f(x^{(i)},y^{(i)}) - (p(y|x^{(i)};v))_{y} \cdot (f_k(x^{(i)},y))_{yk}}.\]</span> (Think of the second part as the expected number of times <span class="math inline">\(f_k\)</span> is equal to 1.)</p>
+<h2 id="memms-maximum-entropy-markov-models-log-linear-tagging-models">MEMMs (Maximum entropy Markov models = Log-linear tagging models)</h2>
+<p>A generative tagging model defines a joint distribution <span class="math inline">\(p(x_1,\ldots, x_n,y_1,\ldots, y_n)\)</span> where <span class="math inline">\(x_i\)</span> is a sentence tagged with <span class="math inline">\(y_i\)</span>. A <strong>conditional tagging model</strong> defines <span class="math inline">\(p(y_1\ldots, y_n|x_1,\ldots, x_n)\)</span>.</p>
+<p>Tag by taking the argmax.</p>
+<ol type="1">
+<li>How to define a conditional tagging model?</li>
+<li>How to estimate the parameters?</li>
+<li>How to find argmax?</li>
+</ol>
+<p>Consider trigrams for example. The independence assumption is that conditioned on <span class="math inline">\(X_{[1,n]}\)</span>, the distribution of <span class="math inline">\(Y_i\)</span> depends only on <span class="math inline">\(Y_{i-1},Y_{i-2}\)</span>.</p>
+<ol type="1">
+<li><p>Let the <span class="math inline">\(i\)</span>th history <span class="math inline">\(h_i=(y_{i-2},y_{i-1},x_{[1,n]}, i)\)</span>. Let <span class="math inline">\(f:H\times \mathcal K\to \R^d\)</span> be the feature-vector representation (<span class="math inline">\(H\)</span> is the space of histories and <span class="math inline">\(\mathcal K\)</span> is the space of tags). Define the probability as a loglinear model on <span class="math inline">\(f\)</span>.</p>
+Features may include
+<ul>
+<li>Word/tag</li>
+<li>Prefix, suffix (Ex. -ing is often with VBG, gerunds)</li>
+<li><span class="math inline">\(n\)</span>-gram (on <span class="math inline">\(y\)</span>) (Having <span class="math inline">\(i\)</span>-grams for <span class="math inline">\(1\le i\le n\)</span> is useful with regularized approaches to parameter estimation)</li>
+<li>Word before/after</li>
+<li>Spelling features</li>
+<li>Contextual features (<span class="math inline">\(x_{i-2},x_{i+2}\)</span>)</li>
+</ul></li>
+<li>Use gradient methods.</li>
+<li><p>Use the Viterbi algorithm.</p></li>
+</ol>
+<h2 id="crfs">CRFs</h2>
+<blockquote>
+<p>There are close connections to support vector machines, where linear models are learned in very high dimensional spaces, with good generalization guarantees hold as long as the margins on training examples are large. Margins are closely related to norms of parameter vectors.</p>
+</blockquote>
+<h2 id="scraps">Scraps</h2>
+<p>Can we extract simple features/algorithms out of neural nets?</p>
+<p>Extracting code from a neural net may be NP-hard?</p>
+<p>Can a neural net do at least as well as <span class="math inline">\(n\)</span>-gram, and can you crystallize a <span class="math inline">\(n\)</span>-gram from it?</p>
+<p>What information is present in memory?</p>
+<p>Allow a neural net to revise, or wait before it outputs…</p>
+<p>Matrix indexed by Indexable.</p>
+<ul>
+<li>[KJF14] Deep Fragment Embeddings for bidirectional sentence mapping: &gt; Inspired &gt; by previous work [5, 22] we observe that a dependency tree of a sentence provides a rich set of &gt; typed relationships that can serve this purpose more effectively than individual words or bigrams. &gt; We discard the tree structure in favor of a simpler model and interpret each relation (edge) as an &gt; individual sentence fragment (Figure 2, right shows 5 example dependency relations)</li>
+</ul>
+
+  </div>
+
+    
+
+    <!-- Extension : Sharing buttons @ www.sharethis.com -->
+    <span class='st_facebook_large' displayText='Facebook'></span>
+    <span class='st_twitter_large' displayText='Tweet'></span>
+    <span class='st_googleplus_large' displayText='Google +'></span>
+    <span class='st_reddit_large' displayText='Reddit'></span>
+    <span class='st__large' displayText=''></span>
+
+    <div id="disqus_thread"></div>
+    
+
+
+  
+    <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+  </div>
+  
+</div>
+]]></summary>
+</entry>
+<entry>
     <title>LDC's: directions</title>
     <link href="http://holdenlee.github.io/notebook/posts/tcs/coding/directions.html" />
     <id>http://holdenlee.github.io/notebook/posts/tcs/coding/directions.html</id>
@@ -814,126 +1090,6 @@ q\ge 2\implies \ell_{\ell_q^n} &amp;= c(\ep) q n^{\fc 2q}&amp;\implies k(\ell_q^
 \end{align}</li>
 <li>We show <span class="math inline">\(k(\ell_\iy^n) \asymp\ln n\)</span>. Spherical caps!</li>
 </ol>
-
-  </div>
-
-    
-
-    <!-- Extension : Sharing buttons @ www.sharethis.com -->
-    <span class='st_facebook_large' displayText='Facebook'></span>
-    <span class='st_twitter_large' displayText='Tweet'></span>
-    <span class='st_googleplus_large' displayText='Google +'></span>
-    <span class='st_reddit_large' displayText='Reddit'></span>
-    <span class='st__large' displayText=''></span>
-
-    <div id="disqus_thread"></div>
-    
-
-
-  
-    <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
-  </div>
-  
-</div>
-]]></summary>
-</entry>
-<entry>
-    <title>Perfect LCCs</title>
-    <link href="http://holdenlee.github.io/notebook/posts/tcs/coding/perfect_lcc.html" />
-    <id>http://holdenlee.github.io/notebook/posts/tcs/coding/perfect_lcc.html</id>
-    <published>2016-04-13T00:00:00Z</published>
-    <updated>2016-04-13T00:00:00Z</updated>
-    <summary type="html"><![CDATA[
-<div class="container">
-  <div id="content">
-    <div class="page header">
-      <h1>Perfect LCCs</h1>
-    </div>
-    <div class="info">
-      
-       
-        <p>Posted: 2016-04-13 
-          , Modified: 2016-04-13 
-	</p>
-      
-       <p>Tags: <a href="/tags/none.html">none</a></p> 
-    </div>
-    
-  </div>
-  <!--/div-->
-
-  <div class="toc"> <ul>
- <li><a href="#proof-1">Proof 1</a></li>
- <li><a href="#proof-2">Proof 2</a></li>
- </ul> </div>
-
-  <div class="blog-main">
-    <p>There are many proofs showing we must have <span class="math inline">\(n=2^k\)</span> for perfect 2 LCCs. Can we extend these methods to give</p>
-<ul>
-<li>exponential lower bounds for LCCs?</li>
-<li>lower bounds for perfect <span class="math inline">\(q\)</span>-LCCs, <span class="math inline">\(q&gt;2\)</span>?</li>
-</ul>
-<p>A perfect <span class="math inline">\(q\)</span>-LCC of input length <span class="math inline">\(k\)</span> in <span class="math inline">\(n\)</span> dimensions is a set of <span class="math inline">\(2^k\)</span> points in <span class="math inline">\(\{\pm 1\}^n\)</span>, together with <span class="math inline">\(n\)</span> unions of perfect <span class="math inline">\(q\)</span>-matchings <span class="math inline">\(M_i\)</span> (or just matchings) and a sign <span class="math inline">\(s_m\)</span> for each <span class="math inline">\(m\in M_i\)</span>, such that on codewords, the decoding process defined by taking any <span class="math inline">\(m\in M_i\)</span> and taking <span class="math inline">\(s_m \prod_{j\in m}x_i\)</span> recovers <span class="math inline">\(x_i\)</span> with probability 1. In other words, <span class="math display">\[\EE_{m\in M_i} s_m\prod_{j\in m} x_j = 1.\]</span></p>
-<h2 id="proof-1">Proof 1</h2>
-<p>For <span class="math inline">\(q=2\)</span>, these are quadratic forms <span class="math inline">\(Q_i\)</span>, with associated matrices <span class="math inline">\(A_i\)</span>. The fact that they are matchings means that <span class="math inline">\(A_i = \rc nS_i\)</span> where <span class="math inline">\(S_i\)</span> is (doubly) stochastic. (In fact, we can deal more generally with perfectly smooth LCCs that recover perfectly on codewords.) The codewords are those with <span class="math display">\[Q_i(x)=x \iff \an{x,A_ix}=x_i.\]</span> Now <span class="math inline">\(S\)</span>, being stochastic, satisfies <span class="math inline">\(\ve{S}_{\iy\to \iy} \le 1\)</span>. Now <span class="math inline">\(\ve{x}_{\iy}\le 1\)</span> so <span class="math inline">\(\ve{A_i x}_{\iy}\le \rc{n}\)</span>. We have <span class="math display">\[n=\ve{x}_1 =\sum_i |\an{x,A_ix}|\le \sum_i \ve{A_ix}_{\iy}\ve{x}_1=n,\]</span> so equality holds and <span class="math inline">\(A_ix = x_ix\)</span>.</p>
-<p>This means the <span class="math inline">\(x\in C\)</span> are simultaneous eigenvalues for the <span class="math inline">\(A_i\)</span>. The sequences of eigenvectors are different, so <span class="math inline">\(|C|\le n\)</span>, i.e., <span class="math inline">\(2^k\le n\)</span>. Equality is acheived for the Hadamard code.</p>
-<p>To extend this: some notion of “approximate eigenvector,” “well-conditioned linear dependency”?</p>
-<h2 id="proof-2">Proof 2</h2>
-<p>For LDCs whose matching correspond to a group action, every <span class="math inline">\(i\)</span> corresponds to a matching <span class="math inline">\(M_i=\{(y, y+x_i)\}\)</span>. Now for any <span class="math inline">\(\ep\in \{-1,1\}^k\)</span>, there must exist a set <span class="math inline">\(S\)</span>, the support of the codeword <span class="math inline">\(x=C(\ep)\)</span>, for which <span class="math inline">\(M_i\)</span> only has edges in <span class="math inline">\(S\)</span> if <span class="math inline">\(\ep_i=1\)</span>, and <span class="math inline">\(M_i\)</span> only has edges between <span class="math inline">\(S,S^c\)</span> if <span class="math inline">\(\ep_i=-1\)</span>. We must have <span class="math inline">\(|S|=\fc n2\)</span>.</p>
-<p>Now if <span class="math inline">\(x_k=\sum_{i=1}^{k-1} a_ix_i\)</span>, consider the set <span class="math inline">\(S\)</span> where <span class="math inline">\(\ep_i=1\)</span> iff <span class="math inline">\(a_i=1\)</span>, but <span class="math inline">\(\ep_{k}=-1\)</span>. Then <span class="math inline">\(S = S+x_i\)</span> for all <span class="math inline">\(i\)</span>, and <span class="math inline">\(S\ne S+x_k\)</span>, contradiction.</p>
-<p>This is very much related to the first proof. There, one can use a linear dependency argument to show there can’t be more than <span class="math inline">\(n\)</span> eigenvectors with distinct sequences of eigenvalues. (Make this relationship more explicit?)</p>
-
-  </div>
-
-    
-
-    <!-- Extension : Sharing buttons @ www.sharethis.com -->
-    <span class='st_facebook_large' displayText='Facebook'></span>
-    <span class='st_twitter_large' displayText='Tweet'></span>
-    <span class='st_googleplus_large' displayText='Google +'></span>
-    <span class='st_reddit_large' displayText='Reddit'></span>
-    <span class='st__large' displayText=''></span>
-
-    <div id="disqus_thread"></div>
-    
-
-
-  
-    <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
-  </div>
-  
-</div>
-]]></summary>
-</entry>
-<entry>
-    <title>Notes index</title>
-    <link href="http://holdenlee.github.io/notebook/posts/summaries/notes_index.html" />
-    <id>http://holdenlee.github.io/notebook/posts/summaries/notes_index.html</id>
-    <published>2016-04-08T00:00:00Z</published>
-    <updated>2016-04-08T00:00:00Z</updated>
-    <summary type="html"><![CDATA[
-<div class="container">
-  <div id="content">
-    <div class="page header">
-      <h1>Notes index</h1>
-    </div>
-    <div class="info">
-      
-       
-        <p>Posted: 2016-04-08 
-          , Modified: 2016-04-08 
-	</p>
-      
-       <p>Tags: <a href="/tags/none.html">none</a></p> 
-    </div>
-    
-  </div>
-  <!--/div-->
-
-  
-
-  <div class="blog-main">
-    
 
   </div>
 
