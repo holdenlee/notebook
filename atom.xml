@@ -8,8 +8,233 @@
         <name>Holden Lee</name>
         <email>oldheneel@gmail.com</email>
     </author>
-    <updated>2016-05-04T00:00:00Z</updated>
+    <updated>2016-05-11T00:00:00Z</updated>
     <entry>
+    <title>Weekly summary 5-14-16</title>
+    <link href="http://holdenlee.github.io/notebook/posts/summaries/2016-05-14.html" />
+    <id>http://holdenlee.github.io/notebook/posts/summaries/2016-05-14.html</id>
+    <published>2016-05-11T00:00:00Z</published>
+    <updated>2016-05-11T00:00:00Z</updated>
+    <summary type="html"><![CDATA[
+<div class="container">
+  <div id="content">
+    <div class="page header">
+      <h1>Weekly summary 5-14-16</h1>
+    </div>
+    <div class="info">
+      
+       
+        <p>Posted: 2016-05-11 
+          , Modified: 2016-05-11 
+	</p>
+      
+       <p>Tags: <a href="/tags/none.html">none</a></p> 
+    </div>
+    
+  </div>
+  <!--/div-->
+
+  <div class="toc"></div>
+
+  <div class="blog-main">
+    <p>Machine learning</p>
+<ul>
+<li>Presentation on Language Games
+<ul>
+<li>TODO: Find some theoretical problems.</li>
+</ul></li>
+<li>NMF
+<ul>
+<li>Why can we use the regular pseudoinverse? (CONTINUE)</li>
+<li>TODO: Search literature, talk to Andrej, Tengyu for ideas</li>
+<li>TODO: Look at Freddy’s code and do some experiments.</li>
+</ul></li>
+<li>NLP learning
+<ul>
+<li>Read Mike Collins’s notes</li>
+<li>Skimmed [CC14] on NMF.</li>
+<li>TODO: Read book on NLP.</li>
+</ul></li>
+<li><a href="../tcs/machine_learning/matrices/streaming_PCA.html">Streaming PCA, Yuanzhi Li</a>.</li>
+<li>TODO: Finish reviewing rest of BV</li>
+<li>TODO: Read lots, start keeping track of problems and techniques.</li>
+</ul>
+<!--After NIPS, find collaborations with other ML students.-->
+<p>Coding</p>
+<ul>
+<li>Understood SoS relaxation approach.</li>
+<li>Started reading CSP refutation paper.
+<ul>
+<li>TODO: Read more of it, in particular, understand how to convert it to SoS language.</li>
+</ul></li>
+<li>Tried “covering with convex sets” but seems difficult.</li>
+<li>TODO: try approach with modulus of convexity.</li>
+<li>TODO: understand SDP extension approach.</li>
+<li>TODO: other approaches?</li>
+</ul>
+<p>TCS</p>
+<ul>
+<li>Log-sobolev inequalities</li>
+</ul>
+<p>TODO</p>
+<ul>
+<li>Review statistical physics.</li>
+<li>Review metric embeddings/geometric inequalities (MAT529) (<span class="citation" data-cites="Kiran">@Kiran</span>).</li>
+<li>Things left to summarize:
+<ul>
+<li>Convex geometry</li>
+<li>Optimization (BV)</li>
+<li>Optimization on manifolds (AMS)</li>
+</ul></li>
+<li>Make a summer reading list. (<span class="citation" data-cites="Arora">@Arora</span>)
+<ul>
+<li>General TCS (randomized algorithms, approximation algorithms)</li>
+<li>Probability (finish)</li>
+<li>Advanced probability
+<ul>
+<li>? Martingales</li>
+<li>Concentration inequalities</li>
+<li>Stochastic processes</li>
+<li>Random matrices</li>
+</ul></li>
+<li>Amit Singer’s course</li>
+<li>Optimization (<span class="citation" data-cites="Hazan">@Hazan</span> for recommendations.)</li>
+<li>? ATaAP</li>
+<li>Topics
+<ul>
+<li>Variational inference and MCMC
+<ul>
+<li>Volume estimation??</li>
+</ul></li>
+<li>Graphical models</li>
+</ul></li>
+</ul></li>
+</ul>
+<p>Other</p>
+<ul>
+<li>Olivier’s generals. TODO: Ask about CertiCoq.</li>
+</ul>
+
+  </div>
+
+    
+
+    <!-- Extension : Sharing buttons @ www.sharethis.com -->
+    <span class='st_facebook_large' displayText='Facebook'></span>
+    <span class='st_twitter_large' displayText='Tweet'></span>
+    <span class='st_googleplus_large' displayText='Google +'></span>
+    <span class='st_reddit_large' displayText='Reddit'></span>
+    <span class='st__large' displayText=''></span>
+
+    <div id="disqus_thread"></div>
+    
+
+
+  
+    <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+  </div>
+  
+</div>
+]]></summary>
+</entry>
+<entry>
+    <title>Towards a better understanding of streaming PCA (Yuanzhi Li)</title>
+    <link href="http://holdenlee.github.io/notebook/posts/tcs/machine_learning/matrices/streaming_PCA.html" />
+    <id>http://holdenlee.github.io/notebook/posts/tcs/machine_learning/matrices/streaming_PCA.html</id>
+    <published>2016-05-10T00:00:00Z</published>
+    <updated>2016-05-10T00:00:00Z</updated>
+    <summary type="html"><![CDATA[
+<div class="container">
+  <div id="content">
+    <div class="page header">
+      <h1>Towards a better understanding of streaming PCA (Yuanzhi Li)</h1>
+    </div>
+    <div class="info">
+      
+       
+        <p>Posted: 2016-05-10 
+          , Modified: 2016-05-10 
+	</p>
+      
+       <p>Tags: <a href="/tags/pca.html">pca</a></p> 
+    </div>
+    
+  </div>
+  <!--/div-->
+
+  <div class="toc"></div>
+
+  <div class="blog-main">
+    <p>Given data <span class="math inline">\(x_i\in \R^d\)</span> sampled from an unknown distribution with <span class="math inline">\(\E[x_ix_i^T]=X\)</span>, where <span class="math inline">\(x\)</span>’s are independent, compute top <span class="math inline">\(k\)</span> eigenvectors of <span class="math inline">\(X\)</span>.</p>
+<p>(For the asymmetric <span class="math inline">\(xy^T\)</span> case, finding the top <span class="math inline">\(k\)</span> is harder.)</p>
+<p>Normal SVD is not memory efficient; you need to store a <span class="math inline">\(d\times d\)</span> matrix. Goal: compute <span class="math inline">\(k\)</span>-SVD in space <span class="math inline">\(O(kd)\)</span>.</p>
+<p>A popular heuristic is to start with a random initial matrix <span class="math inline">\(U_0\in \R^{d\times k}\)</span>. On receiving <span class="math inline">\(x_i\)</span>, update <span class="math inline">\(U_i=(I+\eta_i x_ix_i^T)U_{i-1}\)</span> and let <span class="math inline">\(U_i=QR(U)\)</span> (orthogonalization). Let <span class="math inline">\(\eta_i\sim \rc{i}\)</span>. (Orthogonalization is not a projection. It’s a retraction onto the manifold.)</p>
+<p>This works very well in practice but it’s complicated to analyze from a theoretical point of view.</p>
+<p>Let <span class="math inline">\(g=\si_k-\si_{k+1}\)</span>. The bound is <span class="math inline">\(\fc{k}{g^3T}\)</span>. We use the measure <span class="math inline">\(\E\ba{\ve{W^TU}_F^2}\)</span> (projection to last <span class="math inline">\(k\)</span> singular values. <span class="math inline">\(U\)</span> is the output, <span class="math inline">\(W\)</span> has the last <span class="math inline">\(d-k\)</span> singular values).</p>
+<p>(Rank 1 is just gradient descent; there is no projection.)</p>
+<p>Consider the offline case first: we get <span class="math inline">\(X\)</span> directly instead of <span class="math inline">\(x_ix_i^T\)</span>. The algorithm is analogous to the <strong>subspace power method</strong>.</p>
+<ul>
+<li>Start with random <span class="math inline">\(U_0\in R^{d\times k}\)</span>.</li>
+<li><span class="math inline">\(U=(I+\eta_iX)U_{i-1}\)</span>, <span class="math inline">\(U_i = QR(U)\)</span> decomposition. (This is not linear.)</li>
+</ul>
+<p>We can do the QR decomposition in the last step. It seems nonlinear, how can it commute? In practice you need to do QR decomposition for numerical accuracy. “To TCS people” you can move QR decomposition to the end.</p>
+<p>Analysis: Let <span class="math inline">\(U_i = UR, U_{i+1} = U'R'\)</span>. Then <span class="math inline">\(U_{i+1} = (I+\eta_{i+1}X)(I+\eta_iX) U_{i-1}RR'\)</span>.</p>
+<p>(For a regret bound, you can’t do this.)</p>
+<p>This is how subspace QR is proved: you push everything to the end. <!-- mult update project at end. --></p>
+<p>Let <span class="math inline">\(V\)</span> contain the top <span class="math inline">\(k\)</span> eigenvectors and <span class="math inline">\(W\)</span> the rest. Suppose <span class="math inline">\(v_i=e_i\)</span>. Then for <span class="math inline">\(P_t=\prod (I+\eta_{t-i}X)\)</span>, <span class="math inline">\(P_t=\smatt{\text{large}}00{\text{small}}\)</span>. Multiplying by a random initialization gives <span class="math inline">\((\text{large}\,\text{small})^T\)</span>.</p>
+<p>In the online setting, let <span class="math inline">\(P_t=(I+\eta_{t-i}x_{t-i}x_{t-i}^T)\)</span>. The offdiagonal part <span class="math inline">\(W_t^TP_tV\)</span> is small compared to the diagonal part. <!--Ohad strts with something close in Frobenius norm. Once you get in neighborhood, it doesn't wander away. --></p>
+<ol type="1">
+<li>Show the minimal singular value of <span class="math inline">\(V^TP_tV\)</span> is large. This is not easy to bound. (The maximal one can be bounded by trace norm; exchange <span class="math inline">\(\E\)</span> and <span class="math inline">\(\Tr\)</span>.) <!--larger than singular value: martingale concentration-->
+<ol type="1">
+<li>Show <span class="math inline">\(\Tr[(V^TP_tV)^{-T}(V^TP_tV)^{-1}]\)</span> is small. This requires a lot of computation. (Use Sherman-Morrison formula for inverse for rank 1 update.) But this is suboptimal; lose an <span class="math inline">\(\eta\)</span> factor. <!--use Sherman-Morrison, formula for inverse for rank 1 update--></li>
+<li><p>Attempt 2: show concentration. But it doesn’t work because it’s a product, not a sum. It doesn’t even concentrate in the multiplicative scale. <!--The world is against us, lower bounds are so hard --Sanjeev --></p>
+<p>Why? Suppose <span class="math inline">\(k=1\)</span>. Think of <span class="math inline">\(X\)</span> as diagonal matrix with first eigenvale large and rest small. <span class="math inline">\((I+\eta e_1e_1^T)e_1e_1^T\)</span>. There is some chance that <span class="math inline">\(x_t\)</span> has some weight in the first and last entry. Then the <span class="math inline">\((1,d)\)</span> entry of the product is <span class="math inline">\(\rc{4}\eta_t\)</span>. <!-- In k=1, do epoching. This is not memory efficient? --></p>
+Unlike the offline setting, <span class="math inline">\(x_t\)</span> is not perfectly aligned with the eigenspace of <span class="math inline">\(X\)</span>; it can grab something from the eigenvector.</li>
+<li><p>Try induction. Suppose <span class="math inline">\(P_tP_t^T\succ c_tI\)</span>. Then <span class="math inline">\(\E (P_{t+1}P_{t+1}^T) &gt; c_t(I + \eta_{t+1}X)\)</span>. <span class="math inline">\(\si_{\min}\)</span> is not concave; we don’t have <span class="math inline">\(\E[\si_{\min}(A)]&gt;\si_{\min}[\E(A)]\)</span>. (Counterexample: take <span class="math inline">\(A=e_ie_i^T\)</span> w.p. <span class="math inline">\(\rc d\)</span>.) <!-- after taking expected value sigma min is good --> Min singular value is not a good induction hypothesis. <!--hypnosis--> Summarize <span class="math inline">\(P_t\)</span> with a number. Let <span class="math inline">\(f:\)</span> matrix <span class="math inline">\(\to\)</span> value.</p>
+<p>When you try to solve a hard problem, just write down the conditions. –Yin-Tat.</p>
+“The ideal girlfriend”: <span class="math inline">\(f(P_t)\)</span>
+<ul>
+<li>is a lower bound on the minimal singular value of <span class="math inline">\(P_t\)</span>,</li>
+<li>takes care of all singular values of <span class="math inline">\(P_t\)</span>,</li>
+<li>has diminishing margin (larger singular value have smaller effect)</li>
+<li>easy to compute and update The magical <span class="math inline">\(\al\)</span>-min-root barrier: unique solution <span class="math inline">\(\la\)</span> of <span class="math inline">\(\sumo in \rc{\si_i - \la} = \al\)</span>, <span class="math inline">\(\la\le \si_i\)</span>. <!-- monotone decreasing. ZAZ: equivalent to regularizer. barrier view. \la is like normalization parameter. s. entropy for q=1. --> It satisfies:</li>
+<li>lower bounds the minimum singular value,</li>
+<li>when <span class="math inline">\(\al\to \iy\)</span>, the barrier approaches <span class="math inline">\(\si_{\min}\)</span>.</li>
+<li>diminishing influence: larger <span class="math inline">\(\si\)</span> have smaller contribution</li>
+<li>monotone: <span class="math inline">\(A\succ B\implies f(A)\succ f(B)\)</span>. <!-- solution of crazy function--> <!-- consider distribution of singular values--> Formula: <span class="math inline">\(\sumo in \rc{\si_i-\la} = -\pdd{\la}\log \det(A-\la I)\)</span>. Matrix-determinant lemma (from Sherman-Morrison): <span class="math display">\[\log \det(A-\la I + uv^T) = \pdd{\la} \log \det(A_\la I) + \fc{\pdd{\la}v^T(A-\la I)^{-1}u}{1+v^T(A-\la I)^{-1}u}\]</span> Key observation: If <span class="math inline">\(A=U\Si U^T\)</span>, then <span class="math inline">\(\pdd{\la}v^T (A-\la I)^{-1} u = \sumo in \fc{(Uuv^TU^T)_{ii}}{(\si-\la)^2}\)</span>. <!-- barrier function increases--> <!-- von Neumann entropy more standard. (Elad and Tengyu uses characteric polynomial)--></li>
+</ul>
+<p><strong>Rank 1 update lemma</strong>: Let <span class="math inline">\(A\)</span> be a symmetric matrix. Then <span class="math inline">\(\E[f(A+uu^T)]&gt;f(A) + \si_{\min}(\E(uu^T))\)</span>.</p>
+Apply this on <span class="math inline">\(P_{t+1}\)</span> vs. <span class="math inline">\(P_t\)</span>. Prove the theorem by martingale concentration. <!-- Matrix doesn't concentrate at all, but min singular value improves. --></li>
+</ol></li>
+<li><p>Bound <span class="math inline">\(W^TP_tW\)</span> term. Using trace? But <span class="math inline">\(W^TP_tW\)</span> is not small at all. <span class="math inline">\(W^TP_tW\)</span> “mixes” with <span class="math inline">\(V^TP_tV\)</span>; it can’t interlace.</p>
+<p>Remove influence of <span class="math inline">\(V^TP_tV\)</span> from <span class="math inline">\(W^TP_tW\)</span>.</p>
+<p>But they are not the same dimension.</p>
+<p>Use random initialization: whp <span class="math inline">\(W^TP_tW(W^TQ)(V^TP_tQ)^{-1}\)</span> is small. <!-- Easiest to explain. PMI, weighted low rank approx, optimal regret for BCO, tight bound for approx convex opt, max-entropy disribution for calc partition, NMF without separability, SVD without being cool.--></p></li>
+</ol>
+
+  </div>
+
+    
+
+    <!-- Extension : Sharing buttons @ www.sharethis.com -->
+    <span class='st_facebook_large' displayText='Facebook'></span>
+    <span class='st_twitter_large' displayText='Tweet'></span>
+    <span class='st_googleplus_large' displayText='Google +'></span>
+    <span class='st_reddit_large' displayText='Reddit'></span>
+    <span class='st__large' displayText=''></span>
+
+    <div id="disqus_thread"></div>
+    
+
+
+  
+    <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+  </div>
+  
+</div>
+]]></summary>
+</entry>
+<entry>
     <title>Percy Liang's papers</title>
     <link href="http://holdenlee.github.io/notebook/posts/tcs/machine_learning/nlp/percy_liang.html" />
     <id>http://holdenlee.github.io/notebook/posts/tcs/machine_learning/nlp/percy_liang.html</id>
@@ -856,240 +1081,6 @@ where the last inequality is when <span class="math inline">\(\la\le \rc 4\)</sp
 <h2 id="scraps">Scraps</h2>
 <p>? 9.31,</p>
 <p>estimating Hessian?</p>
-
-  </div>
-
-    
-
-    <!-- Extension : Sharing buttons @ www.sharethis.com -->
-    <span class='st_facebook_large' displayText='Facebook'></span>
-    <span class='st_twitter_large' displayText='Tweet'></span>
-    <span class='st_googleplus_large' displayText='Google +'></span>
-    <span class='st_reddit_large' displayText='Reddit'></span>
-    <span class='st__large' displayText=''></span>
-
-    <div id="disqus_thread"></div>
-    
-
-
-  
-    <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
-  </div>
-  
-</div>
-]]></summary>
-</entry>
-<entry>
-    <title>NMF algorithm</title>
-    <link href="http://holdenlee.github.io/notebook/posts/tcs/machine_learning/matrices/nmf_algorithm.html" />
-    <id>http://holdenlee.github.io/notebook/posts/tcs/machine_learning/matrices/nmf_algorithm.html</id>
-    <published>2016-04-22T00:00:00Z</published>
-    <updated>2016-04-22T00:00:00Z</updated>
-    <summary type="html"><![CDATA[
-<div class="container">
-  <div id="content">
-    <div class="page header">
-      <h1>NMF algorithm</h1>
-    </div>
-    <div class="info">
-      
-       
-        <p>Posted: 2016-04-22 
-          , Modified: 2016-04-22 
-	</p>
-      
-       <p>Tags: <a href="/tags/NMF.html">NMF</a></p> 
-    </div>
-    
-  </div>
-  <!--/div-->
-
-  <div class="toc"> <ul>
- <li><a href="#setup">Setup</a></li>
- <li><a href="#preliminary-calculations">Preliminary calculations</a></li>
- <li><a href="#actual-calculations">Actual calculations</a></li>
- </ul> </div>
-
-  <div class="blog-main">
-    <h2 id="setup">Setup</h2>
-<p>The setup for alternating minimization is as follows.</p>
-<ol type="1">
-<li>(Decoding) Let <span class="math inline">\(x \leftarrow \text{decode}_{A^{(t)}} y\)</span>.</li>
-<li>(Gradient step) Let <span class="math display">\[A^{(t+1)} = A^{(t)} - \eta \pi(\nb L_x(A))\]</span> where the loss function is the KL-divergence (negative log-likelihood)
-\begin{align}
-L_x(A) &amp;= \sum y_i \ln \pf{y_i}{Ax_i}\\
-\nb L_x(A) &amp;= (-y\odot \rc{Ax}) x^T
-\end{align}
-and <span class="math inline">\(\pi\)</span> is projection to the probability simplex.</li>
-</ol>
-<p>The plan is to show this satisfies the conditions needed for approximate gradient descent: each step is correlated with the right direction. We want to find <span class="math inline">\(\al,\be,\ep\)</span> so that <span class="math display">\[ \an{g,A-A^*} \ge \al \ve{A-A^*}^2 + \be \ve{g}^2 - \ep\]</span> (for some norm).</p>
-<p>We have to be careful about 2 things.</p>
-<ul>
-<li>Uniqueness doesn’t hold in general—ex. we can expand the simplex, so there would be a manifold of solutions—but it does hold under separability. We have to use this somehow.</li>
-<li>The more complicated the decoding map is, the harder this is to analyze. The MLE estimator is difficult to work with because there is no explicit form. The inverse is probably easier to work with. It gives a biased estimate, but this may be OK if we only want to get close enough (ex. from <span class="math inline">\(\rc{\log n}\)</span> to <span class="math inline">\(\rc{n}\)</span>).</li>
-</ul>
-<p>We proceed in 2 lemmas.</p>
-<ul>
-<li>When <span class="math inline">\(A\approx A^*\)</span>, the decodings satisfy <span class="math inline">\(x\approx x^*\)</span>.</li>
-<li>When <span class="math inline">\(x\approx x^*\)</span>, the descent direction for <span class="math inline">\(L_x(A)\)</span> is correlated with <span class="math inline">\(A-A^*\)</span>.</li>
-</ul>
-<p>As a first step, show that <span class="math display">\[\an{\EE_y \pa{-y\odot \pa{\rc{Ax} -\rc{A^*x}}x^T} , A-A^*}&gt;0.\]</span></p>
-<h2 id="preliminary-calculations">Preliminary calculations</h2>
-First suppose <span class="math inline">\(y=A^*x\)</span> (no noise), <span class="math inline">\(x=x^*\)</span> (perfect decoding). Then letting <span class="math inline">\(D= \diag\prc{(Ax)_i}\)</span>,
-\begin{align}
-\an{\EE_y \pa{-y\odot \pa{\rc{Ax} -\rc{A^*x}}x^T} , A-A^*}
-&amp;= x^T\ub{(A-A^*)^T D (A-A^*)}{=:M^2}x\\
-&amp;= \ve{x}_{M}^2.
-\end{align}
-Now relax <span class="math inline">\(y\approx A^*x\)</span>, We get
-\begin{align}
-\an{\EE_y \pa{-y\odot \pa{\rc{Ax} -\rc{A^*x}}x^T} , A-A^*}
-&amp;= \EE_{y} \ve{x}_M^2 + \cancelto0{(x^TA^{*T} - y^T) D (A-A^*)x}
-\end{align}
-<p>using <span class="math inline">\(\E y = A^* x\)</span>.</p>
-Now relax <span class="math inline">\(x\approx x^*\)</span>. (Warning: <span class="math inline">\(x^*\)</span> simply being close may not imply convergence to <span class="math inline">\(A^*\)</span> without additional assumptions on <span class="math inline">\(A^*\)</span>, because of nonuniqueness.)
-\begin{align}
-\EE_{x,y} \an{-D yx^T, A-A^*}
-&amp;= \EE_{x,y} [-y^T D(A-A^*) x]\\
-&amp;= \EE_{x,y} [-y^T DA^*x]-1\\
-\end{align}
-<p>The dependencies of the random variables are <span class="math inline">\(x^* \to y \to x\)</span> (<span class="math inline">\(\E_y = A^*x^*\)</span>). We can’t simply replace <span class="math inline">\(\E y = A^*x^*\)</span> because we have to average over <span class="math inline">\(x\)</span> first, which depends on the decoding. (If we could replace <span class="math inline">\(y\)</span> like that, we get <span class="math inline">\(\an{x,x-x^*}_M\)</span>.)</p>
-<h2 id="actual-calculations">Actual calculations</h2>
-<p>Recall that if we’re decoding by multiplying by <span class="math inline">\(B\)</span>, we also have to threshold, <span class="math inline">\(\text{Th}(Bx)\)</span>.</p>
-In Theorem 4.1, if <span class="math inline">\(A\)</span> is biased, then we instead obtain a bound <span class="math display">\[ (By)_i - \E x_i = \ub{(By)_i - BA^*x}{\text{w.h.p. }\le 2\la(A) \sfc{\ln r}{n}} + B(A^*-A) x^*. \]</span> For the second term, <span class="math display">\[ \ve{B(A-A^*)x}_{\iy} \le |B|_{\iy} \max_i \ve{A_{\cdot i} - A_{\cdot i}^*}_1 \le \la \ep.\]</span> We want to lower bound
-\begin{align}
-\an{\nb A, A-A^*}
-&amp;= \sum \fc{y_iA_{ij}^*}{(Ax)_i} - 1\\
-&amp;= \sum_i \fc{y_i(A^*x)_i}{(Ax)_i} - 1\\
-&amp;= \sum \fc{b_i(A^* x)_i}{(Ax)_i} +
-\sum_i \fc{(A^*(x^*-x))_i (A^*x)_i}{(Ax)_i} + \sum_{i,j} \pa{(A^*x)_i\sfc{(Ax)_j}{(Ax)_i} - (A^*x)_j\sfc{(Ax)_i}{(Ax)_j}}^2.
-\end{align}
-<p>We may suppose <span class="math inline">\(\ve{A_{\bullet i} - A_{\bullet i}^*}\le \rc{\poly\log(n)}\)</span>, or something like this.</p>
-<p>Try 2: INCORRECT: I mixed up <span class="math inline">\(x,x^*\)</span> here. <span class="math display">\[\an{\nb A, A-A^*} = \an{\pa{y_i \sfc{(Ax)_j}{(Ax)_i} - y_j \sfc{(Ax)_i}{(Ax)_j}}_{ij}, \pa{(A^*x)_i  \sfc{(Ax)_j}{(Ax)_i} - (A^*x)_j  \sfc{(Ax)_i}{(Ax)_j}}_{ij}}.
-\]</span> It’s tempting to take <span class="math inline">\(\E_y\)</span> first, but we can’t do that.</p>
-<p>If <span class="math inline">\(x=x^*, y= A^*x^*\)</span> then we write this as a sum of squares above. (This is probably the same as writing <span class="math inline">\(\ve{x}_M^2\)</span> from the previous section…) This is Lagrange’s identity.</p>
-<p>We want to lower-bound by <span class="math display">\[ \al \ve{A-A^*}_F^2 + \be \ve{\pf{y_i}{(Ax)_i}}_2^2 \ve{x}_2^2 - \ep.
-\]</span></p>
-
-  </div>
-
-    
-
-    <!-- Extension : Sharing buttons @ www.sharethis.com -->
-    <span class='st_facebook_large' displayText='Facebook'></span>
-    <span class='st_twitter_large' displayText='Tweet'></span>
-    <span class='st_googleplus_large' displayText='Google +'></span>
-    <span class='st_reddit_large' displayText='Reddit'></span>
-    <span class='st__large' displayText=''></span>
-
-    <div id="disqus_thread"></div>
-    
-
-
-  
-    <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
-  </div>
-  
-</div>
-]]></summary>
-</entry>
-<entry>
-    <title>Convex geometry</title>
-    <link href="http://holdenlee.github.io/notebook/posts/math/analysis/metric/convex_geometry.html" />
-    <id>http://holdenlee.github.io/notebook/posts/math/analysis/metric/convex_geometry.html</id>
-    <published>2016-04-20T00:00:00Z</published>
-    <updated>2016-04-20T00:00:00Z</updated>
-    <summary type="html"><![CDATA[
-<div class="container">
-  <div id="content">
-    <div class="page header">
-      <h1>Convex geometry</h1>
-    </div>
-    <div class="info">
-      
-       
-        <p>Posted: 2016-04-20 
-          , Modified: 2016-04-20 
-	</p>
-      
-       <p>Tags: <a href="/tags/none.html">none</a></p> 
-    </div>
-    
-  </div>
-  <!--/div-->
-
-  
-
-  <div class="blog-main">
-    <p>Notes from Vershynin’s course <a href="http://www-personal.umich.edu/~romanv/papers/GFA-book/GFA-book.pdf">Geometric functional analysis</a>.</p>
-<h2 id="functional-analysis-and-convex-geometry">Functional analysis and convex geometry</h2>
-<p><strong>Theorem (Approximate Caratheodory)</strong>: Let <span class="math inline">\(x\in \conv A\)</span>. There exist <span class="math inline">\(N\)</span> points <span class="math inline">\(x_i\in A\)</span> such that <span class="math display">\[\ve{x-\rc N\sumo iN x_i}\le \fc{r(A)}{N}.\]</span> (Given <span class="math inline">\(x\)</span> as a linear combination of elements of <span class="math inline">\(A\)</span>, there is a probabilistic algorithm to find this combination.)</p>
-<p>(Here, <span class="math inline">\(r(A)\)</span> is the radius of <span class="math inline">\(A\)</span>.)</p>
-<p><em>Proof</em>. If <span class="math inline">\(x=\sum a_i z_i\)</span>, sample by <span class="math inline">\(a_i=\Pj(x=z_i)\)</span>. By Chebyshev, <span class="math display">\[\E\ve{x-\rc N \sumo jN z_j}\le \fc{r(A)^2}{N}.\]</span></p>
-<p><em>Remark</em>: This can be <a href="../../../tcs/coding/ldc.html">adapted to <span class="math inline">\(L_p\)</span></a>.</p>
-<h2 id="banach-mazur-distance">Banach-Mazur distance</h2>
-<p>(Skipped.)</p>
-<h2 id="concentration-of-measure-and-euclidean-sections-of-convex-bodies">Concentration of measure and Euclidean sections of convex bodies</h2>
-<p>Observation: Convex bodies like spheres tend to have a lot of mass concentrated in the “middle”. This is a very powerful observation: concentration of measure for a set implies concentration for Lipschitz functions on the set.</p>
-<p>Johnson-Lindenstrauss says that a random projection approximately preserves distances. A sophisticated way to look at this is the following. We can view this as a concentration result: the norm of the projection of <span class="math inline">\(x\)</span> is a Lipschitz function; it must be concentrated around its mean.</p>
-<p>A powerful application of concentration of measure is Dvoretzky’s Theorem (big generalization of JL?), which find large Euclidean-like subspaces in general Banach spaces. (What’s the relationship between the <span class="math inline">\(\log\)</span> here and in Dvoretzky?)</p>
-<h3 id="concentration-of-measure">Concentration of measure</h3>
-<p>For a set <span class="math inline">\(A\)</span> let <span class="math inline">\(A_\ep\)</span> denote the <span class="math inline">\(\ep\)</span>-neighborhood.</p>
-<h4 id="sphere">Sphere</h4>
-<ol type="1">
-<li>(Isoperimetric inequality) Among all sets with given measure, spherical caps minimize <span class="math inline">\(\si(A_\ep)\)</span>. (Proof?)</li>
-<li>Let <span class="math inline">\(\si\)</span> be the measure on the sphere. For any measurable <span class="math inline">\(A\subeq \bS^{n-1}\)</span> with <span class="math inline">\(\si(A)\ge \rc 2\)</span>, <span class="math inline">\(\si(A_\ep)\ge 1-e^{-\fc{n\ep^2}2}\)</span>. Proof:
-<ul>
-<li>For the equator <span class="math inline">\(E\)</span>, <span class="math inline">\(\si(E_\ep)\ge 1-2e^{-\fc{n\ep^2}{2}}\)</span>. Use isoperimetric inequality.</li>
-</ul></li>
-<li>Corollary: For <span class="math inline">\(f:\bS^{n-1}\to \R\)</span> 1-Lipschitz, letting <span class="math inline">\(M\)</span> be the median, <span class="math display">\[\si(|f-M|\le \ep) \ge 1-2e^{-\fc{n\ep^2}{2}}.\]</span> This remains true if <span class="math inline">\(M\)</span> is replaced by the mean.</li>
-</ol>
-<h4 id="gaussians">Gaussians</h4>
-<p>Consider <span class="math inline">\(\R^n\)</span> with measure <span class="math inline">\(\ga\)</span> given by <span class="math inline">\(N(0,I)\)</span>.</p>
-<ol type="1">
-<li>(Isoperimetric inequality) Among all sets with given measure, halfspaces minimize <span class="math inline">\(\si(A_\ep)\)</span>.</li>
-<li>If <span class="math inline">\(\ga(A)\ge \rc2\)</span>, then <span class="math inline">\(\ga(A_t)\ge 1-e^{-\fc{t^2}{2}}\)</span>.</li>
-<li>Corollary: For <span class="math inline">\(f:\R^{n-1}\to \R\)</span> 1-Lipschitz, letting <span class="math inline">\(M\)</span> be the median, <span class="math display">\[\ge(|f-M|\le \ep) \ge 1-2e^{-\fc{n\ep^2}{2}}.\]</span> This remains true if <span class="math inline">\(M\)</span> is replaced by <span class="math inline">\((\E|X|^p)^{\rc p}\)</span> for any <span class="math inline">\(p\ge 1\)</span>.</li>
-</ol>
-<h3 id="johnson-lindenstrauss">Johnson-Lindenstrauss</h3>
-<p>See <a href="../../../tcs/algorithms/jl.html">JL</a>.</p>
-<p><strong>Theorem (Johnson-Lindenstrauss)</strong>: Let <span class="math inline">\(|X|=n\)</span>, <span class="math inline">\(X\)</span> a subset of Hilbert space. For any <span class="math inline">\(\ep&gt;0\)</span>, there exists a <span class="math inline">\((1+\ep)\)</span>-embedding of <span class="math inline">\(X\)</span> into <span class="math inline">\(\ell_2^k\)</span>, <span class="math inline">\(k\ge \fc{C}{\ep^2}\ln n\)</span>.</p>
-<p><em>Proof.</em> Project randomly using gaussians. We can directly bound the concentration, but let’s be more sophisticated.</p>
-<ol type="1">
-<li>Project randomly using gaussians. Let <span class="math inline">\(f:\R^{k\times n}\to \R\)</span> be defined by <span class="math inline">\(G\mapsto \ve{Gx}_2\)</span>. This is 1-Lipschitz. Use concentration of measure for Gaussian space, and then union bound.</li>
-<li>Take a uniformly random projection (ise the Grassmannian, or equivalently, take a uniform rotation followed by a fixed projection). Let <span class="math inline">\(f:\bS^{n-1}\to \R\)</span> be defined by <span class="math inline">\(x\mapsto \ve{Tx}_2\)</span>. Use concentration of measure for the sphere.</li>
-</ol>
-<h3 id="dvoretzkys-theorem">Dvoretzky’s Theorem</h3>
-<h4 id="statements">Statements</h4>
-<p>Dvoretzky finds large Euclidean subspaces.</p>
-<ol type="1">
-<li><strong>Theorem (General Dvoretzky)</strong>: Let <span class="math display">\[M(K) = \int_{\bS^{n-1}}\ve{x}\,d\si(x).\]</span> There exists a subspace <span class="math inline">\(E\)</span>, <span class="math inline">\(\dim E=c(\ep) nM^2\)</span> such that <span class="math display">\[ \ve{x}\in [1-\ep,1+\ep] M \ve{x}_2.\]</span> We can take <span class="math inline">\(c(\ep) = C\fc{\ep^2}{\ln \rc{\ep}}\)</span>.</li>
-<li><strong>Theorem (Dvoretzky)</strong>: Let <span class="math inline">\(X\)</span> be <span class="math inline">\(n\)</span>-dimensional Banach. Given <span class="math inline">\(\ep&gt;0\)</span> there exists a subspace <span class="math inline">\(E\)</span> of <span class="math inline">\(X\)</span> of dimension <span class="math inline">\(k=k(n,\ep)\to \iy\)</span> as <span class="math inline">\(n\to \iy\)</span>, such that <span class="math inline">\(d(E,\ell_2^k)\le 1+\ep\)</span>.</li>
-<li><strong>Theorem (Geometric Dvoretzky)</strong>: Let <span class="math inline">\(K\)</span> be a symmetric convex body in <span class="math inline">\(\R^n\)</span>. Given any <span class="math inline">\(\ep &gt; 0\)</span>, there exists a section <span class="math inline">\(K \cap E\)</span> of <span class="math inline">\(K\)</span> by a subspace <span class="math inline">\(E\)</span> of <span class="math inline">\(\R^n\)</span> of dimension <span class="math inline">\(k = k(n, \ep)\to \iy\)</span> as <span class="math inline">\(n \to \iy\)</span> such that <span class="math inline">\(E \subeq K \subeq (1 + \ep)\mathcal E\)</span> for some ellipsoid <span class="math inline">\(\mathcal E\)</span>.</li>
-</ol>
-<p>There is an alternative formulation for gaussian space, which is often computationally easier.</p>
-<p>Define <span class="math inline">\(\ell_X:=\pa{\int_{\R^n} \ve{x}^2\,d\ga_n(x)}^{\rc 2} = (\E\ve{g}^2)^{\rc 2}\)</span>. This is off from <span class="math inline">\(M\)</span> by a factor of <span class="math inline">\(\sqrt n\)</span>: <span class="math display">\[ \ell_X\sim \sqrt n M_X.\]</span> Thus we can replace <span class="math inline">\(M_X\)</span> by <span class="math inline">\(\fc{\ell_X}{\sqrt n}\)</span> in the bound.</p>
-<h4 id="proofs">Proofs</h4>
-<ol type="1">
-<li>Show it suffices to bound on <span class="math inline">\(\ep\)</span>-nets, and bound the size of the smallest <span class="math inline">\(\ep\)</span>-net.
-<ol type="1">
-<li>Let <span class="math inline">\(\mathcal{N}_\de\)</span> be a <span class="math inline">\(\de\)</span>-net of <span class="math inline">\(S_X\)</span>. Then
-\begin{align}
-\ve{T}&amp;\le \rc{1-\de} \sup_{x\in \mathcal{N}_\de}\ve{Tx}\\
-\inf_{y\in S_X} &amp;\ge \inf_{x\in N} - \de\ve{T}.
-\end{align}
-Applying this to the identity map from <span class="math inline">\(\ved_2\)</span> to <span class="math inline">\(\ved\)</span>, obtain: if <span class="math inline">\(\ve{x}\in [1-\ep,1+\ep]M\)</span> for all <span class="math inline">\(x\in \cal N\)</span>, then for all <span class="math inline">\(x\in \bS^{n-1}\)</span>, <span class="math display">\[\ve{x} \in \ba{1-\ep-2\de, \pf{1+\ep}{1-\de}M}.\]</span></li>
-<li>There is an <span class="math inline">\(\ep\)</span>-net of size <span class="math inline">\(\pa{1+\fc 2\ep}^n\)</span>.</li>
-</ol></li>
-<li>General Dvoretzky: Apply concentration of measure to a fixed vector <span class="math inline">\(x\)</span> of the function <span class="math inline">\(\ved\)</span>. Union bound over a <span class="math inline">\(\de\)</span>-net and approximate the sphere by the <span class="math inline">\(\de\)</span>-net using 1.</li>
-<li>(Aside) We can calculate <span class="math inline">\(\ell_X\)</span> for many spaces. Standard concentration bounds give
-\begin{align}
-1\le p\le 2\implies \ell_{\ell_p^n} &amp;= c(\ep) n&amp;\implies k(\ell_p^n) &amp;\ge c(\ep)n\\
-q\ge 2\implies \ell_{\ell_q^n} &amp;= c(\ep) q n^{\fc 2q}&amp;\implies k(\ell_q^n) &amp; \ge c(\ep)q n^{\fc 2q}\\
-\ell_{\ell_{\iy}^n} &amp; c\sqrt{\ln n} &amp;\implies k(\ell_\iy^n) &amp; \ge c(\ep)\ln n.
-\end{align}</li>
-<li>We show <span class="math inline">\(k(\ell_\iy^n) \asymp\ln n\)</span>. Spherical caps!</li>
-</ol>
 
   </div>
 
