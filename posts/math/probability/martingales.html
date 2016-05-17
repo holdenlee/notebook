@@ -82,15 +82,17 @@
   <!--/div-->
 
   <div class="toc"> <ul>
- <li><a href="#conditional-expectation">Conditional expectation</a><ul>
+ <li><a href="#conditional-expectation">1 Conditional expectation</a><ul>
  <li><a href="#examples">Examples</a></li>
  <li><a href="#properties">Properties</a></li>
  </ul></li>
- <li><a href="#martingales-almost-sure-convergence">Martingales, Almost Sure Convergence</a><ul>
+ <li><a href="#martingales-almost-sure-convergence">2 Martingales, Almost Sure Convergence</a><ul>
  <li><a href="#exercises">Exercises</a></li>
  </ul></li>
- <li><a href="#examples-1">Examples</a></li>
- <li><a href="#doobs-inequality-lp-convergence">Doob’s inequality, <span class="math inline"><em>L</em><sup><em>p</em></sup></span> convergence</a><ul>
+ <li><a href="#examples-1">3 Examples</a><ul>
+ <li><a href="#branching-processes">Branching processes</a></li>
+ </ul></li>
+ <li><a href="#doobs-inequality-lp-convergence">4 Doob’s inequality, <span class="math inline"><em>L</em><sup><em>p</em></sup></span> convergence</a><ul>
  <li><a href="#exercises-1">Exercises</a></li>
  </ul></li>
  <li><a href="#uniform-integrability-convergence-in-l1">5 Uniform integrability; convergence in <span class="math inline"><em>L</em><sup>1</sup></span></a><ul>
@@ -106,7 +108,8 @@
 
   <div class="blog-main">
     <p>Durrett Ch. 5</p>
-<h2 id="conditional-expectation">Conditional expectation</h2>
+<p>See notebook 13.93-95 for exercises.</p>
+<h2 id="conditional-expectation">1 Conditional expectation</h2>
 <p>Define conditional expectation and show it is well defined.</p>
 <p>Let <span class="math inline">\(X\)</span> be a random variable on <span class="math inline">\((\Om, \mathcal F_0, P)\)</span> with <span class="math inline">\(\E|X|&lt;\iy\)</span>. The <strong>conditional expectation</strong> of <span class="math inline">\(X\)</span> given <span class="math inline">\(\mathcal F\)</span> is any (the unique) random variable <span class="math inline">\(Y\)</span> such that</p>
 <ol type="1">
@@ -146,7 +149,7 @@ Generalize conditional probability by letting
 <li>(Least squares, projection) If <span class="math inline">\(\E X^2&lt;\iy\)</span>, then <span class="math inline">\(\E[X|\mathcal F]\)</span> is the variable <span class="math inline">\(Y\in \mathcal F\)</span> that minimizes <span class="math inline">\(\E(X-Y)^2\)</span>.</li>
 </ol>
 <p>(Proofs straightforward from definition, omitted.)</p>
-<h2 id="martingales-almost-sure-convergence">Martingales, Almost Sure Convergence</h2>
+<h2 id="martingales-almost-sure-convergence">2 Martingales, Almost Sure Convergence</h2>
 <p>A <strong>filtration</strong> <span class="math inline">\(\mathcal F\)</span> is an increasing sequence of <span class="math inline">\(\si\)</span>-fields.</p>
 <p><span class="math inline">\(X_n\)</span> is <strong>adapted</strong> to <span class="math inline">\(\mathcal F_n\)</span> if for all <span class="math inline">\(n\)</span>, <span class="math inline">\(X_n\in \mathcal F_n\)</span>.</p>
 <p><span class="math inline">\(X_n\)</span> is a <strong>martingale</strong> if 1. <span class="math inline">\(\E|X_n|&lt;\iy\)</span> 2. <span class="math inline">\(X_n\)</span> is adapted to <span class="math inline">\(\mathcal F_n\)</span> 3. <span class="math inline">\(\E[X_{n+1}|\mathcal F_n]=X_n\)</span> for all <span class="math inline">\(n\)</span>.</p>
@@ -203,14 +206,52 @@ Using definition and then taking <span class="math inline">\(\E[\bullet|\mathcal
 &amp;=\rc{B(0,r)} \int_{B(S_n,r)} f(y)\le f(S_n)=X_n.
 \end{align}</li>
 <li>Let <span class="math inline">\(X_n = -\rc n\)</span>.</li>
-<li><p>Let <span class="math inline">\(X_n=\sumo in \xi_i\)</span>, <span class="math inline">\(\xi_i\)</span></p></li>
+<li>Let <span class="math inline">\(X_n=\sumo in \xi_i\)</span>, <span class="math inline">\(\xi_i=\tcase{-1}{\text{w.p. }1-\rc{10^k}}{10^k}{\text{w.p. }\rc{10^k}}\)</span>.</li>
+<li><p><span class="math inline">\(A_n = A_{n-1} + \E[1_{B_n}|\mathcal F_{n-1}]\)</span>.</p></li>
 </ol>
-<h2 id="examples-1">Examples</h2>
-<h2 id="doobs-inequality-lp-convergence">Doob’s inequality, <span class="math inline">\(L^p\)</span> convergence</h2>
+<h2 id="examples-1">3 Examples</h2>
+<ol type="1">
+<li>Let <span class="math inline">\(X_n\)</span> be a martingale with <span class="math inline">\(|X_{n+1}-X_n|\le M&lt;\iy\)</span>. Let
+\begin{align}
+C &amp; = \{\lim X_n \text{ exists and is finite}\}\\
+D &amp; = \{\limsup X_n=\iy, \liminf X_n=-\iy\}.
+\end{align}
+<p>Then <span class="math inline">\(\Pj(C\cup D)=1\)</span>.</p>
+<em>Proof</em>. Show that when <span class="math inline">\(\liminf X_n&gt;-\iy\)</span> then <span class="math inline">\(\lim X_n\)</span> exists and is finite. By symmetry, also <span class="math inline">\(\limsup X_n&lt;\iy \implies \lim X_n\)</span> exists. To show existence, apply 2.11 to <span class="math inline">\(X_{n\wedge \inf\set{n}{X_n\le -K}} + K + M\)</span>.</li>
+<li><p><strong>Martingale Borel-Cantelli</strong>: Let <span class="math inline">\(\mathcal F_n\)</span> be a filtration with <span class="math inline">\(\mathcal F_0=\{\phi,\Om\}\)</span> and <span class="math inline">\(A_n\in \mathcal F_n\)</span>. Then <span class="math display">\[\{A_n\text{ i.o.}\} = \bc{\sumo n{\iy} \Pj(A_n|\mathcal F_{n-1}) = \iy}.\]</span></p>
+<em>Proof</em>. Apply 3.1 to <span class="math inline">\(X_n = \sumo mn 1_{A_m} - \Pj(A_m|\mathcal F_{m-1})\)</span>.</li>
+<li><strong>Theorem</strong>: If <span class="math inline">\(\mu_n\ll \nu_n\)</span> for all <span class="math inline">\(n\)</span>, for <span class="math inline">\(X_n=\dd{\mu_n}{\nu_n}\)</span>, <span class="math inline">\(X=\limsup X_n\)</span>, then <span class="math display">\[\mu(A) = \int_A X\,d\nu + \mu(A\cap \{X=\iy\}).\]</span></li>
+<li><p><strong>Lemma</strong>: <span class="math inline">\(X_n\)</span> in 3 is a martingale wrt <span class="math inline">\(\mathcal F_n\)</span>.</p>
+<em>Proof of Theorem</em>. The technical difficulty is that we can’t work with the R-N derivative when one of <span class="math inline">\(\mu,\nu\)</span> is singular wrt the other. So interpolate between them by setting <span class="math inline">\(\rh = \fc{\mu + \nu}2\)</span>. We have <span class="math display">\[\dd{\mu_n}{\nu_n} = \left. \dd{\mu_n}{\pf{\mu_n+\nu_n}2}\right/ \dd{\nu_n}{\pf{\mu_n+ \nu_n}2}.\]</span> Take <span class="math inline">\(n\to \iy\)</span>. (Some technical work here.)</li>
+<li><p>(skipped)</p></li>
+</ol>
+<p>Polya urn scheme: An urn starts with <span class="math inline">\(r,g\)</span> red and green balls. At each step draw a ball, replace it, and add <span class="math inline">\(c\)</span> more balls of the same color. The fraction of green balls <span class="math inline">\(X_n\)</span> after the <span class="math inline">\(n\)</span>th draw is a martingale. (p. 241)</p>
+<h3 id="branching-processes">Branching processes</h3>
+The <strong>Galton-Watson</strong> process is defined as follows. Given <span class="math inline">\(\xi_i^n\)</span> iid nonnegative integer rv’s, define
+\begin{align}
+Z_0 &amp;=1\\
+Z_{n+1} &amp;= \tcase{\sumo i{Z_n} \xi_i^{n+1}}{\text{if }Z_n&gt;0}{0}{\text{if }Z_n=0}.
+\end{align}
+<ol start="6" type="1">
+<li>Let <span class="math inline">\(\mathcal F_n = \si(\xi_i^m:i\ge 1, 1\le m\le n)\)</span>, <span class="math inline">\(\mu = \E \xi_i^m\)</span> (same for all <span class="math inline">\(m\)</span>). Then <span class="math inline">\(\fc{Z_n}{\mu^n}\)</span> is a martingale wrt <span class="math inline">\(\mathcal F_n\)</span>.</li>
+<li><p>If <span class="math inline">\(\mu&lt;1\)</span> then <span class="math inline">\(Z_n=0\)</span> for sufficiently large <span class="math inline">\(n\)</span>.</p>
+<em>Proof</em>. Markov</li>
+<li><p>If <span class="math inline">\(\mu=1\)</span> and <span class="math inline">\(\Pj(\xi_i^m=1)&lt;1\)</span> then <span class="math inline">\(Z_n=0\)</span> for sufficiently large <span class="math inline">\(n\)</span>.</p>
+<em>Proof</em>. <span class="math inline">\(Z_n\)</span> is a martingale. <span class="math inline">\(Z_n=Z_\iy\)</span> for large enough <span class="math inline">\(n\)</span>; the only way this can happen when <span class="math inline">\(\Pj&lt;1\)</span> is <span class="math inline">\(Z_n=0\)</span>.</li>
+<li><p>If <span class="math inline">\(\mu&gt;1\)</span> then <span class="math inline">\(\Pj(\forall n, Z_n&gt;0) &gt;0\)</span>.</p>
+<em>Proof</em>. Let <span class="math inline">\(\ph=\sumz k{\iy} p_k s^k\)</span> be the pgf.
+<ol type="1">
+<li>Let <span class="math inline">\(\te_m = \Pj(Z_m=0)\)</span>. Then <span class="math inline">\(\te_m = \sumz k{\iy} p_k \te_{m-1}^k\)</span>. (All children families die out.)</li>
+<li><span class="math inline">\(\ph'(1) =\mu&gt;1 \implies \ph\)</span> has a fixed point.</li>
+<li><span class="math inline">\(\lim_{m\to \iy} \te_m = \rh\)</span>. (Take limits in <span class="math inline">\(\te_m=\ph(\te_{m-1})\)</span>.)</li>
+</ol></li>
+<li><p>Omitted.</p></li>
+</ol>
+<h2 id="doobs-inequality-lp-convergence">4 Doob’s inequality, <span class="math inline">\(L^p\)</span> convergence</h2>
 <ol type="1">
 <li>If <span class="math inline">\(X_n\)</span> is a submartingale and <span class="math inline">\(N\)</span> is a stopping time with <span class="math inline">\(\Pj(N\le k)=1\)</span>, then <span class="math display">\[ \E X_0\le \E X_N \le \E X_k.\]</span> (Note the first inequality is not true in general if <span class="math inline">\(N\)</span> is unbounded.) <em>Proof.</em>
 <ol type="1">
-<li>Show that <span class="math inline">\(X_n - X_{N\wedge n}\)</span> is a submartingale. To see this, wrie it as a dot product with a predictable sequence, <span class="math inline">\(X_n-X_{N\wedge n} = 1_{\{n-1 \ge N\}}\cdot X\)</span>.<a href="#fn1" class="footnoteRef" id="fnref1"><sup>1</sup></a></li>
+<li>Show that <span class="math inline">\(X_n - X_{N\wedge n}\)</span> is a submartingale. To see this, write it as a dot product with a predictable sequence, <span class="math inline">\(X_n-X_{N\wedge n} = 1_{\{n-1 \ge N\}}\cdot X\)</span>.<a href="#fn1" class="footnoteRef" id="fnref1"><sup>1</sup></a></li>
 <li>(Alternative) Condition on <span class="math inline">\(N\)</span> and use the submartingale property. See exercise 1.</li>
 </ol></li>
 <li><p><strong>Doob’s inequality</strong>: Let <span class="math inline">\(X_m\)</span> be a submartingale, <span class="math inline">\(\ol X_n = \max_{0\le m\le n} X_m^+\)</span>, <span class="math inline">\(\la&gt;0\)</span>. Then <span class="math display">\[ \la \Pj(A) \le \E X_n 1_A \le \E X_n^+.\]</span></p>
@@ -276,7 +317,7 @@ Using definition and then taking <span class="math inline">\(\E[\bullet|\mathcal
 <em>Proof</em>. <span class="math inline">\(Y_n=\E(X|\mathcal F_n)\)</span> is a martingale. Use 6 and 5. Use the <span class="math inline">\(\pi\)</span>-<span class="math inline">\(\la\)</span> theorem to get that <span class="math inline">\(\int_A X\,dP = \int_A Y_\iy\,dP\)</span> for all <span class="math inline">\(A\in \mathcal F_\iy\)</span>.</li>
 <li><p><strong>Theorem (Levy’s 0-1 law)</strong>: If <span class="math inline">\(\mathcal F_n\uparrow \mathcal F_{\iy}\)</span> and <span class="math inline">\(A\in \mathcal F_{\iy}\)</span> then <span class="math inline">\(\E(1_A|\mathcal F_n)\to 1_A\)</span> a.s.</p>
 Note this proves Kolmogorov’s 0-1 law: take <span class="math inline">\(A\)</span> to be in the tail <span class="math inline">\(\si\)</span>-field.</li>
-<li><p><strong>Theorem (DCT for conditional expectations)</strong>: Suppose <span class="math inline">\(Y_n\to Y\)</span> a.s., <span class="math inline">\(|Y_n|\le Z\)</span> for all <span class="math inline">\(n\)</span> where <span class="math inline">\(\E Z&lt;\iy\)</span>, and <span class="math inline">\(\mathcal F_n\uparrow \mathcal F_\iy\)</span> then <span class="math display">\[\E(Y_n|\mathcl F_n)\to \E(Y|\mathcal F_\iy)\text{ a.s.}\]</span>. (If instead <span class="math inline">\(Y_n\to Y\)</span> is <span class="math inline">\(L^1\)</span>, then convergence is <span class="math inline">\(L^1\)</span>.)</p>
+<li><p><strong>Theorem (DCT for conditional expectations)</strong>: Suppose <span class="math inline">\(Y_n\to Y\)</span> a.s., <span class="math inline">\(|Y_n|\le Z\)</span> for all <span class="math inline">\(n\)</span> where <span class="math inline">\(\E Z&lt;\iy\)</span>, and <span class="math inline">\(\mathcal F_n\uparrow \mathcal F_\iy\)</span> then <span class="math display">\[\E(Y_n|\mathcal F_n)\to \E(Y|\mathcal F_\iy)\text{ a.s.}\]</span>. (If instead <span class="math inline">\(Y_n\to Y\)</span> is <span class="math inline">\(L^1\)</span>, then convergence is <span class="math inline">\(L^1\)</span>.)</p>
 <p><em>Proof</em>. Show <span class="math inline">\(|\E(Y_n|\mathcal F_n) - \E(Y|\mathcal F_n)| \to 0\)</span> a.s. as <span class="math inline">\(n\to \iy\)</span>, and then use 5.7. To show the inequality, bound by a variable that doesn’t depend on <span class="math inline">\(N\)</span>, <span class="math display">\[ \limsup_{n\to \iy} \E(|Y_n-Y||\mathcal F_n)\le \lim_{n\to \iy} \E(W_N|\mathcal F_n)\]</span> where <span class="math inline">\(W_N\)</span> is defined as the maximum Cauchy difference.</p></li>
 </ol>
 <h3 id="exercises-2">Exercises</h3>
@@ -334,7 +375,7 @@ Then <span class="math inline">\(\mathcal E\)</span> is independent of <span cla
 \E X_N &amp;\le \mathcal F_L.
 \end{align}
 <p><em>Proof</em>. Use 7.3 with <span class="math inline">\(X_n=Y_{M\wedge n}, N=L\)</span>.</p>
-Let <span class="math inline">\(N=\begin{cases} L,&amp;\text{on }A\\ M,&amp;\text{on }A^c\)</span>. Use the first part on <span class="math inline">\(N\le M\)</span> to get <span class="math inline">\(\E Y_N\le \E Y_M\)</span>. Note that <span class="math inline">\(N=M\)</span> on <span class="math inline">\(A^c\)</span> to get <span class="math display">\[A\in \mathcal F_L\implies \E(Y_L;A) \le \E(Y_M;A) = \E[\E[Y_M|\mathcal F_L];A].\]</span> (Define <span class="math inline">\(N\)</span> so we can just localize the inequality to <span class="math inline">\(A\)</span>.)</li>
+Let <span class="math inline">\(N=\begin{cases} L,&amp;\text{on }A\\ M,&amp;\text{on }A^c\end{cases}\)</span>. Use the first part on <span class="math inline">\(N\le M\)</span> to get <span class="math inline">\(\E Y_N\le \E Y_M\)</span>. Note that <span class="math inline">\(N=M\)</span> on <span class="math inline">\(A^c\)</span> to get <span class="math display">\[A\in \mathcal F_L\implies \E(Y_L;A) \le \E(Y_M;A) = \E[\E[Y_M|\mathcal F_L];A].\]</span> (Define <span class="math inline">\(N\)</span> so we can just localize the inequality to <span class="math inline">\(A\)</span>.)</li>
 <li><p><strong>Theorem (Generalization of Wald’s equation)</strong>: If <span class="math inline">\(X_n\)</span> is a submartingale, <span class="math inline">\(\E[|X_{n+1}-X_n||\mathcal F_n]\le B\)</span> a.s., and <span class="math inline">\(\E N&lt;\iy\)</span>, then <span class="math inline">\(X_{N\wedge n}\)</span> is uniformly integrable and <span class="math inline">\(\E X_N\ge \E X_0\)</span>.<a href="#fn3" class="footnoteRef" id="fnref3"><sup>3</sup></a> (For a martingale, we have <span class="math inline">\(=\)</span>.)</p>
 <p><em>Proof</em>. <span class="math display">\[|X_{N \wedge n}| \le |X_0| + \sum_{m=0}^{\iy} |X_{m+1} - X_m| 1_{(N&gt;m)} \le B\sum_{m=0}^{\iy} \Pj(N&gt;m) = B \E N.\]</span></p></li>
 </ol>
