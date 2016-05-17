@@ -91,3 +91,23 @@ If $x=x^*, y= A^*x^*$ then we write this as a sum of squares above. (This is pro
 We want to lower-bound by
 $$ \al \ve{A-A^*}_F^2 + \be \ve{\pf{y_i}{(Ax)_i}}_2^2 \ve{x}_2^2 - \ep.
 $$
+
+# KL Divergence
+
+(5-12)
+
+Idea: use a different potential function. $L^2$ doesn't make so much sense here.
+
+Suppose $x= (1)$ and do MWU. The gradient is
+$$-\diag\prc{Ax} yx^T = -\fc{y}{a}.$$
+We get
+$$a_i' = \fc{a_ie^{-\eta \fc{y_i}{a_i}}}{\sumo kn a_ke^{\eta \fc{y_k}{a_k}}}.$$
+The metric is
+$$d_{KL}(y,a) = \sumo in y_i \ln \pf{y_i}{a_i}.$$
+The decrease is
+\begin{align}
+d_{KL}(y,a) - d_{KL}(y,a') &= \sumo in y_i \ln\pf{a_i'}{a_i}\\
+&=\sumo in y_i \ln \fc{e^{\eta\fc{y_j}{a_j}}}{\sumo jn a_j e^{-\eta \fc{y_j}{a_j}}}\\
+&=\sumo in y_i \ln e^{\eta \fc{y_j}{a_j}} - \ln \sumo jn a_j e^{-\eta\fc{y_j}{a_j}}
+\end{align}
+Sanity check: For $\eta\to 0$, this is $\eta(\sum \fc{y_i^2}{a_i}-\sum y_i)>0$ by $T_2$'s inequality.
