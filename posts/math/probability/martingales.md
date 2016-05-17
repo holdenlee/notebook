@@ -9,7 +9,9 @@ showTOC: True
 
 Durrett Ch. 5
 
-#Conditional expectation
+See notebook 13.93-95 for exercises.
+
+#1 Conditional expectation
 
 Define conditional expectation and show it is well defined.
 
@@ -66,7 +68,7 @@ The general strategy for finding the conditional expectation is to "guess and ve
 
 (Proofs straightforward from definition, omitted.)
 
-#Martingales, Almost Sure Convergence
+#2 Martingales, Almost Sure Convergence
 
 A **filtration** $\mathcal F$ is an increasing sequence of $\si$-fields.
 
@@ -147,17 +149,65 @@ If 3 holds with $\le,\ge$, $X_n$ is a **supermartingale, submartingale**. (Note 
 	&=\rc{B(0,r)} \int_{B(S_n,r)} f(y)\le f(S_n)=X_n.
 	\end{align}
 3.  Let $X_n = -\rc n$.
-4.  Let $X_n=\sumo in \xi_i$, $\xi_i$
+4.  Let $X_n=\sumo in \xi_i$, $\xi_i=\tcase{-1}{\text{w.p. }1-\rc{10^k}}{10^k}{\text{w.p. }\rc{10^k}}$.
+5.  $A_n = A_{n-1} + \E[1_{B_n}|\mathcal F_{n-1}]$.
 
-#Examples
+# 3 Examples
 
-#Doob's inequality, $L^p$ convergence
+1.  Let $X_n$ be a martingale with $|X_{n+1}-X_n|\le M<\iy$. Let
+	\begin{align}
+	C & = \{\lim X_n \text{ exists and is finite}\}\\
+	D & = \{\limsup X_n=\iy, \liminf X_n=-\iy\}.
+	\end{align}
+	Then $\Pj(C\cup D)=1$.
+
+	*Proof*. Show that when $\liminf X_n>-\iy$ then $\lim X_n$ exists and is finite. By symmetry, also $\limsup X_n<\iy \implies \lim X_n$ exists. To show existence, apply 2.11 to $X_{n\wedge \inf\set{n}{X_n\le -K}} + K + M$.
+2.  **Martingale Borel-Cantelli**: Let $\mathcal F_n$ be a filtration with $\mathcal F_0=\{\phi,\Om\}$ and $A_n\in \mathcal F_n$. Then
+	$$\{A_n\text{ i.o.}\} = \bc{\sumo n{\iy} \Pj(A_n|\mathcal F_{n-1}) = \iy}.$$
+
+	*Proof*. Apply 3.1 to $X_n = \sumo mn 1_{A_m} - \Pj(A_m|\mathcal F_{m-1})$.
+3.  **Theorem**: If $\mu_n\ll \nu_n$ for all $n$, for $X_n=\dd{\mu_n}{\nu_n}$, $X=\limsup X_n$, then
+    $$\mu(A) = \int_A X\,d\nu + \mu(A\cap \{X=\iy\}).$$
+4.  **Lemma**: $X_n$ in 3 is a martingale wrt $\mathcal F_n$.
+
+	*Proof of Theorem*. The technical difficulty is that we can't work with the R-N derivative when one of $\mu,\nu$ is singular wrt the other. So interpolate between them by setting $\rh = \fc{\mu + \nu}2$. We have
+	$$\dd{\mu_n}{\nu_n} = \left. \dd{\mu_n}{\pf{\mu_n+\nu_n}2}\right/ \dd{\nu_n}{\pf{\mu_n+ \nu_n}2}.$$
+	Take $n\to \iy$. (Some technical work here.)
+5.  (skipped)
+
+Polya urn scheme: An urn starts with $r,g$ red and green balls. At each step draw a ball, replace it, and add $c$ more balls of the same color. The fraction of green balls $X_n$ after the $n$th draw is a martingale. (p. 241)
+
+##Branching processes
+
+The **Galton-Watson** process is defined as follows. Given $\xi_i^n$ iid nonnegative integer rv's, define
+\begin{align}
+Z_0 &=1\\
+Z_{n+1} &= \tcase{\sumo i{Z_n} \xi_i^{n+1}}{\text{if }Z_n>0}{0}{\text{if }Z_n=0}.
+\end{align}
+
+6.  Let $\mathcal F_n = \si(\xi_i^m:i\ge 1, 1\le m\le n)$, $\mu = \E \xi_i^m$ (same for all $m$). Then $\fc{Z_n}{\mu^n}$ is a martingale wrt $\mathcal F_n$.
+7.  If $\mu<1$ then $Z_n=0$ for sufficiently large $n$.
+
+	*Proof*. Markov
+8.  If $\mu=1$ and $\Pj(\xi_i^m=1)<1$ then $Z_n=0$ for sufficiently large $n$.
+
+	*Proof*. $Z_n$ is a martingale. $Z_n=Z_\iy$ for large enough $n$; the only way this can happen when $\Pj<1$ is $Z_n=0$.
+9.  If $\mu>1$ then $\Pj(\forall n, Z_n>0) >0$.
+
+	*Proof*. Let $\ph=\sumz k{\iy} p_k s^k$ be the pgf.
+	1.  Let $\te_m = \Pj(Z_m=0)$. Then $\te_m = \sumz k{\iy} p_k \te_{m-1}^k$. (All children families die out.)
+	2.  $\ph'(1) =\mu>1 \implies \ph$ has a fixed point.
+	3.  $\lim_{m\to \iy} \te_m = \rh$. (Take limits in $\te_m=\ph(\te_{m-1})$.)
+10. Omitted.
+
+
+# 4 Doob's inequality, $L^p$ convergence
 
 1.  If $X_n$ is a submartingale and $N$ is a stopping time with $\Pj(N\le k)=1$, then
 	$$ \E X_0\le \E X_N \le \E X_k.$$
 	(Note the first inequality is not true in general if $N$ is unbounded.)
 	*Proof.*
-	1. Show that $X_n - X_{N\wedge n}$ is a submartingale. To see this, wrie it as a dot product with a predictable sequence, $X_n-X_{N\wedge n} = 1_{\{n-1 \ge N\}}\cdot X$.[^f41]
+	1. Show that $X_n - X_{N\wedge n}$ is a submartingale. To see this, write it as a dot product with a predictable sequence, $X_n-X_{N\wedge n} = 1_{\{n-1 \ge N\}}\cdot X$.[^f41]
 	2. (Alternative) Condition on $N$ and use the submartingale property. See exercise 1.
 2.  **Doob's inequality**: Let $X_m$ be a submartingale, $\ol X_n = \max_{0\le m\le n} X_m^+$, $\la>0$. Then
     $$ \la \Pj(A) \le \E X_n 1_A \le \E X_n^+.$$
@@ -238,7 +288,7 @@ Note this implies $\sup_{i\in I}\E|X_i|<\iy$.
 
 	Note this proves Kolmogorov's 0-1 law: take $A$ to be in the tail $\si$-field.
 9.  **Theorem (DCT for conditional expectations)**: Suppose $Y_n\to Y$ a.s., $|Y_n|\le Z$ for all $n$ where $\E Z<\iy$, and $\mathcal F_n\uparrow \mathcal F_\iy$ then
-	$$\E(Y_n|\mathcl F_n)\to \E(Y|\mathcal F_\iy)\text{ a.s.}$$. (If instead $Y_n\to Y$ is $L^1$, then convergence is $L^1$.)
+	$$\E(Y_n|\mathcal F_n)\to \E(Y|\mathcal F_\iy)\text{ a.s.}$$. (If instead $Y_n\to Y$ is $L^1$, then convergence is $L^1$.)
 
 	*Proof*. Show $|\E(Y_n|\mathcal F_n) - \E(Y|\mathcal F_n)| \to 0$ a.s. as $n\to \iy$, and then use 5.7. To show the inequality, bound by a variable that doesn't depend on $N$,
 	$$ \limsup_{n\to \iy} \E(|Y_n-Y||\mathcal F_n)\le \lim_{n\to \iy} \E(W_N|\mathcal F_n)$$
@@ -325,7 +375,7 @@ $$ \E(X_{n+1}|\mathcal F_n) = X_n,\quad n\le -1. $$
 
 	*Proof*. Use 7.3 with $X_n=Y_{M\wedge n}, N=L$.
 
-	Let $N=\begin{cases} L,&\text{on }A\\ M,&\text{on }A^c$. Use the first part on $N\le M$ to get $\E Y_N\le \E Y_M$. Note that $N=M$ on $A^c$ to get
+	Let $N=\begin{cases} L,&\text{on }A\\ M,&\text{on }A^c\end{cases}$. Use the first part on $N\le M$ to get $\E Y_N\le \E Y_M$. Note that $N=M$ on $A^c$ to get
 	$$A\in \mathcal F_L\implies \E(Y_L;A) \le \E(Y_M;A) = \E[\E[Y_M|\mathcal F_L];A].$$
 	(Define $N$ so we can just localize the inequality to $A$.)
 5.  **Theorem (Generalization of Wald's equation)**: If $X_n$ is a submartingale, $\E[|X_{n+1}-X_n||\mathcal F_n]\le B$ a.s., and $\E N<\iy$, then $X_{N\wedge n}$ is uniformly integrable and $\E X_N\ge \E X_0$.[^f71] (For a martingale, we have $=$.)
