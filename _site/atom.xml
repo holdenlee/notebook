@@ -8,8 +8,317 @@
         <name>Holden Lee</name>
         <email>oldheneel@gmail.com</email>
     </author>
-    <updated>2016-05-14T00:00:00Z</updated>
+    <updated>2016-05-18T00:00:00Z</updated>
     <entry>
+    <title>Inference for topic models: Code</title>
+    <link href="http://holdenlee.github.io/notebook/posts/tcs/machine_learning/matrices/topic_code.html" />
+    <id>http://holdenlee.github.io/notebook/posts/tcs/machine_learning/matrices/topic_code.html</id>
+    <published>2016-05-18T00:00:00Z</published>
+    <updated>2016-05-18T00:00:00Z</updated>
+    <summary type="html"><![CDATA[
+<div class="container">
+  <div id="content">
+    <div class="page header">
+      <h1>Inference for topic models: Code</h1>
+    </div>
+    <div class="info">
+      
+       
+        <p>Posted: 2016-05-18 
+          , Modified: 2016-05-18 
+	</p>
+      
+       <p>Tags: <a href="/tags/topic%20models.html">topic models</a></p> 
+    </div>
+    
+  </div>
+  <!--/div-->
+
+  <div class="toc"></div>
+
+  <div class="blog-main">
+    <ul>
+<li><code>gen_topic_vector</code>: Generate row vectors of size <span class="math inline">\(K\)</span> using Dirichlet (or Gaussian) <span class="math inline">\((\al,\ldots, \al)\)</span>.</li>
+<li><code>gen_doc</code>: Generate topic vector, multiply by A</li>
+<li><code>interleave</code></li>
+<li><code>singlen1</code>: <span class="math inline">\(i\)</span>th standard basis vector</li>
+<li><code>process_row_delta</code>: ?</li>
+<li><code>process_row_C</code>: ?</li>
+<li><code>new_compute_B</code>:</li>
+<li><code>threshold</code>:</li>
+<li><code>log_likelihood</code>:</li>
+<li><code>fast_grad_log_likelihood</code>:</li>
+<li><code>project</code></li>
+<li><code>l1_distance</code></li>
+<li><code>projected_ascent</code>: ?</li>
+<li><code>top</code></li>
+<li><code>top5</code></li>
+<li><code>is_anchorword</code></li>
+<li><code>near_anchorword</code></li>
+<li><code>sparse_topic</code></li>
+<li><code>superflat_topic</code></li>
+<li><code>top_likelihood_support</code></li>
+<li><code>test_inference</code></li>
+<li><code>safe_mkdir</code></li>
+<li><code>write_doc</code></li>
+<li><code>write_flat</code></li>
+<li><code>estimate_support</code></li>
+<li><code>estimate_support_map</code></li>
+<li><code>split_heldout</code></li>
+<li><code>heldout_score</code></li>
+<li><code>held_out_probability_ascent</code></li>
+<li><code>nearest_neighbors</code></li>
+<li><code>get_train_data</code></li>
+</ul>
+
+  </div>
+
+    
+
+    <!-- Extension : Sharing buttons @ www.sharethis.com -->
+    <span class='st_facebook_large' displayText='Facebook'></span>
+    <span class='st_twitter_large' displayText='Tweet'></span>
+    <span class='st_googleplus_large' displayText='Google +'></span>
+    <span class='st_reddit_large' displayText='Reddit'></span>
+    <span class='st__large' displayText=''></span>
+
+    <div id="disqus_thread"></div>
+    
+
+
+  
+    <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+  </div>
+  
+</div>
+]]></summary>
+</entry>
+<entry>
+    <title>[DKLPRS] Markov logic</title>
+    <link href="http://holdenlee.github.io/notebook/posts/tcs/machine_learning/probabilistic/markov_logic.html" />
+    <id>http://holdenlee.github.io/notebook/posts/tcs/machine_learning/probabilistic/markov_logic.html</id>
+    <published>2016-05-17T00:00:00Z</published>
+    <updated>2016-05-17T00:00:00Z</updated>
+    <summary type="html"><![CDATA[
+<div class="container">
+  <div id="content">
+    <div class="page header">
+      <h1>[DKLPRS] Markov logic</h1>
+    </div>
+    <div class="info">
+      
+       
+        <p>Posted: 2016-05-17 
+          , Modified: 2016-05-17 
+	</p>
+      
+       <p>Tags: <a href="/tags/graphical%20model.html">graphical model</a>, <a href="/tags/probabilistic%20model.html">probabilistic model</a>, <a href="/tags/logic.html">logic</a>, <a href="/tags/FOL.html">FOL</a></p> 
+    </div>
+    
+  </div>
+  <!--/div-->
+
+  <div class="toc"> <ul>
+ <li><a href="#markov-logic-questions">Markov logic: Questions</a><ul>
+ <li><a href="#structure-learning-how-do-we-even-find-the-formulae">6.3 Structure learning: how do we even find the formulae?</a></li>
+ </ul></li>
+ <li><a href="#ksj-a-general-stochastic-approach-to-solving-problems-with-hard-and-soft-constraints">[KSJ] A general stochastic approach to solving problems with hard and soft constraints</a></li>
+ <li><a href="#scraps">Scraps</a></li>
+ <li><a href="#directions">Directions</a></li>
+ </ul> </div>
+
+  <div class="blog-main">
+    <h2 id="markov-logic-questions">Markov logic: Questions</h2>
+<ul>
+<li>Consider a statement like Moral(x) <span class="math inline">\(\implies\)</span> Happy(x). Consider 2 worlds: one where most people are moral, and all but 5 moral people are happy, another where only 5 people are moral, and they are all unhappy. It seems in the Markov model they would have the same weight, when the statement is represented as <span class="math inline">\(\neg\text{Moral}(x) \wedge \text{Happy}(x)\)</span>. Do we want this? I’m guessing this is easier than only restricting to moral people, because that involves dividing.</li>
+<li>I don’t understand the terminology used in LazySAT. My understanding of <code>active_atoms</code> is that we take every clause that is not satisfied and add ALL of its atoms. (Ex. if we have a formula <span class="math inline">\(Friend(A,B)\implies Happy(A) \wedge Happy(B)\)</span>, and <span class="math inline">\(\text{Friend}(x,y) \wedge \neg \text{Happy}(x)\wedge \text{Happy}(y)\)</span>, then both <span class="math inline">\(x,y\)</span> are considered active atoms.)
+<ul>
+<li>But then choosing unsatisfied <span class="math inline">\(x\)</span> and <span class="math inline">\(v_f\sim c\)</span>, it’salways true that <span class="math inline">\(v\in\)</span> active atoms, whereas in Algorithm 2, they consider when <span class="math inline">\(v\nin\)</span> active atoms!</li>
+<li>Note DeltaCost can be easily calculated. Local flipping doesn’t require recalculation of the whole cost.</li>
+<li>Shouldn’t DeltaCost be a function of a setting of variables, not a variable? Or is it like the derivative in the direction of variable <span class="math inline">\(v\)</span>, i.e., what you’d get by flipping <span class="math inline">\(v\)</span>? But you may need to flip two variables in a clause at the same time to get something better!</li>
+</ul></li>
+<li>I don’t understand the explanation on p. 8: The initial active atoms are all those appearing in clauses that are unsatisfied if only the atoms in the database are true, and all others are false.</li>
+<li>More fundamentally, I don’t understand what the database is!</li>
+<li>At each step, take a random unsatisfied clause. Maintain a set of active atoms.
+<ul>
+<li>With probability <span class="math inline">\(p\)</span> choose a random variable from the clause.</li>
+<li>Otherwise, choose the non-active variable <span class="math inline">\(v\)</span> in <span class="math inline">\(c\)</span> is lowest DeltaCost. (Why do we ignore active atoms? Isn’t it true that flipping them can also decrease the cost?)</li>
+<li>Add the chosen variable <span class="math inline">\(v_f\)</span> to <code>active_atoms</code> and add activated clauses. Flip <span class="math inline">\(v_f\)</span>.</li>
+<li>(Do we not want variables to be flipped twice?)</li>
+<li>NO: we choose the variable (active OR non-acive) in <span class="math inline">\(c\)</span> with lowest DeltaCost. It’s merely saying that we have to do a more involved computation if the variable is non-active. (Why? This has something to do with the DB vs. KB, no comprendo.)</li>
+<li>At the beginning, only include active atoms/clauses. Think of these as the dangerous atoms—flipping them could make a clause not satisfied. These clauses are the only clauses we will need to worry about. Add clauses to the active set only if we need to worry about them.</li>
+</ul></li>
+<li>So what’s the difference between SAT and LazySAT? I think it’s just: are you summing over all possible instantiations (unnecessary!), or just looking at the differences when you flip a variable? You can ignore formulas that don’t invove the current variable.</li>
+</ul>
+<p>(OK to have some kind of “complexity measure” of formulae saying how amenable they are to random-walk methods?)</p>
+<ul>
+<li>Intuition about deterministic vs. non-deterministic dependencies. (Tradeoff between search and following stochasticity cf. gradient? The smaller the weights the easier the flow but the lower the probability is to find a satisfying instance?)</li>
+<li>MC-SAT has hard satisfiability. Look at all clauses satisfied in the last step; the larger the weight, the more likely you are to force it to be satisfied next step. It calls on a uniform SAT solver (which doesn’t really exist—but there are things that do well in practice).</li>
+<li>p. 12. Indistinguishable objects. What if you’re just strying to find a distribution that’s close, ex. for at most binary relations, look at the proportion of <span class="math inline">\(\{a,b\}\)</span> with values of <span class="math inline">\(u_1(a),\ldots, u_1(b),\ldots, b_1(a,b),\ldots\)</span> where <span class="math inline">\(u\)</span> are unary and <span class="math inline">\(b\)</span> are binary relations.</li>
+</ul>
+<p>Perhaps I need to learn about databases.</p>
+<ul>
+<li>What is the closed-world assumption?</li>
+</ul>
+<p>Wait, you aren’t flipping nodes! I thought of the nodes as the actors, and unary functions on them. But are the nodes supposed to be formulae? Like <span class="math inline">\(u_1(x)\)</span>, <span class="math inline">\(b_1(x,y)\)</span>, and everything not in it is false?</p>
+<p>An atom is not a node but predicates applied to nodes!</p>
+<p>(Note the logical contradictions is not on the level of node values, but on the formulas relating them? Don’t have <span class="math inline">\(A\wedge B\)</span> as nodes, only have <span class="math inline">\(A\)</span>, <span class="math inline">\(B\)</span>.) Atoms are formulas without connectives like <span class="math inline">\(\wedge, \implies,\forall...\)</span></p>
+<blockquote>
+<p>basic inference problem in first-order logic is to determine whether a knowledge base KB entails a formula F, i.e., if F is true in all worlds where KB is true</p>
+</blockquote>
+<p>Sparsity in the sense that only the relations in the database can be true; everything else has to be false?</p>
+<p>Also, I don’t understand how to deal with intermediate functions like <span class="math inline">\(f(x,g(y))\)</span>. It seems there’s too many possible values of <span class="math inline">\(g\)</span>!</p>
+<p>Approaches to get past intractability:</p>
+<ul>
+<li>The <strong>pseudo-likelihood</strong> is <span class="math inline">\(\ln \Pj_w^*(X=x) = \sumo ln \log \Pj_w(X_l=x_l|MB_x(X_l))\)</span> (markov blanket). (When is this a good approx?)</li>
+<li><strong>Discriminative weight learning</strong>. Partition into evidence and query atoms and calculate conditional log-likelihood. (cf. RBM)</li>
+</ul>
+<h3 id="structure-learning-how-do-we-even-find-the-formulae">6.3 Structure learning: how do we even find the formulae?</h3>
+<ul>
+<li>Inductive logic programming #lookup. But use evaluation function based on pseudo-likelihood rather than accuracy and coverage.</li>
+</ul>
+<p>19 Dependencies are really probabilistic. Ex. two titles sharing a word are more likely to be the same?</p>
+<p>Applications.</p>
+<ul>
+<li>Entity resolution (when do things refer to the same object? Include formulae like transitivity of equality.)</li>
+<li>Citation resolution. (Ex. which article corresponds to which citation, when are they the same? You can imagine there’s some general rules which would do well.)</li>
+</ul>
+<p>Lifted inference, lifted resolution in FOL #lookup</p>
+<h2 id="ksj-a-general-stochastic-approach-to-solving-problems-with-hard-and-soft-constraints">[KSJ] A general stochastic approach to solving problems with hard and soft constraints</h2>
+<ul>
+<li>My understanding of “partitioning”: solve a problem hierarchically: break into smaller pieces, find a list of good solutions of each piece, and then figure out how to combine those solutions.</li>
+<li>Q: is there an algorithm agnostic to the encoding in some sense? (Doubtful—probably can embed crypto problems? But what if you only allow the simplest transformations?)</li>
+<li>WalkSAT <em>does</em> only flip one variable at a time.</li>
+<li>Hard constraints have greater weight than soft constraints.</li>
+</ul>
+<p>I think people do MCMC in problem-solving. Try to tweak things locally. Sometimes though there’s a larger restructuring—view it as a step in a more abstract space, a more abstract transformation?</p>
+<h2 id="scraps">Scraps</h2>
+<p>(Patterns you construct are patterns you could have found?)</p>
+<p>Goal in learning should be to find the formula with weights which decrease the entropy the most?</p>
+<p>SAT refutations corresponding to reasonable mathematical statements have short proofs but not the SAT framework? (Any way to compile down?)</p>
+<h2 id="directions">Directions</h2>
+<ul>
+<li>First, understand the classical results on learning and inference in graphical models.</li>
+<li>Understand MCMC and variational inference, and the situations where they have provable guarantees.</li>
+<li>Try to formulate the simplest problem where you do have some element of first-order logic (ex. a statement with <span class="math inline">\(\forall\)</span>) and/or some combinatorial complexity.</li>
+<li>What’s a test problem in this domain? They give citation resolution. Maybe this is practical but it seems like a rather boring problem!</li>
+<li>Understand some ideas from the logic-learning community (inductive logic programming, etc.) <a href="https://en.wikipedia.org/wiki/Inductive_logic_programming">ILP</a>. Machine learning <span class="math inline">\(\cap\)</span> programming languages???</li>
+</ul>
+
+  </div>
+
+    
+
+    <!-- Extension : Sharing buttons @ www.sharethis.com -->
+    <span class='st_facebook_large' displayText='Facebook'></span>
+    <span class='st_twitter_large' displayText='Tweet'></span>
+    <span class='st_googleplus_large' displayText='Google +'></span>
+    <span class='st_reddit_large' displayText='Reddit'></span>
+    <span class='st__large' displayText=''></span>
+
+    <div id="disqus_thread"></div>
+    
+
+
+  
+    <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+  </div>
+  
+</div>
+]]></summary>
+</entry>
+<entry>
+    <title>Sampling</title>
+    <link href="http://holdenlee.github.io/notebook/posts/tcs/machine_learning/optimization/sampling.html" />
+    <id>http://holdenlee.github.io/notebook/posts/tcs/machine_learning/optimization/sampling.html</id>
+    <published>2016-05-17T00:00:00Z</published>
+    <updated>2016-05-17T00:00:00Z</updated>
+    <summary type="html"><![CDATA[
+<div class="container">
+  <div id="content">
+    <div class="page header">
+      <h1>Sampling</h1>
+    </div>
+    <div class="info">
+      
+       
+        <p>Posted: 2016-05-17 
+          , Modified: 2016-05-17 
+	</p>
+      
+       <p>Tags: <a href="/tags/sampling.html">sampling</a></p> 
+    </div>
+    
+  </div>
+  <!--/div-->
+
+  <div class="toc"> <ul>
+ <li><a href="#markov-chain-monte-carlo">Markov Chain Monte Carlo</a><ul>
+ <li><a href="#metropolis-hastings">Metropolis-Hastings</a></li>
+ <li><a href="#gibbs-samplingglauber-dynamics">Gibbs sampling/Glauber dynamics</a></li>
+ </ul></li>
+ </ul> </div>
+
+  <div class="blog-main">
+    <p>A TOC for the sampling faction of optimization, including</p>
+<ul>
+<li>MCMC
+<ul>
+<li>Metropolis-Hastings (rejection sampling)</li>
+<li>Gibbs sampling</li>
+</ul></li>
+<li>Variational inference</li>
+</ul>
+<p>From a TOC viewpoint:</p>
+<ul>
+<li><a href="https://dl.dropboxusercontent.com/u/27883775/wiki/math/pdfs/counting_and_stat_phys1.pdf">Counting and statistical physics</a> (Local file: C:/Users/Owner/Dropbox/Math/Computation/general/tnoc)</li>
+<li>Andrej’s talk at Gems, Section 9 <a href="https://dl.dropboxusercontent.com/u/27883775/wiki/math/pdfs/gems_of_tcs.pdf">here</a></li>
+</ul>
+<p>See <a href="http://www.minimizingregret.com/2016/03/the-two-cultures-of-optimization.html">two cultures of optimization</a>.</p>
+<h2 id="markov-chain-monte-carlo">Markov Chain Monte Carlo</h2>
+<p>This is a catch-all term for <em>any</em> method for sampling by running a Markov chain on the state space.</p>
+<p>Formally, running MCMC for a distribution <span class="math inline">\(\pi\)</span> on <span class="math inline">\(\Om\)</span> means running a Markov chain <span class="math inline">\(X_t\)</span> on <span class="math inline">\(\Om\)</span> with stationary distribution <span class="math inline">\(\pi\)</span>.</p>
+<h3 id="metropolis-hastings">Metropolis-Hastings</h3>
+<p>Suppose * <span class="math inline">\(\Om\)</span> has a graph structure where at each vertex we can easily choose a neighbor. (Ex. for valid colorings, it is easy to tweak a valid coloring to get another one, but it is hard to simply choose a random coloring.) * We want to sample a distribution on <span class="math inline">\(\Om\)</span>, but all we know is a function <span class="math inline">\(f\)</span> such that <span class="math inline">\(P(x) \prop f(x)\)</span>. Equivalently, we only know the ratios between probabilities.</p>
+<p>Can we sample from <span class="math inline">\(\Om\)</span>? Yes, using Metropolis-Hastings. We already have a way to choose a neighbor randomly. However, running this Markov chain may give the wrong stationary distribution, so we sometimes “reject” a proposed move, using what we know about the desired distribution.</p>
+<p><strong>Definition</strong>. Consider a Markov chain where the probability of transitioning from <span class="math inline">\(x\)</span> to <span class="math inline">\(y\)</span> is <span class="math inline">\(\Psi(x,y)\)</span>. The <strong>Metropolis chain</strong> corresponding to <span class="math inline">\(\Psi\)</span> is <span class="math display">\[P(x,y) = \begin{cases}
+\Psi(x,y) \ba{\fc{\pi(y)\Psi(y,x)}{\pi(x) \Psi(x,y)} \wedge 1},&amp;\text{if } y\ne x\\
+1- \sum_{z:z\ne x} \Psi(x,z) \ba{\fc{\pi(z)\Psi(z,x)}{\pi(x)\Psi(x,z)}\wedge 1},&amp;\text{if }y=x.
+\end{cases}.\]</span> In particular, if <span class="math inline">\(\Psi\)</span> is symmetric, then it cancels out in the ratio.</p>
+<p><strong>Theorem</strong>. The stationary distribution of this Metropolis chain is <span class="math inline">\(\pi\)</span>.</p>
+<em>Proof/derivation</em>. At <span class="math inline">\(x\)</span>, we propose to move to <span class="math inline">\(y\)</span> with probability <span class="math inline">\(\Psi(x,y)\)</span>. For the new chain, let’s accept this move with probability <span class="math inline">\(a(x,y)\)</span>, and reject with probability <span class="math inline">\(1-a(x,y)\)</span> and stay at the current location. Then <span class="math inline">\(P(x,y) = \Psi(x,y) a(x,y)\)</span> for <span class="math inline">\(y\ne x\)</span>. For <span class="math inline">\(\pi\)</span> to be stationary, we want detailed balance,
+\begin{align}
+\pi(x) \Psi(x,y) a(x,y) &amp;= \pi(y) \Psi(y,x) a(y,x)\\
+\fc{ a(x,y)}{a(y,x)} &amp;= \fc{\pi(y) \Psi(y,x)}{\pi(x) \Psi(x,y)}.
+\end{align}
+<p>We want <span class="math inline">\(a\)</span> to be as large as possible for fast mixing, so choose <span class="math inline">\(a\)</span> as defined.</p>
+<p>Examples: coloring, optimization</p>
+<h3 id="gibbs-samplingglauber-dynamics">Gibbs sampling/Glauber dynamics</h3>
+<!--Q: is detailed balance necessary?-->
+
+  </div>
+
+    
+
+    <!-- Extension : Sharing buttons @ www.sharethis.com -->
+    <span class='st_facebook_large' displayText='Facebook'></span>
+    <span class='st_twitter_large' displayText='Tweet'></span>
+    <span class='st_googleplus_large' displayText='Google +'></span>
+    <span class='st_reddit_large' displayText='Reddit'></span>
+    <span class='st__large' displayText=''></span>
+
+    <div id="disqus_thread"></div>
+    
+
+
+  
+    <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+  </div>
+  
+</div>
+]]></summary>
+</entry>
+<entry>
     <title>NLP</title>
     <link href="http://holdenlee.github.io/notebook/posts/tcs/machine_learning/nlp/2016-senior-presentations.html" />
     <id>http://holdenlee.github.io/notebook/posts/tcs/machine_learning/nlp/2016-senior-presentations.html</id>
@@ -788,237 +1097,6 @@ Features may include
 <ul>
 <li>Convex bodies and isotropicity.</li>
 </ul>
-
-  </div>
-
-    
-
-    <!-- Extension : Sharing buttons @ www.sharethis.com -->
-    <span class='st_facebook_large' displayText='Facebook'></span>
-    <span class='st_twitter_large' displayText='Tweet'></span>
-    <span class='st_googleplus_large' displayText='Google +'></span>
-    <span class='st_reddit_large' displayText='Reddit'></span>
-    <span class='st__large' displayText=''></span>
-
-    <div id="disqus_thread"></div>
-    
-
-
-  
-    <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
-  </div>
-  
-</div>
-]]></summary>
-</entry>
-<entry>
-    <title>Constrained optimization</title>
-    <link href="http://holdenlee.github.io/notebook/posts/tcs/machine_learning/optimization/constrained.html" />
-    <id>http://holdenlee.github.io/notebook/posts/tcs/machine_learning/optimization/constrained.html</id>
-    <published>2016-04-28T00:00:00Z</published>
-    <updated>2016-04-28T00:00:00Z</updated>
-    <summary type="html"><![CDATA[
-<div class="container">
-  <div id="content">
-    <div class="page header">
-      <h1>Constrained optimization</h1>
-    </div>
-    <div class="info">
-      
-       
-        <p>Posted: 2016-04-28 
-          , Modified: 2016-04-28 
-	</p>
-      
-       <p>Tags: <a href="/tags/convex%20optimization.html">convex optimization</a></p> 
-    </div>
-    
-  </div>
-  <!--/div-->
-
-  <div class="toc"> <ul>
- <li><a href="#setup">Setup</a></li>
- <li><a href="#newton">Newton</a><ul>
- <li><a href="#feasible-start">Feasible start</a></li>
- <li><a href="#infeasible-start">Infeasible start</a></li>
- </ul></li>
- </ul> </div>
-
-  <div class="blog-main">
-    <h2 id="setup">Setup</h2>
-<p>Consider <span class="math inline">\(\min_{Ax=b}f\)</span>.</p>
-<ul>
-<li>How can we reduce this problem to one without inequality constraints? Let <span class="math inline">\(x_0+Fu\)</span> parametrize <span class="math inline">\(\set{x}{Ax=b}\)</span>.</li>
-<li>Why wouldn’t you want to do this? It can be inefficient—somehow the equality constraint captures more of the problem’s structure.</li>
-</ul>
-Give the example for quadratic minimization. What do the KKT equations say?
-\begin{align}
-\min_{Ax=b} \rc 2 x^T P x + q^T x + r &amp; \\
-Px^* + q + A^T \nu^*&amp;=0\\
-\iff \matt{P}{A^T}{A}0 \coltwo{x^*}{\nu^*} &amp;= \coltwo{-1}{b}.\label{eq:kkt-mat}
-\end{align}
-<p>This is unbounded below if there exist <span class="math inline">\(v,w\)</span> such that <span class="math inline">\(Pv+A^Tw=0\)</span>, <span class="math inline">\(Av=0\)</span>, <span class="math inline">\(-q^Tv+b^Tw&gt;0\)</span> (left-multiply by <span class="math inline">\((v^T\,w^T)\)</span>) to see that the equation above doesn’t have a solution).</p>
-<p>Recall the dual function. Why do we care about it? <span class="math display">\[g(\la,\nu) = \min_x f+\nu^T (Ax-b) = -\nu^Tb - f^*(-\nu^TA), \qquad f^(y)=\max y^Tx - f(x).\]</span> Equality constraints disappear in the dual. If the dual is nice, we can just solve an unconstrained problem <span class="math inline">\(\max_{\la \ge 0} g(\la,\nu)\)</span>.</p>
-<h2 id="newton">Newton</h2>
-<h3 id="feasible-start">Feasible start</h3>
-<p>Describe the Newton method starting with a feasible <span class="math inline">\(x, Ax=b\)</span>. The Newton step is the minimizer for the quadratic approximation under the constraint. (Finding the minimum of a quadratic amounts to solving a linear equation.) Using  <span class="math display">\[\matt{\nb^2 f}{A^T}A0 \coltwo{\De x_{nt}}w = \coltwo{-\nb f}{0}.\]</span> Define <span class="math display">\[\la(x) = (\De x_{nt}^T \nb^2 f \De x_{nt})^{\rc 2}\]</span>.</p>
-<p>Note this <em>is</em> normal Newton if you use a parametrization.</p>
-<p>(Convexity makes the KKT matrix invertible.)</p>
-<h3 id="infeasible-start">Infeasible start</h3>
-<p>Describe the infeasible start Newton method. Approximate <span class="math inline">\(f\)</span> by a quadratic using <span class="math inline">\(P=\nb^2 f\)</span> in  and find <span class="math inline">\(\De x_{nt}\)</span> so that <span class="math inline">\(x+\De x_{nt}\)</span> satisfies the KKT conditions. The equation for <span class="math inline">\(\De x_{nt}\)</span> is <span class="math display">\[\matt{\nb^2 f}{A^T}A0 \coltwo{\De x_{nt}}w = \coltwo{-\nb f}{b-Ax}.\]</span></p>
-<p>Note here we’re just updating <span class="math inline">\(x\)</span> by solving for <span class="math inline">\(\De x_{nt}\)</span>. Ech time <span class="math inline">\(w\)</span> is treated just as an auxiliary variable. But <span class="math inline">\(w\)</span> comes from the dual solution <span class="math inline">\(\nu\)</span>. Can we look at <span class="math inline">\((x,\nu)\)</span> together as a primal-dual pair and update both of them?</p>
-Let the residual be
-\begin{align}
-r &amp;= (\nb f + A^T \nu, Ax-b).
-\end{align}
-<p>Instead of minimizing <span class="math inline">\(f\)</span>, we minimize the residual for the KKT conditions. The residual has a component for minimizing <span class="math inline">\(f\)</span>, and a component for trying to satisfy <span class="math inline">\(Ax=b\)</span>.</p>
-<p>Here is the algorithm.</p>
-<ol type="1">
-<li>Start with <span class="math inline">\(x\)</span> (not necessarily satisfying <span class="math inline">\(Ax=b\)</span>).</li>
-<li>Calculate <span class="math inline">\(\De x_{nt}\)</span>, keeping track of <span class="math inline">\(\nu\)</span>. Backtrack (by multiplying by <span class="math inline">\(\be\)</span>) until you find <span class="math inline">\(t\)</span> such that <span class="math display">\[\ve{r(x+t\De x_{nt}, \nu + t\De \nu_{nt})}_2\le (1-\al t) \ve{r}_2.\]</span></li>
-<li>Repeat until <span class="math inline">\(Ax=b\)</span>, <span class="math inline">\(\ve{r}_2\le \ep\)</span>.</li>
-</ol>
-
-  </div>
-
-    
-
-    <!-- Extension : Sharing buttons @ www.sharethis.com -->
-    <span class='st_facebook_large' displayText='Facebook'></span>
-    <span class='st_twitter_large' displayText='Tweet'></span>
-    <span class='st_googleplus_large' displayText='Google +'></span>
-    <span class='st_reddit_large' displayText='Reddit'></span>
-    <span class='st__large' displayText=''></span>
-
-    <div id="disqus_thread"></div>
-    
-
-
-  
-    <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
-  </div>
-  
-</div>
-]]></summary>
-</entry>
-<entry>
-    <title>Convexity</title>
-    <link href="http://holdenlee.github.io/notebook/posts/tcs/machine_learning/optimization/convexity.html" />
-    <id>http://holdenlee.github.io/notebook/posts/tcs/machine_learning/optimization/convexity.html</id>
-    <published>2016-04-23T00:00:00Z</published>
-    <updated>2016-04-23T00:00:00Z</updated>
-    <summary type="html"><![CDATA[
-<div class="container">
-  <div id="content">
-    <div class="page header">
-      <h1>Convexity</h1>
-    </div>
-    <div class="info">
-      
-       
-        <p>Posted: 2016-04-23 
-          , Modified: 2016-04-23 
-	</p>
-      
-       <p>Tags: <a href="/tags/convex%20optimization.html">convex optimization</a></p> 
-    </div>
-    
-  </div>
-  <!--/div-->
-
-  <div class="toc"> <ul>
- <li><a href="#questions">Questions</a></li>
- <li><a href="#answers">Answers</a></li>
- </ul> </div>
-
-  <div class="blog-main">
-    <h2 id="questions">Questions</h2>
-<ul>
-<li>Define strongly convex. What estimates can you make using strong convexity? Why is it useful?</li>
-<li>Define smoothness. What does it give you?</li>
-<li>Define condition number for sets and matrices. What is the relationship? What do bounds on <span class="math inline">\(\nb^2\)</span> give on condition number?</li>
-</ul>
-<h2 id="answers">Answers</h2>
-<ul>
-<li>Strongly convex means <span class="math display">\[ f(y) \ge f(x) + \nb f(x)^T (y-x) + \fc m2 \ve{y-x}_2^2. \]</span> For twice-differentiable functions, this is equivalent to <span class="math inline">\(\nb^2 f\succeq mI\)</span>. Strong convexity lower-bounds suboptimality: if the gradient is small, then you are not too far from the minimum, because the gradient changes fast. (Ex. for <span class="math inline">\(c+dx+\fc m2x^2\)</span>, the minimum is at <span class="math inline">\(-\fc dm = -\rc m \nb f\)</span>.) The following inequality hold: (bound the optimal value in terms of the gradient, and bound the distance in terms of the gradient.
-\begin{align}
-p^* &amp;\ge f(x) - \rc{2m}\ve{\nb f(x)}_2^2\\
-\ve{x-x^*}_2 &amp; \le \fc 2m \ve{\nb f}_2^2.
-\end{align}</li>
-<li>Smoothness means <span class="math display">\[ f(y) \le f(x) + \nb f(x)^T (y-x) + \fc M2 \ve{y-x}_2^2. \]</span> For twice-differentiable functions, this is equivalent to <span class="math inline">\(\nb^2 f\preceq MI\)</span>. Smoothness upper-bounds suboptimality, and ensures that step sizes don’t overshoot the minimum (much)
-\begin{align}
-p^* &amp;\le f(x) - \rc{2M}\ve{\nb f}_2^2.
-\end{align}</li>
-<li>The condition number of a convex body <span class="math inline">\(C\)</span> is (<span class="math inline">\(W_{\max},W_{\min}\)</span> are max and min width) <span class="math display">\[ \text{cond} (C) = \fc{W_{\max}^2}{W_{\min}^2}.\]</span> For an ellipsoid defined by <span class="math inline">\(x^TA^{-1}x\le 1\)</span>, <span class="math display">\[ \text{cond} (\mathcal E) = \fc{\la_{\max}(A)}{\la_{\min}(A)} = \ka(A).\]</span> Strong convexity and smoothness together bound the condition number of sublevel sets <span class="math inline">\(C_\al =\set{x}{f(x)\le \al}\)</span>. We have for <span class="math inline">\(p^*&lt;\al\)</span>, <span class="math display">\[B_{\sfc{2(\al-p^*)}{M}}\subeq C_\al \subeq B_{\sfc{2(\al-p^*)}{m}},\]</span> <span class="math inline">\(\text{cond}(C_\al)\le \fc{M}{m}\)</span>. Moreover, <span class="math inline">\(\lim_{\al\to 0^+} \text{cond}(C_\al) = \ka (\nb f(x^*))\)</span>.</li>
-</ul>
-
-  </div>
-
-    
-
-    <!-- Extension : Sharing buttons @ www.sharethis.com -->
-    <span class='st_facebook_large' displayText='Facebook'></span>
-    <span class='st_twitter_large' displayText='Tweet'></span>
-    <span class='st_googleplus_large' displayText='Google +'></span>
-    <span class='st_reddit_large' displayText='Reddit'></span>
-    <span class='st__large' displayText=''></span>
-
-    <div id="disqus_thread"></div>
-    
-
-
-  
-    <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
-  </div>
-  
-</div>
-]]></summary>
-</entry>
-<entry>
-    <title>Convex problems</title>
-    <link href="http://holdenlee.github.io/notebook/posts/tcs/machine_learning/optimization/convex_problems.html" />
-    <id>http://holdenlee.github.io/notebook/posts/tcs/machine_learning/optimization/convex_problems.html</id>
-    <published>2016-04-23T00:00:00Z</published>
-    <updated>2016-04-23T00:00:00Z</updated>
-    <summary type="html"><![CDATA[
-<div class="container">
-  <div id="content">
-    <div class="page header">
-      <h1>Convex problems</h1>
-    </div>
-    <div class="info">
-      
-       
-        <p>Posted: 2016-04-23 
-          , Modified: 2016-04-23 
-	</p>
-      
-       <p>Tags: <a href="/tags/convex%20optimization.html">convex optimization</a></p> 
-    </div>
-    
-  </div>
-  <!--/div-->
-
-  <div class="toc"></div>
-
-  <div class="blog-main">
-    <p>Express the following as convex optimization problems.</p>
-<ul>
-<li>Quadratic minimization
-<ul>
-<li>Least squares</li>
-</ul></li>
-<li>Geometric programming</li>
-<li>Analytic center</li>
-</ul>
-\begin{align}
-&amp; \min \rc 2 x^T P x + q^T x + r, &amp;P\in S_+^h\\
-&amp; \min \ve{Ax-b}_262, &amp;P=A^TA, q=A^Tb \text{ matching with above}\\
-&amp; (\text{optimality conditions: } Px^*+q=0, \quad A^TAx^* = A^Tb\\
-&amp; \min \ln \pa{\sum \exp(a_i^Tx+b_i)}\\
-&amp; \min - \sum \ln(b_i - a_i^Tx)\\
-&amp; \min \ln \det(F(x)^{-1}),&amp; F(x) = F_0+\sum_i x_i F_i.
-\end{align}
 
   </div>
 
