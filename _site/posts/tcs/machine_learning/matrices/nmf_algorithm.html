@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+
+  <meta name="description" content="Holden Lee's Research Notebook">
+  <meta name="author" content="Holden Lee">
+    
+  <title>NMF algorithm</title>
+
+  <!-- Bootstrap core CSS -->
+  <link href="../../../../bootstrap/css/bootstrap.min.css" rel="stylesheet">
+
+  <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+  <!-- <link href="../../assets/css/ie10-viewport-bug-workaround.css" rel="stylesheet"> -->
+
+  <!-- Custom styles for this template -->
+  <link href="../../../../css/blog.css" rel="stylesheet">
+  <link href="../../../../css/default.css" rel="stylesheet">
+
+  <!-- Extension : Footnotes -->
+  <link href="../../../../footnotes/css/footnotes.css" rel="stylesheet">
+
+  <!-- Extension : InlineDisqussions @ https://github.com/tsi/inlineDisqussions -->
+  
+
+</head>
+
+<body>
+
+<!-- Navigation bar. navbar-inverse is black, navbar-default is white.-->
+<!-- To make a button active (pressed), use <li class="active"> -->
+<div id="header">
+  <nav class="navbar navbar-inverse navbar-fixed-top">
+    <div class="container">
+      <div class="navbar-header">
+        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+          <span class="sr-only">Toggle navigation</span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="../../../../">Notebook</a>
+      </div>
+      <div id="navbar" class="collapse navbar-collapse">
+        <ul class="nav navbar-nav">
+          <li><a href="../../../../">Home</a></li>
+          <li><a href="../../../../sitemap.html">Sitemap</a></li>
+<!-- TODO: Distinguish between PAPERS, RESEARCH QUESTIONS, BOOKS -->
+<!-- TODO: make this part a for loop over main pages -->
+        </ul>
+      </div><!--/.nav-collapse -->
+    </div>
+  </nav>
+</div>
+<!-- Content -->
+<!--div id="content">
+  <h1>Mental Wilderness</h1>-->
+
+
+
+<div class="container">
+  <div id="content">
+    <div class="page header">
+      <h1>NMF algorithm</h1>
+    </div>
+    <div class="info">
+      
+       
+        <p>Posted: 2016-04-22 
+          , Modified: 2016-04-22 
+	</p>
+      
+       <p>Tags: <a href="../../../../tags/NMF.html">NMF</a></p> 
+    </div>
+    
+  </div>
+  <!--/div-->
+
+  <div class="toc"> <ul>
+ <li><a href="#setup">Setup</a></li>
+ <li><a href="#preliminary-calculations">Preliminary calculations</a></li>
+ <li><a href="#actual-calculations">Actual calculations</a></li>
+ <li><a href="#kl-divergence">KL Divergence</a></li>
+ </ul> </div>
+
+  <div class="blog-main">
+    <h2 id="setup">Setup</h2>
+<p>The setup for alternating minimization is as follows.</p>
+<ol type="1">
+<li>(Decoding) Let <span class="math inline">\(x \leftarrow \text{decode}_{A^{(t)}} y\)</span>.</li>
+<li>(Gradient step) Let <span class="math display">\[A^{(t+1)} = A^{(t)} - \eta \pi(\nb L_x(A))\]</span> where the loss function is the KL-divergence (negative log-likelihood)
+\begin{align}
+L_x(A) &amp;= \sum y_i \ln \pf{y_i}{Ax_i}\\
+\nb L_x(A) &amp;= (-y\odot \rc{Ax}) x^T
+\end{align}
+and <span class="math inline">\(\pi\)</span> is projection to the probability simplex.</li>
+</ol>
+<p>The plan is to show this satisfies the conditions needed for approximate gradient descent: each step is correlated with the right direction. We want to find <span class="math inline">\(\al,\be,\ep\)</span> so that <span class="math display">\[ \an{g,A-A^*} \ge \al \ve{A-A^*}^2 + \be \ve{g}^2 - \ep\]</span> (for some norm).</p>
+<p>We have to be careful about 2 things.</p>
+<ul>
+<li>Uniqueness doesn’t hold in general—ex. we can expand the simplex, so there would be a manifold of solutions—but it does hold under separability. We have to use this somehow.</li>
+<li>The more complicated the decoding map is, the harder this is to analyze. The MLE estimator is difficult to work with because there is no explicit form. The inverse is probably easier to work with. It gives a biased estimate, but this may be OK if we only want to get close enough (ex. from <span class="math inline">\(\rc{\log n}\)</span> to <span class="math inline">\(\rc{n}\)</span>).</li>
+</ul>
+<p>We proceed in 2 lemmas.</p>
+<ul>
+<li>When <span class="math inline">\(A\approx A^*\)</span>, the decodings satisfy <span class="math inline">\(x\approx x^*\)</span>.</li>
+<li>When <span class="math inline">\(x\approx x^*\)</span>, the descent direction for <span class="math inline">\(L_x(A)\)</span> is correlated with <span class="math inline">\(A-A^*\)</span>.</li>
+</ul>
+<p>As a first step, show that <span class="math display">\[\an{\EE_y \pa{-y\odot \pa{\rc{Ax} -\rc{A^*x}}x^T} , A-A^*}&gt;0.\]</span></p>
+<h2 id="preliminary-calculations">Preliminary calculations</h2>
+First suppose <span class="math inline">\(y=A^*x\)</span> (no noise), <span class="math inline">\(x=x^*\)</span> (perfect decoding). Then letting <span class="math inline">\(D= \diag\prc{(Ax)_i}\)</span>,
+\begin{align}
+\an{\EE_y \pa{-y\odot \pa{\rc{Ax} -\rc{A^*x}}x^T} , A-A^*}
+&amp;= x^T\ub{(A-A^*)^T D (A-A^*)}{=:M^2}x\\
+&amp;= \ve{x}_{M}^2.
+\end{align}
+Now relax <span class="math inline">\(y\approx A^*x\)</span>, We get
+\begin{align}
+\an{\EE_y \pa{-y\odot \pa{\rc{Ax} -\rc{A^*x}}x^T} , A-A^*}
+&amp;= \EE_{y} \ve{x}_M^2 + \cancelto0{(x^TA^{*T} - y^T) D (A-A^*)x}
+\end{align}
+<p>using <span class="math inline">\(\E y = A^* x\)</span>.</p>
+Now relax <span class="math inline">\(x\approx x^*\)</span>. (Warning: <span class="math inline">\(x^*\)</span> simply being close may not imply convergence to <span class="math inline">\(A^*\)</span> without additional assumptions on <span class="math inline">\(A^*\)</span>, because of nonuniqueness.)
+\begin{align}
+\EE_{x,y} \an{-D yx^T, A-A^*}
+&amp;= \EE_{x,y} [-y^T D(A-A^*) x]\\
+&amp;= \EE_{x,y} [-y^T DA^*x]-1\\
+\end{align}
+<p>The dependencies of the random variables are <span class="math inline">\(x^* \to y \to x\)</span> (<span class="math inline">\(\E_y = A^*x^*\)</span>). We can’t simply replace <span class="math inline">\(\E y = A^*x^*\)</span> because we have to average over <span class="math inline">\(x\)</span> first, which depends on the decoding. (If we could replace <span class="math inline">\(y\)</span> like that, we get <span class="math inline">\(\an{x,x-x^*}_M\)</span>.)</p>
+<h2 id="actual-calculations">Actual calculations</h2>
+<p>Recall that if we’re decoding by multiplying by <span class="math inline">\(B\)</span>, we also have to threshold, <span class="math inline">\(\text{Th}(Bx)\)</span>.</p>
+In Theorem 4.1, if <span class="math inline">\(A\)</span> is biased, then we instead obtain a bound <span class="math display">\[ (By)_i - \E x_i = \ub{(By)_i - BA^*x}{\text{w.h.p. }\le 2\la(A) \sfc{\ln r}{n}} + B(A^*-A) x^*. \]</span> For the second term, <span class="math display">\[ \ve{B(A-A^*)x}_{\iy} \le |B|_{\iy} \max_i \ve{A_{\cdot i} - A_{\cdot i}^*}_1 \le \la \ep.\]</span> We want to lower bound
+\begin{align}
+\an{\nb A, A-A^*}
+&amp;= \sum \fc{y_iA_{ij}^*}{(Ax)_i} - 1\\
+&amp;= \sum_i \fc{y_i(A^*x)_i}{(Ax)_i} - 1\\
+&amp;= \sum \fc{b_i(A^* x)_i}{(Ax)_i} +
+\sum_i \fc{(A^*(x^*-x))_i (A^*x)_i}{(Ax)_i} + \sum_{i,j} \pa{(A^*x)_i\sfc{(Ax)_j}{(Ax)_i} - (A^*x)_j\sfc{(Ax)_i}{(Ax)_j}}^2.
+\end{align}
+<p>We may suppose <span class="math inline">\(\ve{A_{\bullet i} - A_{\bullet i}^*}\le \rc{\poly\log(n)}\)</span>, or something like this.</p>
+<p>Try 2: INCORRECT: I mixed up <span class="math inline">\(x,x^*\)</span> here. <span class="math display">\[\an{\nb A, A-A^*} = \an{\pa{y_i \sfc{(Ax)_j}{(Ax)_i} - y_j \sfc{(Ax)_i}{(Ax)_j}}_{ij}, \pa{(A^*x)_i  \sfc{(Ax)_j}{(Ax)_i} - (A^*x)_j  \sfc{(Ax)_i}{(Ax)_j}}_{ij}}.
+\]</span> It’s tempting to take <span class="math inline">\(\E_y\)</span> first, but we can’t do that.</p>
+<p>If <span class="math inline">\(x=x^*, y= A^*x^*\)</span> then we write this as a sum of squares above. (This is probably the same as writing <span class="math inline">\(\ve{x}_M^2\)</span> from the previous section…) This is Lagrange’s identity.</p>
+<p>We want to lower-bound by <span class="math display">\[ \al \ve{A-A^*}_F^2 + \be \ve{\pf{y_i}{(Ax)_i}}_2^2 \ve{x}_2^2 - \ep.
+\]</span></p>
+<h2 id="kl-divergence">KL Divergence</h2>
+<p>(5-12)</p>
+<p>Idea: use a different potential function. <span class="math inline">\(L^2\)</span> doesn’t make so much sense here.</p>
+Suppose <span class="math inline">\(x= (1)\)</span> and do MWU. The gradient is <span class="math display">\[-\diag\prc{Ax} yx^T = -\fc{y}{a}.\]</span> We get <span class="math display">\[a_i' = \fc{a_ie^{-\eta \fc{y_i}{a_i}}}{\sumo kn a_ke^{\eta \fc{y_k}{a_k}}}.\]</span> The metric is <span class="math display">\[d_{KL}(y,a) = \sumo in y_i \ln \pf{y_i}{a_i}.\]</span> The decrease is
+\begin{align}
+d_{KL}(y,a) - d_{KL}(y,a') &amp;= \sumo in y_i \ln\pf{a_i'}{a_i}\\
+&amp;=\sumo in y_i \ln \fc{e^{\eta\fc{y_j}{a_j}}}{\sumo jn a_j e^{-\eta \fc{y_j}{a_j}}}\\
+&amp;=\sumo in y_i \ln e^{\eta \fc{y_j}{a_j}} - \ln \sumo jn a_j e^{-\eta\fc{y_j}{a_j}}
+\end{align}
+<p>Sanity check: For <span class="math inline">\(\eta\to 0\)</span>, this is <span class="math inline">\(\eta(\sum \fc{y_i^2}{a_i}-\sum y_i)&gt;0\)</span> by <span class="math inline">\(T_2\)</span>’s inequality.</p>
+
+  </div>
+
+    
+
+    <!-- Extension : Sharing buttons @ www.sharethis.com -->
+    <span class="st_facebook_large" displayText="Facebook"></span>
+    <span class="st_twitter_large" displayText="Tweet"></span>
+    <span class="st_googleplus_large" displayText="Google +"></span>
+    <span class="st_reddit_large" displayText="Reddit"></span>
+    <span class="st__large" displayText></span>
+
+    <div id="disqus_thread"></div>
+    
+
+
+  
+    <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+  </div>
+  
+</div>
+
+
+<!-- Footer -->
+<div id="footer">
+  <div class="container">
+    Built with
+    <a href="http://jaspervdj.be/hakyll">Hakyll</a> 
+    using 
+    <a href="http://www.getbootstrap.com">Bootstrap</a>, 
+    <a href="http://www.disqus.com">Disqus</a>,
+    <a href="http://ignorethecode.net/blog/2010/04/20/footnotes/">Footnotes.js</a>,
+    <a href="http://highlightjs.org/">Highlight.js</a>, 
+    <a href="http://www.mathjax.org">MathJax</a>, 
+    and <a href="http://www.sharethis.com">ShareThis</a>.
+  </div>
+</div>
+</body>
+
+</html>
+
+<!-- SCRIPTS -->
+<!-- jQuery-->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+<script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
+
+<script src="../../../../bootstrap/js/bootstrap.min.js"></script>
+
+<!-- Extension : Highlight.js @ https://highlightjs.org/ -->
+<!-- Syntax highlighting tomorrow-night-bright, agate-->
+<link rel="stylesheet" href="../../../../highlight/css/tomorrow-night-bright.css">
+<script src="../../../../highlight/js/highlight.pack.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+
+<!-- Extension : MathJax @ https://docs.mathjax.org/en/v2.5-latest/tex.html -->
+<!-- MathJax/config/local/local.js contains macros. Need to provide entire URL-->
+<script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML,http://holdenlee.github.io/notebook/MathJax/config/local/local"></script>
+
+<!-- Extension : Footnotes @ http://ignorethecode.net/blog/2010/04/20/footnotes/ -->
+<script src="../../../../footnotes/js/footnotes.js"></script>
+
+<!-- Extension : Disqus @ http://disqus.com -->
+<!-- Extension : InlineDisqussions @ https://github.com/tsi/inlineDisqussions -->
+
+<script src="../../../../disqus/js/disqus.js"></script>
+
+
+
+<!-- Extension : Google Analytics -->
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-73261814-1', 'auto');
+  ga('send', 'pageview');
+
+</script>
+
