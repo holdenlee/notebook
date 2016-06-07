@@ -43,7 +43,7 @@ Idea: on average, there is greater correlation between 2 random vectors in a $k$
 
 *   Let $\wt \E$ be the empirical average, i.e., $\wt \E v_iv_j = \rc n(AA^T)_{ij}$. We have $|v_iv_j|\le 1$, so by Chernoff,
 	$$\Pj(\ab{\wt \E v_iv_j - \E v_iv_j} \ge t) \le 2e^{-nt^2}$$
-	for $i,j\nin I$. We get a similar bound if $i\in I$ or $j\in I$, where the randomness is over the noise in $E$.
+	for $i,j\nin I$. We get a similar bound if $i\in I$ or $j\in I$, where the randomness is over the noise in $\ep$.
 	Union-bounding,
 	$$\Pj(\text{for some $i\ne j$, }\ab{\wt \E v_iv_j - \E v_iv_j} \ge \fc{\ep}{2})\le m^2 e^{-cn\ep^2}.$$
 	Take $n=\Om(\prc{\ep^2}\ln m)$ to get this to be $o(1)$.
