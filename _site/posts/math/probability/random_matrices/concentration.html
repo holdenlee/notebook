@@ -85,7 +85,7 @@
 
   <div class="blog-main">
     <p>See <a href="https://en.wikipedia.org/wiki/Matrix_Chernoff_bound">wikipedia</a>.</p>
-<p><strong>Theorem (Matrix Bernstein)</strong>: Let <span class="math inline">\(\{X_k\}_{k=1}^n\)</span> be a sequence of independent random <span class="math inline">\(d\times d\)</span> matrices with <span class="math display">\[ \E X_k = 0, \quad \la_{\max}(X_k)\le R\text{ a.s.}\]</span> Then for all <span class="math inline">\(t\ge 0\)</span>, <span class="math display">\[ \Pj \ba{\la_{\max}\pa{\sumo kn X_k}} \le de^{-\fc{t^2}{2\si^2+\fc 23 Rt}}\]</span> where <span class="math inline">\(\si^2 = \ve{\sumo kn \E(X_k^2)}\)</span>.</p>
+<p><strong>Theorem (Matrix Bernstein)</strong>: Let <span class="math inline">\(\{X_k\}_{k=1}^n\)</span> be a sequence of independent random <span class="math inline">\(d\times d\)</span> matrices with <span class="math display">\[ \E X_k = 0, \quad \la_{\max}(X_k)\le R\text{ a.s.}\]</span> Then for all <span class="math inline">\(t\ge 0\)</span>, <span class="math display">\[ \Pj \ba{\la_{\max}\pa{\sumo kn X_k}\ge t} \le de^{-\fc{t^2}{2\si^2+\fc 23 Rt}}\]</span> where <span class="math inline">\(\si^2 = \ve{\sumo kn \E(X_k^2)}\)</span>.</p>
 <p>(Note that requiring <span class="math inline">\(X_i\le R\)</span> can be restrictive. If this doesn’t hold use the following instead.)</p>
 <p>Reference: THE EXPECTED NORM OF A SUM OF INDEPENDENT RANDOM MATRICES: AN ELEMENTARY APPROACH</p>
 <strong>Theorem (Matrix Rosenthal)</strong>: Let <span class="math inline">\(S_1,\ldots, S_n\)</span> be random <span class="math inline">\(d_1\times d_2\)</span> complex-valued matrices with <span class="math inline">\(\E S_i=O\)</span>, and <span class="math inline">\(Z:=\sumo in S_i\)</span>. Let

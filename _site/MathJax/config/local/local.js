@@ -45,7 +45,7 @@ MathJax.Hub.Config({
       T: "\\mathbb{T}",
       X: "\\mathfrak{X}",
       Z: "\\mathbb{Z}",
-      one: "\\mathbbm{1}",
+      one: "\\mathbf{1}",
       mba: "\\mathbf{a}",
       ma: "\\mathfrak{a}",
       mb: "\\mathfrak{b}",

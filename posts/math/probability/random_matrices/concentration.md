@@ -11,7 +11,7 @@ See [wikipedia](https://en.wikipedia.org/wiki/Matrix_Chernoff_bound).
 **Theorem (Matrix Bernstein)**: Let $\{X_k\}_{k=1}^n$ be a sequence of independent random $d\times d$ matrices with
 $$ \E X_k = 0, \quad \la_{\max}(X_k)\le R\text{ a.s.}$$
 Then for all $t\ge 0$,
-$$ \Pj \ba{\la_{\max}\pa{\sumo kn X_k}} \le de^{-\fc{t^2}{2\si^2+\fc 23 Rt}}$$
+$$ \Pj \ba{\la_{\max}\pa{\sumo kn X_k}\ge t} \le de^{-\fc{t^2}{2\si^2+\fc 23 Rt}}$$
 where $\si^2 = \ve{\sumo kn \E(X_k^2)}$.
 
 (Note that requiring $X_i\le R$ can be restrictive. If this doesn't hold use the following instead.)
