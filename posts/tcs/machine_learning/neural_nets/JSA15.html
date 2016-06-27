@@ -10,20 +10,20 @@
   <meta name="description" content="Holden Lee's Research Notebook">
   <meta name="author" content="Holden Lee">
     
-  <title>Posts tagged "NMF"</title>
+  <title>[JSA15] Beating the Perils of Non-Convexity - Guaranteed Training of Neural Networks using Tensor Methods</title>
 
   <!-- Bootstrap core CSS -->
-  <link href="../bootstrap/css/bootstrap.min.css" rel="stylesheet">
+  <link href="../../../../bootstrap/css/bootstrap.min.css" rel="stylesheet">
 
   <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
   <!-- <link href="../../assets/css/ie10-viewport-bug-workaround.css" rel="stylesheet"> -->
 
   <!-- Custom styles for this template -->
-  <link href="../css/blog.css" rel="stylesheet">
-  <link href="../css/default.css" rel="stylesheet">
+  <link href="../../../../css/blog.css" rel="stylesheet">
+  <link href="../../../../css/default.css" rel="stylesheet">
 
   <!-- Extension : Footnotes -->
-  <link href="../footnotes/css/footnotes.css" rel="stylesheet">
+  <link href="../../../../footnotes/css/footnotes.css" rel="stylesheet">
 
   <!-- Extension : InlineDisqussions @ https://github.com/tsi/inlineDisqussions -->
   
@@ -44,12 +44,12 @@
           <span class="icon-bar"></span>
           <span class="icon-bar"></span>
         </button>
-        <a class="navbar-brand" href="../">Notebook</a>
+        <a class="navbar-brand" href="../../../../">Notebook</a>
       </div>
       <div id="navbar" class="collapse navbar-collapse">
         <ul class="nav navbar-nav">
-          <li><a href="../">Home</a></li>
-          <li><a href="../sitemap.html">Sitemap</a></li>
+          <li><a href="../../../../">Home</a></li>
+          <li><a href="../../../../sitemap.html">Sitemap</a></li>
 <!-- TODO: Distinguish between PAPERS, RESEARCH QUESTIONS, BOOKS -->
 <!-- TODO: make this part a for loop over main pages -->
         </ul>
@@ -66,43 +66,61 @@
 <div class="container">
   <div id="content">
     <div class="page header">
-      <h1>Posts tagged "NMF"</h1>
+      <h1>[JSA15] Beating the Perils of Non-Convexity - Guaranteed Training of Neural Networks using Tensor Methods</h1>
     </div>
     <div class="info">
       
+       
+        <p>Posted: 2016-06-27 
+          , Modified: 2016-06-27 
+	</p>
       
-      
+       <p>Tags: <a href="../../../../tags/neural%20net.html">neural net</a></p> 
     </div>
     
   </div>
   <!--/div-->
 
-  
+  <div class="toc"> <ul>
+ <li><a href="#notes">Notes</a></li>
+ <li><a href="#algorithm">Algorithm</a></li>
+ </ul> </div>
 
   <div class="blog-main">
-    <ul>
-    
-        <li>
-            <a href="../posts/tcs/machine_learning/matrices/BGKP16.html">[BGKP16] Non-negative matrix factorization under heavy noise</a> (2016-06-27)
-        </li>
-    
-        <li>
-            <a href="../posts/tcs/machine_learning/matrices/nmf_algorithm.html">NMF algorithm</a> (2016-04-22)
-        </li>
-    
-        <li>
-            <a href="../posts/tcs/machine_learning/matrices/NMF.html">Non-negative matrix factorization</a> (2016-03-26)
-        </li>
-    
+    <p>Gives the first provable risk bounds for 2-layer neural nets via an efficient algorithm. Assumes that the generative distribution for the inputs <span class="math inline">\(x\)</span>’s is known or estimable (the algorithm uses the 3rd order score function). Algorithm is based on tensor decomposition.</p>
+<p>Remarks:</p>
+<ul>
+<li>The distribution <span class="math inline">\(p(y|x)\)</span> defined by the NN seems funny. <span class="math inline">\(y\in \{0,1\}\)</span> with <span class="math display">\[f(x) = \E[\wt y|x] = \an{\si_2,\si(A_1^T x + b_1)}+b_2.\]</span> But this means that we must have <span class="math inline">\(f(x)\in \{0,1\}\)</span>! Usually this is put through another sigmoid function…</li>
 </ul>
-
-
+<h2 id="notes">Notes</h2>
+<p>See [JSA14].</p>
+<p><strong>Lemma (Stein’s identity)</strong>: Under some regularity conditions, <span class="math display">\[\EE_{x\sim p} [G(x) \ot \nb_x\ln p(x)] = \EE_{x\sim p} \nb_x G(x).\]</span> (For example, for <span class="math inline">\(p(x)\)</span> Gaussian, <span class="math inline">\(\nb_x \ln p(x) = -x\)</span>.)</p>
+<p><em>Proof</em>. By IbP, <span class="math display">\[\int G(x)_i \pdd{x_j} \ln p(x) p(x) \dx = \int G(x)_i \pdd{x_j}p(x) = -\int \pdd{x_j} G(x)_i p(x)\dx.\]</span></p>
+<h2 id="algorithm">Algorithm</h2>
+<ol type="1">
+<li>Tensor decomposition</li>
+<li>Fourier algorithm</li>
+<li>Ridge (linear) regression</li>
+</ol>
 
   </div>
 
     
 
+    <!-- Extension : Sharing buttons @ www.sharethis.com -->
+    <span class="st_facebook_large" displayText="Facebook"></span>
+    <span class="st_twitter_large" displayText="Tweet"></span>
+    <span class="st_googleplus_large" displayText="Google +"></span>
+    <span class="st_reddit_large" displayText="Reddit"></span>
+    <span class="st__large" displayText></span>
 
+    <div id="disqus_thread"></div>
+    
+
+
+  
+    <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+  </div>
   
 </div>
 
@@ -130,12 +148,12 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
 <script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
 
-<script src="../bootstrap/js/bootstrap.min.js"></script>
+<script src="../../../../bootstrap/js/bootstrap.min.js"></script>
 
 <!-- Extension : Highlight.js @ https://highlightjs.org/ -->
 <!-- Syntax highlighting tomorrow-night-bright, agate-->
-<link rel="stylesheet" href="../highlight/css/tomorrow-night-bright.css">
-<script src="../highlight/js/highlight.pack.js"></script>
+<link rel="stylesheet" href="../../../../highlight/css/tomorrow-night-bright.css">
+<script src="../../../../highlight/js/highlight.pack.js"></script>
 <script>hljs.initHighlightingOnLoad();</script>
 
 <!-- Extension : MathJax @ https://docs.mathjax.org/en/v2.5-latest/tex.html -->
@@ -143,10 +161,13 @@
 <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML,http://holdenlee.github.io/notebook/MathJax/config/local/local"></script>
 
 <!-- Extension : Footnotes @ http://ignorethecode.net/blog/2010/04/20/footnotes/ -->
-<script src="../footnotes/js/footnotes.js"></script>
+<script src="../../../../footnotes/js/footnotes.js"></script>
 
 <!-- Extension : Disqus @ http://disqus.com -->
 <!-- Extension : InlineDisqussions @ https://github.com/tsi/inlineDisqussions -->
+
+<script src="../../../../disqus/js/disqus.js"></script>
+
 
 
 <!-- Extension : Google Analytics -->
