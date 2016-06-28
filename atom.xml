@@ -8,8 +8,262 @@
         <name>Holden Lee</name>
         <email>oldheneel@gmail.com</email>
     </author>
-    <updated>2016-06-27T00:00:00Z</updated>
+    <updated>2016-06-28T00:00:00Z</updated>
     <entry>
+    <title>k-means clustering</title>
+    <link href="http://holdenlee.github.io/notebook/posts/tcs/machine_learning/matrices/k-means.html" />
+    <id>http://holdenlee.github.io/notebook/posts/tcs/machine_learning/matrices/k-means.html</id>
+    <published>2016-06-28T00:00:00Z</published>
+    <updated>2016-06-28T00:00:00Z</updated>
+    <summary type="html"><![CDATA[
+<div class="container">
+  <div id="content">
+    <div class="page header">
+      <h1>k-means clustering</h1>
+    </div>
+    <div class="info">
+      
+       
+        <p>Posted: 2016-06-28 
+          , Modified: 2016-06-28 
+	</p>
+      
+       <p>Tags: <a href="/tags/clustering.html">clustering</a></p> 
+    </div>
+    
+  </div>
+  <!--/div-->
+
+  <div class="toc"> <ul>
+ <li><a href="#questions">Questions</a></li>
+ </ul> </div>
+
+  <div class="blog-main">
+    <p><a href="http://cs229.stanford.edu/notes/cs229-notes7a.pdf">Reference</a></p>
+<p>The <span class="math inline">\(k\)</span>-means clustering is the following. (Lloyd’s algorithm) Let data points be <span class="math inline">\(x^{(i)}\)</span>.</p>
+<ol type="1">
+<li>Initialize <span class="math inline">\(\mu_1,\ldots, \mu_k\)</span>.</li>
+<li>Repeat until convergence.
+<ol type="1">
+<li>Let <span class="math inline">\(c(i) = \amin_j |x^{(i)}-\mu_j|\)</span>.</li>
+<li>Let <span class="math inline">\(\mu_j = \EE_{c(i)=j} x^{(i)}\)</span>.</li>
+</ol></li>
+</ol>
+<p>This is alternating minimization on the distortion function <span class="math display">\[J(c,\mu) = \sumo im \ve{x^{(i)}-\mu_{c(i)}}^2\]</span> with respect to <span class="math inline">\(c\)</span> and <span class="math inline">\(\mu\)</span>. This value decreases and so converges (possible to local optimum); in practice, the <span class="math inline">\(\mu\)</span>’s converge.</p>
+<h2 id="questions">Questions</h2>
+<p>Are there provable guarantees on <span class="math inline">\(k\)</span>-means clustering—if so, what? And/or is there a (worst-case) hardness result?</p>
+
+  </div>
+
+    
+
+    <!-- Extension : Sharing buttons @ www.sharethis.com -->
+    <span class='st_facebook_large' displayText='Facebook'></span>
+    <span class='st_twitter_large' displayText='Tweet'></span>
+    <span class='st_googleplus_large' displayText='Google +'></span>
+    <span class='st_reddit_large' displayText='Reddit'></span>
+    <span class='st__large' displayText=''></span>
+
+    <div id="disqus_thread"></div>
+    
+
+
+  
+    <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+  </div>
+  
+</div>
+]]></summary>
+</entry>
+<entry>
+    <title>ICA (Independent components analysis)</title>
+    <link href="http://holdenlee.github.io/notebook/posts/tcs/machine_learning/matrices/ica.html" />
+    <id>http://holdenlee.github.io/notebook/posts/tcs/machine_learning/matrices/ica.html</id>
+    <published>2016-06-28T00:00:00Z</published>
+    <updated>2016-06-28T00:00:00Z</updated>
+    <summary type="html"><![CDATA[
+<div class="container">
+  <div id="content">
+    <div class="page header">
+      <h1>ICA (Independent components analysis)</h1>
+    </div>
+    <div class="info">
+      
+       
+        <p>Posted: 2016-06-28 
+          , Modified: 2016-06-28 
+	</p>
+      
+       <p>Tags: <a href="/tags/ICA.html">ICA</a></p> 
+    </div>
+    
+  </div>
+  <!--/div-->
+
+  <div class="toc"> <ul>
+ <li><a href="#algorithm">Algorithm</a></li>
+ <li><a href="#tensor-algorithm">Tensor algorithm</a></li>
+ </ul> </div>
+
+  <div class="blog-main">
+    <p><a href="http://cs229.stanford.edu/notes/cs229-notes11.pdf">Reference</a></p>
+<p>Given that the components of <span class="math inline">\(s\in \R^n\)</span> are independent, and we observe <span class="math inline">\(x=As\)</span>, we want to find <span class="math inline">\(W=A^{-1}\)</span> and recover <span class="math inline">\(s\)</span>. Let <span class="math inline">\(w_i^T\)</span> be the rows of <span class="math inline">\(W\)</span>.</p>
+<p>When the <span class="math inline">\(s_i\)</span> are non-gaussian, the solution is unique up to permutation and scaling. (Otherwise, there is rotational invariance.)</p>
+<h2 id="algorithm">Algorithm</h2>
+<p>Suppose the cdf of the components is logistic. (This is a reasonable default. Mean-center first.) Let <span class="math inline">\(g(s) = \rc{1+e^{-s}}\)</span>.</p>
+<p>Change of coordinates gives <span class="math inline">\(p_x(x) = p_s(Wx)\det(W)\)</span>. The log-likelihood is <span class="math display">\[\ell(W) = \sumo im \pa{\sumo jn \ln g'(w_j^T x^{(i)}) + \ln |W|}.\]</span> Use stochastic gradient ascent.</p>
+<p>Note: for problems where successive training examples are correlated, when implementing stochastic gradient ascent, it also sometimes helps accelerate convergence if we visit training examples in a randomly permuted order.</p>
+<h2 id="tensor-algorithm">Tensor algorithm</h2>
+<p>See “new_thread.pdf” page 30.</p>
+
+  </div>
+
+    
+
+    <!-- Extension : Sharing buttons @ www.sharethis.com -->
+    <span class='st_facebook_large' displayText='Facebook'></span>
+    <span class='st_twitter_large' displayText='Tweet'></span>
+    <span class='st_googleplus_large' displayText='Google +'></span>
+    <span class='st_reddit_large' displayText='Reddit'></span>
+    <span class='st__large' displayText=''></span>
+
+    <div id="disqus_thread"></div>
+    
+
+
+  
+    <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+  </div>
+  
+</div>
+]]></summary>
+</entry>
+<entry>
+    <title>Factor analysis</title>
+    <link href="http://holdenlee.github.io/notebook/posts/tcs/machine_learning/matrices/factor-analysis.html" />
+    <id>http://holdenlee.github.io/notebook/posts/tcs/machine_learning/matrices/factor-analysis.html</id>
+    <published>2016-06-28T00:00:00Z</published>
+    <updated>2016-06-28T00:00:00Z</updated>
+    <summary type="html"><![CDATA[
+<div class="container">
+  <div id="content">
+    <div class="page header">
+      <h1>Factor analysis</h1>
+    </div>
+    <div class="info">
+      
+       
+        <p>Posted: 2016-06-28 
+          , Modified: 2016-06-28 
+	</p>
+      
+       <p>Tags: <a href="/tags/factor%20analysis.html">factor analysis</a></p> 
+    </div>
+    
+  </div>
+  <!--/div-->
+
+  <div class="toc"> <ul>
+ <li><a href="#solution-1-assume-independence">Solution 1: Assume independence</a></li>
+ <li><a href="#solution-2-factor-analysis">Solution 2: Factor analysis</a></li>
+ </ul> </div>
+
+  <div class="blog-main">
+    <p><a href="http://cs229.stanford.edu/notes/cs229-notes9.pdf">Reference</a></p>
+<p>If <span class="math inline">\(n\gg m\)</span>, and we have data points <span class="math inline">\(x^{(i)}\in \R^n\)</span>, <span class="math inline">\(1\le i\le m\)</span>, how can we find Gaussian structure? We don’t have enough data points to even fit a single Gaussian.</p>
+<h2 id="solution-1-assume-independence">Solution 1: Assume independence</h2>
+<p>If the covariance matrix <span class="math inline">\(\Si\)</span> is diagonal, minimize the negative log likelihood <span class="math display">\[\sum\pa{\pf{\pa{x_j^{(i)}-\mu_j}^2}{2\si_j^2} + \ln \si_j}\]</span> to get <span class="math inline">\(\Si_{jj} = \EE_{i=1}^m (x_j^{(i)}-\mu_j)^2\)</span>. If <span class="math inline">\(\Si=\si I\)</span>, then <span class="math inline">\(\si^2 = \EE_{i,j}(x_j^{(i)}- \mu_j)^2\)</span>.</p>
+<h2 id="solution-2-factor-analysis">Solution 2: Factor analysis</h2>
+Break the coordinates into 2 parts <span class="math inline">\(x\)</span> and <span class="math inline">\(z\)</span> and assume
+\begin{align}
+z&amp;\sim N(0,I)\\
+\ep &amp;\sim N(0,\Psi)\\
+x &amp;= \mu+ \La z + \ep.
+\end{align}
+<p>Calculate <span class="math display">\[\coltwo zx \sim N\pa{\coltwo 0\mu, \matt{I}{\La^T}{\La}{\La\La^T+\Psi}}.\]</span> Now do EM on the log likelihood with respect to <span class="math inline">\(z\)</span> and <span class="math inline">\(\La\)</span>. (details…)</p>
+<ul>
+<li>“This is just matrix factorization.”</li>
+<li>“Often allows more domain knowledge to be incorporated.”</li>
+</ul>
+
+  </div>
+
+    
+
+    <!-- Extension : Sharing buttons @ www.sharethis.com -->
+    <span class='st_facebook_large' displayText='Facebook'></span>
+    <span class='st_twitter_large' displayText='Tweet'></span>
+    <span class='st_googleplus_large' displayText='Google +'></span>
+    <span class='st_reddit_large' displayText='Reddit'></span>
+    <span class='st__large' displayText=''></span>
+
+    <div id="disqus_thread"></div>
+    
+
+
+  
+    <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+  </div>
+  
+</div>
+]]></summary>
+</entry>
+<entry>
+    <title>CCA (Canonical correlation analysis)</title>
+    <link href="http://holdenlee.github.io/notebook/posts/tcs/machine_learning/matrices/cca.html" />
+    <id>http://holdenlee.github.io/notebook/posts/tcs/machine_learning/matrices/cca.html</id>
+    <published>2016-06-28T00:00:00Z</published>
+    <updated>2016-06-28T00:00:00Z</updated>
+    <summary type="html"><![CDATA[
+<div class="container">
+  <div id="content">
+    <div class="page header">
+      <h1>CCA (Canonical correlation analysis)</h1>
+    </div>
+    <div class="info">
+      
+       
+        <p>Posted: 2016-06-28 
+          , Modified: 2016-06-28 
+	</p>
+      
+       <p>Tags: <a href="/tags/CCA.html">CCA</a></p> 
+    </div>
+    
+  </div>
+  <!--/div-->
+
+  <div class="toc"></div>
+
+  <div class="blog-main">
+    <p><a href="https://en.wikipedia.org/wiki/Canonical_correlation">Wikipedia</a></p>
+<p>Goal: Find the linear combination of <span class="math inline">\((X_i)\)</span> and <span class="math inline">\((Y_j)\)</span> with maximum correlation.</p>
+<p>Let <span class="math inline">\(\Si_{XY} = \Cov(X,Y)\)</span>.</p>
+<p>We want to maximize (let <span class="math inline">\(\ve{v}_M=v^TMv\)</span>) <span class="math display">\[\max_{a,b} \ve{a^T\Si_{XY}b}{\ve{a}_{\Si_{XX}}\ve{b}_{\Si_{YY}}}.\]</span> Let <span class="math inline">\(c=\Si_{XX}a^{\rc 2}\)</span> and <span class="math inline">\(d=\Si_{YY}^{\rc 2}b\)</span>. Then this is <span class="math display">\[\fc{c^T \Si_{XX}^{-\rc2} \Si_{XY} \Si_{YY}^{-\rc2}d}{\ve{c}_2\ve{d}_2}.\]</span> Thus, find the SVD of <span class="math display">\[\Si_{XX}^{-\rc2} \Si_{XY} \Si_{YY}^{-1} \Si_{YX} \Si_{XX}^{-\rc 2}.\]</span> Change coordinates back to find <span class="math inline">\(a,b\)</span>.</p>
+
+  </div>
+
+    
+
+    <!-- Extension : Sharing buttons @ www.sharethis.com -->
+    <span class='st_facebook_large' displayText='Facebook'></span>
+    <span class='st_twitter_large' displayText='Tweet'></span>
+    <span class='st_googleplus_large' displayText='Google +'></span>
+    <span class='st_reddit_large' displayText='Reddit'></span>
+    <span class='st__large' displayText=''></span>
+
+    <div id="disqus_thread"></div>
+    
+
+
+  
+    <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+  </div>
+  
+</div>
+]]></summary>
+</entry>
+<entry>
     <title>[JSA15] Beating the Perils of Non-Convexity - Guaranteed Training of Neural Networks using Tensor Methods</title>
     <link href="http://holdenlee.github.io/notebook/posts/tcs/machine_learning/neural_nets/JSA15.html" />
     <id>http://holdenlee.github.io/notebook/posts/tcs/machine_learning/neural_nets/JSA15.html</id>
@@ -617,475 +871,6 @@ and <span class="math inline">\(\fc{\sqrt B}{A}&gt;\sfc{2}{\pi}\)</span>.</li>
 <li>What’s a test problem in this domain? They give citation resolution. Maybe this is practical but it seems like a rather boring problem!</li>
 <li>Understand some ideas from the logic-learning community (inductive logic programming, etc.) <a href="https://en.wikipedia.org/wiki/Inductive_logic_programming">ILP</a>. Machine learning <span class="math inline">\(\cap\)</span> programming languages???</li>
 </ul>
-
-  </div>
-
-    
-
-    <!-- Extension : Sharing buttons @ www.sharethis.com -->
-    <span class='st_facebook_large' displayText='Facebook'></span>
-    <span class='st_twitter_large' displayText='Tweet'></span>
-    <span class='st_googleplus_large' displayText='Google +'></span>
-    <span class='st_reddit_large' displayText='Reddit'></span>
-    <span class='st__large' displayText=''></span>
-
-    <div id="disqus_thread"></div>
-    
-
-
-  
-    <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
-  </div>
-  
-</div>
-]]></summary>
-</entry>
-<entry>
-    <title>Sampling</title>
-    <link href="http://holdenlee.github.io/notebook/posts/tcs/machine_learning/optimization/sampling.html" />
-    <id>http://holdenlee.github.io/notebook/posts/tcs/machine_learning/optimization/sampling.html</id>
-    <published>2016-05-17T00:00:00Z</published>
-    <updated>2016-05-17T00:00:00Z</updated>
-    <summary type="html"><![CDATA[
-<div class="container">
-  <div id="content">
-    <div class="page header">
-      <h1>Sampling</h1>
-    </div>
-    <div class="info">
-      
-       
-        <p>Posted: 2016-05-17 
-          , Modified: 2016-05-17 
-	</p>
-      
-       <p>Tags: <a href="/tags/sampling.html">sampling</a></p> 
-    </div>
-    
-  </div>
-  <!--/div-->
-
-  <div class="toc"> <ul>
- <li><a href="#markov-chain-monte-carlo">Markov Chain Monte Carlo</a><ul>
- <li><a href="#metropolis-hastings">Metropolis-Hastings</a></li>
- <li><a href="#gibbs-samplingglauber-dynamics">Gibbs sampling/Glauber dynamics</a></li>
- </ul></li>
- </ul> </div>
-
-  <div class="blog-main">
-    <p>A TOC for the sampling faction of optimization, including</p>
-<ul>
-<li>MCMC
-<ul>
-<li>Metropolis-Hastings (rejection sampling)</li>
-<li>Gibbs sampling</li>
-</ul></li>
-<li>Variational inference</li>
-</ul>
-<p>From a TOC viewpoint:</p>
-<ul>
-<li><a href="https://dl.dropboxusercontent.com/u/27883775/wiki/math/pdfs/counting_and_stat_phys1.pdf">Counting and statistical physics</a> (Local file: C:/Users/Owner/Dropbox/Math/Computation/general/tnoc)</li>
-<li>Andrej’s talk at Gems, Section 9 <a href="https://dl.dropboxusercontent.com/u/27883775/wiki/math/pdfs/gems_of_tcs.pdf">here</a></li>
-</ul>
-<p>See <a href="http://www.minimizingregret.com/2016/03/the-two-cultures-of-optimization.html">two cultures of optimization</a>.</p>
-<h2 id="markov-chain-monte-carlo">Markov Chain Monte Carlo</h2>
-<p>This is a catch-all term for <em>any</em> method for sampling by running a Markov chain on the state space.</p>
-<p>Formally, running MCMC for a distribution <span class="math inline">\(\pi\)</span> on <span class="math inline">\(\Om\)</span> means running a Markov chain <span class="math inline">\(X_t\)</span> on <span class="math inline">\(\Om\)</span> with stationary distribution <span class="math inline">\(\pi\)</span>.</p>
-<h3 id="metropolis-hastings">Metropolis-Hastings</h3>
-<p>Suppose * <span class="math inline">\(\Om\)</span> has a graph structure where at each vertex we can easily choose a neighbor. (Ex. for valid colorings, it is easy to tweak a valid coloring to get another one, but it is hard to simply choose a random coloring.) * We want to sample a distribution on <span class="math inline">\(\Om\)</span>, but all we know is a function <span class="math inline">\(f\)</span> such that <span class="math inline">\(P(x) \prop f(x)\)</span>. Equivalently, we only know the ratios between probabilities.</p>
-<p>Can we sample from <span class="math inline">\(\Om\)</span>? Yes, using Metropolis-Hastings. We already have a way to choose a neighbor randomly. However, running this Markov chain may give the wrong stationary distribution, so we sometimes “reject” a proposed move, using what we know about the desired distribution.</p>
-<p><strong>Definition</strong>. Consider a Markov chain where the probability of transitioning from <span class="math inline">\(x\)</span> to <span class="math inline">\(y\)</span> is <span class="math inline">\(\Psi(x,y)\)</span>. The <strong>Metropolis chain</strong> corresponding to <span class="math inline">\(\Psi\)</span> is <span class="math display">\[P(x,y) = \begin{cases}
-\Psi(x,y) \ba{\fc{\pi(y)\Psi(y,x)}{\pi(x) \Psi(x,y)} \wedge 1},&amp;\text{if } y\ne x\\
-1- \sum_{z:z\ne x} \Psi(x,z) \ba{\fc{\pi(z)\Psi(z,x)}{\pi(x)\Psi(x,z)}\wedge 1},&amp;\text{if }y=x.
-\end{cases}.\]</span> In particular, if <span class="math inline">\(\Psi\)</span> is symmetric, then it cancels out in the ratio.</p>
-<p><strong>Theorem</strong>. The stationary distribution of this Metropolis chain is <span class="math inline">\(\pi\)</span>.</p>
-<em>Proof/derivation</em>. At <span class="math inline">\(x\)</span>, we propose to move to <span class="math inline">\(y\)</span> with probability <span class="math inline">\(\Psi(x,y)\)</span>. For the new chain, let’s accept this move with probability <span class="math inline">\(a(x,y)\)</span>, and reject with probability <span class="math inline">\(1-a(x,y)\)</span> and stay at the current location. Then <span class="math inline">\(P(x,y) = \Psi(x,y) a(x,y)\)</span> for <span class="math inline">\(y\ne x\)</span>. For <span class="math inline">\(\pi\)</span> to be stationary, we want detailed balance,
-\begin{align}
-\pi(x) \Psi(x,y) a(x,y) &amp;= \pi(y) \Psi(y,x) a(y,x)\\
-\fc{ a(x,y)}{a(y,x)} &amp;= \fc{\pi(y) \Psi(y,x)}{\pi(x) \Psi(x,y)}.
-\end{align}
-<p>We want <span class="math inline">\(a\)</span> to be as large as possible for fast mixing, so choose <span class="math inline">\(a\)</span> as defined.</p>
-<p>Examples: coloring, optimization</p>
-<h3 id="gibbs-samplingglauber-dynamics">Gibbs sampling/Glauber dynamics</h3>
-<!--Q: is detailed balance necessary?-->
-
-  </div>
-
-    
-
-    <!-- Extension : Sharing buttons @ www.sharethis.com -->
-    <span class='st_facebook_large' displayText='Facebook'></span>
-    <span class='st_twitter_large' displayText='Tweet'></span>
-    <span class='st_googleplus_large' displayText='Google +'></span>
-    <span class='st_reddit_large' displayText='Reddit'></span>
-    <span class='st__large' displayText=''></span>
-
-    <div id="disqus_thread"></div>
-    
-
-
-  
-    <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
-  </div>
-  
-</div>
-]]></summary>
-</entry>
-<entry>
-    <title>NLP</title>
-    <link href="http://holdenlee.github.io/notebook/posts/tcs/machine_learning/nlp/2016-senior-presentations.html" />
-    <id>http://holdenlee.github.io/notebook/posts/tcs/machine_learning/nlp/2016-senior-presentations.html</id>
-    <published>2016-05-14T00:00:00Z</published>
-    <updated>2016-05-14T00:00:00Z</updated>
-    <summary type="html"><![CDATA[
-<div class="container">
-  <div id="content">
-    <div class="page header">
-      <h1>NLP</h1>
-    </div>
-    <div class="info">
-      
-       
-        <p>Posted: 2016-05-14 
-          , Modified: 2016-05-14 
-	</p>
-      
-       <p>Tags: <a href="/tags/nlp.html">nlp</a></p> 
-    </div>
-    
-  </div>
-  <!--/div-->
-
-  <div class="toc"> <ul>
- <li><a href="#personality-through-sentiment-analysis-sidharth">Personality through sentiment analysis (Sidharth)</a><ul>
- <li><a href="#harvard-inquirer">Harvard Inquirer</a></li>
- <li><a href="#general-event-analysis">General event analysis</a></li>
- </ul></li>
- <li><a href="#answering-sat-reading-comprehension-questions-with-tensor-decomposition-and-neural-networks-saahil-madge">Answering SAT reading comprehension questions with tensor decomposition and neural networks (Saahil Madge)</a><ul>
- <li><a href="#tensor-factorization-actually-matrix-factorization-optimizing-over-2-matrices">Tensor factorization (actually, matrix factorization, optimizing over 2 matrices)</a></li>
- <li><a href="#memory-networks">Memory networks</a></li>
- <li><a href="#results">Results</a></li>
- </ul></li>
- <li><a href="#automated-wordnet-construction-using-word-embeddings-misha">Automated WordNet construction using word embeddings (Misha)</a><ul>
- <li><a href="#associate-words-with-synsets">Associate words with synsets</a></li>
- <li><a href="#infer-word-relations">Infer word relations</a></li>
- <li><a href="#translational-synset-matching">Translational synset matching</a></li>
- </ul></li>
- </ul> </div>
-
-  <div class="blog-main">
-    <p>NLP group meeting 5-14-16</p>
-<h2 id="personality-through-sentiment-analysis-sidharth">Personality through sentiment analysis (Sidharth)</h2>
-<ul>
-<li>Big five personality</li>
-<li>Predicting personality from Twitter data, etc.</li>
-</ul>
-<p>Longitudinal, with 5000 documents per person spanning years, with data from private correspondences (more unfiltered). Use <a href="http://rotunda.upress.virginia.edu/founders">presidential letters</a> from Adams, Jefferson, and Washington.</p>
-<!-- I am so much more expressive and unreserved in the expression of my sentiments-->
-<h3 id="harvard-inquirer">Harvard Inquirer</h3>
-<p>Use Harvard Inquirer Categories which puts words in categories (ex. “strong” contains audacity, battle, wealthy, charisma, clever, climax, further). These are hand-crafted categories. There are 200 categories; number of words vary. Words can appear in multiple categories.</p>
-<p>Start with a specific event and analyze the way they respond. For example, use Washington’s early campaigns from the French and Indian War. Find keywords and phrases relating specifically to the event. Use these keywords to find other letters in the same category.</p>
-<p>Differentiate between attitude in these letters and overall attitude by the difference of means statistical test. There were differences in overstatement, negative, understtement, vice, and arousal (negative).</p>
-<p>In the early French and Indian War, Washington had limited resources, Americans would desert, etc.</p>
-<h3 id="general-event-analysis">General event analysis</h3>
-<p>Use Lasswell categories for general event analysis:</p>
-<ul>
-<li>power gain, loss, conflict, cooperation</li>
-<li>respect gain or loss</li>
-<li>affection gain or loss</li>
-<li>wealth</li>
-<li>well-being loss</li>
-</ul>
-<p>Use a Bayesian classifier for all letters. Put in the category that it correlates with the most, provided it’s at least a certain threshold.</p>
-<p>Washington and Adams react to power loss differently. For example, Washington was more active and passive, and both understated and overstated more.</p>
-<p>Vice put together with self-pronouns means self-doubt.</p>
-<p>The goal was to find an interesting way to measure the resilience of a president in the face of tough events. I found some metrics which yielded useful, informative results.</p>
-<p>Another example: Adams was pessimistic and powerless about not being able to go home; Jefferson was closely involved with the education of his kids.</p>
-<p>How to use this? Facebook posts, emails (Clinton, Enron, Wikileaks). Panama papers?</p>
-<h2 id="answering-sat-reading-comprehension-questions-with-tensor-decomposition-and-neural-networks-saahil-madge">Answering SAT reading comprehension questions with tensor decomposition and neural networks (Saahil Madge)</h2>
-<!-- you spend your whole life stuck in the labyrinth-->
-<p>Goal: create a system for machine comprehension. Previous work focused on reading questions for young children (MCTest), with very low accuracy on “why” questions. Most of these are “bag of words” models.</p>
-<p>But we want to capture semantic and structural information. We use SAT questions, which are longer and more complex, and answering requires understanding deeper information about the context. They use different words, “angry” vs. “incensed”, etc.</p>
-<h3 id="tensor-factorization-actually-matrix-factorization-optimizing-over-2-matrices">Tensor factorization (actually, matrix factorization, optimizing over 2 matrices)</h3>
-<p>We use a knowledge graph, consist of entities and relations <span class="math inline">\(\an{e_1,r,e_2}\)</span>. Entities are nodes, and relations are directed edges. We can ask queries <span class="math inline">\(\an{e_1,?,e_2},\an{e_1,r,?}\)</span>.</p>
-<p>(Google’s knowledge graph is FreeBase, 300GB. Nell at Carnegie Mellon is trained to extract triples from the Internet.)</p>
-<ul>
-<li>First, convert text to sets of triples on the knowledge graph. (Use the Stanford NLP toolkit.)</li>
-<li>Use word2vec to convert questions to queries on the graph.</li>
-</ul>
-<p>We focus on Subject-Verb-Direct object (ex. dog likes sausage) or copular relations (subject and description, ex. dog is green). <!-- --></p>
-<p>We used Stanford high-dependency parser. We can do pronoun-antecedent resolutions as well.</p>
-<p>Represent the knowledge graph as a 3-D array where each <span class="math inline">\(X_k\)</span> is the adjacency matrix for relation type <span class="math inline">\(k\)</span>. Approach: find rank <span class="math inline">\(r\)</span> approximation <span class="math display">\[X_k\approx AR_kA^T,\]</span> (<span class="math inline">\(n\times r, r\times r\)</span>, <span class="math inline">\(n\)</span> is the number of entities) for latent features. Use alternating least squares, semantically smoth embedding. Answer questions using factorization. (The slices are dependent because the <span class="math inline">\(A\)</span> is shared.)</p>
-<p>Stories about a character make one of the slices dense; explanatory articles are a lot sparser. Most tensors are sparse. <!-- slices are not symmetric. (one way) binary and sparse --></p>
-<p>(Each slice is factorized separately? Use <a href="http://www.mit.edu/~mnick/">Rescal</a>.)</p>
-<!-- entries.-->
-<h3 id="memory-networks">Memory networks</h3>
-<p>Use neural network to predict answers. Embed the tensor and vectorized query <span class="math inline">\(q\)</span> as inputs. Train the network to recognize what information is relevant, and output an answer choice.</p>
-<h3 id="results">Results</h3>
-<p>Tensor model trains independently, while the NN needs to be trained on 2/3 of the questions. Tensor model is consistent but with low ceiling.</p>
-<p>The tensor model completes a triple rather than just give an answer choice.</p>
-<!-- small data. transfer learning. replaceable characters-->
-<!-- metamind. semantic vs. episodic. DMM. default neural network -->
-<h2 id="automated-wordnet-construction-using-word-embeddings-misha">Automated WordNet construction using word embeddings (Misha)</h2>
-<p>Can we use a mathematical approach to constructing the WordNet graph?</p>
-<p>Current automated methods include merging or extending. Use multi-language translations (French WordNet), scrape Wiktionary, or use rule-based/automatic methods.</p>
-<ol type="1">
-<li>Can we associate words with synsets (sets of synonyms)? Use translations. <!--meaning independent of word--></li>
-<li>Can we find relations between synsets or words? Not yet. (Only using translation.)</li>
-<li>Can we link to synsets in the Princeton WordNet? Yes.</li>
-</ol>
-<p>Use word embeddings. Optimize the squared norm objective <span class="math display">\[\min_{v\in \R^d, C\in \R} \sum_{(i,j)\in [V]^2} f(X_{ij}) (\ve{v_w+v_j}_2^2 + C-\log X_{ij})^2.\]</span> (Distributional assumption.) Word vectors have been used in solving analogies, named-entity recognition, and word similarity.</p>
-<p>Use the discourse model: a corpus is generated by a random walk over the discourse space <span class="math inline">\(\R^d\)</span>. <!-- lower bound for d. Why can't you take d=1,2? --></p>
-<h3 id="associate-words-with-synsets">Associate words with synsets</h3>
-<p>Arora et al. used a learned dictionary of atoms to find representation of the meanings of a word <span class="math inline">\(w\in V\)</span> with a dictionary <span class="math inline">\(A\in \R^{K\times d}\)</span> and sparsity constraint <span class="math inline">\(s\)</span>:</p>
-<ol type="1">
-<li>Find <span class="math inline">\(R_w\in \R^K\)</span> minimizing <span class="math inline">\(\ve{v_w-R_w^TA}_2\)</span> such that <span class="math inline">\(\ve{R_w}_0\le s\)</span>.</li>
-<li>For each <span class="math inline">\(i\)</span> such that <span class="math inline">\(R_{w,i}&gt;0\)</span> find a dense cluster <span class="math inline">\(C\sub \R^d\)</span> of word vectors close to <span class="math inline">\(A_i\in \R^d\)</span>.</li>
-<li>For each cluster <span class="math inline">\(C\)</span>, the set of words <span class="math inline">\(\set{w'}{v_{w'}\in C}\)</span> represents one meaning of <span class="math inline">\(w\)</span>.</li>
-</ol>
-<h3 id="infer-word-relations">Infer word relations</h3>
-<p>Consider hypernyms.</p>
-<ul>
-<li>For supervised learning, use SVM or logistic regression classification on word pair features.</li>
-<li>For unsupervised learning, learn a mixture of 2 gaussians on feature vectors for the word pair, or prune with similarity thresholds or requiring shared atoms.</li>
-</ul>
-<p>This fails on real datasets because of word-relation sparsity and similar relations problem (problems discerning hypernyms and cohypernyms).</p>
-<p>There is a spatial distinction between hyponym-hypernym and random pairs, but not between hyponym-hypernym and co-hypernym (sharing the same hypernym) pairs.</p>
-<h3 id="translational-synset-matching">Translational synset matching</h3>
-<p>We can link to synsets in the Princeton WordNet.</p>
-<p>Given <span class="math inline">\(w\)</span> in a foreign language to synsets in the Princeton WordNet,</p>
-<ol type="1">
-<li>find meanings of <span class="math inline">\(w\)</span> using polysemy.</li>
-<li>find the synsets of all English translations of <span class="math inline">\(w\)</span>.</li>
-<li>Match each meaning to one of the synsets by a similarity measure between the words in the meaning and the foreign languge translation of the synset definition.</li>
-</ol>
-<!--Sometimes don't match to correct atom. -->
-<p>Ex. The word “container” doesn’t exist in Dutch. (cf. Hofstadter, Surfaces and Essences.)</p>
-
-  </div>
-
-    
-
-    <!-- Extension : Sharing buttons @ www.sharethis.com -->
-    <span class='st_facebook_large' displayText='Facebook'></span>
-    <span class='st_twitter_large' displayText='Tweet'></span>
-    <span class='st_googleplus_large' displayText='Google +'></span>
-    <span class='st_reddit_large' displayText='Reddit'></span>
-    <span class='st__large' displayText=''></span>
-
-    <div id="disqus_thread"></div>
-    
-
-
-  
-    <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
-  </div>
-  
-</div>
-]]></summary>
-</entry>
-<entry>
-    <title>Weekly summary 5-14-16</title>
-    <link href="http://holdenlee.github.io/notebook/posts/summaries/2016-05-14.html" />
-    <id>http://holdenlee.github.io/notebook/posts/summaries/2016-05-14.html</id>
-    <published>2016-05-11T00:00:00Z</published>
-    <updated>2016-05-11T00:00:00Z</updated>
-    <summary type="html"><![CDATA[
-<div class="container">
-  <div id="content">
-    <div class="page header">
-      <h1>Weekly summary 5-14-16</h1>
-    </div>
-    <div class="info">
-      
-       
-        <p>Posted: 2016-05-11 
-          , Modified: 2016-05-11 
-	</p>
-      
-       <p>Tags: <a href="/tags/none.html">none</a></p> 
-    </div>
-    
-  </div>
-  <!--/div-->
-
-  <div class="toc"></div>
-
-  <div class="blog-main">
-    <p>Machine learning</p>
-<ul>
-<li>Presentation on Language Games
-<ul>
-<li>TODO: Find some theoretical problems.</li>
-</ul></li>
-<li>NMF
-<ul>
-<li>Why can we use the regular pseudoinverse? (CONTINUE)</li>
-<li>TODO: Search literature, talk to Andrej, Tengyu for ideas</li>
-<li>TODO: Look at Freddy’s code and do some experiments.</li>
-</ul></li>
-<li>NLP learning
-<ul>
-<li>Read Mike Collins’s notes</li>
-<li>Skimmed [CC14] on NMF.</li>
-<li>TODO: Read book on NLP.</li>
-</ul></li>
-<li><a href="../tcs/machine_learning/matrices/streaming_PCA.html">Streaming PCA, Yuanzhi Li</a>.</li>
-<li>TODO: Finish reviewing rest of BV</li>
-<li>TODO: Read lots, start keeping track of problems and techniques.</li>
-</ul>
-<!--After NIPS, find collaborations with other ML students.-->
-<p>Coding</p>
-<ul>
-<li>Understood SoS relaxation approach.</li>
-<li>Started reading CSP refutation paper.
-<ul>
-<li>TODO: Read more of it, in particular, understand how to convert it to SoS language.</li>
-</ul></li>
-<li>Tried “covering with convex sets” but seems difficult.</li>
-<li>TODO: try approach with modulus of convexity.</li>
-<li>TODO: understand SDP extension approach.</li>
-<li>TODO: other approaches?</li>
-</ul>
-<p>TCS</p>
-<ul>
-<li>Log-sobolev inequalities</li>
-</ul>
-<p>TODO</p>
-<ul>
-<li>Review statistical physics.</li>
-<li>Review metric embeddings/geometric inequalities (MAT529) (<span class="citation" data-cites="Kiran">@Kiran</span>).</li>
-<li>Things left to summarize:
-<ul>
-<li>Convex geometry</li>
-<li>Optimization (BV)</li>
-<li>Optimization on manifolds (AMS)</li>
-</ul></li>
-<li>Make a summer reading list. (<span class="citation" data-cites="Arora">@Arora</span>)
-<ul>
-<li>General TCS (randomized algorithms, approximation algorithms)</li>
-<li>Probability (finish)</li>
-<li>Advanced probability
-<ul>
-<li>? Martingales</li>
-<li>Concentration inequalities</li>
-<li>Stochastic processes</li>
-<li>Random matrices</li>
-</ul></li>
-<li>Amit Singer’s course</li>
-<li>Optimization (<span class="citation" data-cites="Hazan">@Hazan</span> for recommendations.)</li>
-<li>? ATaAP</li>
-<li>Topics
-<ul>
-<li>Variational inference and MCMC
-<ul>
-<li>Volume estimation??</li>
-</ul></li>
-<li>Graphical models</li>
-</ul></li>
-</ul></li>
-</ul>
-<p>Other</p>
-<ul>
-<li>Olivier’s generals. TODO: Ask about CertiCoq.</li>
-</ul>
-
-  </div>
-
-    
-
-    <!-- Extension : Sharing buttons @ www.sharethis.com -->
-    <span class='st_facebook_large' displayText='Facebook'></span>
-    <span class='st_twitter_large' displayText='Tweet'></span>
-    <span class='st_googleplus_large' displayText='Google +'></span>
-    <span class='st_reddit_large' displayText='Reddit'></span>
-    <span class='st__large' displayText=''></span>
-
-    <div id="disqus_thread"></div>
-    
-
-
-  
-    <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
-  </div>
-  
-</div>
-]]></summary>
-</entry>
-<entry>
-    <title>Towards a better understanding of streaming PCA (Yuanzhi Li)</title>
-    <link href="http://holdenlee.github.io/notebook/posts/tcs/machine_learning/matrices/streaming_PCA.html" />
-    <id>http://holdenlee.github.io/notebook/posts/tcs/machine_learning/matrices/streaming_PCA.html</id>
-    <published>2016-05-10T00:00:00Z</published>
-    <updated>2016-05-10T00:00:00Z</updated>
-    <summary type="html"><![CDATA[
-<div class="container">
-  <div id="content">
-    <div class="page header">
-      <h1>Towards a better understanding of streaming PCA (Yuanzhi Li)</h1>
-    </div>
-    <div class="info">
-      
-       
-        <p>Posted: 2016-05-10 
-          , Modified: 2016-05-10 
-	</p>
-      
-       <p>Tags: <a href="/tags/pca.html">pca</a></p> 
-    </div>
-    
-  </div>
-  <!--/div-->
-
-  <div class="toc"></div>
-
-  <div class="blog-main">
-    <p>Given data <span class="math inline">\(x_i\in \R^d\)</span> sampled from an unknown distribution with <span class="math inline">\(\E[x_ix_i^T]=X\)</span>, where <span class="math inline">\(x\)</span>’s are independent, compute top <span class="math inline">\(k\)</span> eigenvectors of <span class="math inline">\(X\)</span>.</p>
-<p>(For the asymmetric <span class="math inline">\(xy^T\)</span> case, finding the top <span class="math inline">\(k\)</span> is harder.)</p>
-<p>Normal SVD is not memory efficient; you need to store a <span class="math inline">\(d\times d\)</span> matrix. Goal: compute <span class="math inline">\(k\)</span>-SVD in space <span class="math inline">\(O(kd)\)</span>.</p>
-<p>A popular heuristic is to start with a random initial matrix <span class="math inline">\(U_0\in \R^{d\times k}\)</span>. On receiving <span class="math inline">\(x_i\)</span>, update <span class="math inline">\(U_i=(I+\eta_i x_ix_i^T)U_{i-1}\)</span> and let <span class="math inline">\(U_i=QR(U)\)</span> (orthogonalization). Let <span class="math inline">\(\eta_i\sim \rc{i}\)</span>. (Orthogonalization is not a projection. It’s a retraction onto the manifold.)</p>
-<p>This works very well in practice but it’s complicated to analyze from a theoretical point of view.</p>
-<p>Let <span class="math inline">\(g=\si_k-\si_{k+1}\)</span>. The bound is <span class="math inline">\(\fc{k}{g^3T}\)</span>. We use the measure <span class="math inline">\(\E\ba{\ve{W^TU}_F^2}\)</span> (projection to last <span class="math inline">\(k\)</span> singular values. <span class="math inline">\(U\)</span> is the output, <span class="math inline">\(W\)</span> has the last <span class="math inline">\(d-k\)</span> singular values).</p>
-<p>(Rank 1 is just gradient descent; there is no projection.)</p>
-<p>Consider the offline case first: we get <span class="math inline">\(X\)</span> directly instead of <span class="math inline">\(x_ix_i^T\)</span>. The algorithm is analogous to the <strong>subspace power method</strong>.</p>
-<ul>
-<li>Start with random <span class="math inline">\(U_0\in R^{d\times k}\)</span>.</li>
-<li><span class="math inline">\(U=(I+\eta_iX)U_{i-1}\)</span>, <span class="math inline">\(U_i = QR(U)\)</span> decomposition. (This is not linear.)</li>
-</ul>
-<p>We can do the QR decomposition in the last step. It seems nonlinear, how can it commute? In practice you need to do QR decomposition for numerical accuracy. “To TCS people” you can move QR decomposition to the end.</p>
-<p>Analysis: Let <span class="math inline">\(U_i = UR, U_{i+1} = U'R'\)</span>. Then <span class="math inline">\(U_{i+1} = (I+\eta_{i+1}X)(I+\eta_iX) U_{i-1}RR'\)</span>.</p>
-<p>(For a regret bound, you can’t do this.)</p>
-<p>This is how subspace QR is proved: you push everything to the end. <!-- mult update project at end. --></p>
-<p>Let <span class="math inline">\(V\)</span> contain the top <span class="math inline">\(k\)</span> eigenvectors and <span class="math inline">\(W\)</span> the rest. Suppose <span class="math inline">\(v_i=e_i\)</span>. Then for <span class="math inline">\(P_t=\prod (I+\eta_{t-i}X)\)</span>, <span class="math inline">\(P_t=\smatt{\text{large}}00{\text{small}}\)</span>. Multiplying by a random initialization gives <span class="math inline">\((\text{large}\,\text{small})^T\)</span>.</p>
-<p>In the online setting, let <span class="math inline">\(P_t=(I+\eta_{t-i}x_{t-i}x_{t-i}^T)\)</span>. The offdiagonal part <span class="math inline">\(W_t^TP_tV\)</span> is small compared to the diagonal part. <!--Ohad strts with something close in Frobenius norm. Once you get in neighborhood, it doesn't wander away. --></p>
-<ol type="1">
-<li>Show the minimal singular value of <span class="math inline">\(V^TP_tV\)</span> is large. This is not easy to bound. (The maximal one can be bounded by trace norm; exchange <span class="math inline">\(\E\)</span> and <span class="math inline">\(\Tr\)</span>.) <!--larger than singular value: martingale concentration-->
-<ol type="1">
-<li>Show <span class="math inline">\(\Tr[(V^TP_tV)^{-T}(V^TP_tV)^{-1}]\)</span> is small. This requires a lot of computation. (Use Sherman-Morrison formula for inverse for rank 1 update.) But this is suboptimal; lose an <span class="math inline">\(\eta\)</span> factor. <!--use Sherman-Morrison, formula for inverse for rank 1 update--></li>
-<li><p>Attempt 2: show concentration. But it doesn’t work because it’s a product, not a sum. It doesn’t even concentrate in the multiplicative scale. <!--The world is against us, lower bounds are so hard --Sanjeev --></p>
-<p>Why? Suppose <span class="math inline">\(k=1\)</span>. Think of <span class="math inline">\(X\)</span> as diagonal matrix with first eigenvale large and rest small. <span class="math inline">\((I+\eta e_1e_1^T)e_1e_1^T\)</span>. There is some chance that <span class="math inline">\(x_t\)</span> has some weight in the first and last entry. Then the <span class="math inline">\((1,d)\)</span> entry of the product is <span class="math inline">\(\rc{4}\eta_t\)</span>. <!-- In k=1, do epoching. This is not memory efficient? --></p>
-Unlike the offline setting, <span class="math inline">\(x_t\)</span> is not perfectly aligned with the eigenspace of <span class="math inline">\(X\)</span>; it can grab something from the eigenvector.</li>
-<li><p>Try induction. Suppose <span class="math inline">\(P_tP_t^T\succ c_tI\)</span>. Then <span class="math inline">\(\E (P_{t+1}P_{t+1}^T) &gt; c_t(I + \eta_{t+1}X)\)</span>. <span class="math inline">\(\si_{\min}\)</span> is not concave; we don’t have <span class="math inline">\(\E[\si_{\min}(A)]&gt;\si_{\min}[\E(A)]\)</span>. (Counterexample: take <span class="math inline">\(A=e_ie_i^T\)</span> w.p. <span class="math inline">\(\rc d\)</span>.) <!-- after taking expected value sigma min is good --> Min singular value is not a good induction hypothesis. <!--hypnosis--> Summarize <span class="math inline">\(P_t\)</span> with a number. Let <span class="math inline">\(f:\)</span> matrix <span class="math inline">\(\to\)</span> value.</p>
-<p>When you try to solve a hard problem, just write down the conditions. –Yin-Tat.</p>
-“The ideal girlfriend”: <span class="math inline">\(f(P_t)\)</span>
-<ul>
-<li>is a lower bound on the minimal singular value of <span class="math inline">\(P_t\)</span>,</li>
-<li>takes care of all singular values of <span class="math inline">\(P_t\)</span>,</li>
-<li>has diminishing margin (larger singular value have smaller effect)</li>
-<li>easy to compute and update The magical <span class="math inline">\(\al\)</span>-min-root barrier: unique solution <span class="math inline">\(\la\)</span> of <span class="math inline">\(\sumo in \rc{\si_i - \la} = \al\)</span>, <span class="math inline">\(\la\le \si_i\)</span>. <!-- monotone decreasing. ZAZ: equivalent to regularizer. barrier view. \la is like normalization parameter. s. entropy for q=1. --> It satisfies:</li>
-<li>lower bounds the minimum singular value,</li>
-<li>when <span class="math inline">\(\al\to \iy\)</span>, the barrier approaches <span class="math inline">\(\si_{\min}\)</span>.</li>
-<li>diminishing influence: larger <span class="math inline">\(\si\)</span> have smaller contribution</li>
-<li>monotone: <span class="math inline">\(A\succ B\implies f(A)\succ f(B)\)</span>. <!-- solution of crazy function--> <!-- consider distribution of singular values--> Formula: <span class="math inline">\(\sumo in \rc{\si_i-\la} = -\pdd{\la}\log \det(A-\la I)\)</span>. Matrix-determinant lemma (from Sherman-Morrison): <span class="math display">\[\log \det(A-\la I + uv^T) = \pdd{\la} \log \det(A_\la I) + \fc{\pdd{\la}v^T(A-\la I)^{-1}u}{1+v^T(A-\la I)^{-1}u}\]</span> Key observation: If <span class="math inline">\(A=U\Si U^T\)</span>, then <span class="math inline">\(\pdd{\la}v^T (A-\la I)^{-1} u = \sumo in \fc{(Uuv^TU^T)_{ii}}{(\si-\la)^2}\)</span>. <!-- barrier function increases--> <!-- von Neumann entropy more standard. (Elad and Tengyu uses characteric polynomial)--></li>
-</ul>
-<p><strong>Rank 1 update lemma</strong>: Let <span class="math inline">\(A\)</span> be a symmetric matrix. Then <span class="math inline">\(\E[f(A+uu^T)]&gt;f(A) + \si_{\min}(\E(uu^T))\)</span>.</p>
-Apply this on <span class="math inline">\(P_{t+1}\)</span> vs. <span class="math inline">\(P_t\)</span>. Prove the theorem by martingale concentration. <!-- Matrix doesn't concentrate at all, but min singular value improves. --></li>
-</ol></li>
-<li><p>Bound <span class="math inline">\(W^TP_tW\)</span> term. Using trace? But <span class="math inline">\(W^TP_tW\)</span> is not small at all. <span class="math inline">\(W^TP_tW\)</span> “mixes” with <span class="math inline">\(V^TP_tV\)</span>; it can’t interlace.</p>
-<p>Remove influence of <span class="math inline">\(V^TP_tV\)</span> from <span class="math inline">\(W^TP_tW\)</span>.</p>
-<p>But they are not the same dimension.</p>
-<p>Use random initialization: whp <span class="math inline">\(W^TP_tW(W^TQ)(V^TP_tQ)^{-1}\)</span> is small. <!-- Easiest to explain. PMI, weighted low rank approx, optimal regret for BCO, tight bound for approx convex opt, max-entropy disribution for calc partition, NMF without separability, SVD without being cool.--></p></li>
-</ol>
 
   </div>
 

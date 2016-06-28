@@ -10,7 +10,7 @@
   <meta name="description" content="Holden Lee's Research Notebook">
   <meta name="author" content="Holden Lee">
     
-  <title>Posts in category "tcs/machine_learning/matrices"</title>
+  <title>CCA (Canonical correlation analysis)</title>
 
   <!-- Bootstrap core CSS -->
   <link href="../../../../bootstrap/css/bootstrap.min.css" rel="stylesheet">
@@ -66,91 +66,47 @@
 <div class="container">
   <div id="content">
     <div class="page header">
-      <h1>Posts in category "tcs/machine_learning/matrices"</h1>
+      <h1>CCA (Canonical correlation analysis)</h1>
     </div>
     <div class="info">
       
+       
+        <p>Posted: 2016-06-28 
+          , Modified: 2016-06-28 
+	</p>
       
-      
+       <p>Tags: <a href="../../../../tags/CCA.html">CCA</a></p> 
     </div>
     
   </div>
   <!--/div-->
 
-  
+  <div class="toc"></div>
 
   <div class="blog-main">
-    <ul>
-    
-        <li>
-            <a href="../../../../posts/tcs/machine_learning/matrices/k-means.html">k-means clustering</a> (2016-06-28)
-        </li>
-    
-        <li>
-            <a href="../../../../posts/tcs/machine_learning/matrices/ica.html">ICA (Independent components analysis)</a> (2016-06-28)
-        </li>
-    
-        <li>
-            <a href="../../../../posts/tcs/machine_learning/matrices/factor-analysis.html">Factor analysis</a> (2016-06-28)
-        </li>
-    
-        <li>
-            <a href="../../../../posts/tcs/machine_learning/matrices/cca.html">CCA (Canonical correlation analysis)</a> (2016-06-28)
-        </li>
-    
-        <li>
-            <a href="../../../../posts/tcs/machine_learning/matrices/BGKP16.html">[BGKP16] Non-negative matrix factorization under heavy noise</a> (2016-06-27)
-        </li>
-    
-        <li>
-            <a href="../../../../posts/tcs/machine_learning/matrices/relevant_coordinates_svd.html">Relevant coordinates: Low-rank</a> (2016-06-07)
-        </li>
-    
-        <li>
-            <a href="../../../../posts/tcs/machine_learning/matrices/relevant_coordinates.html">Relevant coordinates</a> (2016-06-02)
-        </li>
-    
-        <li>
-            <a href="../../../../posts/tcs/machine_learning/matrices/topic_code.html">Inference for topic models: Code</a> (2016-05-18)
-        </li>
-    
-        <li>
-            <a href="../../../../posts/tcs/machine_learning/matrices/streaming_PCA.html">Towards a better understanding of streaming PCA (Yuanzhi Li)</a> (2016-05-10)
-        </li>
-    
-        <li>
-            <a href="../../../../posts/tcs/machine_learning/matrices/nmf_algorithm.html">NMF algorithm</a> (2016-04-22)
-        </li>
-    
-        <li>
-            <a href="../../../../posts/tcs/machine_learning/matrices/matrix-factorization.html">Matrix factorizations</a> (2016-04-04)
-        </li>
-    
-        <li>
-            <a href="../../../../posts/tcs/machine_learning/matrices/arora-topic-models.html">[A16] Provable algorithms for inference in topic models</a> (2016-04-04)
-        </li>
-    
-        <li>
-            <a href="../../../../posts/tcs/machine_learning/matrices/AGM14.html">[AGM14] New algorithms for learning incoherent and overcomplete dictionaries</a> (2016-04-02)
-        </li>
-    
-        <li>
-            <a href="../../../../posts/tcs/machine_learning/matrices/NMF.html">Non-negative matrix factorization</a> (2016-03-26)
-        </li>
-    
-        <li>
-            <a href="../../../../posts/tcs/machine_learning/matrices/AGMM15.html">[AGMM15] Simple, efficient, and neural algorithms for sparse coding</a> (2016-03-25)
-        </li>
-    
-</ul>
-
-
+    <p><a href="https://en.wikipedia.org/wiki/Canonical_correlation">Wikipedia</a></p>
+<p>Goal: Find the linear combination of <span class="math inline">\((X_i)\)</span> and <span class="math inline">\((Y_j)\)</span> with maximum correlation.</p>
+<p>Let <span class="math inline">\(\Si_{XY} = \Cov(X,Y)\)</span>.</p>
+<p>We want to maximize (let <span class="math inline">\(\ve{v}_M=v^TMv\)</span>) <span class="math display">\[\max_{a,b} \ve{a^T\Si_{XY}b}{\ve{a}_{\Si_{XX}}\ve{b}_{\Si_{YY}}}.\]</span> Let <span class="math inline">\(c=\Si_{XX}a^{\rc 2}\)</span> and <span class="math inline">\(d=\Si_{YY}^{\rc 2}b\)</span>. Then this is <span class="math display">\[\fc{c^T \Si_{XX}^{-\rc2} \Si_{XY} \Si_{YY}^{-\rc2}d}{\ve{c}_2\ve{d}_2}.\]</span> Thus, find the SVD of <span class="math display">\[\Si_{XX}^{-\rc2} \Si_{XY} \Si_{YY}^{-1} \Si_{YX} \Si_{XX}^{-\rc 2}.\]</span> Change coordinates back to find <span class="math inline">\(a,b\)</span>.</p>
 
   </div>
 
     
 
+    <!-- Extension : Sharing buttons @ www.sharethis.com -->
+    <span class="st_facebook_large" displayText="Facebook"></span>
+    <span class="st_twitter_large" displayText="Tweet"></span>
+    <span class="st_googleplus_large" displayText="Google +"></span>
+    <span class="st_reddit_large" displayText="Reddit"></span>
+    <span class="st__large" displayText></span>
 
+    <div id="disqus_thread"></div>
+    
+
+
+  
+    <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+  </div>
   
 </div>
 
@@ -195,6 +151,9 @@
 
 <!-- Extension : Disqus @ http://disqus.com -->
 <!-- Extension : InlineDisqussions @ https://github.com/tsi/inlineDisqussions -->
+
+<script src="../../../../disqus/js/disqus.js"></script>
+
 
 
 <!-- Extension : Google Analytics -->
