@@ -10,7 +10,7 @@
   <meta name="description" content="Holden Lee's Research Notebook">
   <meta name="author" content="Holden Lee">
     
-  <title>Posts in category "tcs/machine_learning/matrices"</title>
+  <title>Linear dimensionality reduction ([CG15])</title>
 
   <!-- Bootstrap core CSS -->
   <link href="../../../../bootstrap/css/bootstrap.min.css" rel="stylesheet">
@@ -66,95 +66,54 @@
 <div class="container">
   <div id="content">
     <div class="page header">
-      <h1>Posts in category "tcs/machine_learning/matrices"</h1>
+      <h1>Linear dimensionality reduction ([CG15])</h1>
     </div>
     <div class="info">
       
+       
+        <p>Posted: 2016-06-28 
+          , Modified: 2016-06-28 
+	</p>
       
-      
+       <p>Tags: <a href="../../../../tags/dimension%20reduction.html">dimension reduction</a></p> 
     </div>
     
   </div>
   <!--/div-->
 
-  
+  <div class="toc"> <ul>
+ <li><a href="#types-of-reductions">Types of reductions</a></li>
+ </ul> </div>
 
   <div class="blog-main">
-    <ul>
-    
-        <li>
-            <a href="../../../../posts/tcs/machine_learning/matrices/k-means.html">k-means clustering</a> (2016-06-28)
-        </li>
-    
-        <li>
-            <a href="../../../../posts/tcs/machine_learning/matrices/ica.html">ICA (Independent components analysis)</a> (2016-06-28)
-        </li>
-    
-        <li>
-            <a href="../../../../posts/tcs/machine_learning/matrices/factor-analysis.html">Factor analysis</a> (2016-06-28)
-        </li>
-    
-        <li>
-            <a href="../../../../posts/tcs/machine_learning/matrices/dimensionality_reduction.html">Linear dimensionality reduction ([CG15])</a> (2016-06-28)
-        </li>
-    
-        <li>
-            <a href="../../../../posts/tcs/machine_learning/matrices/cca.html">CCA (Canonical correlation analysis)</a> (2016-06-28)
-        </li>
-    
-        <li>
-            <a href="../../../../posts/tcs/machine_learning/matrices/BGKP16.html">[BGKP16] Non-negative matrix factorization under heavy noise</a> (2016-06-27)
-        </li>
-    
-        <li>
-            <a href="../../../../posts/tcs/machine_learning/matrices/relevant_coordinates_svd.html">Relevant coordinates: Low-rank</a> (2016-06-07)
-        </li>
-    
-        <li>
-            <a href="../../../../posts/tcs/machine_learning/matrices/relevant_coordinates.html">Relevant coordinates</a> (2016-06-02)
-        </li>
-    
-        <li>
-            <a href="../../../../posts/tcs/machine_learning/matrices/topic_code.html">Inference for topic models: Code</a> (2016-05-18)
-        </li>
-    
-        <li>
-            <a href="../../../../posts/tcs/machine_learning/matrices/streaming_PCA.html">Towards a better understanding of streaming PCA (Yuanzhi Li)</a> (2016-05-10)
-        </li>
-    
-        <li>
-            <a href="../../../../posts/tcs/machine_learning/matrices/nmf_algorithm.html">NMF algorithm</a> (2016-04-22)
-        </li>
-    
-        <li>
-            <a href="../../../../posts/tcs/machine_learning/matrices/matrix-factorization.html">Matrix factorizations</a> (2016-04-04)
-        </li>
-    
-        <li>
-            <a href="../../../../posts/tcs/machine_learning/matrices/arora-topic-models.html">[A16] Provable algorithms for inference in topic models</a> (2016-04-04)
-        </li>
-    
-        <li>
-            <a href="../../../../posts/tcs/machine_learning/matrices/AGM14.html">[AGM14] New algorithms for learning incoherent and overcomplete dictionaries</a> (2016-04-02)
-        </li>
-    
-        <li>
-            <a href="../../../../posts/tcs/machine_learning/matrices/NMF.html">Non-negative matrix factorization</a> (2016-03-26)
-        </li>
-    
-        <li>
-            <a href="../../../../posts/tcs/machine_learning/matrices/AGMM15.html">[AGMM15] Simple, efficient, and neural algorithms for sparse coding</a> (2016-03-25)
-        </li>
-    
+    <p>A unified framework for linear dimensionality reduction: given <span class="math inline">\(n\)</span> points <span class="math inline">\([x_1,\ldots, x_n]\in \R^{d\times n}\)</span>, optimize <span class="math inline">\(f_X(\cdot)\)</span> to produce a linear transformation <span class="math inline">\(P\in \R^{r\times d}\)</span> and let <span class="math inline">\(Y=PX\in \R^{r\times n}\)</span> be the low-dimensional transformed data.</p>
+<p><img src="../../../../images/dim_red_chart.png"></p>
+<h2 id="types-of-reductions">Types of reductions</h2>
+<ul>
+<li>PCA</li>
+<li><a href="ica.html">ICA</a></li>
+<li><a href="cca.html">CCA</a></li>
+<li><a href="factor-analysis.html">Factor analysis</a></li>
 </ul>
-
-
 
   </div>
 
     
 
+    <!-- Extension : Sharing buttons @ www.sharethis.com -->
+    <span class="st_facebook_large" displayText="Facebook"></span>
+    <span class="st_twitter_large" displayText="Tweet"></span>
+    <span class="st_googleplus_large" displayText="Google +"></span>
+    <span class="st_reddit_large" displayText="Reddit"></span>
+    <span class="st__large" displayText></span>
 
+    <div id="disqus_thread"></div>
+    
+
+
+  
+    <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+  </div>
   
 </div>
 
@@ -199,6 +158,9 @@
 
 <!-- Extension : Disqus @ http://disqus.com -->
 <!-- Extension : InlineDisqussions @ https://github.com/tsi/inlineDisqussions -->
+
+<script src="../../../../disqus/js/disqus.js"></script>
+
 
 
 <!-- Extension : Google Analytics -->

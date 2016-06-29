@@ -8,8 +8,236 @@
         <name>Holden Lee</name>
         <email>oldheneel@gmail.com</email>
     </author>
-    <updated>2016-06-28T00:00:00Z</updated>
+    <updated>2016-06-29T00:00:00Z</updated>
     <entry>
+    <title>Stanford quals</title>
+    <link href="http://holdenlee.github.io/notebook/posts/tcs/machine_learning/stanford_quals.html" />
+    <id>http://holdenlee.github.io/notebook/posts/tcs/machine_learning/stanford_quals.html</id>
+    <published>2016-06-29T00:00:00Z</published>
+    <updated>2016-06-29T00:00:00Z</updated>
+    <summary type="html"><![CDATA[
+<div class="container">
+  <div id="content">
+    <div class="page header">
+      <h1>Stanford quals</h1>
+    </div>
+    <div class="info">
+      
+       
+        <p>Posted: 2016-06-29 
+          , Modified: 2016-06-29 
+	</p>
+      
+       <p>Tags: <a href="/tags/none.html">none</a></p> 
+    </div>
+    
+  </div>
+  <!--/div-->
+
+  <div class="toc"> <ul>
+ <li><a href="#supervised-learning-1">Supervised learning [1]</a></li>
+ <li><a href="#unsupervised-learning-1">Unsupervised learning [1]</a></li>
+ </ul> </div>
+
+  <div class="blog-main">
+    <p>(from Jacob’s notes on Stanford quals)</p>
+<h2 id="supervised-learning-1">Supervised learning [1]</h2>
+<p><a href="http://cs229.stanford.edu/materials.html">CS229</a></p>
+<ul>
+<li>Perceptron, logistic regression, SVMs</li>
+<li>Kernel methods, Gaussian processes</li>
+<li>Boosting (AdaBoost)
+<ul>
+<li>What is the convergence rate?
+<ul>
+<li><span class="math inline">\(\exp(-\sum_{t=1}^T \gamma_t^2)\)</span></li>
+<li>Key property: <em>adaptive</em></li>
+</ul></li>
+<li>What problems can it be applied to?
+<ul>
+<li>binary classification on fixed dataset</li>
+</ul></li>
+<li><a href="http://cseweb.ucsd.edu/~yfreund/papers/IntroToBoosting.pdf">notes</a></li>
+</ul></li>
+<li><a href="cart.html">Decision trees, random forests</a>
+<ul>
+<li>Bagging (given subset of size <span class="math inline">\(N\)</span>, create many versions of the dataset by subsampling <span class="math inline">\(N\)</span> things with replacement repeatedly)</li>
+<li>For each of these versions, also subsample <span class="math inline">\(\sqrt{d})\)</span> of the features to use for the decision tree</li>
+</ul></li>
+<li>Neural networks</li>
+<li>Linear regression</li>
+<li>Regularization: L1, L2 and their properties</li>
+</ul>
+<h2 id="unsupervised-learning-1">Unsupervised learning [1]</h2>
+<p><a href="http://cs229.stanford.edu/materials.html">CS229</a></p>
+<ul>
+<li><a href="matrices/k-means.html">K-means</a></li>
+<li><a href="matrices/dimensionality_reduction.html">Linear dimension reduction</a> PCA, CCA, factor analysis, ICA
+<ul>
+<li>What is PCA / what is it used for?</li>
+<li>Given input dataset, assuming it’s elliptical, finds the principle axes of the ellipse
+<ul>
+<li>In more statistical language, this finds a low-dimensional representation that explains as much of the variance as possible</li>
+</ul></li>
+<li>Can be computed by just taking SVD of covariance matrix</li>
+<li>Typically we mean-center first</li>
+<li>Sometimes want to do other scalings but no clear consensus on the best one</li>
+<li><a href="matrices/cca.html">CCA</a> What is CCA / what is it used for?</li>
+<li>Same intuition as PCA, but wants to find cross-correlations between two sets of variables (X and Y)</li>
+<li>Obtained by taking singular vectors of <span class="math inline">\(\Cov(X,X)^{\rc 2}\Cov(X,Y)Cov(Y,Y)^{-\rc2}\)</span>.</li>
+<li>?Isn’t this used for semi-supervised learning?
+<ul>
+<li>?E.g. given two sets of features, use CCA as a regularizer.</li>
+</ul></li>
+<li><a href="matrices/factor-analysis.html">Factor analysis</a> What is factor analysis / what is it used for?</li>
+<li>Basically, this is just matrix factorization</li>
+<li>Often allows more domain knowledge to be incorporated</li>
+<li><a href="matrices/ica.html">ICA</a> What is ICA / what is it used for?</li>
+<li>Blind source separation</li>
+<li>Tries to break into independent signals</li>
+<li>Often done by maximizing non-gaussianity of signals</li>
+</ul></li>
+<li>EM</li>
+<li>What theoretical property does EM satisfy?
+<ul>
+<li>Maximizes lower bound <span class="math inline">\(\log p(x) - KL(q(z|x) || p(z|x))\)</span></li>
+</ul></li>
+<li>What are the general updates?
+<ul>
+<li>Compute expectation of log-likelihood under current model</li>
+<li>Minimize expectation</li>
+<li>Sort of like iteratively approximating setting the gradient to zero</li>
+</ul></li>
+</ul>
+
+  </div>
+
+    
+
+    <!-- Extension : Sharing buttons @ www.sharethis.com -->
+    <span class='st_facebook_large' displayText='Facebook'></span>
+    <span class='st_twitter_large' displayText='Tweet'></span>
+    <span class='st_googleplus_large' displayText='Google +'></span>
+    <span class='st_reddit_large' displayText='Reddit'></span>
+    <span class='st__large' displayText=''></span>
+
+    <div id="disqus_thread"></div>
+    
+
+
+  
+    <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+  </div>
+  
+</div>
+]]></summary>
+</entry>
+<entry>
+    <title>CART and random forests</title>
+    <link href="http://holdenlee.github.io/notebook/posts/tcs/machine_learning/cart.html" />
+    <id>http://holdenlee.github.io/notebook/posts/tcs/machine_learning/cart.html</id>
+    <published>2016-06-29T00:00:00Z</published>
+    <updated>2016-06-29T00:00:00Z</updated>
+    <summary type="html"><![CDATA[
+<div class="container">
+  <div id="content">
+    <div class="page header">
+      <h1>CART and random forests</h1>
+    </div>
+    <div class="info">
+      
+       
+        <p>Posted: 2016-06-29 
+          , Modified: 2016-06-29 
+	</p>
+      
+       <p>Tags: <a href="/tags/CART.html">CART</a>, <a href="/tags/adaptive%20basis%20functions.html">adaptive basis functions</a>, <a href="/tags/random%20forests.html">random forests</a></p> 
+    </div>
+    
+  </div>
+  <!--/div-->
+
+  <div class="toc"> <ul>
+ <li><a href="#cart-classification-and-regression-trees">CART (Classification and regression trees)</a></li>
+ <li><a href="#random-forests">Random forests</a></li>
+ </ul> </div>
+
+  <div class="blog-main">
+    <p>See Ch. 16 of Murphy. <a href="http://math.bu.edu/people/mkon/MA751/L18RandomForests.pdf">Presentation</a></p>
+<p>An adaptive basis-function model (ABM) is a model of the form <span class="math display">\[ f(x) = w_0+\sumo mM w_m \phi_m(x).\]</span> Typically <span class="math inline">\(\phi_m(x) = \phi(x;v_m)\)</span></p>
+<h2 id="cart-classification-and-regression-trees">CART (Classification and regression trees)</h2>
+<p>Decision trees recursively partition the input space and define a local model on each region.</p>
+<p>For example, if the model is constant on each region, <span class="math inline">\(f(x) = \sumo mM w_m (x\in R_m)\)</span>.</p>
+<p>At each node, consider these kinds of splits:</p>
+<ul>
+<li>Thresholds: <span class="math inline">\(x_i&lt;t\)</span>, <span class="math inline">\(x_i\ge t\)</span>. (Quantitative feature)</li>
+<li><span class="math inline">\(x_i=c,x_i\ne c\)</span> (Categorical feature)</li>
+</ul>
+<p>The cost can be regression or classification cost. Sum the costs for each leaf. Cost:</p>
+<ul>
+<li>Regression: cost of fitting model on the leaf.</li>
+<li>Classification</li>
+<li>Misclassification rate of leaf. (Use the most probable class label.)</li>
+<li>Entropy: <span class="math inline">\(-\sumo cC \wh\pi_c\lg \wh\pi_c\)</span>. (Recommended)</li>
+<li>Gini index <span class="math inline">\(\sumo cC \wh \pi_c(1-\wh \pi_c) = 1-\sumo cC \wh\pi_c^2\)</span>.</li>
+</ul>
+<p>Algorithm:</p>
+<ol type="1">
+<li>Start at the root node of a single-node tree, and put all data points at that node.</li>
+<li>Find the split at the current node (attribute) that minimizes the cost (maximizes information gain). (If it is deemed not worth splitting, e.g. it doesn’t decrease the cost by much<a href="#fn1" class="footnoteRef" id="fnref1"><sup>1</sup></a>, if it’s reached a specified depth, etc., then move on instead.) Make the split. (The data points are now distributed among the two children.)</li>
+<li>Add both child nodes. to the queue.</li>
+<li>Continue the algorithm (at 2) with the next node in the queue.</li>
+</ol>
+<p>Advantages:</p>
+<ul>
+<li>Easy to interpret</li>
+<li>Handle mixed inputs</li>
+<li>Insensitive to monotone transformations, robust to outliers.</li>
+<li>Automatic variable selection</li>
+</ul>
+<p>Disadvantages:</p>
+<ul>
+<li>Features are very restricted.</li>
+<li>Unstable: small changes in input data can have large changes because of the hierarchical nature of the tree-growing process. (They are high variance estimators.)</li>
+</ul>
+<h2 id="random-forests">Random forests</h2>
+<p><strong>Bagging</strong> (bootstrap aggregating): Train <span class="math inline">\(M\)</span> different trees on independently selected subsets of the data, and compute <span class="math inline">\(f(x)=\sumo mM \rc M f_m(x)\)</span>.</p>
+<p>(OR: use boosting instead of taking majority vote.)</p>
+<p>BUT this can result in highly correlated predictors.</p>
+<p><strong>Random forest</strong>: Decorrelate base learners by learning rees based on a randomly chosen subset of input variables and data points.</p>
+<p>(What are the right parameters? <span class="math inline">\(\sqrt d\)</span> features?)</p>
+<p><strong>Bayesian adaptive regression trees (BART)</strong>.</p>
+<p>? Hierarchical mixtures of experts.</p>
+<section class="footnotes">
+<hr />
+<ol>
+<li id="fn1"><p>This is usually too myopic. Instead use pruning. Grow the full tree, evaluate the cross-validated error on subtrees, and pick a minimal tree whose CV error is within 1 se of the min.<a href="#fnref1">↩</a></p></li>
+</ol>
+</section>
+
+  </div>
+
+    
+
+    <!-- Extension : Sharing buttons @ www.sharethis.com -->
+    <span class='st_facebook_large' displayText='Facebook'></span>
+    <span class='st_twitter_large' displayText='Tweet'></span>
+    <span class='st_googleplus_large' displayText='Google +'></span>
+    <span class='st_reddit_large' displayText='Reddit'></span>
+    <span class='st__large' displayText=''></span>
+
+    <div id="disqus_thread"></div>
+    
+
+
+  
+    <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+  </div>
+  
+</div>
+]]></summary>
+</entry>
+<entry>
     <title>k-means clustering</title>
     <link href="http://holdenlee.github.io/notebook/posts/tcs/machine_learning/matrices/k-means.html" />
     <id>http://holdenlee.github.io/notebook/posts/tcs/machine_learning/matrices/k-means.html</id>
@@ -209,6 +437,68 @@ x &amp;= \mu+ \La z + \ep.
 ]]></summary>
 </entry>
 <entry>
+    <title>Linear dimensionality reduction ([CG15])</title>
+    <link href="http://holdenlee.github.io/notebook/posts/tcs/machine_learning/matrices/dimensionality_reduction.html" />
+    <id>http://holdenlee.github.io/notebook/posts/tcs/machine_learning/matrices/dimensionality_reduction.html</id>
+    <published>2016-06-28T00:00:00Z</published>
+    <updated>2016-06-28T00:00:00Z</updated>
+    <summary type="html"><![CDATA[
+<div class="container">
+  <div id="content">
+    <div class="page header">
+      <h1>Linear dimensionality reduction ([CG15])</h1>
+    </div>
+    <div class="info">
+      
+       
+        <p>Posted: 2016-06-28 
+          , Modified: 2016-06-28 
+	</p>
+      
+       <p>Tags: <a href="/tags/dimension%20reduction.html">dimension reduction</a></p> 
+    </div>
+    
+  </div>
+  <!--/div-->
+
+  <div class="toc"> <ul>
+ <li><a href="#types-of-reductions">Types of reductions</a></li>
+ </ul> </div>
+
+  <div class="blog-main">
+    <p>A unified framework for linear dimensionality reduction: given <span class="math inline">\(n\)</span> points <span class="math inline">\([x_1,\ldots, x_n]\in \R^{d\times n}\)</span>, optimize <span class="math inline">\(f_X(\cdot)\)</span> to produce a linear transformation <span class="math inline">\(P\in \R^{r\times d}\)</span> and let <span class="math inline">\(Y=PX\in \R^{r\times n}\)</span> be the low-dimensional transformed data.</p>
+<p><img src="/images/dim_red_chart.png"></p>
+<h2 id="types-of-reductions">Types of reductions</h2>
+<ul>
+<li>PCA</li>
+<li><a href="ica.html">ICA</a></li>
+<li><a href="cca.html">CCA</a></li>
+<li><a href="factor-analysis.html">Factor analysis</a></li>
+</ul>
+
+  </div>
+
+    
+
+    <!-- Extension : Sharing buttons @ www.sharethis.com -->
+    <span class='st_facebook_large' displayText='Facebook'></span>
+    <span class='st_twitter_large' displayText='Tweet'></span>
+    <span class='st_googleplus_large' displayText='Google +'></span>
+    <span class='st_reddit_large' displayText='Reddit'></span>
+    <span class='st__large' displayText=''></span>
+
+    <div id="disqus_thread"></div>
+    
+
+
+  
+    <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+  </div>
+  
+</div>
+]]></summary>
+</entry>
+<entry>
     <title>CCA (Canonical correlation analysis)</title>
     <link href="http://holdenlee.github.io/notebook/posts/tcs/machine_learning/matrices/cca.html" />
     <id>http://holdenlee.github.io/notebook/posts/tcs/machine_learning/matrices/cca.html</id>
@@ -238,8 +528,9 @@ x &amp;= \mu+ \La z + \ep.
   <div class="blog-main">
     <p><a href="https://en.wikipedia.org/wiki/Canonical_correlation">Wikipedia</a></p>
 <p>Goal: Find the linear combination of <span class="math inline">\((X_i)\)</span> and <span class="math inline">\((Y_j)\)</span> with maximum correlation.</p>
-<p>Let <span class="math inline">\(\Si_{XY} = \Cov(X,Y)\)</span>.</p>
-<p>We want to maximize (let <span class="math inline">\(\ve{v}_M=v^TMv\)</span>) <span class="math display">\[\max_{a,b} \ve{a^T\Si_{XY}b}{\ve{a}_{\Si_{XX}}\ve{b}_{\Si_{YY}}}.\]</span> Let <span class="math inline">\(c=\Si_{XX}a^{\rc 2}\)</span> and <span class="math inline">\(d=\Si_{YY}^{\rc 2}b\)</span>. Then this is <span class="math display">\[\fc{c^T \Si_{XX}^{-\rc2} \Si_{XY} \Si_{YY}^{-\rc2}d}{\ve{c}_2\ve{d}_2}.\]</span> Thus, find the SVD of <span class="math display">\[\Si_{XX}^{-\rc2} \Si_{XY} \Si_{YY}^{-1} \Si_{YX} \Si_{XX}^{-\rc 2}.\]</span> Change coordinates back to find <span class="math inline">\(a,b\)</span>.</p>
+<p>Let <span class="math inline">\(\Si_{XY} = \Cov(X,Y)\)</span> (i.e., <span class="math inline">\(XY^T\)</span>).</p>
+<p>We want to maximize (let <span class="math inline">\(\ve{v}_M=v^TMv\)</span>) <span class="math display">\[\max_{a,b} \fc{a^T\Si_{XY}b}{\ve{a}_{\Si_{XX}}\ve{b}_{\Si_{YY}}}.\]</span> Let <span class="math inline">\(c=\Si_{XX}^{\rc 2}a\)</span> and <span class="math inline">\(d=\Si_{YY}^{\rc 2}b\)</span>. Then this is <span class="math display">\[\fc{c^T \Si_{XX}^{-\rc2} \Si_{XY} \Si_{YY}^{-\rc2}d}{\ve{c}_2\ve{d}_2}.\]</span> Thus, find the SVD of <span class="math display">\[\Si_{XX}^{-\rc2} \Si_{XY} \Si_{YY}^{-1} \Si_{YX} \Si_{XX}^{-\rc 2}.\]</span> Change coordinates back to find <span class="math inline">\(a,b\)</span>.</p>
+<p>More generally, to find the top <span class="math inline">\(k\)</span> dimensions, we want <span class="math display">\[\max_{M_X \in \mathcal{O}^{d_a\times r}, M_Y\in \mathcal{O}^{d_b\times r}} \Tr(M_X^T \Si_{XX}^{-\rc2} \Si_{XY} \Si_{YY}^{-\rc2}M_Y).\]</span> Find the rank <span class="math inline">\(k\)</span> SVD, the matrices consist of the top <span class="math inline">\(k\)</span> SV’s.</p>
 
   </div>
 
@@ -510,366 +801,6 @@ Apply this to the covariance matrix.</li>
 <li>How much can we relax independence? Esp. independence of coordinates <span class="math inline">\(i\nin I\)</span>.</li>
 <li>Is worst-case hard (cf. max clique, planted clique)? “Find the subset of size <span class="math inline">\(cn\)</span> that is <span class="math inline">\(\ep\)</span>-close to a rank <span class="math inline">\(k\)</span> matrix.” What about a gap-problem, i.e., there’s a guarantee that there is no subset of size <span class="math inline">\(c'n\)</span> that is <span class="math inline">\(\ep'\)</span> close to rank <span class="math inline">\(c''k\)</span>?</li>
 </ul></li>
-</ul>
-
-  </div>
-
-    
-
-    <!-- Extension : Sharing buttons @ www.sharethis.com -->
-    <span class='st_facebook_large' displayText='Facebook'></span>
-    <span class='st_twitter_large' displayText='Tweet'></span>
-    <span class='st_googleplus_large' displayText='Google +'></span>
-    <span class='st_reddit_large' displayText='Reddit'></span>
-    <span class='st__large' displayText=''></span>
-
-    <div id="disqus_thread"></div>
-    
-
-
-  
-    <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
-  </div>
-  
-</div>
-]]></summary>
-</entry>
-<entry>
-    <title>Relevant coordinates</title>
-    <link href="http://holdenlee.github.io/notebook/posts/tcs/machine_learning/matrices/relevant_coordinates.html" />
-    <id>http://holdenlee.github.io/notebook/posts/tcs/machine_learning/matrices/relevant_coordinates.html</id>
-    <published>2016-06-02T00:00:00Z</published>
-    <updated>2016-06-02T00:00:00Z</updated>
-    <summary type="html"><![CDATA[
-<div class="container">
-  <div id="content">
-    <div class="page header">
-      <h1>Relevant coordinates</h1>
-    </div>
-    <div class="info">
-      
-       
-        <p>Posted: 2016-06-02 
-          , Modified: 2016-06-02 
-	</p>
-      
-       <p>Tags: <a href="/tags/linear%20algebra%2B%2B.html">linear algebra++</a></p> 
-    </div>
-    
-  </div>
-  <!--/div-->
-
-  <div class="toc"> <ul>
- <li><a href="#problem">Problem</a><ul>
- <li><a href="#clustering">Clustering</a></li>
- <li><a href="#svd">SVD</a></li>
- </ul></li>
- <li><a href="#approaches">Approaches</a><ul>
- <li><a href="#l1-vs.l2-norm">L1 vs. L2 norm</a></li>
- <li><a href="#community-detectionsdp">Community detection/SDP</a></li>
- </ul></li>
- <li><a href="#baby-problem-recovering-clusters">Baby problem: Recovering clusters</a><ul>
- <li><a href="#try-1-svd">Try 1: SVD</a></li>
- <li><a href="#try-2-sdp">Try 2: SDP</a></li>
- <li><a href="#more-than-2-groups">More than 2 groups</a></li>
- <li><a href="#clustering-1">Clustering</a></li>
- </ul></li>
- <li><a href="#svd-1">SVD</a></li>
- </ul> </div>
-
-  <div class="blog-main">
-    <h2 id="problem">Problem</h2>
-<p>General problem: Often, given high dimensional data in <span class="math inline">\(\R^n\)</span>, only a subset <span class="math inline">\(S\sub [n]\)</span> of coordinates are “relevant”. Identify them.</p>
-<p>Here are possible formalizations of the problem.</p>
-<h3 id="clustering">Clustering</h3>
-Let <span class="math inline">\(|S|=c_1m\)</span> be a random subset of <span class="math inline">\([m]\)</span>. Let <span class="math inline">\(k\)</span> be fixed. Let <span class="math inline">\(((x^{(i)},\si^{(i)2})\in \R^{S})_{i=1}^k\)</span> be <span class="math inline">\(k\)</span> centers and variances. (Assume some reasonable separation.) Each data point comes from some cluster <span class="math inline">\(i\in [k]\)</span> (ex. uniformly at random). If <span class="math inline">\(x\)</span> comes from cluster <span class="math inline">\(i\)</span>, then generate <span class="math inline">\(x\)</span> by
-\begin{align}
-x_S &amp;\sim N(x^{(i)}, \si^{(i)2})\\
-x_j &amp;\sim N(0,1),&amp;j&amp;\nin S.
-\end{align}
-<p>The goal is to find <span class="math inline">\(S\)</span>. (Then we can recover the centers by standard clustering algorithms.)</p>
-<p>Note: There may be a cheap way to do this by identifying which coordinates are <span class="math inline">\(\sim N(0,1)\)</span>. We want something more generalizable. Ex. assume <span class="math inline">\(x_j\sim N(y_j, \tau_j^2)\)</span>. Even better, assume that the <span class="math inline">\(x_j\)</span> are independent but their distribution is arbitrary.</p>
-<h3 id="svd">SVD</h3>
-<p>Let <span class="math inline">\(A\)</span> be a matrix such that taking the rows with indices in <span class="math inline">\(S\)</span> (<span class="math inline">\(|S|=c_1m\)</span> as above), and suppose that <span class="math inline">\(A\)</span> is <span class="math inline">\(\ep\)</span>-close<a href="#fn1" class="footnoteRef" id="fnref1"><sup>1</sup></a> in <span class="math inline">\(L^2\)</span> to a rank <span class="math inline">\(k\)</span> matrix, and the rest of the entries are generated as <span class="math inline">\(N(0,1)\)</span>. Identify <span class="math inline">\(S\)</span>.</p>
-<p>A probabilistic version: <span class="math inline">\(A_{S,i}\)</span> is <span class="math inline">\(N(0, \Si)\)</span> where <span class="math inline">\(\Si\)</span> is close to rank <span class="math inline">\(k\)</span>.</p>
-<h2 id="approaches">Approaches</h2>
-<h3 id="l1-vs.l2-norm">L1 vs. L2 norm</h3>
-<p>Look at the <span class="math inline">\(L^1\)</span> norm and variance (<span class="math inline">\(L^2\)</span> norm) of each row.</p>
-<ul>
-<li>For the noise rows, we have (whp)
-\begin{align}
-A=\EE_{j=1}^n |A_{ij}| &amp; =2\iiy x e^{-\fc{x^2}2}\rc{\sqrt{2\pi}}\dx\\
-B=\EE_{j=1}^n |A_{ij}|^2 - (\EE_{j=1}^n |A_{ij}|)^2 &amp;=1,
-\end{align}
-and the ratio <span class="math inline">\(\fc{\sqrt B}A\)</span> between these is concentrated at some constant (whp).</li>
-<li><pre><code>For the non-noise rows,</code></pre>
-\begin{align}
-A=\EE_{j=1}^n |A_{ij}| &amp; &gt; \sfc{2}{\pi}\sum|\si_{k_j}|\\
-B=\EE_{j=1}^n |A_{ij}|^2 - (\EE_{j=1}^n |A_{ij}|)^2 &amp;=\sum_i \si_i^2,
-\end{align}
-and <span class="math inline">\(\fc{\sqrt B}{A}&gt;\sfc{2}{\pi}\)</span>.</li>
-</ul>
-<p>But this is heavily dependent on the exact distribution of noise! We want something more generalizable.</p>
-<h3 id="community-detectionsdp">Community detection/SDP</h3>
-<p>Sometimes we can recover even if the noise seems to be larger than the signal, because the noise is uncorrelated. Ex. a random <span class="math inline">\(n\times n\)</span> matrix with <span class="math inline">\(N(0,1)\)</span> entries has eigenvalues on the order of <span class="math inline">\(O(\sqrt n)\)</span>.<a href="#fn2" class="footnoteRef" id="fnref2"><sup>2</sup></a> <!-- check this--></p>
-<p>Reference: Synchronization problem, Amit Singer.</p>
-<h2 id="baby-problem-recovering-clusters">Baby problem: Recovering clusters</h2>
-<p>Problem: Let <span class="math inline">\(x\in \{\pm 1\}^n\)</span>. Given <span class="math inline">\(xx^T + E\)</span> where each entry of <span class="math inline">\(E\)</span> is <span class="math inline">\(N(0,\si^2)\)</span>, recover <span class="math inline">\(x\)</span> (whp). What level of noise <span class="math inline">\(\si\)</span> can we tolerate?</p>
-<p>(We want to recover all of <span class="math inline">\(x\)</span>, rather than just something correlated with <span class="math inline">\(x\)</span>.)</p>
-<h3 id="try-1-svd">Try 1: SVD</h3>
-<p>The largest eigenvector of <span class="math inline">\(A=xx^T\)</span> is <span class="math inline">\(v_1(A) = x\)</span>. By Wedin’s Theorem, <span class="math display">\[ \sin\angle(v_1,v_1') \le \fc{\ve{E}_2}{|\la_1(A) - \la_2(A)|} = \fc{\ve{E}_2}{n} \stackrel?{\ll} \rc{\sqrt n}, \]</span> since the closest vector <span class="math inline">\(w\)</span> to <span class="math inline">\(v_1\)</span> is at an angle <span class="math inline">\(\te\)</span> away where <span class="math inline">\(\cos \te = \fc{n-2}n\)</span>, <span class="math inline">\(\sin \te \sim \rc{\sqrt n}\)</span>. So we need <span class="math inline">\(\ve{E}_2=\wt o(\sqrt n)\)</span><a href="#fn3" class="footnoteRef" id="fnref3"><sup>3</sup></a>.</p>
-<p>To get <span class="math inline">\(\ve{E}_2=\wt o(\sqrt n)\)</span> we need <span class="math inline">\(\si=\wt o(1)\)</span>. Using this method we can only tolerate a level of noise <span class="math inline">\(\ll 1\)</span>.</p>
-<h3 id="try-2-sdp">Try 2: SDP</h3>
-<p>We want <span class="math inline">\(\min_{x\in \{\pm 1\}^n}\ve{xx^T-A}_F^2\)</span>. (Minimize the sum of squares because this is <span class="math inline">\(\propto\)</span> the log-likelihood.)</p>
-<p>Relax this: <span class="math display">\[
-\amin_{x\in \{\pm 1\}^n}\ve{xx^T-A}_F^2
-=\amax_{x\in \{\pm 1\}^n}x_iA_{ij}x_j
-=\amax_{x\in \{\pm 1\}^n} \Tr(xx^T)
-=\amax_{B\succeq 0 , B_{ii}=1} \Tr(AB)
-\]</span></p>
-<p>WLOG the optimal solution is <span class="math inline">\(\one\)</span><a href="#fn4" class="footnoteRef" id="fnref4"><sup>4</sup></a>. By SDP duality, <span class="math inline">\(\one\one^T\)</span> is the unique best solution if there exists <span class="math inline">\(Q\succeq 0\)</span>, <span class="math inline">\(\Tr(\one\one^T(Q-W))=0\)</span> where <span class="math inline">\(W=A+E\)</span> is observed.</p>
-<p>Let’s consider when <span class="math inline">\(E\)</span> is symmetric.<a href="#fn5" class="footnoteRef" id="fnref5"><sup>5</sup></a> We choose <span class="math inline">\(Q=\diag((\sum_{j}A_{ij})_i)\)</span>. Then <span class="math inline">\(M:=Q-W = \mattn{A_{12}+\cdots +A_{1n}}{-A_{12}}{\cdots}{-A_{21}}{A_{21}+A_{23}+\cdots}{\cdots}{\vdots}{\vdots}{\ddots}\)</span>.</p>
-<p>We can think of this as a sum of random matrices <span class="math inline">\(\matt{1+\ep}{-(1+\ep)}{-(1+\ep)}{1+\ep}\)</span> in the submatrix at indices <span class="math inline">\(\{i,j\}\times \{i,j\}\)</span>. The average is <span class="math inline">\(\mattn{(n-1)}{-1}{\cdots}{-1}{n-1}{\cdots}{\ldots}{\ldots}{\ddots}\)</span> with eigenvalues <span class="math inline">\(n,\ldots, n,0\)</span>.</p>
-<p>There is concentration up to <span class="math inline">\(\sqrt{n\ln n}\si\)</span>. We just need this to be <span class="math inline">\(&lt;n\)</span> in order to make the second smallest eigenvalue of <span class="math inline">\(M\)</span> be <span class="math inline">\(&gt;0\)</span>. (The smallest eigenvalue is 0.)</p>
-<p>Thus we can tolerate noise up to <span class="math inline">\(\si = o\pa{\sfc{n}{\ln n}}\)</span>, much better!</p>
-<p><strong>Next step: try to generalize this!</strong></p>
-<h3 id="more-than-2-groups">More than 2 groups</h3>
-<p>We want to recover the clustering from <span class="math inline">\(\mattn JOOOJOOOJ\)</span> plus noise.</p>
-<p>Let <span class="math inline">\(x\in\R^{3n}\)</span> be the (proposed) clustering, where we think of <span class="math inline">\(x\in (\R^3)^n\)</span> and <span class="math inline">\(x_i=e_j\)</span> if <span class="math inline">\(i\)</span> is in the <span class="math inline">\(j\)</span>th cluster.</p>
-<p>We want <span class="math inline">\(\min\sum_{i,j} (x_{i1}x_{j1}+x_{i2}x_{j2}+x_{i3}x_{j3} - a_{ij})^2\)</span> over valid <span class="math inline">\(x\)</span>’s. For valid <span class="math inline">\(x\)</span>’s, the quadratic term is 0 or 1, so we want <span class="math display">\[\amax_{x_{i1}^2+x_{i2}^2+x_{i3}^2=1, x_{i1}+x_{i2}+x_{i3}=1} \sum (a_{ij}-1)(x_{i1}x_{j1}+x_{i2}x_{j2}+x_{i3}x_{j3}).\]</span> We can write the expression in matrix form as <span class="math inline">\(\an{B,xx^T}\)</span> where <span class="math inline">\(B=(a_{ij}I)_{i,j}\)</span> (block matrix). For a SDP relaxation, replace <span class="math inline">\(xx^T\)</span> with <span class="math inline">\(M\)</span>, <span class="math inline">\(M\succeq 0\)</span>.</p>
-<p>How does this relaxation do?</p>
-<h3 id="clustering-1">Clustering</h3>
-<p>In clustering we’re given <span class="math inline">\(v_1,\ldots, v_n\)</span> each of which is either <span class="math inline">\(v\)</span> or <span class="math inline">\(w\)</span> plus noise. We can find <span class="math inline">\(V^TV\)</span> and work off that matrix.</p>
-<p>Look up literature on clustering and learning mixtures of Gaussians.</p>
-<h2 id="svd-1">SVD</h2>
-<p>See <a href="relevant_coordinates_svd.html">Relevant coordinates: low-rank matrix</a>.</p>
-<section class="footnotes">
-<hr />
-<ol>
-<li id="fn1"><p>What <span class="math inline">\(\ep\)</span>?<a href="#fnref1">↩</a></p></li>
-<li id="fn2"><p><span class="math inline">\(\Pj(\la_{\max} \ge t) \le 2ne^{-\fc{t^2}{2\si^2}}\)</span>. Here <span class="math inline">\(\si^2 = \ve{\sum E_{ij}^2}=\sqrt n\)</span>, get concentration to <span class="math inline">\(O(\sqrt n\ln n)\)</span>.<a href="#fnref2">↩</a></p></li>
-<li id="fn3"><p>Write <span class="math inline">\(\wt o(f(n))\)</span> to mean <span class="math inline">\(o\pf{f(n)}{\poly\log(n)}\)</span>.<a href="#fnref3">↩</a></p></li>
-<li id="fn4"><p>Why WLOG?<a href="#fnref4">↩</a></p></li>
-<li id="fn5"><p>We can reduce to this case, I think.<a href="#fnref5">↩</a></p></li>
-</ol>
-</section>
-
-  </div>
-
-    
-
-    <!-- Extension : Sharing buttons @ www.sharethis.com -->
-    <span class='st_facebook_large' displayText='Facebook'></span>
-    <span class='st_twitter_large' displayText='Tweet'></span>
-    <span class='st_googleplus_large' displayText='Google +'></span>
-    <span class='st_reddit_large' displayText='Reddit'></span>
-    <span class='st__large' displayText=''></span>
-
-    <div id="disqus_thread"></div>
-    
-
-
-  
-    <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
-  </div>
-  
-</div>
-]]></summary>
-</entry>
-<entry>
-    <title>Inference for topic models: Code</title>
-    <link href="http://holdenlee.github.io/notebook/posts/tcs/machine_learning/matrices/topic_code.html" />
-    <id>http://holdenlee.github.io/notebook/posts/tcs/machine_learning/matrices/topic_code.html</id>
-    <published>2016-05-18T00:00:00Z</published>
-    <updated>2016-05-18T00:00:00Z</updated>
-    <summary type="html"><![CDATA[
-<div class="container">
-  <div id="content">
-    <div class="page header">
-      <h1>Inference for topic models: Code</h1>
-    </div>
-    <div class="info">
-      
-       
-        <p>Posted: 2016-05-18 
-          , Modified: 2016-05-18 
-	</p>
-      
-       <p>Tags: <a href="/tags/topic%20models.html">topic models</a></p> 
-    </div>
-    
-  </div>
-  <!--/div-->
-
-  <div class="toc"></div>
-
-  <div class="blog-main">
-    <ul>
-<li><code>gen_topic_vector</code>: Generate row vectors of size <span class="math inline">\(K\)</span> using Dirichlet (or Gaussian) <span class="math inline">\((\al,\ldots, \al)\)</span>.</li>
-<li><code>gen_doc</code>: Generate topic vector, multiply by A</li>
-<li><code>interleave</code></li>
-<li><code>singlen1</code>: <span class="math inline">\(i\)</span>th standard basis vector</li>
-<li><code>process_row_delta</code>: ?</li>
-<li><code>process_row_C</code>: ?</li>
-<li><code>new_compute_B</code>:</li>
-<li><code>threshold</code>:</li>
-<li><code>log_likelihood</code>:</li>
-<li><code>fast_grad_log_likelihood</code>:</li>
-<li><code>project</code></li>
-<li><code>l1_distance</code></li>
-<li><code>projected_ascent</code>: ?</li>
-<li><code>top</code></li>
-<li><code>top5</code></li>
-<li><code>is_anchorword</code></li>
-<li><code>near_anchorword</code></li>
-<li><code>sparse_topic</code></li>
-<li><code>superflat_topic</code></li>
-<li><code>top_likelihood_support</code></li>
-<li><code>test_inference</code></li>
-<li><code>safe_mkdir</code></li>
-<li><code>write_doc</code></li>
-<li><code>write_flat</code></li>
-<li><code>estimate_support</code></li>
-<li><code>estimate_support_map</code></li>
-<li><code>split_heldout</code></li>
-<li><code>heldout_score</code></li>
-<li><code>held_out_probability_ascent</code></li>
-<li><code>nearest_neighbors</code></li>
-<li><code>get_train_data</code></li>
-</ul>
-
-  </div>
-
-    
-
-    <!-- Extension : Sharing buttons @ www.sharethis.com -->
-    <span class='st_facebook_large' displayText='Facebook'></span>
-    <span class='st_twitter_large' displayText='Tweet'></span>
-    <span class='st_googleplus_large' displayText='Google +'></span>
-    <span class='st_reddit_large' displayText='Reddit'></span>
-    <span class='st__large' displayText=''></span>
-
-    <div id="disqus_thread"></div>
-    
-
-
-  
-    <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
-  </div>
-  
-</div>
-]]></summary>
-</entry>
-<entry>
-    <title>[DKLPRS] Markov logic</title>
-    <link href="http://holdenlee.github.io/notebook/posts/tcs/machine_learning/probabilistic/markov_logic.html" />
-    <id>http://holdenlee.github.io/notebook/posts/tcs/machine_learning/probabilistic/markov_logic.html</id>
-    <published>2016-05-17T00:00:00Z</published>
-    <updated>2016-05-17T00:00:00Z</updated>
-    <summary type="html"><![CDATA[
-<div class="container">
-  <div id="content">
-    <div class="page header">
-      <h1>[DKLPRS] Markov logic</h1>
-    </div>
-    <div class="info">
-      
-       
-        <p>Posted: 2016-05-17 
-          , Modified: 2016-05-17 
-	</p>
-      
-       <p>Tags: <a href="/tags/graphical%20model.html">graphical model</a>, <a href="/tags/probabilistic%20model.html">probabilistic model</a>, <a href="/tags/logic.html">logic</a>, <a href="/tags/FOL.html">FOL</a></p> 
-    </div>
-    
-  </div>
-  <!--/div-->
-
-  <div class="toc"> <ul>
- <li><a href="#markov-logic-questions">Markov logic: Questions</a><ul>
- <li><a href="#structure-learning-how-do-we-even-find-the-formulae">6.3 Structure learning: how do we even find the formulae?</a></li>
- </ul></li>
- <li><a href="#ksj-a-general-stochastic-approach-to-solving-problems-with-hard-and-soft-constraints">[KSJ] A general stochastic approach to solving problems with hard and soft constraints</a></li>
- <li><a href="#scraps">Scraps</a></li>
- <li><a href="#directions">Directions</a></li>
- </ul> </div>
-
-  <div class="blog-main">
-    <h2 id="markov-logic-questions">Markov logic: Questions</h2>
-<ul>
-<li>Consider a statement like Moral(x) <span class="math inline">\(\implies\)</span> Happy(x). Consider 2 worlds: one where most people are moral, and all but 5 moral people are happy, another where only 5 people are moral, and they are all unhappy. It seems in the Markov model they would have the same weight, when the statement is represented as <span class="math inline">\(\neg\text{Moral}(x) \wedge \text{Happy}(x)\)</span>. Do we want this? I’m guessing this is easier than only restricting to moral people, because that involves dividing.</li>
-<li>I don’t understand the terminology used in LazySAT. My understanding of <code>active_atoms</code> is that we take every clause that is not satisfied and add ALL of its atoms. (Ex. if we have a formula <span class="math inline">\(Friend(A,B)\implies Happy(A) \wedge Happy(B)\)</span>, and <span class="math inline">\(\text{Friend}(x,y) \wedge \neg \text{Happy}(x)\wedge \text{Happy}(y)\)</span>, then both <span class="math inline">\(x,y\)</span> are considered active atoms.)
-<ul>
-<li>But then choosing unsatisfied <span class="math inline">\(x\)</span> and <span class="math inline">\(v_f\sim c\)</span>, it’salways true that <span class="math inline">\(v\in\)</span> active atoms, whereas in Algorithm 2, they consider when <span class="math inline">\(v\nin\)</span> active atoms!</li>
-<li>Note DeltaCost can be easily calculated. Local flipping doesn’t require recalculation of the whole cost.</li>
-<li>Shouldn’t DeltaCost be a function of a setting of variables, not a variable? Or is it like the derivative in the direction of variable <span class="math inline">\(v\)</span>, i.e., what you’d get by flipping <span class="math inline">\(v\)</span>? But you may need to flip two variables in a clause at the same time to get something better!</li>
-</ul></li>
-<li>I don’t understand the explanation on p. 8: The initial active atoms are all those appearing in clauses that are unsatisfied if only the atoms in the database are true, and all others are false.</li>
-<li>More fundamentally, I don’t understand what the database is!</li>
-<li>At each step, take a random unsatisfied clause. Maintain a set of active atoms.
-<ul>
-<li>With probability <span class="math inline">\(p\)</span> choose a random variable from the clause.</li>
-<li>Otherwise, choose the non-active variable <span class="math inline">\(v\)</span> in <span class="math inline">\(c\)</span> is lowest DeltaCost. (Why do we ignore active atoms? Isn’t it true that flipping them can also decrease the cost?)</li>
-<li>Add the chosen variable <span class="math inline">\(v_f\)</span> to <code>active_atoms</code> and add activated clauses. Flip <span class="math inline">\(v_f\)</span>.</li>
-<li>(Do we not want variables to be flipped twice?)</li>
-<li>NO: we choose the variable (active OR non-acive) in <span class="math inline">\(c\)</span> with lowest DeltaCost. It’s merely saying that we have to do a more involved computation if the variable is non-active. (Why? This has something to do with the DB vs. KB, no comprendo.)</li>
-<li>At the beginning, only include active atoms/clauses. Think of these as the dangerous atoms—flipping them could make a clause not satisfied. These clauses are the only clauses we will need to worry about. Add clauses to the active set only if we need to worry about them.</li>
-</ul></li>
-<li>So what’s the difference between SAT and LazySAT? I think it’s just: are you summing over all possible instantiations (unnecessary!), or just looking at the differences when you flip a variable? You can ignore formulas that don’t invove the current variable.</li>
-</ul>
-<p>(OK to have some kind of “complexity measure” of formulae saying how amenable they are to random-walk methods?)</p>
-<ul>
-<li>Intuition about deterministic vs. non-deterministic dependencies. (Tradeoff between search and following stochasticity cf. gradient? The smaller the weights the easier the flow but the lower the probability is to find a satisfying instance?)</li>
-<li>MC-SAT has hard satisfiability. Look at all clauses satisfied in the last step; the larger the weight, the more likely you are to force it to be satisfied next step. It calls on a uniform SAT solver (which doesn’t really exist—but there are things that do well in practice).</li>
-<li>p. 12. Indistinguishable objects. What if you’re just strying to find a distribution that’s close, ex. for at most binary relations, look at the proportion of <span class="math inline">\(\{a,b\}\)</span> with values of <span class="math inline">\(u_1(a),\ldots, u_1(b),\ldots, b_1(a,b),\ldots\)</span> where <span class="math inline">\(u\)</span> are unary and <span class="math inline">\(b\)</span> are binary relations.</li>
-</ul>
-<p>Perhaps I need to learn about databases.</p>
-<ul>
-<li>What is the closed-world assumption?</li>
-</ul>
-<p>Wait, you aren’t flipping nodes! I thought of the nodes as the actors, and unary functions on them. But are the nodes supposed to be formulae? Like <span class="math inline">\(u_1(x)\)</span>, <span class="math inline">\(b_1(x,y)\)</span>, and everything not in it is false?</p>
-<p>An atom is not a node but predicates applied to nodes!</p>
-<p>(Note the logical contradictions is not on the level of node values, but on the formulas relating them? Don’t have <span class="math inline">\(A\wedge B\)</span> as nodes, only have <span class="math inline">\(A\)</span>, <span class="math inline">\(B\)</span>.) Atoms are formulas without connectives like <span class="math inline">\(\wedge, \implies,\forall...\)</span></p>
-<blockquote>
-<p>basic inference problem in first-order logic is to determine whether a knowledge base KB entails a formula F, i.e., if F is true in all worlds where KB is true</p>
-</blockquote>
-<p>Sparsity in the sense that only the relations in the database can be true; everything else has to be false?</p>
-<p>Also, I don’t understand how to deal with intermediate functions like <span class="math inline">\(f(x,g(y))\)</span>. It seems there’s too many possible values of <span class="math inline">\(g\)</span>!</p>
-<p>Approaches to get past intractability:</p>
-<ul>
-<li>The <strong>pseudo-likelihood</strong> is <span class="math inline">\(\ln \Pj_w^*(X=x) = \sumo ln \log \Pj_w(X_l=x_l|MB_x(X_l))\)</span> (markov blanket). (When is this a good approx?)</li>
-<li><strong>Discriminative weight learning</strong>. Partition into evidence and query atoms and calculate conditional log-likelihood. (cf. RBM)</li>
-</ul>
-<h3 id="structure-learning-how-do-we-even-find-the-formulae">6.3 Structure learning: how do we even find the formulae?</h3>
-<ul>
-<li>Inductive logic programming #lookup. But use evaluation function based on pseudo-likelihood rather than accuracy and coverage.</li>
-</ul>
-<p>19 Dependencies are really probabilistic. Ex. two titles sharing a word are more likely to be the same?</p>
-<p>Applications.</p>
-<ul>
-<li>Entity resolution (when do things refer to the same object? Include formulae like transitivity of equality.)</li>
-<li>Citation resolution. (Ex. which article corresponds to which citation, when are they the same? You can imagine there’s some general rules which would do well.)</li>
-</ul>
-<p>Lifted inference, lifted resolution in FOL #lookup</p>
-<h2 id="ksj-a-general-stochastic-approach-to-solving-problems-with-hard-and-soft-constraints">[KSJ] A general stochastic approach to solving problems with hard and soft constraints</h2>
-<ul>
-<li>My understanding of “partitioning”: solve a problem hierarchically: break into smaller pieces, find a list of good solutions of each piece, and then figure out how to combine those solutions.</li>
-<li>Q: is there an algorithm agnostic to the encoding in some sense? (Doubtful—probably can embed crypto problems? But what if you only allow the simplest transformations?)</li>
-<li>WalkSAT <em>does</em> only flip one variable at a time.</li>
-<li>Hard constraints have greater weight than soft constraints.</li>
-</ul>
-<p>I think people do MCMC in problem-solving. Try to tweak things locally. Sometimes though there’s a larger restructuring—view it as a step in a more abstract space, a more abstract transformation?</p>
-<h2 id="scraps">Scraps</h2>
-<p>(Patterns you construct are patterns you could have found?)</p>
-<p>Goal in learning should be to find the formula with weights which decrease the entropy the most?</p>
-<p>SAT refutations corresponding to reasonable mathematical statements have short proofs but not the SAT framework? (Any way to compile down?)</p>
-<h2 id="directions">Directions</h2>
-<ul>
-<li>First, understand the classical results on learning and inference in graphical models.</li>
-<li>Understand MCMC and variational inference, and the situations where they have provable guarantees.</li>
-<li>Try to formulate the simplest problem where you do have some element of first-order logic (ex. a statement with <span class="math inline">\(\forall\)</span>) and/or some combinatorial complexity.</li>
-<li>What’s a test problem in this domain? They give citation resolution. Maybe this is practical but it seems like a rather boring problem!</li>
-<li>Understand some ideas from the logic-learning community (inductive logic programming, etc.) <a href="https://en.wikipedia.org/wiki/Inductive_logic_programming">ILP</a>. Machine learning <span class="math inline">\(\cap\)</span> programming languages???</li>
 </ul>
 
   </div>
