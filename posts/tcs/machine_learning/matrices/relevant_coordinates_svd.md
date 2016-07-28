@@ -56,3 +56,6 @@ Idea: on average, there is greater correlation between 2 random vectors in a $k$
 	* Connect $i,j$ if $|\wt \E v_iv_j|>\fc{\ep}{2}$. We probably reduce to a graph problem, where we want to find a subset where the graph is more dense.
     * How much can we relax independence? Esp. independence of coordinates $i\nin I$. 
 	* Is worst-case hard (cf. max clique, planted clique)? "Find the subset of size $cn$ that is $\ep$-close to a rank $k$ matrix." What about a gap-problem, i.e., there's a guarantee that there is no subset of size $c'n$ that is $\ep'$ close to rank $c''k$?
+
+#Misc
+
