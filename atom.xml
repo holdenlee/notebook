@@ -8,8 +8,308 @@
         <name>Holden Lee</name>
         <email>oldheneel@gmail.com</email>
     </author>
-    <updated>2016-06-29T00:00:00Z</updated>
+    <updated>2016-07-28T00:00:00Z</updated>
     <entry>
+    <title>Representation learning</title>
+    <link href="http://holdenlee.github.io/notebook/posts/tcs/machine_learning/representation.html" />
+    <id>http://holdenlee.github.io/notebook/posts/tcs/machine_learning/representation.html</id>
+    <published>2016-07-28T00:00:00Z</published>
+    <updated>2016-07-28T00:00:00Z</updated>
+    <summary type="html"><![CDATA[
+<div class="container">
+  <div id="content">
+    <div class="page header">
+      <h1>Representation learning</h1>
+    </div>
+    <div class="info">
+      
+       
+        <p>Posted: 2016-07-28 
+          , Modified: 2016-07-28 
+	</p>
+      
+       <p>Tags: <a href="/tags/none.html">none</a></p> 
+    </div>
+    
+  </div>
+  <!--/div-->
+
+  <div class="toc"> <ul>
+ <li><a href="#low-dimensional-structure-in-high-dimensional-space">Low-dimensional structure in high-dimensional space</a></li>
+ </ul> </div>
+
+  <div class="blog-main">
+    <p>Representation learning means you have to first find a good representation—some hidden structure—for the data in order to learn it.</p>
+<h2 id="low-dimensional-structure-in-high-dimensional-space">Low-dimensional structure in high-dimensional space</h2>
+<p>Consider a distribution on a low-dimensional space. Now suppose this low-dimensional space is embedded in a high-dimensional space, and noise in the complementary (may be orthogonal) subspace is added. Recover the low-dimensional space and the structure on this space.</p>
+<ul>
+<li>Suppose complementary noise is Gaussian. [TV16] show how to recover given that the fourth moments of the distribution on the low-dim space are bounded away from that of a Gaussian. (Ex. clusters; a product distribution is limited by the dimension closest to Gaussian, etc.)</li>
+<li>Can we weaken the assumption on the complementary noise? (Arora, Ge, Ma) Put an assumption on “unimodality” in other directions.</li>
+<li>Suppose the subspace is a coordinate subspace, and the structure is a low-rank subspace within that. See <a href="matrices/relevant_coordinates.html">relevant coordinates</a>.</li>
+</ul>
+<p>Consider a dictionary-learning setting. There are many variations here. What we want to say is the following: given there’s a transformation in a certain class—ex. a neural net—that makes the data structured, can you learn the structure/parameters?</p>
+<ul>
+<li>Suppose the samples are sparse linear combinations of <span class="math inline">\(a_i\)</span>. This is the setting of dictionary learning. See <a href="matrices/AGM14.html">AGM14</a>, <a href="matrices/AGMM15.html">AGMM15</a>
+<ul>
+<li>Can we generalize from independent <span class="math inline">\(p\de_0+(1-p)D\)</span> distributions to non-Gaussian distributions?</li>
+<li>Suppose that noise is added. The algorithm above works if the dot product between 2 noise vectors is <span class="math inline">\(o(1)\)</span>. Ex. each coordinate is <span class="math inline">\(o\prc{n^{\rc 4}}\)</span>. Then the dot product is summing <span class="math inline">\(n\)</span> numbers <span class="math inline">\(o\prc{n^{\rc 2}}\)</span> which is <span class="math inline">\(o(1)\)</span>. Can we do noise up to <span class="math inline">\(o(\sqrt n)\)</span>? The overlapping communities problem seems hard now. Before we could threshold at <span class="math inline">\(\rc 2\)</span>, but now, noise is up to <span class="math inline">\(\sqrt n\)</span>. cf. in SBM, you can deal with <span class="math inline">\(\rc{\sqrt n}\)</span> difference in probabilities; in SVD, you can add a random matrix of entries <span class="math inline">\(o(\sqrt n)\)</span> because the eigenvalues are much smaller.</li>
+<li>In the undercomplete case, if the noise is orthogonal to the subspace spanned by <span class="math inline">\(a_i\)</span>, we’re in the setting of [TV16]. Products of non-Gaussians are OK.</li>
+<li>Changing the formulation instead to that <span class="math inline">\((\an{x,a_i})_i\)</span> is sparse is equivalent to learning the dictionary <span class="math inline">\((A^+)^T\)</span>. (Warning: this looks different in the over/undercomplete case.)</li>
+</ul></li>
+</ul>
+
+  </div>
+
+    
+
+    <!-- Extension : Sharing buttons @ www.sharethis.com -->
+    <span class='st_facebook_large' displayText='Facebook'></span>
+    <span class='st_twitter_large' displayText='Tweet'></span>
+    <span class='st_googleplus_large' displayText='Google +'></span>
+    <span class='st_reddit_large' displayText='Reddit'></span>
+    <span class='st__large' displayText=''></span>
+
+    <div id="disqus_thread"></div>
+    
+
+
+  
+    <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+  </div>
+  
+</div>
+]]></summary>
+</entry>
+<entry>
+    <title>Complexity of neural networks</title>
+    <link href="http://holdenlee.github.io/notebook/posts/tcs/machine_learning/neural_nets/complexity_of_neural_nets.html" />
+    <id>http://holdenlee.github.io/notebook/posts/tcs/machine_learning/neural_nets/complexity_of_neural_nets.html</id>
+    <published>2016-07-25T00:00:00Z</published>
+    <updated>2016-07-25T00:00:00Z</updated>
+    <summary type="html"><![CDATA[
+<div class="container">
+  <div id="content">
+    <div class="page header">
+      <h1>Complexity of neural networks</h1>
+    </div>
+    <div class="info">
+      
+       
+        <p>Posted: 2016-07-25 
+          , Modified: 2016-07-25 
+	</p>
+      
+       <p>Tags: <a href="/tags/neural%20net.html">neural net</a></p> 
+    </div>
+    
+  </div>
+  <!--/div-->
+
+  <div class="toc"> <ul>
+ <li><a href="#cs14-simnets---a-generalization-of-convolutional-networks">[CS14] SimNets - A Generalization of Convolutional Networks</a></li>
+ <li><a href="#cs16-convolutional-rectifier-networks-as-generalized-tensor-decompositions">[CS16] Convolutional Rectifier Networks as Generalized Tensor Decompositions</a></li>
+ <li><a href="#css16-on-the-expressive-power-of-deep-learning---a-tensor-analysis">[CSS16] On the Expressive Power of Deep Learning - A Tensor Analysis</a></li>
+ <li><a href="#misc">Misc</a></li>
+ </ul> </div>
+
+  <div class="blog-main">
+    <p><a href="http://www.cs.huji.ac.il/~cohennadav/index.html">Nadav Cohen’s webpage</a></p>
+<p>Papers:</p>
+<ul>
+<li>[CS14] SimNets - A Generalization of Convolutional Networks</li>
+<li>[CS16] Convolutional Rectifier Networks as Generalized Tensor Decompositions</li>
+<li>[CS16] Inductive Bias of Deep Convolutional Networks through Pooling Geometry</li>
+<li>[CSS16] Deep SimNets</li>
+<li>[CSS16] On the Expressive Power of Deep Learning - A Tensor Analysis</li>
+</ul>
+<h2 id="cs14-simnets---a-generalization-of-convolutional-networks">[CS14] SimNets - A Generalization of Convolutional Networks</h2>
+<p>A layer now looks like <span class="math display">\[ h(x) = MEX_\xi [u_l^T \phi(x,z_l) + b_l]_{l=1,\ldots, n} \]</span> where MEX is the exponential mean <span class="math display">\[
+\rc{\xi} \ln\pa{\rc n \sumo in \exp(\xi c_i)}
+\]</span> and <span class="math inline">\(\phi\)</span> is a kernel function, like <span class="math inline">\((x_iz_i)_i\)</span> or <span class="math inline">\((-|x_i-z_i|^p)_i\)</span>. These give rise to linear and generalized Gaussian kernels when composed with MEX.</p>
+<p>MEX interpolates between minimum, average, and maximum pooling.</p>
+<!--(This looks to be a generalization of $1\times 1$ convolution? What about larger?)-->
+<p>There’s a natural unsupervised initialization scheme for SimNets based on statistical estimation. Assume the data is drawn from a mixture of generalized Gaussians and find max-likelihood parameters.</p>
+<p>(cf. initialize the convolution kernels by looking at statistical properties of patches)</p>
+<h2 id="cs16-convolutional-rectifier-networks-as-generalized-tensor-decompositions">[CS16] Convolutional Rectifier Networks as Generalized Tensor Decompositions</h2>
+<p>ICML16.</p>
+<blockquote>
+<p>First, we show that convolutional rectifier networks are universal with max pooling but not with average pooling. Second, and more importantly, we show that depth efficiency is weaker with convolutional rectifier networks than it is with convolutional arithmetic circuits. This leads us to believe that developing effective methods for training convolutional arithmetic circuits, thereby fulfilling their expressive potential, may give rise to a deep learning architecture that is provably superior to convolutional rectifier networks but has so far been overlooked by practitioners.</p>
+</blockquote>
+<p>Generalized tensor decompositions</p>
+<p><span class="math display">\[(A\ot_gB)_{d_1,\ldots, d_{P+Q}} = g(A_{d_1,\ldots, d_P}, B_{d_{P+1},\ldots, d_{P+Q}}). \]</span></p>
+<p>For arbitrary commutative/associative pooling function, replace <span class="math inline">\(\ot\)</span> with <span class="math inline">\(\ot_g\)</span>.</p>
+<h2 id="css16-on-the-expressive-power-of-deep-learning---a-tensor-analysis">[CSS16] On the Expressive Power of Deep Learning - A Tensor Analysis</h2>
+<p>COLT2016.</p>
+<p><img src="/images/deepnets_tensor_1.png"></p>
+<p>Consider a neural network defined on input <span class="math inline">\((x_1,\ldots, x_N)\in (\R^s)^N\)</span>, as follows.</p>
+\begin{align}
+rep(i,d) &amp;= f_{\te_d}(x_i)\\
+conv(i,z) &amp;= \an{a^{z,i}, rep(i,:)} = \sum_d a_d^{z,i} f_{\te_d}(x_i)\\
+pool(z) &amp;= \prod_{i=1}^N conv(i,z) = \prod_{i=1}^N \sum_d a_d^{z,i} f_{\te_d}(x_i)\\
+out(y) &amp;= \an{a_y, pool(:)} = \sum_{z=1}^Z a_{y,z} \prod_{i=1}^N\sum_d a_d^{z,i} f_{\te_d}(x_i)
+\end{align}
+<p>Note pool(z) is a 1-D tensor <span class="math display">\[ (a_d^{z,i\ot N *})_{i_1,\ldots, i_N, d} \ot (f_{\te_d}(x_i))^{i\ot N}_{d,i_1,\ldots, i_N} \]</span> so this is a rank <span class="math inline">\(Z\)</span> tensor.</p>
+<p>Think of conv as <span class="math inline">\(1\times 1\)</span> convolution. Weight sharing makes the tensor decomposition symmetric.</p>
+<p>Deep nets:</p>
+<p><img src="/images/deepnets_tensor_2.png"></p>
+<p>(<strong>Warning: The indexing of <span class="math inline">\(a\)</span> has been switched around here.</strong></p>
+<p>We have a hierarchical decomposition. Ex. first layer:</p>
+\begin{align}
+conv_1(j,\ga) &amp;= \an{a^{1,j,\ga}, pool_0(j,:)}\\
+&amp;=\an{a^{1,j,\ga}, \pa{\prod_{j'\in \{2j-1,2j\}} conv_0(j',k)}_k}\\
+&amp;=\an{a^{1,j,\ga}, (\conv_0(2j-1,k)\conv_0(2j,k))_k}\\
+&amp;=\sum_k a^{1,j,k} \conv_0(2j-1, k) \conv_0(2j,k).
+\end{align}
+<p>Iterating this gives the <strong>hierarchical Tucker decomposition</strong></p>
+<p><img src="/images/deepnets_ht.png"></p>
+<p><strong>Theorem 1</strong>: Consider the space of hierarchical tensors of order <span class="math inline">\(N\)</span> and dimension <span class="math inline">\(M\)</span> in each mode, parametrized by <span class="math inline">\(\{a^{l,j,\ga\}\)</span>. In this space, the tensor has CP-rank <span class="math inline">\(\ge r^{\fc N2}\)</span> a.e.</p>
+<p><em>Proof</em>: Because the space of tensors with CP-rank forms an algebraic variety, it suffices to show that there exists a tensor of this rank. Do this by induction on layers and work with the matricization of the tensors (<span class="math inline">\(\ot\)</span> corresponds to Kronecker product). The CP-rank equals the rank of the matricization.</p>
+<p>Question: what about convolution with larger windows?</p>
+<h2 id="misc">Misc</h2>
+<p>What is the motivation behind pooling? How much does it actually help?</p>
+<p>Do you want universality?</p>
+<p>Arithmetic circuits look much more like complexity-theoretic circuits! Training is harder. Product is AND, like soft version of min on <span class="math inline">\(\{0,1\}^n\)</span>?</p>
+<p>(Replacing sigmoids/relus by 0-1?)</p>
+
+  </div>
+
+    
+
+    <!-- Extension : Sharing buttons @ www.sharethis.com -->
+    <span class='st_facebook_large' displayText='Facebook'></span>
+    <span class='st_twitter_large' displayText='Tweet'></span>
+    <span class='st_googleplus_large' displayText='Google +'></span>
+    <span class='st_reddit_large' displayText='Reddit'></span>
+    <span class='st__large' displayText=''></span>
+
+    <div id="disqus_thread"></div>
+    
+
+
+  
+    <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+  </div>
+  
+</div>
+]]></summary>
+</entry>
+<entry>
+    <title>Tensorflow setup</title>
+    <link href="http://holdenlee.github.io/notebook/posts/cs/neural_nets/tensorflow.html" />
+    <id>http://holdenlee.github.io/notebook/posts/cs/neural_nets/tensorflow.html</id>
+    <published>2016-07-22T00:00:00Z</published>
+    <updated>2016-07-22T00:00:00Z</updated>
+    <summary type="html"><![CDATA[
+<div class="container">
+  <div id="content">
+    <div class="page header">
+      <h1>Tensorflow setup</h1>
+    </div>
+    <div class="info">
+      
+       
+        <p>Posted: 2016-07-22 
+          , Modified: 2016-07-22 
+	</p>
+      
+       <p>Tags: <a href="/tags/programming.html">programming</a></p> 
+    </div>
+    
+  </div>
+  <!--/div-->
+
+  
+
+  <div class="blog-main">
+    <h2 id="setup-on-tiger">Setup on Tiger</h2>
+<p>Load tensorflow on startup, e.g. put in <code>.bashrc</code>.</p>
+<pre><code>module load python cudatoolkit/7.5 cudann
+pip install --user /tigress/plazonic/public_html/tensorflow/rhel6/tensorflow_pkg_gpu/tensorflow-0.8.0-py2-none-any.whl</code></pre>
+<p>Sample script</p>
+<pre><code>#!/bin/bash
+
+#SBATCH -t 10:00:00
+#SBATCH -N 1
+#SBATCH --ntasks-per-node=4
+#SBATCH --ntasks-per-socket=2
+#SBATCH --gres=gpu:2
+#SBATCH --mail-type=begin  
+#SBATCH --mail-type=end  
+#SBATCH --mail-user=holdenl@princeton.edu  
+
+module load python
+module load cudatoolkit/7.5
+module load cudann
+THEANO_FLAGS=mode=FAST_RUN,device=gpu,floatX=float32 python cifar10_multi_gpu_train.py --num_gpus=2 --train_dir='/tigress/holdenl/tmp/cifar10_train1'</code></pre>
+<p>Run by <code>sbatch script.cmd</code>.</p>
+<h2 id="cifar-setup">CIFAR setup</h2>
+<ul>
+<li>Train by calling <code>cifar10_multi_gpu_train.py</code> or <code>cifar10_train.py</code>.
+<ul>
+<li>This calls <code>cifar10.py</code> to build the graph.</li>
+<li>It calls <code>cifar10_input.py</code> to download or load the data.
+<ul>
+<li><code>data_dir</code> defined in <code>cifar10.py</code>. (Changed to <code>/tigress/knv/cifar10_data</code>.)</li>
+</ul></li>
+</ul></li>
+</ul>
+<p>Settings: Override flags as above.</p>
+<ul>
+<li><code>num_gpus=2</code> seems to work best.</li>
+<li>Specify training directory, ex. <code>train_dir='/tigress/holdenl/tmp/cifar10_train1'</code>.</li>
+</ul>
+<h2 id="train">Train</h2>
+<div class="sourceCode"><pre class="sourceCode python"><code class="sourceCode python">train(fs, step_f, output_steps<span class="op">=</span><span class="dv">10</span>, summary_steps<span class="op">=</span><span class="dv">100</span>, save_steps<span class="op">=</span><span class="dv">1000</span>, eval_steps <span class="op">=</span> <span class="dv">1000</span>, max_steps<span class="op">=</span><span class="dv">1000000</span>, train_dir<span class="op">=</span><span class="st">&quot;/&quot;</span>, log_device_placement<span class="op">=</span><span class="va">False</span>, batch_size<span class="op">=</span><span class="dv">128</span>,train_data<span class="op">=</span><span class="va">None</span>,validation_data<span class="op">=</span><span class="va">None</span>, test_data<span class="op">=</span><span class="va">None</span>, train_feed<span class="op">=</span>{}, eval_feed<span class="op">=</span>{}, x_pl<span class="op">=</span><span class="st">&quot;x&quot;</span>, y_pl<span class="op">=</span><span class="st">&quot;y_&quot;</span>, batch_feeder_args<span class="op">=</span>[])</code></pre></div>
+<ul>
+<li><code>fs</code> is a dictionary containing: inference, loss functions</li>
+<li><p><code>step_f</code> is function to execute at each training step, taking arguments <code>fs</code> and <code>global_step</code>. Example</p>
+<div class="sourceCode"><pre class="sourceCode python"><code class="sourceCode python"><span class="kw">lambda</span> fs, global_step: (
+  train_step(fs[<span class="st">&quot;loss&quot;</span>], fs[<span class="st">&quot;losses&quot;</span>], global_step, 
+             <span class="kw">lambda</span> gs: tf.train.AdamOptimizer(<span class="fl">1e-4</span>)))</code></pre></div></li>
+<li></li>
+</ul>
+<h2 id="misc-notes">Misc notes</h2>
+<p>Constants</p>
+<ul>
+<li><code>NUM_EXAMPLES_PER_EPOCH_FOR_TRAIN=50000</code></li>
+<li><code>NUM_EXAMPLES_PER_EPOCH_FOR_EVAL=10000</code></li>
+<li><code>NUM_EPOCHS_PER_DECAY</code></li>
+<li><code>INITIAL_LEARNING_RATE</code></li>
+<li><code>LEARNING_RATE_DECAY_FACTOR</code></li>
+<li><code>NUM_CLASSES=10</code></li>
+<li><code>MOVING_AVERAGE_DECAY = 0.9999</code></li>
+<li><code>NUM_EPOCHS_PER_DECAY = 350.0</code></li>
+<li><code>LEARNING_RATE_DECAY_FACTOR = 0.1</code></li>
+<li><code>INITIAL_LEARNING_RATE = 0.1</code></li>
+</ul>
+<h2 id="todo">Todo</h2>
+<ul>
+<li>Find tiger’s policies on storing files.</li>
+</ul>
+
+  </div>
+
+    
+
+    <!-- Extension : Sharing buttons @ www.sharethis.com -->
+    <span class='st_facebook_large' displayText='Facebook'></span>
+    <span class='st_twitter_large' displayText='Tweet'></span>
+    <span class='st_googleplus_large' displayText='Google +'></span>
+    <span class='st_reddit_large' displayText='Reddit'></span>
+    <span class='st__large' displayText=''></span>
+
+    <div id="disqus_thread"></div>
+    
+
+
+  
+    <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+  </div>
+  
+</div>
+]]></summary>
+</entry>
+<entry>
     <title>Stanford quals</title>
     <link href="http://holdenlee.github.io/notebook/posts/tcs/machine_learning/stanford_quals.html" />
     <id>http://holdenlee.github.io/notebook/posts/tcs/machine_learning/stanford_quals.html</id>
@@ -531,277 +831,6 @@ x &amp;= \mu+ \La z + \ep.
 <p>Let <span class="math inline">\(\Si_{XY} = \Cov(X,Y)\)</span> (i.e., <span class="math inline">\(XY^T\)</span>).</p>
 <p>We want to maximize (let <span class="math inline">\(\ve{v}_M=v^TMv\)</span>) <span class="math display">\[\max_{a,b} \fc{a^T\Si_{XY}b}{\ve{a}_{\Si_{XX}}\ve{b}_{\Si_{YY}}}.\]</span> Let <span class="math inline">\(c=\Si_{XX}^{\rc 2}a\)</span> and <span class="math inline">\(d=\Si_{YY}^{\rc 2}b\)</span>. Then this is <span class="math display">\[\fc{c^T \Si_{XX}^{-\rc2} \Si_{XY} \Si_{YY}^{-\rc2}d}{\ve{c}_2\ve{d}_2}.\]</span> Thus, find the SVD of <span class="math display">\[\Si_{XX}^{-\rc2} \Si_{XY} \Si_{YY}^{-1} \Si_{YX} \Si_{XX}^{-\rc 2}.\]</span> Change coordinates back to find <span class="math inline">\(a,b\)</span>.</p>
 <p>More generally, to find the top <span class="math inline">\(k\)</span> dimensions, we want <span class="math display">\[\max_{M_X \in \mathcal{O}^{d_a\times r}, M_Y\in \mathcal{O}^{d_b\times r}} \Tr(M_X^T \Si_{XX}^{-\rc2} \Si_{XY} \Si_{YY}^{-\rc2}M_Y).\]</span> Find the rank <span class="math inline">\(k\)</span> SVD, the matrices consist of the top <span class="math inline">\(k\)</span> SV’s.</p>
-
-  </div>
-
-    
-
-    <!-- Extension : Sharing buttons @ www.sharethis.com -->
-    <span class='st_facebook_large' displayText='Facebook'></span>
-    <span class='st_twitter_large' displayText='Tweet'></span>
-    <span class='st_googleplus_large' displayText='Google +'></span>
-    <span class='st_reddit_large' displayText='Reddit'></span>
-    <span class='st__large' displayText=''></span>
-
-    <div id="disqus_thread"></div>
-    
-
-
-  
-    <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
-  </div>
-  
-</div>
-]]></summary>
-</entry>
-<entry>
-    <title>[JSA15] Beating the Perils of Non-Convexity - Guaranteed Training of Neural Networks using Tensor Methods</title>
-    <link href="http://holdenlee.github.io/notebook/posts/tcs/machine_learning/neural_nets/JSA15.html" />
-    <id>http://holdenlee.github.io/notebook/posts/tcs/machine_learning/neural_nets/JSA15.html</id>
-    <published>2016-06-27T00:00:00Z</published>
-    <updated>2016-06-27T00:00:00Z</updated>
-    <summary type="html"><![CDATA[
-<div class="container">
-  <div id="content">
-    <div class="page header">
-      <h1>[JSA15] Beating the Perils of Non-Convexity - Guaranteed Training of Neural Networks using Tensor Methods</h1>
-    </div>
-    <div class="info">
-      
-       
-        <p>Posted: 2016-06-27 
-          , Modified: 2016-06-27 
-	</p>
-      
-       <p>Tags: <a href="/tags/neural%20net.html">neural net</a></p> 
-    </div>
-    
-  </div>
-  <!--/div-->
-
-  <div class="toc"> <ul>
- <li><a href="#notes">Notes</a></li>
- <li><a href="#algorithm">Algorithm</a></li>
- </ul> </div>
-
-  <div class="blog-main">
-    <p>Gives the first provable risk bounds for 2-layer neural nets via an efficient algorithm. Assumes that the generative distribution for the inputs <span class="math inline">\(x\)</span>’s is known or estimable (the algorithm uses the 3rd order score function). Algorithm is based on tensor decomposition.</p>
-<p>Remarks:</p>
-<ul>
-<li>The distribution <span class="math inline">\(p(y|x)\)</span> defined by the NN seems funny. <span class="math inline">\(y\in \{0,1\}\)</span> with <span class="math display">\[f(x) = \E[\wt y|x] = \an{\si_2,\si(A_1^T x + b_1)}+b_2.\]</span> But this means that we must have <span class="math inline">\(f(x)\in \{0,1\}\)</span>! Usually this is put through another sigmoid function…</li>
-</ul>
-<h2 id="notes">Notes</h2>
-<p>See [JSA14].</p>
-<p><strong>Lemma (Stein’s identity)</strong>: Under some regularity conditions, <span class="math display">\[\EE_{x\sim p} [G(x) \ot \nb_x\ln p(x)] = \EE_{x\sim p} \nb_x G(x).\]</span> (For example, for <span class="math inline">\(p(x)\)</span> Gaussian, <span class="math inline">\(\nb_x \ln p(x) = -x\)</span>.)</p>
-<p><em>Proof</em>. By IbP, <span class="math display">\[\int G(x)_i \pdd{x_j} \ln p(x) p(x) \dx = \int G(x)_i \pdd{x_j}p(x) = -\int \pdd{x_j} G(x)_i p(x)\dx.\]</span></p>
-<h2 id="algorithm">Algorithm</h2>
-<ol type="1">
-<li>Tensor decomposition</li>
-<li>Fourier algorithm</li>
-<li>Ridge (linear) regression</li>
-</ol>
-
-  </div>
-
-    
-
-    <!-- Extension : Sharing buttons @ www.sharethis.com -->
-    <span class='st_facebook_large' displayText='Facebook'></span>
-    <span class='st_twitter_large' displayText='Tweet'></span>
-    <span class='st_googleplus_large' displayText='Google +'></span>
-    <span class='st_reddit_large' displayText='Reddit'></span>
-    <span class='st__large' displayText=''></span>
-
-    <div id="disqus_thread"></div>
-    
-
-
-  
-    <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
-  </div>
-  
-</div>
-]]></summary>
-</entry>
-<entry>
-    <title>[BGKP16] Non-negative matrix factorization under heavy noise</title>
-    <link href="http://holdenlee.github.io/notebook/posts/tcs/machine_learning/matrices/BGKP16.html" />
-    <id>http://holdenlee.github.io/notebook/posts/tcs/machine_learning/matrices/BGKP16.html</id>
-    <published>2016-06-27T00:00:00Z</published>
-    <updated>2016-06-27T00:00:00Z</updated>
-    <summary type="html"><![CDATA[
-<div class="container">
-  <div id="content">
-    <div class="page header">
-      <h1>[BGKP16] Non-negative matrix factorization under heavy noise</h1>
-    </div>
-    <div class="info">
-      
-       
-        <p>Posted: 2016-06-27 
-          , Modified: 2016-06-27 
-	</p>
-      
-       <p>Tags: <a href="/tags/NMF.html">NMF</a></p> 
-    </div>
-    
-  </div>
-  <!--/div-->
-
-  <div class="toc"> <ul>
- <li><a href="#summary">Summary</a></li>
- <li><a href="#assumptions">Assumptions</a></li>
- <li><a href="#algorithm">Algorithm</a></li>
- </ul> </div>
-
-  <div class="blog-main">
-    <h2 id="summary">Summary</h2>
-<p>A provable algorithm for NMF <span class="math inline">\(A=BC\)</span> without assuming that the noise of every column of <span class="math inline">\(A\)</span> has small noise.</p>
-<p>Under <strong>heavy noise</strong> <span class="math display">\[\forall T\subeq [n], |T|\ge \ep n\implies \rc{|T|}\ve{\sum_{j\in T}N_{\bullet,j}}_1\le \ep\]</span> and in the dominant NMF model (dominant features, dominant basis vectors, nearly pure records), the TSVDNMF algorithm finds <span class="math display">\[\ve{B_{\bullet,l}-\wt B_{\bullet, l}}_1\le \ep_0.\]</span></p>
-<p>Under dominant NMF assumptions D1, D3, <span class="math inline">\(B\)</span> is identifiable.</p>
-<p>Remarks:</p>
-<ul>
-<li>Dominant features is a relaxation of anchor words.</li>
-<li>[AGKM12] (the original algorithm for NMF) requires separability, and does poorly under noise (because under noise the vertices of the simplex may no longer be the vertices of the simplex). Under error <span class="math inline">\(\ve{M-AW}_F^2\le \ep \ve{M}_F^2\)</span>, the algorithm takes time <span class="math inline">\(\exp\pf{r^2}{\ep^2}\)</span>.</li>
-<li>Almost pure documents is an assumption not in AGKM12.</li>
-<li>It only achieves constant error. (Can we do better than this?)</li>
-<li>Heavy noise subsumes many noise models. Note that heavy noise is a bound on <span class="math inline">\(\ve{\sum_{j\in T}N_{\bullet, j}}_1\)</span>, not <span class="math inline">\(\sum_{j\in T}\ve{N_{\bullet, j}}_1\)</span>.</li>
-</ul>
-<h2 id="assumptions">Assumptions</h2>
-<ul>
-<li>Heavy noise was defined above. If the covariance of noise in each column is large enough, <span class="math inline">\(\ve{\Si_j}_2=O\pf{\sqrt d}{\ep^2}\)</span>, then whp the heavy noise assumption holds.<a href="#fn1" class="footnoteRef" id="fnref1"><sup>1</sup></a>
-<ul>
-<li>For example, if it is the sum of <span class="math inline">\(w\)</span> random vectors each with covariance matrix <span class="math inline">\(O(1)\)</span> in norm, then we need <span class="math inline">\(w=\Om\pf{d}{\ep^4}\)</span>. Ex. multinomial noise.<a href="#fn2" class="footnoteRef" id="fnref2"><sup>2</sup></a></li>
-</ul></li>
-</ul>
-<ul>
-<li>Dominant NMF: See picture. Left: Dominant features (D1). (Note: sets have to be disjoint, not necessarily a partition.) Right: Dominant basis vectors (D2) and nearly pure records (D3).</li>
-</ul>
-<p><img src="/images/bgkp16-dnmf.png" width="640"></p>
-<h2 id="algorithm">Algorithm</h2>
-<ol type="1">
-<li>Apply thresholding to get <span class="math inline">\(D\)</span>.
-<ul>
-<li>Initialize <span class="math inline">\(R=[d]\)</span>.</li>
-<li>For each row <span class="math inline">\(i\)</span>, calculate a cutoff <span class="math inline">\(\ze_i\)</span>. Set <span class="math inline">\(D_{ij}=(A_{ij}\ge \ze_i) \sqrt{\ze_i}\)</span>.</li>
-<li>Sort rows in ascending order and prune rows as follows. (Why? We want to prune the non-catchwords. They may be associated with significantly more documents than the catchwords.) <img src="/images/bgkp16-alg1.png" width="640"></li>
-</ul></li>
-<li><p>Take rank-<span class="math inline">\(k\)</span> SVD <span class="math inline">\(D^{(k)}\)</span> of <span class="math inline">\(D\)</span>. (We hope that this is close to a block matrix with nonzeros in <span class="math inline">\(S_l\times T_l\)</span>.)</p>
-<img src="/images/bgkp16-alg2.png" width="640"></li>
-<li>Identify dominant basis vectors.
-<ul>
-<li><span class="math inline">\(k\)</span>-means clustering of columns of <span class="math inline">\(D^{(k)}\)</span>.</li>
-<li>Apply Lloyd’s algorithm to <span class="math inline">\(D\)</span> with this initialization.</li>
-<li>Let <span class="math inline">\((R_i)\)</span> be the <span class="math inline">\(k\)</span>-partition of <span class="math inline">\([n]\)</span>.</li>
-</ul></li>
-<li>Identify dominant features <span class="math inline">\(J_l\)</span> for each basis vector by: for each <span class="math inline">\(l\)</span>, take the features <span class="math inline">\(i\)</span> (words) with largest <span class="math inline">\(A_{il}\)</span>.</li>
-<li><p>Find the basis vectors by averaging the “purest” documents in each <span class="math inline">\(J_l\)</span>. <img src="/images/bgkp16-alg3.png" width="640"></p></li>
-</ol>
-<!-- Suppose $\ve{M-AW}_F^2\le \ep \ve{M}_F^2$. Devise a better algorithm for separable approximate NMF. -->
-<section class="footnotes">
-<hr />
-<ol>
-<li id="fn1"><p>The paper isn’t clear on the <span class="math inline">\(\ep\)</span> dependence… see supplement. In any case this is true in the case that noise is a sum of many <span class="math inline">\(O(1)\)</span> noises.<a href="#fnref1">↩</a></p></li>
-<li id="fn2"><p>The covariance matrix is <span class="math inline">\((-1_{i\ne j} p_ip_j)_{i,j}\)</span>. Max eigenvalue is at most <span class="math inline">\(\max p_i(1-p_i)\)</span> in absolute value.<a href="#fnref2">↩</a></p></li>
-</ol>
-</section>
-
-  </div>
-
-    
-
-    <!-- Extension : Sharing buttons @ www.sharethis.com -->
-    <span class='st_facebook_large' displayText='Facebook'></span>
-    <span class='st_twitter_large' displayText='Tweet'></span>
-    <span class='st_googleplus_large' displayText='Google +'></span>
-    <span class='st_reddit_large' displayText='Reddit'></span>
-    <span class='st__large' displayText=''></span>
-
-    <div id="disqus_thread"></div>
-    
-
-
-  
-    <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
-  </div>
-  
-</div>
-]]></summary>
-</entry>
-<entry>
-    <title>Relevant coordinates: Low-rank</title>
-    <link href="http://holdenlee.github.io/notebook/posts/tcs/machine_learning/matrices/relevant_coordinates_svd.html" />
-    <id>http://holdenlee.github.io/notebook/posts/tcs/machine_learning/matrices/relevant_coordinates_svd.html</id>
-    <published>2016-06-07T00:00:00Z</published>
-    <updated>2016-06-07T00:00:00Z</updated>
-    <summary type="html"><![CDATA[
-<div class="container">
-  <div id="content">
-    <div class="page header">
-      <h1>Relevant coordinates: Low-rank</h1>
-    </div>
-    <div class="info">
-      
-       
-        <p>Posted: 2016-06-07 
-          , Modified: 2016-06-07 
-	</p>
-      
-       <p>Tags: <a href="/tags/linear%20algebra%2B%2B.html">linear algebra++</a></p> 
-    </div>
-    
-  </div>
-  <!--/div-->
-
-  <div class="toc"> <ul>
- <li><a href="#low-rank-submatrix">Low-rank submatrix</a><ul>
- <li><a href="#assumptions">Assumptions</a></li>
- <li><a href="#algorithm">Algorithm</a></li>
- <li><a href="#proof">Proof</a></li>
- <li><a href="#extensions">Extensions</a></li>
- </ul></li>
- </ul> </div>
-
-  <div class="blog-main">
-    <p>See also <a href="relevant_coordinates.html">Relevant coordinates</a>.</p>
-<h2 id="low-rank-submatrix">Low-rank submatrix</h2>
-<p>Suppose <span class="math inline">\(I\subeq [m]\)</span> is a subset of indices. Draw each column of <span class="math inline">\(A\)</span> as follows. <span class="math inline">\(v_I\)</span> is drawn from some distribution close to being supported on a <span class="math inline">\(k\)</span>-dimensional subspace. (For example, first draw <span class="math inline">\(w\in \R^I\)</span> from a distribution supported on a <span class="math inline">\(k\)</span>-dimensional subspace. Now let <span class="math inline">\(v_I=w+\ep\)</span> where <span class="math inline">\(\ep\)</span> is error, independent on different indices. We can relax this in various ways.) For each <span class="math inline">\(i\nin I\)</span>, suppose there is a distribution <span class="math inline">\(D_i\)</span>. Draw <span class="math inline">\(v_i\)</span> from <span class="math inline">\(D_i\)</span> (independently).</p>
-<!-- Let $B_{I\times [n]}$ be a rank-$k$ matrix, and let $A_{I\times [n]}=B_{I\times[n]}+E$ where $E$ is noise. For $i\nin I$, let $A_{ij},1\le j\le m$ be independent draws from some distribution, and suppose that $A_{ij}$ for $i\nin I$ are independent. Recover $I$. -->
-<h3 id="assumptions">Assumptions</h3>
-<ul>
-<li>Suppose for simplicity that for each <span class="math inline">\(i\)</span>, <span class="math inline">\(\E v_i=0\)</span>, <span class="math inline">\(\E v_i^2=\Var(v_i)=1\)</span>. We can always normalize so this is the case (paying a little bit error for estimation for <span class="math inline">\(\E v_i\)</span>, <span class="math inline">\(\Var(v_i)\)</span>).</li>
-<li>Suppose the distribution on <span class="math inline">\(\R^I\)</span> satisfies the following. For every <span class="math inline">\(i\in I\)</span>, there exists <span class="math inline">\(j\in I, j\ne i\)</span> such that <span class="math inline">\(\E |v_iv_j|\ge \ep\)</span> (for example, <span class="math inline">\(\ep=\rc k\)</span>). (Is this a reasonable assumption? Can we replace it by something more standard?) (This is basically saying that you can’t delete a coordinate and make the distribution on <span class="math inline">\(\R^{I\bs \{i\}}\)</span> almost <span class="math inline">\((k-1)\)</span>-dimensional.)
-<ul>
-<li><p>Actually, we don’t need this, because:</p>
-<p>Lemma: if <span class="math inline">\(B_{ii}=1\)</span>, <span class="math inline">\(B\)</span> is symmetric, has entries in <span class="math inline">\([-1,1]\)</span>, and <span class="math inline">\(B_i\)</span> is a linear combination of <span class="math inline">\(k\)</span> other rows, then there is some <span class="math inline">\(j\ne i\)</span> such that <span class="math inline">\(|B_{ij}|\ge \rc k\)</span>.</p>
-<p>Proof. Suppose the <span class="math inline">\(k\)</span> rows are <span class="math inline">\([1,k]\)</span>, and the <span class="math inline">\((k+1)\)</span>th row is a linear combination of these with coefficients <span class="math inline">\(w\)</span>, i.e., letting <span class="math inline">\(C=B_{[1,n]\times [1,n]}\)</span>, <span class="math inline">\(w^TC = [B_{k+1,1},\ldots, B_{k+1,k}]\)</span>. Looking at this linear combination on the <span class="math inline">\(k+1\)</span>th column, <span class="math inline">\(w^T[B_{k+1,1},\ldots, B_{k+1,k}]=1\)</span>. Putting these together, we get <span class="math inline">\(w^TCw=1\)</span>. Because the entries of <span class="math inline">\(C\)</span> are at most 1 in absolute value, this means <span class="math display">\[(|w_1|+\cdots +|w_{k}|)^2\ge 1\implies \exists i, |w_i|\ge \rc k.\]</span></p>
-Apply this to the covariance matrix.</li>
-</ul></li>
-<li>Suppose <span class="math inline">\(\ep\)</span>, the noise, is such that each entry is in <span class="math inline">\([-C,C]\)</span>, zero-centered, and independent.</li>
-</ul>
-<h3 id="algorithm">Algorithm</h3>
-<p>Idea: on average, there is greater correlation between 2 random vectors in a <span class="math inline">\(k\)</span>-dimensional subspace than 2 random vectors in <span class="math inline">\(n\)</span> dimensions.</p>
-<ul>
-<li>Take <span class="math inline">\(n=\Om(\prc{\ep^2}(\ln m))\)</span> samples. Let them be the columns of <span class="math inline">\(A\)</span>.</li>
-<li>Calculate <span class="math inline">\(\rc n AA^T\)</span> (as a guess for the covariance matrix for <span class="math inline">\(v\)</span>).</li>
-<li>Declare <span class="math inline">\(i\in I\)</span> iff there is <span class="math inline">\(j\ne i\)</span> such that <span class="math inline">\((\rc{n}AA^T)_{ij}&gt;\fc{\ep}2\)</span>. <!-- * In a graph, connect up $i,j\in[n]$ by an edge iff $|A_{ij}|>\fc{\ep}{2}$.
-* W.h.p., all non-isolated vertices are in a connected component. This is $I$. (I.e., declare $i\in I$ iff there is $j\ne i$ such that $(\rc{n}AA^T)_{ij}>\fc{\ep}2$.)--></li>
-</ul>
-<h3 id="proof">Proof</h3>
-<ul>
-<li>Let <span class="math inline">\(\wt \E\)</span> be the empirical average, i.e., <span class="math inline">\(\wt \E v_iv_j = \rc n(AA^T)_{ij}\)</span>. We have <span class="math inline">\(|v_iv_j|\le 1\)</span>, so by Chernoff, <span class="math display">\[\Pj(\ab{\wt \E v_iv_j - \E v_iv_j} \ge t) \le 2e^{-nt^2}\]</span> for <span class="math inline">\(i,j\nin I\)</span>. We get a similar bound if <span class="math inline">\(i\in I\)</span> or <span class="math inline">\(j\in I\)</span>, where the randomness is over the noise in <span class="math inline">\(\ep\)</span>. Union-bounding, <span class="math display">\[\Pj(\text{for some $i\ne j$, }\ab{\wt \E v_iv_j - \E v_iv_j} \ge \fc{\ep}{2})\le m^2 e^{-cn\ep^2}.\]</span> Take <span class="math inline">\(n=\Om(\prc{\ep^2}\ln m)\)</span> to get this to be <span class="math inline">\(o(1)\)</span>.</li>
-<li>When either <span class="math inline">\(i\nin I\)</span> or <span class="math inline">\(j\nin I\)</span>, we have <span class="math inline">\(\E v_iv_j=0\)</span> so the above event makes <span class="math inline">\(|\wt\E v_iv_j|&lt;\fc{\ep}{2}\)</span>; when <span class="math inline">\(i\in I\)</span>, there is <span class="math inline">\(j\in I\)</span> such that <span class="math inline">\(\E |v_iv_j|&gt;\fc{\ep}{2}\)</span> by assumption so the above event makes <span class="math inline">\(|\wt \E v_iv_j|&gt;\fc{\ep}{2}\)</span>.</li>
-</ul>
-<h3 id="extensions">Extensions</h3>
-<ul>
-<li>It’s not really necessary for <span class="math inline">\(v_I\)</span> to be independent. It’s enough that <span class="math inline">\(A_{I\times [n]} = B_{I\times [n]}+E\)</span> where <span class="math inline">\(B_{I\times [n]}\)</span> is a rank <span class="math inline">\(k\)</span>-matrix such that for every <span class="math inline">\(i\in I\)</span>, there is <span class="math inline">\(j\in I\)</span> such that <span class="math inline">\(\an{B_i,B_j} &gt;\ep \ve{B_i}\ve{B_j}\)</span>, and <span class="math inline">\(E\)</span> is random-enough error.</li>
-<li>Can we get a result using fewer generative assumptions?
-<ul>
-<li>Connect <span class="math inline">\(i,j\)</span> if <span class="math inline">\(|\wt \E v_iv_j|&gt;\fc{\ep}{2}\)</span>. We probably reduce to a graph problem, where we want to find a subset where the graph is more dense.</li>
-<li>How much can we relax independence? Esp. independence of coordinates <span class="math inline">\(i\nin I\)</span>.</li>
-<li>Is worst-case hard (cf. max clique, planted clique)? “Find the subset of size <span class="math inline">\(cn\)</span> that is <span class="math inline">\(\ep\)</span>-close to a rank <span class="math inline">\(k\)</span> matrix.” What about a gap-problem, i.e., there’s a guarantee that there is no subset of size <span class="math inline">\(c'n\)</span> that is <span class="math inline">\(\ep'\)</span> close to rank <span class="math inline">\(c''k\)</span>?</li>
-</ul></li>
-</ul>
 
   </div>
 
