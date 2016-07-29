@@ -8,6 +8,8 @@ type: concept
 
 (See 10/15 notebook for detailed notes.)
 
+See also [AO15](AO15.html) and [mirror descent](mirror-descend.html).
+
 #Summary
 
 Algorithm|General|$\al$-strongly convex|$\be$-smooth|$\ga$-convex
@@ -24,7 +26,8 @@ Accelerated gradient descent|$\fc{d}{T}$|$\rc{\al T^2}$|$\fc{\be}{T^2}$|$e^{-\sq
 	2.  Choose a step size $\tau>0$:
 	    $$x^{(t+1)} \leftarrow x+\tau \De x.$$
 		* Backtracking OR
-		* Exact line search
+		* Exact line search OR
+		* Fixed multiplier
     3. Continue until stop criterion.
 * What is vanilla (one shot) gradient descent?
     *    Gradient descent lemma: Suppose $f$ is convex and $L$-smooth, $\ve{\nb f(x)-\nb f(y)}\le L\ve{x-y}$.
@@ -80,3 +83,48 @@ $$\fc{s-\rc{l}}{\rc{l}} = \fc{\rc L-s}{\rc L} \implies s = \fc{2}{L+l}.$$
 		    * Progress $\fc{2\al \be m}{M}$.
 		* Convergence $\fc{f(x_t) - f(x^*)}{f(x_{t-1}) - f(x^*)} \le 1-\min\pa{\fc{2\al \be (1-\al)d^2}{M}, 2m\al}$.
 			
+#Different settings
+
+*   General (can replace gradient by subgradient): Suppose $\ve{\nb f(x)}_2\le M$ and $\ve{x_1-x^*}_2\le R$. 
+	\begin{align}
+    \rc 2\ve{x_{k+1}-x^*}_2^2
+	& = \rc2 \ve{x_k-\al_k g_k -x^*}_2^2 \\
+	&= \rc 2\ve{x_k-x^*}_2^2 - \al_k \an{g_k,x_k-x^*} + \fc{\al_k^2}{2}\ve{g_k}^2\\
+	&\le \rc 2\ve{x_k-x^*}_2^2 - \al_k [f(x_k) - f(x^*)]+ \fc{\al_k^2}{2}\ve{g_k}^2& (f(x^*) \ge f(x_k) + \an{g_k,x^*-x_k}).
+	\end{align}
+	Rearranging,
+	$$
+	\al_k [f(x_k) - f(x^*)] \le \rc2 \ve{x_k-x^*}^2 \le 
+	\rc2 \ve{x_k-x^*}-\rc2 \ve{x_{k+1}-x^*}^2 + \fc{\al_k^2}{2}\ve{g_k}_*^2.
+	$$
+	Summing and telescoping, (n.b. we don't divide through by $\al_k$ before summing)
+	$$
+	\sumo kK  \al_k [f(x_k)-f^*] \le \rc2\ve{x_1-x^*}_2^2 + \sumo kK \fc{\al_k^2}2 \ve{g_k}_2^2.
+	$$
+	Letting $\ol x_K = \rc K \sumo kK x_k$, (for simplicity of notation, set $\rc{2\al_0}=0$)
+	$$
+	f(\ol x_K) - f(x^*) \le \rc K\pa{
+	\sum_k \pa{\sumo kK\rc{2\al_k}-\rc{2\al_{k-1}}\ve{x_k-x^*}} - \rc{2\al_K} \ve{x_{K+1}-x^*}^2+ \sumo kK \fc{\al_k}2\ve{g_k}^2}
+	\le \rc{2\al K}R + \rc{2K}\al M^2.
+	$$
+	Choose $\al=\fc{\sqrt R}{M}$ to get this is $\le \boxed{\fc{M\sqrt{R}}K}$.
+	<!--
+	Letting $\ol x_K = \sumo kK \al_k x_k/\sumo kK \al_k$, 
+	$$
+	f(\ol x_K) - f(x^*) \le \fc{R^2+ \rc2 \sumo kK \al_k^2 M^2}{\sumo kK \al_k}.
+	$$
+	(By convexity, $f(\ol x_K)\le \sumo kK \al_kf(x_k)/\sumo kK \al_k$.)
+
+	Choose $\al=\fc{R}{M\sqrt K}$ to get 
+	$$
+	f(\ol x_K) - f(x^*) \le \fc{RM}{\sqrt K}.
+	$$
+	Note if $\sum_k \al_k=\iy$ but $\al_k\to 0$, we get convergence.
+
+	This is slow. If we want $f(x_k) - f(x^*)\le \ep$, we need $O\prc{\ep^2}$ steps.
+    I'm very confused here. Isn't the above setting the $M$-smooth case, in which case you get $\rc{T}$ convergence? -->
+	Note this is also a regret bound, and it gives a bound on $\ol x_K$ not $x_K$. For the bound on $x_K$ see [AO15](AO15.html). Note that proof starts with $f(x_k)-f(x^*)$ rather than $\ve{x_k-x^*}$, and telescopes on $\rc{D_k}$ instead of $\ve{x_k-x^*}$.
+
+	Alternate proof off by factor of $\log T$: reduce to $\ga$-convex by adding $\fc{\al}2\ve{x-x_1}^2$. 
+* $\al$-sc: Proof off by factor of $\log T$: average $f*\mu(\pl \bS_\de)$ is $\fc{dG}{\de}$ smooth; optimize parameters.
+* General case: Consider $g(x)=f(x) + \fc{\al}2\ve{x-x_1}^2$. Use the $\al$-sc case to get error $\fc{\al}2R^2 + \rc{\al T}$. Take $\al = \sfc{1}{TR}$ to get $\sfc{R}{\sqrt T}$.
