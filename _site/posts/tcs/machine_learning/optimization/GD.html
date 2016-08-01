@@ -119,6 +119,13 @@
 <td style="text-align: left;"><span class="math inline">\(\fc{\be}{T^2}\)</span></td>
 <td style="text-align: left;"><span class="math inline">\(e^{-\sqrt{\ga} T}\)</span></td>
 </tr>
+<tr class="odd">
+<td style="text-align: left;">GD (average regret)</td>
+<td style="text-align: left;">N/A</td>
+<td style="text-align: left;"><span class="math inline">\(\rc{\al} \ln T\)</span></td>
+<td style="text-align: left;"><span class="math inline">\(\rc{\sqrt T}\)</span></td>
+<td style="text-align: left;"><span class="math inline">\(\fc{n}{\ga} \ln T\)</span></td>
+</tr>
 </tbody>
 </table>
 <p>“<span class="math inline">\(\ga\)</span>-convex” is also called “condition number <span class="math inline">\(\ka\)</span>” (<span class="math inline">\(\ka= \ga\)</span>).</p>
@@ -190,6 +197,13 @@ where the last inequality follows from <span class="math inline">\(\al&lt;0.5\)<
 </ul>
 <h2 id="different-settings">Different settings</h2>
 <ul>
+<li><p><span class="math inline">\(\be\)</span>-smooth: see <a href="AO15.html">AO15</a>. Note that proof starts with <span class="math inline">\(f(x_k)-f(x^*)\)</span> rather than <span class="math inline">\(\ve{x_k-x^*}\)</span>, and telescopes on <span class="math inline">\(\rc{D_k}\)</span> instead of <span class="math inline">\(\ve{x_k-x^*}\)</span>.</p>
+Alternate proof off by factor of <span class="math inline">\(\log T\)</span>: reduce to <span class="math inline">\(\ga\)</span>-convex by adding <span class="math inline">\(\fc{\al}2\ve{x-x_1}^2\)</span>.</li>
+<li><span class="math inline">\(\al\)</span>-sc: Proof off by factor of <span class="math inline">\(\log T\)</span>: average <span class="math inline">\(f*\mu(\pl \bS_\de)\)</span> is <span class="math inline">\(\fc{dG}{\de}\)</span> smooth; optimize parameters.</li>
+<li><p>General case: Consider <span class="math inline">\(g(x)=f(x) + \fc{\al}2\ve{x-x_1}^2\)</span>. Use the <span class="math inline">\(\al\)</span>-sc case to get error <span class="math inline">\(\fc{\al}2R^2 + \rc{\al T}\)</span>. Take <span class="math inline">\(\al = \sfc{1}{TR}\)</span> to get <span class="math inline">\(\sfc{R}{\sqrt T}\)</span>.</p></li>
+</ul>
+<h2 id="regret-bounds">Regret bounds</h2>
+<ul>
 <li>General (can replace gradient by subgradient): Suppose <span class="math inline">\(\ve{\nb f(x)}_2\le M\)</span> and <span class="math inline">\(\ve{x_1-x^*}_2\le R\)</span>.
 \begin{align}
 \rc 2\ve{x_{k+1}-x^*}_2^2
@@ -197,7 +211,7 @@ where the last inequality follows from <span class="math inline">\(\al&lt;0.5\)<
 &amp;= \rc 2\ve{x_k-x^*}_2^2 - \al_k \an{g_k,x_k-x^*} + \fc{\al_k^2}{2}\ve{g_k}^2\\
 &amp;\le \rc 2\ve{x_k-x^*}_2^2 - \al_k [f(x_k) - f(x^*)]+ \fc{\al_k^2}{2}\ve{g_k}^2&amp; (f(x^*) \ge f(x_k) + \an{g_k,x^*-x_k}).
 \end{align}
-<p>Rearranging, <span class="math display">\[
+Rearranging, <span class="math display">\[
 \al_k [f(x_k) - f(x^*)] \le \rc2 \ve{x_k-x^*}^2 \le 
 \rc2 \ve{x_k-x^*}-\rc2 \ve{x_{k+1}-x^*}^2 + \fc{\al_k^2}{2}\ve{g_k}_*^2.
 \]</span> Summing and telescoping, (n.b. we don’t divide through by <span class="math inline">\(\al_k\)</span> before summing) <span class="math display">\[
@@ -205,8 +219,8 @@ where the last inequality follows from <span class="math inline">\(\al&lt;0.5\)<
 \]</span> Letting <span class="math inline">\(\ol x_K = \rc K \sumo kK x_k\)</span>, (for simplicity of notation, set <span class="math inline">\(\rc{2\al_0}=0\)</span>) <span class="math display">\[
 f(\ol x_K) - f(x^*) \le \rc K\pa{
 \sum_k \pa{\sumo kK\rc{2\al_k}-\rc{2\al_{k-1}}\ve{x_k-x^*}} - \rc{2\al_K} \ve{x_{K+1}-x^*}^2+ \sumo kK \fc{\al_k}2\ve{g_k}^2}
-\le \rc{2\al K}R + \rc{2K}\al M^2.
-\]</span> Choose <span class="math inline">\(\al=\fc{\sqrt R}{M}\)</span> to get this is <span class="math inline">\(\le \boxed{\fc{M\sqrt{R}}K}\)</span>. <!--
+\le \rc{2\al K}R + \rc{2}\al M^2.
+\]</span> Choose <span class="math inline">\(\al=\fc{\sqrt{R}}{M\sqrt{K}}\)</span> to get this is <span class="math inline">\(\le \boxed{\fc{M\sqrt{R}}{\sqrt K}}\)</span>. <!--
 	Letting $\ol x_K = \sumo kK \al_k x_k/\sumo kK \al_k$, 
 	$$
 	f(\ol x_K) - f(x^*) \le \fc{R^2+ \rc2 \sumo kK \al_k^2 M^2}{\sumo kK \al_k}.
@@ -220,10 +234,7 @@ f(\ol x_K) - f(x^*) \le \rc K\pa{
 	Note if $\sum_k \al_k=\iy$ but $\al_k\to 0$, we get convergence.
 
 	This is slow. If we want $f(x_k) - f(x^*)\le \ep$, we need $O\prc{\ep^2}$ steps.
-    I'm very confused here. Isn't the above setting the $M$-smooth case, in which case you get $\rc{T}$ convergence? --> Note this is also a regret bound, and it gives a bound on <span class="math inline">\(\ol x_K\)</span> not <span class="math inline">\(x_K\)</span>. For the bound on <span class="math inline">\(x_K\)</span> see <a href="AO15.html">AO15</a>. Note that proof starts with <span class="math inline">\(f(x_k)-f(x^*)\)</span> rather than <span class="math inline">\(\ve{x_k-x^*}\)</span>, and telescopes on <span class="math inline">\(\rc{D_k}\)</span> instead of <span class="math inline">\(\ve{x_k-x^*}\)</span>.</p>
-Alternate proof off by factor of <span class="math inline">\(\log T\)</span>: reduce to <span class="math inline">\(\ga\)</span>-convex by adding <span class="math inline">\(\fc{\al}2\ve{x-x_1}^2\)</span>.</li>
-<li><span class="math inline">\(\al\)</span>-sc: Proof off by factor of <span class="math inline">\(\log T\)</span>: average <span class="math inline">\(f*\mu(\pl \bS_\de)\)</span> is <span class="math inline">\(\fc{dG}{\de}\)</span> smooth; optimize parameters.</li>
-<li><p>General case: Consider <span class="math inline">\(g(x)=f(x) + \fc{\al}2\ve{x-x_1}^2\)</span>. Use the <span class="math inline">\(\al\)</span>-sc case to get error <span class="math inline">\(\fc{\al}2R^2 + \rc{\al T}\)</span>. Take <span class="math inline">\(\al = \sfc{1}{TR}\)</span> to get <span class="math inline">\(\sfc{R}{\sqrt T}\)</span>.</p></li>
+    I'm very confused here. Isn't the above setting the $M$-smooth case, in which case you get $\rc{T}$ convergence? --> Note this is a regret bound, and it gives a bound on <span class="math inline">\(\ol x_K\)</span> not <span class="math inline">\(x_K\)</span>. For the bound on <span class="math inline">\(x_K\)</span> see <a href="AO15.html">AO15</a>. Note that proof starts with <span class="math inline">\(f(x_k)-f(x^*)\)</span> rather than <span class="math inline">\(\ve{x_k-x^*}\)</span>, and telescopes on <span class="math inline">\(\rc{D_k}\)</span> instead of <span class="math inline">\(\ve{x_k-x^*}\)</span>.</li>
 </ul>
 <section class="footnotes">
 <hr />

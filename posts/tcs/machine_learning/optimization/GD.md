@@ -16,8 +16,10 @@ Algorithm|General|$\al$-strongly convex|$\be$-smooth|$\ga$-convex
 ---|---|---|---|---
 Gradient descent|$\rc{\sqrt{T}}$|$\rc{\al T}$|$\fc{\be}T$|$e^{-\ga T}$
 Accelerated gradient descent|$\fc{d}{T}$|$\rc{\al T^2}$|$\fc{\be}{T^2}$|$e^{-\sqrt{\ga} T}$
+GD (average regret)|N/A| $\rc{\al} \ln T$ | $\rc{\sqrt T}$ | $\fc{n}{\ga} \ln T$
 
 "$\ga$-convex" is also called "condition number $\ka$" ($\ka= \ga$).
+
 
 ##Gradient descent main points
 
@@ -85,6 +87,14 @@ $$\fc{s-\rc{l}}{\rc{l}} = \fc{\rc L-s}{\rc L} \implies s = \fc{2}{L+l}.$$
 			
 #Different settings
 
+*   $\be$-smooth: see [AO15](AO15.html). Note that proof starts with $f(x_k)-f(x^*)$ rather than $\ve{x_k-x^*}$, and telescopes on $\rc{D_k}$ instead of $\ve{x_k-x^*}$.
+
+    Alternate proof off by factor of $\log T$: reduce to $\ga$-convex by adding $\fc{\al}2\ve{x-x_1}^2$. 
+* $\al$-sc: Proof off by factor of $\log T$: average $f*\mu(\pl \bS_\de)$ is $\fc{dG}{\de}$ smooth; optimize parameters.
+* General case: Consider $g(x)=f(x) + \fc{\al}2\ve{x-x_1}^2$. Use the $\al$-sc case to get error $\fc{\al}2R^2 + \rc{\al T}$. Take $\al = \sfc{1}{TR}$ to get $\sfc{R}{\sqrt T}$.
+
+#Regret bounds
+
 *   General (can replace gradient by subgradient): Suppose $\ve{\nb f(x)}_2\le M$ and $\ve{x_1-x^*}_2\le R$. 
 	\begin{align}
     \rc 2\ve{x_{k+1}-x^*}_2^2
@@ -105,9 +115,9 @@ $$\fc{s-\rc{l}}{\rc{l}} = \fc{\rc L-s}{\rc L} \implies s = \fc{2}{L+l}.$$
 	$$
 	f(\ol x_K) - f(x^*) \le \rc K\pa{
 	\sum_k \pa{\sumo kK\rc{2\al_k}-\rc{2\al_{k-1}}\ve{x_k-x^*}} - \rc{2\al_K} \ve{x_{K+1}-x^*}^2+ \sumo kK \fc{\al_k}2\ve{g_k}^2}
-	\le \rc{2\al K}R + \rc{2K}\al M^2.
+	\le \rc{2\al K}R + \rc{2}\al M^2.
 	$$
-	Choose $\al=\fc{\sqrt R}{M}$ to get this is $\le \boxed{\fc{M\sqrt{R}}K}$.
+	Choose $\al=\fc{\sqrt{R}}{M\sqrt{K}}$ to get this is $\le \boxed{\fc{M\sqrt{R}}{\sqrt K}}$.
 	<!--
 	Letting $\ol x_K = \sumo kK \al_k x_k/\sumo kK \al_k$, 
 	$$
@@ -123,8 +133,5 @@ $$\fc{s-\rc{l}}{\rc{l}} = \fc{\rc L-s}{\rc L} \implies s = \fc{2}{L+l}.$$
 
 	This is slow. If we want $f(x_k) - f(x^*)\le \ep$, we need $O\prc{\ep^2}$ steps.
     I'm very confused here. Isn't the above setting the $M$-smooth case, in which case you get $\rc{T}$ convergence? -->
-	Note this is also a regret bound, and it gives a bound on $\ol x_K$ not $x_K$. For the bound on $x_K$ see [AO15](AO15.html). Note that proof starts with $f(x_k)-f(x^*)$ rather than $\ve{x_k-x^*}$, and telescopes on $\rc{D_k}$ instead of $\ve{x_k-x^*}$.
+	Note this is a regret bound, and it gives a bound on $\ol x_K$ not $x_K$. For the bound on $x_K$ see [AO15](AO15.html). Note that proof starts with $f(x_k)-f(x^*)$ rather than $\ve{x_k-x^*}$, and telescopes on $\rc{D_k}$ instead of $\ve{x_k-x^*}$.
 
-	Alternate proof off by factor of $\log T$: reduce to $\ga$-convex by adding $\fc{\al}2\ve{x-x_1}^2$. 
-* $\al$-sc: Proof off by factor of $\log T$: average $f*\mu(\pl \bS_\de)$ is $\fc{dG}{\de}$ smooth; optimize parameters.
-* General case: Consider $g(x)=f(x) + \fc{\al}2\ve{x-x_1}^2$. Use the $\al$-sc case to get error $\fc{\al}2R^2 + \rc{\al T}$. Take $\al = \sfc{1}{TR}$ to get $\sfc{R}{\sqrt T}$.

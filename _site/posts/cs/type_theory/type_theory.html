@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+
+  <meta name="description" content="Holden Lee's Research Notebook">
+  <meta name="author" content="Holden Lee">
+    
+  <title>Type theory</title>
+
+  <!-- Bootstrap core CSS -->
+  <link href="../../../bootstrap/css/bootstrap.min.css" rel="stylesheet">
+
+  <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+  <!-- <link href="../../assets/css/ie10-viewport-bug-workaround.css" rel="stylesheet"> -->
+
+  <!-- Custom styles for this template -->
+  <link href="../../../css/blog.css" rel="stylesheet">
+  <link href="../../../css/default.css" rel="stylesheet">
+
+  <!-- Extension : Footnotes -->
+  <link href="../../../footnotes/css/footnotes.css" rel="stylesheet">
+
+  <!-- Extension : InlineDisqussions @ https://github.com/tsi/inlineDisqussions -->
+  
+
+</head>
+
+<body>
+
+<!-- Navigation bar. navbar-inverse is black, navbar-default is white.-->
+<!-- To make a button active (pressed), use <li class="active"> -->
+<div id="header">
+  <nav class="navbar navbar-inverse navbar-fixed-top">
+    <div class="container">
+      <div class="navbar-header">
+        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+          <span class="sr-only">Toggle navigation</span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="../../../">Notebook</a>
+      </div>
+      <div id="navbar" class="collapse navbar-collapse">
+        <ul class="nav navbar-nav">
+          <li><a href="../../../">Home</a></li>
+          <li><a href="../../../sitemap.html">Sitemap</a></li>
+<!-- TODO: Distinguish between PAPERS, RESEARCH QUESTIONS, BOOKS -->
+<!-- TODO: make this part a for loop over main pages -->
+        </ul>
+      </div><!--/.nav-collapse -->
+    </div>
+  </nav>
+</div>
+<!-- Content -->
+<!--div id="content">
+  <h1>Mental Wilderness</h1>-->
+
+
+
+<div class="container">
+  <div id="content">
+    <div class="page header">
+      <h1>Type theory</h1>
+    </div>
+    <div class="info">
+      
+       
+        <p>Posted: 2016-07-31 
+          , Modified: 2016-07-31 
+	</p>
+      
+       <p>Tags: <a href="../../../tags/none.html">none</a></p> 
+    </div>
+    
+  </div>
+  <!--/div-->
+
+  <div class="toc"> <ul>
+ <li><a href="#hindley-milner-type-system">Hindley-Milner type system</a><ul>
+ <li><a href="#ingredients">Ingredients</a></li>
+ </ul></li>
+ <li><a href="#axioms">Axioms</a></li>
+ <li><a href="#algorithm-w">Algorithm W</a></li>
+ <li><a href="#bottom-up-algorithm-w">Bottom-up Algorithm W</a></li>
+ <li><a href="#lambda-cube">Lambda cube</a></li>
+ <li><a href="#scratch">Scratch</a></li>
+ </ul> </div>
+
+  <div class="blog-main">
+    <h2 id="hindley-milner-type-system">Hindley-Milner type system</h2>
+<p>The Hindley-Milner type system is a very nice point in the space of possible type systems because there is a reasonable algorithm to deduce the most general type of a program without type annotations (it is sound and complete).</p>
+<p>To understand it, we need to understand</p>
+<ul>
+<li>the ingredients: what are syntactically valid expressions?</li>
+<li>the axioms: the rules that allow you to say what types more complicated expressions are, given the types of the building blocks.</li>
+<li>the algorithm: an efficient way to find the most general type (ex. <code>Int -&gt; a -&gt; List a</code>) of an expression, given the types of the building blocks. This algorithm can be proved to capture all possible types for the expression.</li>
+</ul>
+<p>What rules make sense? <span class="math display">\[ x:a,\quad f:a\to b\vdash f x:b\]</span> And we need some kind of specialization <span class="math display">\[ x : \forall a, F(a) \vdash x : F(a').\]</span> We need lambda expressions too.</p>
+<h3 id="ingredients">Ingredients</h3>
+<div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="kw">newtype</span> <span class="dt">Var</span> <span class="fu">=</span> <span class="dt">Var</span> <span class="dt">String</span>
+<span class="kw">newtype</span> <span class="dt">TVar</span> <span class="fu">=</span> <span class="dt">TVar</span> <span class="dt">String</span>
+
+<span class="kw">data</span> <span class="dt">Expr</span> <span class="fu">=</span> <span class="dt">ExprV</span> <span class="dt">Var</span> <span class="co">-- x</span>
+	<span class="fu">|</span> <span class="dt">App</span> <span class="dt">Expr</span> <span class="dt">Expr</span> <span class="co">-- e_1 e_2</span>
+	<span class="fu">|</span> <span class="dt">Lambda</span> <span class="dt">Var</span> <span class="dt">Expr</span> <span class="co">-- \lambda x. e</span>
+	<span class="fu">|</span> <span class="dt">Let</span> <span class="dt">Var</span> <span class="dt">Expr</span> <span class="dt">Expr</span> <span class="co">-- let x = e_1 in e_2</span>
+
+<span class="kw">data</span> <span class="dt">Mono</span> <span class="fu">=</span> <span class="dt">MonoV</span> <span class="dt">TVar</span> <span class="co">-- a</span>
+	<span class="fu">|</span> <span class="dt">TApp</span> <span class="dt">Type</span> [<span class="dt">Mono</span>] <span class="co">-- D t_1 ..., here D is a parametric type with some number of arguments</span>
+
+<span class="kw">data</span> <span class="dt">Poly</span> <span class="fu">=</span> <span class="dt">PolyM</span> <span class="dt">Mono</span> <span class="co">-- t</span>
+	<span class="fu">|</span> <span class="dt">Forall</span> <span class="dt">TypeVar</span> <span class="dt">Poly</span> <span class="co">-- \forall a . s</span></code></pre></div>
+<p>(Note, “-&gt;” is a special case of TApp: TApp fun [a, b].)</p>
+<p>Monotypes can only be one type (ex. <code>Int -&gt; [Int]</code>) while polytypes can be many different types (ex. <code>a -&gt; [a]</code>, forall is implicit here).</p>
+<p>We need to make a distinction between monotypes and polytypes because <strong>only monotypes can go in the forall</strong>.</p>
+<p>We also need the notion of <strong>free variable</strong>. These are variables that have not been captured by a <span class="math inline">\(\forall\)</span>.</p>
+<pre><code>import Data.Set as S
+
+freeM :: Mono -&gt; S.Set TVar
+freeM = \case
+	MonoV t -&gt; S.singleton t
+	TApp _ ts -&gt; S.unions (map freeM ts)
+
+freeP :: Poly -&gt; S.Set TVar
+freeP = \case
+	PolyM m s -&gt; S.delete m (freeP si)</code></pre>
+<p>(Warning: in Haskell all type variables are implicitly bound, so free variables do not appear. See Ex. 1 in wikipedia.)</p>
+<p>Next we need the notion of a context, which says what expressions are of what type. For example, it can say what types the variables are; in the inside of <code>let</code> we need to know what the context is to do typing.</p>
+<pre><code>data Bindings = Bind Var Poly -- x:s
+
+type Context = S.Set Bindings
+
+freeC :: Context -&gt; S.Set Var
+freeC ga = S.unions (map (\case Bind v s -&gt; freeP s) (S.elems ga))
+	</code></pre>
+<!--Is set a monad?-->
+<p>The polymorphic types form a partial order <span class="math inline">\(\si\sqsubseteq \si'\)</span>, <span class="math inline">\(\si\)</span> is more special. Ex. <code>Map Int Int</code><span class="math inline">\(\sqsubseteq\)</span><code>Map Int v</code><span class="math inline">\(\sqsubseteq\)</span><code>Map k v</code>.</p>
+<!--this requires a bit more work to code...-->
+<!--note: need to add deriving...-->
+<h2 id="axioms">Axioms</h2>
+\begin{align}
+\frac{x:\si\in \Ga}{\Ga\vdash x:\si}&amp;&amp; \text{[Var]}\\
+\frac{\Ga\vdash e_0:\tau \to \tau'\quad
+\Ga\vdash e_1:\tau}{\Ga\vdash e_0 \,e_1:\tau'}&amp;&amp; \text{[App]}\\
+\frac{\Ga\cup \{ x:\tau\} \vdash e:\tau'}{\Ga \vdash \lambda x.e:\tau \to \tau'} &amp;&amp;\text{[Abs]}\\
+\frac{\Ga \vdash  e_0:\si\quad \Ga\cup \{x:\si\}\vdash e_1:\tau}{\Ga \vdash \text{let }x=e_0\text{ in }e_1:\tau}&amp;&amp; \text{[Let]}\\
+\frac{\Ga \vdash e:\si'\quad \si'\sqsubseteq \si}{\Ga \vdash e:\si}&amp;&amp;\text{[Inst]}\\
+\frac{\Ga \vdash e:\si\quad \al\nin \text{free}(\Ga)}{\Ga \vdash e:\forall \al.\si}&amp;&amp;\text{[Gen]}.
+\end{align}
+<p>Abs is abstraction. Inst is instantiation. Note we add to the context when we go inside a lambda or a let. Gen then Inst together help specialize given information in context.</p>
+<p>Subtlety: in <code>let</code>, variables enter in polymorphic form and can be specialized. Contrast <span class="math display">\[
+\la f. (f \,\text{true}, f \,0)
+\]</span> with <span class="math display">\[
+\text{let } f = \la x. x\text{ in } (f\text{ true}, f \, 0).
+\]</span> This is why <code>let</code> is NOT just syntactic sugar for <span class="math inline">\((\la x.e_2)\,e_1\)</span>; it genuinely adds expressivity.</p>
+<h2 id="algorithm-w">Algorithm W</h2>
+<p>Algorithm is simple, but there’s a lot of things you have to define first (ex. substitution, instantiation).</p>
+<p>First, define a unification algorithm. It takes expressions (AST’s) <span class="math inline">\(\si,\tau\)</span> and returns a substitution (map) <span class="math inline">\(U\)</span>, such that for any substitution <span class="math inline">\(R\)</span> unifying <span class="math inline">\(\si\)</span> and <span class="math inline">\(\tau\)</span>, <span class="math inline">\(R=SU\)</span>. I.e., it gives the most general unification. (Unify by making more specific.)</p>
+<p>Algorithm W: Given a context/type environment <span class="math inline">\(\ol p\)</span> (map from strings to polytypes/schemes), and an expression <span class="math inline">\(e\)</span>, return a substitution and a typing for <span class="math inline">\(e\)</span> and all subexpressions. (We will denote such a typing by <span class="math inline">\(\ol{e}_\si\)</span> where <span class="math inline">\(\si\)</span> is the type for <span class="math inline">\(e\)</span>, and <span class="math inline">\(\ol{\bullet}\)</span> means that all subexpressions have been annotated.) If <span class="math inline">\(e\)</span> is…</p>
+<ul>
+<li>variable <span class="math inline">\(x\)</span>: Lookup <span class="math inline">\(x\)</span> in the type environment. If it’s not there, ERROR. Let <span class="math inline">\(\tau\)</span> be the type. Substitute generic (bound) variables in <span class="math inline">\(\tau\)</span> by new (free) variables. I.e., <code>({}, instantiate(tau))</code>.</li>
+<li>application <span class="math inline">\(d\,e\)</span>:
+<ul>
+<li>Run <span class="math inline">\(W\)</span> on the function: <span class="math inline">\((R,\ol d_\rh) = W(\ol p, d)\)</span>.</li>
+<li>Run <span class="math inline">\(W\)</span> on the argument, where we apply the substitution output by the function, <span class="math inline">\((S, \ol e_\si) = W(R\ol p, e)\)</span>.</li>
+<li>We’ve now calculated a type <span class="math inline">\(\rh\)</span> for the function, and a type <span class="math inline">\(\si\)</span> for the argument. Now we need to unify these. (Ex. the function is <span class="math inline">\(a\to a\)</span> and the type is <code>Int</code>.) Let <span class="math inline">\(\be\)</span> be a new variable. Unify <span class="math inline">\(S\rh\)</span> and <span class="math inline">\(\si\to \be\)</span>, <span class="math inline">\(U=U(S\rh, \si\to \be)\)</span>.</li>
+<li>Return <span class="math inline">\((USR, U(((S\ol d)\ol e)_\be))\)</span>. (Compose the substitutions in the order that we calculated them.) Explanation:
+<ul>
+<li>We had a typing for <span class="math inline">\(\ol d\)</span>. We update that by <span class="math inline">\(S\)</span>.</li>
+<li>The type for <span class="math inline">\(d\, e\)</span> is <span class="math inline">\(\be\)</span> (found in the previous step).</li>
+<li>Apply <span class="math inline">\(U\)</span> to get the type for the whole expression.</li>
+</ul></li>
+<li>Note: if <span class="math inline">\(x\)</span> came from <span class="math inline">\(\la x:\be\)</span>, then <span class="math inline">\(\be\)</span> is a monotype (possibly with free variables), and no substitution is done. If <span class="math inline">\(x\)</span> came from <code>let</code> then <span class="math inline">\(x\)</span> may have bound variables, so we instantiate new variables.</li>
+</ul></li>
+<li>abstraction <span class="math inline">\(\la x. \,d\)</span>:
+<ul>
+<li>Let <span class="math inline">\(\be\)</span> be a new type variable.</li>
+<li>Add <span class="math inline">\(x:\be\)</span> to the context, <span class="math inline">\(\ol p \cup \{x:\be\}\)</span>.</li>
+<li>Run <span class="math inline">\(W\)</span> with this new context, <span class="math inline">\(W(\ol p \cup \{x:\be\}, d)\)</span>.</li>
+<li>Return <span class="math inline">\((R, (\la x_{R\be}.\ol{d}_\rh)_{R\be \to \rh})\)</span>.</li>
+</ul></li>
+<li><code>let x=d in e</code>. This different similar to <span class="math inline">\(\la\)</span> with application (<span class="math inline">\((\la x . d) \, e\)</span>) because there we would apply the substitution to the function <span class="math inline">\(d\)</span> (<span class="math inline">\(S\rh\)</span>) and attempt to unify, but here we keep the bound variables in <span class="math inline">\(d\)</span>.
+<ul>
+<li>Run <span class="math inline">\(W\)</span> on <span class="math inline">\(d\)</span>: Let <span class="math inline">\((R,\ol d_\rh)=W(\ol p, d)\)</span>.</li>
+<li>Run <span class="math inline">\(W\)</span> on <span class="math inline">\(e\)</span> with <span class="math inline">\(\{x:\rh\}\)</span> added: Let <span class="math inline">\((s,\ol e_\si) = W(R\ol p\cup \{x:\rh\}, e)\)</span>.</li>
+<li>Return <span class="math inline">\((SR, (\text{let }x_{S\rh} = S\ol d\text{ in }\ol e)_{\si})\)</span>.</li>
+<li>!! Should generalize here: abstract (<span class="math inline">\(\forall\)</span>) over all variables free in <span class="math inline">\(d\)</span> but not free in the environment. Ex. <code>let foo = \y -&gt; x</code> in context <code>x:a</code>. <code>\y -&gt; x : b -&gt; a</code> is not yet generalized. Make it <span class="math inline">\(\forall b: b\to a\)</span>.</li>
+</ul></li>
+</ul>
+<p>Note we don’t really need to keep track of the intermediate typings, just the substitutions.</p>
+<p>Subtle point I’m still trying to get clear (ex. 1):</p>
+<pre><code>let bar [forall a. forall b. a -&gt; (b -&gt; a)] = \x -&gt;
+	let foo [forall b. b -&gt; a] = \y -&gt; x
+	in foo
+in bar</code></pre>
+<p>is the same as</p>
+<div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell">\x <span class="ot">-&gt;</span> (\y <span class="ot">-&gt;</span> x)</code></pre></div>
+<p>right?</p>
+<h2 id="bottom-up-algorithm-w">Bottom-up Algorithm W</h2>
+<div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="kw">data</span> <span class="dt">Constraint</span> <span class="fu">=</span> <span class="dt">EqC</span> <span class="dt">Poly</span> <span class="dt">Poly</span>
+	<span class="fu">|</span> <span class="dt">InstM</span> <span class="dt">Poly</span> (<span class="dt">S.Set</span> <span class="dt">Mono</span>) <span class="dt">Poly</span>
+	<span class="fu">|</span> <span class="dt">GenericInst</span> <span class="dt">Poly</span> <span class="dt">Poly</span></code></pre></div>
+<p>Generate the constraint set as follows. For an expression <span class="math inline">\(e\)</span>, if <span class="math inline">\(e\)</span> is</p>
+<ul>
+<li>variable <span class="math inline">\(x\)</span>: Get fresh <span class="math inline">\(\be\)</span>, note <span class="math inline">\(x:\be\)</span>.</li>
+<li>application <span class="math inline">\(e_1\,e_2\)</span>: Recurse on <span class="math inline">\(e_1\)</span> and <span class="math inline">\(e_2\)</span> (take union of constraints and typings). Let <span class="math inline">\(e_1:\tau_1\)</span>, <span class="math inline">\(e_2:\tau_2\)</span>. Note <span class="math inline">\(e_1\, e_2:\be\)</span>, add <span class="math inline">\(\tau_1\equiv \tau_2\to \be\)</span> to the constraint set.</li>
+<li>abstraction <span class="math inline">\(\la x. e\)</span>: Recurse on <span class="math inline">\(e\)</span>, suppose <span class="math inline">\(e:\tau\)</span>. Take all typings of the form <span class="math inline">\(x:\tau'\)</span> and make constraints <span class="math inline">\(\tau'\equiv \be\)</span>. Generate fresh <span class="math inline">\(\be\)</span>. Type <span class="math inline">\(\la x.e : (\be \to \tau)\)</span>.</li>
+<li><code>let x=e_1 in e_2</code>: Recurse on <span class="math inline">\(e_1:\tau_1\)</span>, <span class="math inline">\(e_2:\tau_2\)</span>, and type as <span class="math inline">\(\tau_2\)</span>. For all typings of the form <span class="math inline">\(x:\tau'\)</span> generated by <span class="math inline">\(e_2\)</span>, add <span class="math inline">\(\tau'\le_M \tau_1\)</span> to the constraint set.</li>
+</ul>
+<p>Note that for the <span class="math inline">\(\le_M\)</span> constraint, we need to keep a list of monomorphic variables <span class="math inline">\(M\)</span> (corresponding to free—introduced in lambdas) as we recurse down the tree. (Things in lambdas DO NOT generalize, in <span class="math inline">\(\la x. e\)</span>, <span class="math inline">\(x\)</span> can’t have two different types/interpretations in <span class="math inline">\(e\)</span>. Thus within the lambda expression, <span class="math inline">\(x\)</span> is in the monomorphic set—you can’t do <span class="math inline">\(\forall x\)</span>.)</p>
+<p>The bottom-up inference rules are different from the usual inference rules:</p>
+<ul>
+<li>Usual rules keep the context the same; these change the context.</li>
+<li>They translate more directly into an algorithm.</li>
+<li>They involve the constraints, not the context.</li>
+</ul>
+<p>See p. 10 for the algorithm.</p>
+<h2 id="lambda-cube">Lambda cube</h2>
+<p>https://en.wikipedia.org/wiki/Lambda_cube</p>
+<p><img src="https://upload.wikimedia.org/wikipedia/commons/1/19/Lambda_cube.png"></p>
+<p>3 dimensions:</p>
+<ul>
+<li>Polymorphism (bottom/top)</li>
+<li>Type operators/types depending on types (front/back)</li>
+<li>Types depending on terms, dependent types (left/right)</li>
+</ul>
+<p>Front:</p>
+<table>
+<thead>
+<tr class="header">
+<th style="text-align: left;">*</th>
+<th style="text-align: left;">None</th>
+<th style="text-align: left;">Dependent types</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Polymorphism</td>
+<td style="text-align: left;">F, <span class="math inline">\(\la2\)</span></td>
+<td style="text-align: left;"><span class="math inline">\(\la P2\)</span></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">None</td>
+<td style="text-align: left;"><span class="math inline">\(\la_{\to}\)</span></td>
+<td style="text-align: left;">LF, <span class="math inline">\(\la P\)</span></td>
+</tr>
+</tbody>
+</table>
+<p>Back: (types depending on types)</p>
+<table>
+<thead>
+<tr class="header">
+<th style="text-align: left;">*</th>
+<th style="text-align: left;">None</th>
+<th style="text-align: left;">Dependent types</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Polymorphism</td>
+<td style="text-align: left;"><span class="math inline">\(F_\om\)</span>, <span class="math inline">\(\la \om\)</span></td>
+<td style="text-align: left;">CIC, <span class="math inline">\(\la P\om\)</span></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">None</td>
+<td style="text-align: left;"><span class="math inline">\(\la_\om\)</span>, <span class="math inline">\(\la\ul{\om}\)</span></td>
+<td style="text-align: left;"><span class="math inline">\(\la P \ul{\om}\)</span></td>
+</tr>
+</tbody>
+</table>
+<p>Hindley-Milner is a subset of System F (in between <span class="math inline">\(\la_{\to}\)</span> and <span class="math inline">\(F=\la 2\)</span>). Haskell contains system F.</p>
+<p>References:</p>
+<ul>
+<li><span class="math inline">\(F_{&lt;:}\)</span> (F with subtyping): Ch. 26, 28</li>
+<li><span class="math inline">\(\la_\om\)</span> (types depending on types): Ch. 29</li>
+<li><span class="math inline">\(F_\om\)</span> (F with types depending on types): Ch. 30</li>
+<li><span class="math inline">\(F_{&lt;:}^\om\)</span>: CH. 31</li>
+</ul>
+<h2 id="scratch">Scratch</h2>
+
+  </div>
+
+    
+
+    <!-- Extension : Sharing buttons @ www.sharethis.com -->
+    <span class="st_facebook_large" displayText="Facebook"></span>
+    <span class="st_twitter_large" displayText="Tweet"></span>
+    <span class="st_googleplus_large" displayText="Google +"></span>
+    <span class="st_reddit_large" displayText="Reddit"></span>
+    <span class="st__large" displayText></span>
+
+    <div id="disqus_thread"></div>
+    
+
+
+  
+    <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+  </div>
+  
+</div>
+
+
+<!-- Footer -->
+<div id="footer">
+  <div class="container">
+    Built with
+    <a href="http://jaspervdj.be/hakyll">Hakyll</a> 
+    using 
+    <a href="http://www.getbootstrap.com">Bootstrap</a>, 
+    <a href="http://www.disqus.com">Disqus</a>,
+    <a href="http://ignorethecode.net/blog/2010/04/20/footnotes/">Footnotes.js</a>,
+    <a href="http://highlightjs.org/">Highlight.js</a>, 
+    <a href="http://www.mathjax.org">MathJax</a>, 
+    and <a href="http://www.sharethis.com">ShareThis</a>.
+  </div>
+</div>
+</body>
+
+</html>
+
+<!-- SCRIPTS -->
+<!-- jQuery-->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+<script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
+
+<script src="../../../bootstrap/js/bootstrap.min.js"></script>
+
+<!-- Extension : Highlight.js @ https://highlightjs.org/ -->
+<!-- Syntax highlighting tomorrow-night-bright, agate-->
+<link rel="stylesheet" href="../../../highlight/css/tomorrow-night-bright.css">
+<script src="../../../highlight/js/highlight.pack.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+
+<!-- Extension : MathJax @ https://docs.mathjax.org/en/v2.5-latest/tex.html -->
+<!-- MathJax/config/local/local.js contains macros. Need to provide entire URL-->
+<script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML,http://holdenlee.github.io/notebook/MathJax/config/local/local"></script>
+
+<!-- Extension : Footnotes @ http://ignorethecode.net/blog/2010/04/20/footnotes/ -->
+<script src="../../../footnotes/js/footnotes.js"></script>
+
+<!-- Extension : Disqus @ http://disqus.com -->
+<!-- Extension : InlineDisqussions @ https://github.com/tsi/inlineDisqussions -->
+
+<script src="../../../disqus/js/disqus.js"></script>
+
+
+
+<!-- Extension : Google Analytics -->
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-73261814-1', 'auto');
+  ga('send', 'pageview');
+
+</script>
+

@@ -10,7 +10,7 @@
   <meta name="description" content="Holden Lee's Research Notebook">
   <meta name="author" content="Holden Lee">
     
-  <title>Posts in category "tcs/machine_learning/nlp"</title>
+  <title>[ALLMR16] Linear Algebraic Structure of Word Senses, with Applications to Polysemy</title>
 
   <!-- Bootstrap core CSS -->
   <link href="../../../../bootstrap/css/bootstrap.min.css" rel="stylesheet">
@@ -66,55 +66,73 @@
 <div class="container">
   <div id="content">
     <div class="page header">
-      <h1>Posts in category "tcs/machine_learning/nlp"</h1>
+      <h1>[ALLMR16] Linear Algebraic Structure of Word Senses, with Applications to Polysemy</h1>
     </div>
     <div class="info">
       
+       
+        <p>Posted: 2016-03-15 
+          , Modified: 2016-03-15 
+	</p>
       
-      
+       <p>Tags: <a href="../../../../tags/nlp.html">nlp</a>, <a href="../../../../tags/word%20embeddings.html">word embeddings</a></p> 
     </div>
     
   </div>
   <!--/div-->
 
-  
+  <div class="toc"></div>
 
   <div class="blog-main">
-    <ul>
-    
-        <li>
-            <a href="../../../../posts/tcs/machine_learning/nlp/pmi.html">PMI and feature vectors</a> (2016-07-29)
-        </li>
-    
-        <li>
-            <a href="../../../../posts/tcs/machine_learning/nlp/2016-senior-presentations.html">NLP</a> (2016-05-14)
-        </li>
-    
-        <li>
-            <a href="../../../../posts/tcs/machine_learning/nlp/percy_liang.html">Percy Liang's papers</a> (2016-05-04)
-        </li>
-    
-        <li>
-            <a href="../../../../posts/tcs/machine_learning/nlp/nlp.html">NLP</a> (2016-05-04)
-        </li>
-    
-        <li>
-            <a href="../../../../posts/tcs/machine_learning/nlp/randwalk.html">[ALLMR16] RAND-WALK: A latent variable model approach to word embeddings</a> (2016-03-15)
-        </li>
-    
-        <li>
-            <a href="../../../../posts/tcs/machine_learning/nlp/polysemy.html">[ALLMR16] Linear Algebraic Structure of Word Senses, with Applications to Polysemy</a> (2016-03-15)
-        </li>
-    
-</ul>
-
-
+    <p>Words don’t just live in a small-dimensional space; they are composed of a small number of atoms plus noise.</p>
+<p><span class="math display">\[v_w = Ax_w + n_w\]</span> where <span class="math inline">\(\Supp(x_w)\le s\)</span> (<span class="math inline">\(s=5\)</span> works well), <span class="math inline">\(A\)</span> is overcomplete <span class="math inline">\(d\times k\)</span>, <span class="math inline">\(k&gt;d\)</span>, and <span class="math inline">\(n_w\)</span> is noise. <span class="math inline">\(k=2000\)</span> works well. The <span class="math inline">\(A_{\bullet i}\)</span> are discourse vectors. They correspond to different senses (meanings) of the word. (Rather than just different features of the word.)</p>
+<p>Do dictionary learning another time (recursive/hierarchical!)<a href="#fn1" class="footnoteRef" id="fnref1"><sup>1</sup></a> with <span class="math inline">\(k'=200\)</span> and sparsity <span class="math inline">\(s'=2\)</span>. Get meta-discourse vectors.</p>
+<p>For a polysemous word, given lists (by WordNet/humans) of sets of 8 words representing senses,</p>
+<ol type="1">
+<li>find 5 atoms of the word and its inflectional forms to obtain 10-20 candidate discourse atoms.</li>
+<li>for each atom, find top 2 senses with highest normalized similarities, <span class="math display">\[S(a,L) = \sqrt{\sum_{u\in L}\an{a,v_u}^2/|L|} + \sqrt{\sum_{u\in L}\an{v_w,v_u}^2/|L|}.\]</span></li>
+<li>return top <span class="math inline">\(k\)</span> senses.</li>
+</ol>
+<p>Let <span class="math inline">\(r=\fc{\Pj(w_2)}{\Pj(w_1)}\)</span>. The set of words that appear in both <span class="math inline">\(w_1,w_2\)</span> is much smaller than the set of words that appear with exactly one of them.</p>
+Suppose each <span class="math inline">\(\chi\)</span> appears with only one <span class="math inline">\(w_i\)</span>. Let <span class="math inline">\(T_i\)</span> be the <span class="math inline">\(\chi\)</span> appearing with <span class="math inline">\(w_i\)</span>. Then
+\begin{align}
+\chi&amp;\in T_1\implies &amp;PMI(\chi,w) &amp;= PMI(\chi,w_1) - \ub{\log(1+r)}{\ka_1}\\
+\chi&amp;\in T_2\implies &amp;PMI(\chi,w) &amp;= PMI(\chi,w_2) - \ub{\log(1+\rc r)}{\ka_2}.
+\end{align}
+<p>Identify words and their context vectors.</p>
+<p><em>Claim</em>: under the assumptions</p>
+<ol type="1">
+<li><span class="math inline">\(v_1\perp v_2\)</span></li>
+<li>For words that coappear with <span class="math inline">\(w_1\)</span>, their vectors are pretty correlated with <span class="math inline">\(v_1\)</span>, and orthogonal components behave like random vectors, <span class="math inline">\(\chi= \an{\chi,v_1}v_1/ve{v_1}^2 + \xi\)</span></li>
+</ol>
+<p>we have <span class="math display">\[\amin_z \sum_\chi \Pj(\chi,w) (PMI(\chi,w)-\an{\chi,z})^2\approx \sumo i2(1-\ka_ic_i)v_i.\]</span> <a href="#fn2" class="footnoteRef" id="fnref2"><sup>2</sup></a></p>
+<p>Note the logarithmic scaling—this means that even small senses are detectable.</p>
+<section class="footnotes">
+<hr />
+<ol>
+<li id="fn1"><p>cf. hierarchical topic models (but sparse coding is very different from topic modeling. does it work better?), cf. a multiple-layer neural net<a href="#fnref1">↩</a></p></li>
+<li id="fn2"><p>This tells us how the word vectors change, provided that the other terms in the sum don’t affect things much.<a href="#fnref2">↩</a></p></li>
+</ol>
+</section>
 
   </div>
 
     
 
+    <!-- Extension : Sharing buttons @ www.sharethis.com -->
+    <span class="st_facebook_large" displayText="Facebook"></span>
+    <span class="st_twitter_large" displayText="Tweet"></span>
+    <span class="st_googleplus_large" displayText="Google +"></span>
+    <span class="st_reddit_large" displayText="Reddit"></span>
+    <span class="st__large" displayText></span>
 
+    <div id="disqus_thread"></div>
+    
+
+
+  
+    <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+  </div>
   
 </div>
 
@@ -159,6 +177,9 @@
 
 <!-- Extension : Disqus @ http://disqus.com -->
 <!-- Extension : InlineDisqussions @ https://github.com/tsi/inlineDisqussions -->
+
+<script src="../../../../disqus/js/disqus.js"></script>
+
 
 
 <!-- Extension : Google Analytics -->

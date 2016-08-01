@@ -8,8 +8,528 @@
         <name>Holden Lee</name>
         <email>oldheneel@gmail.com</email>
     </author>
-    <updated>2016-07-28T00:00:00Z</updated>
+    <updated>2016-07-31T00:00:00Z</updated>
     <entry>
+    <title>Types and programming languages, Benjamin Pierce</title>
+    <link href="http://holdenlee.github.io/notebook/posts/cs/type_theory/types_and_pl.html" />
+    <id>http://holdenlee.github.io/notebook/posts/cs/type_theory/types_and_pl.html</id>
+    <published>2016-07-31T00:00:00Z</published>
+    <updated>2016-07-31T00:00:00Z</updated>
+    <summary type="html"><![CDATA[
+<div class="container">
+  <div id="content">
+    <div class="page header">
+      <h1>Types and programming languages, Benjamin Pierce</h1>
+    </div>
+    <div class="info">
+      
+       
+        <p>Posted: 2016-07-31 
+          , Modified: 2016-07-31 
+	</p>
+      
+       <p>Tags: <a href="/tags/none.html">none</a></p> 
+    </div>
+    
+  </div>
+  <!--/div-->
+
+  <div class="toc"> <ul>
+ <li><a href="#recursive-types">20 Recursive types</a><ul>
+ <li><a href="#formalities">20.2 Formalities</a></li>
+ <li><a href="#subtyping">20.3 Subtyping</a></li>
+ </ul></li>
+ <li><a href="#metatheory-of-recursive-types">21 Metatheory of recursive types</a><ul>
+ <li><a href="#subtyping-1">21.3 Subtyping</a></li>
+ <li><a href="#regular-trees">21.7 Regular trees</a></li>
+ <li><a href="#mu-types">21.8 Mu-types</a></li>
+ </ul></li>
+ <li><a href="#type-reconstruction">22 Type reconstruction</a><ul>
+ <li><a href="#let-polymorphism">22.7 Let-polymorphism</a></li>
+ </ul></li>
+ <li><a href="#universal-types">Universal types</a><ul>
+ <li><a href="#system-f">23.3 System F</a></li>
+ <li><a href="#section">23.10</a></li>
+ </ul></li>
+ </ul> </div>
+
+  <div class="blog-main">
+    <h2 id="recursive-types">20 Recursive types</h2>
+<p><span class="math inline">\(\mu\)</span> is a recursion operator for types. A definition <span class="math inline">\(T = \mu X. Y\)</span> means: let <span class="math inline">\(T\)</span> be the infinite type satisfying <span class="math inline">\(X=Y\)</span>.</p>
+<pre><code>Hungry = \mu A. Nat -&gt; A
+Stream = \mu A. Unit -&gt; {Nat, A}
+Process = \mu A. Nat -&gt; {Nat, A}
+Counter = \mu C. {get: Nat, inc: Unit -&gt; C}</code></pre>
+<p>Note: you can’t define Hungry in Haskell because (Then how does printf work? Something with type classes?)</p>
+<p>Recursive types well-types the fixed-point combinator. <span class="math display">\[
+fix_T = \la f:T\to T.(\la x:(\mu A. A\to T). f (x x)) (\la x:(\mu A. A\to T). f (x x))
+\]</span></p>
+<p>Every type is inhabited (<span class="math inline">\(\la\_:(). fix_T (\la x:T.x)\)</span>), so systems with recursive types are useless as logics.</p>
+<p>[Embed untyped lambda calculus]</p>
+<h3 id="formalities">20.2 Formalities</h3>
+<p>There are 2 basic approaches to recursive types. What is the relationship between the type and its one-step unfolding?</p>
+<ol type="1">
+<li>Equi-recursive: They are definitionally equal.</li>
+<li>Iso-recursive: They are different but isomorphic. There are functions <code>unfold</code> and <code>fold</code> going both ways. (Ex. Haskell)</li>
+</ol>
+<p>Note equi-recursive places more demands on the typechecker.</p>
+<h3 id="subtyping">20.3 Subtyping</h3>
+<h2 id="metatheory-of-recursive-types">21 Metatheory of recursive types</h2>
+<p><strong>Theorem</strong> (Knaster-Tarski): Let <span class="math inline">\(X\)</span> be a poset, <span class="math inline">\(f:X\to X\)</span> be order-preserving. Then there exists a fixed point, <span class="math inline">\(\sup\set{x\in X}{x\le f(x)}\)</span>.</p>
+<p>Let <span class="math inline">\(\cal U\)</span> be the universal set. Consider <span class="math inline">\((\cal P(\cal U), \subeq)\)</span>. Say <span class="math inline">\(X\)</span> is <span class="math inline">\(F\)</span>-closed/consistent if <span class="math inline">\(F(X)\subeq/\supeq X\)</span>.</p>
+<p><em>Corollary</em>. The intersection/union of all <span class="math inline">\(F\)</span>-closed/consistent is the least/greatest fixed point of <span class="math inline">\(F\)</span>, denoted by <span class="math inline">\(\mu F, \nu F\)</span>.</p>
+<p>(Principle of induction/coinduction) If <span class="math inline">\(X\)</span> is <span class="math inline">\(F\)</span>-closed, <span class="math inline">\(\mu F\subeq X\)</span>; if <span class="math inline">\(X\)</span> is <span class="math inline">\(F\)</span>-consistent, <span class="math inline">\(X\subeq \nu F\)</span>.</p>
+<p>Finite tree types are given by</p>
+<pre><code>T = Top | (T, T) | T -&gt; T </code></pre>
+<p>Infinite tree types are like this but the tree can be infinite.</p>
+<h3 id="subtyping-1">21.3 Subtyping</h3>
+<p>Say <span class="math inline">\(T&lt;:Top\)</span>, <span class="math inline">\(S_1&lt;:T_1, S_2&lt;:T_2 \implies (S_1\times S_2)&lt;:(T_1,T_2)\)</span> and similarly for <span class="math inline">\(\to\)</span>. Take the transitive closure to get the subtyping relation.</p>
+<h3 id="regular-trees">21.7 Regular trees</h3>
+<p>A tree type is regular if subtrees(T) is finite.</p>
+<h3 id="mu-types">21.8 Mu-types</h3>
+<pre><code>T = X
+	| Top
+	| T x T
+	| T -&gt; T
+	| \mu X. T</code></pre>
+<p>“Keep substituting” <span class="math inline">\(\mu X. T\)</span> to get the tree type corresponding to the <span class="math inline">\(\mu\)</span>-type, treeof<span class="math inline">\(([X\mapsto \mu X. T]T)(\pi)\)</span>.</p>
+<h2 id="type-reconstruction">22 Type reconstruction</h2>
+<p>2 questions:</p>
+<ol type="1">
+<li>Are all substitution instances of t well typed? <span class="math display">\[\forall \si, (\si \Ga \vdash \si t:T)\]</span> Type variables should be held abstract. This leads to <strong>parametric polymorphism</strong>.</li>
+<li>Is some substitution instance of <span class="math inline">\(t\)</span> well typed? <span class="math display">\[\exists \si, (\si \Ga \vdash \si t:T)\]</span> Can <span class="math inline">\(t\)</span> be instantiated to a well-typed term by choosing appropriate values? This leads to type reconstruction/inference.</li>
+</ol>
+<p>Constraint typing: <span class="math inline">\(\Ga \vdash t:T|_{\cal X} C\)</span> means “term <span class="math inline">\(t\)</span> has type <span class="math inline">\(T\)</span> under assumptions <span class="math inline">\(\Ga\)</span> whenever constraints <span class="math inline">\(C\)</span> are satisfied.” <span class="math inline">\(\cal X\)</span> tracks type variables introduced in each subderivation.</p>
+<p>(This is a hybrid between the normal deductive system, and the bottom-up constraint generation system.)</p>
+<h3 id="let-polymorphism">22.7 Let-polymorphism</h3>
+<p>Not allowed: doubleFun:<span class="math inline">\(\forall a . (\forall f : a\to a) \to a \to a\)</span> defined by</p>
+<pre class="hs"><code>let doubleFun = \f x -&gt; f (f x)</code></pre>
+<p>Reason: a polytype cannot appear inside <code>-&gt;</code>.</p>
+<p>T-LetPoly: <span class="math display">\[
+\frac{\Ga \vdash [x\mapsto t_1]t_2:T_2 \quad \Ga \vdash t_1:T_1}{\Ga \vdash \text{let }x=t_1\text{ in }t_2:T_2}.
+\]</span> Instead of calculating a type for <span class="math inline">\(t_1\)</span>, it substitutes <span class="math inline">\(t_1\)</span> in the body. I.e., perform a step of evaluation before calculating types.</p>
+<p>Problem: If the body contains many occurrences, we have to check once for each occurrence. This can take exponential time. See p. 333-4 for solution. Worst-case is still exponential, but in practice it is essentially linear.</p>
+<h2 id="universal-types">Universal types</h2>
+<p>We need to abstract out a type from a term and instantiate the abstract term with concrete type annotations.</p>
+<ul>
+<li>Parametric polymorphism: a single piece of code can be typed generically using variables in place of types, and then instantiated. They behave uniformly.
+<ul>
+<li>Impredicative/first-class</li>
+<li>Let-polymorphism (restricted to top-level let-bindings). Functions cannot take polymorphic values as arguments.</li>
+</ul></li>
+<li>Ad-hoc polymorphism: Exhibit different behaviors when viewed at different types. Overloading: associate single function symbol with many implementations.</li>
+<li>Multi-method dispatch</li>
+<li>Intensional polymorphism: restricted computation over types at run time.</li>
+<li>Subtype polymorphism</li>
+</ul>
+<h3 id="system-f">23.3 System F</h3>
+<p>Equivalent to polymorphic lambda-calculus a.k.a. 2nd-order lambda calculus because it corresponds to 2nd-order intuitionistic logic, which allows quantification over predicates (types) not just terms.</p>
+<p>New terms are</p>
+<ul>
+<li><span class="math inline">\(\la X.t\)</span> (type abstraction)</li>
+<li><span class="math inline">\(t [T]\)</span> (type application)</li>
+</ul>
+<h3 id="section">23.10</h3>
+<p>Impredicative: definition involves thing being defined. <span class="math inline">\(T=\forall X.X\to X\)</span> ranges over all types, including <span class="math inline">\(T\)</span> itself.</p>
+<p>Predicative/stratified: range is restricted to monotypes.</p>
+
+  </div>
+
+    
+
+    <!-- Extension : Sharing buttons @ www.sharethis.com -->
+    <span class='st_facebook_large' displayText='Facebook'></span>
+    <span class='st_twitter_large' displayText='Tweet'></span>
+    <span class='st_googleplus_large' displayText='Google +'></span>
+    <span class='st_reddit_large' displayText='Reddit'></span>
+    <span class='st__large' displayText=''></span>
+
+    <div id="disqus_thread"></div>
+    
+
+
+  
+    <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+  </div>
+  
+</div>
+]]></summary>
+</entry>
+<entry>
+    <title>Type theory</title>
+    <link href="http://holdenlee.github.io/notebook/posts/cs/type_theory/type_theory.html" />
+    <id>http://holdenlee.github.io/notebook/posts/cs/type_theory/type_theory.html</id>
+    <published>2016-07-31T00:00:00Z</published>
+    <updated>2016-07-31T00:00:00Z</updated>
+    <summary type="html"><![CDATA[
+<div class="container">
+  <div id="content">
+    <div class="page header">
+      <h1>Type theory</h1>
+    </div>
+    <div class="info">
+      
+       
+        <p>Posted: 2016-07-31 
+          , Modified: 2016-07-31 
+	</p>
+      
+       <p>Tags: <a href="/tags/none.html">none</a></p> 
+    </div>
+    
+  </div>
+  <!--/div-->
+
+  <div class="toc"> <ul>
+ <li><a href="#hindley-milner-type-system">Hindley-Milner type system</a><ul>
+ <li><a href="#ingredients">Ingredients</a></li>
+ </ul></li>
+ <li><a href="#axioms">Axioms</a></li>
+ <li><a href="#algorithm-w">Algorithm W</a></li>
+ <li><a href="#bottom-up-algorithm-w">Bottom-up Algorithm W</a></li>
+ <li><a href="#lambda-cube">Lambda cube</a></li>
+ <li><a href="#scratch">Scratch</a></li>
+ </ul> </div>
+
+  <div class="blog-main">
+    <h2 id="hindley-milner-type-system">Hindley-Milner type system</h2>
+<p>The Hindley-Milner type system is a very nice point in the space of possible type systems because there is a reasonable algorithm to deduce the most general type of a program without type annotations (it is sound and complete).</p>
+<p>To understand it, we need to understand</p>
+<ul>
+<li>the ingredients: what are syntactically valid expressions?</li>
+<li>the axioms: the rules that allow you to say what types more complicated expressions are, given the types of the building blocks.</li>
+<li>the algorithm: an efficient way to find the most general type (ex. <code>Int -&gt; a -&gt; List a</code>) of an expression, given the types of the building blocks. This algorithm can be proved to capture all possible types for the expression.</li>
+</ul>
+<p>What rules make sense? <span class="math display">\[ x:a,\quad f:a\to b\vdash f x:b\]</span> And we need some kind of specialization <span class="math display">\[ x : \forall a, F(a) \vdash x : F(a').\]</span> We need lambda expressions too.</p>
+<h3 id="ingredients">Ingredients</h3>
+<div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="kw">newtype</span> <span class="dt">Var</span> <span class="fu">=</span> <span class="dt">Var</span> <span class="dt">String</span>
+<span class="kw">newtype</span> <span class="dt">TVar</span> <span class="fu">=</span> <span class="dt">TVar</span> <span class="dt">String</span>
+
+<span class="kw">data</span> <span class="dt">Expr</span> <span class="fu">=</span> <span class="dt">ExprV</span> <span class="dt">Var</span> <span class="co">-- x</span>
+	<span class="fu">|</span> <span class="dt">App</span> <span class="dt">Expr</span> <span class="dt">Expr</span> <span class="co">-- e_1 e_2</span>
+	<span class="fu">|</span> <span class="dt">Lambda</span> <span class="dt">Var</span> <span class="dt">Expr</span> <span class="co">-- \lambda x. e</span>
+	<span class="fu">|</span> <span class="dt">Let</span> <span class="dt">Var</span> <span class="dt">Expr</span> <span class="dt">Expr</span> <span class="co">-- let x = e_1 in e_2</span>
+
+<span class="kw">data</span> <span class="dt">Mono</span> <span class="fu">=</span> <span class="dt">MonoV</span> <span class="dt">TVar</span> <span class="co">-- a</span>
+	<span class="fu">|</span> <span class="dt">TApp</span> <span class="dt">Type</span> [<span class="dt">Mono</span>] <span class="co">-- D t_1 ..., here D is a parametric type with some number of arguments</span>
+
+<span class="kw">data</span> <span class="dt">Poly</span> <span class="fu">=</span> <span class="dt">PolyM</span> <span class="dt">Mono</span> <span class="co">-- t</span>
+	<span class="fu">|</span> <span class="dt">Forall</span> <span class="dt">TypeVar</span> <span class="dt">Poly</span> <span class="co">-- \forall a . s</span></code></pre></div>
+<p>(Note, “-&gt;” is a special case of TApp: TApp fun [a, b].)</p>
+<p>Monotypes can only be one type (ex. <code>Int -&gt; [Int]</code>) while polytypes can be many different types (ex. <code>a -&gt; [a]</code>, forall is implicit here).</p>
+<p>We need to make a distinction between monotypes and polytypes because <strong>only monotypes can go in the forall</strong>.</p>
+<p>We also need the notion of <strong>free variable</strong>. These are variables that have not been captured by a <span class="math inline">\(\forall\)</span>.</p>
+<pre><code>import Data.Set as S
+
+freeM :: Mono -&gt; S.Set TVar
+freeM = \case
+	MonoV t -&gt; S.singleton t
+	TApp _ ts -&gt; S.unions (map freeM ts)
+
+freeP :: Poly -&gt; S.Set TVar
+freeP = \case
+	PolyM m s -&gt; S.delete m (freeP si)</code></pre>
+<p>(Warning: in Haskell all type variables are implicitly bound, so free variables do not appear. See Ex. 1 in wikipedia.)</p>
+<p>Next we need the notion of a context, which says what expressions are of what type. For example, it can say what types the variables are; in the inside of <code>let</code> we need to know what the context is to do typing.</p>
+<pre><code>data Bindings = Bind Var Poly -- x:s
+
+type Context = S.Set Bindings
+
+freeC :: Context -&gt; S.Set Var
+freeC ga = S.unions (map (\case Bind v s -&gt; freeP s) (S.elems ga))
+	</code></pre>
+<!--Is set a monad?-->
+<p>The polymorphic types form a partial order <span class="math inline">\(\si\sqsubseteq \si'\)</span>, <span class="math inline">\(\si\)</span> is more special. Ex. <code>Map Int Int</code><span class="math inline">\(\sqsubseteq\)</span><code>Map Int v</code><span class="math inline">\(\sqsubseteq\)</span><code>Map k v</code>.</p>
+<!--this requires a bit more work to code...-->
+<!--note: need to add deriving...-->
+<h2 id="axioms">Axioms</h2>
+\begin{align}
+\frac{x:\si\in \Ga}{\Ga\vdash x:\si}&amp;&amp; \text{[Var]}\\
+\frac{\Ga\vdash e_0:\tau \to \tau'\quad
+\Ga\vdash e_1:\tau}{\Ga\vdash e_0 \,e_1:\tau'}&amp;&amp; \text{[App]}\\
+\frac{\Ga\cup \{ x:\tau\} \vdash e:\tau'}{\Ga \vdash \lambda x.e:\tau \to \tau'} &amp;&amp;\text{[Abs]}\\
+\frac{\Ga \vdash  e_0:\si\quad \Ga\cup \{x:\si\}\vdash e_1:\tau}{\Ga \vdash \text{let }x=e_0\text{ in }e_1:\tau}&amp;&amp; \text{[Let]}\\
+\frac{\Ga \vdash e:\si'\quad \si'\sqsubseteq \si}{\Ga \vdash e:\si}&amp;&amp;\text{[Inst]}\\
+\frac{\Ga \vdash e:\si\quad \al\nin \text{free}(\Ga)}{\Ga \vdash e:\forall \al.\si}&amp;&amp;\text{[Gen]}.
+\end{align}
+<p>Abs is abstraction. Inst is instantiation. Note we add to the context when we go inside a lambda or a let. Gen then Inst together help specialize given information in context.</p>
+<p>Subtlety: in <code>let</code>, variables enter in polymorphic form and can be specialized. Contrast <span class="math display">\[
+\la f. (f \,\text{true}, f \,0)
+\]</span> with <span class="math display">\[
+\text{let } f = \la x. x\text{ in } (f\text{ true}, f \, 0).
+\]</span> This is why <code>let</code> is NOT just syntactic sugar for <span class="math inline">\((\la x.e_2)\,e_1\)</span>; it genuinely adds expressivity.</p>
+<h2 id="algorithm-w">Algorithm W</h2>
+<p>Algorithm is simple, but there’s a lot of things you have to define first (ex. substitution, instantiation).</p>
+<p>First, define a unification algorithm. It takes expressions (AST’s) <span class="math inline">\(\si,\tau\)</span> and returns a substitution (map) <span class="math inline">\(U\)</span>, such that for any substitution <span class="math inline">\(R\)</span> unifying <span class="math inline">\(\si\)</span> and <span class="math inline">\(\tau\)</span>, <span class="math inline">\(R=SU\)</span>. I.e., it gives the most general unification. (Unify by making more specific.)</p>
+<p>Algorithm W: Given a context/type environment <span class="math inline">\(\ol p\)</span> (map from strings to polytypes/schemes), and an expression <span class="math inline">\(e\)</span>, return a substitution and a typing for <span class="math inline">\(e\)</span> and all subexpressions. (We will denote such a typing by <span class="math inline">\(\ol{e}_\si\)</span> where <span class="math inline">\(\si\)</span> is the type for <span class="math inline">\(e\)</span>, and <span class="math inline">\(\ol{\bullet}\)</span> means that all subexpressions have been annotated.) If <span class="math inline">\(e\)</span> is…</p>
+<ul>
+<li>variable <span class="math inline">\(x\)</span>: Lookup <span class="math inline">\(x\)</span> in the type environment. If it’s not there, ERROR. Let <span class="math inline">\(\tau\)</span> be the type. Substitute generic (bound) variables in <span class="math inline">\(\tau\)</span> by new (free) variables. I.e., <code>({}, instantiate(tau))</code>.</li>
+<li>application <span class="math inline">\(d\,e\)</span>:
+<ul>
+<li>Run <span class="math inline">\(W\)</span> on the function: <span class="math inline">\((R,\ol d_\rh) = W(\ol p, d)\)</span>.</li>
+<li>Run <span class="math inline">\(W\)</span> on the argument, where we apply the substitution output by the function, <span class="math inline">\((S, \ol e_\si) = W(R\ol p, e)\)</span>.</li>
+<li>We’ve now calculated a type <span class="math inline">\(\rh\)</span> for the function, and a type <span class="math inline">\(\si\)</span> for the argument. Now we need to unify these. (Ex. the function is <span class="math inline">\(a\to a\)</span> and the type is <code>Int</code>.) Let <span class="math inline">\(\be\)</span> be a new variable. Unify <span class="math inline">\(S\rh\)</span> and <span class="math inline">\(\si\to \be\)</span>, <span class="math inline">\(U=U(S\rh, \si\to \be)\)</span>.</li>
+<li>Return <span class="math inline">\((USR, U(((S\ol d)\ol e)_\be))\)</span>. (Compose the substitutions in the order that we calculated them.) Explanation:
+<ul>
+<li>We had a typing for <span class="math inline">\(\ol d\)</span>. We update that by <span class="math inline">\(S\)</span>.</li>
+<li>The type for <span class="math inline">\(d\, e\)</span> is <span class="math inline">\(\be\)</span> (found in the previous step).</li>
+<li>Apply <span class="math inline">\(U\)</span> to get the type for the whole expression.</li>
+</ul></li>
+<li>Note: if <span class="math inline">\(x\)</span> came from <span class="math inline">\(\la x:\be\)</span>, then <span class="math inline">\(\be\)</span> is a monotype (possibly with free variables), and no substitution is done. If <span class="math inline">\(x\)</span> came from <code>let</code> then <span class="math inline">\(x\)</span> may have bound variables, so we instantiate new variables.</li>
+</ul></li>
+<li>abstraction <span class="math inline">\(\la x. \,d\)</span>:
+<ul>
+<li>Let <span class="math inline">\(\be\)</span> be a new type variable.</li>
+<li>Add <span class="math inline">\(x:\be\)</span> to the context, <span class="math inline">\(\ol p \cup \{x:\be\}\)</span>.</li>
+<li>Run <span class="math inline">\(W\)</span> with this new context, <span class="math inline">\(W(\ol p \cup \{x:\be\}, d)\)</span>.</li>
+<li>Return <span class="math inline">\((R, (\la x_{R\be}.\ol{d}_\rh)_{R\be \to \rh})\)</span>.</li>
+</ul></li>
+<li><code>let x=d in e</code>. This different similar to <span class="math inline">\(\la\)</span> with application (<span class="math inline">\((\la x . d) \, e\)</span>) because there we would apply the substitution to the function <span class="math inline">\(d\)</span> (<span class="math inline">\(S\rh\)</span>) and attempt to unify, but here we keep the bound variables in <span class="math inline">\(d\)</span>.
+<ul>
+<li>Run <span class="math inline">\(W\)</span> on <span class="math inline">\(d\)</span>: Let <span class="math inline">\((R,\ol d_\rh)=W(\ol p, d)\)</span>.</li>
+<li>Run <span class="math inline">\(W\)</span> on <span class="math inline">\(e\)</span> with <span class="math inline">\(\{x:\rh\}\)</span> added: Let <span class="math inline">\((s,\ol e_\si) = W(R\ol p\cup \{x:\rh\}, e)\)</span>.</li>
+<li>Return <span class="math inline">\((SR, (\text{let }x_{S\rh} = S\ol d\text{ in }\ol e)_{\si})\)</span>.</li>
+<li>!! Should generalize here: abstract (<span class="math inline">\(\forall\)</span>) over all variables free in <span class="math inline">\(d\)</span> but not free in the environment. Ex. <code>let foo = \y -&gt; x</code> in context <code>x:a</code>. <code>\y -&gt; x : b -&gt; a</code> is not yet generalized. Make it <span class="math inline">\(\forall b: b\to a\)</span>.</li>
+</ul></li>
+</ul>
+<p>Note we don’t really need to keep track of the intermediate typings, just the substitutions.</p>
+<p>Subtle point I’m still trying to get clear (ex. 1):</p>
+<pre><code>let bar [forall a. forall b. a -&gt; (b -&gt; a)] = \x -&gt;
+	let foo [forall b. b -&gt; a] = \y -&gt; x
+	in foo
+in bar</code></pre>
+<p>is the same as</p>
+<div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell">\x <span class="ot">-&gt;</span> (\y <span class="ot">-&gt;</span> x)</code></pre></div>
+<p>right?</p>
+<h2 id="bottom-up-algorithm-w">Bottom-up Algorithm W</h2>
+<div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="kw">data</span> <span class="dt">Constraint</span> <span class="fu">=</span> <span class="dt">EqC</span> <span class="dt">Poly</span> <span class="dt">Poly</span>
+	<span class="fu">|</span> <span class="dt">InstM</span> <span class="dt">Poly</span> (<span class="dt">S.Set</span> <span class="dt">Mono</span>) <span class="dt">Poly</span>
+	<span class="fu">|</span> <span class="dt">GenericInst</span> <span class="dt">Poly</span> <span class="dt">Poly</span></code></pre></div>
+<p>Generate the constraint set as follows. For an expression <span class="math inline">\(e\)</span>, if <span class="math inline">\(e\)</span> is</p>
+<ul>
+<li>variable <span class="math inline">\(x\)</span>: Get fresh <span class="math inline">\(\be\)</span>, note <span class="math inline">\(x:\be\)</span>.</li>
+<li>application <span class="math inline">\(e_1\,e_2\)</span>: Recurse on <span class="math inline">\(e_1\)</span> and <span class="math inline">\(e_2\)</span> (take union of constraints and typings). Let <span class="math inline">\(e_1:\tau_1\)</span>, <span class="math inline">\(e_2:\tau_2\)</span>. Note <span class="math inline">\(e_1\, e_2:\be\)</span>, add <span class="math inline">\(\tau_1\equiv \tau_2\to \be\)</span> to the constraint set.</li>
+<li>abstraction <span class="math inline">\(\la x. e\)</span>: Recurse on <span class="math inline">\(e\)</span>, suppose <span class="math inline">\(e:\tau\)</span>. Take all typings of the form <span class="math inline">\(x:\tau'\)</span> and make constraints <span class="math inline">\(\tau'\equiv \be\)</span>. Generate fresh <span class="math inline">\(\be\)</span>. Type <span class="math inline">\(\la x.e : (\be \to \tau)\)</span>.</li>
+<li><code>let x=e_1 in e_2</code>: Recurse on <span class="math inline">\(e_1:\tau_1\)</span>, <span class="math inline">\(e_2:\tau_2\)</span>, and type as <span class="math inline">\(\tau_2\)</span>. For all typings of the form <span class="math inline">\(x:\tau'\)</span> generated by <span class="math inline">\(e_2\)</span>, add <span class="math inline">\(\tau'\le_M \tau_1\)</span> to the constraint set.</li>
+</ul>
+<p>Note that for the <span class="math inline">\(\le_M\)</span> constraint, we need to keep a list of monomorphic variables <span class="math inline">\(M\)</span> (corresponding to free—introduced in lambdas) as we recurse down the tree. (Things in lambdas DO NOT generalize, in <span class="math inline">\(\la x. e\)</span>, <span class="math inline">\(x\)</span> can’t have two different types/interpretations in <span class="math inline">\(e\)</span>. Thus within the lambda expression, <span class="math inline">\(x\)</span> is in the monomorphic set—you can’t do <span class="math inline">\(\forall x\)</span>.)</p>
+<p>The bottom-up inference rules are different from the usual inference rules:</p>
+<ul>
+<li>Usual rules keep the context the same; these change the context.</li>
+<li>They translate more directly into an algorithm.</li>
+<li>They involve the constraints, not the context.</li>
+</ul>
+<p>See p. 10 for the algorithm.</p>
+<h2 id="lambda-cube">Lambda cube</h2>
+<p>https://en.wikipedia.org/wiki/Lambda_cube</p>
+<p><img src="https://upload.wikimedia.org/wikipedia/commons/1/19/Lambda_cube.png"></p>
+<p>3 dimensions:</p>
+<ul>
+<li>Polymorphism (bottom/top)</li>
+<li>Type operators/types depending on types (front/back)</li>
+<li>Types depending on terms, dependent types (left/right)</li>
+</ul>
+<p>Front:</p>
+<table>
+<thead>
+<tr class="header">
+<th style="text-align: left;">*</th>
+<th style="text-align: left;">None</th>
+<th style="text-align: left;">Dependent types</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Polymorphism</td>
+<td style="text-align: left;">F, <span class="math inline">\(\la2\)</span></td>
+<td style="text-align: left;"><span class="math inline">\(\la P2\)</span></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">None</td>
+<td style="text-align: left;"><span class="math inline">\(\la_{\to}\)</span></td>
+<td style="text-align: left;">LF, <span class="math inline">\(\la P\)</span></td>
+</tr>
+</tbody>
+</table>
+<p>Back: (types depending on types)</p>
+<table>
+<thead>
+<tr class="header">
+<th style="text-align: left;">*</th>
+<th style="text-align: left;">None</th>
+<th style="text-align: left;">Dependent types</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Polymorphism</td>
+<td style="text-align: left;"><span class="math inline">\(F_\om\)</span>, <span class="math inline">\(\la \om\)</span></td>
+<td style="text-align: left;">CIC, <span class="math inline">\(\la P\om\)</span></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">None</td>
+<td style="text-align: left;"><span class="math inline">\(\la_\om\)</span>, <span class="math inline">\(\la\ul{\om}\)</span></td>
+<td style="text-align: left;"><span class="math inline">\(\la P \ul{\om}\)</span></td>
+</tr>
+</tbody>
+</table>
+<p>Hindley-Milner is a subset of System F (in between <span class="math inline">\(\la_{\to}\)</span> and <span class="math inline">\(F=\la 2\)</span>). Haskell contains system F.</p>
+<p>References:</p>
+<ul>
+<li><span class="math inline">\(F_{&lt;:}\)</span> (F with subtyping): Ch. 26, 28</li>
+<li><span class="math inline">\(\la_\om\)</span> (types depending on types): Ch. 29</li>
+<li><span class="math inline">\(F_\om\)</span> (F with types depending on types): Ch. 30</li>
+<li><span class="math inline">\(F_{&lt;:}^\om\)</span>: CH. 31</li>
+</ul>
+<h2 id="scratch">Scratch</h2>
+
+  </div>
+
+    
+
+    <!-- Extension : Sharing buttons @ www.sharethis.com -->
+    <span class='st_facebook_large' displayText='Facebook'></span>
+    <span class='st_twitter_large' displayText='Tweet'></span>
+    <span class='st_googleplus_large' displayText='Google +'></span>
+    <span class='st_reddit_large' displayText='Reddit'></span>
+    <span class='st__large' displayText=''></span>
+
+    <div id="disqus_thread"></div>
+    
+
+
+  
+    <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+  </div>
+  
+</div>
+]]></summary>
+</entry>
+<entry>
+    <title>LLVM tutorial</title>
+    <link href="http://holdenlee.github.io/notebook/posts/cs/PL/llvm.html" />
+    <id>http://holdenlee.github.io/notebook/posts/cs/PL/llvm.html</id>
+    <published>2016-07-31T00:00:00Z</published>
+    <updated>2016-07-31T00:00:00Z</updated>
+    <summary type="html"><![CDATA[
+<div class="container">
+  <div id="content">
+    <div class="page header">
+      <h1>LLVM tutorial</h1>
+    </div>
+    <div class="info">
+      
+       
+        <p>Posted: 2016-07-31 
+          , Modified: 2016-07-31 
+	</p>
+      
+       <p>Tags: <a href="/tags/none.html">none</a></p> 
+    </div>
+    
+  </div>
+  <!--/div-->
+
+  <div class="toc"></div>
+
+  <div class="blog-main">
+    <p><a href="http://www.stephendiehl.com/llvm/">Tutorial</a></p>
+<ul>
+<li>Source</li>
+<li>lexer</li>
+<li>parser</li>
+<li>checking</li>
+<li>codegen</li>
+<li>Output</li>
+</ul>
+
+  </div>
+
+    
+
+    <!-- Extension : Sharing buttons @ www.sharethis.com -->
+    <span class='st_facebook_large' displayText='Facebook'></span>
+    <span class='st_twitter_large' displayText='Tweet'></span>
+    <span class='st_googleplus_large' displayText='Google +'></span>
+    <span class='st_reddit_large' displayText='Reddit'></span>
+    <span class='st__large' displayText=''></span>
+
+    <div id="disqus_thread"></div>
+    
+
+
+  
+    <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+  </div>
+  
+</div>
+]]></summary>
+</entry>
+<entry>
+    <title>PMI and feature vectors</title>
+    <link href="http://holdenlee.github.io/notebook/posts/tcs/machine_learning/nlp/pmi.html" />
+    <id>http://holdenlee.github.io/notebook/posts/tcs/machine_learning/nlp/pmi.html</id>
+    <published>2016-07-29T00:00:00Z</published>
+    <updated>2016-07-29T00:00:00Z</updated>
+    <summary type="html"><![CDATA[
+<div class="container">
+  <div id="content">
+    <div class="page header">
+      <h1>PMI and feature vectors</h1>
+    </div>
+    <div class="info">
+      
+       
+        <p>Posted: 2016-07-29 
+          , Modified: 2016-07-29 
+	</p>
+      
+       <p>Tags: <a href="/tags/nlp.html">nlp</a>, <a href="/tags/word%20embeddings.html">word embeddings</a></p> 
+    </div>
+    
+  </div>
+  <!--/div-->
+
+  <div class="toc"></div>
+
+  <div class="blog-main">
+    <ul>
+<li><a href="randwalk.html">ALLMR16 Randwalk</a></li>
+<li><a href="polysemy.html">ALLMR16 Polysemy</a></li>
+</ul>
+<p>Reduce the dimensionality of words by finding a low-dimensional vector for each word, such that the inner products approximate the log of the co-occurrence matrix (perhaps in a weighted sense).</p>
+<p>Why does this work? I.e., why are the low-dimensional vectors useful for NLP tasks? One “task” is analogies. Word embeddings are useful for analogies if addition naturally corresponds to composing their meanings.</p>
+<p>What could be a low-dimensional representation of a word? Its PMI with all possible contexts. (Firth: a word’s sense is captured by the distribution of other words around it.) Assume all these PMI vectors live in a low-dimensional space; why does the log of co-occurrence find these vectors?</p>
+<p>Here’s a simplified model. Consider words drawn as follows: pick a random context vector, and then take words <span class="math inline">\(w, w'\)</span> with probability <span class="math inline">\(\rc{Z^2} e^{-\an{v_w,c} - \an{v_w',c}}\)</span>. Integrating this gives <span class="math inline">\(\rc{Z^2} \exp\pf{|v_w+v_w'|^2}{2}\)</span>. Then (I’m not being careful with the factor of <span class="math inline">\(d\)</span>) <span class="math display">\[PMI(w,w') = \lg \fc{\Pj(w,w')}{\Pj(w)\Pj(w')} \approx \rc d \an{v_w,v_w'}+o(1).\]</span></p>
+<p>If the context vector drifts slowly enough, this analysis still works.</p>
+<p>(?) The right optimization problem is <span class="math display">\[\min\sum_{w_1,w_2} \Pj(w_1,w_2) (PMI(w_1,w_2)-\an{v_{w_1},v_{w_2}}.\]</span></p>
+<p>Actually, better is <span class="math display">\[
+\min_{\{v_w\}, C} \sum_{w,w'} X_{w,w'}(\ln (X_{w,w'} - \ve{v_w+v_{w'}}_2^2-C))^2.
+\]</span></p>
+
+  </div>
+
+    
+
+    <!-- Extension : Sharing buttons @ www.sharethis.com -->
+    <span class='st_facebook_large' displayText='Facebook'></span>
+    <span class='st_twitter_large' displayText='Tweet'></span>
+    <span class='st_googleplus_large' displayText='Google +'></span>
+    <span class='st_reddit_large' displayText='Reddit'></span>
+    <span class='st__large' displayText=''></span>
+
+    <div id="disqus_thread"></div>
+    
+
+
+  
+    <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+  </div>
+  
+</div>
+]]></summary>
+</entry>
+<entry>
     <title>Representation learning</title>
     <link href="http://holdenlee.github.io/notebook/posts/tcs/machine_learning/representation.html" />
     <id>http://holdenlee.github.io/notebook/posts/tcs/machine_learning/representation.html</id>
@@ -580,257 +1100,6 @@ THEANO_FLAGS=mode=FAST_RUN,device=gpu,floatX=float32 python cifar10_multi_gpu_tr
 <p>This is alternating minimization on the distortion function <span class="math display">\[J(c,\mu) = \sumo im \ve{x^{(i)}-\mu_{c(i)}}^2\]</span> with respect to <span class="math inline">\(c\)</span> and <span class="math inline">\(\mu\)</span>. This value decreases and so converges (possible to local optimum); in practice, the <span class="math inline">\(\mu\)</span>’s converge.</p>
 <h2 id="questions">Questions</h2>
 <p>Are there provable guarantees on <span class="math inline">\(k\)</span>-means clustering—if so, what? And/or is there a (worst-case) hardness result?</p>
-
-  </div>
-
-    
-
-    <!-- Extension : Sharing buttons @ www.sharethis.com -->
-    <span class='st_facebook_large' displayText='Facebook'></span>
-    <span class='st_twitter_large' displayText='Tweet'></span>
-    <span class='st_googleplus_large' displayText='Google +'></span>
-    <span class='st_reddit_large' displayText='Reddit'></span>
-    <span class='st__large' displayText=''></span>
-
-    <div id="disqus_thread"></div>
-    
-
-
-  
-    <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
-  </div>
-  
-</div>
-]]></summary>
-</entry>
-<entry>
-    <title>ICA (Independent components analysis)</title>
-    <link href="http://holdenlee.github.io/notebook/posts/tcs/machine_learning/matrices/ica.html" />
-    <id>http://holdenlee.github.io/notebook/posts/tcs/machine_learning/matrices/ica.html</id>
-    <published>2016-06-28T00:00:00Z</published>
-    <updated>2016-06-28T00:00:00Z</updated>
-    <summary type="html"><![CDATA[
-<div class="container">
-  <div id="content">
-    <div class="page header">
-      <h1>ICA (Independent components analysis)</h1>
-    </div>
-    <div class="info">
-      
-       
-        <p>Posted: 2016-06-28 
-          , Modified: 2016-06-28 
-	</p>
-      
-       <p>Tags: <a href="/tags/ICA.html">ICA</a></p> 
-    </div>
-    
-  </div>
-  <!--/div-->
-
-  <div class="toc"> <ul>
- <li><a href="#algorithm">Algorithm</a></li>
- <li><a href="#tensor-algorithm">Tensor algorithm</a></li>
- </ul> </div>
-
-  <div class="blog-main">
-    <p><a href="http://cs229.stanford.edu/notes/cs229-notes11.pdf">Reference</a></p>
-<p>Given that the components of <span class="math inline">\(s\in \R^n\)</span> are independent, and we observe <span class="math inline">\(x=As\)</span>, we want to find <span class="math inline">\(W=A^{-1}\)</span> and recover <span class="math inline">\(s\)</span>. Let <span class="math inline">\(w_i^T\)</span> be the rows of <span class="math inline">\(W\)</span>.</p>
-<p>When the <span class="math inline">\(s_i\)</span> are non-gaussian, the solution is unique up to permutation and scaling. (Otherwise, there is rotational invariance.)</p>
-<h2 id="algorithm">Algorithm</h2>
-<p>Suppose the cdf of the components is logistic. (This is a reasonable default. Mean-center first.) Let <span class="math inline">\(g(s) = \rc{1+e^{-s}}\)</span>.</p>
-<p>Change of coordinates gives <span class="math inline">\(p_x(x) = p_s(Wx)\det(W)\)</span>. The log-likelihood is <span class="math display">\[\ell(W) = \sumo im \pa{\sumo jn \ln g'(w_j^T x^{(i)}) + \ln |W|}.\]</span> Use stochastic gradient ascent.</p>
-<p>Note: for problems where successive training examples are correlated, when implementing stochastic gradient ascent, it also sometimes helps accelerate convergence if we visit training examples in a randomly permuted order.</p>
-<h2 id="tensor-algorithm">Tensor algorithm</h2>
-<p>See “new_thread.pdf” page 30.</p>
-
-  </div>
-
-    
-
-    <!-- Extension : Sharing buttons @ www.sharethis.com -->
-    <span class='st_facebook_large' displayText='Facebook'></span>
-    <span class='st_twitter_large' displayText='Tweet'></span>
-    <span class='st_googleplus_large' displayText='Google +'></span>
-    <span class='st_reddit_large' displayText='Reddit'></span>
-    <span class='st__large' displayText=''></span>
-
-    <div id="disqus_thread"></div>
-    
-
-
-  
-    <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
-  </div>
-  
-</div>
-]]></summary>
-</entry>
-<entry>
-    <title>Factor analysis</title>
-    <link href="http://holdenlee.github.io/notebook/posts/tcs/machine_learning/matrices/factor-analysis.html" />
-    <id>http://holdenlee.github.io/notebook/posts/tcs/machine_learning/matrices/factor-analysis.html</id>
-    <published>2016-06-28T00:00:00Z</published>
-    <updated>2016-06-28T00:00:00Z</updated>
-    <summary type="html"><![CDATA[
-<div class="container">
-  <div id="content">
-    <div class="page header">
-      <h1>Factor analysis</h1>
-    </div>
-    <div class="info">
-      
-       
-        <p>Posted: 2016-06-28 
-          , Modified: 2016-06-28 
-	</p>
-      
-       <p>Tags: <a href="/tags/factor%20analysis.html">factor analysis</a></p> 
-    </div>
-    
-  </div>
-  <!--/div-->
-
-  <div class="toc"> <ul>
- <li><a href="#solution-1-assume-independence">Solution 1: Assume independence</a></li>
- <li><a href="#solution-2-factor-analysis">Solution 2: Factor analysis</a></li>
- </ul> </div>
-
-  <div class="blog-main">
-    <p><a href="http://cs229.stanford.edu/notes/cs229-notes9.pdf">Reference</a></p>
-<p>If <span class="math inline">\(n\gg m\)</span>, and we have data points <span class="math inline">\(x^{(i)}\in \R^n\)</span>, <span class="math inline">\(1\le i\le m\)</span>, how can we find Gaussian structure? We don’t have enough data points to even fit a single Gaussian.</p>
-<h2 id="solution-1-assume-independence">Solution 1: Assume independence</h2>
-<p>If the covariance matrix <span class="math inline">\(\Si\)</span> is diagonal, minimize the negative log likelihood <span class="math display">\[\sum\pa{\pf{\pa{x_j^{(i)}-\mu_j}^2}{2\si_j^2} + \ln \si_j}\]</span> to get <span class="math inline">\(\Si_{jj} = \EE_{i=1}^m (x_j^{(i)}-\mu_j)^2\)</span>. If <span class="math inline">\(\Si=\si I\)</span>, then <span class="math inline">\(\si^2 = \EE_{i,j}(x_j^{(i)}- \mu_j)^2\)</span>.</p>
-<h2 id="solution-2-factor-analysis">Solution 2: Factor analysis</h2>
-Break the coordinates into 2 parts <span class="math inline">\(x\)</span> and <span class="math inline">\(z\)</span> and assume
-\begin{align}
-z&amp;\sim N(0,I)\\
-\ep &amp;\sim N(0,\Psi)\\
-x &amp;= \mu+ \La z + \ep.
-\end{align}
-<p>Calculate <span class="math display">\[\coltwo zx \sim N\pa{\coltwo 0\mu, \matt{I}{\La^T}{\La}{\La\La^T+\Psi}}.\]</span> Now do EM on the log likelihood with respect to <span class="math inline">\(z\)</span> and <span class="math inline">\(\La\)</span>. (details…)</p>
-<ul>
-<li>“This is just matrix factorization.”</li>
-<li>“Often allows more domain knowledge to be incorporated.”</li>
-</ul>
-
-  </div>
-
-    
-
-    <!-- Extension : Sharing buttons @ www.sharethis.com -->
-    <span class='st_facebook_large' displayText='Facebook'></span>
-    <span class='st_twitter_large' displayText='Tweet'></span>
-    <span class='st_googleplus_large' displayText='Google +'></span>
-    <span class='st_reddit_large' displayText='Reddit'></span>
-    <span class='st__large' displayText=''></span>
-
-    <div id="disqus_thread"></div>
-    
-
-
-  
-    <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
-  </div>
-  
-</div>
-]]></summary>
-</entry>
-<entry>
-    <title>Linear dimensionality reduction ([CG15])</title>
-    <link href="http://holdenlee.github.io/notebook/posts/tcs/machine_learning/matrices/dimensionality_reduction.html" />
-    <id>http://holdenlee.github.io/notebook/posts/tcs/machine_learning/matrices/dimensionality_reduction.html</id>
-    <published>2016-06-28T00:00:00Z</published>
-    <updated>2016-06-28T00:00:00Z</updated>
-    <summary type="html"><![CDATA[
-<div class="container">
-  <div id="content">
-    <div class="page header">
-      <h1>Linear dimensionality reduction ([CG15])</h1>
-    </div>
-    <div class="info">
-      
-       
-        <p>Posted: 2016-06-28 
-          , Modified: 2016-06-28 
-	</p>
-      
-       <p>Tags: <a href="/tags/dimension%20reduction.html">dimension reduction</a></p> 
-    </div>
-    
-  </div>
-  <!--/div-->
-
-  <div class="toc"> <ul>
- <li><a href="#types-of-reductions">Types of reductions</a></li>
- </ul> </div>
-
-  <div class="blog-main">
-    <p>A unified framework for linear dimensionality reduction: given <span class="math inline">\(n\)</span> points <span class="math inline">\([x_1,\ldots, x_n]\in \R^{d\times n}\)</span>, optimize <span class="math inline">\(f_X(\cdot)\)</span> to produce a linear transformation <span class="math inline">\(P\in \R^{r\times d}\)</span> and let <span class="math inline">\(Y=PX\in \R^{r\times n}\)</span> be the low-dimensional transformed data.</p>
-<p><img src="/images/dim_red_chart.png"></p>
-<h2 id="types-of-reductions">Types of reductions</h2>
-<ul>
-<li>PCA</li>
-<li><a href="ica.html">ICA</a></li>
-<li><a href="cca.html">CCA</a></li>
-<li><a href="factor-analysis.html">Factor analysis</a></li>
-</ul>
-
-  </div>
-
-    
-
-    <!-- Extension : Sharing buttons @ www.sharethis.com -->
-    <span class='st_facebook_large' displayText='Facebook'></span>
-    <span class='st_twitter_large' displayText='Tweet'></span>
-    <span class='st_googleplus_large' displayText='Google +'></span>
-    <span class='st_reddit_large' displayText='Reddit'></span>
-    <span class='st__large' displayText=''></span>
-
-    <div id="disqus_thread"></div>
-    
-
-
-  
-    <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
-  </div>
-  
-</div>
-]]></summary>
-</entry>
-<entry>
-    <title>CCA (Canonical correlation analysis)</title>
-    <link href="http://holdenlee.github.io/notebook/posts/tcs/machine_learning/matrices/cca.html" />
-    <id>http://holdenlee.github.io/notebook/posts/tcs/machine_learning/matrices/cca.html</id>
-    <published>2016-06-28T00:00:00Z</published>
-    <updated>2016-06-28T00:00:00Z</updated>
-    <summary type="html"><![CDATA[
-<div class="container">
-  <div id="content">
-    <div class="page header">
-      <h1>CCA (Canonical correlation analysis)</h1>
-    </div>
-    <div class="info">
-      
-       
-        <p>Posted: 2016-06-28 
-          , Modified: 2016-06-28 
-	</p>
-      
-       <p>Tags: <a href="/tags/CCA.html">CCA</a></p> 
-    </div>
-    
-  </div>
-  <!--/div-->
-
-  <div class="toc"></div>
-
-  <div class="blog-main">
-    <p><a href="https://en.wikipedia.org/wiki/Canonical_correlation">Wikipedia</a></p>
-<p>Goal: Find the linear combination of <span class="math inline">\((X_i)\)</span> and <span class="math inline">\((Y_j)\)</span> with maximum correlation.</p>
-<p>Let <span class="math inline">\(\Si_{XY} = \Cov(X,Y)\)</span> (i.e., <span class="math inline">\(XY^T\)</span>).</p>
-<p>We want to maximize (let <span class="math inline">\(\ve{v}_M=v^TMv\)</span>) <span class="math display">\[\max_{a,b} \fc{a^T\Si_{XY}b}{\ve{a}_{\Si_{XX}}\ve{b}_{\Si_{YY}}}.\]</span> Let <span class="math inline">\(c=\Si_{XX}^{\rc 2}a\)</span> and <span class="math inline">\(d=\Si_{YY}^{\rc 2}b\)</span>. Then this is <span class="math display">\[\fc{c^T \Si_{XX}^{-\rc2} \Si_{XY} \Si_{YY}^{-\rc2}d}{\ve{c}_2\ve{d}_2}.\]</span> Thus, find the SVD of <span class="math display">\[\Si_{XX}^{-\rc2} \Si_{XY} \Si_{YY}^{-1} \Si_{YX} \Si_{XX}^{-\rc 2}.\]</span> Change coordinates back to find <span class="math inline">\(a,b\)</span>.</p>
-<p>More generally, to find the top <span class="math inline">\(k\)</span> dimensions, we want <span class="math display">\[\max_{M_X \in \mathcal{O}^{d_a\times r}, M_Y\in \mathcal{O}^{d_b\times r}} \Tr(M_X^T \Si_{XX}^{-\rc2} \Si_{XY} \Si_{YY}^{-\rc2}M_Y).\]</span> Find the rank <span class="math inline">\(k\)</span> SVD, the matrices consist of the top <span class="math inline">\(k\)</span> SV’s.</p>
 
   </div>
 
