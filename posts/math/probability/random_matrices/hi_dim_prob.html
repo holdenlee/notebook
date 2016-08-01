@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+
+  <meta name="description" content="Holden Lee's Research Notebook">
+  <meta name="author" content="Holden Lee">
+    
+  <title>High-dimensional probability</title>
+
+  <!-- Bootstrap core CSS -->
+  <link href="../../../../bootstrap/css/bootstrap.min.css" rel="stylesheet">
+
+  <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+  <!-- <link href="../../assets/css/ie10-viewport-bug-workaround.css" rel="stylesheet"> -->
+
+  <!-- Custom styles for this template -->
+  <link href="../../../../css/blog.css" rel="stylesheet">
+  <link href="../../../../css/default.css" rel="stylesheet">
+
+  <!-- Extension : Footnotes -->
+  <link href="../../../../footnotes/css/footnotes.css" rel="stylesheet">
+
+  <!-- Extension : InlineDisqussions @ https://github.com/tsi/inlineDisqussions -->
+  
+
+</head>
+
+<body>
+
+<!-- Navigation bar. navbar-inverse is black, navbar-default is white.-->
+<!-- To make a button active (pressed), use <li class="active"> -->
+<div id="header">
+  <nav class="navbar navbar-inverse navbar-fixed-top">
+    <div class="container">
+      <div class="navbar-header">
+        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+          <span class="sr-only">Toggle navigation</span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="../../../../">Notebook</a>
+      </div>
+      <div id="navbar" class="collapse navbar-collapse">
+        <ul class="nav navbar-nav">
+          <li><a href="../../../../">Home</a></li>
+          <li><a href="../../../../sitemap.html">Sitemap</a></li>
+<!-- TODO: Distinguish between PAPERS, RESEARCH QUESTIONS, BOOKS -->
+<!-- TODO: make this part a for loop over main pages -->
+        </ul>
+      </div><!--/.nav-collapse -->
+    </div>
+  </nav>
+</div>
+<!-- Content -->
+<!--div id="content">
+  <h1>Mental Wilderness</h1>-->
+
+
+
+<div class="container">
+  <div id="content">
+    <div class="page header">
+      <h1>High-dimensional probability</h1>
+    </div>
+    <div class="info">
+      
+       
+        <p>Posted: 2016-08-01 
+          , Modified: 2016-08-01 
+	</p>
+      
+       <p>Tags: <a href="../../../../tags/random%20matrix.html">random matrix</a></p> 
+    </div>
+    
+  </div>
+  <!--/div-->
+
+  <div class="toc"> <ul>
+ <li><a href="#introduction">Introduction</a></li>
+ <li><a href="#variance-bounds-and-poincare-inequalities">Variance bounds and Poincare inequalities</a><ul>
+ <li><a href="#section">2.1</a><ul>
+ <li><a href="#problems">Problems</a></li>
+ </ul></li>
+ <li><a href="#markov-semigroups">Markov semigroups</a></li>
+ <li><a href="#variance-identities-and-exponential-ergodicity">2.4 Variance identities and exponential ergodicity</a></li>
+ </ul></li>
+ </ul> </div>
+
+  <div class="blog-main">
+    <p>Based on Ramon von Handel’s ORF570 notes.</p>
+<h2 id="introduction">Introduction</h2>
+<p>Themes:</p>
+<ul>
+<li>concentration: if <span class="math inline">\(X_{1:n}\)</span> are independent or weakly dependent random variables, and <span class="math inline">\(f\)</span> is not too <em>sensitive</em> to any coordinate, then <span class="math inline">\(f(X_{1:n})\)</span> is <em>close</em> to its mean.</li>
+<li>suprema</li>
+<li>universality</li>
+</ul>
+<h2 id="variance-bounds-and-poincare-inequalities">Variance bounds and Poincare inequalities</h2>
+<h3 id="section">2.1</h3>
+<p>Trivial bound: <span class="math display">\[ \Var[f(X)]\le \rc4 (\sup f - \inf f)^2 \qquad \Var[f(x)] \le \E[(f(X)-\inf f)^2].\]</span></p>
+<p>Tensorization gives a bound for functions of independent random variables from bounds for functions of each individual random variable.</p>
+<p><strong>Theorem</strong> (Tensorization of variance): <span class="math display">\[\Var[f(X_1,\ldots, X_n)]\le \E\ba{\sumo in \Var_f f(X_1,\ldots, X_n)}\]</span> whenever <span class="math inline">\(X_{1:n}\)</span> are independent.</p>
+<p>This is sharp for linear functions.</p>
+<em>Proof</em>. Write <span class="math display">\[ f(X_{1:n}) - \E f(X_{1:n}) = \sumo kn \ub{\E[f(X_{1:n}|X_{1:k})] - \E[f(X_{1:n})|X_{1:k-1}]}{\De_k}. \]</span> The <span class="math inline">\(\De_k\)</span> form a martingale. By independence of martingale increments,
+\begin{align}
+\Var(f) &amp;= \sumo kn \E[\De_k^2] \\
+\E[\De_k^2] &amp;= \E[\E[\wt \De_k |X_{1:k}]^2]\\
+&amp; \le  \E[(\ub{f - \E[f|X_{1:k-1,k+1:n}]}{\wt \De_k})^2] &amp; \text{Jensen}\\
+&amp;= \E\ba{\sumo in \Var_f f(X_1,\ldots, X_n)}.
+\end{align}
+Define
+\begin{align}
+D_i f(x) &amp;= (\sup_z-\inf_z)(f(x_{1:i-1},z,x_{i+1:n}))\\
+D_i^- f(x) &amp;= f(x) - \inf_z(f(x_{1:i-1},z,x_{i+1:n}))\\
+\end{align}
+<p><strong>Corollary</strong> (Bounded difference inequality): Tensorization + trivial inequality.</p>
+<p><strong>Example</strong>: Consider Bernoulli symmetric matrices. What is the variance of <span class="math inline">\(\la_{\max}(M) = \an{v_{\max}(M), Mv_{\max}(M)}\)</span>? Fix <span class="math inline">\(i,j\)</span>. Let <span class="math display">\[M^- = \amin_{\text{only }M_{ij} \text{ varies}} \la_{\max}(M).\]</span> Then <span class="math display">\[D_{ij}^-\la_{\max}(M) \le \an{v_{\max}(M), (M-M^-) v_{\max}(M)}\le 4|v_{\max}(M)_i||v_{\max}(M)_j|.\]</span> Use the corollary to get <span class="math inline">\(\le 16\)</span>.</p>
+<p>This is not sharp. (<span class="math inline">\(\sim n^{-\rc 3}\)</span> is correct.)</p>
+<p>Drawbacks to this method:</p>
+<ul>
+<li>bounds using bounded di↵erence inequalities are typically restricted to situations where the random variables <span class="math inline">\(X_i\)</span> and/or the function <span class="math inline">\(f\)</span> are bounded.</li>
+<li>Bounded difference inequalities do not capture any information on the distribution of <span class="math inline">\(X_i\)</span>. In the other direction, the tensorization inequality is too distribution-dependent.</li>
+<li>Tensorization depends on independence.</li>
+</ul>
+<p>Inequalities in this section are roughly of the following form (Poincare inequalities): <span class="math display">\[\Var(f) \le \E[\ve{\nb f}^2].\]</span> “The validity of a Poincar´e inequality for a given distribution is intimately connected the convergence rate of a Markov process that admits that distribution as a stationary measure.”</p>
+<h4 id="problems">Problems</h4>
+<ol type="1">
+<li>Use <span class="math inline">\(\Var\pa{\ve{\rc n \sumo kn X_k}_B} = \sup_{y\in B^*} \an{\rc n\sumo kn X_k, y}\)</span>. Use the corollary, get <span class="math inline">\(D_k^-\le 2 \sup_{y\in B^*}\an{\rc X_k,y} \le \fc{2C}{n}\)</span>. Now square and sum.</li>
+<li>.</li>
+<li>.</li>
+<li>.</li>
+<li>We have <span class="math inline">\((f(x) - f(..., a, ...))^2\le \ve{(b-a)\nb f}^2\)</span>. Now take expectations and sum over different coordinates.</li>
+</ol>
+<h3 id="markov-semigroups">Markov semigroups</h3>
+<p>A <strong>Markov process</strong> satisfies: For every bounded measurable <span class="math inline">\(f\)</span> and <span class="math inline">\(s,t\in \R_+\)</span>, here is abounded measurable <span class="math inline">\(P_sf\)</span> such that <span class="math display">\[\E[f(X_{t+s})|\{X_r\}_{r\le t}] = (P_s f)(X_t).\]</span> <span class="math inline">\(\mu\)</span> is <strong>stationary</strong> if <span class="math inline">\(\mu(P_tf)=\mu(f)\)</span> for all <span class="math inline">\(t\in \R_+\)</span>, bounded measurable <span class="math inline">\(f\)</span>.</p>
+<p><strong>Lemma 2.7</strong>. <span class="math inline">\(\{P_t\}_{t\in \R_+}\)</span> defines a semigroup of linear operators on <span class="math inline">\(L^p(\mu)\)</span>. It is contractive and conservative (<span class="math inline">\(P_t1=1\)</span> <span class="math inline">\(\mu\)</span>-a.s.).</p>
+<p><em>Proof</em>. Jensen.</p>
+<p>The semigroup in fact acts on any <span class="math inline">\(f\in L^1(\mu)\)</span>.</p>
+<p><strong>Lemma 2.9</strong>. If <span class="math inline">\(\mu\)</span> is stationary, for every <span class="math inline">\(f\)</span>, <span class="math inline">\(\Var_\mu(P_tf)\)</span> is decreasing.</p>
+<p><em>Proof</em>. <span class="math inline">\(L^2\)</span> contractivity and semigroup property.</p>
+<p>The <strong>generator</strong> is <span class="math display">\[\cal L f = \lim_{t\searrow 0} \fc{P_tf-f}t.\]</span> The set of <span class="math inline">\(f\)</span> where this is defined is the domain; <span class="math inline">\(\cal L:\text{Dom}(\cal L) \to L^2(\mu)\)</span>.</p>
+<p>Warning: for Markov processes with continuous sample paths, such as Brownian motion, <span class="math inline">\(Dom(\cL)\sub L^2(\mu)\)</span>. Functional analysis is required for rigor, but results usually extend.</p>
+<p><span class="math inline">\(P_t\)</span> is the solution of the Kolmogorov equation <span class="math display">\[ \ddd{t} P_t f = P_t \cL f, \quad P_0f=f.\]</span> The generator and semigroup commute.</p>
+<p>A finite-state Markov process with <span class="math display">\[ \Pj[X_{t+\de}=j|X_t=i] = \la_{ij} \de + o(\de), \quad i\ne j\]</span> has generator equal to the transition matrix <span class="math inline">\(\La\)</span>.<a href="#fn1" class="footnoteRef" id="fnref1"><sup>1</sup></a></p>
+<p>Then <span class="math inline">\(P_t=e^{t\La}\)</span>. (In the non-finite case, this makes sense as a power series.)</p>
+<p><span class="math inline">\(P_t\)</span> is <strong>reversible</strong> if <span class="math inline">\(P_t\)</span> are self-adjoint on <span class="math inline">\(L^2(\mu)\)</span>: <span class="math display">\[\an{f,P_tg}_\mu = \an{P_tf,g}_\mu.\]</span> Reversibility implies <span class="math display">\[P_tf(x) =\E[f(X_t)|X_0=x] = \E[f(X_0)|X_t=x];\]</span> i.e., the Markov process viewed backwards has the same law. <!-- delta functions? --></p>
+<p>For finite state space, this is equivalent to <span class="math display">\[\mu_i \La_{ij} = \mu_j \La_{ji},\]</span> <strong>detailed balance</strong>.<a href="#fn2" class="footnoteRef" id="fnref2"><sup>2</sup></a></p>
+<p><strong>Definition</strong>. A Markov semigroup is <strong>ergodic</strong> if <span class="math inline">\(P_tf \to \mu f\)</span> in <span class="math inline">\(L^2(\mu)\)</span> as <span class="math inline">\(t\to \iy\)</span> for every <span class="math inline">\(f\in L^2(\mu)\)</span>.</p>
+<blockquote>
+<p>A measure <span class="math inline">\(\mu\)</span> satisfies a Poincare inequality for a certain notion of “gradient” if and only if an ergodic Markov semigroup associated to this “gradient” converges exponentially fast to <span class="math inline">\(\mu\)</span>.</p>
+</blockquote>
+<p>The <strong>Dirichlet form</strong> is <span class="math display">\[\cal E(f,g) = -\an{f,\cL g}_\mu.\]</span> Note: for complex-valued functions, we take the real part.</p>
+<p><strong>Theorem</strong> (Poincare inequality). Let <span class="math inline">\(P_t\)</span> be reversible ergodic Markov semigroup with stationary measure <span class="math inline">\(\mu\)</span>. For <span class="math inline">\(c\ge 0\)</span>, TFAE:</p>
+<ol type="1">
+<li>(Poincare inequality) <span class="math inline">\(\Var_\mu(f) \le c\cal E(f,f)\)</span></li>
+<li><span class="math inline">\(\forall f, t, \ve{P_t f- \mu f}_{L^2(\mu)} \le e^{-\fc tc}\ve{f-\mu f}_{L^2(\mu)}\)</span></li>
+<li><span class="math inline">\(\forall f, t, \cal E(P_t f, P_t f) \le e^{-2t/c} \cal E(f,f)\)</span></li>
+<li><span class="math inline">\(\forall f \exists \ka(f), \ve{P_t f-\mu f}_{L^2(\mu)} \le \ka(f) e^{-\fc tc}\)</span>.</li>
+<li><span class="math inline">\(\forall f \exists \ka(f), \cal E(P_tf,P_tf)\le \ka(f)e^{-2t/c}\)</span>.</li>
+</ol>
+<p>Note <span class="math inline">\(5\Leftarrow 3\implies 1\Leftrightarrow 2\Rightarrow 4\)</span> doesn’t require reversibility.</p>
+<p>Example: Gaussian distribution</p>
+<ol type="1">
+<li>Define the <strong>Ornstein-Uhlenbeck process</strong> by <span class="math display">\[X_t = e^{-t} X_0 + e^{-t} W_{e^{2t}-1}, \quad X_0\perp W\]</span> where <span class="math inline">\(W_t\)</span> is standard Brownian motion. Note <span class="math inline">\(N(0,1)\)</span> is stationary.</li>
+<li>Using Gaussian integration by parts <span class="math inline">\(\E_{N(0,1)} [\xi f(\xi)] = \E_{N(0,1)} [f'(\xi)]\)</span>, show that
+<ul>
+<li><span class="math inline">\(X_t\)</span> is a Markov process with semigroup <span class="math inline">\(\E[f(e^{-t} x + \sqrt{1-e^{-2t}}\xi)]\)</span>, <span class="math inline">\(\xi\in N(0,1)\)</span>.</li>
+<li>The generator is <span class="math inline">\(\cL f(x) = -xf'+f''\)</span>.</li>
+<li><span class="math inline">\(\cE (f,g) = \an{f',g'}_\mu\)</span>.</li>
+<li>In particular, <span class="math inline">\(\cE(f,f) = \ve{f'}^2_{L^2(\mu)} = \E[f'(\xi)^2]\)</span> is exctly the expected square gradient.</li>
+</ul></li>
+<li>From the expression for <span class="math inline">\(P_t\)</span> obtain <span class="math inline">\(\ddd{x} P_t f(x) = e^{-t} P_t f'(x)\)</span>. Then <span class="math inline">\(\cE (P_tf,P_tf) \le e^{-2t} \cE(f,f)\)</span>. Hence for <span class="math inline">\(\mu=N(0,1)\)</span>, <span class="math display">\[\Var_\mu(f) \le \ve{f'}_{L^2(\mu)}.\]</span></li>
+<li>By tensorization, <span class="math display">\[\Var_\mu(f) \le \E[\ve{\nb f(X_1,\ldots, X_n)}^2].\]</span></li>
+</ol>
+<p>Note: The O-U process is the solution of the stochastic differential equation <span class="math display">\[dX_t = -X_t \,dt + \sqrt2 \, dB_t.\]</span> Revisit this after I learn stochastic calculus.</p>
+<p>Tensorization using Poincare inequality:</p>
+<ol type="1">
+<li>Construct a random process <span class="math inline">\(X_t=(X_t^1,\ldots, X_t^n)\)</span> by having coordinates re-randomize according to independent Poisson processes.</li>
+<li>Then <span class="math display">\[P_tf(x) = \sum_{I\subeq [n]} (1-e^{-t})^{|I|} e^{-t(n-|I|)} \int f(x_1,\ldots, x_n) \prod_{i\in I}\mu_i(dx_i)+o(t).\]</span> (Note the integral is only over the indices in <span class="math inline">\(I\)</span>.) Only the <span class="math inline">\(|I|=1\)</span> terms matter in the limit (makes sense, we’re taking the derivative!),
+\begin{align}
+\cL f &amp;= -\sumo in \de_i f\\
+\de_if(x)&amp;:= f(x) - \int f(x_1,\ldots, x_{i-1}, z, x_{i+1},\ldots, x_n)\,\mu_i(dz).
+\end{align}</li>
+<li><span class="math inline">\(\int h\de_i g\,d\mu=0\)</span> if <span class="math inline">\(h\)</span> does not depend on <span class="math inline">\(x_i\)</span>. Thus <span class="math inline">\(\cE(f,g) = \sumo in \int \de_i f\de_i g\,d\mu\)</span>. This is symmetric, so the process is reversible.</li>
+<li>We have <span class="math inline">\(\cE(f,f) = \sumo in \int \Var_if \,d\mu\)</span>, so the tensorization inequality is exactly <span class="math inline">\(\Var_\mu(f) \le \cE(f,f)\)</span>.</li>
+<li>Conclude ergodicity. Conversely, we can prove the tensorization inequality from ergodicity: Note <span class="math display">\[\de_i P_t f=e^{-t} \sum_{I\nin i} (1-e^{-t})^{|I|} e^{-t(n-1-|I|)} \int \de_i f\prod_{i\in I}\mu_i(dx_i)\]</span> so <span class="math inline">\(\cE(P_tf,P_tf) \le \ka(f) e^{-2t}\)</span>.</li>
+</ol>
+<h3 id="variance-identities-and-exponential-ergodicity">2.4 Variance identities and exponential ergodicity</h3>
+<p>We prove the Poincare inequality.</p>
+<ol type="1">
+<li><strong>Lemma</strong>. <span class="math display">\[\ddd t \Var_\mu(P_t f) = -2\cal E(P_tf,P_tf)\]</span>. <em>Proof</em>. Use <span class="math inline">\(\mu(P_tf)=\mu(f)\)</span>. Both are equal to <span class="math inline">\(\mu(2P_t f\ddd tP_tf)\)</span>.</li>
+<li><strong>Corollary</strong>. <span class="math inline">\(\cE(f,f)\ge 0\)</span>.</li>
+<li>Integral representation of variance: If the Markov semigroup is ergodic, integrating gives <span class="math inline">\(\Var_\mu (f) = 2\iiy \cE(P_tf,P_tf)\,dt\)</span>.</li>
+<li>(<span class="math inline">\(3\implies1\)</span>) Use the integral representation.</li>
+<li>(<span class="math inline">\(1\implies2\)</span>) Using <span class="math inline">\(\cal E\propto -\ddd t \Var\)</span>, get a differential inequality that gives exponential decay.</li>
+<li>(<span class="math inline">\(2\implies1\)</span>) Write <span class="math inline">\(\cE\)</span> as a limit and apply the inequality to <span class="math inline">\(\Var\)</span>.</li>
+<li>If <span class="math inline">\(P_t\)</span> is reversible, then <span class="math inline">\(t\mapsto \log\ve{P_t f}_{L^2(\mu)}^2\)</span>, <span class="math inline">\(\log \cE(P_tf,P_tf)\)</span> are convex. Proof. First derivative is <span class="math inline">\(-\fc{2\an{\cL P_tf, f}}{\ve{P_tf}^2}\)</span>. Differentiate again, use CS.</li>
+<li>(<span class="math inline">\(2\implies3\)</span>) The first derivative is increasing. Rearrange to get <span class="math display">\[\fc{\cE(P_tf,P_tf)}{\cE(f,f)}\le \fc{\ve{P_tf}_{L^2(\mu)}^2}{\ve{f}_{L^2(\mu)}^2}\]</span>.</li>
+<li>(<span class="math inline">\(4\implies2\)</span>, <span class="math inline">\(5\implies3\)</span>) Use the lemma: if <span class="math inline">\(g\)</span> is convex and <span class="math inline">\(g(t)\le K-\al t\)</span> for <span class="math inline">\(t\ge 0\)</span> then <span class="math inline">\(g(t)\le g(0)-\al t\)</span> for <span class="math inline">\(t\ge 0\)</span>.</li>
+</ol>
+Intuition: If reversibility holds,
+\begin{align}
+\cE(f,g) &amp;=\rc2 \sum \mu_i \La_{ij} (f_i-f_j)(g_i-g_j)\\
+\cE(f,f) &amp;=\rc2 \sum \mu_i \La_{ij} (f_i-f_j)^2.
+\end{align}
+<p><a href="#fn3" class="footnoteRef" id="fnref3"><sup>3</sup></a>In finite dimensions, if <span class="math inline">\(\mu f=0\)</span>, <span class="math display">\[
+\cE(f,f) \ge (\ub{\la_1}0-\la_2) \Var_\mu(f).
+\]</span> The best constant in the Poincare inequality is the spectral gap. The spectral gap controls the exponential convergence rate. Note it’s essential that <span class="math inline">\(\La\)</span> admits a real spectral decomposition.</p>
+<section class="footnotes">
+<hr />
+<ol>
+<li id="fn1"><p>The kernel is the same as <span class="math inline">\(\La\)</span> except it also records the probbability of staying. <span class="math inline">\(K-I = \La\)</span>.<a href="#fnref1">↩</a></p></li>
+<li id="fn2"><p><span class="math inline">\(K^*(x,y) = \fc{K(y,x)}{\pi(x)}\pi(y)\)</span>.<a href="#fnref2">↩</a></p></li>
+<li id="fn3"><p>(cf. Laplacian)<a href="#fnref3">↩</a></p></li>
+</ol>
+</section>
+
+  </div>
+
+    
+
+    <!-- Extension : Sharing buttons @ www.sharethis.com -->
+    <span class="st_facebook_large" displayText="Facebook"></span>
+    <span class="st_twitter_large" displayText="Tweet"></span>
+    <span class="st_googleplus_large" displayText="Google +"></span>
+    <span class="st_reddit_large" displayText="Reddit"></span>
+    <span class="st__large" displayText></span>
+
+    <div id="disqus_thread"></div>
+    
+
+
+  
+    <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+  </div>
+  
+</div>
+
+
+<!-- Footer -->
+<div id="footer">
+  <div class="container">
+    Built with
+    <a href="http://jaspervdj.be/hakyll">Hakyll</a> 
+    using 
+    <a href="http://www.getbootstrap.com">Bootstrap</a>, 
+    <a href="http://www.disqus.com">Disqus</a>,
+    <a href="http://ignorethecode.net/blog/2010/04/20/footnotes/">Footnotes.js</a>,
+    <a href="http://highlightjs.org/">Highlight.js</a>, 
+    <a href="http://www.mathjax.org">MathJax</a>, 
+    and <a href="http://www.sharethis.com">ShareThis</a>.
+  </div>
+</div>
+</body>
+
+</html>
+
+<!-- SCRIPTS -->
+<!-- jQuery-->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+<script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
+
+<script src="../../../../bootstrap/js/bootstrap.min.js"></script>
+
+<!-- Extension : Highlight.js @ https://highlightjs.org/ -->
+<!-- Syntax highlighting tomorrow-night-bright, agate-->
+<link rel="stylesheet" href="../../../../highlight/css/tomorrow-night-bright.css">
+<script src="../../../../highlight/js/highlight.pack.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+
+<!-- Extension : MathJax @ https://docs.mathjax.org/en/v2.5-latest/tex.html -->
+<!-- MathJax/config/local/local.js contains macros. Need to provide entire URL-->
+<script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML,http://holdenlee.github.io/notebook/MathJax/config/local/local"></script>
+
+<!-- Extension : Footnotes @ http://ignorethecode.net/blog/2010/04/20/footnotes/ -->
+<script src="../../../../footnotes/js/footnotes.js"></script>
+
+<!-- Extension : Disqus @ http://disqus.com -->
+<!-- Extension : InlineDisqussions @ https://github.com/tsi/inlineDisqussions -->
+
+<script src="../../../../disqus/js/disqus.js"></script>
+
+
+
+<!-- Extension : Google Analytics -->
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-73261814-1', 'auto');
+  ga('send', 'pageview');
+
+</script>
+
