@@ -10,7 +10,7 @@
   <meta name="description" content="Holden Lee's Research Notebook">
   <meta name="author" content="Holden Lee">
     
-  <title>Posts in category "tcs/machine_learning/neural_nets"</title>
+  <title>PMI for images</title>
 
   <!-- Bootstrap core CSS -->
   <link href="../../../../bootstrap/css/bootstrap.min.css" rel="stylesheet">
@@ -66,67 +66,92 @@
 <div class="container">
   <div id="content">
     <div class="page header">
-      <h1>Posts in category "tcs/machine_learning/neural_nets"</h1>
+      <h1>PMI for images</h1>
     </div>
     <div class="info">
       
+       
+        <p>Posted: 2016-08-01 
+          , Modified: 2016-08-01 
+	</p>
       
-      
+       <p>Tags: <a href="../../../../tags/PMI.html">PMI</a>, <a href="../../../../tags/neural%20nets.html">neural nets</a>, <a href="../../../../tags/vision.html">vision</a></p> 
     </div>
     
   </div>
   <!--/div-->
 
-  
+  <div class="toc"> <ul>
+ <li><a href="#notes">Notes</a></li>
+ <li><a href="#theory">Theory</a></li>
+ <li><a href="#thoughts">Thoughts</a></li>
+ <li><a href="#todo">Todo</a></li>
+ </ul> </div>
 
   <div class="blog-main">
-    <ul>
-    
-        <li>
-            <a href="../../../../posts/tcs/machine_learning/neural_nets/convnets_ideas.html">Convnets ideas</a> (2016-08-02)
-        </li>
-    
-        <li>
-            <a href="../../../../posts/tcs/machine_learning/neural_nets/pmi_images.html">PMI for images</a> (2016-08-01)
-        </li>
-    
-        <li>
-            <a href="../../../../posts/tcs/machine_learning/neural_nets/complexity_of_neural_nets.html">Complexity of neural networks</a> (2016-07-25)
-        </li>
-    
-        <li>
-            <a href="../../../../posts/tcs/machine_learning/neural_nets/JSA15.html">[JSA15] Beating the Perils of Non-Convexity - Guaranteed Training of Neural Networks using Tensor Methods</a> (2016-06-27)
-        </li>
-    
-        <li>
-            <a href="../../../../posts/tcs/machine_learning/neural_nets/lstm_code.html">LSTM Programming</a> (2016-03-19)
-        </li>
-    
-        <li>
-            <a href="../../../../posts/tcs/machine_learning/neural_nets/basics.html">Neural nets basics</a> (2016-03-13)
-        </li>
-    
-        <li>
-            <a href="../../../../posts/tcs/machine_learning/neural_nets/ALM16.html">[ALM16] WHY ARE DEEP NETS REVERSIBLE: A SIMPLE THEORY, WITH IMPLICATIONS FOR TRAINING</a> (2016-03-13)
-        </li>
-    
-        <li>
-            <a href="../../../../posts/tcs/machine_learning/neural_nets/CHMAL15.html">[CHMAL15] The Loss Surfaces of Multilayer Networks</a> (2016-03-07)
-        </li>
-    
-        <li>
-            <a href="../../../../posts/tcs/machine_learning/neural_nets/nn_modeling.html">Analysis of neural networks</a> (2016-03-05)
-        </li>
-    
+    <h2 id="notes">Notes</h2>
+<p>Experiments:</p>
+<ul>
+<li><code>mnist_testing.m</code>: Prep data.</li>
+<li><code>svd_testing.m</code>: How does reducing the number of features through SVD affect classification accuracy?</li>
+<li><code>pairwise_mi.m</code>: Tests related to mutual information</li>
+<li><code>mi.m</code></li>
+<li><code>MI_GG.m</code></li>
+<li><code>rsvd.m</code></li>
 </ul>
+<p>Qs</p>
+<ul>
+<li>Why is the normalization <code>nrm=mean(sqrt(sum(compTr.^2)))</code>?</li>
+</ul>
+<pre><code>	         nlayers: 2
+             layer: {2x1 cell}
+    type_zerolayer: 2
+             ndesc: 7200
 
 
+                         numlayer: 1
+                        centering: 0
+    median_contrast_normalization: 0
+                           npatch: 5
+                      subsampling: 2
+                             smap: 50
+                   type_zerolayer: 2
+                            sigma: 0.7459
+                                Z: [25x50 double]
+                                w: [50x1 double]</code></pre>
+<p>In <code>pairwise_mi.m</code> there’s no normalization by scaling (<span class="math inline">\(-2\log\pat{scale}\)</span>).</p>
+<p>https://en.wikipedia.org/wiki/Conditional_mutual_information</p>
+<h2 id="theory">Theory</h2>
+<p>The right PMI measure to use here is <span class="math display">\[
+\ln \pf{\an{v,w}}{\an{v,\one}\an{w,\one}}.
+\]</span> Because if we assume the activations are like <span class="math inline">\((e^{\chi,v})_\chi\)</span>, then we still get that the expected dot product of these is <span class="math inline">\(\int e^{\an{\chi,v}}e^{\an{\chi,w}}\,d\chi\propto \exp\pa{\fc{\ve{v+w}^2}{2}}\)</span>.</p>
+<h2 id="thoughts">Thoughts</h2>
+<ul>
+<li>Is a picture more like a context or a document? We’re treating it like context (looking at all pairs of features there). But its size makes it seem more like a document. Or better: a sentence, because sentences are big enough to incorporate different features and small enough to still have a vector associated with it.</li>
+<li>How to incorporate convolutional ideas? Ex. if features <span class="math inline">\(f_1,f_2\)</span> are in the same relationship (translationally) as <span class="math inline">\(f_1',f_2'\)</span> then we expect PMI to be similar, so we should we really be looking at a <span class="math inline">\(7200\times 7200\)</span> matrix? How about look at PMI of adjacent features? (But they shouldn’t overlap…) Or look at PMI pre-convolution by another layer?</li>
+<li>What happens if you apply (convolutional?) DL to the learned features? Then apply SVD to the dimension-reduced vectors?</li>
+</ul>
+<h2 id="todo">Todo</h2>
+<p>Understand loss function for PMI.</p>
 
   </div>
 
     
 
+    <!-- Extension : Sharing buttons @ www.sharethis.com -->
+    <span class="st_facebook_large" displayText="Facebook"></span>
+    <span class="st_twitter_large" displayText="Tweet"></span>
+    <span class="st_googleplus_large" displayText="Google +"></span>
+    <span class="st_reddit_large" displayText="Reddit"></span>
+    <span class="st__large" displayText></span>
 
+    <div id="disqus_thread"></div>
+    
+
+
+  
+    <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+  </div>
   
 </div>
 
@@ -171,6 +196,9 @@
 
 <!-- Extension : Disqus @ http://disqus.com -->
 <!-- Extension : InlineDisqussions @ https://github.com/tsi/inlineDisqussions -->
+
+<script src="../../../../disqus/js/disqus.js"></script>
+
 
 
 <!-- Extension : Google Analytics -->

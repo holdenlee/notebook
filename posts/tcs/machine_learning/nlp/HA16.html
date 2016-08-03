@@ -10,20 +10,20 @@
   <meta name="description" content="Holden Lee's Research Notebook">
   <meta name="author" content="Holden Lee">
     
-  <title>Posts tagged "word embeddings"</title>
+  <title>[HA16] Unsupervised Learning of Word-Sequence Representations from Scratch via Convolutional Tensor Decomposition</title>
 
   <!-- Bootstrap core CSS -->
-  <link href="../bootstrap/css/bootstrap.min.css" rel="stylesheet">
+  <link href="../../../../bootstrap/css/bootstrap.min.css" rel="stylesheet">
 
   <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
   <!-- <link href="../../assets/css/ie10-viewport-bug-workaround.css" rel="stylesheet"> -->
 
   <!-- Custom styles for this template -->
-  <link href="../css/blog.css" rel="stylesheet">
-  <link href="../css/default.css" rel="stylesheet">
+  <link href="../../../../css/blog.css" rel="stylesheet">
+  <link href="../../../../css/default.css" rel="stylesheet">
 
   <!-- Extension : Footnotes -->
-  <link href="../footnotes/css/footnotes.css" rel="stylesheet">
+  <link href="../../../../footnotes/css/footnotes.css" rel="stylesheet">
 
   <!-- Extension : InlineDisqussions @ https://github.com/tsi/inlineDisqussions -->
   
@@ -44,12 +44,12 @@
           <span class="icon-bar"></span>
           <span class="icon-bar"></span>
         </button>
-        <a class="navbar-brand" href="../">Notebook</a>
+        <a class="navbar-brand" href="../../../../">Notebook</a>
       </div>
       <div id="navbar" class="collapse navbar-collapse">
         <ul class="nav navbar-nav">
-          <li><a href="../">Home</a></li>
-          <li><a href="../sitemap.html">Sitemap</a></li>
+          <li><a href="../../../../">Home</a></li>
+          <li><a href="../../../../sitemap.html">Sitemap</a></li>
 <!-- TODO: Distinguish between PAPERS, RESEARCH QUESTIONS, BOOKS -->
 <!-- TODO: make this part a for loop over main pages -->
         </ul>
@@ -66,47 +66,51 @@
 <div class="container">
   <div id="content">
     <div class="page header">
-      <h1>Posts tagged "word embeddings"</h1>
+      <h1>[HA16] Unsupervised Learning of Word-Sequence Representations from Scratch via Convolutional Tensor Decomposition</h1>
     </div>
     <div class="info">
       
+       
+        <p>Posted: 2016-08-02 
+          , Modified: 2016-08-02 
+	</p>
       
-      
+       <p>Tags: <a href="../../../../tags/nlp.html">nlp</a>, <a href="../../../../tags/word%20embeddings.html">word embeddings</a></p> 
     </div>
     
   </div>
   <!--/div-->
 
-  
+  <div class="toc"></div>
 
   <div class="blog-main">
-    <ul>
-    
-        <li>
-            <a href="../posts/tcs/machine_learning/nlp/HA16.html">[HA16] Unsupervised Learning of Word-Sequence Representations from Scratch via Convolutional Tensor Decomposition</a> (2016-08-02)
-        </li>
-    
-        <li>
-            <a href="../posts/tcs/machine_learning/nlp/pmi.html">PMI and feature vectors</a> (2016-07-29)
-        </li>
-    
-        <li>
-            <a href="../posts/tcs/machine_learning/nlp/randwalk.html">[ALLMR16] RAND-WALK: A latent variable model approach to word embeddings</a> (2016-03-15)
-        </li>
-    
-        <li>
-            <a href="../posts/tcs/machine_learning/nlp/polysemy.html">[ALLMR16] Linear Algebraic Structure of Word Senses, with Applications to Polysemy</a> (2016-03-15)
-        </li>
-    
-</ul>
-
-
+    <p>See also [HA15] Convolutional Dictionary Learning through Tensor Factorization.</p>
+<ol type="1">
+<li>Use PCA to reduce dimensionality of 1-hot encodings to <span class="math inline">\(k\)</span> dimensions. (Wouldn’t it be better to use word embeddings?)</li>
+<li>For each dimension and each sentence, obtain a vector <span class="math inline">\(x\)</span>. Train on this set. Minimize <span class="math display">\[\min_{f_i,w_i:\ve{f_i}=1} \ve{x-\sum_{i\in [L]} f_i * w_i}^2.
+\]</span> (How to avoid SGD or calculating the sum of these? Some tensor trickery?) <span class="math inline">\(f\)</span>’s are filters, <span class="math inline">\(w\)</span>’s are activation maps.</li>
+</ol>
+<p>Q: Why are we considering each dimension separately? Wouldn’t it make more sense to consider them together, and try to write <span class="math display">\[ X = \sum_{i\in [L]} F_i*w_i\]</span> where <span class="math inline">\(X\)</span> is a matrix corresponding to a sentence, and <span class="math inline">\(w_i\)</span> is in the row direction. In [HA16]’s way of doing it, you’re learning how a generic subject/theme/atom modulates throughout the space (sentence), not how combinations of subjects modulate. Is this what you want? This does need MUCH fewer atoms though, else you can expect <span class="math inline">\(k\)</span> times more.</p>
+<p>(T/F? Tensor algorithms are fragile in the sense that they depend on the model being exactly the way it is. Ex. tensor algorithm for NN—if you change the NN a bit it may fail.)</p>
 
   </div>
 
     
 
+    <!-- Extension : Sharing buttons @ www.sharethis.com -->
+    <span class="st_facebook_large" displayText="Facebook"></span>
+    <span class="st_twitter_large" displayText="Tweet"></span>
+    <span class="st_googleplus_large" displayText="Google +"></span>
+    <span class="st_reddit_large" displayText="Reddit"></span>
+    <span class="st__large" displayText></span>
 
+    <div id="disqus_thread"></div>
+    
+
+
+  
+    <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+  </div>
   
 </div>
 
@@ -134,12 +138,12 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
 <script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
 
-<script src="../bootstrap/js/bootstrap.min.js"></script>
+<script src="../../../../bootstrap/js/bootstrap.min.js"></script>
 
 <!-- Extension : Highlight.js @ https://highlightjs.org/ -->
 <!-- Syntax highlighting tomorrow-night-bright, agate-->
-<link rel="stylesheet" href="../highlight/css/tomorrow-night-bright.css">
-<script src="../highlight/js/highlight.pack.js"></script>
+<link rel="stylesheet" href="../../../../highlight/css/tomorrow-night-bright.css">
+<script src="../../../../highlight/js/highlight.pack.js"></script>
 <script>hljs.initHighlightingOnLoad();</script>
 
 <!-- Extension : MathJax @ https://docs.mathjax.org/en/v2.5-latest/tex.html -->
@@ -147,10 +151,13 @@
 <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML,http://holdenlee.github.io/notebook/MathJax/config/local/local"></script>
 
 <!-- Extension : Footnotes @ http://ignorethecode.net/blog/2010/04/20/footnotes/ -->
-<script src="../footnotes/js/footnotes.js"></script>
+<script src="../../../../footnotes/js/footnotes.js"></script>
 
 <!-- Extension : Disqus @ http://disqus.com -->
 <!-- Extension : InlineDisqussions @ https://github.com/tsi/inlineDisqussions -->
+
+<script src="../../../../disqus/js/disqus.js"></script>
+
 
 
 <!-- Extension : Google Analytics -->

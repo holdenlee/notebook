@@ -8,8 +8,354 @@
         <name>Holden Lee</name>
         <email>oldheneel@gmail.com</email>
     </author>
-    <updated>2016-08-01T00:00:00Z</updated>
+    <updated>2016-08-06T00:00:00Z</updated>
     <entry>
+    <title>Weekly summary 2016-08-06</title>
+    <link href="http://holdenlee.github.io/notebook/posts/summaries/2016-08-06.html" />
+    <id>http://holdenlee.github.io/notebook/posts/summaries/2016-08-06.html</id>
+    <published>2016-08-06T00:00:00Z</published>
+    <updated>2016-08-06T00:00:00Z</updated>
+    <summary type="html"><![CDATA[
+<div class="container">
+  <div id="content">
+    <div class="page header">
+      <h1>Weekly summary 2016-08-06</h1>
+    </div>
+    <div class="info">
+      
+       
+        <p>Posted: 2016-08-06 
+          , Modified: 2016-08-06 
+	</p>
+      
+       <p>Tags: <a href="/tags/none.html">none</a></p> 
+    </div>
+    
+  </div>
+  <!--/div-->
+
+  <div class="toc"> <ul>
+ <li><a href="#representation-learning">Representation learning</a></li>
+ </ul> </div>
+
+  <div class="blog-main">
+    <ul>
+<li>Machine learning
+<ul>
+<li><a href="/tcs/machine_learning/neural_nets/pmi_images.html">PMI images</a>
+<ul>
+<li>Understood <a href="/tcs/machine_learning/nlp/pmi.html">PMI idea</a> more thoroughly.</li>
+<li>Got code from Ben. Having troubles running. See
+<ul>
+<li>https://www.mathworks.com/matlabcentral/newsreader/view_thread/345876#947272</li>
+<li>https://askrc.princeton.edu/question/255/matlab-on-nobel-error-using-mex/</li>
+<li>http://stackoverflow.com/questions/38723051/error-using-mex-g-error-no-such-file-or-directory</li>
+</ul></li>
+<li><a href="/tcs/machine_learning/neural_nets/convnets_ideas.html">Brainstorm on convnets</a>. Skimmed the following. <strong>TODO</strong>: understand more thoroughly.
+<ul>
+<li>Fastfood - computing Hilbert space expansions in loglinear time
+<ul>
+<li>Deep-fried convnets</li>
+<li>Ailon-Chazelle</li>
+</ul></li>
+<li><a href="/tcs/machine_learning/nlp/HA16.html">HA16</a> Unsupervised Learning of Word-Sequence Representations from Scratch via Convolutional Tensor Decomposition</li>
+<li>[MKHS14] Convolutional Kernel Networks</li>
+</ul></li>
+</ul></li>
+<li>Representation learning problem (see below)</li>
+<li><strong>TODO</strong>: Think about AGD, talk with Cyril.</li>
+</ul></li>
+<li>Probability
+<ul>
+<li><a href="/math/probability/random_matrices/hi_dim_prob.html">HDP</a> Chapters 2-3</li>
+</ul></li>
+<li>TT/ATP/PL
+<ul>
+<li>Reviewed HMTI, read more on type theory. See <a href="cs/type_theory/types_and_pl.html">Types and PL</a>, <a href="cs/type_theory/type_theory.html">Type theory</a>.</li>
+</ul></li>
+</ul>
+<h2 id="representation-learning">Representation learning</h2>
+<p>In dictionary learning, we assume we have samples <span class="math inline">\(y = Ax + e\)</span> where <span class="math inline">\(x\)</span> comes from a sparse distribution (ex. <span class="math inline">\(x_i\)</span> independent, <span class="math inline">\(x_i\neq 0\)</span> with probability <span class="math inline">\(s/n\)</span> and then is drawn from some distribution not concentrated at 0) and <span class="math inline">\(e\)</span> is error (ex. Gaussian).</p>
+<p>The way we stated our problem is that <span class="math inline">\(x\cdot a_i\)</span> is large for only a few <span class="math inline">\(i\)</span>. This is similar to dictionary learning with <span class="math inline">\((A^+)^T\)</span> where the columns of <span class="math inline">\(A\)</span> are the <span class="math inline">\(a_i\)</span>. (I.e. the <span class="math inline">\(x\)</span>’s here are really the <span class="math inline">\(y\)</span>’s in DL.)</p>
+<p>I may be wrong but I think that what’s different is that</p>
+<ul>
+<li>Dictionary learning on <span class="math inline">\((A^+)^T\)</span> would correspond to when <span class="math inline">\((x\cdot a_i)_i\)</span> is sparse + noise. Our assumption is a bit different that <span class="math inline">\(x\cdot a_i\)</span> is large for only a few <span class="math inline">\(i\)</span>, ex. large negative values don’t count against the assumption.</li>
+<li>we’re trying to relax the condition on the noise—ex. instead of saying that the noise in the other coordinates is random, we consider worst-case or make an assumption that they’re random-like in some way.</li>
+</ul>
+<p>(Actually, I think the undercomplete case when the number of <span class="math inline">\(a_i\)</span> is less than the dimension of <span class="math inline">\(n\)</span> doesn’t quite correspond to DL because the map <span class="math inline">\(x\mapsto (x\cdot a_i)_i\)</span> is not invertible…)</p>
+
+  </div>
+
+    
+
+    <!-- Extension : Sharing buttons @ www.sharethis.com -->
+    <span class='st_facebook_large' displayText='Facebook'></span>
+    <span class='st_twitter_large' displayText='Tweet'></span>
+    <span class='st_googleplus_large' displayText='Google +'></span>
+    <span class='st_reddit_large' displayText='Reddit'></span>
+    <span class='st__large' displayText=''></span>
+
+    <div id="disqus_thread"></div>
+    
+
+
+  
+    <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+  </div>
+  
+</div>
+]]></summary>
+</entry>
+<entry>
+    <title>[HA16] Unsupervised Learning of Word-Sequence Representations from Scratch via Convolutional Tensor Decomposition</title>
+    <link href="http://holdenlee.github.io/notebook/posts/tcs/machine_learning/nlp/HA16.html" />
+    <id>http://holdenlee.github.io/notebook/posts/tcs/machine_learning/nlp/HA16.html</id>
+    <published>2016-08-02T00:00:00Z</published>
+    <updated>2016-08-02T00:00:00Z</updated>
+    <summary type="html"><![CDATA[
+<div class="container">
+  <div id="content">
+    <div class="page header">
+      <h1>[HA16] Unsupervised Learning of Word-Sequence Representations from Scratch via Convolutional Tensor Decomposition</h1>
+    </div>
+    <div class="info">
+      
+       
+        <p>Posted: 2016-08-02 
+          , Modified: 2016-08-02 
+	</p>
+      
+       <p>Tags: <a href="/tags/nlp.html">nlp</a>, <a href="/tags/word%20embeddings.html">word embeddings</a></p> 
+    </div>
+    
+  </div>
+  <!--/div-->
+
+  <div class="toc"></div>
+
+  <div class="blog-main">
+    <p>See also [HA15] Convolutional Dictionary Learning through Tensor Factorization.</p>
+<ol type="1">
+<li>Use PCA to reduce dimensionality of 1-hot encodings to <span class="math inline">\(k\)</span> dimensions. (Wouldn’t it be better to use word embeddings?)</li>
+<li>For each dimension and each sentence, obtain a vector <span class="math inline">\(x\)</span>. Train on this set. Minimize <span class="math display">\[\min_{f_i,w_i:\ve{f_i}=1} \ve{x-\sum_{i\in [L]} f_i * w_i}^2.
+\]</span> (How to avoid SGD or calculating the sum of these? Some tensor trickery?) <span class="math inline">\(f\)</span>’s are filters, <span class="math inline">\(w\)</span>’s are activation maps.</li>
+</ol>
+<p>Q: Why are we considering each dimension separately? Wouldn’t it make more sense to consider them together, and try to write <span class="math display">\[ X = \sum_{i\in [L]} F_i*w_i\]</span> where <span class="math inline">\(X\)</span> is a matrix corresponding to a sentence, and <span class="math inline">\(w_i\)</span> is in the row direction. In [HA16]’s way of doing it, you’re learning how a generic subject/theme/atom modulates throughout the space (sentence), not how combinations of subjects modulate. Is this what you want? This does need MUCH fewer atoms though, else you can expect <span class="math inline">\(k\)</span> times more.</p>
+<p>(T/F? Tensor algorithms are fragile in the sense that they depend on the model being exactly the way it is. Ex. tensor algorithm for NN—if you change the NN a bit it may fail.)</p>
+
+  </div>
+
+    
+
+    <!-- Extension : Sharing buttons @ www.sharethis.com -->
+    <span class='st_facebook_large' displayText='Facebook'></span>
+    <span class='st_twitter_large' displayText='Tweet'></span>
+    <span class='st_googleplus_large' displayText='Google +'></span>
+    <span class='st_reddit_large' displayText='Reddit'></span>
+    <span class='st__large' displayText=''></span>
+
+    <div id="disqus_thread"></div>
+    
+
+
+  
+    <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+  </div>
+  
+</div>
+]]></summary>
+</entry>
+<entry>
+    <title>Convnets ideas</title>
+    <link href="http://holdenlee.github.io/notebook/posts/tcs/machine_learning/neural_nets/convnets_ideas.html" />
+    <id>http://holdenlee.github.io/notebook/posts/tcs/machine_learning/neural_nets/convnets_ideas.html</id>
+    <published>2016-08-02T00:00:00Z</published>
+    <updated>2016-08-02T00:00:00Z</updated>
+    <summary type="html"><![CDATA[
+<div class="container">
+  <div id="content">
+    <div class="page header">
+      <h1>Convnets ideas</h1>
+    </div>
+    <div class="info">
+      
+       
+        <p>Posted: 2016-08-02 
+          , Modified: 2016-08-02 
+	</p>
+      
+       <p>Tags: <a href="/tags/neural%20nets.html">neural nets</a></p> 
+    </div>
+    
+  </div>
+  <!--/div-->
+
+  <div class="toc"></div>
+
+  <div class="blog-main">
+    <ul>
+<li>In the Fourier basis translation is diagonalized. So can we train better in the Fourier basis?
+<ul>
+<li>This seems tempting, but it doesn’t seem to lead anywhere. Local convolution with shared parameters commutes with translation. Here, diagonal maps commute with translation (=multiplication by eigenfunctions). So in terms of computing a linear map, it’s easier.</li>
+<li>But then we follow by a nonlinearity: pointwise sigmoid, or local pooling. In the Fourier space, this doesn’t correspond to anything nice! Fourier transform scrambles locality, and locality is important here…</li>
+</ul></li>
+<li>Adding more invariances:
+<ul>
+<li>Rotational invariance. (See [CW16] Group Equivariant Convolutional Networks)
+<ul>
+<li>Make local rotated copies of the image (have to be careful with cropping, interpolating) and stack them. Now do a 3-D convolution in <span class="math inline">\((x,y,\te)\)</span> space.</li>
+<li>This is less efficient. We should be able to reduce the number of parameters, but by how much?</li>
+<li>Beyond translation symmetry, the dimensionality of symmetries becomes greater than the dimensionality of the image (there is more than one symmetry taking one point to another point). This redundancy causes inefficiency.</li>
+</ul></li>
+<li>Scaling invariance.
+<ul>
+<li>Run the same convnet on the picture at different scales.</li>
+</ul></li>
+<li>Coloration (does this cause problems typically?)</li>
+<li>There’s some classical result in theoretical computer vision that identifies the dimensionality of the manifold of image alterations… check Amit Singer’s notes.</li>
+</ul></li>
+<li>Apply the variant on convolutional dictionary learning <a href="../nlp/HA16.html">HA16</a>, except 2-D.</li>
+<li>What if we did global convolutions? (This would add many parameters…)</li>
+<li>Add regularization to penalize non-smooth/non-simple kernels. For example, write the kernel in a Fourier or wavelet basis, and penalize larger Fourier or wavelet vectors (ex. term based on Fourier expectation).</li>
+<li>I “get” max pooling now: it preserves translation invariance. Pool across close-by transformations.
+<ul>
+<li>Does overlapping impose consistency?</li>
+</ul></li>
+<li>Could you compute max-pooling across many local transformations (ex. <span class="math inline">\((x,y,\te)\)</span>) more efficiently? Ex. finding the distance from a manifold of transformations of the image.</li>
+<li>How to incorporate common sense? Ex. “A thin object in a person’s hand is likely to be a pencil.”</li>
+<li>Can we train on the quotient manifold, quotiented out by symmetries? The problem is that the quotient manifold has cusps. Ex. <span class="math inline">\(\R^2/(x,y)\mapsto (y,x)\)</span> has “cusps” at <span class="math inline">\((x,x)\)</span>. Add regularization/change metric to keep it away? cf. keeping things in the simplex.</li>
+<li>(General NN) How much can you sparsify a fully connected layer and still have it work? (cf. dropout)</li>
+<li>How much can you reduce parameters in a trained NN and still get similar performance? (+ an explanation of why more parameters that needed helps learning) Can you iterate reducing parameters and training?
+<ul>
+<li>READ: Deep-fried convnets.</li>
+</ul></li>
+<li>Fooling neural nets…</li>
+<li>Train twice independently and put together?</li>
+</ul>
+
+  </div>
+
+    
+
+    <!-- Extension : Sharing buttons @ www.sharethis.com -->
+    <span class='st_facebook_large' displayText='Facebook'></span>
+    <span class='st_twitter_large' displayText='Tweet'></span>
+    <span class='st_googleplus_large' displayText='Google +'></span>
+    <span class='st_reddit_large' displayText='Reddit'></span>
+    <span class='st__large' displayText=''></span>
+
+    <div id="disqus_thread"></div>
+    
+
+
+  
+    <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+  </div>
+  
+</div>
+]]></summary>
+</entry>
+<entry>
+    <title>PMI for images</title>
+    <link href="http://holdenlee.github.io/notebook/posts/tcs/machine_learning/neural_nets/pmi_images.html" />
+    <id>http://holdenlee.github.io/notebook/posts/tcs/machine_learning/neural_nets/pmi_images.html</id>
+    <published>2016-08-01T00:00:00Z</published>
+    <updated>2016-08-01T00:00:00Z</updated>
+    <summary type="html"><![CDATA[
+<div class="container">
+  <div id="content">
+    <div class="page header">
+      <h1>PMI for images</h1>
+    </div>
+    <div class="info">
+      
+       
+        <p>Posted: 2016-08-01 
+          , Modified: 2016-08-01 
+	</p>
+      
+       <p>Tags: <a href="/tags/PMI.html">PMI</a>, <a href="/tags/neural%20nets.html">neural nets</a>, <a href="/tags/vision.html">vision</a></p> 
+    </div>
+    
+  </div>
+  <!--/div-->
+
+  <div class="toc"> <ul>
+ <li><a href="#notes">Notes</a></li>
+ <li><a href="#theory">Theory</a></li>
+ <li><a href="#thoughts">Thoughts</a></li>
+ <li><a href="#todo">Todo</a></li>
+ </ul> </div>
+
+  <div class="blog-main">
+    <h2 id="notes">Notes</h2>
+<p>Experiments:</p>
+<ul>
+<li><code>mnist_testing.m</code>: Prep data.</li>
+<li><code>svd_testing.m</code>: How does reducing the number of features through SVD affect classification accuracy?</li>
+<li><code>pairwise_mi.m</code>: Tests related to mutual information</li>
+<li><code>mi.m</code></li>
+<li><code>MI_GG.m</code></li>
+<li><code>rsvd.m</code></li>
+</ul>
+<p>Qs</p>
+<ul>
+<li>Why is the normalization <code>nrm=mean(sqrt(sum(compTr.^2)))</code>?</li>
+</ul>
+<pre><code>	         nlayers: 2
+             layer: {2x1 cell}
+    type_zerolayer: 2
+             ndesc: 7200
+
+
+                         numlayer: 1
+                        centering: 0
+    median_contrast_normalization: 0
+                           npatch: 5
+                      subsampling: 2
+                             smap: 50
+                   type_zerolayer: 2
+                            sigma: 0.7459
+                                Z: [25x50 double]
+                                w: [50x1 double]</code></pre>
+<p>In <code>pairwise_mi.m</code> there’s no normalization by scaling (<span class="math inline">\(-2\log\pat{scale}\)</span>).</p>
+<p>https://en.wikipedia.org/wiki/Conditional_mutual_information</p>
+<h2 id="theory">Theory</h2>
+<p>The right PMI measure to use here is <span class="math display">\[
+\ln \pf{\an{v,w}}{\an{v,\one}\an{w,\one}}.
+\]</span> Because if we assume the activations are like <span class="math inline">\((e^{\chi,v})_\chi\)</span>, then we still get that the expected dot product of these is <span class="math inline">\(\int e^{\an{\chi,v}}e^{\an{\chi,w}}\,d\chi\propto \exp\pa{\fc{\ve{v+w}^2}{2}}\)</span>.</p>
+<h2 id="thoughts">Thoughts</h2>
+<ul>
+<li>Is a picture more like a context or a document? We’re treating it like context (looking at all pairs of features there). But its size makes it seem more like a document. Or better: a sentence, because sentences are big enough to incorporate different features and small enough to still have a vector associated with it.</li>
+<li>How to incorporate convolutional ideas? Ex. if features <span class="math inline">\(f_1,f_2\)</span> are in the same relationship (translationally) as <span class="math inline">\(f_1',f_2'\)</span> then we expect PMI to be similar, so we should we really be looking at a <span class="math inline">\(7200\times 7200\)</span> matrix? How about look at PMI of adjacent features? (But they shouldn’t overlap…) Or look at PMI pre-convolution by another layer?</li>
+<li>What happens if you apply (convolutional?) DL to the learned features? Then apply SVD to the dimension-reduced vectors?</li>
+</ul>
+<h2 id="todo">Todo</h2>
+<p>Understand loss function for PMI.</p>
+
+  </div>
+
+    
+
+    <!-- Extension : Sharing buttons @ www.sharethis.com -->
+    <span class='st_facebook_large' displayText='Facebook'></span>
+    <span class='st_twitter_large' displayText='Tweet'></span>
+    <span class='st_googleplus_large' displayText='Google +'></span>
+    <span class='st_reddit_large' displayText='Reddit'></span>
+    <span class='st__large' displayText=''></span>
+
+    <div id="disqus_thread"></div>
+    
+
+
+  
+    <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+  </div>
+  
+</div>
+]]></summary>
+</entry>
+<entry>
     <title>High-dimensional probability</title>
     <link href="http://holdenlee.github.io/notebook/posts/math/probability/random_matrices/hi_dim_prob.html" />
     <id>http://holdenlee.github.io/notebook/posts/math/probability/random_matrices/hi_dim_prob.html</id>
@@ -37,11 +383,15 @@
   <div class="toc"> <ul>
  <li><a href="#introduction">Introduction</a></li>
  <li><a href="#variance-bounds-and-poincare-inequalities">Variance bounds and Poincare inequalities</a><ul>
- <li><a href="#section">2.1</a><ul>
- <li><a href="#problems">Problems</a></li>
- </ul></li>
+ <li><a href="#section">2.1</a></li>
  <li><a href="#markov-semigroups">Markov semigroups</a></li>
  <li><a href="#variance-identities-and-exponential-ergodicity">2.4 Variance identities and exponential ergodicity</a></li>
+ <li><a href="#problems">Problems</a></li>
+ </ul></li>
+ <li><a href="#subgaussian-concentration-and-log-sobolev-inequalities">3 Subgaussian concentration and log-Sobolev inequalities</a><ul>
+ <li><a href="#the-martingale-method">3.2 The martingale method</a></li>
+ <li><a href="#the-entropy-method">3.3 The entropy method</a></li>
+ <li><a href="#log-sobolev-inequalities">3.4 Log-Sobolev inequalities</a></li>
  </ul></li>
  </ul> </div>
 
@@ -58,7 +408,7 @@
 <h3 id="section">2.1</h3>
 <p>Trivial bound: <span class="math display">\[ \Var[f(X)]\le \rc4 (\sup f - \inf f)^2 \qquad \Var[f(x)] \le \E[(f(X)-\inf f)^2].\]</span></p>
 <p>Tensorization gives a bound for functions of independent random variables from bounds for functions of each individual random variable.</p>
-<p><strong>Theorem</strong> (Tensorization of variance): <span class="math display">\[\Var[f(X_1,\ldots, X_n)]\le \E\ba{\sumo in \Var_f f(X_1,\ldots, X_n)}\]</span> whenever <span class="math inline">\(X_{1:n}\)</span> are independent.</p>
+<p><strong>Theorem</strong> (Tensorization of variance): <span class="math display">\[\Var[f(X_1,\ldots, X_n)]\le \E\ba{\sumo in \Var_i f(X_1,\ldots, X_n)}\]</span> whenever <span class="math inline">\(X_{1:n}\)</span> are independent.</p>
 <p>This is sharp for linear functions.</p>
 <em>Proof</em>. Write <span class="math display">\[ f(X_{1:n}) - \E f(X_{1:n}) = \sumo kn \ub{\E[f(X_{1:n}|X_{1:k})] - \E[f(X_{1:n})|X_{1:k-1}]}{\De_k}. \]</span> The <span class="math inline">\(\De_k\)</span> form a martingale. By independence of martingale increments,
 \begin{align}
@@ -82,14 +432,6 @@ D_i^- f(x) &amp;= f(x) - \inf_z(f(x_{1:i-1},z,x_{i+1:n}))\\
 <li>Tensorization depends on independence.</li>
 </ul>
 <p>Inequalities in this section are roughly of the following form (Poincare inequalities): <span class="math display">\[\Var(f) \le \E[\ve{\nb f}^2].\]</span> “The validity of a Poincar´e inequality for a given distribution is intimately connected the convergence rate of a Markov process that admits that distribution as a stationary measure.”</p>
-<h4 id="problems">Problems</h4>
-<ol type="1">
-<li>Use <span class="math inline">\(\Var\pa{\ve{\rc n \sumo kn X_k}_B} = \sup_{y\in B^*} \an{\rc n\sumo kn X_k, y}\)</span>. Use the corollary, get <span class="math inline">\(D_k^-\le 2 \sup_{y\in B^*}\an{\rc X_k,y} \le \fc{2C}{n}\)</span>. Now square and sum.</li>
-<li>.</li>
-<li>.</li>
-<li>.</li>
-<li>We have <span class="math inline">\((f(x) - f(..., a, ...))^2\le \ve{(b-a)\nb f}^2\)</span>. Now take expectations and sum over different coordinates.</li>
-</ol>
 <h3 id="markov-semigroups">Markov semigroups</h3>
 <p>A <strong>Markov process</strong> satisfies: For every bounded measurable <span class="math inline">\(f\)</span> and <span class="math inline">\(s,t\in \R_+\)</span>, here is abounded measurable <span class="math inline">\(P_sf\)</span> such that <span class="math display">\[\E[f(X_{t+s})|\{X_r\}_{r\le t}] = (P_s f)(X_t).\]</span> <span class="math inline">\(\mu\)</span> is <strong>stationary</strong> if <span class="math inline">\(\mu(P_tf)=\mu(f)\)</span> for all <span class="math inline">\(t\in \R_+\)</span>, bounded measurable <span class="math inline">\(f\)</span>.</p>
 <p><strong>Lemma 2.7</strong>. <span class="math inline">\(\{P_t\}_{t\in \R_+}\)</span> defines a semigroup of linear operators on <span class="math inline">\(L^p(\mu)\)</span>. It is contractive and conservative (<span class="math inline">\(P_t1=1\)</span> <span class="math inline">\(\mu\)</span>-a.s.).</p>
@@ -165,6 +507,166 @@ Intuition: If reversibility holds,
 <p><a href="#fn3" class="footnoteRef" id="fnref3"><sup>3</sup></a>In finite dimensions, if <span class="math inline">\(\mu f=0\)</span>, <span class="math display">\[
 \cE(f,f) \ge (\ub{\la_1}0-\la_2) \Var_\mu(f).
 \]</span> The best constant in the Poincare inequality is the spectral gap. The spectral gap controls the exponential convergence rate. Note it’s essential that <span class="math inline">\(\La\)</span> admits a real spectral decomposition.</p>
+<h3 id="problems">Problems</h3>
+<ol type="1">
+<li>Use <span class="math inline">\(\Var\pa{\ve{\rc n \sumo kn X_k}_B} = \sup_{y\in B^*} \an{\rc n\sumo kn X_k, y}\)</span>. Use the corollary, get <span class="math inline">\(D_k^-\le 2 \sup_{y\in B^*}\an{\rc X_k,y} \le \fc{2C}{n}\)</span>. Now square and sum.</li>
+<li>.</li>
+<li>.</li>
+<li>.</li>
+<li>We have <span class="math inline">\((f(x) - f(..., a, ...))^2\le \ve{(b-a)\nb f}^2\)</span>. Now take expectations and sum over different coordinates.</li>
+<li>.</li>
+<li></li>
+<li><ol type="1">
+<li><p>Smooth <span class="math inline">\(f\)</span> and use the Gaussian Poincare inequality.</p>
+Note we have <span class="math inline">\(\Var[f(x)]\le \E[(f(x)-f(0))^2]\le \E L^2x^2 = L^2\)</span> but this doesn’t help us, because if we sum up derivatives along different coordinates, we overestimate <span class="math inline">\(L\)</span> to <span class="math inline">\(Ln\)</span> instead.</li>
+<li>Note <span class="math inline">\((\Si^{\rc Y})_i\)</span> is <span class="math inline">\(\ve{(\Si^{\rc 2})_i}\)</span>-Lipschitz, so <span class="math inline">\(\max((\Si^{\rc 2}Y)_i)\)</span> is <span class="math inline">\(\max \ve{(\Si^{\rc 2})_i}\)</span>-Lipschitz. By (a), <span class="math display">\[ \Var[\max_i X_i] \le \max\ve{(\Si^{\rc 2})_i} = \max \ve{\Si_{ii}} =\max_i \Var(X_i).\]</span></li>
+<li>The sum of variances on the LHS is <span class="math inline">\(\sum_j \sum_i F_{x_j}^2 = \ve{\nb F}^2\)</span>. Use the central limit theorem to show that the LHS var approaches the RHS var. There’s a factor of <span class="math inline">\((\max -\min)^2/4=1\)</span>.</li>
+</ol></li>
+<li></li>
+<li><ol type="1">
+<li>Let <span class="math inline">\(p_I\)</span> denote the probability of seeing sequence <span class="math inline">\(I\)</span> of jumps in <span class="math inline">\([0,t]\)</span>. (We don’t need to calculate it.) Let <span class="math inline">\(\Pj(x|I)\)</span> be the probability of <span class="math inline">\(x\)</span> after observing jumps in <span class="math inline">\(I\)</span>. We have <span class="math display">\[\E [f(Z_t)] = \sum_I p_I \int \Pj(x|I) f(x)\dx\]</span> which can be written <span class="math inline">\(P_tf\)</span>. Note this converges. (<span class="math inline">\(\sum_I p_I = 1\)</span>.)</li>
+<li><p>Only the <span class="math inline">\(|I|=\phi, 1\)</span> terms are significant as <span class="math inline">\(\sum_{|I|=k} p_I = Poisson(n, t, k)\)</span>.</p>
+\begin{align}\cL f &amp;= \lim_{t\to 0^+} \pf{e^{-tn} \E f - \E f + \sum (1-e^{-t}) e^{-t (n-1)} \int f\, \mu_i (dx_i|x)}{t}\\
+&amp;= \sum_{i=1}^n \ub{\pa{\pa{\int f(x)\mu_i(dx_i|x)} - f(x)}}{=: - \de_if}\\
+\cE (f, g) &amp;= -\int f \cL g\,d\mu\\
+&amp;= -\int \pa{-\sumo in f\de_i g}\,d\mu\\
+&amp;= \sumo in \int \de_if\de_ig\,d\mu
+\end{align}
+where we used <span class="math inline">\(\int (f-\de_if)\de_ig=0\)</span> because the first term has mean 0 and <span class="math inline">\(\de_ig\)</span> doesn’t depend on <span class="math inline">\(x_i\)</span>.</li>
+<li>\begin{align}
+\De_i f &amp;= \max_x |f(..., 1_i,...) - f(..., -1_i, ...)|\\
+\De_j f \,d\mu_i &amp; = \max_x \ab{\int f(\ldots 1_j\ldots)\,d\mu_i - \int f(\ldots -1_j\ldots)}\\
+&amp;\max_x |\Pj(x_i=1|x_{-i, j\leftarrow 1}) f(1_j1_i) - \Pj(x_i=1|x_{-i, j\leftarrow-1}) f(-1_j1_i) + \Pj(x=-1|\cdots)\cdots
+\end{align}
+The probabilities of <span class="math inline">\(=1|1\)</span> and <span class="math inline">\(=1|-1\)</span> differ by <span class="math inline">\(C_{ij}\)</span> (n.b. typo) so we get
+\begin{align}
+&amp;\le \max_x |f(x,1_j) - f(x,-1_j)| + C_{ij} \De_i f = \De_j f + \De_i fC_{ij}.
+\end{align}</li>
+<li>\begin{align}
+\De_j\pa{f+\fc tn \cL f} &amp;=
+\De_jf + \fc tn \De_j \pa{\pa{\int f(x) \,d\mu_i (dx_i|x)} - f(x)} \\
+&amp;\le \pa{1-\fc tn}\De_j f + \fc tn \sumo in \De_i fC_{ij}\\
+\De(f+t\cL f/n) &amp;\le \De f(I-t(I-C)/n).
+\end{align}</li>
+<li>Iterate <span class="math inline">\(n\)</span> times and take <span class="math inline">\(n\to \iy\)</span> to get <span class="math display">\[\De (e^{t\cL}f) = \De P_t f \le \De f e^{-t(I-C)}.\]</span></li>
+<li>\begin{align}
+\cE(f, f)&amp;=\sumo in \int (f-\int f\,d\mu_i)^2\,d\mu\\
+&amp;\le \sumo in |\De_i f|^2\\
+\cE(P_tf,P_tf) &amp;\le \sumo in \ve{\De f e^{-2t(I-C)}}^2\\
+&amp;\le \ka(f) (\la_{\min}(I-C))^{-1} \\
+&amp; = \ka(f) (1-\la_{\max}(C))^{-1}
+\end{align}
+<p>Use <span class="math inline">\(5\implies 1\)</span> of Poincare.</p></li>
+</ol></li>
+</ol>
+<h2 id="subgaussian-concentration-and-log-sobolev-inequalities">3 Subgaussian concentration and log-Sobolev inequalities</h2>
+<strong>Lemma 3.1</strong> (Cheroff bound). Define the <strong>log-moment generating function</strong>
+\begin{align}
+\psi(\la) :&amp;= \log \E[e^{\la (X-\E X)}]\\
+\psi^*(\la)&amp;=\sup_{\la \ge 0} (\la t-\psi(\la)).	
+\end{align}
+<p>Then <span class="math inline">\(\Pj(X-\E X \ge t) \le e^{-\psi^*(t)}\)</span> for all <span class="math inline">\(t\ge 0\)</span>.</p>
+<p><em>Proof</em>. Exponentiate and Markov.</p>
+<p>The log-moment generating function is continuous and can be investigated using calculus.</p>
+<p><strong>Example</strong>. Gaussian: <span class="math inline">\(\psi(\la) = \fc{\la^2\si^2}2\)</span> and <span class="math inline">\(\psi^*(t) = \fc{t^2}{2\si^2}\)</span> so bound of <span class="math inline">\(e^{-\fc{t^2}{2\si^2}}\)</span>.</p>
+<p>A rv is <span class="math inline">\(\si^2\)</span>-<strong>subgaussian</strong> if <span class="math inline">\(\psi(\la)\le \fc{\la^2}{\si^2}2\)</span>. Then we get tail bounds of <span class="math inline">\(e^{-\fc{t^2}{2\si^2}}\)</span>.</p>
+<p><strong>Lemma 3.6</strong> (Hoeffding): If <span class="math inline">\(X\in [a,b]\)</span> a.s., then <span class="math inline">\(X\)</span> is <span class="math inline">\((b-a)^2/4\)</span> subgaussian.</p>
+<p><em>Proof</em>. Interpret <span class="math inline">\(\psi''\)</span> as a variance, get <span class="math inline">\(\psi''\le \fc{(b-a)^2}{4}\)</span>, integrate twice.</p>
+<h3 id="the-martingale-method">3.2 The martingale method</h3>
+<p>We want to show <span class="math inline">\(f\)</span> is subgaussian with variance proxy controlled by a “square gradient” of <span class="math inline">\(f\)</span>.</p>
+<p>The subgaussian property does not tensorize.</p>
+<p>The proof of subgaussian inequailties can be reduced to a strengthened form of Poincare inequalities, <strong>log-Sobolev</strong> inequalities, that do tensorize.</p>
+<p><strong>Lemma</strong> (Azuma): Let <span class="math inline">\(\cF_k\)</span> be a filtration, and 1. (Martingale difference) <span class="math inline">\(\De_k\)</span> is <span class="math inline">\(\cF_k\)</span>-measurable, <span class="math inline">\(\E[\De_k |\cF_{k-1}]=0\)</span>. 2. (Conditional subgaussian) <span class="math inline">\(\E[e^{\la \De_k}|\cF_{k-1}]\le e^{\la^2\si_k^2/2}\)</span>. Then <span class="math inline">\(\sumo kn \De_k\)</span> is subgaussian with variance proxy <span class="math inline">\(\sumo kn \si_k^2\)</span>.</p>
+<p><strong>Corollary</strong> (Azuma-Hoeffding): Replace (2) by <span class="math inline">\(A_k\le \De_k\le B_k\)</span> where <span class="math inline">\(A_k,B_k\)</span> are <span class="math inline">\(\cF_{k-1}\)</span>-measurable. The variance proxy is <span class="math inline">\(\rc 4 \sumo kn \ve{B_k-A_k}^2_{\iy}\)</span>. The tail bound is <span class="math inline">\(\exp\pa{-\fc{2t^2}{\sumo kn \ve{B_k-A_k}^2_{\iy}}}\)</span>.</p>
+<p><strong>Theorem 3.11</strong> (McDiarmid): For <span class="math inline">\(X_{1:n}\)</span> independent, <span class="math inline">\(f(X)\)</span> is subgaussian with variance proxy <span class="math inline">\(\rc 4\sumo kn \ve{D_kf}_{\iy}^2\)</span> where <span class="math display">\[D_if(x) = (\sup_z-\inf_z)f(x_{1:i-1},z,x_{i+1:n}).\]</span></p>
+<p><em>Proof</em>. Use Azuma-Hoeffding on martingale differences <span class="math inline">\(\De_k =\E[f|X_{1:k}] - \E[f|X_{1:k-1}]\)</span>.</p>
+<p>This is unsatisfactory because the variance proxy is controlled by a uniform upper bound on square gradient rather than its expectation. Something like <span class="math inline">\(\ve{\sumo kn |D_kf|^2}_{\iy}\)</span> would be better.</p>
+<h3 id="the-entropy-method">3.3 The entropy method</h3>
+<p>The subgaussian property is equivalent to <span class="math inline">\(\la^{-1}\psi(\la)\precsim \la\)</span>, so it suffices to show <span class="math inline">\(\ddd{\la}(\la^{-1}\psi)\precsim 1\)</span>.</p>
+<ul>
+<li>Define <span class="math inline">\(\Ent(Z) = \E[Z\ln Z] - (\E Z)(\ln \E Z)\)</span>.</li>
+<li>(Entropic formulation of subgaussianity) <span class="math inline">\(\forall \la \ge 0, \Ent(e^{\la X}) \le \fc{\la^2\si^2}{2} \E e^{\la X}\implies \forall \la \ge 0, \psi(\la) \le \fc{\la^2\si^2}2\)</span>.
+<ul>
+<li><em>Proof</em>. Integrate <span class="math inline">\(\ddd{\la} \fc{\psi(\la)}{\la} = \rc{\la^2} \fc{\Ent(e^{\la x})}{\E (e^{\la x})}\)</span>.</li>
+</ul></li>
+<li>Variational characterization of entropy: <span class="math inline">\(\Ent(Z) = \sup\set{\E(ZX)}{\E(e^X)=1}\)</span>.
+<ul>
+<li><em>Proof</em>.
+\begin{align}
+\Ent(Z) - \E[ZX] &amp;= \Ent_Q (e^{-X}Z)\ge0
+\end{align}
+with equality when <span class="math inline">\(X=\ln\pf{Z}{\E Z}\)</span>.</li>
+</ul></li>
+<li>Tensorization: <span class="math inline">\(\Ent(f) \le \E\ba{\sumo in \Ent_i f}\)</span>.
+<ul>
+<li><em>Proof</em>. Let <span class="math inline">\(Z=f(X)\)</span>.
+\begin{align}
+U_k :&amp;= \ln \E[Z|X_{1:k}] - \ln \E[Z|X_{1:k-1}]\\
+\Ent (Z) &amp;= \sum \E[ZU_k]\\
+\E[e^{U_k}|X_{-k}]&amp;=1\implies &amp; \E[ZU_k|X_{-k}]&amp;\le \Ent_k f.
+\end{align}</li>
+</ul></li>
+</ul>
+<p>The entropic formulation of subgaussianity and the tensorization inequality tell us that if we prove (for some notion of <span class="math inline">\(\nb\)</span>) <span class="math display">\[ \Ent(e^g) \precsim \E[\ve{\nb g}^2]\]</span> in one dimension, then in any number of dimensions, <span class="math display">\[ \Ent(e^{\la f})\precsim \E[\ve{\nb (\la f)}^2e^{\la f}]\]</span> so <span class="math inline">\(f\)</span> is subgaussian with <span class="math inline">\(\max\ve{\nb f}^2\)</span>.</p>
+<ul>
+<li>Discrete log-Sobolev: Let <span class="math inline">\(D^-f=f-\inf f\)</span>. Then <span class="math display">\[\Ent[e^f] \le \Cov[f,e^f] \le \E[|D^-f|^2e^f].\]</span>
+<ul>
+<li><em>Proof</em>. Jensen and convexity.</li>
+</ul></li>
+<li>On product measure, <span class="math inline">\(f\)</span> is subgaussian with variance proxy <span class="math inline">\(2\ve{\sumo in |D_if|^2}_{\iy}\)</span>. Upper and lower tail bounds with <span class="math inline">\(D_i^-\)</span> and <span class="math inline">\(D_i^+\)</span>.</li>
+</ul>
+<p><strong>Example</strong> (Random Bernoulli symmetric matrices). Using <span class="math inline">\(D_{ij}^-\la_{\max(M)}\)</span>, get <span class="math display">\[ \Pj(\la_{\max}(M) - \E\la_{\max}(M)\ge t)\le e^{-\fc{t^2}{64}}. \]</span> We can’t use the same technique to look at the lower tail because the bound is in terms of different <span class="math inline">\(M^{(ij)}\)</span>’s.</p>
+<h3 id="log-sobolev-inequalities">3.4 Log-Sobolev inequalities</h3>
+<p>We have an entropic analogue of just the easy parts of the Poincare inequality equivalence.</p>
+<p><strong>Theorem</strong>. 1 and 2 are equivalent. 3 implies 1, 2 if <span class="math inline">\(\Ent_\mu(P_tf)\to 0\)</span> (entropic ergodicity).</p>
+<ol type="1">
+<li><span class="math inline">\(\Ent_\mu(f)\le c\cE(\ln f, f)\)</span> (log-Sobolev inequality)</li>
+<li><span class="math inline">\(\Ent_\mu(P_tf) \le e^{-t/c} \Ent_\mu(f)\)</span> (entropic exponential ergodicity)</li>
+<li><span class="math inline">\(\cE(\ln P_tf , P_tf) \le e^{-t/c}\cE(\ln f, f)\)</span>.</li>
+</ol>
+<p><em>Proof</em>.</p>
+<ul>
+<li>(<span class="math inline">\(3\implies1\)</span>) Note <span class="math inline">\(\ddd{t} \Ent_\mu(P_tf) = -\cE(\ln P_tf,P_tf)\)</span> using <span class="math inline">\(\mu(\cL P_tf)=0\)</span>. <span class="math inline">\(\Ent_\mu(f) = \lim -\iiy \ddd{\mu} \Ent_\mu(P_tf)\)</span>.</li>
+<li>(<span class="math inline">\(1\implies2\)</span>) Inequality for exponential decay</li>
+<li>(<span class="math inline">\(2\implies1\)</span>) Take the limit.</li>
+</ul>
+<strong>Example</strong> (Discrete log-Sobolev inequality). Consider Poisson resampling under <span class="math inline">\(\mu\)</span>. Then
+\begin{align}
+P_t f&amp;= e^{-t}f + (1-e^{-t}) \mu(f) \\
+\cE(f,g)&amp;=\int \de f\de g\,d\mu = \Cov_\mu[f,g]\\
+P_tf \ln (P_tf)&amp;\le e^{-t}\ln f + (1-e^{-t}) \mu f\ln \mu f\\
+\implies \Ent_\mu[P_t f] &amp;\le e^{-t} \Ent_\mu(f)\\
+\implies \Ent_\mu(f) &amp;\le \Cov_\mu(\ln f, f) &amp;(2\implies 1)
+\end{align}
+<p>The log-Sobolev equivalences cannot reproduce the tensorization inequality for entropy.</p>
+<strong>Theorem</strong> (Gaussian log-Sobolev). For independent Gaussian variables,
+\begin{align} 
+\Ent[f] &amp;\le \rc 2 \E [\nb f \cdot \nb \ln f]&amp; (f\ge 0)\\
+\Ent[e^f] &amp; \le \rc 2 \E[\ve{\nb f}^2 e^f].
+\end{align}
+<p>As a result <span class="math inline">\(f\)</span> is <span class="math inline">\(\si^2 = \ve{\ve{\nb f}^2}_{\iy}\)</span> subgaussian and we get Gaussian concentration, <span class="math display">\[\Pj[f - \E f\ge t] \le e^{-t^2/2\si^2}.\]</span></p>
+<em>Proof</em>. Recall <span class="math inline">\(\cE(f,g) = \mu(f'g')\)</span>, <span class="math inline">\((P_tf)' = e^{-t}P_t f'\)</span>. Note <span class="math inline">\(|P_t(fg)|^2 \le P_t(f^2)P_t(g^2)\)</span> by CS (expand out).
+\begin{align}
+(\ln P_t f)' (P_tf)' &amp;= e^{-2t} \fc{|P_tf|^2}{P_tf}\\
+|P_t f'|^2 &amp;\le P_t((\ln f)'f') P_t f&amp;\text{by CS}\\
+\implies \cE(\ln (P_tf), P_tf) &amp;\le e^{-2t}\cE(\ln f, f) &amp;\text{by }\int\\
+\implies \Ent_\mu(f) &amp;\le \cE(\ln f, f)&amp;(3\implies 1).
+\end{align}
+Note several different forms of log-Sobolev, equivalent in the Gaussian case (or anytime the chain rule holds for <span class="math inline">\(\cE\)</span>:
+\begin{align}
+\Ent(f) &amp;\le \rc 2 \E[\nb f \cdot \nb \ln f] = \rc2 \cE (\ln f, f)\\
+\Ent(f) &amp;\le \rc 2 \E\pf{\ve{\nb f}^2}{f}\\
+\Ent(e^f) &amp;\le \rc 2 \E[\ve{\nb f}^2 e^f]\\
+\Ent(f^2) &amp;\le 2\E[\ve{\nb f}^2] = 2\cE(f,f)\\
+\E(f^2\ln f)-\E[f^2]\ln \ve{f}_2 &amp;\le c\ve{\nb f}_2^2.
+\end{align}
+<p>Classical Sobolev inequalities are for <span class="math inline">\(\ved_q\)</span>, <span class="math inline">\(q\ge 2\)</span> and do not tensorize.</p>
+<p><strong>Lemma 3.28</strong>: Log-Sobolev <span class="math inline">\(\Ent(f) \le c\cE (\ln f, f)\)</span> implies the Poincare inequality <span class="math inline">\(\Var(f) \le 2c\cE (f,f)\)</span>.</p>
+<p><em>Proof</em>. <span class="math display">\[
+\ub{\E[\la f e^{\la f}}{\la^2\cE(f,f) + o(\la^2)} - 
+\ub{\E[e^{\la f}] \ln \E[e^{\la f}]}{\la \E f + \la^2(\E[f^2] + \E[f]^2)/2 + o(\la^2)} = 
+\ub{\E[\la f e^{\la f}]}{\la \E f + \la^2 \E [f^2] + o(\la^2)}
+\]</span></p>
 <section class="footnotes">
 <hr />
 <ol>
@@ -691,7 +1193,7 @@ in bar</code></pre>
 <p>If the context vector drifts slowly enough, this analysis still works.</p>
 <p>(?) The right optimization problem is <span class="math display">\[\min\sum_{w_1,w_2} \Pj(w_1,w_2) (PMI(w_1,w_2)-\an{v_{w_1},v_{w_2}}.\]</span></p>
 <p>Actually, better is <span class="math display">\[
-\min_{\{v_w\}, C} \sum_{w,w'} X_{w,w'}(\ln (X_{w,w'} - \ve{v_w+v_{w'}}_2^2-C))^2.
+\min_{\{v_w\}, C} \sum_{w,w'} X_{w,w'}(\ln (X_{w,w'}) - \ve{v_w+v_{w'}}_2^2-C)^2.
 \]</span></p>
 
   </div>
@@ -764,463 +1266,6 @@ in bar</code></pre>
 <li>Changing the formulation instead to that <span class="math inline">\((\an{x,a_i})_i\)</span> is sparse is equivalent to learning the dictionary <span class="math inline">\((A^+)^T\)</span>. (Warning: this looks different in the over/undercomplete case.)</li>
 </ul></li>
 </ul>
-
-  </div>
-
-    
-
-    <!-- Extension : Sharing buttons @ www.sharethis.com -->
-    <span class='st_facebook_large' displayText='Facebook'></span>
-    <span class='st_twitter_large' displayText='Tweet'></span>
-    <span class='st_googleplus_large' displayText='Google +'></span>
-    <span class='st_reddit_large' displayText='Reddit'></span>
-    <span class='st__large' displayText=''></span>
-
-    <div id="disqus_thread"></div>
-    
-
-
-  
-    <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
-  </div>
-  
-</div>
-]]></summary>
-</entry>
-<entry>
-    <title>Complexity of neural networks</title>
-    <link href="http://holdenlee.github.io/notebook/posts/tcs/machine_learning/neural_nets/complexity_of_neural_nets.html" />
-    <id>http://holdenlee.github.io/notebook/posts/tcs/machine_learning/neural_nets/complexity_of_neural_nets.html</id>
-    <published>2016-07-25T00:00:00Z</published>
-    <updated>2016-07-25T00:00:00Z</updated>
-    <summary type="html"><![CDATA[
-<div class="container">
-  <div id="content">
-    <div class="page header">
-      <h1>Complexity of neural networks</h1>
-    </div>
-    <div class="info">
-      
-       
-        <p>Posted: 2016-07-25 
-          , Modified: 2016-07-25 
-	</p>
-      
-       <p>Tags: <a href="/tags/neural%20net.html">neural net</a></p> 
-    </div>
-    
-  </div>
-  <!--/div-->
-
-  <div class="toc"> <ul>
- <li><a href="#cs14-simnets---a-generalization-of-convolutional-networks">[CS14] SimNets - A Generalization of Convolutional Networks</a></li>
- <li><a href="#cs16-convolutional-rectifier-networks-as-generalized-tensor-decompositions">[CS16] Convolutional Rectifier Networks as Generalized Tensor Decompositions</a></li>
- <li><a href="#css16-on-the-expressive-power-of-deep-learning---a-tensor-analysis">[CSS16] On the Expressive Power of Deep Learning - A Tensor Analysis</a></li>
- <li><a href="#misc">Misc</a></li>
- </ul> </div>
-
-  <div class="blog-main">
-    <p><a href="http://www.cs.huji.ac.il/~cohennadav/index.html">Nadav Cohen’s webpage</a></p>
-<p>Papers:</p>
-<ul>
-<li>[CS14] SimNets - A Generalization of Convolutional Networks</li>
-<li>[CS16] Convolutional Rectifier Networks as Generalized Tensor Decompositions</li>
-<li>[CS16] Inductive Bias of Deep Convolutional Networks through Pooling Geometry</li>
-<li>[CSS16] Deep SimNets</li>
-<li>[CSS16] On the Expressive Power of Deep Learning - A Tensor Analysis</li>
-</ul>
-<h2 id="cs14-simnets---a-generalization-of-convolutional-networks">[CS14] SimNets - A Generalization of Convolutional Networks</h2>
-<p>A layer now looks like <span class="math display">\[ h(x) = MEX_\xi [u_l^T \phi(x,z_l) + b_l]_{l=1,\ldots, n} \]</span> where MEX is the exponential mean <span class="math display">\[
-\rc{\xi} \ln\pa{\rc n \sumo in \exp(\xi c_i)}
-\]</span> and <span class="math inline">\(\phi\)</span> is a kernel function, like <span class="math inline">\((x_iz_i)_i\)</span> or <span class="math inline">\((-|x_i-z_i|^p)_i\)</span>. These give rise to linear and generalized Gaussian kernels when composed with MEX.</p>
-<p>MEX interpolates between minimum, average, and maximum pooling.</p>
-<!--(This looks to be a generalization of $1\times 1$ convolution? What about larger?)-->
-<p>There’s a natural unsupervised initialization scheme for SimNets based on statistical estimation. Assume the data is drawn from a mixture of generalized Gaussians and find max-likelihood parameters.</p>
-<p>(cf. initialize the convolution kernels by looking at statistical properties of patches)</p>
-<h2 id="cs16-convolutional-rectifier-networks-as-generalized-tensor-decompositions">[CS16] Convolutional Rectifier Networks as Generalized Tensor Decompositions</h2>
-<p>ICML16.</p>
-<blockquote>
-<p>First, we show that convolutional rectifier networks are universal with max pooling but not with average pooling. Second, and more importantly, we show that depth efficiency is weaker with convolutional rectifier networks than it is with convolutional arithmetic circuits. This leads us to believe that developing effective methods for training convolutional arithmetic circuits, thereby fulfilling their expressive potential, may give rise to a deep learning architecture that is provably superior to convolutional rectifier networks but has so far been overlooked by practitioners.</p>
-</blockquote>
-<p>Generalized tensor decompositions</p>
-<p><span class="math display">\[(A\ot_gB)_{d_1,\ldots, d_{P+Q}} = g(A_{d_1,\ldots, d_P}, B_{d_{P+1},\ldots, d_{P+Q}}). \]</span></p>
-<p>For arbitrary commutative/associative pooling function, replace <span class="math inline">\(\ot\)</span> with <span class="math inline">\(\ot_g\)</span>.</p>
-<h2 id="css16-on-the-expressive-power-of-deep-learning---a-tensor-analysis">[CSS16] On the Expressive Power of Deep Learning - A Tensor Analysis</h2>
-<p>COLT2016.</p>
-<p><img src="/images/deepnets_tensor_1.png"></p>
-<p>Consider a neural network defined on input <span class="math inline">\((x_1,\ldots, x_N)\in (\R^s)^N\)</span>, as follows.</p>
-\begin{align}
-rep(i,d) &amp;= f_{\te_d}(x_i)\\
-conv(i,z) &amp;= \an{a^{z,i}, rep(i,:)} = \sum_d a_d^{z,i} f_{\te_d}(x_i)\\
-pool(z) &amp;= \prod_{i=1}^N conv(i,z) = \prod_{i=1}^N \sum_d a_d^{z,i} f_{\te_d}(x_i)\\
-out(y) &amp;= \an{a_y, pool(:)} = \sum_{z=1}^Z a_{y,z} \prod_{i=1}^N\sum_d a_d^{z,i} f_{\te_d}(x_i)
-\end{align}
-<p>Note pool(z) is a 1-D tensor <span class="math display">\[ (a_d^{z,i\ot N *})_{i_1,\ldots, i_N, d} \ot (f_{\te_d}(x_i))^{i\ot N}_{d,i_1,\ldots, i_N} \]</span> so this is a rank <span class="math inline">\(Z\)</span> tensor.</p>
-<p>Think of conv as <span class="math inline">\(1\times 1\)</span> convolution. Weight sharing makes the tensor decomposition symmetric.</p>
-<p>Deep nets:</p>
-<p><img src="/images/deepnets_tensor_2.png"></p>
-<p>(<strong>Warning: The indexing of <span class="math inline">\(a\)</span> has been switched around here.</strong></p>
-<p>We have a hierarchical decomposition. Ex. first layer:</p>
-\begin{align}
-conv_1(j,\ga) &amp;= \an{a^{1,j,\ga}, pool_0(j,:)}\\
-&amp;=\an{a^{1,j,\ga}, \pa{\prod_{j'\in \{2j-1,2j\}} conv_0(j',k)}_k}\\
-&amp;=\an{a^{1,j,\ga}, (\conv_0(2j-1,k)\conv_0(2j,k))_k}\\
-&amp;=\sum_k a^{1,j,k} \conv_0(2j-1, k) \conv_0(2j,k).
-\end{align}
-<p>Iterating this gives the <strong>hierarchical Tucker decomposition</strong></p>
-<p><img src="/images/deepnets_ht.png"></p>
-<p><strong>Theorem 1</strong>: Consider the space of hierarchical tensors of order <span class="math inline">\(N\)</span> and dimension <span class="math inline">\(M\)</span> in each mode, parametrized by <span class="math inline">\(\{a^{l,j,\ga\}\)</span>. In this space, the tensor has CP-rank <span class="math inline">\(\ge r^{\fc N2}\)</span> a.e.</p>
-<p><em>Proof</em>: Because the space of tensors with CP-rank forms an algebraic variety, it suffices to show that there exists a tensor of this rank. Do this by induction on layers and work with the matricization of the tensors (<span class="math inline">\(\ot\)</span> corresponds to Kronecker product). The CP-rank equals the rank of the matricization.</p>
-<p>Question: what about convolution with larger windows?</p>
-<h2 id="misc">Misc</h2>
-<p>What is the motivation behind pooling? How much does it actually help?</p>
-<p>Do you want universality?</p>
-<p>Arithmetic circuits look much more like complexity-theoretic circuits! Training is harder. Product is AND, like soft version of min on <span class="math inline">\(\{0,1\}^n\)</span>?</p>
-<p>(Replacing sigmoids/relus by 0-1?)</p>
-
-  </div>
-
-    
-
-    <!-- Extension : Sharing buttons @ www.sharethis.com -->
-    <span class='st_facebook_large' displayText='Facebook'></span>
-    <span class='st_twitter_large' displayText='Tweet'></span>
-    <span class='st_googleplus_large' displayText='Google +'></span>
-    <span class='st_reddit_large' displayText='Reddit'></span>
-    <span class='st__large' displayText=''></span>
-
-    <div id="disqus_thread"></div>
-    
-
-
-  
-    <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
-  </div>
-  
-</div>
-]]></summary>
-</entry>
-<entry>
-    <title>Tensorflow setup</title>
-    <link href="http://holdenlee.github.io/notebook/posts/cs/neural_nets/tensorflow.html" />
-    <id>http://holdenlee.github.io/notebook/posts/cs/neural_nets/tensorflow.html</id>
-    <published>2016-07-22T00:00:00Z</published>
-    <updated>2016-07-22T00:00:00Z</updated>
-    <summary type="html"><![CDATA[
-<div class="container">
-  <div id="content">
-    <div class="page header">
-      <h1>Tensorflow setup</h1>
-    </div>
-    <div class="info">
-      
-       
-        <p>Posted: 2016-07-22 
-          , Modified: 2016-07-22 
-	</p>
-      
-       <p>Tags: <a href="/tags/programming.html">programming</a></p> 
-    </div>
-    
-  </div>
-  <!--/div-->
-
-  
-
-  <div class="blog-main">
-    <h2 id="setup-on-tiger">Setup on Tiger</h2>
-<p>Load tensorflow on startup, e.g. put in <code>.bashrc</code>.</p>
-<pre><code>module load python cudatoolkit/7.5 cudann
-pip install --user /tigress/plazonic/public_html/tensorflow/rhel6/tensorflow_pkg_gpu/tensorflow-0.8.0-py2-none-any.whl</code></pre>
-<p>Sample script</p>
-<pre><code>#!/bin/bash
-
-#SBATCH -t 10:00:00
-#SBATCH -N 1
-#SBATCH --ntasks-per-node=4
-#SBATCH --ntasks-per-socket=2
-#SBATCH --gres=gpu:2
-#SBATCH --mail-type=begin  
-#SBATCH --mail-type=end  
-#SBATCH --mail-user=holdenl@princeton.edu  
-
-module load python
-module load cudatoolkit/7.5
-module load cudann
-THEANO_FLAGS=mode=FAST_RUN,device=gpu,floatX=float32 python cifar10_multi_gpu_train.py --num_gpus=2 --train_dir='/tigress/holdenl/tmp/cifar10_train1'</code></pre>
-<p>Run by <code>sbatch script.cmd</code>.</p>
-<h2 id="cifar-setup">CIFAR setup</h2>
-<ul>
-<li>Train by calling <code>cifar10_multi_gpu_train.py</code> or <code>cifar10_train.py</code>.
-<ul>
-<li>This calls <code>cifar10.py</code> to build the graph.</li>
-<li>It calls <code>cifar10_input.py</code> to download or load the data.
-<ul>
-<li><code>data_dir</code> defined in <code>cifar10.py</code>. (Changed to <code>/tigress/knv/cifar10_data</code>.)</li>
-</ul></li>
-</ul></li>
-</ul>
-<p>Settings: Override flags as above.</p>
-<ul>
-<li><code>num_gpus=2</code> seems to work best.</li>
-<li>Specify training directory, ex. <code>train_dir='/tigress/holdenl/tmp/cifar10_train1'</code>.</li>
-</ul>
-<h2 id="train">Train</h2>
-<div class="sourceCode"><pre class="sourceCode python"><code class="sourceCode python">train(fs, step_f, output_steps<span class="op">=</span><span class="dv">10</span>, summary_steps<span class="op">=</span><span class="dv">100</span>, save_steps<span class="op">=</span><span class="dv">1000</span>, eval_steps <span class="op">=</span> <span class="dv">1000</span>, max_steps<span class="op">=</span><span class="dv">1000000</span>, train_dir<span class="op">=</span><span class="st">&quot;/&quot;</span>, log_device_placement<span class="op">=</span><span class="va">False</span>, batch_size<span class="op">=</span><span class="dv">128</span>,train_data<span class="op">=</span><span class="va">None</span>,validation_data<span class="op">=</span><span class="va">None</span>, test_data<span class="op">=</span><span class="va">None</span>, train_feed<span class="op">=</span>{}, eval_feed<span class="op">=</span>{}, x_pl<span class="op">=</span><span class="st">&quot;x&quot;</span>, y_pl<span class="op">=</span><span class="st">&quot;y_&quot;</span>, batch_feeder_args<span class="op">=</span>[])</code></pre></div>
-<ul>
-<li><code>fs</code> is a dictionary containing: inference, loss functions</li>
-<li><p><code>step_f</code> is function to execute at each training step, taking arguments <code>fs</code> and <code>global_step</code>. Example</p>
-<div class="sourceCode"><pre class="sourceCode python"><code class="sourceCode python"><span class="kw">lambda</span> fs, global_step: (
-  train_step(fs[<span class="st">&quot;loss&quot;</span>], fs[<span class="st">&quot;losses&quot;</span>], global_step, 
-             <span class="kw">lambda</span> gs: tf.train.AdamOptimizer(<span class="fl">1e-4</span>)))</code></pre></div></li>
-<li></li>
-</ul>
-<h2 id="misc-notes">Misc notes</h2>
-<p>Constants</p>
-<ul>
-<li><code>NUM_EXAMPLES_PER_EPOCH_FOR_TRAIN=50000</code></li>
-<li><code>NUM_EXAMPLES_PER_EPOCH_FOR_EVAL=10000</code></li>
-<li><code>NUM_EPOCHS_PER_DECAY</code></li>
-<li><code>INITIAL_LEARNING_RATE</code></li>
-<li><code>LEARNING_RATE_DECAY_FACTOR</code></li>
-<li><code>NUM_CLASSES=10</code></li>
-<li><code>MOVING_AVERAGE_DECAY = 0.9999</code></li>
-<li><code>NUM_EPOCHS_PER_DECAY = 350.0</code></li>
-<li><code>LEARNING_RATE_DECAY_FACTOR = 0.1</code></li>
-<li><code>INITIAL_LEARNING_RATE = 0.1</code></li>
-</ul>
-<h2 id="todo">Todo</h2>
-<ul>
-<li>Find tiger’s policies on storing files.</li>
-</ul>
-
-  </div>
-
-    
-
-    <!-- Extension : Sharing buttons @ www.sharethis.com -->
-    <span class='st_facebook_large' displayText='Facebook'></span>
-    <span class='st_twitter_large' displayText='Tweet'></span>
-    <span class='st_googleplus_large' displayText='Google +'></span>
-    <span class='st_reddit_large' displayText='Reddit'></span>
-    <span class='st__large' displayText=''></span>
-
-    <div id="disqus_thread"></div>
-    
-
-
-  
-    <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
-  </div>
-  
-</div>
-]]></summary>
-</entry>
-<entry>
-    <title>Stanford quals</title>
-    <link href="http://holdenlee.github.io/notebook/posts/tcs/machine_learning/stanford_quals.html" />
-    <id>http://holdenlee.github.io/notebook/posts/tcs/machine_learning/stanford_quals.html</id>
-    <published>2016-06-29T00:00:00Z</published>
-    <updated>2016-06-29T00:00:00Z</updated>
-    <summary type="html"><![CDATA[
-<div class="container">
-  <div id="content">
-    <div class="page header">
-      <h1>Stanford quals</h1>
-    </div>
-    <div class="info">
-      
-       
-        <p>Posted: 2016-06-29 
-          , Modified: 2016-06-29 
-	</p>
-      
-       <p>Tags: <a href="/tags/none.html">none</a></p> 
-    </div>
-    
-  </div>
-  <!--/div-->
-
-  <div class="toc"> <ul>
- <li><a href="#supervised-learning-1">Supervised learning [1]</a></li>
- <li><a href="#unsupervised-learning-1">Unsupervised learning [1]</a></li>
- </ul> </div>
-
-  <div class="blog-main">
-    <p>(from Jacob’s notes on Stanford quals)</p>
-<h2 id="supervised-learning-1">Supervised learning [1]</h2>
-<p><a href="http://cs229.stanford.edu/materials.html">CS229</a></p>
-<ul>
-<li>Perceptron, logistic regression, SVMs</li>
-<li>Kernel methods, Gaussian processes</li>
-<li>Boosting (AdaBoost)
-<ul>
-<li>What is the convergence rate?
-<ul>
-<li><span class="math inline">\(\exp(-\sum_{t=1}^T \gamma_t^2)\)</span></li>
-<li>Key property: <em>adaptive</em></li>
-</ul></li>
-<li>What problems can it be applied to?
-<ul>
-<li>binary classification on fixed dataset</li>
-</ul></li>
-<li><a href="http://cseweb.ucsd.edu/~yfreund/papers/IntroToBoosting.pdf">notes</a></li>
-</ul></li>
-<li><a href="cart.html">Decision trees, random forests</a>
-<ul>
-<li>Bagging (given subset of size <span class="math inline">\(N\)</span>, create many versions of the dataset by subsampling <span class="math inline">\(N\)</span> things with replacement repeatedly)</li>
-<li>For each of these versions, also subsample <span class="math inline">\(\sqrt{d})\)</span> of the features to use for the decision tree</li>
-</ul></li>
-<li>Neural networks</li>
-<li>Linear regression</li>
-<li>Regularization: L1, L2 and their properties</li>
-</ul>
-<h2 id="unsupervised-learning-1">Unsupervised learning [1]</h2>
-<p><a href="http://cs229.stanford.edu/materials.html">CS229</a></p>
-<ul>
-<li><a href="matrices/k-means.html">K-means</a></li>
-<li><a href="matrices/dimensionality_reduction.html">Linear dimension reduction</a> PCA, CCA, factor analysis, ICA
-<ul>
-<li>What is PCA / what is it used for?</li>
-<li>Given input dataset, assuming it’s elliptical, finds the principle axes of the ellipse
-<ul>
-<li>In more statistical language, this finds a low-dimensional representation that explains as much of the variance as possible</li>
-</ul></li>
-<li>Can be computed by just taking SVD of covariance matrix</li>
-<li>Typically we mean-center first</li>
-<li>Sometimes want to do other scalings but no clear consensus on the best one</li>
-<li><a href="matrices/cca.html">CCA</a> What is CCA / what is it used for?</li>
-<li>Same intuition as PCA, but wants to find cross-correlations between two sets of variables (X and Y)</li>
-<li>Obtained by taking singular vectors of <span class="math inline">\(\Cov(X,X)^{\rc 2}\Cov(X,Y)Cov(Y,Y)^{-\rc2}\)</span>.</li>
-<li>?Isn’t this used for semi-supervised learning?
-<ul>
-<li>?E.g. given two sets of features, use CCA as a regularizer.</li>
-</ul></li>
-<li><a href="matrices/factor-analysis.html">Factor analysis</a> What is factor analysis / what is it used for?</li>
-<li>Basically, this is just matrix factorization</li>
-<li>Often allows more domain knowledge to be incorporated</li>
-<li><a href="matrices/ica.html">ICA</a> What is ICA / what is it used for?</li>
-<li>Blind source separation</li>
-<li>Tries to break into independent signals</li>
-<li>Often done by maximizing non-gaussianity of signals</li>
-</ul></li>
-<li>EM</li>
-<li>What theoretical property does EM satisfy?
-<ul>
-<li>Maximizes lower bound <span class="math inline">\(\log p(x) - KL(q(z|x) || p(z|x))\)</span></li>
-</ul></li>
-<li>What are the general updates?
-<ul>
-<li>Compute expectation of log-likelihood under current model</li>
-<li>Minimize expectation</li>
-<li>Sort of like iteratively approximating setting the gradient to zero</li>
-</ul></li>
-</ul>
-
-  </div>
-
-    
-
-    <!-- Extension : Sharing buttons @ www.sharethis.com -->
-    <span class='st_facebook_large' displayText='Facebook'></span>
-    <span class='st_twitter_large' displayText='Tweet'></span>
-    <span class='st_googleplus_large' displayText='Google +'></span>
-    <span class='st_reddit_large' displayText='Reddit'></span>
-    <span class='st__large' displayText=''></span>
-
-    <div id="disqus_thread"></div>
-    
-
-
-  
-    <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
-  </div>
-  
-</div>
-]]></summary>
-</entry>
-<entry>
-    <title>CART and random forests</title>
-    <link href="http://holdenlee.github.io/notebook/posts/tcs/machine_learning/cart.html" />
-    <id>http://holdenlee.github.io/notebook/posts/tcs/machine_learning/cart.html</id>
-    <published>2016-06-29T00:00:00Z</published>
-    <updated>2016-06-29T00:00:00Z</updated>
-    <summary type="html"><![CDATA[
-<div class="container">
-  <div id="content">
-    <div class="page header">
-      <h1>CART and random forests</h1>
-    </div>
-    <div class="info">
-      
-       
-        <p>Posted: 2016-06-29 
-          , Modified: 2016-06-29 
-	</p>
-      
-       <p>Tags: <a href="/tags/CART.html">CART</a>, <a href="/tags/adaptive%20basis%20functions.html">adaptive basis functions</a>, <a href="/tags/random%20forests.html">random forests</a></p> 
-    </div>
-    
-  </div>
-  <!--/div-->
-
-  <div class="toc"> <ul>
- <li><a href="#cart-classification-and-regression-trees">CART (Classification and regression trees)</a></li>
- <li><a href="#random-forests">Random forests</a></li>
- </ul> </div>
-
-  <div class="blog-main">
-    <p>See Ch. 16 of Murphy. <a href="http://math.bu.edu/people/mkon/MA751/L18RandomForests.pdf">Presentation</a></p>
-<p>An adaptive basis-function model (ABM) is a model of the form <span class="math display">\[ f(x) = w_0+\sumo mM w_m \phi_m(x).\]</span> Typically <span class="math inline">\(\phi_m(x) = \phi(x;v_m)\)</span></p>
-<h2 id="cart-classification-and-regression-trees">CART (Classification and regression trees)</h2>
-<p>Decision trees recursively partition the input space and define a local model on each region.</p>
-<p>For example, if the model is constant on each region, <span class="math inline">\(f(x) = \sumo mM w_m (x\in R_m)\)</span>.</p>
-<p>At each node, consider these kinds of splits:</p>
-<ul>
-<li>Thresholds: <span class="math inline">\(x_i&lt;t\)</span>, <span class="math inline">\(x_i\ge t\)</span>. (Quantitative feature)</li>
-<li><span class="math inline">\(x_i=c,x_i\ne c\)</span> (Categorical feature)</li>
-</ul>
-<p>The cost can be regression or classification cost. Sum the costs for each leaf. Cost:</p>
-<ul>
-<li>Regression: cost of fitting model on the leaf.</li>
-<li>Classification</li>
-<li>Misclassification rate of leaf. (Use the most probable class label.)</li>
-<li>Entropy: <span class="math inline">\(-\sumo cC \wh\pi_c\lg \wh\pi_c\)</span>. (Recommended)</li>
-<li>Gini index <span class="math inline">\(\sumo cC \wh \pi_c(1-\wh \pi_c) = 1-\sumo cC \wh\pi_c^2\)</span>.</li>
-</ul>
-<p>Algorithm:</p>
-<ol type="1">
-<li>Start at the root node of a single-node tree, and put all data points at that node.</li>
-<li>Find the split at the current node (attribute) that minimizes the cost (maximizes information gain). (If it is deemed not worth splitting, e.g. it doesn’t decrease the cost by much<a href="#fn1" class="footnoteRef" id="fnref1"><sup>1</sup></a>, if it’s reached a specified depth, etc., then move on instead.) Make the split. (The data points are now distributed among the two children.)</li>
-<li>Add both child nodes. to the queue.</li>
-<li>Continue the algorithm (at 2) with the next node in the queue.</li>
-</ol>
-<p>Advantages:</p>
-<ul>
-<li>Easy to interpret</li>
-<li>Handle mixed inputs</li>
-<li>Insensitive to monotone transformations, robust to outliers.</li>
-<li>Automatic variable selection</li>
-</ul>
-<p>Disadvantages:</p>
-<ul>
-<li>Features are very restricted.</li>
-<li>Unstable: small changes in input data can have large changes because of the hierarchical nature of the tree-growing process. (They are high variance estimators.)</li>
-</ul>
-<h2 id="random-forests">Random forests</h2>
-<p><strong>Bagging</strong> (bootstrap aggregating): Train <span class="math inline">\(M\)</span> different trees on independently selected subsets of the data, and compute <span class="math inline">\(f(x)=\sumo mM \rc M f_m(x)\)</span>.</p>
-<p>(OR: use boosting instead of taking majority vote.)</p>
-<p>BUT this can result in highly correlated predictors.</p>
-<p><strong>Random forest</strong>: Decorrelate base learners by learning rees based on a randomly chosen subset of input variables and data points.</p>
-<p>(What are the right parameters? <span class="math inline">\(\sqrt d\)</span> features?)</p>
-<p><strong>Bayesian adaptive regression trees (BART)</strong>.</p>
-<p>? Hierarchical mixtures of experts.</p>
-<section class="footnotes">
-<hr />
-<ol>
-<li id="fn1"><p>This is usually too myopic. Instead use pruning. Grow the full tree, evaluate the cross-validated error on subtrees, and pick a minimal tree whose CV error is within 1 se of the min.<a href="#fnref1">↩</a></p></li>
-</ol>
-</section>
 
   </div>
 
