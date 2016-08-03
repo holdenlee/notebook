@@ -84,11 +84,15 @@
   <div class="toc"> <ul>
  <li><a href="#introduction">Introduction</a></li>
  <li><a href="#variance-bounds-and-poincare-inequalities">Variance bounds and Poincare inequalities</a><ul>
- <li><a href="#section">2.1</a><ul>
- <li><a href="#problems">Problems</a></li>
- </ul></li>
+ <li><a href="#section">2.1</a></li>
  <li><a href="#markov-semigroups">Markov semigroups</a></li>
  <li><a href="#variance-identities-and-exponential-ergodicity">2.4 Variance identities and exponential ergodicity</a></li>
+ <li><a href="#problems">Problems</a></li>
+ </ul></li>
+ <li><a href="#subgaussian-concentration-and-log-sobolev-inequalities">3 Subgaussian concentration and log-Sobolev inequalities</a><ul>
+ <li><a href="#the-martingale-method">3.2 The martingale method</a></li>
+ <li><a href="#the-entropy-method">3.3 The entropy method</a></li>
+ <li><a href="#log-sobolev-inequalities">3.4 Log-Sobolev inequalities</a></li>
  </ul></li>
  </ul> </div>
 
@@ -105,7 +109,7 @@
 <h3 id="section">2.1</h3>
 <p>Trivial bound: <span class="math display">\[ \Var[f(X)]\le \rc4 (\sup f - \inf f)^2 \qquad \Var[f(x)] \le \E[(f(X)-\inf f)^2].\]</span></p>
 <p>Tensorization gives a bound for functions of independent random variables from bounds for functions of each individual random variable.</p>
-<p><strong>Theorem</strong> (Tensorization of variance): <span class="math display">\[\Var[f(X_1,\ldots, X_n)]\le \E\ba{\sumo in \Var_f f(X_1,\ldots, X_n)}\]</span> whenever <span class="math inline">\(X_{1:n}\)</span> are independent.</p>
+<p><strong>Theorem</strong> (Tensorization of variance): <span class="math display">\[\Var[f(X_1,\ldots, X_n)]\le \E\ba{\sumo in \Var_i f(X_1,\ldots, X_n)}\]</span> whenever <span class="math inline">\(X_{1:n}\)</span> are independent.</p>
 <p>This is sharp for linear functions.</p>
 <em>Proof</em>. Write <span class="math display">\[ f(X_{1:n}) - \E f(X_{1:n}) = \sumo kn \ub{\E[f(X_{1:n}|X_{1:k})] - \E[f(X_{1:n})|X_{1:k-1}]}{\De_k}. \]</span> The <span class="math inline">\(\De_k\)</span> form a martingale. By independence of martingale increments,
 \begin{align}
@@ -129,14 +133,6 @@ D_i^- f(x) &amp;= f(x) - \inf_z(f(x_{1:i-1},z,x_{i+1:n}))\\
 <li>Tensorization depends on independence.</li>
 </ul>
 <p>Inequalities in this section are roughly of the following form (Poincare inequalities): <span class="math display">\[\Var(f) \le \E[\ve{\nb f}^2].\]</span> “The validity of a Poincar´e inequality for a given distribution is intimately connected the convergence rate of a Markov process that admits that distribution as a stationary measure.”</p>
-<h4 id="problems">Problems</h4>
-<ol type="1">
-<li>Use <span class="math inline">\(\Var\pa{\ve{\rc n \sumo kn X_k}_B} = \sup_{y\in B^*} \an{\rc n\sumo kn X_k, y}\)</span>. Use the corollary, get <span class="math inline">\(D_k^-\le 2 \sup_{y\in B^*}\an{\rc X_k,y} \le \fc{2C}{n}\)</span>. Now square and sum.</li>
-<li>.</li>
-<li>.</li>
-<li>.</li>
-<li>We have <span class="math inline">\((f(x) - f(..., a, ...))^2\le \ve{(b-a)\nb f}^2\)</span>. Now take expectations and sum over different coordinates.</li>
-</ol>
 <h3 id="markov-semigroups">Markov semigroups</h3>
 <p>A <strong>Markov process</strong> satisfies: For every bounded measurable <span class="math inline">\(f\)</span> and <span class="math inline">\(s,t\in \R_+\)</span>, here is abounded measurable <span class="math inline">\(P_sf\)</span> such that <span class="math display">\[\E[f(X_{t+s})|\{X_r\}_{r\le t}] = (P_s f)(X_t).\]</span> <span class="math inline">\(\mu\)</span> is <strong>stationary</strong> if <span class="math inline">\(\mu(P_tf)=\mu(f)\)</span> for all <span class="math inline">\(t\in \R_+\)</span>, bounded measurable <span class="math inline">\(f\)</span>.</p>
 <p><strong>Lemma 2.7</strong>. <span class="math inline">\(\{P_t\}_{t\in \R_+}\)</span> defines a semigroup of linear operators on <span class="math inline">\(L^p(\mu)\)</span>. It is contractive and conservative (<span class="math inline">\(P_t1=1\)</span> <span class="math inline">\(\mu\)</span>-a.s.).</p>
@@ -212,6 +208,166 @@ Intuition: If reversibility holds,
 <p><a href="#fn3" class="footnoteRef" id="fnref3"><sup>3</sup></a>In finite dimensions, if <span class="math inline">\(\mu f=0\)</span>, <span class="math display">\[
 \cE(f,f) \ge (\ub{\la_1}0-\la_2) \Var_\mu(f).
 \]</span> The best constant in the Poincare inequality is the spectral gap. The spectral gap controls the exponential convergence rate. Note it’s essential that <span class="math inline">\(\La\)</span> admits a real spectral decomposition.</p>
+<h3 id="problems">Problems</h3>
+<ol type="1">
+<li>Use <span class="math inline">\(\Var\pa{\ve{\rc n \sumo kn X_k}_B} = \sup_{y\in B^*} \an{\rc n\sumo kn X_k, y}\)</span>. Use the corollary, get <span class="math inline">\(D_k^-\le 2 \sup_{y\in B^*}\an{\rc X_k,y} \le \fc{2C}{n}\)</span>. Now square and sum.</li>
+<li>.</li>
+<li>.</li>
+<li>.</li>
+<li>We have <span class="math inline">\((f(x) - f(..., a, ...))^2\le \ve{(b-a)\nb f}^2\)</span>. Now take expectations and sum over different coordinates.</li>
+<li>.</li>
+<li></li>
+<li><ol type="1">
+<li><p>Smooth <span class="math inline">\(f\)</span> and use the Gaussian Poincare inequality.</p>
+Note we have <span class="math inline">\(\Var[f(x)]\le \E[(f(x)-f(0))^2]\le \E L^2x^2 = L^2\)</span> but this doesn’t help us, because if we sum up derivatives along different coordinates, we overestimate <span class="math inline">\(L\)</span> to <span class="math inline">\(Ln\)</span> instead.</li>
+<li>Note <span class="math inline">\((\Si^{\rc Y})_i\)</span> is <span class="math inline">\(\ve{(\Si^{\rc 2})_i}\)</span>-Lipschitz, so <span class="math inline">\(\max((\Si^{\rc 2}Y)_i)\)</span> is <span class="math inline">\(\max \ve{(\Si^{\rc 2})_i}\)</span>-Lipschitz. By (a), <span class="math display">\[ \Var[\max_i X_i] \le \max\ve{(\Si^{\rc 2})_i} = \max \ve{\Si_{ii}} =\max_i \Var(X_i).\]</span></li>
+<li>The sum of variances on the LHS is <span class="math inline">\(\sum_j \sum_i F_{x_j}^2 = \ve{\nb F}^2\)</span>. Use the central limit theorem to show that the LHS var approaches the RHS var. There’s a factor of <span class="math inline">\((\max -\min)^2/4=1\)</span>.</li>
+</ol></li>
+<li></li>
+<li><ol type="1">
+<li>Let <span class="math inline">\(p_I\)</span> denote the probability of seeing sequence <span class="math inline">\(I\)</span> of jumps in <span class="math inline">\([0,t]\)</span>. (We don’t need to calculate it.) Let <span class="math inline">\(\Pj(x|I)\)</span> be the probability of <span class="math inline">\(x\)</span> after observing jumps in <span class="math inline">\(I\)</span>. We have <span class="math display">\[\E [f(Z_t)] = \sum_I p_I \int \Pj(x|I) f(x)\dx\]</span> which can be written <span class="math inline">\(P_tf\)</span>. Note this converges. (<span class="math inline">\(\sum_I p_I = 1\)</span>.)</li>
+<li><p>Only the <span class="math inline">\(|I|=\phi, 1\)</span> terms are significant as <span class="math inline">\(\sum_{|I|=k} p_I = Poisson(n, t, k)\)</span>.</p>
+\begin{align}\cL f &amp;= \lim_{t\to 0^+} \pf{e^{-tn} \E f - \E f + \sum (1-e^{-t}) e^{-t (n-1)} \int f\, \mu_i (dx_i|x)}{t}\\
+&amp;= \sum_{i=1}^n \ub{\pa{\pa{\int f(x)\mu_i(dx_i|x)} - f(x)}}{=: - \de_if}\\
+\cE (f, g) &amp;= -\int f \cL g\,d\mu\\
+&amp;= -\int \pa{-\sumo in f\de_i g}\,d\mu\\
+&amp;= \sumo in \int \de_if\de_ig\,d\mu
+\end{align}
+where we used <span class="math inline">\(\int (f-\de_if)\de_ig=0\)</span> because the first term has mean 0 and <span class="math inline">\(\de_ig\)</span> doesn’t depend on <span class="math inline">\(x_i\)</span>.</li>
+<li>\begin{align}
+\De_i f &amp;= \max_x |f(..., 1_i,...) - f(..., -1_i, ...)|\\
+\De_j f \,d\mu_i &amp; = \max_x \ab{\int f(\ldots 1_j\ldots)\,d\mu_i - \int f(\ldots -1_j\ldots)}\\
+&amp;\max_x |\Pj(x_i=1|x_{-i, j\leftarrow 1}) f(1_j1_i) - \Pj(x_i=1|x_{-i, j\leftarrow-1}) f(-1_j1_i) + \Pj(x=-1|\cdots)\cdots
+\end{align}
+The probabilities of <span class="math inline">\(=1|1\)</span> and <span class="math inline">\(=1|-1\)</span> differ by <span class="math inline">\(C_{ij}\)</span> (n.b. typo) so we get
+\begin{align}
+&amp;\le \max_x |f(x,1_j) - f(x,-1_j)| + C_{ij} \De_i f = \De_j f + \De_i fC_{ij}.
+\end{align}</li>
+<li>\begin{align}
+\De_j\pa{f+\fc tn \cL f} &amp;=
+\De_jf + \fc tn \De_j \pa{\pa{\int f(x) \,d\mu_i (dx_i|x)} - f(x)} \\
+&amp;\le \pa{1-\fc tn}\De_j f + \fc tn \sumo in \De_i fC_{ij}\\
+\De(f+t\cL f/n) &amp;\le \De f(I-t(I-C)/n).
+\end{align}</li>
+<li>Iterate <span class="math inline">\(n\)</span> times and take <span class="math inline">\(n\to \iy\)</span> to get <span class="math display">\[\De (e^{t\cL}f) = \De P_t f \le \De f e^{-t(I-C)}.\]</span></li>
+<li>\begin{align}
+\cE(f, f)&amp;=\sumo in \int (f-\int f\,d\mu_i)^2\,d\mu\\
+&amp;\le \sumo in |\De_i f|^2\\
+\cE(P_tf,P_tf) &amp;\le \sumo in \ve{\De f e^{-2t(I-C)}}^2\\
+&amp;\le \ka(f) (\la_{\min}(I-C))^{-1} \\
+&amp; = \ka(f) (1-\la_{\max}(C))^{-1}
+\end{align}
+<p>Use <span class="math inline">\(5\implies 1\)</span> of Poincare.</p></li>
+</ol></li>
+</ol>
+<h2 id="subgaussian-concentration-and-log-sobolev-inequalities">3 Subgaussian concentration and log-Sobolev inequalities</h2>
+<strong>Lemma 3.1</strong> (Cheroff bound). Define the <strong>log-moment generating function</strong>
+\begin{align}
+\psi(\la) :&amp;= \log \E[e^{\la (X-\E X)}]\\
+\psi^*(\la)&amp;=\sup_{\la \ge 0} (\la t-\psi(\la)).	
+\end{align}
+<p>Then <span class="math inline">\(\Pj(X-\E X \ge t) \le e^{-\psi^*(t)}\)</span> for all <span class="math inline">\(t\ge 0\)</span>.</p>
+<p><em>Proof</em>. Exponentiate and Markov.</p>
+<p>The log-moment generating function is continuous and can be investigated using calculus.</p>
+<p><strong>Example</strong>. Gaussian: <span class="math inline">\(\psi(\la) = \fc{\la^2\si^2}2\)</span> and <span class="math inline">\(\psi^*(t) = \fc{t^2}{2\si^2}\)</span> so bound of <span class="math inline">\(e^{-\fc{t^2}{2\si^2}}\)</span>.</p>
+<p>A rv is <span class="math inline">\(\si^2\)</span>-<strong>subgaussian</strong> if <span class="math inline">\(\psi(\la)\le \fc{\la^2}{\si^2}2\)</span>. Then we get tail bounds of <span class="math inline">\(e^{-\fc{t^2}{2\si^2}}\)</span>.</p>
+<p><strong>Lemma 3.6</strong> (Hoeffding): If <span class="math inline">\(X\in [a,b]\)</span> a.s., then <span class="math inline">\(X\)</span> is <span class="math inline">\((b-a)^2/4\)</span> subgaussian.</p>
+<p><em>Proof</em>. Interpret <span class="math inline">\(\psi''\)</span> as a variance, get <span class="math inline">\(\psi''\le \fc{(b-a)^2}{4}\)</span>, integrate twice.</p>
+<h3 id="the-martingale-method">3.2 The martingale method</h3>
+<p>We want to show <span class="math inline">\(f\)</span> is subgaussian with variance proxy controlled by a “square gradient” of <span class="math inline">\(f\)</span>.</p>
+<p>The subgaussian property does not tensorize.</p>
+<p>The proof of subgaussian inequailties can be reduced to a strengthened form of Poincare inequalities, <strong>log-Sobolev</strong> inequalities, that do tensorize.</p>
+<p><strong>Lemma</strong> (Azuma): Let <span class="math inline">\(\cF_k\)</span> be a filtration, and 1. (Martingale difference) <span class="math inline">\(\De_k\)</span> is <span class="math inline">\(\cF_k\)</span>-measurable, <span class="math inline">\(\E[\De_k |\cF_{k-1}]=0\)</span>. 2. (Conditional subgaussian) <span class="math inline">\(\E[e^{\la \De_k}|\cF_{k-1}]\le e^{\la^2\si_k^2/2}\)</span>. Then <span class="math inline">\(\sumo kn \De_k\)</span> is subgaussian with variance proxy <span class="math inline">\(\sumo kn \si_k^2\)</span>.</p>
+<p><strong>Corollary</strong> (Azuma-Hoeffding): Replace (2) by <span class="math inline">\(A_k\le \De_k\le B_k\)</span> where <span class="math inline">\(A_k,B_k\)</span> are <span class="math inline">\(\cF_{k-1}\)</span>-measurable. The variance proxy is <span class="math inline">\(\rc 4 \sumo kn \ve{B_k-A_k}^2_{\iy}\)</span>. The tail bound is <span class="math inline">\(\exp\pa{-\fc{2t^2}{\sumo kn \ve{B_k-A_k}^2_{\iy}}}\)</span>.</p>
+<p><strong>Theorem 3.11</strong> (McDiarmid): For <span class="math inline">\(X_{1:n}\)</span> independent, <span class="math inline">\(f(X)\)</span> is subgaussian with variance proxy <span class="math inline">\(\rc 4\sumo kn \ve{D_kf}_{\iy}^2\)</span> where <span class="math display">\[D_if(x) = (\sup_z-\inf_z)f(x_{1:i-1},z,x_{i+1:n}).\]</span></p>
+<p><em>Proof</em>. Use Azuma-Hoeffding on martingale differences <span class="math inline">\(\De_k =\E[f|X_{1:k}] - \E[f|X_{1:k-1}]\)</span>.</p>
+<p>This is unsatisfactory because the variance proxy is controlled by a uniform upper bound on square gradient rather than its expectation. Something like <span class="math inline">\(\ve{\sumo kn |D_kf|^2}_{\iy}\)</span> would be better.</p>
+<h3 id="the-entropy-method">3.3 The entropy method</h3>
+<p>The subgaussian property is equivalent to <span class="math inline">\(\la^{-1}\psi(\la)\precsim \la\)</span>, so it suffices to show <span class="math inline">\(\ddd{\la}(\la^{-1}\psi)\precsim 1\)</span>.</p>
+<ul>
+<li>Define <span class="math inline">\(\Ent(Z) = \E[Z\ln Z] - (\E Z)(\ln \E Z)\)</span>.</li>
+<li>(Entropic formulation of subgaussianity) <span class="math inline">\(\forall \la \ge 0, \Ent(e^{\la X}) \le \fc{\la^2\si^2}{2} \E e^{\la X}\implies \forall \la \ge 0, \psi(\la) \le \fc{\la^2\si^2}2\)</span>.
+<ul>
+<li><em>Proof</em>. Integrate <span class="math inline">\(\ddd{\la} \fc{\psi(\la)}{\la} = \rc{\la^2} \fc{\Ent(e^{\la x})}{\E (e^{\la x})}\)</span>.</li>
+</ul></li>
+<li>Variational characterization of entropy: <span class="math inline">\(\Ent(Z) = \sup\set{\E(ZX)}{\E(e^X)=1}\)</span>.
+<ul>
+<li><em>Proof</em>.
+\begin{align}
+\Ent(Z) - \E[ZX] &amp;= \Ent_Q (e^{-X}Z)\ge0
+\end{align}
+with equality when <span class="math inline">\(X=\ln\pf{Z}{\E Z}\)</span>.</li>
+</ul></li>
+<li>Tensorization: <span class="math inline">\(\Ent(f) \le \E\ba{\sumo in \Ent_i f}\)</span>.
+<ul>
+<li><em>Proof</em>. Let <span class="math inline">\(Z=f(X)\)</span>.
+\begin{align}
+U_k :&amp;= \ln \E[Z|X_{1:k}] - \ln \E[Z|X_{1:k-1}]\\
+\Ent (Z) &amp;= \sum \E[ZU_k]\\
+\E[e^{U_k}|X_{-k}]&amp;=1\implies &amp; \E[ZU_k|X_{-k}]&amp;\le \Ent_k f.
+\end{align}</li>
+</ul></li>
+</ul>
+<p>The entropic formulation of subgaussianity and the tensorization inequality tell us that if we prove (for some notion of <span class="math inline">\(\nb\)</span>) <span class="math display">\[ \Ent(e^g) \precsim \E[\ve{\nb g}^2]\]</span> in one dimension, then in any number of dimensions, <span class="math display">\[ \Ent(e^{\la f})\precsim \E[\ve{\nb (\la f)}^2e^{\la f}]\]</span> so <span class="math inline">\(f\)</span> is subgaussian with <span class="math inline">\(\max\ve{\nb f}^2\)</span>.</p>
+<ul>
+<li>Discrete log-Sobolev: Let <span class="math inline">\(D^-f=f-\inf f\)</span>. Then <span class="math display">\[\Ent[e^f] \le \Cov[f,e^f] \le \E[|D^-f|^2e^f].\]</span>
+<ul>
+<li><em>Proof</em>. Jensen and convexity.</li>
+</ul></li>
+<li>On product measure, <span class="math inline">\(f\)</span> is subgaussian with variance proxy <span class="math inline">\(2\ve{\sumo in |D_if|^2}_{\iy}\)</span>. Upper and lower tail bounds with <span class="math inline">\(D_i^-\)</span> and <span class="math inline">\(D_i^+\)</span>.</li>
+</ul>
+<p><strong>Example</strong> (Random Bernoulli symmetric matrices). Using <span class="math inline">\(D_{ij}^-\la_{\max(M)}\)</span>, get <span class="math display">\[ \Pj(\la_{\max}(M) - \E\la_{\max}(M)\ge t)\le e^{-\fc{t^2}{64}}. \]</span> We can’t use the same technique to look at the lower tail because the bound is in terms of different <span class="math inline">\(M^{(ij)}\)</span>’s.</p>
+<h3 id="log-sobolev-inequalities">3.4 Log-Sobolev inequalities</h3>
+<p>We have an entropic analogue of just the easy parts of the Poincare inequality equivalence.</p>
+<p><strong>Theorem</strong>. 1 and 2 are equivalent. 3 implies 1, 2 if <span class="math inline">\(\Ent_\mu(P_tf)\to 0\)</span> (entropic ergodicity).</p>
+<ol type="1">
+<li><span class="math inline">\(\Ent_\mu(f)\le c\cE(\ln f, f)\)</span> (log-Sobolev inequality)</li>
+<li><span class="math inline">\(\Ent_\mu(P_tf) \le e^{-t/c} \Ent_\mu(f)\)</span> (entropic exponential ergodicity)</li>
+<li><span class="math inline">\(\cE(\ln P_tf , P_tf) \le e^{-t/c}\cE(\ln f, f)\)</span>.</li>
+</ol>
+<p><em>Proof</em>.</p>
+<ul>
+<li>(<span class="math inline">\(3\implies1\)</span>) Note <span class="math inline">\(\ddd{t} \Ent_\mu(P_tf) = -\cE(\ln P_tf,P_tf)\)</span> using <span class="math inline">\(\mu(\cL P_tf)=0\)</span>. <span class="math inline">\(\Ent_\mu(f) = \lim -\iiy \ddd{\mu} \Ent_\mu(P_tf)\)</span>.</li>
+<li>(<span class="math inline">\(1\implies2\)</span>) Inequality for exponential decay</li>
+<li>(<span class="math inline">\(2\implies1\)</span>) Take the limit.</li>
+</ul>
+<strong>Example</strong> (Discrete log-Sobolev inequality). Consider Poisson resampling under <span class="math inline">\(\mu\)</span>. Then
+\begin{align}
+P_t f&amp;= e^{-t}f + (1-e^{-t}) \mu(f) \\
+\cE(f,g)&amp;=\int \de f\de g\,d\mu = \Cov_\mu[f,g]\\
+P_tf \ln (P_tf)&amp;\le e^{-t}\ln f + (1-e^{-t}) \mu f\ln \mu f\\
+\implies \Ent_\mu[P_t f] &amp;\le e^{-t} \Ent_\mu(f)\\
+\implies \Ent_\mu(f) &amp;\le \Cov_\mu(\ln f, f) &amp;(2\implies 1)
+\end{align}
+<p>The log-Sobolev equivalences cannot reproduce the tensorization inequality for entropy.</p>
+<strong>Theorem</strong> (Gaussian log-Sobolev). For independent Gaussian variables,
+\begin{align} 
+\Ent[f] &amp;\le \rc 2 \E [\nb f \cdot \nb \ln f]&amp; (f\ge 0)\\
+\Ent[e^f] &amp; \le \rc 2 \E[\ve{\nb f}^2 e^f].
+\end{align}
+<p>As a result <span class="math inline">\(f\)</span> is <span class="math inline">\(\si^2 = \ve{\ve{\nb f}^2}_{\iy}\)</span> subgaussian and we get Gaussian concentration, <span class="math display">\[\Pj[f - \E f\ge t] \le e^{-t^2/2\si^2}.\]</span></p>
+<em>Proof</em>. Recall <span class="math inline">\(\cE(f,g) = \mu(f'g')\)</span>, <span class="math inline">\((P_tf)' = e^{-t}P_t f'\)</span>. Note <span class="math inline">\(|P_t(fg)|^2 \le P_t(f^2)P_t(g^2)\)</span> by CS (expand out).
+\begin{align}
+(\ln P_t f)' (P_tf)' &amp;= e^{-2t} \fc{|P_tf|^2}{P_tf}\\
+|P_t f'|^2 &amp;\le P_t((\ln f)'f') P_t f&amp;\text{by CS}\\
+\implies \cE(\ln (P_tf), P_tf) &amp;\le e^{-2t}\cE(\ln f, f) &amp;\text{by }\int\\
+\implies \Ent_\mu(f) &amp;\le \cE(\ln f, f)&amp;(3\implies 1).
+\end{align}
+Note several different forms of log-Sobolev, equivalent in the Gaussian case (or anytime the chain rule holds for <span class="math inline">\(\cE\)</span>:
+\begin{align}
+\Ent(f) &amp;\le \rc 2 \E[\nb f \cdot \nb \ln f] = \rc2 \cE (\ln f, f)\\
+\Ent(f) &amp;\le \rc 2 \E\pf{\ve{\nb f}^2}{f}\\
+\Ent(e^f) &amp;\le \rc 2 \E[\ve{\nb f}^2 e^f]\\
+\Ent(f^2) &amp;\le 2\E[\ve{\nb f}^2] = 2\cE(f,f)\\
+\E(f^2\ln f)-\E[f^2]\ln \ve{f}_2 &amp;\le c\ve{\nb f}_2^2.
+\end{align}
+<p>Classical Sobolev inequalities are for <span class="math inline">\(\ved_q\)</span>, <span class="math inline">\(q\ge 2\)</span> and do not tensorize.</p>
+<p><strong>Lemma 3.28</strong>: Log-Sobolev <span class="math inline">\(\Ent(f) \le c\cE (\ln f, f)\)</span> implies the Poincare inequality <span class="math inline">\(\Var(f) \le 2c\cE (f,f)\)</span>.</p>
+<p><em>Proof</em>. <span class="math display">\[
+\ub{\E[\la f e^{\la f}}{\la^2\cE(f,f) + o(\la^2)} - 
+\ub{\E[e^{\la f}] \ln \E[e^{\la f}]}{\la \E f + \la^2(\E[f^2] + \E[f]^2)/2 + o(\la^2)} = 
+\ub{\E[\la f e^{\la f}]}{\la \E f + \la^2 \E [f^2] + o(\la^2)}
+\]</span></p>
 <section class="footnotes">
 <hr />
 <ol>

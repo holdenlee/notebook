@@ -10,7 +10,7 @@
   <meta name="description" content="Holden Lee's Research Notebook">
   <meta name="author" content="Holden Lee">
     
-  <title>Posts in category "tcs/machine_learning/neural_nets"</title>
+  <title>Convnets ideas</title>
 
   <!-- Bootstrap core CSS -->
   <link href="../../../../bootstrap/css/bootstrap.min.css" rel="stylesheet">
@@ -66,67 +66,82 @@
 <div class="container">
   <div id="content">
     <div class="page header">
-      <h1>Posts in category "tcs/machine_learning/neural_nets"</h1>
+      <h1>Convnets ideas</h1>
     </div>
     <div class="info">
       
+       
+        <p>Posted: 2016-08-02 
+          , Modified: 2016-08-02 
+	</p>
       
-      
+       <p>Tags: <a href="../../../../tags/neural%20nets.html">neural nets</a></p> 
     </div>
     
   </div>
   <!--/div-->
 
-  
+  <div class="toc"></div>
 
   <div class="blog-main">
     <ul>
-    
-        <li>
-            <a href="../../../../posts/tcs/machine_learning/neural_nets/convnets_ideas.html">Convnets ideas</a> (2016-08-02)
-        </li>
-    
-        <li>
-            <a href="../../../../posts/tcs/machine_learning/neural_nets/pmi_images.html">PMI for images</a> (2016-08-01)
-        </li>
-    
-        <li>
-            <a href="../../../../posts/tcs/machine_learning/neural_nets/complexity_of_neural_nets.html">Complexity of neural networks</a> (2016-07-25)
-        </li>
-    
-        <li>
-            <a href="../../../../posts/tcs/machine_learning/neural_nets/JSA15.html">[JSA15] Beating the Perils of Non-Convexity - Guaranteed Training of Neural Networks using Tensor Methods</a> (2016-06-27)
-        </li>
-    
-        <li>
-            <a href="../../../../posts/tcs/machine_learning/neural_nets/lstm_code.html">LSTM Programming</a> (2016-03-19)
-        </li>
-    
-        <li>
-            <a href="../../../../posts/tcs/machine_learning/neural_nets/basics.html">Neural nets basics</a> (2016-03-13)
-        </li>
-    
-        <li>
-            <a href="../../../../posts/tcs/machine_learning/neural_nets/ALM16.html">[ALM16] WHY ARE DEEP NETS REVERSIBLE: A SIMPLE THEORY, WITH IMPLICATIONS FOR TRAINING</a> (2016-03-13)
-        </li>
-    
-        <li>
-            <a href="../../../../posts/tcs/machine_learning/neural_nets/CHMAL15.html">[CHMAL15] The Loss Surfaces of Multilayer Networks</a> (2016-03-07)
-        </li>
-    
-        <li>
-            <a href="../../../../posts/tcs/machine_learning/neural_nets/nn_modeling.html">Analysis of neural networks</a> (2016-03-05)
-        </li>
-    
+<li>In the Fourier basis translation is diagonalized. So can we train better in the Fourier basis?
+<ul>
+<li>This seems tempting, but it doesn’t seem to lead anywhere. Local convolution with shared parameters commutes with translation. Here, diagonal maps commute with translation (=multiplication by eigenfunctions). So in terms of computing a linear map, it’s easier.</li>
+<li>But then we follow by a nonlinearity: pointwise sigmoid, or local pooling. In the Fourier space, this doesn’t correspond to anything nice! Fourier transform scrambles locality, and locality is important here…</li>
+</ul></li>
+<li>Adding more invariances:
+<ul>
+<li>Rotational invariance. (See [CW16] Group Equivariant Convolutional Networks)
+<ul>
+<li>Make local rotated copies of the image (have to be careful with cropping, interpolating) and stack them. Now do a 3-D convolution in <span class="math inline">\((x,y,\te)\)</span> space.</li>
+<li>This is less efficient. We should be able to reduce the number of parameters, but by how much?</li>
+<li>Beyond translation symmetry, the dimensionality of symmetries becomes greater than the dimensionality of the image (there is more than one symmetry taking one point to another point). This redundancy causes inefficiency.</li>
+</ul></li>
+<li>Scaling invariance.
+<ul>
+<li>Run the same convnet on the picture at different scales.</li>
+</ul></li>
+<li>Coloration (does this cause problems typically?)</li>
+<li>There’s some classical result in theoretical computer vision that identifies the dimensionality of the manifold of image alterations… check Amit Singer’s notes.</li>
+</ul></li>
+<li>Apply the variant on convolutional dictionary learning <a href="../nlp/HA16.html">HA16</a>, except 2-D.</li>
+<li>What if we did global convolutions? (This would add many parameters…)</li>
+<li>Add regularization to penalize non-smooth/non-simple kernels. For example, write the kernel in a Fourier or wavelet basis, and penalize larger Fourier or wavelet vectors (ex. term based on Fourier expectation).</li>
+<li>I “get” max pooling now: it preserves translation invariance. Pool across close-by transformations.
+<ul>
+<li>Does overlapping impose consistency?</li>
+</ul></li>
+<li>Could you compute max-pooling across many local transformations (ex. <span class="math inline">\((x,y,\te)\)</span>) more efficiently? Ex. finding the distance from a manifold of transformations of the image.</li>
+<li>How to incorporate common sense? Ex. “A thin object in a person’s hand is likely to be a pencil.”</li>
+<li>Can we train on the quotient manifold, quotiented out by symmetries? The problem is that the quotient manifold has cusps. Ex. <span class="math inline">\(\R^2/(x,y)\mapsto (y,x)\)</span> has “cusps” at <span class="math inline">\((x,x)\)</span>. Add regularization/change metric to keep it away? cf. keeping things in the simplex.</li>
+<li>(General NN) How much can you sparsify a fully connected layer and still have it work? (cf. dropout)</li>
+<li>How much can you reduce parameters in a trained NN and still get similar performance? (+ an explanation of why more parameters that needed helps learning) Can you iterate reducing parameters and training?
+<ul>
+<li>READ: Deep-fried convnets.</li>
+</ul></li>
+<li>Fooling neural nets…</li>
+<li>Train twice independently and put together?</li>
 </ul>
-
-
 
   </div>
 
     
 
+    <!-- Extension : Sharing buttons @ www.sharethis.com -->
+    <span class="st_facebook_large" displayText="Facebook"></span>
+    <span class="st_twitter_large" displayText="Tweet"></span>
+    <span class="st_googleplus_large" displayText="Google +"></span>
+    <span class="st_reddit_large" displayText="Reddit"></span>
+    <span class="st__large" displayText></span>
 
+    <div id="disqus_thread"></div>
+    
+
+
+  
+    <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+  </div>
   
 </div>
 
@@ -171,6 +186,9 @@
 
 <!-- Extension : Disqus @ http://disqus.com -->
 <!-- Extension : InlineDisqussions @ https://github.com/tsi/inlineDisqussions -->
+
+<script src="../../../../disqus/js/disqus.js"></script>
+
 
 
 <!-- Extension : Google Analytics -->

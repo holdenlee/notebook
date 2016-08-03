@@ -27,7 +27,7 @@ $$ \Var[f(X)]\le \rc4 (\sup f - \inf f)^2 \qquad \Var[f(x)] \le \E[(f(X)-\inf f)
 Tensorization gives a bound for functions of independent random variables from bounds for functions of each individual random variable.
 
 **Theorem** (Tensorization of variance):
-    $$\Var[f(X_1,\ldots, X_n)]\le \E\ba{\sumo in \Var_f f(X_1,\ldots, X_n)}$$
+    $$\Var[f(X_1,\ldots, X_n)]\le \E\ba{\sumo in \Var_i f(X_1,\ldots, X_n)}$$
 	whenever $X_{1:n}$ are independent.
 
 This is sharp for linear functions.
@@ -68,14 +68,6 @@ Drawbacks to this method:
 Inequalities in this section are roughly of the following form (Poincare inequalities):
 $$\Var(f) \le \E[\ve{\nb f}^2].$$
 "The validity of a Poincar´e inequality for a given distribution is intimately connected the convergence rate of a Markov process that admits that distribution as a stationary measure."
-
-###Problems
-
-1. Use $\Var\pa{\ve{\rc n \sumo kn X_k}_B} = \sup_{y\in B^*} \an{\rc n\sumo kn X_k, y}$. Use the corollary, get $D_k^-\le 2 \sup_{y\in B^*}\an{\rc X_k,y} \le \fc{2C}{n}$. Now square and sum.
-2. .
-3. .
-4. .
-5. We have $(f(x) - f(..., a, ...))^2\le \ve{(b-a)\nb f}^2$. Now take expectations and sum over different coordinates.
 
 ##Markov semigroups
 
@@ -206,3 +198,202 @@ $$
 The best constant in the Poincare inequality is the spectral gap. The spectral gap controls the exponential convergence rate. Note it's essential that $\La$ admits a real spectral decomposition.
 
 [^f3]: (cf. Laplacian)
+
+##Problems
+
+1. Use $\Var\pa{\ve{\rc n \sumo kn X_k}_B} = \sup_{y\in B^*} \an{\rc n\sumo kn X_k, y}$. Use the corollary, get $D_k^-\le 2 \sup_{y\in B^*}\an{\rc X_k,y} \le \fc{2C}{n}$. Now square and sum.
+2. .
+3. .
+4. .
+5. We have $(f(x) - f(..., a, ...))^2\le \ve{(b-a)\nb f}^2$. Now take expectations and sum over different coordinates.
+6. .
+7.
+8. 
+    1.  Smooth $f$ and use the Gaussian Poincare inequality.
+
+	    Note we have $\Var[f(x)]\le \E[(f(x)-f(0))^2]\le \E L^2x^2 = L^2$ but this doesn't help us, because if we sum up derivatives along different coordinates, we overestimate $L$ to $Ln$ instead.
+	2.  Note $(\Si^{\rc Y})_i$ is $\ve{(\Si^{\rc 2})_i}$-Lipschitz, so $\max((\Si^{\rc 2}Y)_i)$ is $\max \ve{(\Si^{\rc 2})_i}$-Lipschitz. By (a),
+		$$ \Var[\max_i X_i] \le \max\ve{(\Si^{\rc 2})_i} = \max \ve{\Si_{ii}} =\max_i \Var(X_i).$$
+	3. The sum of variances on the LHS is $\sum_j \sum_i F_{x_j}^2 = \ve{\nb F}^2$. Use the central limit theorem to show that the LHS var approaches the RHS var. There's a factor of $(\max -\min)^2/4=1$. 
+9.
+10.
+    1.  Let $p_I$ denote the probability of seeing sequence $I$ of jumps in $[0,t]$. (We don't need to calculate it.) Let $\Pj(x|I)$ be the probability of $x$ after observing jumps in $I$. We have
+	    $$\E [f(Z_t)] = \sum_I p_I \int \Pj(x|I) f(x)\dx$$
+		which can be written $P_tf$. Note this converges. ($\sum_I p_I = 1$.)
+	2.  Only the $|I|=\phi, 1$ terms are significant as $\sum_{|I|=k} p_I = Poisson(n, t, k)$.
+
+	    \begin{align}\cL f &= \lim_{t\to 0^+} \pf{e^{-tn} \E f - \E f + \sum (1-e^{-t}) e^{-t (n-1)} \int f\, \mu_i (dx_i|x)}{t}\\
+		&= \sum_{i=1}^n \ub{\pa{\pa{\int f(x)\mu_i(dx_i|x)} - f(x)}}{=: - \de_if}\\
+		\cE (f, g) &= -\int f \cL g\,d\mu\\
+		&= -\int \pa{-\sumo in f\de_i g}\,d\mu\\
+		&= \sumo in \int \de_if\de_ig\,d\mu
+		\end{align}
+		where we used $\int (f-\de_if)\de_ig=0$ because the first term has mean 0 and $\de_ig$ doesn't depend on $x_i$.
+	3.
+		\begin{align}
+		\De_i f &= \max_x |f(..., 1_i,...) - f(..., -1_i, ...)|\\
+		\De_j f \,d\mu_i & = \max_x \ab{\int f(\ldots 1_j\ldots)\,d\mu_i - \int f(\ldots -1_j\ldots)}\\
+		&\max_x |\Pj(x_i=1|x_{-i, j\leftarrow 1}) f(1_j1_i) - \Pj(x_i=1|x_{-i, j\leftarrow-1}) f(-1_j1_i) + \Pj(x=-1|\cdots)\cdots
+	    \end{align}
+		The probabilities of $=1|1$ and $=1|-1$ differ by $C_{ij}$ (n.b. typo) so we get
+		\begin{align}
+		&\le \max_x |f(x,1_j) - f(x,-1_j)| + C_{ij} \De_i f = \De_j f + \De_i fC_{ij}.
+	    \end{align}
+	4.
+		\begin{align}
+		\De_j\pa{f+\fc tn \cL f} &=
+		\De_jf + \fc tn \De_j \pa{\pa{\int f(x) \,d\mu_i (dx_i|x)} - f(x)} \\
+		&\le \pa{1-\fc tn}\De_j f + \fc tn \sumo in \De_i fC_{ij}\\
+		\De(f+t\cL f/n) &\le \De f(I-t(I-C)/n).
+	    \end{align}
+	5.  Iterate $n$ times and take $n\to \iy$ to get
+	    $$\De (e^{t\cL}f) = \De P_t f \le \De f e^{-t(I-C)}.$$
+	6.
+		\begin{align}
+		\cE(f, f)&=\sumo in \int (f-\int f\,d\mu_i)^2\,d\mu\\
+		&\le \sumo in |\De_i f|^2\\
+		\cE(P_tf,P_tf) &\le \sumo in \ve{\De f e^{-2t(I-C)}}^2\\
+		&\le \ka(f) (\la_{\min}(I-C))^{-1} \\
+		& = \ka(f) (1-\la_{\max}(C))^{-1}
+	    \end{align}
+		Use $5\implies 1$ of Poincare.
+
+#3 Subgaussian concentration and log-Sobolev inequalities
+
+**Lemma 3.1** (Cheroff bound). Define the **log-moment generating function**
+\begin{align}
+\psi(\la) :&= \log \E[e^{\la (X-\E X)}]\\
+\psi^*(\la)&=\sup_{\la \ge 0} (\la t-\psi(\la)).	
+\end{align}
+Then $\Pj(X-\E X \ge t) \le e^{-\psi^*(t)}$ for all $t\ge 0$.
+
+*Proof*. Exponentiate and Markov.
+
+The log-moment generating function is continuous and can be investigated using calculus.
+
+**Example**. Gaussian: $\psi(\la) = \fc{\la^2\si^2}2$ and $\psi^*(t) = \fc{t^2}{2\si^2}$ so bound of $e^{-\fc{t^2}{2\si^2}}$.
+
+A rv is $\si^2$-**subgaussian** if $\psi(\la)\le \fc{\la^2}{\si^2}2$. Then we get tail bounds of $e^{-\fc{t^2}{2\si^2}}$.
+
+**Lemma 3.6** (Hoeffding): If $X\in [a,b]$ a.s., then $X$ is $(b-a)^2/4$ subgaussian.
+
+*Proof*. Interpret $\psi''$ as a variance, get $\psi''\le \fc{(b-a)^2}{4}$, integrate twice.
+
+##3.2 The martingale method
+
+We want to show $f$ is subgaussian with variance proxy controlled by a "square gradient" of $f$.
+
+The subgaussian property does not tensorize.
+
+The proof of subgaussian inequailties can be reduced to a strengthened form of Poincare inequalities, **log-Sobolev** inequalities, that do tensorize.
+
+**Lemma** (Azuma): Let $\cF_k$ be a filtration, and
+1. (Martingale difference) $\De_k$ is $\cF_k$-measurable, $\E[\De_k |\cF_{k-1}]=0$.
+2. (Conditional subgaussian) $\E[e^{\la \De_k}|\cF_{k-1}]\le e^{\la^2\si_k^2/2}$. Then $\sumo kn \De_k$ is subgaussian with variance proxy $\sumo kn \si_k^2$.
+
+**Corollary** (Azuma-Hoeffding): Replace (2) by $A_k\le \De_k\le B_k$ where $A_k,B_k$ are $\cF_{k-1}$-measurable. The variance proxy is $\rc 4 \sumo kn \ve{B_k-A_k}^2_{\iy}$. The tail bound is $\exp\pa{-\fc{2t^2}{\sumo kn \ve{B_k-A_k}^2_{\iy}}}$.
+
+**Theorem 3.11** (McDiarmid): For $X_{1:n}$ independent, $f(X)$ is subgaussian with variance proxy $\rc 4\sumo kn \ve{D_kf}_{\iy}^2$ where
+$$D_if(x) = (\sup_z-\inf_z)f(x_{1:i-1},z,x_{i+1:n}).$$
+
+*Proof*. Use Azuma-Hoeffding on martingale differences $\De_k =\E[f|X_{1:k}] - \E[f|X_{1:k-1}]$.
+
+This is unsatisfactory because the variance proxy is controlled by a uniform upper bound on square gradient rather than its expectation. Something like $\ve{\sumo kn |D_kf|^2}_{\iy}$ would be better.
+
+## 3.3 The entropy method
+
+The subgaussian property is equivalent to $\la^{-1}\psi(\la)\precsim \la$, so it suffices to show $\ddd{\la}(\la^{-1}\psi)\precsim 1$.
+
+* Define $\Ent(Z) = \E[Z\ln Z] - (\E Z)(\ln \E Z)$.
+* (Entropic formulation of subgaussianity) $\forall \la \ge 0, \Ent(e^{\la X}) \le \fc{\la^2\si^2}{2} \E e^{\la X}\implies \forall \la \ge 0,  \psi(\la) \le \fc{\la^2\si^2}2$.
+    * *Proof*. Integrate $\ddd{\la} \fc{\psi(\la)}{\la} = \rc{\la^2} \fc{\Ent(e^{\la x})}{\E (e^{\la x})}$.
+* Variational characterization of entropy: $\Ent(Z) = \sup\set{\E(ZX)}{\E(e^X)=1}$.
+    *   *Proof*.
+	    \begin{align}
+		\Ent(Z) - \E[ZX] &= \Ent_Q (e^{-X}Z)\ge0
+	    \end{align}
+		with equality when $X=\ln\pf{Z}{\E Z}$.
+* Tensorization: $\Ent(f) \le \E\ba{\sumo in \Ent_i f}$.
+    *   *Proof*. Let $Z=f(X)$.
+	    \begin{align}
+		U_k :&= \ln \E[Z|X_{1:k}] - \ln \E[Z|X_{1:k-1}]\\
+		\Ent (Z) &= \sum \E[ZU_k]\\
+		\E[e^{U_k}|X_{-k}]&=1\implies & \E[ZU_k|X_{-k}]&\le \Ent_k f.
+	    \end{align}
+
+The entropic formulation of subgaussianity and the tensorization inequality tell us that if we prove (for some notion of $\nb$)
+$$ \Ent(e^g) \precsim \E[\ve{\nb g}^2]$$
+in one dimension, then in any number of dimensions,
+$$ \Ent(e^{\la f})\precsim \E[\ve{\nb (\la f)}^2e^{\la f}]$$
+so $f$ is subgaussian with $\max\ve{\nb f}^2$.
+
+*   Discrete log-Sobolev: Let $D^-f=f-\inf f$. Then
+    $$\Ent[e^f] \le \Cov[f,e^f] \le \E[|D^-f|^2e^f].$$
+    * *Proof*. Jensen and convexity.
+* On product measure, $f$ is subgaussian with variance proxy $2\ve{\sumo in |D_if|^2}_{\iy}$. Upper and lower tail bounds with $D_i^-$ and $D_i^+$.
+
+**Example** (Random Bernoulli symmetric matrices). Using $D_{ij}^-\la_{\max(M)}$, get
+$$ \Pj(\la_{\max}(M) - \E\la_{\max}(M)\ge t)\le e^{-\fc{t^2}{64}}. $$
+We can't use the same technique to look at the lower tail because the bound is in terms of different $M^{(ij)}$'s.
+
+##3.4 Log-Sobolev inequalities
+
+We have an entropic analogue of just the easy parts of the Poincare inequality equivalence.
+
+**Theorem**. 1 and 2 are equivalent. 3 implies 1, 2 if $\Ent_\mu(P_tf)\to 0$ (entropic ergodicity).
+
+1. $\Ent_\mu(f)\le c\cE(\ln f, f)$ (log-Sobolev inequality)
+2. $\Ent_\mu(P_tf) \le e^{-t/c} \Ent_\mu(f)$ (entropic exponential ergodicity)
+3. $\cE(\ln P_tf , P_tf) \le e^{-t/c}\cE(\ln f, f)$.
+
+*Proof*.
+
+* ($3\implies1$) Note $\ddd{t} \Ent_\mu(P_tf) = -\cE(\ln P_tf,P_tf)$ using $\mu(\cL P_tf)=0$. $\Ent_\mu(f) = \lim -\iiy \ddd{\mu} \Ent_\mu(P_tf)$.
+* ($1\implies2$) Inequality for exponential decay
+* ($2\implies1$) Take the limit.
+
+**Example** (Discrete log-Sobolev inequality). Consider Poisson resampling under $\mu$. Then
+\begin{align}
+P_t f&= e^{-t}f + (1-e^{-t}) \mu(f) \\
+\cE(f,g)&=\int \de f\de g\,d\mu = \Cov_\mu[f,g]\\
+P_tf \ln (P_tf)&\le e^{-t}\ln f + (1-e^{-t}) \mu f\ln \mu f\\
+\implies \Ent_\mu[P_t f] &\le e^{-t} \Ent_\mu(f)\\
+\implies \Ent_\mu(f) &\le \Cov_\mu(\ln f, f) &(2\implies 1)
+\end{align}
+
+The log-Sobolev equivalences cannot reproduce the tensorization inequality for entropy.
+
+**Theorem** (Gaussian log-Sobolev). For independent Gaussian variables,
+\begin{align} 
+\Ent[f] &\le \rc 2 \E [\nb f \cdot \nb \ln f]& (f\ge 0)\\
+\Ent[e^f] & \le \rc 2 \E[\ve{\nb f}^2 e^f].
+\end{align}
+As a result $f$ is  $\si^2 = \ve{\ve{\nb f}^2}_{\iy}$ subgaussian and we get Gaussian concentration,
+$$\Pj[f - \E f\ge t] \le e^{-t^2/2\si^2}.$$
+
+*Proof*. Recall $\cE(f,g) = \mu(f'g')$, $(P_tf)' = e^{-t}P_t f'$. Note $|P_t(fg)|^2 \le P_t(f^2)P_t(g^2)$ by CS (expand out).
+\begin{align}
+(\ln P_t f)' (P_tf)' &= e^{-2t} \fc{|P_tf|^2}{P_tf}\\
+|P_t f'|^2 &\le P_t((\ln f)'f') P_t f&\text{by CS}\\
+\implies \cE(\ln (P_tf), P_tf) &\le e^{-2t}\cE(\ln f, f) &\text{by }\int\\
+\implies \Ent_\mu(f) &\le \cE(\ln f, f)&(3\implies 1).
+\end{align}
+
+Note several different forms of log-Sobolev, equivalent in the Gaussian case (or anytime the chain rule holds for $\cE$:
+\begin{align}
+\Ent(f) &\le \rc 2 \E[\nb f \cdot \nb \ln f] = \rc2 \cE (\ln f, f)\\
+\Ent(f) &\le \rc 2 \E\pf{\ve{\nb f}^2}{f}\\
+\Ent(e^f) &\le \rc 2 \E[\ve{\nb f}^2 e^f]\\
+\Ent(f^2) &\le 2\E[\ve{\nb f}^2] = 2\cE(f,f)\\
+\E(f^2\ln f)-\E[f^2]\ln \ve{f}_2 &\le c\ve{\nb f}_2^2.
+\end{align}
+Classical Sobolev inequalities are for $\ved_q$, $q\ge 2$ and do not tensorize.
+
+**Lemma 3.28**: Log-Sobolev $\Ent(f) \le c\cE (\ln f, f)$ implies the Poincare inequality $\Var(f) \le 2c\cE (f,f)$.
+
+*Proof*.
+$$
+\ub{\E[\la f e^{\la f}}{\la^2\cE(f,f) + o(\la^2)} - 
+\ub{\E[e^{\la f}] \ln \E[e^{\la f}]}{\la \E f + \la^2(\E[f^2] + \E[f]^2)/2 + o(\la^2)} = 
+\ub{\E[\la f e^{\la f}]}{\la \E f + \la^2 \E [f^2] + o(\la^2)}
+$$

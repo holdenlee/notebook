@@ -25,5 +25,5 @@ $$\min\sum_{w_1,w_2} \Pj(w_1,w_2) (PMI(w_1,w_2)-\an{v_{w_1},v_{w_2}}.$$
 
 Actually, better is
 $$
-\min_{\{v_w\}, C} \sum_{w,w'} X_{w,w'}(\ln (X_{w,w'} - \ve{v_w+v_{w'}}_2^2-C))^2.
+\min_{\{v_w\}, C} \sum_{w,w'} X_{w,w'}(\ln (X_{w,w'}) - \ve{v_w+v_{w'}}_2^2-C)^2.
 $$
