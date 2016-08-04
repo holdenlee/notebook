@@ -72,7 +72,7 @@
       
        
         <p>Posted: 2016-08-01 
-          , Modified: 2016-08-01 
+          , Modified: 2016-08-04 
 	</p>
       
        <p>Tags: <a href="../../../../tags/random%20matrix.html">random matrix</a></p> 
@@ -93,6 +93,7 @@
  <li><a href="#the-martingale-method">3.2 The martingale method</a></li>
  <li><a href="#the-entropy-method">3.3 The entropy method</a></li>
  <li><a href="#log-sobolev-inequalities">3.4 Log-Sobolev inequalities</a></li>
+ <li><a href="#problems-1">Problems</a></li>
  </ul></li>
  </ul> </div>
 
@@ -270,7 +271,7 @@ The probabilities of <span class="math inline">\(=1|1\)</span> and <span class="
 <p><em>Proof</em>. Exponentiate and Markov.</p>
 <p>The log-moment generating function is continuous and can be investigated using calculus.</p>
 <p><strong>Example</strong>. Gaussian: <span class="math inline">\(\psi(\la) = \fc{\la^2\si^2}2\)</span> and <span class="math inline">\(\psi^*(t) = \fc{t^2}{2\si^2}\)</span> so bound of <span class="math inline">\(e^{-\fc{t^2}{2\si^2}}\)</span>.</p>
-<p>A rv is <span class="math inline">\(\si^2\)</span>-<strong>subgaussian</strong> if <span class="math inline">\(\psi(\la)\le \fc{\la^2}{\si^2}2\)</span>. Then we get tail bounds of <span class="math inline">\(e^{-\fc{t^2}{2\si^2}}\)</span>.</p>
+<p>A rv is <span class="math inline">\(\si^2\)</span>-<strong>subgaussian</strong> if <span class="math inline">\(\psi(\la)\le \fc{\la^2\si^2}2\)</span>. Then we get tail bounds of <span class="math inline">\(e^{-\fc{t^2}{2\si^2}}\)</span>.</p>
 <p><strong>Lemma 3.6</strong> (Hoeffding): If <span class="math inline">\(X\in [a,b]\)</span> a.s., then <span class="math inline">\(X\)</span> is <span class="math inline">\((b-a)^2/4\)</span> subgaussian.</p>
 <p><em>Proof</em>. Interpret <span class="math inline">\(\psi''\)</span> as a variance, get <span class="math inline">\(\psi''\le \fc{(b-a)^2}{4}\)</span>, integrate twice.</p>
 <h3 id="the-martingale-method">3.2 The martingale method</h3>
@@ -364,10 +365,66 @@ Note several different forms of log-Sobolev, equivalent in the Gaussian case (or
 <p>Classical Sobolev inequalities are for <span class="math inline">\(\ved_q\)</span>, <span class="math inline">\(q\ge 2\)</span> and do not tensorize.</p>
 <p><strong>Lemma 3.28</strong>: Log-Sobolev <span class="math inline">\(\Ent(f) \le c\cE (\ln f, f)\)</span> implies the Poincare inequality <span class="math inline">\(\Var(f) \le 2c\cE (f,f)\)</span>.</p>
 <p><em>Proof</em>. <span class="math display">\[
-\ub{\E[\la f e^{\la f}}{\la^2\cE(f,f) + o(\la^2)} - 
+\ub{\E[\la f e^{\la f}]}{\la^2\cE(f,f) + o(\la^2)} - 
 \ub{\E[e^{\la f}] \ln \E[e^{\la f}]}{\la \E f + \la^2(\E[f^2] + \E[f]^2)/2 + o(\la^2)} = 
 \ub{\E[\la f e^{\la f}]}{\la \E f + \la^2 \E [f^2] + o(\la^2)}
 \]</span></p>
+<h3 id="problems-1">Problems</h3>
+<p>Equivalent conditions for subgaussianity:</p>
+<ol type="1">
+<li>The tails are dominated by the tails of the Gaussian: <span class="math display">\[\Pj(|X|\ge t) \le 2\exp(-t^2/K_1^2).\]</span></li>
+<li>Moments: For all <span class="math inline">\(p\ge 1\)</span>, <span class="math display">\[
+\ve{X}_p = (\E|X|^p)^{\rc p} \le K_2\sqrt p
+\]</span></li>
+<li>Moment generating function of <span class="math inline">\(X^2\)</span>: <span class="math display">\[\E\exp(X^2/K_3^2)\le 2.\]</span></li>
+<li>(If <span class="math inline">\(\E X=0\)</span>,) MGF of <span class="math inline">\(X\)</span>: <span class="math display">\[\E \exp(\la X) \le \exp(\la^2 K_4^2)\]</span> for all <span class="math inline">\(\la\in \R\)</span>.</li>
+</ol>
+<p>Problems</p>
+<ol type="1">
+<li><ol type="1">
+<li>Expanding <span class="math inline">\(\E(e^{\la (X-\E X)}) \le e^{\la^2\si^2/2}\)</span> gives <span class="math display">\[ 1+\fc{\la^2}2 (X-\E X)^2 \le 1+ \fc{\la^2}2 \si^2.\]</span></li>
+<li>Easy.</li>
+<li>(<span class="math inline">\(4\implies1\)</span>) This is Chernoff. <span class="math inline">\(\inf_\la \psi(\la)-\la t \le \inf \pa{\fc{\la^2\si^2}2 - \la t} = -\fc{t^2}{2\si^2}\)</span>.</li>
+<li>(<span class="math inline">\(1\implies 3\)</span>)
+\begin{align}
+\E e^{X^2/6\si^2} &amp;= 1+\iiy \fc{t}{3\si^2} e^{\fc{t^2}{6\si^2}} \Pj(|X|\ge t)\,dt\\
+&amp; = 1+\iiy \fc{t}{3\si^2} e^{\fc{t^2}{6\si^2}} e^{-\fc{t^2}{2\si^2}}\,dt=2.
+\end{align}</li>
+<li>? (<span class="math inline">\(3\implies 4\)</span>) <!--Expanding $\E e^{\la X}\le e^{\fc{\la^2\si^2}2 + \la \E X}$ gives--> Weaker: Expanding <span class="math inline">\(\E e^{X^2/6\si^2}\le 2\)</span> gives <span class="math inline">\(\rc{q!}\pf{X^2}{6\si^2}^q\le 1\)</span>, <span class="math inline">\(\E X^{2q}\le (6\si^2)^qq!\)</span>.</li>
+<li><span class="math inline">\(\E(e^{X^2/8\si^2}) = \E\pa{\sumz q\iy \rc{q!} \pf{x^2}{8\si^2}^q} \le \E\sumz q\iy\prc{2}^q=2\)</span>.</li>
+</ol></li>
+<li></li>
+<li></li>
+<li></li>
+<li></li>
+<li></li>
+<li></li>
+<li></li>
+<li></li>
+<li></li>
+<li></li>
+<li>Let <span class="math inline">\(Z=\fc{e^{\la X}}{\E e^{\la X}}\)</span>. Then
+\begin{align}
+\Ent(e^{\la X}) &amp;\le \E(e^{\la X}) \E(Z\ln Z)\\
+&amp;\le \E(e^{\la X}) \ln \pf{\E[(e^{\la X})^2]}{(\E e^{\la X})^2}\\
+&amp;\le \E(e^{\la X}) (\fc{\la^2\si^2}2 + \ln \pf{e^{2 \la \E X}}{\E(e^{\la X})^2})\\
+&amp;\le \E(e^{\la X}) (\fc{\la^2\si^2}2).
+\end{align}</li>
+<li><ol type="1">
+<li>We have
+\begin{align}
+\Ent Z &amp;= \inf_{t&gt;0} \E[Z\ln Z - Z\ln t - Z+t]\\
+\iff (\E Z)(\E \ln Z+1) &amp;=\inf_{t&gt;0} \E(-Z\ln t+t)
+\end{align}
+Take the derivative; this is minimized at <span class="math inline">\(t=\rc{\E Z}\)</span>.</li>
+<li>\begin{align}
+\Ent(e^f) &amp;=\inf_{t&gt;0}\E [e^f (f - \ln t - 1) + t]\\
+&amp;\le e^f (f-\inf f + e^{\inf f-f} - 1) &amp; t=e^{\inf f}.
+\end{align}</li>
+<li><span class="math inline">\(\phi(x) = e^{-x}+x-1 \le 1-x+\fc{x^2}2 + x-1 = \fc{x^2}2\)</span>.</li>
+<li><span class="math inline">\(\E[\ph(D^-f) e^f] \le \rc{2}\E[|D^-f|^2 e^f]\)</span>. ?? Stuck.</li>
+</ol></li>
+</ol>
 <section class="footnotes">
 <hr />
 <ol>

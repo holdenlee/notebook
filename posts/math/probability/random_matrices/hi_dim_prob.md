@@ -1,7 +1,7 @@
 ---
 title: High-dimensional probability
 published: 2016-08-01
-modified: 2016-08-01
+modified: 2016-08-04
 tags: random matrix
 type: notes
 showTOC: True
@@ -273,7 +273,7 @@ The log-moment generating function is continuous and can be investigated using c
 
 **Example**. Gaussian: $\psi(\la) = \fc{\la^2\si^2}2$ and $\psi^*(t) = \fc{t^2}{2\si^2}$ so bound of $e^{-\fc{t^2}{2\si^2}}$.
 
-A rv is $\si^2$-**subgaussian** if $\psi(\la)\le \fc{\la^2}{\si^2}2$. Then we get tail bounds of $e^{-\fc{t^2}{2\si^2}}$.
+A rv is $\si^2$-**subgaussian** if $\psi(\la)\le \fc{\la^2\si^2}2$. Then we get tail bounds of $e^{-\fc{t^2}{2\si^2}}$.
 
 **Lemma 3.6** (Hoeffding): If $X\in [a,b]$ a.s., then $X$ is $(b-a)^2/4$ subgaussian.
 
@@ -393,7 +393,70 @@ Classical Sobolev inequalities are for $\ved_q$, $q\ge 2$ and do not tensorize.
 
 *Proof*.
 $$
-\ub{\E[\la f e^{\la f}}{\la^2\cE(f,f) + o(\la^2)} - 
+\ub{\E[\la f e^{\la f}]}{\la^2\cE(f,f) + o(\la^2)} - 
 \ub{\E[e^{\la f}] \ln \E[e^{\la f}]}{\la \E f + \la^2(\E[f^2] + \E[f]^2)/2 + o(\la^2)} = 
 \ub{\E[\la f e^{\la f}]}{\la \E f + \la^2 \E [f^2] + o(\la^2)}
 $$
+
+##Problems
+
+Equivalent conditions for subgaussianity:
+
+1.  The tails are dominated by the tails of the Gaussian:
+    $$\Pj(|X|\ge t) \le 2\exp(-t^2/K_1^2).$$
+2.  Moments: For all $p\ge 1$,
+	$$
+	\ve{X}_p = (\E|X|^p)^{\rc p} \le K_2\sqrt p
+	$$
+3.  Moment generating function of $X^2$:
+	$$\E\exp(X^2/K_3^2)\le 2.$$
+4.  (If $\E X=0$,) MGF of $X$: 
+	$$\E \exp(\la X) \le \exp(\la^2 K_4^2)$$
+	for all $\la\in \R$. 
+
+Problems
+
+1.
+    1.  Expanding $\E(e^{\la (X-\E X)}) \le e^{\la^2\si^2/2}$ gives
+	    $$ 1+\fc{\la^2}2 (X-\E X)^2 \le 1+ \fc{\la^2}2 \si^2.$$
+	2.  Easy.
+	3.  ($4\implies1$) This is Chernoff. $\inf_\la \psi(\la)-\la t \le \inf \pa{\fc{\la^2\si^2}2 - \la t} = -\fc{t^2}{2\si^2}$.
+	4.  ($1\implies 3$)
+		\begin{align}
+		\E e^{X^2/6\si^2} &= 1+\iiy \fc{t}{3\si^2} e^{\fc{t^2}{6\si^2}} \Pj(|X|\ge t)\,dt\\
+		& = 1+\iiy \fc{t}{3\si^2} e^{\fc{t^2}{6\si^2}} e^{-\fc{t^2}{2\si^2}}\,dt=2.
+	    \end{align}
+	5.  ? ($3\implies 4$) <!--Expanding $\E e^{\la X}\le e^{\fc{\la^2\si^2}2 + \la \E X}$ gives-->
+	    Weaker: Expanding $\E e^{X^2/6\si^2}\le 2$ gives $\rc{q!}\pf{X^2}{6\si^2}^q\le 1$, $\E X^{2q}\le (6\si^2)^qq!$.
+	6.  $\E(e^{X^2/8\si^2}) = \E\pa{\sumz q\iy \rc{q!} \pf{x^2}{8\si^2}^q} \le \E\sumz q\iy\prc{2}^q=2$.
+2.
+3.
+4.
+5.
+6.
+7.
+8.
+9.
+10.
+11.
+12. Let $Z=\fc{e^{\la X}}{\E e^{\la X}}$. Then 
+    \begin{align}
+	\Ent(e^{\la X}) &\le \E(e^{\la X}) \E(Z\ln Z)\\
+	&\le \E(e^{\la X}) \ln \pf{\E[(e^{\la X})^2]}{(\E e^{\la X})^2}\\
+	&\le \E(e^{\la X}) (\fc{\la^2\si^2}2 + \ln \pf{e^{2 \la \E X}}{\E(e^{\la X})^2})\\
+	&\le \E(e^{\la X}) (\fc{\la^2\si^2}2).
+    \end{align}
+13.
+    1.  We have
+	    \begin{align}
+		\Ent Z &= \inf_{t>0} \E[Z\ln Z - Z\ln t - Z+t]\\
+		\iff (\E Z)(\E \ln Z+1) &=\inf_{t>0} \E(-Z\ln t+t)
+		\end{align}
+		Take the derivative; this is minimized at $t=\rc{\E Z}$.
+	2.  \begin{align}
+		\Ent(e^f) &=\inf_{t>0}\E [e^f (f - \ln t - 1) + t]\\
+		&\le e^f (f-\inf f + e^{\inf f-f} - 1) & t=e^{\inf f}.
+		\end{align}
+	3.  $\phi(x) = e^{-x}+x-1 \le 1-x+\fc{x^2}2 + x-1 = \fc{x^2}2$.
+	4.  $\E[\ph(D^-f) e^f] \le \rc{2}\E[|D^-f|^2 e^f]$.
+	    ?? Stuck.
