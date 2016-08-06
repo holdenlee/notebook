@@ -42,23 +42,23 @@
     <ul>
 <li>Machine learning
 <ul>
-<li><a href="/tcs/machine_learning/neural_nets/pmi_images.html">PMI images</a>
+<li><a href="/posts/tcs/machine_learning/neural_nets/pmi_images.html">PMI images</a>
 <ul>
-<li>Understood <a href="/tcs/machine_learning/nlp/pmi.html">PMI idea</a> more thoroughly.</li>
+<li>Understood <a href="/posts/tcs/machine_learning/nlp/pmi.html">PMI idea</a> more thoroughly.</li>
 <li>Got code from Ben. Having troubles running. See
 <ul>
 <li>https://www.mathworks.com/matlabcentral/newsreader/view_thread/345876#947272</li>
 <li>https://askrc.princeton.edu/question/255/matlab-on-nobel-error-using-mex/</li>
 <li>http://stackoverflow.com/questions/38723051/error-using-mex-g-error-no-such-file-or-directory</li>
 </ul></li>
-<li><a href="/tcs/machine_learning/neural_nets/convnets_ideas.html">Brainstorm on convnets</a>. Skimmed the following. <strong>TODO</strong>: understand more thoroughly.
+<li><a href="/posts/tcs/machine_learning/neural_nets/convnets_ideas.html">Brainstorm on convnets</a>. Skimmed the following. <strong>TODO</strong>: understand more thoroughly.
 <ul>
 <li>Fastfood - computing Hilbert space expansions in loglinear time
 <ul>
 <li>Deep-fried convnets</li>
 <li>Ailon-Chazelle</li>
 </ul></li>
-<li><a href="/tcs/machine_learning/nlp/HA16.html">HA16</a> Unsupervised Learning of Word-Sequence Representations from Scratch via Convolutional Tensor Decomposition</li>
+<li><a href="/posts/tcs/machine_learning/nlp/HA16.html">HA16</a> Unsupervised Learning of Word-Sequence Representations from Scratch via Convolutional Tensor Decomposition</li>
 <li>[MKHS14] Convolutional Kernel Networks</li>
 </ul></li>
 </ul></li>
@@ -67,11 +67,11 @@
 </ul></li>
 <li>Probability
 <ul>
-<li><a href="/math/probability/random_matrices/hi_dim_prob.html">HDP</a> Chapters 2-3</li>
+<li><a href="/posts/math/probability/random_matrices/hi_dim_prob.html">HDP</a> Chapters 2-3</li>
 </ul></li>
 <li>TT/ATP/PL
 <ul>
-<li>Reviewed HMTI, read more on type theory. See <a href="cs/type_theory/types_and_pl.html">Types and PL</a>, <a href="cs/type_theory/type_theory.html">Type theory</a>.</li>
+<li>Reviewed HMTI, read more on type theory. See <a href="/posts/cs/type_theory/types_and_pl.html">Types and PL</a>, <a href="/posts/cs/type_theory/type_theory.html">Type theory</a>.</li>
 </ul></li>
 </ul>
 <h2 id="representation-learning">Representation learning</h2>
@@ -83,6 +83,113 @@
 <li>we’re trying to relax the condition on the noise—ex. instead of saying that the noise in the other coordinates is random, we consider worst-case or make an assumption that they’re random-like in some way.</li>
 </ul>
 <p>(Actually, I think the undercomplete case when the number of <span class="math inline">\(a_i\)</span> is less than the dimension of <span class="math inline">\(n\)</span> doesn’t quite correspond to DL because the map <span class="math inline">\(x\mapsto (x\cdot a_i)_i\)</span> is not invertible…)</p>
+
+  </div>
+
+    
+
+    <!-- Extension : Sharing buttons @ www.sharethis.com -->
+    <span class='st_facebook_large' displayText='Facebook'></span>
+    <span class='st_twitter_large' displayText='Tweet'></span>
+    <span class='st_googleplus_large' displayText='Google +'></span>
+    <span class='st_reddit_large' displayText='Reddit'></span>
+    <span class='st__large' displayText=''></span>
+
+    <div id="disqus_thread"></div>
+    
+
+
+  
+    <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+  </div>
+  
+</div>
+]]></summary>
+</entry>
+<entry>
+    <title>Chebyshev polynomials</title>
+    <link href="http://holdenlee.github.io/notebook/posts/math/analysis/numerical/chebyshev.html" />
+    <id>http://holdenlee.github.io/notebook/posts/math/analysis/numerical/chebyshev.html</id>
+    <published>2016-08-04T00:00:00Z</published>
+    <updated>2016-08-04T00:00:00Z</updated>
+    <summary type="html"><![CDATA[
+<div class="container">
+  <div id="content">
+    <div class="page header">
+      <h1>Chebyshev polynomials</h1>
+    </div>
+    <div class="info">
+      
+       
+        <p>Posted: 2016-08-04 
+          , Modified: 2016-08-04 
+	</p>
+      
+       <p>Tags: <a href="/tags/none.html">none</a></p> 
+    </div>
+    
+  </div>
+  <!--/div-->
+
+  
+
+  <div class="blog-main">
+    <p>References:</p>
+<ul>
+<li><a href="http://blog.mrtz.org/2013/09/07/the-zen-of-gradient-descent.html">The Zen of gradient descent</a></li>
+</ul>
+Define the Chebyshev polynomials by
+\begin{align}
+T_0 &amp;=1\\
+T_1 &amp;=x\\
+T_{n+1} &amp;= 2xT_n - T_{n-1}\\
+T_n(\cos x) &amp;= \cos(nx).
+\end{align}
+<strong>Theorem</strong>. There exists a polynomial <span class="math inline">\(p_k\)</span> such that
+\begin{align}
+\deg(p_k) &amp;= O\pa{\sqrt{\fc{L}{l}} \ln \prc{\ep}}\\
+p_k(0) &amp;= 1\\
+p_k(x)&amp;\le \ep, &amp;x\in [l,L]
+\end{align}
+<p>First attempt: Scale and translate the Chebyshev polynomial to be <span class="math inline">\(\le \ep\)</span> on <span class="math inline">\([l,L]\)</span>. A Chebyshev poly at <span class="math inline">\(x\)</span> is <span class="math inline">\(O(2^{n-1}x^n)\)</span>. Then the value at 0 is <span class="math inline">\(2^{n-1}\)</span> is <span class="math inline">\(2^{n-1}\pf{l}{(L-l)/2}^n\)</span>, it suffices for this to be <span class="math inline">\(\le 1\)</span>. But this only that <span class="math inline">\(n\le \fc{\ln \prc{\ep}}{\ln \pf{4l}{L-l}}\)</span> is sufficient.</p>
+<p>This is a bad approximation!</p>
+We know
+\begin{align}
+T_n\pf{e^x+e^{-x}}2 &amp;= \fc{e^{nx}+e^{-nx}}2\\
+T_n\pf{u+\rc u}{2} &amp;= \pf{u^n+\rc{u^n}}2.
+\end{align}
+Solving <span class="math inline">\(u+\rc{u} = x\)</span> gives <span class="math inline">\(u=x \pm\sqrt{x^2-1}\)</span> and <span class="math display">\[u^n +\rc{u^n} = (x+\sqrt{x^2-1})^n + (x-\sqrt{x^2-1})^n.\]</span> Thus it suffices to have (let <span class="math inline">\(k = \fc Ll\)</span>)
+\begin{align}
+2\ba{\pf{L+l}{L-l} + \sqrt{\pf{L+l}{L-l}^2 - 1}}^n \ep &amp;\le 1\\
+\iff n\ln \ba{\pf{L+l}{L-l} + \sqrt{\pf{L+l}{L-l}^2 - 1}} &amp; \le \ln \fc{2}{\ep}\\
+\iff n\ln \pf{(\sqrt k+1)^2}{k-1} &amp; \le \ln \pf 2\ep\\
+\Leftarrow n\pf{2+2\sqrt k}{k-1} &amp; \le \ln \pf 2\ep\\
+\Leftarrow n&amp;\le \fc{k-1}{2(\sqrt k + 1)}\ln \pf 2\ep\\
+&amp;=\rc{2}(\sqrt k - 1) \ln \pf 2\ep\\
+&amp;=O(\sqrt k \ln \prc{\ep}).
+\end{align}
+<p>Restatement: There exists a polynomial of degree <span class="math inline">\(O\pa{\sfc{L+l}{L-l}\ln \prc{\ep}}\)</span> such that <span class="math inline">\(p_k(L)=1\)</span> and <span class="math inline">\(p_k(x)=0\)</span> on <span class="math inline">\([-l,l]\)</span>.</p>
+Let’s solve <span class="math inline">\(Ax=b\)</span> when <span class="math inline">\(A\)</span> is positive definite. Consider <span class="math inline">\(f=\rc 2 x^TAx - b^Tx\)</span> starting at <span class="math inline">\(x_0=b\)</span>. Gradient descent with step size <span class="math inline">\(t\)</span> gives
+\begin{align}
+x_{k+1} &amp;= x_k - t (Ax_k-b)\\
+&amp;= (I-tA)x_k + tb\\
+x_k &amp;= (I+\cdots +(I-tA)^k)tb
+\end{align}
+Now <span class="math inline">\(p(x) = 1+\cdots + (1-x)^n\)</span> is an approximation of <span class="math inline">\(\rc{x} = \rc{1-(1-x)}\)</span>. Suppose all eigenvalues of <span class="math inline">\(A\)</span> are in <span class="math inline">\([l,L]\)</span>. Then diagonalizing, we get that (take <span class="math inline">\(t=1\)</span>?)
+\begin{align}
+\ve{(p(tA) - A^{-1})tb}_2 
+&amp;= \ve{tb}_2\max_{\la\text{ of }A} (p(\la) - \rc{\la})) \\
+&amp;= \ve{tb}_2\max_{x\in [l,L]} (p(x) - \rc x) \\
+&amp;= \ve{tb}_2 \ve{p(x) - \rc x}_{L^\iy([l,L])}.
+\end{align}
+<!-- (We may assume $A$ is diagonalizable with real eigenvalues by multiplying by a unitary.) -->
+<p>But <span class="math inline">\(p(x)\)</span>, although it is a power series expansion of <span class="math inline">\(\rc{x}\)</span>, is not the best estimator of <span class="math inline">\(\rc{x}\)</span> in the <span class="math inline">\(L^{\iy}\)</span> norm. Polynomials based on Chebyshev polynomials do better. The Chebyshev polynomials are defined by a recurrence, which corresponds to a different recurrence relation on the <span class="math inline">\(x_k\)</span>.</p>
+<p>For the above <span class="math inline">\(p\)</span>, the difference is <span class="math inline">\(\fc{(1-tx)^{n+1}}x\)</span>. Choosing <span class="math inline">\(t=\fc{2}{L+l}\)</span>, we get <span class="math inline">\(\pf{L-l}{L+l}^{n+1} = O\pf{\ka - 1}{\ka+1}^{n}\)</span> convergence.</p>
+<p>This motivates the following question.</p>
+<p><strong>Question</strong>. What is <span class="math display">\[
+\min_{\deg p = n} \ve{p(x) - \rc{x}}_{L^{\iy}([l,L])}?
+\]</span></p>
+<p>Interpolate at Chebyshev points? Conjugate gradients, etc.</p>
 
   </div>
 
@@ -369,7 +476,11 @@
  <li><a href="#notes">Notes</a></li>
  <li><a href="#theory">Theory</a></li>
  <li><a href="#thoughts">Thoughts</a></li>
- <li><a href="#todo">Todo</a></li>
+ <li><a href="#todo">Todo</a><ul>
+ <li><a href="#coding">Coding</a></li>
+ <li><a href="#theory-1">Theory</a></li>
+ </ul></li>
+ <li><a href="#scratch">Scratch</a></li>
  </ul> </div>
 
   <div class="blog-main">
@@ -382,10 +493,6 @@
 <li><code>mi.m</code></li>
 <li><code>MI_GG.m</code></li>
 <li><code>rsvd.m</code></li>
-</ul>
-<p>Qs</p>
-<ul>
-<li>Why is the normalization <code>nrm=mean(sqrt(sum(compTr.^2)))</code>?</li>
 </ul>
 <pre><code>	         nlayers: 2
              layer: {2x1 cell}
@@ -416,7 +523,22 @@
 <li>What happens if you apply (convolutional?) DL to the learned features? Then apply SVD to the dimension-reduced vectors?</li>
 </ul>
 <h2 id="todo">Todo</h2>
+<h3 id="coding">Coding</h3>
+<ul>
+<li>Compute PMI matrix.</li>
+<li>Plot histogram of PMI’s.</li>
+<li>Plot histogram of conditional PMI’s.</li>
+<li>Train on feature vectors.</li>
+<li>Do weighted SVD on PMI matrix.</li>
+<li>Do dictionary learning on feature vectors/PMI vectors (?).</li>
+</ul>
+<h3 id="theory-1">Theory</h3>
 <p>Understand loss function for PMI.</p>
+<h2 id="scratch">Scratch</h2>
+<p>Qs</p>
+<ul>
+<li>Why is the normalization <code>nrm=mean(sqrt(sum(compTr.^2)))</code>?</li>
+</ul>
 
   </div>
 
@@ -1273,70 +1395,6 @@ in bar</code></pre>
 <li>codegen</li>
 <li>Output</li>
 </ul>
-
-  </div>
-
-    
-
-    <!-- Extension : Sharing buttons @ www.sharethis.com -->
-    <span class='st_facebook_large' displayText='Facebook'></span>
-    <span class='st_twitter_large' displayText='Tweet'></span>
-    <span class='st_googleplus_large' displayText='Google +'></span>
-    <span class='st_reddit_large' displayText='Reddit'></span>
-    <span class='st__large' displayText=''></span>
-
-    <div id="disqus_thread"></div>
-    
-
-
-  
-    <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
-  </div>
-  
-</div>
-]]></summary>
-</entry>
-<entry>
-    <title>PMI and feature vectors</title>
-    <link href="http://holdenlee.github.io/notebook/posts/tcs/machine_learning/nlp/pmi.html" />
-    <id>http://holdenlee.github.io/notebook/posts/tcs/machine_learning/nlp/pmi.html</id>
-    <published>2016-07-29T00:00:00Z</published>
-    <updated>2016-07-29T00:00:00Z</updated>
-    <summary type="html"><![CDATA[
-<div class="container">
-  <div id="content">
-    <div class="page header">
-      <h1>PMI and feature vectors</h1>
-    </div>
-    <div class="info">
-      
-       
-        <p>Posted: 2016-07-29 
-          , Modified: 2016-07-29 
-	</p>
-      
-       <p>Tags: <a href="/tags/nlp.html">nlp</a>, <a href="/tags/word%20embeddings.html">word embeddings</a></p> 
-    </div>
-    
-  </div>
-  <!--/div-->
-
-  <div class="toc"></div>
-
-  <div class="blog-main">
-    <ul>
-<li><a href="randwalk.html">ALLMR16 Randwalk</a></li>
-<li><a href="polysemy.html">ALLMR16 Polysemy</a></li>
-</ul>
-<p>Reduce the dimensionality of words by finding a low-dimensional vector for each word, such that the inner products approximate the log of the co-occurrence matrix (perhaps in a weighted sense).</p>
-<p>Why does this work? I.e., why are the low-dimensional vectors useful for NLP tasks? One “task” is analogies. Word embeddings are useful for analogies if addition naturally corresponds to composing their meanings.</p>
-<p>What could be a low-dimensional representation of a word? Its PMI with all possible contexts. (Firth: a word’s sense is captured by the distribution of other words around it.) Assume all these PMI vectors live in a low-dimensional space; why does the log of co-occurrence find these vectors?</p>
-<p>Here’s a simplified model. Consider words drawn as follows: pick a random context vector, and then take words <span class="math inline">\(w, w'\)</span> with probability <span class="math inline">\(\rc{Z^2} e^{-\an{v_w,c} - \an{v_w',c}}\)</span>. Integrating this gives <span class="math inline">\(\rc{Z^2} \exp\pf{|v_w+v_w'|^2}{2}\)</span>. Then (I’m not being careful with the factor of <span class="math inline">\(d\)</span>) <span class="math display">\[PMI(w,w') = \lg \fc{\Pj(w,w')}{\Pj(w)\Pj(w')} \approx \rc d \an{v_w,v_w'}+o(1).\]</span></p>
-<p>If the context vector drifts slowly enough, this analysis still works.</p>
-<p>(?) The right optimization problem is <span class="math display">\[\min\sum_{w_1,w_2} \Pj(w_1,w_2) (PMI(w_1,w_2)-\an{v_{w_1},v_{w_2}}.\]</span></p>
-<p>Actually, better is <span class="math display">\[
-\min_{\{v_w\}, C} \sum_{w,w'} X_{w,w'}(\ln (X_{w,w'}) - \ve{v_w+v_{w'}}_2^2-C)^2.
-\]</span></p>
 
   </div>
 

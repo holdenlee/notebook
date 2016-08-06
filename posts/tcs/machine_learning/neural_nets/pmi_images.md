@@ -18,9 +18,6 @@ Experiments:
 * `MI_GG.m`
 * `rsvd.m`
 
-Qs
-
-* Why is the normalization `nrm=mean(sqrt(sum(compTr.^2)))`?
 
 
 ```
@@ -61,4 +58,23 @@ Because if we assume the activations are like $(e^{\chi,v})_\chi$, then we still
 * What happens if you apply (convolutional?) DL to the learned features? Then apply SVD to the dimension-reduced vectors?
 
 #Todo
+
+##Coding
+
+* Compute PMI matrix.
+* Plot histogram of PMI's.
+* Plot histogram of conditional PMI's.
+* Train on feature vectors.
+* Do weighted SVD on PMI matrix.
+* Do dictionary learning on feature vectors/PMI vectors (?).
+
+##Theory
+
 Understand loss function for PMI.
+
+#Scratch 
+
+Qs
+
+* Why is the normalization `nrm=mean(sqrt(sum(compTr.^2)))`?
+
