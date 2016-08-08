@@ -8,8 +8,278 @@
         <name>Holden Lee</name>
         <email>oldheneel@gmail.com</email>
     </author>
-    <updated>2016-08-06T00:00:00Z</updated>
+    <updated>2016-08-13T00:00:00Z</updated>
     <entry>
+    <title>Weekly summary 2016-08-13</title>
+    <link href="http://holdenlee.github.io/notebook/posts/summaries/2016-08-13.html" />
+    <id>http://holdenlee.github.io/notebook/posts/summaries/2016-08-13.html</id>
+    <published>2016-08-13T00:00:00Z</published>
+    <updated>2016-08-13T00:00:00Z</updated>
+    <summary type="html"><![CDATA[
+<div class="container">
+  <div id="content">
+    <div class="page header">
+      <h1>Weekly summary 2016-08-13</h1>
+    </div>
+    <div class="info">
+      
+       
+        <p>Posted: 2016-08-13 
+          , Modified: 2016-08-13 
+	</p>
+      
+       <p>Tags: <a href="/tags/none.html">none</a></p> 
+    </div>
+    
+  </div>
+  <!--/div-->
+
+  <div class="toc"></div>
+
+  <div class="blog-main">
+    <p>Goals:</p>
+<ul>
+<li>Run basic PMI experiments
+<ul>
+<li><a href="/posts/tcs/machine_learning/neural_nets/pmi_images.html">PMI images</a>, <a href="/posts/tcs/machine_learning/nlp/pmi.html">PMI idea</a></li>
+<li>Get dictionary learning/weighted SVD code from Yingyu.</li>
+<li>Write up findings.</li>
+</ul></li>
+<li>Learning
+<ul>
+<li>Go through half of ATAP.</li>
+<li>Ch. 4 of HDP.</li>
+<li>Understand conjugate gradients using Chebyshev polys. Look at AGD from this point of view.</li>
+<li>Summarize bandit paper.</li>
+</ul></li>
+<li>Representation learning
+<ul>
+<li>Clarify idea.</li>
+</ul></li>
+<li>Tensorflow
+<ul>
+<li>Get basic LSTM running.</li>
+<li>Play with parameters in MNIST.</li>
+</ul></li>
+</ul>
+
+  </div>
+
+    
+
+    <!-- Extension : Sharing buttons @ www.sharethis.com -->
+    <span class='st_facebook_large' displayText='Facebook'></span>
+    <span class='st_twitter_large' displayText='Tweet'></span>
+    <span class='st_googleplus_large' displayText='Google +'></span>
+    <span class='st_reddit_large' displayText='Reddit'></span>
+    <span class='st__large' displayText=''></span>
+
+    <div id="disqus_thread"></div>
+    
+
+
+  
+    <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+  </div>
+  
+</div>
+]]></summary>
+</entry>
+<entry>
+    <title>Approximation theory and approximation practice</title>
+    <link href="http://holdenlee.github.io/notebook/posts/math/analysis/numerical/ATAP.html" />
+    <id>http://holdenlee.github.io/notebook/posts/math/analysis/numerical/ATAP.html</id>
+    <published>2016-08-08T00:00:00Z</published>
+    <updated>2016-08-08T00:00:00Z</updated>
+    <summary type="html"><![CDATA[
+<div class="container">
+  <div id="content">
+    <div class="page header">
+      <h1>Approximation theory and approximation practice</h1>
+    </div>
+    <div class="info">
+      
+       
+        <p>Posted: 2016-08-08 
+          , Modified: 2016-08-08 
+	</p>
+      
+       <p>Tags: <a href="/tags/none.html">none</a></p> 
+    </div>
+    
+  </div>
+  <!--/div-->
+
+  
+
+  <div class="blog-main">
+    <h2 id="introduction">1 Introduction</h2>
+<h2 id="chebyshev-points-and-interpolation">2 Chebyshev points and interpolation</h2>
+Define <strong>Chebyshev points</strong> of parameter <span class="math inline">\(n\)</span> to be <span class="math inline">\(x_j\)</span> where
+\begin{align}
+\te_j &amp;= \fc{j\pi }n\\
+z_j &amp; = e^{\pi j/n}, &amp;0\le j\le n\\
+x_j &amp; = \Re (z_j) = \fc{z_j+z_j^{-1}}2 = \cos\te_j.
+\end{align}
+<p>Write</p>
+<div class="sourceCode"><pre class="sourceCode matlab"><code class="sourceCode matlab">xx=chebpts(n+<span class="fl">1</span>)</code></pre></div>
+<p>(Note: from now on we will reverse the order of the <span class="math inline">\(x_j\)</span>, to go from left to right.)</p>
+<p>The <strong>Chebyshev interpolant</strong> of <span class="math inline">\((f_j)\)</span> is the unique polynomial of degree (<span class="math inline">\(\le\)</span>) <span class="math inline">\(n\)</span> going through points <span class="math inline">\(x_j,f_j\)</span>. To construct the interpolant for a function,</p>
+<div class="sourceCode"><pre class="sourceCode matlab"><code class="sourceCode matlab">x = chebfun(<span class="st">'x'</span>);
+f = (function of x);
+p=chebfun(f,n+<span class="fl">1</span>); hold on, plot(p,<span class="st">'.-'</span>)</code></pre></div>
+<p>(Note: <code>x</code> is like a vector here. So you must write <code>.*</code> for multiplication, etc.) <code>.-</code> makes it point out the Chebyshev interpolation points.</p>
+<h2 id="chebyshev-polynomials-and-series">3 Chebyshev polynomials and series</h2>
+<p>Define <a href="chebyshev.html">Chebyshev polynomials</a>.</p>
+The following are Chebyshev, Laurent, and Fourier expansions.
+\begin{align}
+f(x) &amp;\approx \sumz kn a_kT_k(x), &amp;&amp; x&amp;\in [-1,1]\\
+F(z) &amp;= \rc 2 \sumz kn a_k(z^k+z^{-k}) &amp; f(x)&amp;=F\pf{z+z^{-1}}2&amp;|z|&amp;=1\\
+\cF (\te) &amp;\approx \rc 2 \sumz kn a_k(e^{ik\te} + e^{-ik\te})&amp; \te&amp;\in [-\pi,\pi]
+\end{align}
+<p>One can expand a polynomial in Chebyshev basis using the FFT or Fast Cosine Transform.</p>
+<p>Chebyshev series: If <span class="math inline">\(f\)</span> is Lipschitz continuous on <span class="math inline">\([-1,1]\)</span>, it has a unique representation <span class="math display">\[f(x)=\sumz k\iy a_k T_k(x),\quad a_k = \fc2\pi \int_{-1}^1 \fc{f(x)T_k(x)}{\sqrt{1-x^2}} \dx. \]</span></p>
+<em>Proof</em>.
+\begin{align}
+a_k &amp;= \rc{2\pi i} \oint_{|z|=1} (z^{-1+k}+z^{-1-k})F(z)\,dz\\
+&amp;= \rc{\pi i} \int_{|z|=1} z^{-1}T_k(x) F(z)\,dz\\
+&amp;=-\rc{\pi}\fc{f(x)T_k(x)}{\Im z}\,dz &amp; dx&amp;=\rc 2 \pf{z-z^{-1}}{2z}dz = \rc2 i z^{-1}\Im z\\
+&amp;=\fc2\pi \int_{-1}^1 \fc{f(x)T_k(x)}{\sqrt{1-x^2}} \dx.
+\end{align}
+<p>Orthonormality: <span class="math display">\[ \fc 2\pi\int_{-1}^1 \fc{T_l(x)T_k(x)}{\sqrt{1-x^2}} = \de_{kl}.\]</span></p>
+<h2 id="interpolation-projection-and-aliasing">4 Interpolation, projection, and aliasing</h2>
+<p>There are 2 ways to approximate <span class="math inline">\(f\)</span> by a Chebyshev expansion.</p>
+<ol type="1">
+<li>Interpolation of Chebyshev points <span class="math inline">\(p_n\)</span></li>
+<li>Truncation of Chebyshev expansion <span class="math inline">\(f_n\)</span></li>
+</ol>
+<p>In computation, <span class="math inline">\(p_n\)</span> are usually almost as good and easier to evaluate.</p>
+<p><strong>Theorem</strong> (aliasing). <span class="math inline">\(T_k\)</span> takes the same value on the <span class="math inline">\((n+1)\)</span>-point Chebyshev grid as <span class="math inline">\(T_m\)</span>, <span class="math inline">\(m=|(k+n-1)\bmod{2n} - (n-1)|\)</span>. (i.e., <span class="math inline">\(T_m\)</span> takes the same value as <span class="math inline">\(T_k\)</span> with <span class="math inline">\(k=2jn\pm m\)</span>.)</p>
+<p><em>Proof</em>. Look at <span class="math inline">\(2n\)</span>th roots of unity.</p>
+<strong>Theorem</strong> (aliasing for Chebyshev coefficients). Let <span class="math inline">\(a_k,c_k\)</span> be Chebyshev coefficients of <span class="math inline">\(f\)</span> and <span class="math inline">\(p_n\)</span>. Then
+\begin{align}
+c_k &amp;= \sum_{i\in \{2jn\pm k\}\cap \N} a_i.
+\end{align}
+<p>So <span class="math display">\[f(x)-p_n(x) = \sum_{k=n+1}^{\iy} a_k(T_k(x) - T_{m(k,n)}(x)).\]</span></p>
+<p>In Chebfun, to get truncation, interpolation use</p>
+<div class="sourceCode"><pre class="sourceCode matlab"><code class="sourceCode matlab">a = chebpoly(f) <span class="co">% truncation/projection</span>
+fn = chebfun(f, <span class="st">'trunc'</span>, n+<span class="fl">1</span>) <span class="co">% truncation</span>
+pn = chebfun(f, n+<span class="fl">1</span>)
+c = chebpoly(pn) <span class="co">% interpolation</span></code></pre></div>
+<h2 id="barycentric-interpolation-formula">5 Barycentric interpolation formula</h2>
+<p>How to evaluate a Chebyshev interpolant?</p>
+<ul>
+<li><span class="math inline">\(O(n\ln n)\)</span> for single point evaluation: Compute coefficients and use the series.</li>
+<li><span class="math inline">\(O(n)\)</span> work, stable: Barycentric interpolation formula.</li>
+</ul>
+<p>Lagrange interpolation:</p>
+\begin{align}
+p(x) &amp;= \sumz jn f_jl_j(x)\\
+l_j(x) &amp;=\fc{\prod_{k\ne j}(x-x_k)}{\prod_{k\ne j} (x_j-x_k)}
+\end{align}
+<p>The computation of <span class="math inline">\(l_j\)</span> is unstable and takes <span class="math inline">\(O(n^2)\)</span> operations.</p>
+Modified Lagrange formula (first barycentric formula)
+\begin{align}
+p(x) &amp;= l(x) \sumz jn \fc{\la_j}{x-x_j} f_j\\
+l(x) &amp;= \prod_{k=0}^{n} (x-x_k)\\
+\la_j &amp;= \rc{\prod_{k\ne j}(x_j-x_k)} = \rc{l'(x_j)}.
+\end{align}
+<p>This takes <span class="math inline">\(O(n)\)</span> operations to evaluate. (Computing the weights takes <span class="math inline">\(O(n^2)\)</span> but only needs to be done once.)</p>
+<p><strong>Theorem</strong> (Barycentric interpolation formula). <span class="math display">\[p(x) = \left. \sumz jn \fc{\la_j f_j}{x-x_j} \right/ \sumz jn \fc{\la_j}{x-x_j}.\]</span></p>
+<p><em>Proof</em>. Note <span class="math inline">\(\sumz jn l_j(n)=1\)</span>. so just replace the <span class="math inline">\(l_j\)</span> by <span class="math inline">\(\fc{\la_j}{x-x_j}\)</span> and then normalize afterwards.</p>
+<p>For Chebyshev points <span class="math inline">\(\la_j = (-1)^j \fc{2^{n-1}}{n} (1-\rc 2(j=0\text{ or }n))\)</span>. Obtain <span class="math display">\[p(x) = \left. \sumz jn' \fc{(-1)^jf_j}{x-x_k}\right/\sumz jn' \fc{(-1)^j}{x-x_k}
+\]</span> where <span class="math inline">\(\sum'\)</span> means that the first and last terms are multiplied by <span class="math inline">\(\rc2\)</span>.</p>
+<em>Proof</em>.
+\begin{align}
+l(x) &amp;= (x-x_0)\cdots (x-x_n)\\
+&amp; = (z^{2n}-1)(z^2-1)(z^{-n-1}-1) \rc{2^{n+1}} &amp; x=\fc{z+z^{-1}}2\\
+&amp;= \rc{2^n} \pa{\fc{x^{n+1}+x^{-(n+1)}}2 - \fc{x^{n-1}+x^{-(n-1)}}}\\
+\la_j &amp;=\rc{l'(x_j)}  = \fc{2^n}{T_{n+1}'(x_j) - T_{n-1}'(x_j)} = \fc{2^n}{2n(-1)^j(1+(j=0\text{ or }n))}
+\end{align}
+<p>by using the recurrence relation to compute the derivatives.</p>
+<p>This is stable, whereas polynomial interpolation via Vandemonde is exponentially unstable.</p>
+<p>Warning:</p>
+<ul>
+<li>This is unstable for extrapolation.</li>
+<li>The type 1 barycentric formula is stable.</li>
+<li>The barycentric formulas are forward stable; the 1st barycentric formula is backwards stable.</li>
+<li>Use the 1st formula for points far from Chebyshev.</li>
+<li>The 1st formula is not scale-invariant.</li>
+</ul>
+<h2 id="weierstrass-approximation-theorem">6 Weierstrass Approximation Theorem</h2>
+<p><strong>Theorem</strong> (Weierstrass approximtion). A continuous function on <span class="math inline">\([-1,1]\)</span> can be arbitrarily well-approximated in <span class="math inline">\(L^{\iy}\)</span> by polynomials.</p>
+<p><em>Proof</em>. Extend <span class="math inline">\(f\)</span> to be continuous with compact support. Take <span class="math inline">\(f\)</span> as initial data for <span class="math inline">\(u_t=u_{xx}\)</span>. The solution is <span class="math inline">\(f*e^{-\fc{x^2}{4t}}/\sqrt{2\pi t}\)</span>. For <span class="math inline">\(t&gt;0\)</span> this is analytic and has uniformly convergent Taylor series.</p>
+<p>Bernstein’s proof is a discrete analogue replacing diffusion by a random walk.</p>
+<p><strong>Theorem</strong> (Mergelyan). If <span class="math inline">\(f\)</span> is continuous on compact simply connected <span class="math inline">\(K\sub \C\)</span> and analytic in <span class="math inline">\(K^{\circ}\)</span>, then <span class="math inline">\(f\)</span> can be approximated on <span class="math inline">\(K\)</span> by polynomials.</p>
+<h2 id="convergence-for-differentiable-functions">7 Convergence for differentiable functions</h2>
+<p>(Bounded variation means <span class="math inline">\(\ve{f'}_1&lt;\iy\)</span> where <span class="math inline">\(f'\)</span> is interpreted in the distributional sense.)</p>
+If <span class="math inline">\(f^{(k)}, k\le v-1\)</span> is absolutely continuous and <span class="math inline">\(f^{(v)}\)</span> has bounded variation, then
+\begin{align}
+a_k &amp;\le \fc{2V}{\pi k\fp{v+1}} &amp;\le \fc{2V}{\pi (k-v)^{v+1}}\\
+\ve{f-f_n}_\iy &amp;\le \sum_{k=n+1}^\iy |a_k| \le \fc{2V}{\pi v(n-v)^v}\\
+\ve{f-p_n}_\iy &amp;\le \sum_{k=n+1}^{\iy} 2|a_k|\le \fc{4V}{\pi v(n-v)^v}
+\end{align}
+<em>Proof</em>.
+\begin{align}
+a_k &amp;= \rc{\pi i}\int_{|z|} f(\rc 2(z+z^{-1})) z^{k-1}\,dz\\
+&amp;=-\rc{\pi i} \int_{|z|=1} f'(\rc 2 (z+z^{-1}))\fc{z^k}{k}\dx\\
+|a_k| &amp;\le \fc{2}\pi \int_{-1}^1 |f'\Im\fc{z^k}{k}|\dx.
+\end{align}
+<p>For <span class="math inline">\(v&gt;0\)</span>, integrate by parts <span class="math inline">\(v+1\)</span> times to get <span class="math display">\[(-1)^{v+1} \rc{\pi i}\int_{|z|=1} f^{(v+1)}(\rc 2 (z+z^{-1})) f_{v, k}(z)\dx\]</span> where <span class="math inline">\(f_{0,k}(z) = \fc{z^k}{k}\)</span> and <span class="math inline">\(f_{n+1,k} = \int f_{n,k} \fc{1-z^{-2}}2\)</span>.</p>
+<h2 id="convergence-for-analytic-functions">8 Convergence for analytic functions</h2>
+If the analytic continuation of <span class="math inline">\(f\)</span> to the open Bernstein ellipse <span class="math inline">\(\pa{z\mapsto \fc{z+z^{-1}}2}B_\rh\)</span> satisfies <span class="math inline">\(f\le M\)</span>, then
+\begin{align}
+|a_k| &amp;\le 2M\rh^{-k}\\
+\ve{f-f_n}&amp;\le \fc{2M\rh^{-n}}{\rh - 1}\\
+\ve{f-p_n}&amp;\le \fc{4M\rh^{-n}}{\rh - 1}.
+\end{align}
+<p><em>Proof</em>. <span class="math inline">\(a_k = \ab{\rc{\pi i}\int_{|z|=\rh} z^{-1-k} F(z)\,dz}\)</span>.</p>
+<p>Converse: If there exist <span class="math inline">\(q_n\)</span>, <span class="math inline">\(\ve{f-q_n}\le C\rh^{-n}\)</span>, then <span class="math inline">\(f\)</span> is continuable to the Bernstein ellipse <span class="math inline">\(E_\rh\)</span>.</p>
+<p><em>Proof</em>. Write <span class="math inline">\(f=q_0+(q_1-q_0)+\cdots\)</span>. Use the estimate <span class="math inline">\(\deg p\le d\implies \ve{p}_{L^{\iy}(E_\rh)}\le \rh^d \ve{p}_{L^{\iy}[-1,1]}\)</span>. Proof: Let <span class="math inline">\(q(z) = \fc{p(z)}{(z+\sqrt{z^2-1})^d}\)</span>. This is analytic on <span class="math inline">\(\C\cup \{\iy\}\bs [-1,1]\)</span>. (Why is it well-defined?) (It is defined at <span class="math inline">\(\iy\)</span> because taking <span class="math inline">\(z\leftarrow \rc z\)</span> we get <span class="math inline">\(\fc{p_{\text{rev}}(z)}{(1+\sqrt{1-z^2})^d}\)</span>.) The maximum is attained at the boundary <span class="math inline">\([-1,1]\)</span> where the absolute value is 1.</p>
+<h2 id="gibbs-phenomenon">9 Gibbs Phenomenon</h2>
+<p>At discontinuities, the overshoot of a Chebyshev approximation does not <span class="math inline">\(\to 0\)</span> as <span class="math inline">\(n\to \iy\)</span>.</p>
+For Chebyshev interpolants of <span class="math inline">\(\sgn(x)\)</span> on <span class="math inline">\([-1,1]\)</span>,
+\begin{align}
+\lim_{n\to \iy,n\text{ odd}} \ve{p_n}_\iy &amp;\approx1.282...\\
+\lim_{n\to \iy,n\text{ even}} \ve{p_n}_\iy &amp;\approx1.066...
+\end{align}
+<p>For Chebyshev projections, <span class="math display">\[\lim_{n\to \iy} \ve{f_n} = \fc 2\pi \int_0^\pi \fc{\sin x}x\dx.\]</span></p>
+<p>Intuition: <span class="math inline">\(p(x) = \sum_{j=(n+1)/2}^n l_j(x)\)</span>. This is an alternating series which in the limit has finite nonzero sum.</p>
+<p>Notes:</p>
+<ul>
+<li>Note even though each prtial sum is continuous, a series may converge pointwise to a discontinuous limit.</li>
+<li>Gibbs oscillations decay slowly at rate <span class="math inline">\(O(k^{v+1})\)</span> if <span class="math inline">\(f^{(v)}\)</span> has a jump.</li>
+<li>This is an algebraic rate of decay, while splins have exponential decay.</li>
+<li>We can get exponential decay by splitting up the function and approximating each piece separately.</li>
+</ul>
+<h2 id="best-approximation">10 Best approximation</h2>
+<p><strong>Theorem</strong>. A continuous <span class="math inline">\(f\)</span> on <span class="math inline">\([-1,1]\)</span> has a unique best approximation <span class="math inline">\(p^*\in \cP_n\)</span>. It is uniquely characterized by <span class="math inline">\(f-p\)</span> equioscillating in <span class="math inline">\(\ge n+2\)</span> extreme points.</p>
+<p><em>Proof</em>. The minimum is attained because it lies in <span class="math inline">\(\{\ve{f-p}\le \ve{f}\}\)</span>. (<span class="math inline">\(L^\iy\)</span> norms.) If <span class="math inline">\(p,q\)</span> satisfy the condition, and <span class="math inline">\(\ve{f-q}&lt; \ve{f_p}\)</span>, then <span class="math inline">\(p-q\)</span> has <span class="math inline">\(n+1\)</span> zeros. If it doesn’t equioscillate, perturb by <span class="math inline">\((x_1-x)\cdots (x_k-x)\)</span>. (If <span class="math inline">\(\ve{f-q}=\ve{f-p}\)</span>, use the following argument: suppose <span class="math inline">\(p\)</span> has equioscillation extreme points <span class="math inline">\(x_{0:n+1}\)</span>. Induct on: <span class="math inline">\(p-q\)</span> has <span class="math inline">\(\ge j\)</span> roots in <span class="math inline">\([x_0,x_j]\)</span>. Suppose this is first violated at <span class="math inline">\(k\)</span> and obtain a contradiction.</p>
+<h2 id="hermite-integral-formula">11 Hermite integral formula</h2>
+
+  </div>
+
+    
+
+    <!-- Extension : Sharing buttons @ www.sharethis.com -->
+    <span class='st_facebook_large' displayText='Facebook'></span>
+    <span class='st_twitter_large' displayText='Tweet'></span>
+    <span class='st_googleplus_large' displayText='Google +'></span>
+    <span class='st_reddit_large' displayText='Reddit'></span>
+    <span class='st__large' displayText=''></span>
+
+    <div id="disqus_thread"></div>
+    
+
+
+  
+    <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+  </div>
+  
+</div>
+]]></summary>
+</entry>
+<entry>
     <title>Weekly summary 2016-08-06</title>
     <link href="http://holdenlee.github.io/notebook/posts/summaries/2016-08-06.html" />
     <id>http://holdenlee.github.io/notebook/posts/summaries/2016-08-06.html</id>
@@ -45,7 +315,7 @@
 <li><a href="/posts/tcs/machine_learning/neural_nets/pmi_images.html">PMI images</a>
 <ul>
 <li>Understood <a href="/posts/tcs/machine_learning/nlp/pmi.html">PMI idea</a> more thoroughly.</li>
-<li>Got code from Ben. Having troubles running. See
+<li>Got code from Ben. Having trouble running. See
 <ul>
 <li>https://www.mathworks.com/matlabcentral/newsreader/view_thread/345876#947272</li>
 <li>https://askrc.princeton.edu/question/255/matlab-on-nobel-error-using-mex/</li>
@@ -62,8 +332,15 @@
 <li>[MKHS14] Convolutional Kernel Networks</li>
 </ul></li>
 </ul></li>
-<li>Representation learning problem (see below)</li>
-<li><strong>TODO</strong>: Think about AGD, talk with Cyril.</li>
+<li>Representation learning problem (see below)
+<ul>
+<li>Talked with Anand.</li>
+<li>Kernel dictionary learning idea. <strong>TODO</strong>: try to make this rigorous, and test it out.</li>
+</ul></li>
+<li><strong>TODO</strong>: Think about AGD, talk with Cyril.
+<ul>
+<li><a href="/posts/math/analysis/numerica/chebyshev.html">Chebyshev polynomials</a></li>
+</ul></li>
 </ul></li>
 <li>Probability
 <ul>
@@ -190,6 +467,19 @@ Now <span class="math inline">\(p(x) = 1+\cdots + (1-x)^n\)</span> is an approxi
 \min_{\deg p = n} \ve{p(x) - \rc{x}}_{L^{\iy}([l,L])}?
 \]</span></p>
 <p>Interpolate at Chebyshev points? Conjugate gradients, etc.</p>
+<p>See exercise 8.10 in <a href="ATAP.html">ATAP</a>. First reposition at <span class="math inline">\([-1,1]\)</span> as above. <span class="math inline">\(\rc{x}\)</span> gets sent to <span class="math inline">\(\fc{k+1}{m(k-1)}\rc{x-\pf{k+1}{k-1}}\)</span>. For any <span class="math inline">\(\rh\)</span> such that <span class="math inline">\(\fc{\rh+\rh^{-1}}2\le \fc{k+1}{k-1}\)</span>, i.e., <span class="math inline">\(\rh \le 1+\fc{2}{\sqrt k - 1}\)</span>, we get a bound <span class="math display">\[
+\fc{k+1}{m(k-1)} \pa{\pf{k+1}{k-1}-\fc{\rh+\rh^{-1}}{2}} \rh^{-n} = \rc m O_{\rh}(\rh^{-n})
+\]</span> This is an upper bound on convergence of conjugate gradient, because conjugate gradient finds the vector in <span class="math inline">\(\spn(\{b, Ab, \ldots, A^{n}b\})\)</span> that is closest to <span class="math inline">\(A^{-1}b\)</span>.</p>
+<p>(Thus, conjugate gradient gets <span class="math inline">\(\ep\)</span>-close in <span class="math inline">\(O(\sqrt\ka \ln \prc{\ep})\)</span> steps.)</p>
+<p>(We can get a lower bound by computing the best possible <span class="math inline">\(L^2\)</span> of the approximation. It should be on the same order.)</p>
+Conjugate gradient:
+\begin{align}
+v_0&amp;=b\\
+w_i&amp;=Av_i\\
+v_i&amp;=w_i- \sumz j{i-1} \fc{\an{w_i,v_j}_A}{\an{v_j,v_j}_A}v_j.
+\end{align}
+<p>We have <span class="math inline">\(\an{w_{i+1},v_j} = \an{v_i,w_{j+1}}_A\)</span> and <span class="math inline">\(w_{i+1}\perp v_{i+2},ldots\)</span> so <span class="math inline">\(v_i\perp_A w_{i+3},\ldots\)</span>.</p>
+<!--We try to minimize $\max_\la (\la p(\la)-1)^2)$-->
 
   </div>
 
@@ -1085,316 +1375,6 @@ fix_T = \la f:T\to T.(\la x:(\mu A. A\to T). f (x x)) (\la x:(\mu A. A\to T). f 
 <h3 id="section">23.10</h3>
 <p>Impredicative: definition involves thing being defined. <span class="math inline">\(T=\forall X.X\to X\)</span> ranges over all types, including <span class="math inline">\(T\)</span> itself.</p>
 <p>Predicative/stratified: range is restricted to monotypes.</p>
-
-  </div>
-
-    
-
-    <!-- Extension : Sharing buttons @ www.sharethis.com -->
-    <span class='st_facebook_large' displayText='Facebook'></span>
-    <span class='st_twitter_large' displayText='Tweet'></span>
-    <span class='st_googleplus_large' displayText='Google +'></span>
-    <span class='st_reddit_large' displayText='Reddit'></span>
-    <span class='st__large' displayText=''></span>
-
-    <div id="disqus_thread"></div>
-    
-
-
-  
-    <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
-  </div>
-  
-</div>
-]]></summary>
-</entry>
-<entry>
-    <title>Type theory</title>
-    <link href="http://holdenlee.github.io/notebook/posts/cs/type_theory/type_theory.html" />
-    <id>http://holdenlee.github.io/notebook/posts/cs/type_theory/type_theory.html</id>
-    <published>2016-07-31T00:00:00Z</published>
-    <updated>2016-07-31T00:00:00Z</updated>
-    <summary type="html"><![CDATA[
-<div class="container">
-  <div id="content">
-    <div class="page header">
-      <h1>Type theory</h1>
-    </div>
-    <div class="info">
-      
-       
-        <p>Posted: 2016-07-31 
-          , Modified: 2016-07-31 
-	</p>
-      
-       <p>Tags: <a href="/tags/none.html">none</a></p> 
-    </div>
-    
-  </div>
-  <!--/div-->
-
-  <div class="toc"> <ul>
- <li><a href="#hindley-milner-type-system">Hindley-Milner type system</a><ul>
- <li><a href="#ingredients">Ingredients</a></li>
- </ul></li>
- <li><a href="#axioms">Axioms</a></li>
- <li><a href="#algorithm-w">Algorithm W</a></li>
- <li><a href="#bottom-up-algorithm-w">Bottom-up Algorithm W</a></li>
- <li><a href="#lambda-cube">Lambda cube</a></li>
- <li><a href="#scratch">Scratch</a></li>
- </ul> </div>
-
-  <div class="blog-main">
-    <h2 id="hindley-milner-type-system">Hindley-Milner type system</h2>
-<p>The Hindley-Milner type system is a very nice point in the space of possible type systems because there is a reasonable algorithm to deduce the most general type of a program without type annotations (it is sound and complete).</p>
-<p>To understand it, we need to understand</p>
-<ul>
-<li>the ingredients: what are syntactically valid expressions?</li>
-<li>the axioms: the rules that allow you to say what types more complicated expressions are, given the types of the building blocks.</li>
-<li>the algorithm: an efficient way to find the most general type (ex. <code>Int -&gt; a -&gt; List a</code>) of an expression, given the types of the building blocks. This algorithm can be proved to capture all possible types for the expression.</li>
-</ul>
-<p>What rules make sense? <span class="math display">\[ x:a,\quad f:a\to b\vdash f x:b\]</span> And we need some kind of specialization <span class="math display">\[ x : \forall a, F(a) \vdash x : F(a').\]</span> We need lambda expressions too.</p>
-<h3 id="ingredients">Ingredients</h3>
-<div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="kw">newtype</span> <span class="dt">Var</span> <span class="fu">=</span> <span class="dt">Var</span> <span class="dt">String</span>
-<span class="kw">newtype</span> <span class="dt">TVar</span> <span class="fu">=</span> <span class="dt">TVar</span> <span class="dt">String</span>
-
-<span class="kw">data</span> <span class="dt">Expr</span> <span class="fu">=</span> <span class="dt">ExprV</span> <span class="dt">Var</span> <span class="co">-- x</span>
-	<span class="fu">|</span> <span class="dt">App</span> <span class="dt">Expr</span> <span class="dt">Expr</span> <span class="co">-- e_1 e_2</span>
-	<span class="fu">|</span> <span class="dt">Lambda</span> <span class="dt">Var</span> <span class="dt">Expr</span> <span class="co">-- \lambda x. e</span>
-	<span class="fu">|</span> <span class="dt">Let</span> <span class="dt">Var</span> <span class="dt">Expr</span> <span class="dt">Expr</span> <span class="co">-- let x = e_1 in e_2</span>
-
-<span class="kw">data</span> <span class="dt">Mono</span> <span class="fu">=</span> <span class="dt">MonoV</span> <span class="dt">TVar</span> <span class="co">-- a</span>
-	<span class="fu">|</span> <span class="dt">TApp</span> <span class="dt">Type</span> [<span class="dt">Mono</span>] <span class="co">-- D t_1 ..., here D is a parametric type with some number of arguments</span>
-
-<span class="kw">data</span> <span class="dt">Poly</span> <span class="fu">=</span> <span class="dt">PolyM</span> <span class="dt">Mono</span> <span class="co">-- t</span>
-	<span class="fu">|</span> <span class="dt">Forall</span> <span class="dt">TypeVar</span> <span class="dt">Poly</span> <span class="co">-- \forall a . s</span></code></pre></div>
-<p>(Note, “-&gt;” is a special case of TApp: TApp fun [a, b].)</p>
-<p>Monotypes can only be one type (ex. <code>Int -&gt; [Int]</code>) while polytypes can be many different types (ex. <code>a -&gt; [a]</code>, forall is implicit here).</p>
-<p>We need to make a distinction between monotypes and polytypes because <strong>only monotypes can go in the forall</strong>.</p>
-<p>We also need the notion of <strong>free variable</strong>. These are variables that have not been captured by a <span class="math inline">\(\forall\)</span>.</p>
-<pre><code>import Data.Set as S
-
-freeM :: Mono -&gt; S.Set TVar
-freeM = \case
-	MonoV t -&gt; S.singleton t
-	TApp _ ts -&gt; S.unions (map freeM ts)
-
-freeP :: Poly -&gt; S.Set TVar
-freeP = \case
-	PolyM m s -&gt; S.delete m (freeP si)</code></pre>
-<p>(Warning: in Haskell all type variables are implicitly bound, so free variables do not appear. See Ex. 1 in wikipedia.)</p>
-<p>Next we need the notion of a context, which says what expressions are of what type. For example, it can say what types the variables are; in the inside of <code>let</code> we need to know what the context is to do typing.</p>
-<pre><code>data Bindings = Bind Var Poly -- x:s
-
-type Context = S.Set Bindings
-
-freeC :: Context -&gt; S.Set Var
-freeC ga = S.unions (map (\case Bind v s -&gt; freeP s) (S.elems ga))
-	</code></pre>
-<!--Is set a monad?-->
-<p>The polymorphic types form a partial order <span class="math inline">\(\si\sqsubseteq \si'\)</span>, <span class="math inline">\(\si\)</span> is more special. Ex. <code>Map Int Int</code><span class="math inline">\(\sqsubseteq\)</span><code>Map Int v</code><span class="math inline">\(\sqsubseteq\)</span><code>Map k v</code>.</p>
-<!--this requires a bit more work to code...-->
-<!--note: need to add deriving...-->
-<h2 id="axioms">Axioms</h2>
-\begin{align}
-\frac{x:\si\in \Ga}{\Ga\vdash x:\si}&amp;&amp; \text{[Var]}\\
-\frac{\Ga\vdash e_0:\tau \to \tau'\quad
-\Ga\vdash e_1:\tau}{\Ga\vdash e_0 \,e_1:\tau'}&amp;&amp; \text{[App]}\\
-\frac{\Ga\cup \{ x:\tau\} \vdash e:\tau'}{\Ga \vdash \lambda x.e:\tau \to \tau'} &amp;&amp;\text{[Abs]}\\
-\frac{\Ga \vdash  e_0:\si\quad \Ga\cup \{x:\si\}\vdash e_1:\tau}{\Ga \vdash \text{let }x=e_0\text{ in }e_1:\tau}&amp;&amp; \text{[Let]}\\
-\frac{\Ga \vdash e:\si'\quad \si'\sqsubseteq \si}{\Ga \vdash e:\si}&amp;&amp;\text{[Inst]}\\
-\frac{\Ga \vdash e:\si\quad \al\nin \text{free}(\Ga)}{\Ga \vdash e:\forall \al.\si}&amp;&amp;\text{[Gen]}.
-\end{align}
-<p>Abs is abstraction. Inst is instantiation. Note we add to the context when we go inside a lambda or a let. Gen then Inst together help specialize given information in context.</p>
-<p>Subtlety: in <code>let</code>, variables enter in polymorphic form and can be specialized. Contrast <span class="math display">\[
-\la f. (f \,\text{true}, f \,0)
-\]</span> with <span class="math display">\[
-\text{let } f = \la x. x\text{ in } (f\text{ true}, f \, 0).
-\]</span> This is why <code>let</code> is NOT just syntactic sugar for <span class="math inline">\((\la x.e_2)\,e_1\)</span>; it genuinely adds expressivity.</p>
-<h2 id="algorithm-w">Algorithm W</h2>
-<p>Algorithm is simple, but there’s a lot of things you have to define first (ex. substitution, instantiation).</p>
-<p>First, define a unification algorithm. It takes expressions (AST’s) <span class="math inline">\(\si,\tau\)</span> and returns a substitution (map) <span class="math inline">\(U\)</span>, such that for any substitution <span class="math inline">\(R\)</span> unifying <span class="math inline">\(\si\)</span> and <span class="math inline">\(\tau\)</span>, <span class="math inline">\(R=SU\)</span>. I.e., it gives the most general unification. (Unify by making more specific.)</p>
-<p>Algorithm W: Given a context/type environment <span class="math inline">\(\ol p\)</span> (map from strings to polytypes/schemes), and an expression <span class="math inline">\(e\)</span>, return a substitution and a typing for <span class="math inline">\(e\)</span> and all subexpressions. (We will denote such a typing by <span class="math inline">\(\ol{e}_\si\)</span> where <span class="math inline">\(\si\)</span> is the type for <span class="math inline">\(e\)</span>, and <span class="math inline">\(\ol{\bullet}\)</span> means that all subexpressions have been annotated.) If <span class="math inline">\(e\)</span> is…</p>
-<ul>
-<li>variable <span class="math inline">\(x\)</span>: Lookup <span class="math inline">\(x\)</span> in the type environment. If it’s not there, ERROR. Let <span class="math inline">\(\tau\)</span> be the type. Substitute generic (bound) variables in <span class="math inline">\(\tau\)</span> by new (free) variables. I.e., <code>({}, instantiate(tau))</code>.</li>
-<li>application <span class="math inline">\(d\,e\)</span>:
-<ul>
-<li>Run <span class="math inline">\(W\)</span> on the function: <span class="math inline">\((R,\ol d_\rh) = W(\ol p, d)\)</span>.</li>
-<li>Run <span class="math inline">\(W\)</span> on the argument, where we apply the substitution output by the function, <span class="math inline">\((S, \ol e_\si) = W(R\ol p, e)\)</span>.</li>
-<li>We’ve now calculated a type <span class="math inline">\(\rh\)</span> for the function, and a type <span class="math inline">\(\si\)</span> for the argument. Now we need to unify these. (Ex. the function is <span class="math inline">\(a\to a\)</span> and the type is <code>Int</code>.) Let <span class="math inline">\(\be\)</span> be a new variable. Unify <span class="math inline">\(S\rh\)</span> and <span class="math inline">\(\si\to \be\)</span>, <span class="math inline">\(U=U(S\rh, \si\to \be)\)</span>.</li>
-<li>Return <span class="math inline">\((USR, U(((S\ol d)\ol e)_\be))\)</span>. (Compose the substitutions in the order that we calculated them.) Explanation:
-<ul>
-<li>We had a typing for <span class="math inline">\(\ol d\)</span>. We update that by <span class="math inline">\(S\)</span>.</li>
-<li>The type for <span class="math inline">\(d\, e\)</span> is <span class="math inline">\(\be\)</span> (found in the previous step).</li>
-<li>Apply <span class="math inline">\(U\)</span> to get the type for the whole expression.</li>
-</ul></li>
-<li>Note: if <span class="math inline">\(x\)</span> came from <span class="math inline">\(\la x:\be\)</span>, then <span class="math inline">\(\be\)</span> is a monotype (possibly with free variables), and no substitution is done. If <span class="math inline">\(x\)</span> came from <code>let</code> then <span class="math inline">\(x\)</span> may have bound variables, so we instantiate new variables.</li>
-</ul></li>
-<li>abstraction <span class="math inline">\(\la x. \,d\)</span>:
-<ul>
-<li>Let <span class="math inline">\(\be\)</span> be a new type variable.</li>
-<li>Add <span class="math inline">\(x:\be\)</span> to the context, <span class="math inline">\(\ol p \cup \{x:\be\}\)</span>.</li>
-<li>Run <span class="math inline">\(W\)</span> with this new context, <span class="math inline">\(W(\ol p \cup \{x:\be\}, d)\)</span>.</li>
-<li>Return <span class="math inline">\((R, (\la x_{R\be}.\ol{d}_\rh)_{R\be \to \rh})\)</span>.</li>
-</ul></li>
-<li><code>let x=d in e</code>. This different similar to <span class="math inline">\(\la\)</span> with application (<span class="math inline">\((\la x . d) \, e\)</span>) because there we would apply the substitution to the function <span class="math inline">\(d\)</span> (<span class="math inline">\(S\rh\)</span>) and attempt to unify, but here we keep the bound variables in <span class="math inline">\(d\)</span>.
-<ul>
-<li>Run <span class="math inline">\(W\)</span> on <span class="math inline">\(d\)</span>: Let <span class="math inline">\((R,\ol d_\rh)=W(\ol p, d)\)</span>.</li>
-<li>Run <span class="math inline">\(W\)</span> on <span class="math inline">\(e\)</span> with <span class="math inline">\(\{x:\rh\}\)</span> added: Let <span class="math inline">\((s,\ol e_\si) = W(R\ol p\cup \{x:\rh\}, e)\)</span>.</li>
-<li>Return <span class="math inline">\((SR, (\text{let }x_{S\rh} = S\ol d\text{ in }\ol e)_{\si})\)</span>.</li>
-<li>!! Should generalize here: abstract (<span class="math inline">\(\forall\)</span>) over all variables free in <span class="math inline">\(d\)</span> but not free in the environment. Ex. <code>let foo = \y -&gt; x</code> in context <code>x:a</code>. <code>\y -&gt; x : b -&gt; a</code> is not yet generalized. Make it <span class="math inline">\(\forall b: b\to a\)</span>.</li>
-</ul></li>
-</ul>
-<p>Note we don’t really need to keep track of the intermediate typings, just the substitutions.</p>
-<p>Subtle point I’m still trying to get clear (ex. 1):</p>
-<pre><code>let bar [forall a. forall b. a -&gt; (b -&gt; a)] = \x -&gt;
-	let foo [forall b. b -&gt; a] = \y -&gt; x
-	in foo
-in bar</code></pre>
-<p>is the same as</p>
-<div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell">\x <span class="ot">-&gt;</span> (\y <span class="ot">-&gt;</span> x)</code></pre></div>
-<p>right?</p>
-<h2 id="bottom-up-algorithm-w">Bottom-up Algorithm W</h2>
-<div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="kw">data</span> <span class="dt">Constraint</span> <span class="fu">=</span> <span class="dt">EqC</span> <span class="dt">Poly</span> <span class="dt">Poly</span>
-	<span class="fu">|</span> <span class="dt">InstM</span> <span class="dt">Poly</span> (<span class="dt">S.Set</span> <span class="dt">Mono</span>) <span class="dt">Poly</span>
-	<span class="fu">|</span> <span class="dt">GenericInst</span> <span class="dt">Poly</span> <span class="dt">Poly</span></code></pre></div>
-<p>Generate the constraint set as follows. For an expression <span class="math inline">\(e\)</span>, if <span class="math inline">\(e\)</span> is</p>
-<ul>
-<li>variable <span class="math inline">\(x\)</span>: Get fresh <span class="math inline">\(\be\)</span>, note <span class="math inline">\(x:\be\)</span>.</li>
-<li>application <span class="math inline">\(e_1\,e_2\)</span>: Recurse on <span class="math inline">\(e_1\)</span> and <span class="math inline">\(e_2\)</span> (take union of constraints and typings). Let <span class="math inline">\(e_1:\tau_1\)</span>, <span class="math inline">\(e_2:\tau_2\)</span>. Note <span class="math inline">\(e_1\, e_2:\be\)</span>, add <span class="math inline">\(\tau_1\equiv \tau_2\to \be\)</span> to the constraint set.</li>
-<li>abstraction <span class="math inline">\(\la x. e\)</span>: Recurse on <span class="math inline">\(e\)</span>, suppose <span class="math inline">\(e:\tau\)</span>. Take all typings of the form <span class="math inline">\(x:\tau'\)</span> and make constraints <span class="math inline">\(\tau'\equiv \be\)</span>. Generate fresh <span class="math inline">\(\be\)</span>. Type <span class="math inline">\(\la x.e : (\be \to \tau)\)</span>.</li>
-<li><code>let x=e_1 in e_2</code>: Recurse on <span class="math inline">\(e_1:\tau_1\)</span>, <span class="math inline">\(e_2:\tau_2\)</span>, and type as <span class="math inline">\(\tau_2\)</span>. For all typings of the form <span class="math inline">\(x:\tau'\)</span> generated by <span class="math inline">\(e_2\)</span>, add <span class="math inline">\(\tau'\le_M \tau_1\)</span> to the constraint set.</li>
-</ul>
-<p>Note that for the <span class="math inline">\(\le_M\)</span> constraint, we need to keep a list of monomorphic variables <span class="math inline">\(M\)</span> (corresponding to free—introduced in lambdas) as we recurse down the tree. (Things in lambdas DO NOT generalize, in <span class="math inline">\(\la x. e\)</span>, <span class="math inline">\(x\)</span> can’t have two different types/interpretations in <span class="math inline">\(e\)</span>. Thus within the lambda expression, <span class="math inline">\(x\)</span> is in the monomorphic set—you can’t do <span class="math inline">\(\forall x\)</span>.)</p>
-<p>The bottom-up inference rules are different from the usual inference rules:</p>
-<ul>
-<li>Usual rules keep the context the same; these change the context.</li>
-<li>They translate more directly into an algorithm.</li>
-<li>They involve the constraints, not the context.</li>
-</ul>
-<p>See p. 10 for the algorithm.</p>
-<h2 id="lambda-cube">Lambda cube</h2>
-<p>https://en.wikipedia.org/wiki/Lambda_cube</p>
-<p><img src="https://upload.wikimedia.org/wikipedia/commons/1/19/Lambda_cube.png"></p>
-<p>3 dimensions:</p>
-<ul>
-<li>Polymorphism (bottom/top)</li>
-<li>Type operators/types depending on types (front/back)</li>
-<li>Types depending on terms, dependent types (left/right)</li>
-</ul>
-<p>Front:</p>
-<table>
-<thead>
-<tr class="header">
-<th style="text-align: left;">*</th>
-<th style="text-align: left;">None</th>
-<th style="text-align: left;">Dependent types</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td style="text-align: left;">Polymorphism</td>
-<td style="text-align: left;">F, <span class="math inline">\(\la2\)</span></td>
-<td style="text-align: left;"><span class="math inline">\(\la P2\)</span></td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">None</td>
-<td style="text-align: left;"><span class="math inline">\(\la_{\to}\)</span></td>
-<td style="text-align: left;">LF, <span class="math inline">\(\la P\)</span></td>
-</tr>
-</tbody>
-</table>
-<p>Back: (types depending on types)</p>
-<table>
-<thead>
-<tr class="header">
-<th style="text-align: left;">*</th>
-<th style="text-align: left;">None</th>
-<th style="text-align: left;">Dependent types</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td style="text-align: left;">Polymorphism</td>
-<td style="text-align: left;"><span class="math inline">\(F_\om\)</span>, <span class="math inline">\(\la \om\)</span></td>
-<td style="text-align: left;">CIC, <span class="math inline">\(\la P\om\)</span></td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">None</td>
-<td style="text-align: left;"><span class="math inline">\(\la_\om\)</span>, <span class="math inline">\(\la\ul{\om}\)</span></td>
-<td style="text-align: left;"><span class="math inline">\(\la P \ul{\om}\)</span></td>
-</tr>
-</tbody>
-</table>
-<p>Hindley-Milner is a subset of System F (in between <span class="math inline">\(\la_{\to}\)</span> and <span class="math inline">\(F=\la 2\)</span>). Haskell contains system F.</p>
-<p>References:</p>
-<ul>
-<li><span class="math inline">\(F_{&lt;:}\)</span> (F with subtyping): Ch. 26, 28</li>
-<li><span class="math inline">\(\la_\om\)</span> (types depending on types): Ch. 29</li>
-<li><span class="math inline">\(F_\om\)</span> (F with types depending on types): Ch. 30</li>
-<li><span class="math inline">\(F_{&lt;:}^\om\)</span>: CH. 31</li>
-</ul>
-<h2 id="scratch">Scratch</h2>
-
-  </div>
-
-    
-
-    <!-- Extension : Sharing buttons @ www.sharethis.com -->
-    <span class='st_facebook_large' displayText='Facebook'></span>
-    <span class='st_twitter_large' displayText='Tweet'></span>
-    <span class='st_googleplus_large' displayText='Google +'></span>
-    <span class='st_reddit_large' displayText='Reddit'></span>
-    <span class='st__large' displayText=''></span>
-
-    <div id="disqus_thread"></div>
-    
-
-
-  
-    <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
-  </div>
-  
-</div>
-]]></summary>
-</entry>
-<entry>
-    <title>LLVM tutorial</title>
-    <link href="http://holdenlee.github.io/notebook/posts/cs/PL/llvm.html" />
-    <id>http://holdenlee.github.io/notebook/posts/cs/PL/llvm.html</id>
-    <published>2016-07-31T00:00:00Z</published>
-    <updated>2016-07-31T00:00:00Z</updated>
-    <summary type="html"><![CDATA[
-<div class="container">
-  <div id="content">
-    <div class="page header">
-      <h1>LLVM tutorial</h1>
-    </div>
-    <div class="info">
-      
-       
-        <p>Posted: 2016-07-31 
-          , Modified: 2016-07-31 
-	</p>
-      
-       <p>Tags: <a href="/tags/none.html">none</a></p> 
-    </div>
-    
-  </div>
-  <!--/div-->
-
-  <div class="toc"></div>
-
-  <div class="blog-main">
-    <p><a href="http://www.stephendiehl.com/llvm/">Tutorial</a></p>
-<ul>
-<li>Source</li>
-<li>lexer</li>
-<li>parser</li>
-<li>checking</li>
-<li>codegen</li>
-<li>Output</li>
-</ul>
 
   </div>
 

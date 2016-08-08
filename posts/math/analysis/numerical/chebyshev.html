@@ -140,6 +140,19 @@ Now <span class="math inline">\(p(x) = 1+\cdots + (1-x)^n\)</span> is an approxi
 \min_{\deg p = n} \ve{p(x) - \rc{x}}_{L^{\iy}([l,L])}?
 \]</span></p>
 <p>Interpolate at Chebyshev points? Conjugate gradients, etc.</p>
+<p>See exercise 8.10 in <a href="ATAP.html">ATAP</a>. First reposition at <span class="math inline">\([-1,1]\)</span> as above. <span class="math inline">\(\rc{x}\)</span> gets sent to <span class="math inline">\(\fc{k+1}{m(k-1)}\rc{x-\pf{k+1}{k-1}}\)</span>. For any <span class="math inline">\(\rh\)</span> such that <span class="math inline">\(\fc{\rh+\rh^{-1}}2\le \fc{k+1}{k-1}\)</span>, i.e., <span class="math inline">\(\rh \le 1+\fc{2}{\sqrt k - 1}\)</span>, we get a bound <span class="math display">\[
+\fc{k+1}{m(k-1)} \pa{\pf{k+1}{k-1}-\fc{\rh+\rh^{-1}}{2}} \rh^{-n} = \rc m O_{\rh}(\rh^{-n})
+\]</span> This is an upper bound on convergence of conjugate gradient, because conjugate gradient finds the vector in <span class="math inline">\(\spn(\{b, Ab, \ldots, A^{n}b\})\)</span> that is closest to <span class="math inline">\(A^{-1}b\)</span>.</p>
+<p>(Thus, conjugate gradient gets <span class="math inline">\(\ep\)</span>-close in <span class="math inline">\(O(\sqrt\ka \ln \prc{\ep})\)</span> steps.)</p>
+<p>(We can get a lower bound by computing the best possible <span class="math inline">\(L^2\)</span> of the approximation. It should be on the same order.)</p>
+Conjugate gradient:
+\begin{align}
+v_0&amp;=b\\
+w_i&amp;=Av_i\\
+v_i&amp;=w_i- \sumz j{i-1} \fc{\an{w_i,v_j}_A}{\an{v_j,v_j}_A}v_j.
+\end{align}
+<p>We have <span class="math inline">\(\an{w_{i+1},v_j} = \an{v_i,w_{j+1}}_A\)</span> and <span class="math inline">\(w_{i+1}\perp v_{i+2},ldots\)</span> so <span class="math inline">\(v_i\perp_A w_{i+3},\ldots\)</span>.</p>
+<!--We try to minimize $\max_\la (\la p(\la)-1)^2)$-->
 
   </div>
 
