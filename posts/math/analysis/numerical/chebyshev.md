@@ -80,3 +80,24 @@ $$
 
 Interpolate at Chebyshev points?
 Conjugate gradients, etc.
+
+See exercise 8.10 in [ATAP](ATAP.html). First reposition at $[-1,1]$ as above. $\rc{x}$ gets sent to $\fc{k+1}{m(k-1)}\rc{x-\pf{k+1}{k-1}}$. For any $\rh$ such that $\fc{\rh+\rh^{-1}}2\le \fc{k+1}{k-1}$, i.e., $\rh \le 1+\fc{2}{\sqrt k - 1}$, we get a bound
+$$
+\fc{k+1}{m(k-1)} \pa{\pf{k+1}{k-1}-\fc{\rh+\rh^{-1}}{2}} \rh^{-n} = \rc m O_{\rh}(\rh^{-n})
+$$
+This is an upper bound on convergence of conjugate gradient, because conjugate gradient finds the vector in $\spn(\{b, Ab, \ldots, A^{n}b\})$ that is closest to $A^{-1}b$.
+
+(Thus, conjugate gradient gets $\ep$-close in $O(\sqrt\ka \ln \prc{\ep})$ steps.)
+
+(We can get a lower bound by computing the best possible $L^2$ of the approximation. It should be on the same order.)
+
+Conjugate gradient: 
+\begin{align}
+v_0&=b\\
+w_i&=Av_i\\
+v_i&=w_i- \sumz j{i-1} \fc{\an{w_i,v_j}_A}{\an{v_j,v_j}_A}v_j.
+\end{align}
+We have $\an{w_{i+1},v_j} = \an{v_i,w_{j+1}}_A$ and $w_{i+1}\perp v_{i+2},ldots$ so $v_i\perp_A w_{i+3},\ldots$.
+
+<!--We try to minimize $\max_\la (\la p(\la)-1)^2)$-->
+
