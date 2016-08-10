@@ -57,24 +57,58 @@ Because if we assume the activations are like $(e^{\chi,v})_\chi$, then we still
 * How to incorporate convolutional ideas? Ex. if features $f_1,f_2$ are in the same relationship (translationally) as $f_1',f_2'$ then we expect PMI to be similar, so we should we really be looking at a $7200\times 7200$ matrix? How about look at PMI of adjacent features? (But they shouldn't overlap...) Or look at PMI pre-convolution by another layer?
 * What happens if you apply (convolutional?) DL to the learned features? Then apply SVD to the dimension-reduced vectors?
 
-#Todo
+# Todo
 
-##Coding
+## Coding
 
-* Compute PMI matrix.
-* Plot histogram of PMI's.
-* Plot histogram of conditional PMI's.
-* Train on feature vectors.
-* Do weighted SVD on PMI matrix.
-* Do dictionary learning on feature vectors/PMI vectors (?).
+* Completed
+  * Compute PMI matrix. 
+  * Plot histogram of PMI's.
+  * Plot histogram of conditional PMI's. (They don't look like they have higher values... Try thresholding first? Look at features with largest PMI? Calculate entropies?)
+  * Look at correlations between PMI's and distances between pairs. (There doesn't seem to be any correlation.)
+* Todo
+  * Train on feature vectors.
+  * Do weighted SVD on PMI matrix.
+  * Do dictionary learning on feature vectors/PMI vectors (?).
 
-##Theory
+(Compare to purely random.)
+
+## Theory
 
 Understand loss function for PMI.
 
-#Scratch 
+# Scratch 
 
 Qs
 
 * Why is the normalization `nrm=mean(sqrt(sum(compTr.^2)))`?
 
+# Steps
+
+Run experiments.
+
+```
+nohup nice -19 matlab -nodisplay -nodesktop -nojvm -nosplash < run_experiments2.m > output_2016-08-07.txt 2>&1 &
+```
+
+```matlab
+%Get psiTr
+pmi_experiments('logs/model_mnist_5_2_0_2_2_0_50_200_0_1.000000e-01_1.000000e-01_1.000000e-01_2.mat');
+%get percentiles for each feature
+pc= get_percentiles(psiTr);
+save('pc_1.mat','pc','-v7.3');
+%calculate PMI after normalizing and deleting zero rows.
+[P, inds] = calculate_pmi(psiTr); %inds give the indices that are kept (indices of nonzero rows)
+%exploratory analysis
+%pmi_experiments(P);
+[all_pmi_pairs, positions, dists] = pmi_experiments2(P, inds');
+save('all_pmi_pairs_1.mat','all_pmi_pairs');
+save('positions_1.mat','positions');
+save('dists_1.mat','dists');
+
+%cpmi matrices
+Ps = calculate_cpmi(psiTr, Ytr, '1');
+cpmi_experiments('P_1');
+```
+
+<img src="/images/pmi/pmi_histogram_1.jpg">

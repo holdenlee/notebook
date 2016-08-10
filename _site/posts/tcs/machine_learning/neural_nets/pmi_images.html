@@ -90,6 +90,7 @@
  <li><a href="#theory-1">Theory</a></li>
  </ul></li>
  <li><a href="#scratch">Scratch</a></li>
+ <li><a href="#steps">Steps</a></li>
  </ul> </div>
 
   <div class="blog-main">
@@ -134,13 +135,17 @@
 <h2 id="todo">Todo</h2>
 <h3 id="coding">Coding</h3>
 <ul>
+<li>Completed</li>
 <li>Compute PMI matrix.</li>
 <li>Plot histogram of PMI’s.</li>
-<li>Plot histogram of conditional PMI’s.</li>
+<li>Plot histogram of conditional PMI’s. (They don’t look like they have higher values… Try thresholding first? Look at features with largest PMI? Calculate entropies?)</li>
+<li>Look at correlations between PMI’s and distances between pairs. (There doesn’t seem to be any correlation.)</li>
+<li>Todo</li>
 <li>Train on feature vectors.</li>
 <li>Do weighted SVD on PMI matrix.</li>
 <li>Do dictionary learning on feature vectors/PMI vectors (?).</li>
 </ul>
+<p>(Compare to purely random.)</p>
 <h3 id="theory-1">Theory</h3>
 <p>Understand loss function for PMI.</p>
 <h2 id="scratch">Scratch</h2>
@@ -148,6 +153,27 @@
 <ul>
 <li>Why is the normalization <code>nrm=mean(sqrt(sum(compTr.^2)))</code>?</li>
 </ul>
+<h2 id="steps">Steps</h2>
+<p>Run experiments.</p>
+<pre><code>nohup nice -19 matlab -nodisplay -nodesktop -nojvm -nosplash &lt; run_experiments2.m &gt; output_2016-08-07.txt 2&gt;&amp;1 &amp;</code></pre>
+<div class="sourceCode"><pre class="sourceCode matlab"><code class="sourceCode matlab"><span class="co">%Get psiTr</span>
+pmi_experiments(<span class="st">'logs/model_mnist_5_2_0_2_2_0_50_200_0_1.000000e-01_1.000000e-01_1.000000e-01_2.mat'</span>);
+<span class="co">%get percentiles for each feature</span>
+pc= get_percentiles(psiTr);
+save(<span class="st">'pc_1.mat'</span>,<span class="st">'pc'</span>,<span class="st">'-v7.3'</span>);
+<span class="co">%calculate PMI after normalizing and deleting zero rows.</span>
+[P, inds] = calculate_pmi(psiTr); <span class="co">%inds give the indices that are kept (indices of nonzero rows)</span>
+<span class="co">%exploratory analysis</span>
+<span class="co">%pmi_experiments(P);</span>
+[all_pmi_pairs, positions, dists] = pmi_experiments2(P, inds');
+save(<span class="st">'all_pmi_pairs_1.mat'</span>,<span class="st">'all_pmi_pairs'</span>);
+save(<span class="st">'positions_1.mat'</span>,<span class="st">'positions'</span>);
+save(<span class="st">'dists_1.mat'</span>,<span class="st">'dists'</span>);
+
+<span class="co">%cpmi matrices</span>
+Ps = calculate_cpmi(psiTr, Ytr, <span class="st">'1'</span>);
+cpmi_experiments(<span class="st">'P_1'</span>);</code></pre></div>
+<p><img src="../../../../images/pmi/pmi_histogram_1.jpg"></p>
 
   </div>
 

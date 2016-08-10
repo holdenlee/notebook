@@ -62,6 +62,14 @@
 <li>Play with parameters in MNIST.</li>
 </ul></li>
 </ul>
+<p>Summary:</p>
+<ul>
+<li><a href="/posts/math/analysis/numerical/ATAP.html">Approximation theory and approximation practice</a>: Notes
+<ul>
+<li>Understood conjugate gradient bound using Chebyshev polynomials (<span class="citation" data-cites="Cyril">@Cyril</span>)</li>
+</ul></li>
+<li></li>
+</ul>
 
   </div>
 
@@ -110,7 +118,23 @@
   </div>
   <!--/div-->
 
-  
+  <div class="toc"> <ul>
+ <li><a href="#introduction">1 Introduction</a></li>
+ <li><a href="#chebyshev-points-and-interpolation">2 Chebyshev points and interpolation</a></li>
+ <li><a href="#chebyshev-polynomials-and-series">3 Chebyshev polynomials and series</a></li>
+ <li><a href="#interpolation-projection-and-aliasing">4 Interpolation, projection, and aliasing</a></li>
+ <li><a href="#barycentric-interpolation-formula">5 Barycentric interpolation formula</a></li>
+ <li><a href="#weierstrass-approximation-theorem">6 Weierstrass Approximation Theorem</a></li>
+ <li><a href="#convergence-for-differentiable-functions">7 Convergence for differentiable functions</a></li>
+ <li><a href="#convergence-for-analytic-functions">8 Convergence for analytic functions</a></li>
+ <li><a href="#gibbs-phenomenon">9 Gibbs Phenomenon</a></li>
+ <li><a href="#best-approximation">10 Best approximation</a></li>
+ <li><a href="#hermite-integral-formula">11 Hermite integral formula</a></li>
+ <li><a href="#potential-theory-and-applications">12 Potential theory and applications</a></li>
+ <li><a href="#equispaced-points-runge-phenomenon">13 Equispaced points, Runge phenomenon</a></li>
+ <li><a href="#discussion-of-high-order-interpolation">14 Discussion of high-order interpolation</a></li>
+ <li><a href="#lebesgue-constants">15 Lebesgue constants</a></li>
+ </ul> </div>
 
   <div class="blog-main">
     <h2 id="introduction">1 Introduction</h2>
@@ -254,8 +278,69 @@ For Chebyshev interpolants of <span class="math inline">\(\sgn(x)\)</span> on <s
 </ul>
 <h2 id="best-approximation">10 Best approximation</h2>
 <p><strong>Theorem</strong>. A continuous <span class="math inline">\(f\)</span> on <span class="math inline">\([-1,1]\)</span> has a unique best approximation <span class="math inline">\(p^*\in \cP_n\)</span>. It is uniquely characterized by <span class="math inline">\(f-p\)</span> equioscillating in <span class="math inline">\(\ge n+2\)</span> extreme points.</p>
-<p><em>Proof</em>. The minimum is attained because it lies in <span class="math inline">\(\{\ve{f-p}\le \ve{f}\}\)</span>. (<span class="math inline">\(L^\iy\)</span> norms.) If <span class="math inline">\(p,q\)</span> satisfy the condition, and <span class="math inline">\(\ve{f-q}&lt; \ve{f_p}\)</span>, then <span class="math inline">\(p-q\)</span> has <span class="math inline">\(n+1\)</span> zeros. If it doesn’t equioscillate, perturb by <span class="math inline">\((x_1-x)\cdots (x_k-x)\)</span>. (If <span class="math inline">\(\ve{f-q}=\ve{f-p}\)</span>, use the following argument: suppose <span class="math inline">\(p\)</span> has equioscillation extreme points <span class="math inline">\(x_{0:n+1}\)</span>. Induct on: <span class="math inline">\(p-q\)</span> has <span class="math inline">\(\ge j\)</span> roots in <span class="math inline">\([x_0,x_j]\)</span>. Suppose this is first violated at <span class="math inline">\(k\)</span> and obtain a contradiction.</p>
+<p><em>Proof</em>. The minimum is attained because it lies in <span class="math inline">\(\{\ve{f-p}\le \ve{f}\}\)</span>. (<span class="math inline">\(L^\iy\)</span> norms.) If <span class="math inline">\(p,q\)</span> satisfy the condition, and <span class="math inline">\(\ve{f-q}&lt; \ve{f_p}\)</span>, then <span class="math inline">\(p-q\)</span> has <span class="math inline">\(n+1\)</span> zeros. If it doesn’t equioscillate, perturb by <span class="math inline">\((x_1-x)\cdots (x_k-x)\)</span>. (If <span class="math inline">\(\ve{f-q}=\ve{f-p}\)</span>, use the following argument: suppose <span class="math inline">\(p\)</span> has equioscillation extreme points <span class="math inline">\(x_{0:n+1}\)</span>. Induct on: <span class="math inline">\(p-q\)</span> has <span class="math inline">\(\ge j\)</span> roots in <span class="math inline">\([x_0,x_j]\)</span>. Suppose this is first violated at <span class="math inline">\(k\)</span> and obtain a contradiction.)</p>
 <h2 id="hermite-integral-formula">11 Hermite integral formula</h2>
+<p><strong>Theorem</strong>. Let <span class="math inline">\(f\)</span> be analytic in a region <span class="math inline">\(\Om\)</span> containing distinct points <span class="math inline">\(x_0,\ldots, x_n\)</span> and <span class="math inline">\(\Ga\)</span> be a contour in <span class="math inline">\(\Om\)</span> looping once around them. The polynomial interpolant of degree <span class="math inline">\(\le n\)</span> to <span class="math inline">\(f\)</span> at <span class="math inline">\(\{x_j\}\)</span> is <span class="math display">\[p(x) = \rc{2\pi i} \int_{\Ga} \fc{f(t)(l(t)-l(x))}{l(t)(t-x)}\,dt\]</span> and if <span class="math inline">\(x\)</span> is enclosed by <span class="math inline">\(\Ga\)</span>, the error is <span class="math display">\[f(x) - p(x) = \rc{2\pi i}\int_{\Ga} \fc{l(x)}{l(t)} \fc{f(t)}{t-x}\,dt.\]</span></p>
+<p>This is useful because it gives an estimate for the error in terms of “analyticity” of <span class="math inline">\(f\)</span>. If <span class="math inline">\(f\)</span> is analytic on a larger region, we can take <span class="math inline">\(\Ga\)</span> to be bigger, and the ratio <span class="math inline">\(\fc{l(x)}{l(t)} = \prod_{j=0}^n \fc{x-x_j}{t-x_j}\)</span> is smaller. This also tells us a property we desire for the interpolation points: they should make <span class="math inline">\(l(x)\)</span> small. (We shouldn’t have to go far away to make the ratio <span class="math inline">\(\fc{l(x)}{l(t)}\)</span> small.)</p>
+<p><em>Proof</em>.</p>
+<ol type="1">
+<li>Let <span class="math inline">\(\Ga_j\)</span> enclose <span class="math inline">\(x_j\)</span> only, and not <span class="math inline">\(x\)</span> By Cauchy, <span class="math display">\[l_j(x) = \fc{l(x)}{l'(x_j)(x-x_j)} = \Res_{x_j}\pf{l(x)}{l(t)(x-t)}\,dt = \rc{2\pi i} \int_{\Ga_j} \fc{l(x)}{l(t)(x-t)}\,dt.\]</span></li>
+<li>Similarly, if <span class="math inline">\(\Ga'\)</span> encloses all <span class="math inline">\(x_j\)</span> but not <span class="math inline">\(x\)</span>, <span class="math display">\[\rc{2\pi i} \int_{\Ga'} \fc{l(x)f(t)}{l(t)(x-t)}\,dt = \sum_j \Res_{x_j} \pf{l(x)f(t)}{l(t)(x-t)} =\sum_j f(x_j)\ell_j(x)=p(x).\]</span></li>
+<li>If <span class="math inline">\(\Ga\)</span> encloses all <span class="math inline">\(x_j,x\)</span>, then this adds <span class="math inline">\(\Res_x\pf{l(x)f(t)}{l(t)(x-t)} = -f(x)\)</span>, so <span class="math display">\[p(x) - f(x) = \rc{2\pi i}\int_{\Ga} \fc{l(x)}{l(t)} \fc{f(t)}{x-t}\,dt.\]</span></li>
+<li>For the first equation, note <span class="math inline">\(f(x) = \rc{2\pi i}\int_\Ga \fc{l(t)f(t)}{l(t)(t-x)}\)</span>.</li>
+</ol>
+<h2 id="potential-theory-and-applications">12 Potential theory and applications</h2>
+\begin{align}
+\ga_n(x,t) &amp;= \prod_{j=0}^n \pf{|t-x_j|}{|x-x_j|}^{\rc{n+1}}\\
+\af{l(x)}{l(t)} &amp;= \ga_n(x,t)^{-n-1}\\
+\al_n &amp;= \min_{x\in X, t\in \Ga} \ga_n(x,t)\\
+\log\ga_n(x,t) &amp;= \ub{\rc{n+1}\sumz jn \log |t-x_j|}{u_n(t)} - \ub{\rc{n+1} \sumz jn \log |x-x_j|}{u_n(s)} \le \al_{n}^{-(n+1)}\\
+\log\al_n&amp;= \min_{t\in \G}u_n(t) - \max_{x\in X}u_n(x).
+\end{align}
+<p>We want to lower bound <span class="math inline">\(\al_n\)</span> to get exponential convergence.</p>
+<p>Think of <span class="math inline">\(u\)</span> as a discrete approximation for a continuous potential <span class="math display">\[u(s) = \int_{-1}^1 \ln |s-\tau| \,d\mu(\tau).\]</span> On <span class="math inline">\([-1,1]\)</span>, equally spaced grids converge to <span class="math inline">\(\mu(\tau)=\rc2\)</span> and Chebyshev grids converge to <span class="math inline">\(\mu(\tau) = \rc{\pi \sqrt{1-\tau^2}}\)</span> in weak*.</p>
+<p><em>Key property</em>. The Chebyshev measure generates constant potential on <span class="math inline">\([-1,1]\)</span>, and so minimizes <span class="math inline">\(I(\mu)\)</span> (proof omitted).</p>
+<p>Some alterntive views.</p>
+<ul>
+<li>It’s 1 unit of charge in equilibrium, minimal-energy distributoin, where the potential function is logarithmic. The energy is <span class="math display">\[ I(\mu) = -\int_{-1}^1 \int_{-1}^1 \log |s-\tau|\,d\mu(\tau)\,d\mu(s).\]</span></li>
+<li><span class="math inline">\(u\)</span> is the functiton in the complex <span class="math inline">\(s\)</span>-plane that is harmonic outside <span class="math inline">\([-1,1]\)</span>, approaches a constant value <span class="math inline">\(s\to [-1,1]\)</span>, and is <span class="math inline">\(\log|s|+O(s^{-1})\)</span> (to make total amount of charge 1). To solve this, find a conformal map mapping the exterior of the interval to the exterior of a disk, <span class="math display">\[\phi(s) = \rc2 (s+i\sqrt{1-s^2}).\]</span> The solution there is <span class="math inline">\(\log|z|\)</span>. Map it back to get <span class="math inline">\(u(s) = \log |s+i\sqrt{1-s^2}|-\log 2\)</span>.
+<ul>
+<li>From this we wee that the equipotentials are the Bernstein ellipses: <span class="math inline">\(\rh=2e^{u_0}\)</span> gives <span class="math inline">\(u(s)=u_0\)</span>.</li>
+</ul></li>
+</ul>
+<p>The capacity is <span class="math inline">\(\min_\mu I(\mu)\)</span>; for <span class="math inline">\([-1,1]\)</span> it is <span class="math inline">\(\log 2\)</span>. (Each grid point is at an average distance of <span class="math inline">\(\rc2\)</span> from the others in geometric mean.)</p>
+<p>How to generalize to other regions (compact sets of <span class="math inline">\(\C\)</span>)?</p>
+<ul>
+<li>Fekete points: <span class="math inline">\(\prod_{j\ne k} |x_j-x_k|^{\fc{2}{n(n+1)}}\)</span> as large as possible. (This decreases to <span class="math inline">\(c(E)\)</span>.) This is mathematically nice but computationally difficult.</li>
+<li>Fejer points: <span class="math inline">\(\phi^{-1}(\{z_j\})\)</span> where <span class="math inline">\(z_j\)</span> are equally spaced around the unit circle, where <span class="math inline">\(\phi\)</span> maps the exterior of <span class="math inline">\(E\)</span> to the exterior of the unit circle.</li>
+<li>Leja points: greedy approximations to Fekete poits. Pick <span class="math inline">\(x_i\)</span> successively maximizing <span class="math inline">\(\prod_{j=0}^{n-1}|x_j-x_n|\)</span> at each step.</li>
+</ul>
+<p><strong>Theorem</strong>. Let <span class="math inline">\(f\in C([-1,1])\)</span>. Let <span class="math inline">\(\rh\)</span> be the parameter of the largest Bernstein ellipse <span class="math inline">\(E_\rh\)</span> where <span class="math inline">\(f\)</span> can be analytically continued, and <span class="math inline">\(p_n\)</span> be the interpolants to any sequence of grids with <span class="math inline">\(\lim_{n\to \iy}(\sup_{x\in [-1,1]}|l(x)|)^{\rc n}\)</span>. Then <span class="math inline">\(\lim_{n\to \iy} \ve{f-p_n}^{\rc n} = \rh^{-1}\)</span>.</p>
+<h2 id="equispaced-points-runge-phenomenon">13 Equispaced points, Runge phenomenon</h2>
+<p>Interpolation at equally spaced points can diverge exponentially (at the edges). Why? <span class="math inline">\([-1,1]\)</span> is far from being a level curve. The curve <span class="math inline">\(l(x)=l(t)\)</span> is a “football”; <span class="math inline">\(f\)</span> needs to be analytic inside this football for convergence. The football goes to <span class="math inline">\(\approx .526i\)</span>. Ex. <span class="math inline">\(f=\rc{1+25x^2}\)</span> is not analytic inside, so the interpolants diverge.</p>
+<p>Even if convergence should take place in theory (<span class="math inline">\(f\)</span> is analytic in the football), rounding errors can be amplified by <span class="math inline">\(O(2^n)\)</span> causing divergence in practice.</p>
+<h2 id="discussion-of-high-order-interpolation">14 Discussion of high-order interpolation</h2>
+<p>Much of the literature is skeptical of high-order interpolation because people saw it doesn’t work for equispaced point. However, Chebyshev interpolation does work.</p>
+<p>2 important issues:</p>
+<ol type="1">
+<li>Conditioning of the problem: interpolation points must be properly spaced, so the interpolant does not depend sensitively on the data. Ill-conditioning can lead to Runge phenomenon.</li>
+<li>Stability of the algorithm: Interpolation algorithm must be stable (e.g. barycentric interpolation formula) even when the problem is well-conditioned. Vandermonde is very poorly conditioned.</li>
+</ol>
+<h2 id="lebesgue-constants">15 Lebesgue constants</h2>
+<p>The <strong>Lebesgue constant</strong> of a set of points <span class="math inline">\(S\sub [-1,1]\)</span> is <span class="math display">\[\La = \sup_f\fc{\ve{p}}{\ve{f}} = \sup_{x\in [-1,1]} \ub{\sumo jn |l_j(x)|}{\la(x)}\]</span> where <span class="math inline">\(p\)</span> is the interpolant of <span class="math inline">\(f\)</span> through <span class="math inline">\(S\)</span>.</p>
+<p>The largest possible interpolation error is at least <span class="math inline">\(\La-1\)</span>, and the interpolation error is at most <span class="math inline">\((\La+1) \ve{f-p^*}\)</span>.</p>
+<p>More generally, define the Lebesgue constant of any linear projection by <span class="math inline">\(\sup_f \fc{\ve{Lf}}{\ve{f}}\)</span>. Then <span class="math inline">\(\ve{f-p}\le (\La+1)\ve{f-p^*}\)</span>.</p>
+<p>No set of interpolation points can lead to convergence for all <span class="math inline">\(C([-1,1])\)</span> (PROOF?) so <span class="math inline">\(\lim_{n\to \iy} \La_n\)</span>.</p>
+<p><strong>Theorem</strong>.</p>
+<ol type="1">
+<li>Lebesgue constants for <span class="math inline">\(|S|=n+1\)</span> satisfy <span class="math inline">\(\La_n \ge \fc{2}{\pi}\log (n+1) + \fc{2}\pi (\ga + \log \pf{4}{\pi})\)</span>.</li>
+<li>For Chebyshev points, <span class="math inline">\(\La_n\le \fc{2}{\pi}\log (n+1) +1\)</span>.</li>
+<li>For equispaced points, <span class="math inline">\(\La_n&gt;\fc{2^{n-2}}{n^2}\)</span>.</li>
+<li>For Chebyshev projection, <span class="math inline">\(\La_n =\rc{2\pi}\int_{-\pi}^{\pi} \af{\sin((n+1/2)t)}{\sin(t/2)}\,dt\sim \fc{4}{\pi^2}\log n\)</span>.</li>
+</ol>
+<p>Instructive: Plot <span class="math inline">\(\la(x)\)</span> for equispaced and Chebyshev points.</p>
+<p>Intuition: The fastest a Lagrange polynomial can decay is <span class="math inline">\(O\prc{x}\)</span>, and adding up these alternating tails with alternating coefficients gives a harmonic series.</p>
+<p>Related: For Taylor projection of <span class="math inline">\(f\)</span> analytic on the unit disc, Landau constants <span class="math inline">\(\La_n \sim \rc{\pi}\log n\)</span>.</p>
 
   </div>
 
@@ -771,6 +856,7 @@ v_i&amp;=w_i- \sumz j{i-1} \fc{\an{w_i,v_j}_A}{\an{v_j,v_j}_A}v_j.
  <li><a href="#theory-1">Theory</a></li>
  </ul></li>
  <li><a href="#scratch">Scratch</a></li>
+ <li><a href="#steps">Steps</a></li>
  </ul> </div>
 
   <div class="blog-main">
@@ -815,13 +901,17 @@ v_i&amp;=w_i- \sumz j{i-1} \fc{\an{w_i,v_j}_A}{\an{v_j,v_j}_A}v_j.
 <h2 id="todo">Todo</h2>
 <h3 id="coding">Coding</h3>
 <ul>
+<li>Completed</li>
 <li>Compute PMI matrix.</li>
 <li>Plot histogram of PMI’s.</li>
-<li>Plot histogram of conditional PMI’s.</li>
+<li>Plot histogram of conditional PMI’s. (They don’t look like they have higher values… Try thresholding first? Look at features with largest PMI? Calculate entropies?)</li>
+<li>Look at correlations between PMI’s and distances between pairs. (There doesn’t seem to be any correlation.)</li>
+<li>Todo</li>
 <li>Train on feature vectors.</li>
 <li>Do weighted SVD on PMI matrix.</li>
 <li>Do dictionary learning on feature vectors/PMI vectors (?).</li>
 </ul>
+<p>(Compare to purely random.)</p>
 <h3 id="theory-1">Theory</h3>
 <p>Understand loss function for PMI.</p>
 <h2 id="scratch">Scratch</h2>
@@ -829,6 +919,27 @@ v_i&amp;=w_i- \sumz j{i-1} \fc{\an{w_i,v_j}_A}{\an{v_j,v_j}_A}v_j.
 <ul>
 <li>Why is the normalization <code>nrm=mean(sqrt(sum(compTr.^2)))</code>?</li>
 </ul>
+<h2 id="steps">Steps</h2>
+<p>Run experiments.</p>
+<pre><code>nohup nice -19 matlab -nodisplay -nodesktop -nojvm -nosplash &lt; run_experiments2.m &gt; output_2016-08-07.txt 2&gt;&amp;1 &amp;</code></pre>
+<div class="sourceCode"><pre class="sourceCode matlab"><code class="sourceCode matlab"><span class="co">%Get psiTr</span>
+pmi_experiments(<span class="st">'logs/model_mnist_5_2_0_2_2_0_50_200_0_1.000000e-01_1.000000e-01_1.000000e-01_2.mat'</span>);
+<span class="co">%get percentiles for each feature</span>
+pc= get_percentiles(psiTr);
+save(<span class="st">'pc_1.mat'</span>,<span class="st">'pc'</span>,<span class="st">'-v7.3'</span>);
+<span class="co">%calculate PMI after normalizing and deleting zero rows.</span>
+[P, inds] = calculate_pmi(psiTr); <span class="co">%inds give the indices that are kept (indices of nonzero rows)</span>
+<span class="co">%exploratory analysis</span>
+<span class="co">%pmi_experiments(P);</span>
+[all_pmi_pairs, positions, dists] = pmi_experiments2(P, inds');
+save(<span class="st">'all_pmi_pairs_1.mat'</span>,<span class="st">'all_pmi_pairs'</span>);
+save(<span class="st">'positions_1.mat'</span>,<span class="st">'positions'</span>);
+save(<span class="st">'dists_1.mat'</span>,<span class="st">'dists'</span>);
+
+<span class="co">%cpmi matrices</span>
+Ps = calculate_cpmi(psiTr, Ytr, <span class="st">'1'</span>);
+cpmi_experiments(<span class="st">'P_1'</span>);</code></pre></div>
+<p><img src="/images/pmi/pmi_histogram_1.jpg"></p>
 
   </div>
 
