@@ -111,4 +111,18 @@ Ps = calculate_cpmi(psiTr, Ytr, '1');
 cpmi_experiments('P_1');
 ```
 
+Over all pairs of features $i,j$, this is the distribution of $PMI(v_i,v_j)$:
+
 <img src="/images/pmi/pmi_histogram_1.jpg">
+
+Is there a correlation between PMI and distance between features? (Distance ranges from $0$ to $5\sqrt 2$.) It seems not.
+
+<img src="/images/pmi/pmi_distance.jpg">
+
+Conditioned on the digit being a specific value, how does the PMI distribution look? Still about the same...
+
+<img src="/images/pmi/hist_P_1_0.jpg">
+<img src="/images/pmi/hist_P_1_1.jpg">
+<img src="/images/pmi/hist_P_1_2.jpg">
+<img src="/images/pmi/hist_P_1_3.jpg">
+<img src="/images/pmi/hist_P_1_4.jpg">

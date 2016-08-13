@@ -26,7 +26,7 @@ siteURL = "http://holdenlee.github.io/notebook"
 main :: IO ()
 main = hakyll $ do
     --IMAGES: copy
-    match "images/*" $ do
+    match "images/**" $ do
         route   idRoute
         compile copyFileCompiler
 
@@ -112,6 +112,7 @@ main = hakyll $ do
         makeItem outline
           >>= loadAndApplyTemplate "templates/post.html" mapCtx
           >>= loadAndApplyTemplate "templates/default.html" mapCtx
+          >>= loadAndApplyTemplate "templates/sitemap.html" mapCtx
           >>= relativizeUrls
 
     --TOC for posts

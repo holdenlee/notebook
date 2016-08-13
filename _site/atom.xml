@@ -64,11 +64,133 @@
 </ul>
 <p>Summary:</p>
 <ul>
+<li>Got PMI code running.</li>
 <li><a href="/posts/math/analysis/numerical/ATAP.html">Approximation theory and approximation practice</a>: Notes
 <ul>
-<li>Understood conjugate gradient bound using Chebyshev polynomials (<span class="citation" data-cites="Cyril">@Cyril</span>)</li>
+<li>Understood conjugate gradient bound using Chebyshev polynomials (<span class="citation" data-cites="Cyril">@Cyril</span>). <a href="/posts/math/analysis/numerical/chebyshev.html">Notes</a></li>
 </ul></li>
-<li></li>
+<li>Talk: Yuanzhi on Bandit convex optimization (FOLLOW UP)</li>
+<li>Representation learning <a href="/posts/tcs/machine_learning/representation.html">summary</a>. Talked to Yingyu and kernel DL.</li>
+</ul>
+
+  </div>
+
+    
+
+    <!-- Extension : Sharing buttons @ www.sharethis.com -->
+    <span class='st_facebook_large' displayText='Facebook'></span>
+    <span class='st_twitter_large' displayText='Tweet'></span>
+    <span class='st_googleplus_large' displayText='Google +'></span>
+    <span class='st_reddit_large' displayText='Reddit'></span>
+    <span class='st__large' displayText=''></span>
+
+    <div id="disqus_thread"></div>
+    
+
+
+  
+    <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+  </div>
+  
+</div>
+]]></summary>
+</entry>
+<entry>
+    <title>[BH16] Algorithms for generalized topic modeling</title>
+    <link href="http://holdenlee.github.io/notebook/posts/tcs/machine_learning/matrices/BH16.html" />
+    <id>http://holdenlee.github.io/notebook/posts/tcs/machine_learning/matrices/BH16.html</id>
+    <published>2016-08-12T00:00:00Z</published>
+    <updated>2016-08-12T00:00:00Z</updated>
+    <summary type="html"><![CDATA[
+<div class="container">
+  <div id="content">
+    <div class="page header">
+      <h1>[BH16] Algorithms for generalized topic modeling</h1>
+    </div>
+    <div class="info">
+      
+       
+        <p>Posted: 2016-08-12 
+          , Modified: 2016-08-12 
+	</p>
+      
+       <p>Tags: <a href="/tags/topic%20modeling.html">topic modeling</a></p> 
+    </div>
+    
+  </div>
+  <!--/div-->
+
+  <div class="toc"> <ul>
+ <li><a href="#problem">Problem</a><ul>
+ <li><a href="#assumptions-non-noisy-case">Assumptions (Non-noisy case)</a></li>
+ <li><a href="#assumptions-noisy-case">Assumptions (Noisy case)</a></li>
+ </ul></li>
+ <li><a href="#algorithm">Algorithm</a><ul>
+ <li><a href="#non-noisy-case">Non-noisy case</a></li>
+ <li><a href="#noisy-case">Noisy case</a></li>
+ <li><a href="#lower-bounds">Lower bounds</a></li>
+ </ul></li>
+ </ul> </div>
+
+  <div class="blog-main">
+    <h2 id="problem">Problem</h2>
+<h3 id="assumptions-non-noisy-case">Assumptions (Non-noisy case)</h3>
+<p>Each document has two views <span class="math inline">\((x^1,x^2)\)</span>, ex., representing two paragraphs. There are <span class="math inline">\(k\)</span> topic vectors <span class="math inline">\(v_1,\ldots, v_k\)</span>.</p>
+<ol type="1">
+<li>Each document has a topic vector <span class="math inline">\(w\)</span> associated to it, satisfying <span class="math display">\[\an{w,v_i}=w_i\]</span> with <span class="math inline">\(\sum w_i=1\)</span> (<span class="math inline">\(w=(w_1,\ldots, w_k)\)</span> (<span class="math inline">\(\sum w_i=1\)</span>) is the mixture coefficients). Alternatively, letting <span class="math inline">\(A\)</span> be such that <span class="math inline">\(V^TA=I\)</span>, <span class="math display">\[\pi_{v_1,\ldots, v_k}(x^1)=\pi_{v_1,\ldots, v_k}(x^k) = w^TA.\]</span> (Let <span class="math inline">\(\De=\conv A\)</span>.)</li>
+<li>There exist pure documents: $&gt;$.</li>
+<li>Non-correlation: For all <span class="math inline">\(Z\sub \text{\null}\{v_1,\ldots, v_k\}\)</span>, <span class="math inline">\(\dim Z&lt;n-k\)</span>, <span class="math display">\[\Pj_{(x^1,x^2)\sim D^w} ((x^1-x^2)\nin \Z) \ge \ze.\]</span></li>
+</ol>
+<p>Problem: find <span class="math inline">\(w_i\)</span>.</p>
+<h3 id="assumptions-noisy-case">Assumptions (Noisy case)</h3>
+<ol type="1">
+<li>Observe <span class="math inline">\(\wh x_i^j=\begin{cases} x_i^j&amp;\text{w.p. }1-p_0\\ x_i^j + N(0,\si^2I_n)&amp;\text{w.p. }p_0\end{cases}\)</span>.</li>
+<li>The least nonzero singular value of <span class="math inline">\(\Var(x^1-x^2)\)</span> is <span class="math inline">\(\ge \si^2 + \de_0\)</span>.</li>
+<li><span class="math inline">\(\ve{x_i^j}_2\le M\)</span>.</li>
+</ol>
+<h2 id="algorithm">Algorithm</h2>
+<h3 id="non-noisy-case">Non-noisy case</h3>
+<ol type="1">
+<li>Let <span class="math inline">\(X_1,X_2\)</span> have <span class="math inline">\(x^1\)</span> and <span class="math inline">\(x^2\)</span>’s in their columns. Let <span class="math inline">\(P\)</span> be the projection onto the last <span class="math inline">\(k\)</span> singular vectors of <span class="math inline">\(X_1-X_2\)</span>.</li>
+<li>Let <span class="math inline">\(S_\parallel = \{Px_i^j\}\)</span>. Let <span class="math inline">\(A\)</span> be the extreme points of the convex hull.</li>
+<li>Return <span class="math inline">\(A^+=[v_1,\ldots, v_k]\)</span>.</li>
+</ol>
+<p><em>Proof</em>.</p>
+<ol type="1">
+<li><p>With <span class="math inline">\(O\pa{\fc{n-k}{\ze}\ln \prc{\de}}\)</span> samples, with probability <span class="math inline">\(1-\de\)</span>, <span class="math inline">\(\rank(Z)=n-k\)</span>.</p>
+<em>Proof</em>. Induct: <span class="math inline">\(\rank\set{x_i^1-x_i^2}{i&lt;\fc{j}{ze}\ln \pf{n}{\de}}&lt;j\)</span> with probability <span class="math inline">\(\fc{j\de}{n}\)</span>.</li>
+<li><span class="math inline">\(x_{\parallel} = \pi_{v_1,\ldots, v_k}(x) = \sum (v_i \cdot x)a_i = AV^T x\)</span>.</li>
+<li><p>Takig <span class="math inline">\(m=\Om(\rc{\ze}\ln \pf{k}{\de})\)</span> samples, wp <span class="math inline">\(1-\de\)</span>, <span class="math inline">\(\{a_1,\ldots, a_k\}\)</span> are extreme points of <span class="math inline">\(\conv(S_{\parallel})\)</span>.</p></li>
+</ol>
+<h3 id="noisy-case">Noisy case</h3>
+<ol type="1">
+<li>Let <span class="math inline">\(P\)</span> be the projection onto the last <span class="math inline">\(k\)</span> left singular values of <span class="math inline">\(\wh X_1-\wh X_2\)</span>.</li>
+<li><p>Take <span class="math inline">\(m_2\)</span> fresh samples and let <span class="math inline">\(\wh S_{\parallel} = \{\wh P \wh x_i^1\}\)</span>.</p>
+Let <span class="math inline">\(\ep' = \fc{\ep}{8r}\)</span>. Remove <span class="math inline">\(\wh x_{\parallel}\)</span> from <span class="math inline">\(\wh S_{\parallel}\)</span> if <span class="math inline">\(&lt;\fc{p_0 \xi m_2}2\)</span> points in <span class="math inline">\(B_{\fc{\ep'}2}(\wh x_{\parallel})\)</span>.</li>
+<li><p>If <span class="math inline">\(d(\wh x_{\parallel}, \conv (\wh S_{\parallel}\bs B_{6r \ep'}(\wh x))\ge 2\ep'\)</span>, add <span class="math inline">\(\wh x_{\parallel}\)</span> to <span class="math inline">\(C\)</span>.</p>
+<p>Cluster <span class="math inline">\(C\)</span> by single linkage (i.e. put in same cluster if <span class="math inline">\(\le\)</span>) <span class="math inline">\(16r\ep'=2\ep\)</span>. Return any point from cluster <span class="math inline">\(i\)</span> as <span class="math inline">\(\wh a_i\)</span>.</p></li>
+</ol>
+<p>Here, <span class="math inline">\(r\)</span> is the smallest value such that <span class="math inline">\(d(a_i, \conv(\De\bs B(a_i,r\ep))) \ge \ep\)</span>.</p>
+<p><em>Proof</em>.</p>
+<ol type="1">
+<li><p>Show whp <span class="math inline">\(\ve{P-\wh P}_2\le \ep\)</span>.</p>
+<p>Let <span class="math inline">\(D=X_1-X_2\)</span>. Split <span class="math display">\[ \rc m \wh D \wh D^T - \si^2 I_n -\rc{m} DD^T = \pa{\rc m EE^T - \si^2 I_n} + \pa{\rc m DE^T + \rc m ED^T}. \]</span> Establish 2 properties:</p>
+<ol type="1">
+<li>Whp, this is <span class="math inline">\(\le \ep\)</span>. Use Matrix Bernstein on each term above.</li>
+<li>Whp <span class="math inline">\(\la_{n-k} \pa{\rc m \wh D \wh D^T) &gt; \si^2 +\fc{\de_0}2\)</span>. Bound by the spectral norm of the difference.</li>
+</ol>
+Now use Davis-Kahan.</li>
+<li><p>(Denoising) For appropriate <span class="math inline">\(\ep'\)</span>, <span class="math inline">\(m\)</span>, for any <span class="math inline">\(x\in \wh S_{\parallel}\)</span>, <span class="math inline">\(d(x,\De)\le \ep'\)</span> (points that are kept are close), and for all <span class="math inline">\(i\in [k]\)</span>, there is <span class="math inline">\(\wh a_i\in \wh S_{\parallel}\)</span> such that <span class="math inline">\(\ve{\wh a_i-a_i}\le \ep'\)</span>.</p>
+<em>Proof</em> Use Gaussian anticoncentration, and the fact that in a large sample set, the fraction of samples within any region is close to the density of the region.</li>
+<li><p>Returns <span class="math inline">\(\ve{a_i-\wh a_i}\le \ep\)</span>. Use the definition of <span class="math inline">\(r\)</span> and some geometry.</p></li>
+</ol>
+<h3 id="lower-bounds">Lower bounds</h3>
+<p>Any algorithm requires <span class="math inline">\(\Om(n)\)</span>, not <span class="math inline">\(\Om(k)\)</span> samples.</p>
+<p>Further study:</p>
+<ul>
+<li>Agnostic noise</li>
+<li>General functions <span class="math inline">\(f\)</span>: look at the convex cone of projected samples.</li>
+<li>More general class of similarity functions, e.g. kernels.</li>
 </ul>
 
   </div>
@@ -939,7 +1061,12 @@ save(<span class="st">'dists_1.mat'</span>,<span class="st">'dists'</span>);
 <span class="co">%cpmi matrices</span>
 Ps = calculate_cpmi(psiTr, Ytr, <span class="st">'1'</span>);
 cpmi_experiments(<span class="st">'P_1'</span>);</code></pre></div>
+<p>Over all pairs of features <span class="math inline">\(i,j\)</span>, this is the distribution of <span class="math inline">\(PMI(v_i,v_j)\)</span>:</p>
 <p><img src="/images/pmi/pmi_histogram_1.jpg"></p>
+<p>Is there a correlation between PMI and distance between features? (Distance ranges from <span class="math inline">\(0\)</span> to <span class="math inline">\(5\sqrt 2\)</span>.) It seems not.</p>
+<p><img src="/images/pmi/pmi_distance.jpg"></p>
+<p>Conditioned on the digit being a specific value, how does the PMI distribution look? Still about the same…</p>
+<p><img src="/images/pmi/hist_P_1_0.jpg"> <img src="/images/pmi/hist_P_1_1.jpg"> <img src="/images/pmi/hist_P_1_2.jpg"> <img src="/images/pmi/hist_P_1_3.jpg"> <img src="/images/pmi/hist_P_1_4.jpg"></p>
 
   </div>
 
@@ -1340,152 +1467,6 @@ Take the derivative; this is minimized at <span class="math inline">\(t=\rc{\E Z
 <li id="fn3"><p>(cf. Laplacian)<a href="#fnref3">↩</a></p></li>
 </ol>
 </section>
-
-  </div>
-
-    
-
-    <!-- Extension : Sharing buttons @ www.sharethis.com -->
-    <span class='st_facebook_large' displayText='Facebook'></span>
-    <span class='st_twitter_large' displayText='Tweet'></span>
-    <span class='st_googleplus_large' displayText='Google +'></span>
-    <span class='st_reddit_large' displayText='Reddit'></span>
-    <span class='st__large' displayText=''></span>
-
-    <div id="disqus_thread"></div>
-    
-
-
-  
-    <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
-  </div>
-  
-</div>
-]]></summary>
-</entry>
-<entry>
-    <title>Types and programming languages, Benjamin Pierce</title>
-    <link href="http://holdenlee.github.io/notebook/posts/cs/type_theory/types_and_pl.html" />
-    <id>http://holdenlee.github.io/notebook/posts/cs/type_theory/types_and_pl.html</id>
-    <published>2016-07-31T00:00:00Z</published>
-    <updated>2016-07-31T00:00:00Z</updated>
-    <summary type="html"><![CDATA[
-<div class="container">
-  <div id="content">
-    <div class="page header">
-      <h1>Types and programming languages, Benjamin Pierce</h1>
-    </div>
-    <div class="info">
-      
-       
-        <p>Posted: 2016-07-31 
-          , Modified: 2016-07-31 
-	</p>
-      
-       <p>Tags: <a href="/tags/none.html">none</a></p> 
-    </div>
-    
-  </div>
-  <!--/div-->
-
-  <div class="toc"> <ul>
- <li><a href="#recursive-types">20 Recursive types</a><ul>
- <li><a href="#formalities">20.2 Formalities</a></li>
- <li><a href="#subtyping">20.3 Subtyping</a></li>
- </ul></li>
- <li><a href="#metatheory-of-recursive-types">21 Metatheory of recursive types</a><ul>
- <li><a href="#subtyping-1">21.3 Subtyping</a></li>
- <li><a href="#regular-trees">21.7 Regular trees</a></li>
- <li><a href="#mu-types">21.8 Mu-types</a></li>
- </ul></li>
- <li><a href="#type-reconstruction">22 Type reconstruction</a><ul>
- <li><a href="#let-polymorphism">22.7 Let-polymorphism</a></li>
- </ul></li>
- <li><a href="#universal-types">Universal types</a><ul>
- <li><a href="#system-f">23.3 System F</a></li>
- <li><a href="#section">23.10</a></li>
- </ul></li>
- </ul> </div>
-
-  <div class="blog-main">
-    <h2 id="recursive-types">20 Recursive types</h2>
-<p><span class="math inline">\(\mu\)</span> is a recursion operator for types. A definition <span class="math inline">\(T = \mu X. Y\)</span> means: let <span class="math inline">\(T\)</span> be the infinite type satisfying <span class="math inline">\(X=Y\)</span>.</p>
-<pre><code>Hungry = \mu A. Nat -&gt; A
-Stream = \mu A. Unit -&gt; {Nat, A}
-Process = \mu A. Nat -&gt; {Nat, A}
-Counter = \mu C. {get: Nat, inc: Unit -&gt; C}</code></pre>
-<p>Note: you can’t define Hungry in Haskell because (Then how does printf work? Something with type classes?)</p>
-<p>Recursive types well-types the fixed-point combinator. <span class="math display">\[
-fix_T = \la f:T\to T.(\la x:(\mu A. A\to T). f (x x)) (\la x:(\mu A. A\to T). f (x x))
-\]</span></p>
-<p>Every type is inhabited (<span class="math inline">\(\la\_:(). fix_T (\la x:T.x)\)</span>), so systems with recursive types are useless as logics.</p>
-<p>[Embed untyped lambda calculus]</p>
-<h3 id="formalities">20.2 Formalities</h3>
-<p>There are 2 basic approaches to recursive types. What is the relationship between the type and its one-step unfolding?</p>
-<ol type="1">
-<li>Equi-recursive: They are definitionally equal.</li>
-<li>Iso-recursive: They are different but isomorphic. There are functions <code>unfold</code> and <code>fold</code> going both ways. (Ex. Haskell)</li>
-</ol>
-<p>Note equi-recursive places more demands on the typechecker.</p>
-<h3 id="subtyping">20.3 Subtyping</h3>
-<h2 id="metatheory-of-recursive-types">21 Metatheory of recursive types</h2>
-<p><strong>Theorem</strong> (Knaster-Tarski): Let <span class="math inline">\(X\)</span> be a poset, <span class="math inline">\(f:X\to X\)</span> be order-preserving. Then there exists a fixed point, <span class="math inline">\(\sup\set{x\in X}{x\le f(x)}\)</span>.</p>
-<p>Let <span class="math inline">\(\cal U\)</span> be the universal set. Consider <span class="math inline">\((\cal P(\cal U), \subeq)\)</span>. Say <span class="math inline">\(X\)</span> is <span class="math inline">\(F\)</span>-closed/consistent if <span class="math inline">\(F(X)\subeq/\supeq X\)</span>.</p>
-<p><em>Corollary</em>. The intersection/union of all <span class="math inline">\(F\)</span>-closed/consistent is the least/greatest fixed point of <span class="math inline">\(F\)</span>, denoted by <span class="math inline">\(\mu F, \nu F\)</span>.</p>
-<p>(Principle of induction/coinduction) If <span class="math inline">\(X\)</span> is <span class="math inline">\(F\)</span>-closed, <span class="math inline">\(\mu F\subeq X\)</span>; if <span class="math inline">\(X\)</span> is <span class="math inline">\(F\)</span>-consistent, <span class="math inline">\(X\subeq \nu F\)</span>.</p>
-<p>Finite tree types are given by</p>
-<pre><code>T = Top | (T, T) | T -&gt; T </code></pre>
-<p>Infinite tree types are like this but the tree can be infinite.</p>
-<h3 id="subtyping-1">21.3 Subtyping</h3>
-<p>Say <span class="math inline">\(T&lt;:Top\)</span>, <span class="math inline">\(S_1&lt;:T_1, S_2&lt;:T_2 \implies (S_1\times S_2)&lt;:(T_1,T_2)\)</span> and similarly for <span class="math inline">\(\to\)</span>. Take the transitive closure to get the subtyping relation.</p>
-<h3 id="regular-trees">21.7 Regular trees</h3>
-<p>A tree type is regular if subtrees(T) is finite.</p>
-<h3 id="mu-types">21.8 Mu-types</h3>
-<pre><code>T = X
-	| Top
-	| T x T
-	| T -&gt; T
-	| \mu X. T</code></pre>
-<p>“Keep substituting” <span class="math inline">\(\mu X. T\)</span> to get the tree type corresponding to the <span class="math inline">\(\mu\)</span>-type, treeof<span class="math inline">\(([X\mapsto \mu X. T]T)(\pi)\)</span>.</p>
-<h2 id="type-reconstruction">22 Type reconstruction</h2>
-<p>2 questions:</p>
-<ol type="1">
-<li>Are all substitution instances of t well typed? <span class="math display">\[\forall \si, (\si \Ga \vdash \si t:T)\]</span> Type variables should be held abstract. This leads to <strong>parametric polymorphism</strong>.</li>
-<li>Is some substitution instance of <span class="math inline">\(t\)</span> well typed? <span class="math display">\[\exists \si, (\si \Ga \vdash \si t:T)\]</span> Can <span class="math inline">\(t\)</span> be instantiated to a well-typed term by choosing appropriate values? This leads to type reconstruction/inference.</li>
-</ol>
-<p>Constraint typing: <span class="math inline">\(\Ga \vdash t:T|_{\cal X} C\)</span> means “term <span class="math inline">\(t\)</span> has type <span class="math inline">\(T\)</span> under assumptions <span class="math inline">\(\Ga\)</span> whenever constraints <span class="math inline">\(C\)</span> are satisfied.” <span class="math inline">\(\cal X\)</span> tracks type variables introduced in each subderivation.</p>
-<p>(This is a hybrid between the normal deductive system, and the bottom-up constraint generation system.)</p>
-<h3 id="let-polymorphism">22.7 Let-polymorphism</h3>
-<p>Not allowed: doubleFun:<span class="math inline">\(\forall a . (\forall f : a\to a) \to a \to a\)</span> defined by</p>
-<pre class="hs"><code>let doubleFun = \f x -&gt; f (f x)</code></pre>
-<p>Reason: a polytype cannot appear inside <code>-&gt;</code>.</p>
-<p>T-LetPoly: <span class="math display">\[
-\frac{\Ga \vdash [x\mapsto t_1]t_2:T_2 \quad \Ga \vdash t_1:T_1}{\Ga \vdash \text{let }x=t_1\text{ in }t_2:T_2}.
-\]</span> Instead of calculating a type for <span class="math inline">\(t_1\)</span>, it substitutes <span class="math inline">\(t_1\)</span> in the body. I.e., perform a step of evaluation before calculating types.</p>
-<p>Problem: If the body contains many occurrences, we have to check once for each occurrence. This can take exponential time. See p. 333-4 for solution. Worst-case is still exponential, but in practice it is essentially linear.</p>
-<h2 id="universal-types">Universal types</h2>
-<p>We need to abstract out a type from a term and instantiate the abstract term with concrete type annotations.</p>
-<ul>
-<li>Parametric polymorphism: a single piece of code can be typed generically using variables in place of types, and then instantiated. They behave uniformly.
-<ul>
-<li>Impredicative/first-class</li>
-<li>Let-polymorphism (restricted to top-level let-bindings). Functions cannot take polymorphic values as arguments.</li>
-</ul></li>
-<li>Ad-hoc polymorphism: Exhibit different behaviors when viewed at different types. Overloading: associate single function symbol with many implementations.</li>
-<li>Multi-method dispatch</li>
-<li>Intensional polymorphism: restricted computation over types at run time.</li>
-<li>Subtype polymorphism</li>
-</ul>
-<h3 id="system-f">23.3 System F</h3>
-<p>Equivalent to polymorphic lambda-calculus a.k.a. 2nd-order lambda calculus because it corresponds to 2nd-order intuitionistic logic, which allows quantification over predicates (types) not just terms.</p>
-<p>New terms are</p>
-<ul>
-<li><span class="math inline">\(\la X.t\)</span> (type abstraction)</li>
-<li><span class="math inline">\(t [T]\)</span> (type application)</li>
-</ul>
-<h3 id="section">23.10</h3>
-<p>Impredicative: definition involves thing being defined. <span class="math inline">\(T=\forall X.X\to X\)</span> ranges over all types, including <span class="math inline">\(T\)</span> itself.</p>
-<p>Predicative/stratified: range is restricted to monotypes.</p>
 
   </div>
 
