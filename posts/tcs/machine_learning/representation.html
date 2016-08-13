@@ -28,6 +28,10 @@
   <!-- Extension : InlineDisqussions @ https://github.com/tsi/inlineDisqussions -->
   
 
+  <!-- Extension : Collapsible lists @ http://code.stephenmorley.org/javascript/collapsible-lists/-->
+  <link href="../../../collapsible_lists/css/collapsible.css" rel="stylesheet">
+  <script type="text/javascript" src="../../../collapsible_lists/js/CollapsibleLists.js"></script>
+
 </head>
 
 <body>
@@ -72,7 +76,7 @@
       
        
         <p>Posted: 2016-07-28 
-          , Modified: 2016-07-28 
+          , Modified: 2016-08-13 
 	</p>
       
        <p>Tags: <a href="../../../tags/none.html">none</a></p> 
@@ -83,6 +87,12 @@
 
   <div class="toc"> <ul>
  <li><a href="#low-dimensional-structure-in-high-dimensional-space">Low-dimensional structure in high-dimensional space</a></li>
+ <li><a href="#thoughts-8-13">Thoughts 8-13</a><ul>
+ <li><a href="#kernel-dictionary-learning">Kernel dictionary learning</a></li>
+ <li><a href="#try-to-use-kernel-dictionary-learning">Try to use kernel dictionary learning</a></li>
+ <li><a href="#generalizing-agmm">Generalizing AGMM</a></li>
+ <li><a href="#dl-vs.ica-tensor-decomposition">DL vs. ICA, tensor decomposition</a></li>
+ </ul></li>
  </ul> </div>
 
   <div class="blog-main">
@@ -104,6 +114,60 @@
 <li>Changing the formulation instead to that <span class="math inline">\((\an{x,a_i})_i\)</span> is sparse is equivalent to learning the dictionary <span class="math inline">\((A^+)^T\)</span>. (Warning: this looks different in the over/undercomplete case.)</li>
 </ul></li>
 </ul>
+<h2 id="thoughts-8-13">Thoughts 8-13</h2>
+<p>The problem here is really about <strong>unsupervised learning</strong>: given that there is a representation of a certain form on top of which you can train a classifier, etc., in the <em>absence of labels</em> find the representation.</p>
+<h3 id="kernel-dictionary-learning">Kernel dictionary learning</h3>
+<p>Let <span class="math inline">\(x\)</span>’s be the data points and <span class="math inline">\(X=[\Phi(x)]\)</span> be the image under <span class="math inline">\(\Phi\)</span>. <span class="math inline">\(\Phi\)</span> is such that <span class="math inline">\(K(x,y) = \an{\Phi(x),\Phi(y)}\)</span>. Kernel dictionary learning seeks to find <span class="math inline">\(X=DA\)</span>, <span class="math inline">\(D\in \R^{\iy\times k}\)</span>. But assume <span class="math inline">\(D=XE\)</span> is a linear combination of <span class="math inline">\(\Phi(x)\)</span>’s. Then the objective becomes minimizing <span class="math inline">\(\ve{X-XEA}\)</span> (what norm?) subject to sparsity constraints. Do alternting minimization, etc., using the fact that the norm (and gradients) can be evaluated easily using the kernel trick.</p>
+<h3 id="try-to-use-kernel-dictionary-learning">Try to use kernel dictionary learning</h3>
+<p>Warning: these steps are not justified.</p>
+Suppose that <span class="math inline">\(x\)</span>’s are latent variables, that are sparse<span class="math inline">\(+\)</span>noise, and we observe <span class="math display">\[y=Af(x).\]</span> In our case, <span class="math inline">\(f=\ln\)</span> (so that sparse<span class="math inline">\(+\)</span>positive noise becomes few large entries). Then (maybe we should have <span class="math inline">\(A^T\)</span>? Not sure)
+\begin{align}
+A^+ y &amp;= f(x)\\
+f^{-1}(A^+y) &amp;= x\\
+\Phi(A^+)\Phi(y) &amp;= x \\
+\Phi(y) &amp;=\Phi(A^+)^+ x.
+\end{align}
+<p>This suggests doing dictionary learning on <span class="math inline">\(\Phi(y)\)</span> (or a finite approximation of this), finding <span class="math inline">\(x\)</span>’s, then solving the system of equations <span class="math inline">\(A^TY=f(X)\)</span>. (Take many samples <span class="math inline">\((x,y)\)</span> and do least squares.) In order for this to work, we need to</p>
+<ul>
+<li>justify all the pseudo-inverses, transposes (e.g. OK if inputs random: <span class="math inline">\(A^TAx\approx x\)</span> coordinatewise so things like thresholding work)</li>
+<li>a finite approximation of <span class="math inline">\(\Phi\)</span> is OK.</li>
+<li>DL on <span class="math inline">\(\Phi(Y)\)</span> recovers something that is close to the desired solution.</li>
+<li>The noise model of <span class="math inline">\(x\)</span> meets the requirements for the DL algorithm.</li>
+</ul>
+<p>This does DL in the larger space though. Can we use the kernel trick to make it more efficient?</p>
+<ul>
+<li>We can try to do the kernel trick by first doing KSVD on <span class="math inline">\(\Phi(Y)\)</span>. (Find the singular vectors as linear combinations of <span class="math inline">\(\Phi(Y)\)</span>.)</li>
+<li>If the DL algorithm only relies on <span class="math inline">\(Y^TY\)</span>, we’re in good shape because we can compute this exactly using <span class="math inline">\(\Phi\)</span>.</li>
+</ul>
+<p>So an attempt at an algorithm.</p>
+<ol type="1">
+<li>KSVD</li>
+<li>DL/ICA to find <span class="math inline">\(X\)</span>.</li>
+<li>Solve for <span class="math inline">\(A\)</span>.</li>
+</ol>
+<h3 id="generalizing-agmm">Generalizing AGMM</h3>
+<ul>
+<li>Can we generalize to <span class="math inline">\(x=\)</span> sparse + noise rather than <span class="math inline">\(y=A\pat{sparse} + \pat{noise}\)</span>? We still need noise part to be <span class="math inline">\(o(1)\)</span> though so <span class="math inline">\(\E x_i =o(1)\)</span> (why? otherwise I don’t think you can even do sparse recovery.) Suppose the noise distribution is known; perhaps we can correct for the noise in the AGMM algorithm. If the noise is not known, ex. its mean is not known, this seems difficult.</li>
+<li>The algorithm involves thresholding and looking at a graph. Can we instead have weights, ex. a triangle has weight <span class="math inline">\(\an{u,v}\an{v,w}\an{w,u}\)</span>? The problem is if <span class="math inline">\(u,v,w\)</span> are in 2 communities this multiplies by 8. It’s not a natural additive decomposition. But perhaps something can still be done. Ex. Find overlapping communities such that most triangles are fully inside one community, and triangles occupy a large proportion of each community.</li>
+<li>AGMM just requires <span class="math inline">\(YY^T\)</span>, so knowledge of the dot products is enough. (Kernel trick works.)</li>
+<li>When threshold is not known? Noise is <span class="math inline">\(&lt;\al\)</span>, signal is <span class="math inline">\(&gt;\al\)</span>. Add an entry <span class="math inline">\(1\)</span> to every vector, but <em>that</em> entry is not 0-centered…</li>
+</ul>
+<p>Different optimization problem? (Ex. add sparsity regularization, ex. <span class="math inline">\(\ved_1\)</span>.) SDP relaxation? It’s hard to integrate the sparsity constraints.</p>
+<p>Redo analysis with continuous observations?</p>
+<p>Tensor decomp for mixed community detection [Anandkumar, Ge]: look at <span class="math inline">\((\E_{x\in X} \an{x,a}\an{x,b}\an{x,c})_{a,b,c}\)</span>.</p>
+<p>I think I’m trying to do too many things at once. Allow larger noise, agnostic noise, arbitrary mean/cutoff…</p>
+<p>Look at the simplest problem inspired by the problem. Ex. Assume there are <span class="math inline">\(k=10\)</span> functions <span class="math inline">\(\si_k(A_k^Tx+b_k)\)</span> (normalized) that map data to close to <span class="math inline">\(e_1,\ldots, e_{10}\)</span>? Completely unsupervised learning. AGM is much simpler with sparsity 1…</p>
+<h3 id="dl-vs.ica-tensor-decomposition">DL vs. ICA, tensor decomposition</h3>
+<p>Why can’t we just solve dictionary learning with tensor decomposition? Suppose <span class="math inline">\(x_i\)</span> are independent, symmetric, non-Gaussian, mean 0. (Symmetric mean 0 can probably be loosened if we modify this.) Then <span class="math display">\[\E y^{\ot 4} -(\E y^{\ot 2})^{\ot 2} =\sum_i A_i^{\ot 4} [(\E x_i)^4 - (\E x_i^2)^2].\]</span> We don’t even need the <span class="math inline">\(x_i\)</span> to be from a sparse distribution—any non-Gaussian distribution (actually, want 4th moments to be non-Gaussian) will do!</p>
+<p>Reasons why this doesn’t trivialize the problem?</p>
+<ol type="1">
+<li>Overcomplete tensor decomposition is hard/not well-understood.</li>
+<li>The <span class="math inline">\(x_i\)</span> aren’t completely independent. (But we can assume almost 4-wise independence, etc.—the AGMM algorithm also requires similar assumptions.)</li>
+<li>Tensor decomposition is inefficient.</li>
+<li>It doesn’t find <span class="math inline">\(x\)</span>’s. (But we can do inference separately.)</li>
+<li>Tensor decomposition in this regime just doesn’t work in practice. (Practically, what can you expect???)</li>
+</ol>
+<p>I think I need to familiarize myself with practical tensor decomposition and DL!</p>
 
   </div>
 

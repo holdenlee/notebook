@@ -28,6 +28,10 @@
   <!-- Extension : InlineDisqussions @ https://github.com/tsi/inlineDisqussions -->
   
 
+  <!-- Extension : Collapsible lists @ http://code.stephenmorley.org/javascript/collapsible-lists/-->
+  <link href="../../../../collapsible_lists/css/collapsible.css" rel="stylesheet">
+  <script type="text/javascript" src="../../../../collapsible_lists/js/CollapsibleLists.js"></script>
+
 </head>
 
 <body>
@@ -173,7 +177,12 @@ save(<span class="st">'dists_1.mat'</span>,<span class="st">'dists'</span>);
 <span class="co">%cpmi matrices</span>
 Ps = calculate_cpmi(psiTr, Ytr, <span class="st">'1'</span>);
 cpmi_experiments(<span class="st">'P_1'</span>);</code></pre></div>
+<p>Over all pairs of features <span class="math inline">\(i,j\)</span>, this is the distribution of <span class="math inline">\(PMI(v_i,v_j)\)</span>:</p>
 <p><img src="../../../../images/pmi/pmi_histogram_1.jpg"></p>
+<p>Is there a correlation between PMI and distance between features? (Distance ranges from <span class="math inline">\(0\)</span> to <span class="math inline">\(5\sqrt 2\)</span>.) It seems not.</p>
+<p><img src="../../../../images/pmi/pmi_distance.jpg"></p>
+<p>Conditioned on the digit being a specific value, how does the PMI distribution look? Still about the same…</p>
+<p><img src="../../../../images/pmi/hist_P_1_0.jpg"> <img src="../../../../images/pmi/hist_P_1_1.jpg"> <img src="../../../../images/pmi/hist_P_1_2.jpg"> <img src="../../../../images/pmi/hist_P_1_3.jpg"> <img src="../../../../images/pmi/hist_P_1_4.jpg"></p>
 
   </div>
 
