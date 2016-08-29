@@ -173,7 +173,7 @@
 <p>For strongly convex: Choose <span class="math inline">\(s\)</span> to maximize the minimum progress in terms of <span class="math inline">\(x\)</span>. <span class="math display">\[\fc{s-\rc{l}}{\rc{l}} = \fc{\rc L-s}{\rc L} \implies s = \fc{2}{L+l}.\]</span></p>
 <p><strong>Backtracking analysis:</strong></p>
 <ul>
-<li>Translate to <span class="math inline">\((0,0)\)</span> and look at 1-D slice. Then <span class="math inline">\(f\le b x + \rc2 M x^2\)</span>, <span class="math inline">\(b = \ve{\nb f(x)}\)</span>. The quadratic equals $bx $ at <span class="math inline">\(x=\fc{2b(1-\al)}{M}\)</span>.</li>
+<li>Translate to <span class="math inline">\((0,0)\)</span> and look at 1-D slice. Then <span class="math inline">\(f\le b x + \rc2 M x^2\)</span>, <span class="math inline">\(b = \ve{\nb f(x)}\)</span>. <!--The quadratic equals $\al bx$ at $x=\fc{2b(1-\al)}{M}$.--></li>
 <li>One of the following holds.
 \begin{align}
 f(x+t_0\De x) &amp;&gt; f(x) + \al \nb f^T \De x\\
@@ -204,7 +204,7 @@ where the last inequality follows from <span class="math inline">\(\al&lt;0.5\)<
 <li><p><span class="math inline">\(\be\)</span>-smooth: see <a href="AO15.html">AO15</a>. Note that proof starts with <span class="math inline">\(f(x_k)-f(x^*)\)</span> rather than <span class="math inline">\(\ve{x_k-x^*}\)</span>, and telescopes on <span class="math inline">\(\rc{D_k}\)</span> instead of <span class="math inline">\(\ve{x_k-x^*}\)</span>.</p>
 Alternate proof off by factor of <span class="math inline">\(\log T\)</span>: reduce to <span class="math inline">\(\ga\)</span>-convex by adding <span class="math inline">\(\fc{\al}2\ve{x-x_1}^2\)</span>.</li>
 <li><span class="math inline">\(\al\)</span>-sc: Proof off by factor of <span class="math inline">\(\log T\)</span>: average <span class="math inline">\(f*\mu(\pl \bS_\de)\)</span> is <span class="math inline">\(\fc{dG}{\de}\)</span> smooth; optimize parameters.</li>
-<li><p>General case: Consider <span class="math inline">\(g(x)=f(x) + \fc{\al}2\ve{x-x_1}^2\)</span>. Use the <span class="math inline">\(\al\)</span>-sc case to get error <span class="math inline">\(\fc{\al}2R^2 + \rc{\al T}\)</span>. Take <span class="math inline">\(\al = \sfc{1}{TR}\)</span> to get <span class="math inline">\(\sfc{R}{\sqrt T}\)</span>.</p></li>
+<li><p>General case: Consider <span class="math inline">\(g(x)=f(x) + \fc{\al}2\ve{x-x_1}^2\)</span>. Use the <span class="math inline">\(\al\)</span>-sc case to get error <span class="math inline">\(\fc{\al}2R^2 + \rc{\al T}\)</span>. Take <span class="math inline">\(\al \propto \rc{\sqrt T}\)</span>. <!-- Take $\al = \sfc{1}{TR}$ to get $\sfc{R}{\sqrt T}$.--></p></li>
 </ul>
 <h2 id="regret-bounds">Regret bounds</h2>
 <ul>
@@ -239,6 +239,14 @@ f(\ol x_K) - f(x^*) \le \rc K\pa{
 
 	This is slow. If we want $f(x_k) - f(x^*)\le \ep$, we need $O\prc{\ep^2}$ steps.
     I'm very confused here. Isn't the above setting the $M$-smooth case, in which case you get $\rc{T}$ convergence? --> Note this is a regret bound, and it gives a bound on <span class="math inline">\(\ol x_K\)</span> not <span class="math inline">\(x_K\)</span>. For the bound on <span class="math inline">\(x_K\)</span> see <a href="AO15.html">AO15</a>. Note that proof starts with <span class="math inline">\(f(x_k)-f(x^*)\)</span> rather than <span class="math inline">\(\ve{x_k-x^*}\)</span>, and telescopes on <span class="math inline">\(\rc{D_k}\)</span> instead of <span class="math inline">\(\ve{x_k-x^*}\)</span>.</li>
+</ul>
+<h2 id="review">Review</h2>
+<ul>
+<li>What is the performance of GD, AGD, and regret GD on general, <span class="math inline">\(\al\)</span>-convex, <span class="math inline">\(\be\)</span>-smooth, and <span class="math inline">\(\ga\)</span>-convex functions?</li>
+<li>Describe gradient descent (a) when condition number is known and (b) using backtracking. What are parameters for backtracking?</li>
+<li>State the gradient descent lemma and prove it. Prove GD for <span class="math inline">\(\ga\)</span>-convex functions.</li>
+<li>Prove the bound for <span class="math inline">\(\al\)</span>-smooth functions.</li>
+<li>Prove a regret bound in the general case.</li>
 </ul>
 <section class="footnotes">
 <hr />

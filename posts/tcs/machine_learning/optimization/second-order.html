@@ -91,6 +91,7 @@
  <li><a href="#convergence">Convergence</a></li>
  <li><a href="#more-intuition">More intuition</a></li>
  <li><a href="#implementation-issues">Implementation issues</a></li>
+ <li><a href="#review">Review</a></li>
  <li><a href="#scraps">Scraps</a></li>
  </ul> </div>
 
@@ -126,7 +127,7 @@
 \De x_{nsd} &amp;=\fc{H^{-1} \nb f}{\ve{H^{-\rc 2} \nb f}} = \fc{H^{-1} \nb f}{\la(x)^2}\\
 \la(x) &amp;= \ve{H^{-\rc 2}\nb f}^{\rc 2} = (\nb f^T H^{-1} \nb f)^{\rc 2}.
 \end{align}
-Here <span class="math inline">\(\la(x)\)</span> is the Newton decrement.</li>
+Here <span class="math inline">\(\la(x)\)</span> is the Newton decrement. (Use <span class="math inline">\(\Delta x = \Delta x_{nsd}\)</span>.)</li>
 </ul></li>
 <li>Newton for functions with Lipschitz Hessian: The number of steps to reach <span class="math inline">\(\ep\)</span> is <span class="math display">\[\fc{f(x^{(0)}-p^*)}{\ga} + \ln\ln \fc{\ep_0}{\ep}, \ep_0=\fc{2m^3}{L^2}.\]</span></li>
 <li><span class="math inline">\(f\)</span> is <strong>self-concordant</strong> if for all <span class="math inline">\(v\)</span>, <span class="math inline">\(\an{\nb^3 f, \De x^{\ot 3}} \le 2 \an{\nb^2 f, \De x^{\ot2}}^{\fc 32}\)</span>. For self-concordant functions, the number of steps to reach <span class="math inline">\(\ep\)</span> is <span class="math display">\[\fc{f(x^{(0)}-p^*)}{\ga} + \log_2\log_2\prc{\ep}\]</span> where <span class="math inline">\(\ga = \fc{\al \be (1-2\al)^2}{20-8\al}\)</span>.</li>
@@ -160,10 +161,10 @@ Here <span class="math inline">\(\la(x)\)</span> is the Newton decrement.</li>
 <li>What is the main idea of Newton descent? Why/how do we get quadratic convergence?
 <ul>
 <li>Go in the direction of the minimum suggested by the Hessian (second order approximation).</li>
-<li>The proof is organized as follows. If <span class="math inline">\(\ve{\nb f(x^{(k)})^2}\)</span> is
+<li>The proof is organized as follows. If <span class="math inline">\(\ve{\nb f(x^{(k)})}^2\)</span> is
 <ul>
 <li>large (<span class="math inline">\(\ge \eta\)</span>), then make constant progress by <span class="math inline">\(\ga\)</span>. This is the dampled phase; steps are small. Steps are small because the default Newton step <span class="math inline">\(t=1\)</span> is bad, and backtracking will choose a smaller <span class="math inline">\(t\)</span>. (?) (It’s “slow” in the sense it’s not quadratically convergent, but it makes constant progress.)</li>
-<li>small (<span class="math inline">\(&lt;\eta\)</span>), then make quadratic progress, <span class="math inline">\(\fc{L}{2m^2}\ve{\nb f(x^{(k+1)})}_2\le \ve{\nb f(x^{(k)})}_2^2\)</span>.</li>
+<li>small (<span class="math inline">\(&lt;\eta\)</span>), then make quadratic progress, <span class="math inline">\(\ve{\nb f(x^{(k+1)})}_2\le \fc{L}{2m^2}\ve{\nb f(x^{(k)})}_2^2\)</span>.</li>
 </ul></li>
 </ul></li>
 <li>What should <span class="math inline">\(\eta\)</span> depend on? <span class="math inline">\(\al\)</span> (the slope for backtracking), <span class="math inline">\(m\)</span> (strong convexity parameter), <span class="math inline">\(L\)</span> (Lipschitz constant on Hessian).</li>
@@ -172,7 +173,7 @@ Here <span class="math inline">\(\la(x)\)</span> is the Newton decrement.</li>
 \begin{align}
 f(x) &amp;= dx + \rc 2 ax^2 + \te\pa{\rc 6 Lx^3}\\
 f\pa{-\fc da} &amp;= -\rc 2 \fc{d^2}a\\
-&amp;\le -\fc{d^2}{a} ]ub{\pa{\rc 2 - \rc 6 L \fc{d}{a^2}}}{\ge \al}.
+&amp;\le -\fc{d^2}{a} \ub{\pa{\rc 2 - \rc 6 L \fc{d}{a^2}}}{\ge \al}.
 \end{align}
 <p>In order for the quantity to be <span class="math inline">\(\ge \al\)</span>, noting <span class="math inline">\(\fc{d}{a^2} = \fc{d}{a^{\fc 32}}\)</span>, we want <span class="math inline">\(\la \le \fc{3(1-2\al) a^{\fc 32}}L\)</span>; it’s sufficient for <span class="math inline">\(f'\le \fc{3(1-2\al)m^2}{L}\)</span>.</p>
 Note that unlike for linear convergence, we don’t prove something like <span class="math inline">\(f(x') - f(x^*)\le \cdots\)</span>. We have to work with the gradients to get quadratic convergence. (Gradients also control the distance to the optimum.) We have
@@ -248,6 +249,12 @@ where the last inequality is when <span class="math inline">\(\la\le \rc 4\)</sp
 <ol type="1">
 <li>Precompute line searches: it can be more efficient to simultaneously compute <span class="math inline">\(f(x+t\De x)\)</span> for many values of <span class="math inline">\(t\)</span>, e.g., if it involves a linear/matrix function.</li>
 <li>Computing <span class="math inline">\(\De x_{nt}=H^{-1}\nb f(x)\)</span> is more efficient if <span class="math inline">\(H\)</span> has band structure, sparsity, etc.</li>
+</ol>
+<h2 id="review">Review</h2>
+<ol type="1">
+<li>Describe the Newton method. What is the step size and Newton decrement?</li>
+<li>What is the convergence rate for functions with Lipschitz Hessian?</li>
+<li>Define self-concordant. What is the convergence for self-concordant functions?</li>
 </ol>
 <h2 id="scraps">Scraps</h2>
 <p>? 9.31,</p>

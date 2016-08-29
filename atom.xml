@@ -8,8 +8,1090 @@
         <name>Holden Lee</name>
         <email>oldheneel@gmail.com</email>
     </author>
-    <updated>2016-08-13T00:00:00Z</updated>
+    <updated>2016-08-27T00:00:00Z</updated>
     <entry>
+    <title>Weekly summary 2016-08-27</title>
+    <link href="http://holdenlee.github.io/notebook/posts/summaries/2016-08-27.html" />
+    <id>http://holdenlee.github.io/notebook/posts/summaries/2016-08-27.html</id>
+    <published>2016-08-27T00:00:00Z</published>
+    <updated>2016-08-27T00:00:00Z</updated>
+    <summary type="html"><![CDATA[
+<div class="container">
+  <div id="content">
+    <div class="page header">
+      <h1>Weekly summary 2016-08-27</h1>
+    </div>
+    <div class="info">
+      
+       
+        <p>Posted: 2016-08-27 
+          , Modified: 2016-08-27 
+	</p>
+      
+       <p>Tags: <a href="/tags/none.html">none</a></p> 
+    </div>
+    
+  </div>
+  <!--/div-->
+
+  <div class="toc"> <ul>
+ <li><a href="#goals">Goals</a></li>
+ <li><a href="#summary">Summary:</a></li>
+ </ul> </div>
+
+  <div class="blog-main">
+    <h2 id="goals">Goals</h2>
+<ul>
+<li>Review/learning
+<ul>
+<li>HDP Ch. 4</li>
+<li>Index-card AI safety notes</li>
+<li>Convex optimization, bandit optimization</li>
+</ul></li>
+<li>PMI
+<ul>
+<li>Organize code, data; write up what I’ve found so far.</li>
+</ul></li>
+<li>Representation learning
+<ul>
+<li>Experiment?</li>
+</ul></li>
+<li>Tensorflow
+<ul>
+<li>Get basic LSTM running.</li>
+<li>Play with parameters in MNIST.</li>
+</ul></li>
+</ul>
+<h2 id="summary">Summary:</h2>
+<ul>
+<li>PMI
+<ul>
+<li>Run weighted SVD and compare</li>
+</ul></li>
+<li>HDP started Ch. 4</li>
+</ul>
+
+  </div>
+
+    
+
+    <!-- Extension : Sharing buttons @ www.sharethis.com -->
+    <span class='st_facebook_large' displayText='Facebook'></span>
+    <span class='st_twitter_large' displayText='Tweet'></span>
+    <span class='st_googleplus_large' displayText='Google +'></span>
+    <span class='st_reddit_large' displayText='Reddit'></span>
+    <span class='st__large' displayText=''></span>
+
+    <div id="disqus_thread"></div>
+    
+
+
+  
+    <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+  </div>
+  
+</div>
+]]></summary>
+</entry>
+<entry>
+    <title>Interior point methods</title>
+    <link href="http://holdenlee.github.io/notebook/posts/tcs/machine_learning/optimization/ipm.html" />
+    <id>http://holdenlee.github.io/notebook/posts/tcs/machine_learning/optimization/ipm.html</id>
+    <published>2016-08-26T00:00:00Z</published>
+    <updated>2016-08-26T00:00:00Z</updated>
+    <summary type="html"><![CDATA[
+<div class="container">
+  <div id="content">
+    <div class="page header">
+      <h1>Interior point methods</h1>
+    </div>
+    <div class="info">
+      
+       
+        <p>Posted: 2016-08-26 
+          , Modified: 2016-08-26 
+	</p>
+      
+       <p>Tags: <a href="/tags/convex%20optimization.html">convex optimization</a></p> 
+    </div>
+    
+  </div>
+  <!--/div-->
+
+  <div class="toc"> <ul>
+ <li><a href="#introduction">Introduction</a></li>
+ <li><a href="#analysis-and-algorithm-explanation">Analysis and algorithm explanation</a><ul>
+ <li><a href="#place-to-start">1 Place to start</a><ul>
+ <li><a href="#termination-near-phase-ii-central-path">Termination near phase II central path</a></li>
+ </ul></li>
+ <li><a href="#inner-steps">2 Inner steps</a></li>
+ <li><a href="#outer-steps">3 Outer steps</a></li>
+ <li><a href="#total">Total</a></li>
+ <li><a href="#variations">Variations</a></li>
+ </ul></li>
+ <li><a href="#primal-dual-ipm">Primal-dual IPM</a></li>
+ <li><a href="#intuitions">Intuitions</a></li>
+ </ul> </div>
+
+  <div class="blog-main">
+    <h2 id="introduction">Introduction</h2>
+<p>The idea: Given <span class="math inline">\(\min_{f_i\le 0} f\)</span>,</p>
+<ol type="1">
+<li>Find a feasible point.</li>
+<li>Turn into soft constraints: let <span class="math inline">\(F(t,x) = \min f+ \sum -\rc t \ln (-f_i)\)</span>. (Add a barrier function.) As <span class="math inline">\(t\to \iy\)</span>, <span class="math inline">\(F(t,x)\)</span> becomes steeper and <span class="math inline">\(\to f(x)\)</span> pointwise.</li>
+<li>Solve iteratively. Start at some <span class="math inline">\((x_0,t_0)\)</span>: Find a value within <span class="math inline">\(\ep\)</span> of <span class="math inline">\(\min F(t_i,x)\)</span>. (Centering)</li>
+<li>Set <span class="math inline">\(t_{i+1}=\ga t_i\)</span> (updating schedule).</li>
+<li>Go back to 3. Repeat until <span class="math inline">\(t\)</span> is large enough. (<span class="math inline">\(m/t&lt;\ep\)</span>)</li>
+</ol>
+<p>Define the central path. What are the properties of the central path. Explain the relationship to the dual problem.</p>
+<p><span class="math display">\[
+C = \set{(t,x)}{x=\amin f(x) + \sum -\rc t \ln (-f_i(x))}.
+\]</span> Now <span class="math inline">\(f(c(t))\to f(x^*)\)</span>. For <span class="math inline">\((t,x')\in C\)</span>, we have <span class="math display">\[ \nb f + \sum - \fc{\nb f_i}{tf_i}=0.\]</span> This is the first KKT condition with <span class="math inline">\(\la_i = -\rc{tf_i(x')}\)</span>. (Complementarity is not satisfied though: we have <span class="math inline">\(-\la_if_i=\rc t\)</span>, not 0.)</p>
+Let <span class="math inline">\(x^*=\amin_{f_i\le 0} f\)</span>, <span class="math inline">\(x'=\amin f - \sum \rc t \ln (-f_i)\)</span>. Substituting <span class="math inline">\(x',\la_i\)</span> in the dual problem, we get
+\begin{align}
+f(x^*) &amp;\ge \min_x f(x) - \sum \rc{t f_i(x')} f_i(x) \\
+&amp; = f(x') - \fc mt &amp; x=x'\\
+\implies f(x^*) \le f(x') &amp;\le f(x^*) + \fc mt.
+\end{align}
+<p>Now add in the condition <span class="math inline">\(Ax=b\)</span>, and the term <span class="math inline">\(\nu^T(Ax-b)\)</span>. The analysis stays the same.</p>
+<p>(<span class="math inline">\(\ln(-f_i)\)</span> has the magic that its gradient is <span class="math inline">\(\nb f_i\)</span> times something.)</p>
+<p>What questions do we need to address?</p>
+<ol type="1">
+<li>How do we find a point to start—find a feasible point?</li>
+<li>Given the previous almost-optimal solution, what’s the complexity of finding the next one, given ratio <span class="math inline">\(\mu\)</span>? (Number of inner steps)</li>
+<li>How many outer steps do we need? When to stop? (We’ve shown the gap is <span class="math inline">\(\fc mt\)</span>, so stop when <span class="math inline">\(t&gt;\fc m\ep\)</span>.</li>
+</ol>
+<p>What assumptions do we need?</p>
+<ul>
+<li><span class="math inline">\(tf_0+\phi\)</span> (<span class="math inline">\(\phi = -\sumo im \ln(-f_i)\)</span>) closed (??) and self-concordant for all <span class="math inline">\(t\ge t^{(0)}\)</span>.</li>
+<li>Sublevel sets of <span class="math inline">\(f_0\)</span> (<span class="math inline">\(f_i\le 0\)</span>, <span class="math inline">\(Ax=b\)</span>) are bounded. (This implies that <span class="math inline">\(\nb^2(tf_0+\phi)\)</span> is PD—why?)</li>
+</ul>
+<p>This is reasonable because it is self-concordant if all <span class="math inline">\(f_i\)</span> are linear or quadratic, and <span class="math inline">\(\ln\)</span> is good at making functions self-concordant.</p>
+<p>Give an example of a problem that can be reformulated to be self-concordant. Technique is to add redundant constraints or extra variables.</p>
+<ul>
+<li>For <span class="math inline">\(\min_{Fx\le g, Ax=b} \sumo in x_i\ln x_i\)</span>, <span class="math inline">\(tf_0(x)+\phi(x)\)</span> is not closed (?) or self-concordant. Using that <span class="math inline">\(ty\ln y - \ln y\)</span> is self-concordant, we add in the redundant constraint <span class="math inline">\(x\ge 0\)</span> to get <span class="math display">\[tf_0+\phi = \sumo in (tx_i\ln x_i - \ln x_i) - \sumo im \ln (g_i-f_i^Tx).\]</span></li>
+<li>For <span class="math inline">\(\min_{\ln(\sumo k{K_i}\exp(a_{ik}^T + b_{ik}))\le 0} \ln \pa{\sumo k{K_0} \exp(a_{0k}^Tx+b_{0k})}\)</span>, introduce the variables <span class="math inline">\(y_{ik}\)</span>. Change the problem to
+\begin{align}
+\min \sumo k{K_0} y_{0k}\\
+\sumo k{K_i} y_{ik} &amp;\le 1\\
+a_{ik}^T x+b_{ik} - \ln y_{ik} &amp;\le 0\\
+y_{ik} &amp;\ge 0.
+\end{align}</li>
+</ul>
+<h2 id="analysis-and-algorithm-explanation">Analysis and algorithm explanation</h2>
+<h3 id="place-to-start">1 Place to start</h3>
+<p>How to find a feasible point? A feasibility problem can be transformed into an optimization problem</p>
+<p><span class="math display">\[
+\exists x, f_i\le 0,  \iff \min_{f_i\le m} m\le 0.
+\]</span> <!-- Ax = b --> Assume <span class="math inline">\(\{\forall i, f_i\le 0\}\subeq B_R(0)\)</span>. Let <span class="math inline">\(\ol p^*\)</span> be the optimal value of this optimization problem.</p>
+Actually add an extra constraint (<span class="math inline">\(a\)</span> satisfies <span class="math inline">\(\ve{a}_2\le \rc R\)</span> so is redundant). <span class="math display">\[
+\min_{f_i\le s, a^Tx \le 1} s.
+\]</span> Choose <span class="math inline">\(a,s_0\)</span> so that <span class="math inline">\((x=0,s=s_0, t_0)\)</span> is on the central path (to make analysis easier), i.e., so <span class="math inline">\(x=0,s=s_0\)</span> minimizes <span class="math display">\[t^{(0)}s- \sumo im \ln (s-f_i(x)) - \ln (1-a^T x).\]</span> Set the gradient to 0 to see that we require
+\begin{align}
+t^{(0)} &amp;= \sumo im \rc{s_0 - f_i(0)}\\
+a &amp;= -\sumo im \rc{s_0-f_i(0)} \nb f_i(0).
+\end{align}
+<p>What to choose for <span class="math inline">\(s_0\)</span>? We need <span class="math inline">\(s_0&gt;F:=\max_i f_i(0)\)</span> and <span class="math inline">\(\ve{a}_2\le \rc{R}\)</span>. Upper bound <span class="math inline">\(\ve{a}_2\)</span> by <span class="math display">\[
+\ve{a}_2\le \sumo im \rc{s_0-f_i(0)}\ve{\nb f_i(0)} \le \fc{mG}{s_0-F},\quad G=\max_i \ve{\nb f_i(0)}_2,
+\]</span> so we can take <span class="math inline">\(\boxed{s_0=mGR+F}\)</span>. Then <span class="math inline">\(t^{(0)} \ge \rc{mGR}\)</span> so the initial duality gap is <span class="math inline">\(\fc{m+1}{t^{(0)}} \le (m+1) mGR\)</span>. Use the barrier method until the duality gap is <span class="math inline">\(&lt;|\ol p^*|\)</span>, so that we can determine <span class="math inline">\(\sgn(\ol p^*)\)</span>. This requires (take <span class="math inline">\(\mu = 1+\rc{\sqrt{m+1}}\)</span>) <span class="math display">\[
+\le \ce{\sqrt{m+1} \log_2 \fc{m(m+1)GR}{|\ol p^*|}}\pa{\rc{2\ga} + c}
+\]</span> Newton steps. (Interpret <span class="math inline">\(\lg\pf{GR}{|\ol p^*|}\)</span> as how close the feasibility problem is to the boundary between feasibility and infeasibility.)</p>
+<p>(Equality constraints don’t change things too much. ?? <span class="math inline">\(G\)</span>, <span class="math inline">\(R\)</span> refer to reduced/eliminated problem.)</p>
+Why did we add in <span class="math inline">\(a^Tx\le 1\)</span>? Otherwise, we minimize <span class="math inline">\(ts-\sum \ln (-(f_i-s))\)</span>, and
+\begin{align}
+\ddd{s} &amp;= t+\sum \rc{f_i-s} = 0\\
+\nb_x &amp;= \sum \fc{-\nb f_i}{f_i-s} =0.
+\end{align}
+<p>We can’t choose <span class="math inline">\(x=0\)</span> because we need <span class="math inline">\(s&gt;\max f_i\)</span>, and <span class="math inline">\(\nb_x&gt;0\)</span>.</p>
+<p>(Note if we add the constraint <span class="math inline">\(a^Tx\le 1\)</span> for phase 1, we have to include it for phase II as well.)</p>
+<h4 id="termination-near-phase-ii-central-path">Termination near phase II central path</h4>
+<p>During phase I, add in the extra constraint <span class="math inline">\(f_0(x)\le M\)</span> to make it intersect the phase II central path. (We can add the constraint <span class="math inline">\(a^Tx\le 1\)</span> below.) We want the point on the central path for phase I corresponding to <span class="math inline">\(s=0\)</span> to also be on the phase II central path. (I think you won’t get to <span class="math inline">\(s=0\)</span> exactly, but you get close—then the duality gap is <span class="math inline">\(m(M-f_0)+\)</span>(something small).)</p>
+\begin{align}
+\min_{f_i\le s, f_0\le M, Ax=b} s:&amp;&amp; \nb(ts + (\sum-\ln (s-f_i)) - \ln (M-f_0) + A^T \nu) &amp;=0\\
+\iff &amp;&amp; t&amp;=\sum \rc{s-f_i} = \sum -\rc{f_i}\\
+&amp;&amp; \rc{M-f_0} \nb f_0 + \sum\rc{s-f_i} \nb f_i + A^T\nu &amp;=0\\
+\min_{f_i\le 0, Ax=b}f_0:&amp;&amp; \nb(tf_0+\sum - \ln (-f_i) + A^T \nu) &amp;=0\\
+\iff &amp;&amp;t\nb f + \fc{\nb f_i}{f_i} + A^T \nu &amp;=0
+\end{align}
+<p>Make these match by setting <span class="math inline">\(t=\rc{M-f_0}\)</span>. I.e., the initial duality gap for phase 2 is <span class="math inline">\(\fc{m}{t} = m(M-f_0)\)</span>.</p>
+<h3 id="inner-steps">2 Inner steps</h3>
+<p>Given <span class="math inline">\(x^*(t)\)</span>, how many steps does it take to compute <span class="math inline">\(x^*(\mu t)\)</span>?</p>
+<p>How can you use the fact that <span class="math inline">\(x\)</span> is optimal for <span class="math inline">\(tf_0(x) + \phi(x)\)</span> to prove how optimal it is for <span class="math inline">\(\mu t f_0(x)+\phi(x)\)</span>?</p>
+<p>Let <span class="math inline">\(x=x^*(t)\)</span>, <span class="math inline">\(x^+=x^*(\mu t)\)</span>.</p>
+<p>It suffices to bound <span class="math display">\[\mu t f_0(x) + \phi(x) - \mu tf_0(x^+) - \phi(x^+).\]</span></p>
+<p>We can’t bound <span class="math inline">\(\ln(-f_i)\)</span> directly. We can hope to bound the dual function <span class="math inline">\(\cL\)</span> (we have info from the KKT conditions). Use the linear approximation to <span class="math inline">\(\ln\)</span>.</p>
+\begin{align}
+\mu t f_0(x) + \phi(x) - \mu tf_0(x^+) - \phi(x^+)
+&amp;= \mu t f_0(x) - \mu t f_0(x^+) + \sum \ln \pf{\mu f_i(x^+)}{\mu f_i(x^+)}\\
+&amp;\le \mu t f_0(x) - \mu t f_0(x^+) + \sum \pa{\fc{\mu f_i(x^+)}{f_i(x)} - 1 -\ln \mu}\\
+&amp;= \mu t f_0(x) - \mu t f_0(x^+) + t\pa{\sum \rc{tf_i} \mu f_i(x^+)} - m - m\ln \mu\\
+&amp;= \mu t f_0(x) - \mu t \cL(x^+, \la, \nu) - m - m \ln \mu &amp;Ax^+=b, \la_i  = \rc{tf_i}\\
+&amp;\le \mu tf_0(x) - \mu t g(\la, \nu) - m - m\ln \mu\\
+&amp;=m(\mu-1 - \ln \mu).
+\end{align}
+<p>Thus, the number of inner steps is <span class="math display">\[
+\fc{f(x)=p^*}{\ga}+c = \fc{m(\mu - 1 - \ln \mu)}{\ga} + c
+\]</span> (See <a href="second-order.html">Newton</a> for definition of <span class="math inline">\(\ga\)</span>. We approximate <span class="math inline">\(\ln\ln\)</span> by a constant.) This is approximately quadratic for small <span class="math inline">\(\mu\)</span> (<span class="math inline">\(O(m(\mu-1)^2)\)</span>), linear (<span class="math inline">\(O(m\mu)\)</span>) for large <span class="math inline">\(\mu\)</span>. (This does not depend on <span class="math inline">\(n,p\)</span>.)</p>
+<h3 id="outer-steps">3 Outer steps</h3>
+<p>The number of outer steps needed is <span class="math inline">\(\ce{\fc{\ln (m/(t^{(0)}\ep))}{\ln \mu}}\)</span> so the total number of Newton steps needed is <span class="math display">\[\ce{\log_\mu \pf{m}{t^{(0)}\ep)}} \pa{\fc{m(\mu - 1 - \ln \mu)}{\ga} + c}. \]</span></p>
+<ul>
+<li>Choosing <span class="math inline">\(\mu\)</span> constant, get <span class="math inline">\(O\pf{\pa{\ln\pf{m}\ep}m}{\ga}\)</span>.</li>
+<li>Set <span class="math inline">\(\mu\)</span> small to do better. Balance <span class="math inline">\((\mu-1-\ln \mu)m=O(m(\mu-1)^2)\)</span> and <span class="math inline">\(c\)</span> by setting <span class="math inline">\(\mu = 1+\rc{\sqrt m}\)</span>, and get <span class="math inline">\(O(\sqrt m)\)</span>. (Recall <span class="math inline">\(m\)</span> is number of constraints.)</li>
+<li>In practice, though, choose <span class="math inline">\(\mu\)</span> constant.</li>
+</ul>
+<h3 id="total">Total</h3>
+\begin{align}
+N_I &amp;= O(\sqrt m \log \pf{mGR}{|\ol p^*|} \rc{\ga})\\
+N_{II} &amp;= O(\sqrt m \log \pf{m(M-p^*)}{\ep}) \prc{\ga}.
+\end{align}
+<p>Explanation: The point at the end of phase I has duality gap <span class="math inline">\(\le (m+1)(M-p^*)\)</span>.</p>
+<h3 id="variations">Variations</h3>
+<p>What are other ways to do Phase I?</p>
+<ul>
+<li>Sum of infeasibilities <span class="math inline">\(\min_{f_i\le s_i, Ax=b, s\ge0} \one^Ts\)</span>. Why use this? When infeasible, the optimal point often violates a small unber of inequalities (cf. <span class="math inline">\(l_1\)</span>-regression, basis pursuit). Here the penalty is <span class="math inline">\(l_1\)</span> not <span class="math inline">\(l_\iy\)</span>.</li>
+<li>Use infeasible start Newton to solve the barrier formulation <span class="math display">\[\min_{f_i\le s, Ax=b, s=0} f_0\qquad \min_{Ax=b, s=0} t^{(0)} f_0-\sum \ln (s-f_i).\]</span> (Infeasible start means you can start with points violating equality constraints.)</li>
+</ul>
+<p>What if we don’t know a point in <span class="math inline">\(\bigcap dom(f_i)\)</span>? Add a translation, <span class="math inline">\(\min_{..., z_i=0} t^{(0)} f_0(x+z_0) - \sum \ln (s-f_i(x+z_i))\)</span>.</p>
+<p>Disadvantage: There is no good stopping criterion when infeasible.</p>
+<h2 id="primal-dual-ipm">Primal-dual IPM</h2>
+<p>Review <a href="constrained.html">constrained optimization</a>. Here there is no distinction between inner and outer iterations.</p>
+<p>Applying the infeasible start Newton method to the barrier problem gives <span class="math display">\[ \matt{t\nb^2 f_0+\nb^2 \phi A^T}{A^T}{A}{0} \coltwo{\De x_{nt}}{\nu_{nt}}  = -\coltwo{t\nb f_0+\nb \phi}{0}. \]</span> The residual is <span class="math inline">\((\nb f + \nb \phi + A^T\nu, Ax-b)\)</span>, <span class="math inline">\(\phi = -\sum \rc{t}\ln (-f_i)\)</span>.</p>
+<p>But here <span class="math inline">\(t\)</span> is fixed. We want to treat <span class="math inline">\(t\)</span> as a variable. Actually, we introduce <span class="math inline">\(\la\)</span>.</p>
+<p>Recall that a point on the central path gives a dual feasible <span class="math inline">\((\la, \nu)\)</span> with <span class="math inline">\(\la_if_i=-\rc t\)</span>. We write everything in terms of the primal <span class="math inline">\(x\)</span> and dual <span class="math inline">\((\la,\nu)\)</span>. Introduce <span class="math inline">\(\la\)</span> as a variable that we want to satisfy <span class="math inline">\(\la_if_i=-\rc t\)</span> (the modified KKT equation) to get the (dual, centrality, primal) residual <span class="math display">\[r_t(x,\la,\nu) = \colthree{\nb f + Df^T\la + A^T\nu}{-\diag(\la) f - \rc t \one}{Ax-b} =: \colthree{\De x}{\De \la}{\De \nu} = -\colthree{r_{dual}}{r_{cent}}{r_{pri}}.\]</span></p>
+The Newton step for solving the modified KKT equations
+\begin{align}
+\nb f_0 + Df^T \la + A^T\nu &amp;=0\\
+-\la_i f_i &amp;=\rc t\\
+Ax-b &amp;=0
+\end{align}
+is hence (set the gradients of these equations to the negative residuals)
+\begin{align}
+\mattn{\nb^2 f_0+\sum \la_i \nb^2 f_i}{Df^T}{A^T}{-\diag(\la)Df}{-\diag(f)}{0}{A}00 \colthree{\De x}{\De \la}{\De \nu} = -\colthree{r_{dual}}{r_{cent}}{r_{pri}}.
+\end{align}
+<p>(<span class="math inline">\(Df\)</span> has <span class="math inline">\(\nb f_i\)</span> as rows.) The solution is the primal-dual search direction. It is not the same as the search direction in the barrier method (because here we’re changing <span class="math inline">\(\la\)</span>).</p>
+Solving for <span class="math inline">\(\De \la\)</span> and substituting gives
+\begin{align}
+\matt{\nb^2 f_0 + \sumo im \la_i \nb^2 f_i + \sumo im -\fc{\la_i}{f_i}\nb f_i \nb f_i^T}{A^T}A0 \coltwo{\De x_{pd}}{\De \nu_{pd}} &amp;= 
+\coltwo{r_{dual} - \sum \la_i \nb f_i - \sum \fc{\nb f_i}{tf_i}}{r_{pri}}\\
+&amp;=-\coltwo{\nb f_0 + \rc t \sumo im -\rc{f_i}\nb f_i+A^T\nu}{r_{pri}}.
+\end{align}
+<p>Compare to the Newton step for the centering method (<span class="math inline">\(t\)</span> fixed) in the barrier method. The upper-left entry is replaced by <span class="math inline">\(t\nb^2 f_0 + \sumo im -\rc{f_i} \nb^2 f_i + \sumo \rc{f_i^2} \nb f_i f_i^T\)</span>, and the dual residual is instead <span class="math inline">\(t\nb f_0 + \sumo im -\rc{f_i} \nb f_i\)</span>.</p>
+<p>The iterates are not necessarily feasible, so we can’t evaluate a duality gap. Define the <strong>surrogate duality gap</strong> for <span class="math inline">\(x,f(x)&lt;0, \la\ge 0\)</span> by <span class="math display">\[\wh \eta(x,\la) = -f^T\la.\]</span> It is the duality gap if <span class="math inline">\(x\)</span> were primal feasible and <span class="math inline">\(\la,\nu\)</span> were dual feasible (<span class="math inline">\(r_{pri}=0,r_{dual}=0\)</span>).</p>
+<p>The algorithm:</p>
+<p>(Feasible start) Start with <span class="math inline">\(x\)</span> such that <span class="math inline">\(f_i(x)&lt;0\)</span>, <span class="math inline">\(\la&gt;0\)</span>, <span class="math inline">\(\mu&gt;1\)</span>, <span class="math inline">\(\ep_{feas}&gt;0\)</span>, <span class="math inline">\(\ep&gt;0\)</span>.</p>
+<ol type="1">
+<li>Set <span class="math inline">\(t=\mu m/\wh eta\)</span>.</li>
+<li>Compute primal-dual search direction <span class="math inline">\(\De y_{pd}\)</span>.</li>
+<li>Line search and update.</li>
+<li>Repeat until <span class="math inline">\(\ve{r_{pri}}_2\le \ep_{feas}\)</span>, <span class="math inline">\(\ve{r_{dual}}_2\le \ep_{feas}\)</span>, and <span class="math inline">\(\wh \eta \le \ep\)</span>.</li>
+</ol>
+<p>(Note <span class="math inline">\(r_{cent}\)</span> means that we stick close to the central path.)</p>
+<h2 id="intuitions">Intuitions</h2>
+<ul>
+<li>Each constraint has the force <span class="math inline">\(\rc{f_i(x)}\nb f_i(x)\)</span> and the objective force field is <span class="math inline">\(-t\nb f_0(x)\)</span>.</li>
+</ul>
+
+  </div>
+
+    
+
+    <!-- Extension : Sharing buttons @ www.sharethis.com -->
+    <span class='st_facebook_large' displayText='Facebook'></span>
+    <span class='st_twitter_large' displayText='Tweet'></span>
+    <span class='st_googleplus_large' displayText='Google +'></span>
+    <span class='st_reddit_large' displayText='Reddit'></span>
+    <span class='st__large' displayText=''></span>
+
+    <div id="disqus_thread"></div>
+    
+
+
+  
+    <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+  </div>
+  
+</div>
+]]></summary>
+</entry>
+<entry>
+    <title>Logic of provability</title>
+    <link href="http://holdenlee.github.io/notebook/posts/math/logic/logic_of_provability.html" />
+    <id>http://holdenlee.github.io/notebook/posts/math/logic/logic_of_provability.html</id>
+    <published>2016-08-25T00:00:00Z</published>
+    <updated>2016-08-25T00:00:00Z</updated>
+    <summary type="html"><![CDATA[
+<div class="container">
+  <div id="content">
+    <div class="page header">
+      <h1>Logic of provability</h1>
+    </div>
+    <div class="info">
+      
+       
+        <p>Posted: 2016-08-25 
+          , Modified: 2016-08-25 
+	</p>
+      
+       <p>Tags: <a href="/tags/logic.html">logic</a>, <a href="/tags/self-reference.html">self-reference</a>, <a href="/tags/provability.html">provability</a></p> 
+    </div>
+    
+  </div>
+  <!--/div-->
+
+  <div class="toc"> <ul>
+ <li><a href="#systems">Systems</a></li>
+ <li><a href="#questions">Questions</a></li>
+ </ul> </div>
+
+  <div class="blog-main">
+    <p>George Boolos</p>
+<h2 id="systems">Systems</h2>
+<p>Normal: all tautologies, distribution axioms, closed under MP, necessitation (???), substitution.</p>
+<p>(I’m confused about necessitation. Aren’t there true things without proof? Yes, but you couldn’t have written them down in the first place! The fact that you can write down <span class="math inline">\(A\)</span> as a result of some deductions means you proved <span class="math inline">\(A\)</span>, so you might as well say you proved <span class="math inline">\(\square A\)</span> too! Note <span class="math inline">\(A\implies \square A\)</span> is a deduction rule, but <span class="math inline">\(A\to \square A\)</span> is NOT TRUE! The difference is that in the deduction rule, <span class="math inline">\(A\)</span> must have been deduced as well. I hesitate to call this a deduction rule, actually… This can only be done top-level, you can’t do it on <span class="math inline">\(A\wedge \neg A\)</span>… A rule of inference cannot always be interpreted as an axiom! This inference rule is sort-of like Kripke… I think you have to be very careful here to avoid <span class="math inline">\(A\to \square A, \neg A \to \square \neg A, \square A \wedge \square \neg A\)</span>.)</p>
+<p>Additional axioms.</p>
+<ul>
+<li>K (Kripke): no more.</li>
+<li>K4: <span class="math inline">\(\square A \to \square\square A\)</span>. This is true and provable in PA.</li>
+<li>T: <span class="math inline">\(\square A \to A\)</span>. This is NOT provable in PA. What happens if we add it?</li>
+<li>S4: K4+T.</li>
+<li>B: T+<span class="math inline">\(\square \diamond A\)</span>.</li>
+<li>S5: T+<span class="math inline">\(\diamond A \to \square \diamond A\)</span>.</li>
+<li>GL: Lob’s Theorem <span class="math inline">\(\square (\square A \to A) \to \square A\)</span>.</li>
+</ul>
+<p>Inclusions: Note K4<span class="math inline">\(\subeq\)</span>GL, B<span class="math inline">\(\subeq\)</span>S5.</p>
+<p>Question: Why doesn’t K4 imply GL?</p>
+<h2 id="questions">Questions</h2>
+<p>https://en.wikipedia.org/wiki/G%C3%B6del%27s_incompleteness_theorems</p>
+<p>What is true arithmetic?</p>
+<p>Undecidable: <span class="math inline">\(\neg \square X \wedge \neg \square \neg X\)</span>.</p>
+<ul>
+<li>Let <span class="math inline">\(S\)</span> be the sentence such that <span class="math inline">\(S=\neg \square S\)</span>.
+<ul>
+<li>Is it true that <span class="math inline">\(\neg \square S \wedge \neg \square \neg S\)</span>?</li>
+<li>Is $ (S S)$?</li>
+<li>Is $ ((S S))$?</li>
+</ul></li>
+<li>What happens if we add <span class="math inline">\(\neg \square \perp\)</span> as an axiom?</li>
+<li>I don’t understand <span class="math inline">\(\om\)</span>-consistency. First incompleteness: if arithmetic is <span class="math inline">\(\om\)</span>-consistent, then arithmetic is incomplete. Is this weaker or stronger than consistency? 1-consistency is stronger, because <span class="math inline">\(\square \cdots \square \perp\)</span> are not theorems. (?) <span class="math inline">\(\om\)</span>-consistency implies 1-consistency, so <span class="math inline">\(\om\)</span>-consistency is strongest.</li>
+</ul>
+<p>GLS: GL+<span class="math inline">\(\square A\to A\)</span>, only MP.</p>
+<p>GL, GLS have decision procedures. (They only capture part of PA.)</p>
+<p>Formalizing existence?</p>
+<p>If <span class="math inline">\(X\)</span> is true (in all consistent extensions) but not provable, then is <span class="math inline">\(\square X\)</span> decidable? What about <span class="math inline">\(\square \square X\)</span>? Etc.</p>
+<p>Suppose <span class="math inline">\(X=\neg \square X\)</span>. Why doesn’t <span class="math inline">\(\neg X \to \square X \to X\)</span> so <span class="math inline">\(\neg X\to \perp\)</span> constitute a proof of <span class="math inline">\(X\)</span>?</p>
+<ul>
+<li>Because you can’t use the law of the excluded middle. (Is it true that <span class="math inline">\(\square (X\to Y), \square (\neg X\to Y)\)</span> imply <span class="math inline">\(\square Y\)</span>? I think there shouldn’t be any problem.)</li>
+<li>Because you can’t use <span class="math inline">\(\square X \to X\)</span>. You don’t have the axiom <span class="math inline">\(\square X\to X\)</span>, and by Lob, <span class="math inline">\(\square (\square X\to X)\)</span> only when <span class="math inline">\(\square X\)</span>.</li>
+</ul>
+
+  </div>
+
+    
+
+    <!-- Extension : Sharing buttons @ www.sharethis.com -->
+    <span class='st_facebook_large' displayText='Facebook'></span>
+    <span class='st_twitter_large' displayText='Tweet'></span>
+    <span class='st_googleplus_large' displayText='Google +'></span>
+    <span class='st_reddit_large' displayText='Reddit'></span>
+    <span class='st__large' displayText=''></span>
+
+    <div id="disqus_thread"></div>
+    
+
+
+  
+    <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+  </div>
+  
+</div>
+]]></summary>
+</entry>
+<entry>
+    <title>[CYHB13] Definability of Truth in Probabilistic Logic</title>
+    <link href="http://holdenlee.github.io/notebook/posts/cs/ai/control/truth_in_prob_logic.html" />
+    <id>http://holdenlee.github.io/notebook/posts/cs/ai/control/truth_in_prob_logic.html</id>
+    <published>2016-08-19T00:00:00Z</published>
+    <updated>2016-08-19T00:00:00Z</updated>
+    <summary type="html"><![CDATA[
+<div class="container">
+  <div id="content">
+    <div class="page header">
+      <h1>[CYHB13] Definability of Truth in Probabilistic Logic</h1>
+    </div>
+    <div class="info">
+      
+       
+        <p>Posted: 2016-08-19 
+          , Modified: 2016-08-26 
+	</p>
+      
+       <p>Tags: <a href="/tags/ai%20safety.html">ai safety</a>, <a href="/tags/logic.html">logic</a></p> 
+    </div>
+    
+  </div>
+  <!--/div-->
+
+  <div class="toc"> <ul>
+ <li><a href="#intro">Intro</a></li>
+ <li><a href="#reflection">Reflection</a></li>
+ </ul> </div>
+
+  <div class="blog-main">
+    <!--Can't have True predicate,
+$$\forall \ph: True(\ce{\ph}) \iff \ph.$$-->
+<!--don't need to be computable, just definable. already impossible-->
+<h2 id="intro">Intro</h2>
+<p>Undefinability of truth: no expressive and consistent language can contain its own truth predicate, satisfying <span class="math display">\[\forall \ph: True(\ce{\ph}) \iff \ph.\]</span></p>
+<p>Responses:</p>
+<ol type="1">
+<li>Work with meta-languages.</li>
+<li>Accept some sentences are neither true nor false.</li>
+</ol>
+<p>“Then we may continue to define True by the strong strong reflection property that the truth values of <span class="math inline">\(\ph\)</span> and <span class="math inline">\(True(\ce{\ph})\)</span> are the same for every <span class="math inline">\(\ph\)</span>. (?)</p>
+<p>Unsatisfying.</p>
+<ul>
+<li>No way test if <span class="math inline">\(\ph\)</span> is undefined</li>
+<li>No bound on number of undefined sentences.</li>
+</ul>
+<p>Possible over prob. logic!</p>
+<!-- can... -->
+<p>Fix a theory <span class="math inline">\(T\)</span> over a language <span class="math inline">\(L\)</span>. (We will let also let <span class="math inline">\(L\)</span> denote the set of sentences.)</p>
+<p><strong>Definition</strong>: A probability function <span class="math inline">\(\Pj:L\to [0,1]\)</span> is <strong>coherent</strong> if there is a probability measure <span class="math inline">\(\mu\)</span> over models of <span class="math inline">\(L\)</span> such that <span class="math display">\[\Pj(\ph) = \mu(\set{\mathcal M}{\mathcal M \vDash \ph}).\]</span></p>
+<p><strong>Theorem</strong>: <span class="math inline">\(\Pj\)</span> is coherent iff all these hold.</p>
+<ol type="1">
+<li>For each <span class="math inline">\(\ph,\psi\)</span>, <span class="math inline">\(\Pj(\ph)=\Pj(\ph\wedge \psi)+\Pj(\ph\wedge \neg \psi)\)</span>.</li>
+<li>For each tautology (something that is true in all models) <span class="math inline">\(\Pj(\ph)=1\)</span>.</li>
+<li>For each contradiction <span class="math inline">\(\ph\)</span>, <span class="math inline">\(\Pj(\ph)=0\)</span>.</li>
+</ol>
+<p><em>Proof</em>. Define <span class="math inline">\(T_{i+1}\)</span> iteratively by choosing the first statement independent of <span class="math inline">\(T_i\)</span>, and including it with probability <span class="math inline">\(\Pj(\ph_j|T_i)\)</span> and its negation otherwise. Let <span class="math inline">\(T=\bigcup_i T_i\)</span>. (Consistent by compactness.)</p>
+<p>Axiom 1 implies <span class="math inline">\(\Pj(\ph|T_i)\)</span> is a martingale. It eventually stabilizes at 0 or 1; the martingale property implies <span class="math inline">\(T\vdash \ph\)</span> with probability <span class="math inline">\(\Pj(\ph|T_0)\)</span>.</p>
+<h2 id="reflection">Reflection</h2>
+<p>This reflection principle doesn’t work: <span class="math display">\[\forall \ph\in L', \forall a,b\in \Q: a&lt;\Pj(\ph)&lt;b\iff \Pj(a&lt;\Pj(\ce{\ph})&lt;b)=1\]</span> because we can construct <span class="math inline">\(G\iff \Pj(\ce{G})&lt;1\)</span>, <span class="math display">\[\Pj(G)&lt;1\iff \Pj(\Pj(\ce{G})&lt;1)=1 \iff \Pj(G)=1.\]</span></p>
+Instead imagine <span class="math inline">\(\Pj\)</span> having arbitrarily precise information about <span class="math inline">\(\Pj\)</span>. Say <span class="math inline">\(\Pj\)</span> is <strong>reflectively consistent</strong> if (these are equivalent)
+\begin{align}
+\forall \ph\in L',\forall a,b\in \Q: (a&lt;\Pj(\ph)&lt;b) &amp;\implies \Pj(a&lt;\Pj(\ce{\phi})&lt;b) &amp;= 1\\
+\forall \ph\in L',\forall a,b\in \Q:  (a\le \Pj(\ph)\le b) &amp;\Leftarrow \Pj(a\le \Pj(\ce{\phi})\le b) &amp;= 1
+\end{align}
+<p><strong>Theorem</strong> (Consistency of reflection): Let <span class="math inline">\(T\)</span> be a consistent theory over <span class="math inline">\(L\)</span> where <span class="math inline">\((\Q,+)\)</span> can be embedded, and <span class="math inline">\(L'\)</span> be the extension of <span class="math inline">\(L\)</span> by <span class="math inline">\(\Pj\)</span>. There is a coherent probability function <span class="math inline">\(\Pj\)</span> over <span class="math inline">\(L'\)</span> assigning probability 1 to <span class="math inline">\(T\)</span> and satisfying the reflection principle.</p>
+<p><em>Proof</em>.</p>
+<p><strong>Theorem (Kakutani fixed point)</strong>: <a href="https://en.wikipedia.org/wiki/Kakutani_fixed-point_theorem">wikipedia</a></p>
+<ol type="1">
+<li>Let <span class="math inline">\(S\subeq \R^n\)</span> be non-empty compact convex, <span class="math inline">\(\ph:S\to 2^S\)</span> such that <span class="math inline">\(\ph(x)\)</span> is non-empty and convex for all <span class="math inline">\(x\in S\)</span>, and <span class="math inline">\(\ph\)</span> has closed graph. Then <span class="math inline">\(\ph\)</span> has a fixed point (<span class="math inline">\(x\in \ph(x)\)</span>).</li>
+<li><span class="math inline">\(\ph:X\to 2^Y\)</span>is upper hemicontinuous if for every open <span class="math inline">\(W\subeq Y\)</span>, <span class="math inline">\(\set{x}{\ph(x)\subeq W}\)</span> is open in <span class="math inline">\(X\)</span>. If <span class="math inline">\(X,Y\)</span> are topological vector spaces, <span class="math inline">\(\ph:X\to 2^Y\)</span>, <span class="math inline">\(Y\)</span> convex, then <span class="math inline">\(\ph\)</span> is Kakutani if it is upper hemicontinuous and <span class="math inline">\(\ph(x)\)</span> is non-empty, compact and convex. If <span class="math inline">\(S\)</span> is non-empty, compact, convex subset of Hausdorff locally convex topological vector space, and <span class="math inline">\(\ph:S\to 2^S\)</span> is Kakutani, then it has a fixed point.</li>
+</ol>
+<ul>
+<li>Let <span class="math inline">\(\cA\sub [0,1]^{L'}\)</span> be the set of coherent probability distributions which assign probability 1 to <span class="math inline">\(T\)</span>. <span class="math inline">\(\cA\)</span> is nonempty convex and closed (in a compact set), so compact. (?? Nonempty because can set <span class="math inline">\(\Pj(\ce{\ph})\)</span> arbitrarily and it still satisfies these.</li>
+<li>Given <span class="math inline">\(\Pj\in \cA\)</span>, let <span class="math inline">\(R_{\Pj}\)</span> be axioms of the form <span class="math inline">\(a&lt;\Pj(\ce{\ph})&lt;b\)</span> where <span class="math inline">\(a&lt;\Pj(\ph)&lt;b\)</span>. Let <span class="math display">\[ f(\Pj') = \set{\Pj\in \cA}{\Pj(R_{\Pj'}) = 1}.\]</span></li>
+<li>Show that <span class="math inline">\(f\)</span> has a closed graph and use Kakutani fixed point.</li>
+</ul>
+<p>(Why do we care that <span class="math inline">\(R_{\Pj'}\)</span> is countable?)</p>
+<blockquote>
+<p>“we don’t want P to assert that P is reflectively consistent, we want it to actually <em>be</em> reflectively consistent.”</p>
+</blockquote>
+<blockquote>
+<p>our work shows that the obstructions presented by the liar’s paradox can be overcome by tolerating an infinitesimal error, and that Tarski’s result on the undefinability of truth is in some sense an artifact of the infinite precision demanded by reasoning about complete certainty.</p>
+</blockquote>
+<p>(Don’t understand the last page: revisit.)</p>
+
+  </div>
+
+    
+
+    <!-- Extension : Sharing buttons @ www.sharethis.com -->
+    <span class='st_facebook_large' displayText='Facebook'></span>
+    <span class='st_twitter_large' displayText='Tweet'></span>
+    <span class='st_googleplus_large' displayText='Google +'></span>
+    <span class='st_reddit_large' displayText='Reddit'></span>
+    <span class='st__large' displayText=''></span>
+
+    <div id="disqus_thread"></div>
+    
+
+
+  
+    <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+  </div>
+  
+</div>
+]]></summary>
+</entry>
+<entry>
+    <title>Technical agenda</title>
+    <link href="http://holdenlee.github.io/notebook/posts/cs/ai/control/technical_agenda.html" />
+    <id>http://holdenlee.github.io/notebook/posts/cs/ai/control/technical_agenda.html</id>
+    <published>2016-08-19T00:00:00Z</published>
+    <updated>2016-08-19T00:00:00Z</updated>
+    <summary type="html"><![CDATA[
+<div class="container">
+  <div id="content">
+    <div class="page header">
+      <h1>Technical agenda</h1>
+    </div>
+    <div class="info">
+      
+       
+        <p>Posted: 2016-08-19 
+          , Modified: 2016-08-19 
+	</p>
+      
+       <p>Tags: <a href="/tags/ai%20safety.html">ai safety</a></p> 
+    </div>
+    
+  </div>
+  <!--/div-->
+
+  <div class="toc"> <ul>
+ <li><a href="#intro">Intro</a></li>
+ <li><a href="#highly-reliable-agent-designs">Highly reliable agent designs</a><ul>
+ <li><a href="#realistic-world-models">Realistic world models</a></li>
+ <li><a href="#decision-theory-w-game-theory">Decision theory (w/ game theory)</a></li>
+ <li><a href="#logical-uncertainty">Logical uncertainty</a></li>
+ <li><a href="#vingean-reflection">Vingean reflection</a></li>
+ </ul></li>
+ <li><a href="#error-tolerant-agent-designs">Error-tolerant agent designs</a></li>
+ <li><a href="#value-specification">Value specification</a></li>
+ <li><a href="#discussion">Discussion</a></li>
+ </ul> </div>
+
+  <div class="blog-main">
+    <p>[SF14] Agent Foundations for Aligning Machine Intelligence with Human Interests: A Technical Research Agenda</p>
+<h2 id="intro">Intro</h2>
+<ol type="1">
+<li>How can we create an agent that will reliably pursue the goals it is given? (Find an agent architecture to reliably and autonomously pursue a set of objectives.)</li>
+<li>How can we formally specify beneficial goals?<br />
+</li>
+<li>And how can we ensure that this agent will assist and cooperate with its programmers as they improve its design, given that mistakes in early AI systems are inevitable?</li>
+</ol>
+<p>Make tolerant of human error.</p>
+<p>Value learning: how to construct agents that learn what to value?</p>
+<p>There are theoretical prerequisits for designing aligned AI above what is require to design misaligned AI.</p>
+<p>Topics that are tractable, uncrowded, focused, unable to be outsourced (to machines).</p>
+<h2 id="highly-reliable-agent-designs">Highly reliable agent designs</h2>
+<p>It’s not sufficient to verify the algorithm behaves well in test settings.</p>
+<p>Ex. Bird and Layzell (2002) describe a genetic algorithm which, tasked with making an oscillator, re-purposed the printed circuit board tracks on the motherboard as a makeshift radio to amplify oscillating signals from nearby computers.</p>
+<p>Ex. Chess: Trees and backtracking do not immediately yield a solution but they are the conceptual tools; you need them before you can make heuristics work.</p>
+<p>In safety-critical applications, it is crucial that theoretical insights come first.</p>
+<h3 id="realistic-world-models">Realistic world models</h3>
+<p>What is the set of/distribution over possible realities? How are agents scored?</p>
+<p>Solomonoff induction (agent predicts, does not affect)</p>
+<ol type="1">
+<li>Computable environment.</li>
+<li>Evaluated by simplicity</li>
+<li>Scored by ability to predict next observation.</li>
+</ol>
+<p>Legg and Hutter define universal measure of intelligence, but high-scoring agents may manipulate the reward function.</p>
+<p><strong>Naturalized induction</strong>: But what about an agent learning about environment when embedded within it?</p>
+<p>Hutter, <strong>interaction problem</strong>: agent learns and acts upon environment. Maximize reward function.</p>
+<p>Human goals are specified in terms of high-level notions.</p>
+<p><strong>Ontology identification</strong> (?)</p>
+<h3 id="decision-theory-w-game-theory">Decision theory (w/ game theory)</h3>
+<p>What does it mean for a decision to be good?</p>
+<p>How to construct the <strong>counterfactual</strong> environment?</p>
+<p>Ex. different agents logically constrained to behave identically.</p>
+<p>Standard causal reasoning identifies “defection” as the best strategy.</p>
+<p><strong>Logical counterfactuals</strong> problem.</p>
+<p>Updateless decision theory, Wei Dai.</p>
+<p>Check out: Model with Haskell implementation of multi-agent games where agents have access to each others’ source code and base decisions on what they can prove. Possible to achieve robust cooperation while remaining unexploitable.</p>
+<h3 id="logical-uncertainty">Logical uncertainty</h3>
+<p>Knowing the machine/system exactly but not knowing the action/result. ex. reasoning about environment.</p>
+<p>What are logically <strong>impossible possibilities</strong>? (???)</p>
+<p>How can probabilities be assigned to sentences? Preserving all logical implications requires the system to be deductively omnipotent.</p>
+<p>A coherent assignment of probabilities corresponds to a probability distribution over complete, consistent logical theories.</p>
+<p>Start with rough approximation of prior and refine.</p>
+<p><strong>Logical priors</strong>: What is a satisfactory set of priors over logical sentences that a bounded reasoner can approximate?</p>
+<h3 id="vingean-reflection">Vingean reflection</h3>
+<p>Humans may specify generally intelligent systems that then create superintelligence.</p>
+<p>A self-modifying agent (or any that constructs new agents more intelligent than itself) must reason about the behavior of a system that is more intelligent than the reasoner.</p>
+<p>Vingean principle: a parent agent cannot simply check what its successor agent would do in all scenarios, for if it could, then it would already know what actions its successor will take, and the successor would not in any way be smarter. (So it must reason abstractly.)</p>
+<p>Study first in the domain of formal logic.</p>
+<p><strong>Lobian obstacle</strong>: How can agents gain very high confidence in agents that use similar reasoning system avoiding self-reference paradoxes?</p>
+<p>(Carry over into probabilistic logics.)</p>
+<h2 id="error-tolerant-agent-designs">Error-tolerant agent designs</h2>
+<p>Intelligent systems must be amenable to correction.</p>
+<p>Design agents which do not have incentives to escape, manipulate, or deceive. <strong>corrigibility</strong></p>
+<p>Ex. moral uncertainty frameworks still incentivize agents not to change the moral framework if it’s flawed.</p>
+<p>Toy problem: Shut-down problem: don’t incentivize the agent to cause or prevent pressing the button.</p>
+<p><strong>Utility indifference</strong>. Make agents switch preferences on demand without having incentives to cause/prevent switching.</p>
+<p><strong>Domesticity</strong>. Incentivize low impact.</p>
+<h2 id="value-specification">Value specification</h2>
+<p>Not sufficient to construct systems smart enough to figure out intended goals.</p>
+<p><strong>Multi-level world-models</strong></p>
+<p>Complexities of value: ex. happiness is not smiling humans.</p>
+<p><strong>Ambiguity identification</strong>: Identify dimensions neglected by training data.</p>
+<p><strong>Operator modeling</strong></p>
+<p><strong>Normative uncertainty</strong>: What to do when uncertain about what one should do?</p>
+<h2 id="discussion">Discussion</h2>
+<p>Why progress can be made today?</p>
+
+  </div>
+
+    
+
+    <!-- Extension : Sharing buttons @ www.sharethis.com -->
+    <span class='st_facebook_large' displayText='Facebook'></span>
+    <span class='st_twitter_large' displayText='Tweet'></span>
+    <span class='st_googleplus_large' displayText='Google +'></span>
+    <span class='st_reddit_large' displayText='Reddit'></span>
+    <span class='st__large' displayText=''></span>
+
+    <div id="disqus_thread"></div>
+    
+
+
+  
+    <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+  </div>
+  
+</div>
+]]></summary>
+</entry>
+<entry>
+    <title>[SF15] Questions of reasoning under logical uncertainty</title>
+    <link href="http://holdenlee.github.io/notebook/posts/cs/ai/control/logical_uncertainty.html" />
+    <id>http://holdenlee.github.io/notebook/posts/cs/ai/control/logical_uncertainty.html</id>
+    <published>2016-08-19T00:00:00Z</published>
+    <updated>2016-08-19T00:00:00Z</updated>
+    <summary type="html"><![CDATA[
+<div class="container">
+  <div id="content">
+    <div class="page header">
+      <h1>[SF15] Questions of reasoning under logical uncertainty</h1>
+    </div>
+    <div class="info">
+      
+       
+        <p>Posted: 2016-08-19 
+          , Modified: 2016-08-19 
+	</p>
+      
+       <p>Tags: <a href="/tags/ai%20safety.html">ai safety</a></p> 
+    </div>
+    
+  </div>
+  <!--/div-->
+
+  <div class="toc"> <ul>
+ <li><a href="#introduction">Introduction</a></li>
+ <li><a href="#impossible-possibilities">Impossible possibilities</a></li>
+ <li><a href="#logical-priors">Logical priors</a></li>
+ <li><a href="#beyond-logical-systems">Beyond logical systems</a></li>
+ <li><a href="#discussion">Discussion</a></li>
+ <li><a href="#logical-induction-andrew-critch-820">Logical induction, Andrew Critch (8/20)</a><ul>
+ <li><a href="#technical">Technical</a></li>
+ </ul></li>
+ </ul> </div>
+
+  <div class="blog-main">
+    <h2 id="introduction">Introduction</h2>
+<p>Knowing how the system behaves but not the result, because of lack of computational resources.</p>
+<p>Standard probability theory assumes logical omniscience.</p>
+<p>What are logically impossible possibilities? (Things that are logically incorrect, but kept as a possibility because you don’t have the computational power to see they’re incorrect.) Reasonable prior?</p>
+<h2 id="impossible-possibilities">Impossible possibilities</h2>
+<p>Consider truth values of sentences of logic.</p>
+<p>Must preserve some structure: Ex. if probability 1 for <span class="math inline">\(\phi,\phi\implies \psi\)</span>, then probability 1 for <span class="math inline">\(\psi\)</span>.</p>
+<p>2 types of logical uncertainty</p>
+<ol type="1">
+<li>Logical theory</li>
+<li>Limited deductive capabilities</li>
+</ol>
+<p>Complete logical theory: for every sentence <span class="math inline">\(\phi\)</span>, either <span class="math inline">\(\phi\in T\)</span> or <span class="math inline">\(\neg \phi\in T\)</span>.</p>
+<p>Incomplete theories can be completed. (Use Zorn.)</p>
+<p>(In what sense is there a “true arithmetic”? In the sense that you believe there is a true answer of whether a Turing machine halts!)<a href="#fn1" class="footnoteRef" id="fnref1"><sup>1</sup></a></p>
+<p>For a deductively unlimited reasoner, an impossible possibiity is any complete theory of logic.</p>
+<p>Deductively limited reasoners entertain inconsistent impossible possibilities.</p>
+<p>An “impossible possibility,” then, could be any assignment of truth values to logical sentences which does not allow a short proof of inconsistency.</p>
+<p>No precise statements about its performance have yet been proven.</p>
+<h2 id="logical-priors">Logical priors</h2>
+<p>How to construct a weak (e.g. maximum entropy) prior over complete theories? (It’s easy to place 0 probability on complete theories.)</p>
+<p><strong>Hutter prior</strong>: For each sentence, select a model in which that sentence is true, and in which certain desirable properties hold (the “Gaifman condition” and the “Cournot condition” (Hutter et al. 2013)). Add the complete theory of that model to the distribution with measure in proportion to the probability of the sentence.</p>
+<p>Demski’s prior over complete theories extending <span class="math inline">\(B\)</span>.</p>
+<ul>
+<li>Take initial set <span class="math inline">\(B\)</span> of known sentences.</li>
+<li>Construct complete theory <span class="math inline">\(T\)</span> by starting with <span class="math inline">\(B\)</span> and selecting <span class="math inline">\(\phi\in \Phi\)</span> randomly. (Ex. <span class="math inline">\(\Phi\)</span> is simplicity prior.)</li>
+<li>Add <span class="math inline">\(\phi\)</span> to <span class="math inline">\(T\)</span> if consistent, else <span class="math inline">\(\neg \phi\)</span>.</li>
+</ul>
+<p>Resulting prior probability is uncomputable but approximable.</p>
+<p>Christiano uses standard ML techniques.</p>
+<p>Undesirable: If <span class="math inline">\(B=\phi\)</span>, then 0 probabilities on complete theories where PA holds—any theory not finitely axiomatizable.<a href="#fn2" class="footnoteRef" id="fnref2"><sup>2</sup></a></p>
+<p>Two ways to update Demski’s prior:</p>
+<ol type="1">
+<li>completely regenerate from <span class="math inline">\(B\cup \{\phi\}\)</span></li>
+<li>condition on <span class="math inline">\(\phi\)</span>.</li>
+</ol>
+<p>Why these are different: Consider <span class="math inline">\(\psi,\neg \psi\)</span> consistent with <span class="math inline">\(\phi\)</span>.</p>
+<ol type="1">
+<li>Regenerate: <span class="math inline">\(\ge 2^{-|\psi|}\)</span> probability on <span class="math inline">\(\psi\)</span>.</li>
+<li>Conditioned on <span class="math inline">\(\phi\)</span>: may be arbitrarily low. Ex.
+<ul>
+<li><span class="math inline">\(\neg \psi \to \phi\)</span></li>
+<li>almost all theories with <span class="math inline">\(\psi\)</span> also contain <span class="math inline">\(\neg \phi\)</span>.</li>
+</ul></li>
+</ol>
+<p>Intuition</p>
+<ol type="1">
+<li>Regenerating: doesn’t alter lower bound. (It learns differently from facts it always knew.)</li>
+<li>Conditioning: favor explanations</li>
+</ol>
+<p>Desiderata</p>
+<ol type="1">
+<li>Coherence: probability distribution over complete theories.</li>
+<li>Computable approximation</li>
+<li>Occam property: length-based lower bound on probability of consistent sentence.</li>
+<li>Inductive: <span class="math inline">\(\Pj(\forall n.\psi(n))\to 1\)</span> as get more confirmations</li>
+<li>PA-weakness: nonzero probability on set of complete extensions of PA.</li>
+<li>Bounded regret: Regret at most constant worse than other distributions over complete theories</li>
+<li>Practicality</li>
+<li>Reflectivity: There is <span class="math inline">\(P\)</span> in the language which can be interpreted as representation of <span class="math inline">\(\Pj\)</span>.</li>
+</ol>
+<p>Note approximations must be incoherent. Reflectivity is possible up to infinitesimal error but difficult.</p>
+<ul>
+<li>Hutter: coherent (1), inductive (4), PA-weak (5) as long as prob. dist generated from has Occam property. Not computably approximable, practical</li>
+<li>Demski: coherent, computably approximable (2), Occam if <span class="math inline">\(\Phi\)</span> (3).</li>
+</ul>
+<p>Inductivity is the Gaifman condition: If <span class="math inline">\(\Pj\)</span> is logical prior and <span class="math inline">\(\phi\)</span> is true <span class="math inline">\(\Pi_1\)</span> sentence <span class="math inline">\(\forall n:\psi(n)\)</span>, then <span class="math inline">\(\Pj(\cdot |\text{true for }1,...,N)\to 1\)</span>. But must assign probability 0 to some true <span class="math inline">\(\Pi_2\)</span> sentences. These priors are not weak enough!</p>
+<p><span class="math inline">\(\Pi_1\)</span>: <span class="math inline">\(\psi\)</span> decidable by primitive recursive function. <span class="math inline">\(\Pi_2\)</span>: <span class="math inline">\(\forall\exists\)</span>.</p>
+<p>(Why do we care about statements that don’t follow from PA? Toy problem for reasoning about uncertainty… is this the right problem?)</p>
+<p>Desirable property:</p>
+<ul>
+<li>If prior conditioned on <span class="math inline">\(\phi\)</span> true for <span class="math inline">\(p\)</span> of first <span class="math inline">\(L\)</span> numbers (<span class="math inline">\(L\)</span> large), then <span class="math inline">\(\phi(0)\)</span> has probability <span class="math inline">\(p\)</span>.</li>
+</ul>
+<h2 id="beyond-logical-systems">Beyond logical systems</h2>
+<p>Logical sentences are not the right tool for reasoning about the behavior of objects in the real world.</p>
+<p>Realistic reasoning shortcuts. (cf. regret?)</p>
+<p>It is not clear that sentences of first order logic are the “correct” underlying structure for logically uncertain reasoning about the world.</p>
+<p>Ex. billiards player (?)</p>
+<h2 id="discussion">Discussion</h2>
+<h2 id="logical-induction-andrew-critch-820">Logical induction, Andrew Critch (8/20)</h2>
+<table style="width:25%;">
+<colgroup>
+<col style="width: 5%" />
+<col style="width: 5%" />
+<col style="width: 5%" />
+<col style="width: 5%" />
+<col style="width: 5%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Domain</th>
+<th style="text-align: left;">Agent</th>
+<th style="text-align: left;">Minimal sufficient conditions</th>
+<th style="text-align: left;">Desirability arguments</th>
+<th style="text-align: left;">Feasibility</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Rational choice</td>
+<td style="text-align: left;">VNM utility maximizer</td>
+<td style="text-align: left;">VNM axioms</td>
+<td style="text-align: left;">Dutch book arguments, compelling axioms</td>
+<td style="text-align: left;">AIXI, POMDP solvers</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Probability</td>
+<td style="text-align: left;">Bayesian updater</td>
+<td style="text-align: left;">axioms of probability theory</td>
+<td style="text-align: left;">Dutch book arguments, compelling axioms</td>
+<td style="text-align: left;">Solomonoff induction</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Logical uncertainty</td>
+<td style="text-align: left;">Garrabrant inductor</td>
+<td style="text-align: left;">???</td>
+<td style="text-align: left;">Dutch book arguments, historical desiderata</td>
+<td style="text-align: left;">LIA2016</td>
+</tr>
+</tbody>
+</table>
+<ol type="1">
+<li>Improve logical uncertainty theory (min conditions, more conseq)</li>
+<li>Using Garrabrant inductors</li>
+<li></li>
+</ol>
+<p>Replace logical omniscience with logical uncertain.</p>
+<p>Logical uncertainty was a roadblock to decision theory, etc.</p>
+<p>(What would you do tomorrow if you found Critch changed <span class="math inline">\(\pi\)</span> to 4? Would you still go to work? Will pigs fly?)</p>
+<p>Suppose you’re an algorithm. What if I do x?</p>
+<p>Algorithm: what if I did this thing I didn’t do?</p>
+<!-- Gameable but works.
+Bayesian updaters don't exist.
+Use AI to research AI safety.
+when ask question about themselves, as q about math objects. Theory about understanding place in world.
+converge to paper \iy
+-->
+<h3 id="technical">Technical</h3>
+<ul>
+<li><span class="math inline">\(\Ga\)</span> language for encoding and proving statements about variables and computer programs (PA)</li>
+<li><span class="math inline">\(\La\)</span> all sentences expresible in <span class="math inline">\(\Ga\)</span>.</li>
+<li>Belief state: <span class="math inline">\(\La\to [0,1]\)</span> constant outside some finite subset (of things you’ve thought of)</li>
+<li>Reasoning process: computable sequence of belief states <span class="math inline">\(\set{P_n}{L\to [0,1]}\)</span>.</li>
+</ul>
+<p>Put criteria for reasoning in a good language.</p>
+<p>A good reasoning process <span class="math inline">\(P\)</span> should satisfy</p>
+<ol type="1">
+<li>computability of <span class="math inline">\(P_n(\phi)\)</span> for any <span class="math inline">\((n,\phi)\)</span>.</li>
+<li>convergence: <span class="math inline">\(P_\iy(phi) = \lim_{n\to \iy} P_n(\phi)\)</span> exists</li>
+<li>coherent limit: <span class="math inline">\(P_{\iy}\)</span> should be coherent probability distribution, <span class="math inline">\(P_\iy(A\wedge B) +P_iy( A \vee B) = P(A) + P(B)\)</span>.</li>
+<li>non-dogmatism: If <span class="math inline">\(\Ga \not \vdash \phi\)</span> then <span class="math inline">\(P_\iy(\phi)&lt;1\)</span> and if <span class="math inline">\(\Ga \not \vdash \neg\phi\)</span> then <span class="math inline">\(P_\iy(\phi)&gt;0\)</span>.</li>
+</ol>
+<p>There’s a secret property (master criterion) that implies all 4 of these.</p>
+<p>Conservatism (not too extreme)</p>
+<ul>
+<li>Uniform non-dogmatism: for any recursively enumerable sequence of sentences <span class="math inline">\(\{\phi_n\}\)</span> such that <span class="math inline">\(\Ga \cup \{\phi_n\}\)</span> is consistent, there is <span class="math inline">\(\ep&gt;0\)</span> such that for all <span class="math inline">\(n\)</span>, <span class="math inline">\(P_\iy(\phi_n) \ge \ep\)</span>.</li>
+<li>Occam bonds: <span class="math inline">\(\ka\)</span> Kolmogorov complexity, <span class="math inline">\(P_\iy(phi) \ge 2^{-\ka(\phi)}\)</span>, <span class="math inline">\(P_\iy(\phi)\le 1-C2^{-\ka(\phi)}\)</span>. (Occam: Simple things shouldn’t be too extreme.)</li>
+</ul>
+<p>Self-reflection</p>
+<p>Tension between Godel (can’t prove soundness/consistency), vs. can notice certain things about own sanity.</p>
+<ul>
+<li>Belief in consistency: <span class="math inline">\(con(t)=\)</span> “There is no proof of <span class="math inline">\(\perp\)</span> from <span class="math inline">\(\Ga\)</span> using <span class="math inline">\(t\)</span> or fewer symbols.” Then <span class="math inline">\(\lim_{n\to \iy} P_n(con(n))=1\)</span>.</li>
+<li>Belief in future consistency: For any encoding <span class="math inline">\(\ol f\)</span> of computable <span class="math inline">\(f:\N\to \N\)</span>, <span class="math display">\[
+\lim_{n\to \iy} P_n(con(\ol f(n)))=1.
+\]</span> Ex. <span class="math inline">\(f(n) = Ack(n,n)\)</span></li>
+</ul>
+<p>Sequence of statements <span class="math inline">\(\phi\)</span> is polytime generable if <span class="math inline">\(M(n)=\phi_n\)</span> polytime.</p>
+<p>Sequence of T/F questions relatively easy to generate, but can be arbitrarily difficult to answer deductively as <span class="math inline">\(n\)</span> grows. p.g. statements are easy to state, hard to verify.</p>
+<!--2nd problem hard -->
+<p>Ex. <span class="math inline">\(G(\ol n)\iff\)</span> There is no proof of <span class="math inline">\(\ol G(\ol n)\)</span> in <span class="math inline">\(\le \ol f (\ol n)\)</span> characters.</p>
+<p>True, but can’t be proven in fewer characters.</p>
+<ul>
+<li>Provability induction: Any p.g. sequence of provable theorems <span class="math inline">\(\phi_n\)</span> will eventually be believed by <span class="math inline">\(P_n\)</span> as soon as they are generated, <span class="math inline">\(\lim_{n\to \iy} P_n(\phi_n)=1\)</span>. <span class="math inline">\(P\)</span> outpaces deduction. <!-- p.g. sufficiently expressive for writing down. Failing to have makes exploitable. Can make larger class.--></li>
+</ul>
+<p>Analogy: Ramanujan vs. Hardy.</p>
+Timely manner:
+\begin{align}
+x_n \simeq_n y_n \iff \lim_{n\to \iy} x_n-y_n=0\\
+x_n \gtrsim_n y_n\iff \lim\inf &gt;0\\
+...
+\end{align}
+<ul>
+<li>Timely adoption of limits. <span class="math inline">\(p\)</span> sequence of rational probabilities. If <span class="math inline">\(P_\iy(\phi_n) \simeq_n p_n\)</span> then <span class="math inline">\(P_n(\phi_n) \simeq_n p_n\)</span>. (Keep up with todo list.)</li>
+<li>Introspection: ask about themselves. Knows what its own beliefs are at time it has them. For any pg <span class="math inline">\(\phi_n\)</span>, any <span class="math inline">\((a,b)\)</span> (or sequence of intervals), any <span class="math inline">\(\ep&gt;0\)</span>, large enough <span class="math inline">\(n\)</span>,
+\begin{align}
+P_n(\phi_n)&amp;\in (a+\ep,b-\ep) &amp;\implies P_n'P_n(\phi_n)\in (a,b)' &gt; 1-\ep\\
+P_n(\phi_n)&amp;\nin (a-\ep,b+\ep) &amp;\Leftarrow P_n('P_n(\phi_n)\in (a,b)') &lt;\ep
+\end{align}
+(Spit out at once at time <span class="math inline">\(n\)</span>. It’s one static table with introspective property.)</li>
+<li>Liar’s paradox resistance: Liar sentences <span class="math inline">\(L_n\)</span>, <span class="math inline">\(\Ga\vdash L_n \iff 'P_n(L_n)\le p'\)</span>. Then <span class="math inline">\(\lim_{n\to \iy} P_n(L_n)=p\)</span>. (Oscillations…)</li>
+</ul>
+<p>(How sure of being sure…)</p>
+<p>Self-trust</p>
+<ul>
+<li>Trust in future beliefs: For any computable <span class="math inline">\(f(n)&gt;n\)</span>, <span class="math display">\[''P(\phi_n | ' P_{f(n)}(\phi_n) \ge p_n') \gtrsim_n p_n''\]</span> Precise statement <!--$$ \E_n([\phi_n \Ind_{\de_n} (' P_{f(n)}(\phi_n) \ge p_n') \gtr$$--></li>
+</ul>
+<p>Learning statistical patterns.</p>
+<p>Learning provable relationships:</p>
+<ul>
+<li>case breakdowns: Let <span class="math inline">\(\phi^1,\ldots, \phi^k\)</span> be <span class="math inline">\(k\)</span> p.g. sequences of sentences such that for each <span class="math inline">\(n\)</span>, <span class="math inline">\(\Ga\)</span> proves that <span class="math inline">\(\phi_n^1,\ldots, \phi_n^k\)</span> are exclusive and exhaustive. Then <span class="math display">\[ \lim_{n\to \iy} \sum P (\phi_i)= 1.\]</span></li>
+<li>affine relations</li>
+</ul>
+<p>No study of convergence rates. Point is that it verifies desiderata (first 9) are not contradictory.</p>
+<p><strong>Open question</strong>: Continuum hyp, bounded by Kolm complexity. depend on how parametrized. Different versions of Garrabrant inductors. Probabilities dominate each other? All universal semimeasures dominate each other. Garrabrant dominate universal semimeasures. Are all the different good ways comparable?</p>
+<p>(Ex. <span class="math inline">\(\phi_n\)</span>: Turing machine has not halted by time <span class="math inline">\(n\)</span>.)</p>
+<p>Try not to lose a lot of money on bets. (On agents simpler than you.)</p>
+<p>A tad under doubly exponential time.</p>
+<p>Mentally simulate all polytime traders. Run Wall Street traders in head output algebraic expressions. Open, algorithms respond. Algorithms respond to beliefs. This is what beliefs are, this is what I wish instead. Find fixpoint. Computably approximate.</p>
+<p>Property: can’t lost too much money to polytime traders.</p>
+<p>Pascal’s mugging. Where’s your <span class="math inline">\(\iy\)</span> dollars. Bring the briefcase with the cash!</p>
+<p>Start with finite budget, inversely proportional to complexity. By being complicated, smarter. Smart ones gain more money, larger bets, affect market prices more. Smart ones get rick and fill the market.</p>
+<p>(Maybe that’s what neurons are! jk. SoM: Competing processes.)</p>
+<section class="footnotes">
+<hr />
+<ol>
+<li id="fn1"><p>Try to define like this. If there is no proof for “Turing machine halts” then say it is false. (This is a tie-breaker.) Now derive all logical consequences. Take some unknown statement <span class="math inline">\(X\)</span>. Consider machines trying to find proofs of <span class="math inline">\(X,\neg X\)</span>. Neither will halt. But this doesn’t say anything about <span class="math inline">\(X\)</span>! Why is there a true arithmetic?<a href="#fnref1">↩</a></p></li>
+<li id="fn2"><p>Induction schema consists of infinitely many axioms. What if we tried to do this with higher-order logic? What difficulties arise?<a href="#fnref2">↩</a></p></li>
+</ol>
+</section>
+
+  </div>
+
+    
+
+    <!-- Extension : Sharing buttons @ www.sharethis.com -->
+    <span class='st_facebook_large' displayText='Facebook'></span>
+    <span class='st_twitter_large' displayText='Tweet'></span>
+    <span class='st_googleplus_large' displayText='Google +'></span>
+    <span class='st_reddit_large' displayText='Reddit'></span>
+    <span class='st__large' displayText=''></span>
+
+    <div id="disqus_thread"></div>
+    
+
+
+  
+    <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+  </div>
+  
+</div>
+]]></summary>
+</entry>
+<entry>
+    <title>Lob's Theorem</title>
+    <link href="http://holdenlee.github.io/notebook/posts/cs/ai/control/lobs_theorem.html" />
+    <id>http://holdenlee.github.io/notebook/posts/cs/ai/control/lobs_theorem.html</id>
+    <published>2016-08-19T00:00:00Z</published>
+    <updated>2016-08-19T00:00:00Z</updated>
+    <summary type="html"><![CDATA[
+<div class="container">
+  <div id="content">
+    <div class="page header">
+      <h1>Lob's Theorem</h1>
+    </div>
+    <div class="info">
+      
+       
+        <p>Posted: 2016-08-19 
+          , Modified: 2016-08-19 
+	</p>
+      
+       <p>Tags: <a href="/tags/ai%20safety.html">ai safety</a>, <a href="/tags/logic.html">logic</a></p> 
+    </div>
+    
+  </div>
+  <!--/div-->
+
+  <div class="toc"> <ul>
+ <li><a href="#proof">Proof</a></li>
+ <li><a href="#questions">Questions:</a></li>
+ </ul> </div>
+
+  <div class="blog-main">
+    <p>Does PA claim to be sound? (More standard notation: <span class="math inline">\(\square X\)</span> for <span class="math inline">\(PA[X]\)</span>.) <span class="math display">\[PA[PA[X]\implies X]\]</span> No. Then PA would be inconsistent. (Why?) <span class="math display">\[PA[PA[X]\implies X]\implies PA[X].\]</span> (Converse is obviously true.)</p>
+<p>Alas, this means we can’t prove PA sound with respect to any important class of statements. (?)</p>
+<p>Lob’s sentence: L says “If a proof of L exists, then C.” <span class="math display">\[L = \square L \implies C\]</span> (?If we assume <span class="math inline">\(\square L \implies L\)</span>, then <span class="math inline">\(\square L \implies C\)</span>. Assuming <span class="math inline">\(\neg \square L\)</span> doesn’t give anything.)</p>
+<p>cf. “If this sentence is true, then Santa Claus exists.”<a href="#fn1" class="footnoteRef" id="fnref1"><sup>1</sup></a></p>
+<p>For a sentence to refer to itself, it must contain a self-replicating recipe - when the recipe is executed, it produces a copy of the complete sentence, including the recipe itself</p>
+<p>Generalities about Lob.</p>
+<ol type="1">
+<li>The difference between truth and provability. If we defined <span class="math inline">\(\square\)</span> correctly, <span class="math inline">\(\square S \to S\)</span> looks to always be true. However, it’s not provable, unless <span class="math inline">\(S\)</span> is provable!</li>
+<li><span class="math inline">\(\square\)</span> seems like negation in some way. (Cf. proof by contradiction)</li>
+<li>We would want PA on occassion to assert its own soundness. But no, it only asserts its soundness on statements that are actually provable.</li>
+<li><span class="math inline">\(\square (\square S \to S)\)</span> only when <span class="math inline">\(S\)</span> is provable.</li>
+<li>It seems bizarre!</li>
+</ol>
+<h2 id="proof">Proof</h2>
+<p>Note:</p>
+<ul>
+<li><span class="math inline">\(\implies\)</span> means a deduction rule. From <span class="math inline">\(A\)</span> you can deduce <span class="math inline">\(B\)</span>. <span class="math inline">\(A\implies B\)</span> is not a statement within PA, it is within the meta-logic you’re defining everything in (which can be PA if you want!). (But you can consider <span class="math inline">\(A\to B\)</span>, which is a statement in PA.)</li>
+<li><span class="math inline">\(\to\)</span> is a statement in PA. <span class="math inline">\(\to\)</span> is turned into <span class="math inline">\(\implies\)</span> by MP.</li>
+</ul>
+<p>I’m not distinguishing between <span class="math inline">\(PA \vdash X\)</span> and <span class="math inline">\(\square X\)</span>. They are equivalent (in the meta-logic).</p>
+<p>Use</p>
+<ol type="1">
+<li>(A1) <span class="math inline">\(\square X \implies \square \square X\)</span>. This takes work to prove. Show that given a proof of <span class="math inline">\(X\)</span>, you can turn it into a proof that a proof of <span class="math inline">\(X\)</span> exist! Mind-bending.</li>
+<li>(A2) <span class="math inline">\(\square (\square X \to \square \square X)\)</span>. (A1) is provable.</li>
+<li>(A3) <span class="math inline">\(\square (\square (A \to B) \to (\square A \to \square B))\)</span>. This is straightforward: if you have a proof of <span class="math inline">\(A\)</span>, and a proof of <span class="math inline">\(A\to B\)</span>, you can make a proof of <span class="math inline">\(B\)</span> by joining the proofs together and adding a modus ponens at the end. You can furthermore prove this within PA.</li>
+<li>(MP) <span class="math inline">\(\square A, \square (A\to B)\implies \square B\)</span>. The non-meta version of the above.</li>
+<li>(B1) <span class="math inline">\(\square (A\to B), \square (B\to C), \implies \square (A\to C)\)</span>.</li>
+<li>(B2) <span class="math inline">\(\square (A\to B), \square (A\to (B\to C)), \implies \square (A\to C)\)</span>.</li>
+</ol>
+<p>Let <span class="math inline">\(L=\square L \to C\)</span>. If <span class="math inline">\(L\)</span> is provable, then <span class="math inline">\(C\)</span>.</p>
+<ol type="1">
+<li><span class="math inline">\(\square (\square L \lra \square (\square L \to C))\)</span>. Unpack the box.</li>
+<li><span class="math inline">\(\square (\square C\to C)\)</span>. Lob’s hypothesis. <!--We aim to show that if $L$ is provable, then we can prove $C$ is provable, and hence $C$ is provable.--></li>
+<li><span class="math inline">\(\square (\square (\square L \to C) \to (\square(\square L)\to \square C))\)</span> by A3.</li>
+<li><span class="math inline">\(\square( \square L \to (\square (\square L)\to \square C))\)</span>. I.e., we distributed the <span class="math inline">\(\square\)</span> in (1). If <span class="math inline">\(\square L\)</span> and <span class="math inline">\(\square \square L\)</span>, then <span class="math inline">\(C\)</span>. But this means we can get <span class="math inline">\(C\)</span> from just <span class="math inline">\(\square L\)</span>, because of A2!</li>
+<li>Use A2.</li>
+<li><span class="math inline">\(\square (\square L \to \square C)\)</span>.</li>
+<li><span class="math inline">\(\square (\square L \to C)\)</span>.</li>
+<li><span class="math inline">\(\square\square (\square L \to C)\)</span>.</li>
+<li><span class="math inline">\(\square\square L\)</span>. KEY! To prove <span class="math inline">\(L\)</span>, you just have to prove <span class="math inline">\(\square L \to C\)</span>, by definition of <span class="math inline">\(L\)</span>! So you get <span class="math inline">\(\square\square L\)</span> for free! (Not <span class="math inline">\(\square L\)</span>.) How did we get <span class="math inline">\(\square\square L\)</span>? We used Lob’s hypothesis and A2.</li>
+<li><span class="math inline">\(\square C\)</span>.</li>
+</ol>
+<h2 id="questions">Questions:</h2>
+<ul>
+<li>What happens if we add the axiom <span class="math inline">\(\square X \implies X\)</span>? What might break? Is Proofs can now include the statement “<span class="math inline">\(\square X \implies X\)</span>”?</li>
+<li>“if PA asserted its own soundness (in general), PA would become inconsistent.” Does this just mean we can’t add this axiom, or that it being provable leads to a contradiction? (Can you get this from “This theorem is unprovable” type things?)</li>
+<li>Undefinability of truth: no predicate True such that <span class="math inline">\(True(X)\text{ xor } True(\neg X)\)</span> and <span class="math inline">\(True(X)\implies X\)</span>. Or: if you extend with primitive “True” you get a contradiction.</li>
+</ul>
+<p>Intuition: If a program doesn’t have native support for meta-programming, then you can’t program in meta-programming. Here, I mean: take a data structure and splice it into the program itself. (But you could always write a compiler in the language, and apply the compiler to the string…)</p>
+<p>This setting is different. To prove something, you have to write down the entire proof. You aren’t allowed to make a program that writes down the proof. Ex. you want to show <span class="math inline">\(\forall x, P(x)\)</span>. You are not allowed to write down a program that given <span class="math inline">\(x\)</span>, spits out a proof of <span class="math inline">\(x\)</span>.</p>
+<p>If you try the recursive fix, it’s not clear that the language is still consistent. Perhaps now <span class="math inline">\(\square \perp\)</span>, and hence <span class="math inline">\(\perp\)</span>!</p>
+<section class="footnotes">
+<hr />
+<ol>
+<li id="fn1"><p>Confused ramblings (wrong?) This sentence is true—even if Santa Claus doesn’t exist! The problem with provability logic - why you can’t just add in <span class="math inline">\(\square X \implies X\)</span> as an axiom—is that you can now prove both <span class="math inline">\(X, \neg X\)</span> by constructing Lob’s sentence! Reflection doesn’t work—it’s not that simple! You have to design a logic to make reflection not inconsistent!<a href="#fnref1">↩</a></p></li>
+</ol>
+</section>
+
+  </div>
+
+    
+
+    <!-- Extension : Sharing buttons @ www.sharethis.com -->
+    <span class='st_facebook_large' displayText='Facebook'></span>
+    <span class='st_twitter_large' displayText='Tweet'></span>
+    <span class='st_googleplus_large' displayText='Google +'></span>
+    <span class='st_reddit_large' displayText='Reddit'></span>
+    <span class='st__large' displayText=''></span>
+
+    <div id="disqus_thread"></div>
+    
+
+
+  
+    <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+  </div>
+  
+</div>
+]]></summary>
+</entry>
+<entry>
+    <title>Distribution of critical points</title>
+    <link href="http://holdenlee.github.io/notebook/posts/tcs/machine_learning/optimization/distribution_of_critical_points.html" />
+    <id>http://holdenlee.github.io/notebook/posts/tcs/machine_learning/optimization/distribution_of_critical_points.html</id>
+    <published>2016-08-13T00:00:00Z</published>
+    <updated>2016-08-13T00:00:00Z</updated>
+    <summary type="html"><![CDATA[
+<div class="container">
+  <div id="content">
+    <div class="page header">
+      <h1>Distribution of critical points</h1>
+    </div>
+    <div class="info">
+      
+       
+        <p>Posted: 2016-08-13 
+          , Modified: 2016-08-13 
+	</p>
+      
+       <p>Tags: <a href="/tags/none.html">none</a></p> 
+    </div>
+    
+  </div>
+  <!--/div-->
+
+  
+
+  <div class="blog-main">
+    <p><a href="http://mathoverflow.net/questions/247469/expected-number-of-local-minima-of-random-polynomial-in-high-dimensions">MO question</a></p>
+<p>Consider the inner product space <span class="math inline">\(P_k\)</span> of polynomials of degree <span class="math inline">\(\le k\)</span> on the unit sphere <span class="math inline">\(\mathbb S^{n-1}\subset \mathbb R^n\)</span>. Let <span class="math inline">\(p\sim N(0,\sigma^2 I)\)</span> be a randomly chosen polynomial in <span class="math inline">\(P_k\)</span>, according to the standard Gaussian distribution. What is the average number of local minima of <span class="math inline">\(p\)</span>?</p>
+<p><a href="http://arxiv.org/pdf/1101.5990.pdf">Nicolaescu</a> used the Kac-Rice formula to address the case where <span class="math inline">\(n\)</span> is kept fixed and <span class="math inline">\(k\to \infty\)</span>. In fact, his result is more general: the manifold is fixed and the space of eigenfunctions of the Laplacian with eigenvalue <span class="math inline">\(\le L\)</span> is considered.</p>
+<p>However, I’m interested in the asymptotics when <span class="math inline">\(k\)</span> is fixed (ex. take <span class="math inline">\(k=3\)</span> or 4) and <span class="math inline">\(n\to \infty\)</span>, in order to help understand the tractability of random optimization problems as <span class="math inline">\(n\to \infty\)</span>. I’m also interested in any other asymptotics that are known, e.g. distribution of values at local minima, distribution of other critical points, etc.</p>
+<!--  (modulo $\sum_{i=1}^{n} x_i^2-1$)-->
+
+  </div>
+
+    
+
+    <!-- Extension : Sharing buttons @ www.sharethis.com -->
+    <span class='st_facebook_large' displayText='Facebook'></span>
+    <span class='st_twitter_large' displayText='Tweet'></span>
+    <span class='st_googleplus_large' displayText='Google +'></span>
+    <span class='st_reddit_large' displayText='Reddit'></span>
+    <span class='st__large' displayText=''></span>
+
+    <div id="disqus_thread"></div>
+    
+
+
+  
+    <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+  </div>
+  
+</div>
+]]></summary>
+</entry>
+<entry>
     <title>Weekly summary 2016-08-13</title>
     <link href="http://holdenlee.github.io/notebook/posts/summaries/2016-08-13.html" />
     <id>http://holdenlee.github.io/notebook/posts/summaries/2016-08-13.html</id>
@@ -71,6 +1153,7 @@
 </ul></li>
 <li>Talk: Yuanzhi on Bandit convex optimization (FOLLOW UP)</li>
 <li>Representation learning <a href="/posts/tcs/machine_learning/representation.html">summary</a>. Talked to Yingyu and kernel DL.</li>
+<li>Read <a href="/posts/tcs/machine_learning/matrices/BH16.html">BH16</a>.</li>
 </ul>
 
   </div>
@@ -192,1281 +1275,6 @@ Now use Davis-Kahan.</li>
 <li>General functions <span class="math inline">\(f\)</span>: look at the convex cone of projected samples.</li>
 <li>More general class of similarity functions, e.g. kernels.</li>
 </ul>
-
-  </div>
-
-    
-
-    <!-- Extension : Sharing buttons @ www.sharethis.com -->
-    <span class='st_facebook_large' displayText='Facebook'></span>
-    <span class='st_twitter_large' displayText='Tweet'></span>
-    <span class='st_googleplus_large' displayText='Google +'></span>
-    <span class='st_reddit_large' displayText='Reddit'></span>
-    <span class='st__large' displayText=''></span>
-
-    <div id="disqus_thread"></div>
-    
-
-
-  
-    <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
-  </div>
-  
-</div>
-]]></summary>
-</entry>
-<entry>
-    <title>Approximation theory and approximation practice</title>
-    <link href="http://holdenlee.github.io/notebook/posts/math/analysis/numerical/ATAP.html" />
-    <id>http://holdenlee.github.io/notebook/posts/math/analysis/numerical/ATAP.html</id>
-    <published>2016-08-08T00:00:00Z</published>
-    <updated>2016-08-08T00:00:00Z</updated>
-    <summary type="html"><![CDATA[
-<div class="container">
-  <div id="content">
-    <div class="page header">
-      <h1>Approximation theory and approximation practice</h1>
-    </div>
-    <div class="info">
-      
-       
-        <p>Posted: 2016-08-08 
-          , Modified: 2016-08-08 
-	</p>
-      
-       <p>Tags: <a href="/tags/none.html">none</a></p> 
-    </div>
-    
-  </div>
-  <!--/div-->
-
-  <div class="toc"> <ul>
- <li><a href="#introduction">1 Introduction</a></li>
- <li><a href="#chebyshev-points-and-interpolation">2 Chebyshev points and interpolation</a></li>
- <li><a href="#chebyshev-polynomials-and-series">3 Chebyshev polynomials and series</a></li>
- <li><a href="#interpolation-projection-and-aliasing">4 Interpolation, projection, and aliasing</a></li>
- <li><a href="#barycentric-interpolation-formula">5 Barycentric interpolation formula</a></li>
- <li><a href="#weierstrass-approximation-theorem">6 Weierstrass Approximation Theorem</a></li>
- <li><a href="#convergence-for-differentiable-functions">7 Convergence for differentiable functions</a></li>
- <li><a href="#convergence-for-analytic-functions">8 Convergence for analytic functions</a></li>
- <li><a href="#gibbs-phenomenon">9 Gibbs Phenomenon</a></li>
- <li><a href="#best-approximation">10 Best approximation</a></li>
- <li><a href="#hermite-integral-formula">11 Hermite integral formula</a></li>
- <li><a href="#potential-theory-and-applications">12 Potential theory and applications</a></li>
- <li><a href="#equispaced-points-runge-phenomenon">13 Equispaced points, Runge phenomenon</a></li>
- <li><a href="#discussion-of-high-order-interpolation">14 Discussion of high-order interpolation</a></li>
- <li><a href="#lebesgue-constants">15 Lebesgue constants</a></li>
- </ul> </div>
-
-  <div class="blog-main">
-    <h2 id="introduction">1 Introduction</h2>
-<h2 id="chebyshev-points-and-interpolation">2 Chebyshev points and interpolation</h2>
-Define <strong>Chebyshev points</strong> of parameter <span class="math inline">\(n\)</span> to be <span class="math inline">\(x_j\)</span> where
-\begin{align}
-\te_j &amp;= \fc{j\pi }n\\
-z_j &amp; = e^{\pi j/n}, &amp;0\le j\le n\\
-x_j &amp; = \Re (z_j) = \fc{z_j+z_j^{-1}}2 = \cos\te_j.
-\end{align}
-<p>Write</p>
-<div class="sourceCode"><pre class="sourceCode matlab"><code class="sourceCode matlab">xx=chebpts(n+<span class="fl">1</span>)</code></pre></div>
-<p>(Note: from now on we will reverse the order of the <span class="math inline">\(x_j\)</span>, to go from left to right.)</p>
-<p>The <strong>Chebyshev interpolant</strong> of <span class="math inline">\((f_j)\)</span> is the unique polynomial of degree (<span class="math inline">\(\le\)</span>) <span class="math inline">\(n\)</span> going through points <span class="math inline">\(x_j,f_j\)</span>. To construct the interpolant for a function,</p>
-<div class="sourceCode"><pre class="sourceCode matlab"><code class="sourceCode matlab">x = chebfun(<span class="st">'x'</span>);
-f = (function of x);
-p=chebfun(f,n+<span class="fl">1</span>); hold on, plot(p,<span class="st">'.-'</span>)</code></pre></div>
-<p>(Note: <code>x</code> is like a vector here. So you must write <code>.*</code> for multiplication, etc.) <code>.-</code> makes it point out the Chebyshev interpolation points.</p>
-<h2 id="chebyshev-polynomials-and-series">3 Chebyshev polynomials and series</h2>
-<p>Define <a href="chebyshev.html">Chebyshev polynomials</a>.</p>
-The following are Chebyshev, Laurent, and Fourier expansions.
-\begin{align}
-f(x) &amp;\approx \sumz kn a_kT_k(x), &amp;&amp; x&amp;\in [-1,1]\\
-F(z) &amp;= \rc 2 \sumz kn a_k(z^k+z^{-k}) &amp; f(x)&amp;=F\pf{z+z^{-1}}2&amp;|z|&amp;=1\\
-\cF (\te) &amp;\approx \rc 2 \sumz kn a_k(e^{ik\te} + e^{-ik\te})&amp; \te&amp;\in [-\pi,\pi]
-\end{align}
-<p>One can expand a polynomial in Chebyshev basis using the FFT or Fast Cosine Transform.</p>
-<p>Chebyshev series: If <span class="math inline">\(f\)</span> is Lipschitz continuous on <span class="math inline">\([-1,1]\)</span>, it has a unique representation <span class="math display">\[f(x)=\sumz k\iy a_k T_k(x),\quad a_k = \fc2\pi \int_{-1}^1 \fc{f(x)T_k(x)}{\sqrt{1-x^2}} \dx. \]</span></p>
-<em>Proof</em>.
-\begin{align}
-a_k &amp;= \rc{2\pi i} \oint_{|z|=1} (z^{-1+k}+z^{-1-k})F(z)\,dz\\
-&amp;= \rc{\pi i} \int_{|z|=1} z^{-1}T_k(x) F(z)\,dz\\
-&amp;=-\rc{\pi}\fc{f(x)T_k(x)}{\Im z}\,dz &amp; dx&amp;=\rc 2 \pf{z-z^{-1}}{2z}dz = \rc2 i z^{-1}\Im z\\
-&amp;=\fc2\pi \int_{-1}^1 \fc{f(x)T_k(x)}{\sqrt{1-x^2}} \dx.
-\end{align}
-<p>Orthonormality: <span class="math display">\[ \fc 2\pi\int_{-1}^1 \fc{T_l(x)T_k(x)}{\sqrt{1-x^2}} = \de_{kl}.\]</span></p>
-<h2 id="interpolation-projection-and-aliasing">4 Interpolation, projection, and aliasing</h2>
-<p>There are 2 ways to approximate <span class="math inline">\(f\)</span> by a Chebyshev expansion.</p>
-<ol type="1">
-<li>Interpolation of Chebyshev points <span class="math inline">\(p_n\)</span></li>
-<li>Truncation of Chebyshev expansion <span class="math inline">\(f_n\)</span></li>
-</ol>
-<p>In computation, <span class="math inline">\(p_n\)</span> are usually almost as good and easier to evaluate.</p>
-<p><strong>Theorem</strong> (aliasing). <span class="math inline">\(T_k\)</span> takes the same value on the <span class="math inline">\((n+1)\)</span>-point Chebyshev grid as <span class="math inline">\(T_m\)</span>, <span class="math inline">\(m=|(k+n-1)\bmod{2n} - (n-1)|\)</span>. (i.e., <span class="math inline">\(T_m\)</span> takes the same value as <span class="math inline">\(T_k\)</span> with <span class="math inline">\(k=2jn\pm m\)</span>.)</p>
-<p><em>Proof</em>. Look at <span class="math inline">\(2n\)</span>th roots of unity.</p>
-<strong>Theorem</strong> (aliasing for Chebyshev coefficients). Let <span class="math inline">\(a_k,c_k\)</span> be Chebyshev coefficients of <span class="math inline">\(f\)</span> and <span class="math inline">\(p_n\)</span>. Then
-\begin{align}
-c_k &amp;= \sum_{i\in \{2jn\pm k\}\cap \N} a_i.
-\end{align}
-<p>So <span class="math display">\[f(x)-p_n(x) = \sum_{k=n+1}^{\iy} a_k(T_k(x) - T_{m(k,n)}(x)).\]</span></p>
-<p>In Chebfun, to get truncation, interpolation use</p>
-<div class="sourceCode"><pre class="sourceCode matlab"><code class="sourceCode matlab">a = chebpoly(f) <span class="co">% truncation/projection</span>
-fn = chebfun(f, <span class="st">'trunc'</span>, n+<span class="fl">1</span>) <span class="co">% truncation</span>
-pn = chebfun(f, n+<span class="fl">1</span>)
-c = chebpoly(pn) <span class="co">% interpolation</span></code></pre></div>
-<h2 id="barycentric-interpolation-formula">5 Barycentric interpolation formula</h2>
-<p>How to evaluate a Chebyshev interpolant?</p>
-<ul>
-<li><span class="math inline">\(O(n\ln n)\)</span> for single point evaluation: Compute coefficients and use the series.</li>
-<li><span class="math inline">\(O(n)\)</span> work, stable: Barycentric interpolation formula.</li>
-</ul>
-<p>Lagrange interpolation:</p>
-\begin{align}
-p(x) &amp;= \sumz jn f_jl_j(x)\\
-l_j(x) &amp;=\fc{\prod_{k\ne j}(x-x_k)}{\prod_{k\ne j} (x_j-x_k)}
-\end{align}
-<p>The computation of <span class="math inline">\(l_j\)</span> is unstable and takes <span class="math inline">\(O(n^2)\)</span> operations.</p>
-Modified Lagrange formula (first barycentric formula)
-\begin{align}
-p(x) &amp;= l(x) \sumz jn \fc{\la_j}{x-x_j} f_j\\
-l(x) &amp;= \prod_{k=0}^{n} (x-x_k)\\
-\la_j &amp;= \rc{\prod_{k\ne j}(x_j-x_k)} = \rc{l'(x_j)}.
-\end{align}
-<p>This takes <span class="math inline">\(O(n)\)</span> operations to evaluate. (Computing the weights takes <span class="math inline">\(O(n^2)\)</span> but only needs to be done once.)</p>
-<p><strong>Theorem</strong> (Barycentric interpolation formula). <span class="math display">\[p(x) = \left. \sumz jn \fc{\la_j f_j}{x-x_j} \right/ \sumz jn \fc{\la_j}{x-x_j}.\]</span></p>
-<p><em>Proof</em>. Note <span class="math inline">\(\sumz jn l_j(n)=1\)</span>. so just replace the <span class="math inline">\(l_j\)</span> by <span class="math inline">\(\fc{\la_j}{x-x_j}\)</span> and then normalize afterwards.</p>
-<p>For Chebyshev points <span class="math inline">\(\la_j = (-1)^j \fc{2^{n-1}}{n} (1-\rc 2(j=0\text{ or }n))\)</span>. Obtain <span class="math display">\[p(x) = \left. \sumz jn' \fc{(-1)^jf_j}{x-x_k}\right/\sumz jn' \fc{(-1)^j}{x-x_k}
-\]</span> where <span class="math inline">\(\sum'\)</span> means that the first and last terms are multiplied by <span class="math inline">\(\rc2\)</span>.</p>
-<em>Proof</em>.
-\begin{align}
-l(x) &amp;= (x-x_0)\cdots (x-x_n)\\
-&amp; = (z^{2n}-1)(z^2-1)(z^{-n-1}-1) \rc{2^{n+1}} &amp; x=\fc{z+z^{-1}}2\\
-&amp;= \rc{2^n} \pa{\fc{x^{n+1}+x^{-(n+1)}}2 - \fc{x^{n-1}+x^{-(n-1)}}}\\
-\la_j &amp;=\rc{l'(x_j)}  = \fc{2^n}{T_{n+1}'(x_j) - T_{n-1}'(x_j)} = \fc{2^n}{2n(-1)^j(1+(j=0\text{ or }n))}
-\end{align}
-<p>by using the recurrence relation to compute the derivatives.</p>
-<p>This is stable, whereas polynomial interpolation via Vandemonde is exponentially unstable.</p>
-<p>Warning:</p>
-<ul>
-<li>This is unstable for extrapolation.</li>
-<li>The type 1 barycentric formula is stable.</li>
-<li>The barycentric formulas are forward stable; the 1st barycentric formula is backwards stable.</li>
-<li>Use the 1st formula for points far from Chebyshev.</li>
-<li>The 1st formula is not scale-invariant.</li>
-</ul>
-<h2 id="weierstrass-approximation-theorem">6 Weierstrass Approximation Theorem</h2>
-<p><strong>Theorem</strong> (Weierstrass approximtion). A continuous function on <span class="math inline">\([-1,1]\)</span> can be arbitrarily well-approximated in <span class="math inline">\(L^{\iy}\)</span> by polynomials.</p>
-<p><em>Proof</em>. Extend <span class="math inline">\(f\)</span> to be continuous with compact support. Take <span class="math inline">\(f\)</span> as initial data for <span class="math inline">\(u_t=u_{xx}\)</span>. The solution is <span class="math inline">\(f*e^{-\fc{x^2}{4t}}/\sqrt{2\pi t}\)</span>. For <span class="math inline">\(t&gt;0\)</span> this is analytic and has uniformly convergent Taylor series.</p>
-<p>Bernstein’s proof is a discrete analogue replacing diffusion by a random walk.</p>
-<p><strong>Theorem</strong> (Mergelyan). If <span class="math inline">\(f\)</span> is continuous on compact simply connected <span class="math inline">\(K\sub \C\)</span> and analytic in <span class="math inline">\(K^{\circ}\)</span>, then <span class="math inline">\(f\)</span> can be approximated on <span class="math inline">\(K\)</span> by polynomials.</p>
-<h2 id="convergence-for-differentiable-functions">7 Convergence for differentiable functions</h2>
-<p>(Bounded variation means <span class="math inline">\(\ve{f'}_1&lt;\iy\)</span> where <span class="math inline">\(f'\)</span> is interpreted in the distributional sense.)</p>
-If <span class="math inline">\(f^{(k)}, k\le v-1\)</span> is absolutely continuous and <span class="math inline">\(f^{(v)}\)</span> has bounded variation, then
-\begin{align}
-a_k &amp;\le \fc{2V}{\pi k\fp{v+1}} &amp;\le \fc{2V}{\pi (k-v)^{v+1}}\\
-\ve{f-f_n}_\iy &amp;\le \sum_{k=n+1}^\iy |a_k| \le \fc{2V}{\pi v(n-v)^v}\\
-\ve{f-p_n}_\iy &amp;\le \sum_{k=n+1}^{\iy} 2|a_k|\le \fc{4V}{\pi v(n-v)^v}
-\end{align}
-<em>Proof</em>.
-\begin{align}
-a_k &amp;= \rc{\pi i}\int_{|z|} f(\rc 2(z+z^{-1})) z^{k-1}\,dz\\
-&amp;=-\rc{\pi i} \int_{|z|=1} f'(\rc 2 (z+z^{-1}))\fc{z^k}{k}\dx\\
-|a_k| &amp;\le \fc{2}\pi \int_{-1}^1 |f'\Im\fc{z^k}{k}|\dx.
-\end{align}
-<p>For <span class="math inline">\(v&gt;0\)</span>, integrate by parts <span class="math inline">\(v+1\)</span> times to get <span class="math display">\[(-1)^{v+1} \rc{\pi i}\int_{|z|=1} f^{(v+1)}(\rc 2 (z+z^{-1})) f_{v, k}(z)\dx\]</span> where <span class="math inline">\(f_{0,k}(z) = \fc{z^k}{k}\)</span> and <span class="math inline">\(f_{n+1,k} = \int f_{n,k} \fc{1-z^{-2}}2\)</span>.</p>
-<h2 id="convergence-for-analytic-functions">8 Convergence for analytic functions</h2>
-If the analytic continuation of <span class="math inline">\(f\)</span> to the open Bernstein ellipse <span class="math inline">\(\pa{z\mapsto \fc{z+z^{-1}}2}B_\rh\)</span> satisfies <span class="math inline">\(f\le M\)</span>, then
-\begin{align}
-|a_k| &amp;\le 2M\rh^{-k}\\
-\ve{f-f_n}&amp;\le \fc{2M\rh^{-n}}{\rh - 1}\\
-\ve{f-p_n}&amp;\le \fc{4M\rh^{-n}}{\rh - 1}.
-\end{align}
-<p><em>Proof</em>. <span class="math inline">\(a_k = \ab{\rc{\pi i}\int_{|z|=\rh} z^{-1-k} F(z)\,dz}\)</span>.</p>
-<p>Converse: If there exist <span class="math inline">\(q_n\)</span>, <span class="math inline">\(\ve{f-q_n}\le C\rh^{-n}\)</span>, then <span class="math inline">\(f\)</span> is continuable to the Bernstein ellipse <span class="math inline">\(E_\rh\)</span>.</p>
-<p><em>Proof</em>. Write <span class="math inline">\(f=q_0+(q_1-q_0)+\cdots\)</span>. Use the estimate <span class="math inline">\(\deg p\le d\implies \ve{p}_{L^{\iy}(E_\rh)}\le \rh^d \ve{p}_{L^{\iy}[-1,1]}\)</span>. Proof: Let <span class="math inline">\(q(z) = \fc{p(z)}{(z+\sqrt{z^2-1})^d}\)</span>. This is analytic on <span class="math inline">\(\C\cup \{\iy\}\bs [-1,1]\)</span>. (Why is it well-defined?) (It is defined at <span class="math inline">\(\iy\)</span> because taking <span class="math inline">\(z\leftarrow \rc z\)</span> we get <span class="math inline">\(\fc{p_{\text{rev}}(z)}{(1+\sqrt{1-z^2})^d}\)</span>.) The maximum is attained at the boundary <span class="math inline">\([-1,1]\)</span> where the absolute value is 1.</p>
-<h2 id="gibbs-phenomenon">9 Gibbs Phenomenon</h2>
-<p>At discontinuities, the overshoot of a Chebyshev approximation does not <span class="math inline">\(\to 0\)</span> as <span class="math inline">\(n\to \iy\)</span>.</p>
-For Chebyshev interpolants of <span class="math inline">\(\sgn(x)\)</span> on <span class="math inline">\([-1,1]\)</span>,
-\begin{align}
-\lim_{n\to \iy,n\text{ odd}} \ve{p_n}_\iy &amp;\approx1.282...\\
-\lim_{n\to \iy,n\text{ even}} \ve{p_n}_\iy &amp;\approx1.066...
-\end{align}
-<p>For Chebyshev projections, <span class="math display">\[\lim_{n\to \iy} \ve{f_n} = \fc 2\pi \int_0^\pi \fc{\sin x}x\dx.\]</span></p>
-<p>Intuition: <span class="math inline">\(p(x) = \sum_{j=(n+1)/2}^n l_j(x)\)</span>. This is an alternating series which in the limit has finite nonzero sum.</p>
-<p>Notes:</p>
-<ul>
-<li>Note even though each prtial sum is continuous, a series may converge pointwise to a discontinuous limit.</li>
-<li>Gibbs oscillations decay slowly at rate <span class="math inline">\(O(k^{v+1})\)</span> if <span class="math inline">\(f^{(v)}\)</span> has a jump.</li>
-<li>This is an algebraic rate of decay, while splins have exponential decay.</li>
-<li>We can get exponential decay by splitting up the function and approximating each piece separately.</li>
-</ul>
-<h2 id="best-approximation">10 Best approximation</h2>
-<p><strong>Theorem</strong>. A continuous <span class="math inline">\(f\)</span> on <span class="math inline">\([-1,1]\)</span> has a unique best approximation <span class="math inline">\(p^*\in \cP_n\)</span>. It is uniquely characterized by <span class="math inline">\(f-p\)</span> equioscillating in <span class="math inline">\(\ge n+2\)</span> extreme points.</p>
-<p><em>Proof</em>. The minimum is attained because it lies in <span class="math inline">\(\{\ve{f-p}\le \ve{f}\}\)</span>. (<span class="math inline">\(L^\iy\)</span> norms.) If <span class="math inline">\(p,q\)</span> satisfy the condition, and <span class="math inline">\(\ve{f-q}&lt; \ve{f_p}\)</span>, then <span class="math inline">\(p-q\)</span> has <span class="math inline">\(n+1\)</span> zeros. If it doesn’t equioscillate, perturb by <span class="math inline">\((x_1-x)\cdots (x_k-x)\)</span>. (If <span class="math inline">\(\ve{f-q}=\ve{f-p}\)</span>, use the following argument: suppose <span class="math inline">\(p\)</span> has equioscillation extreme points <span class="math inline">\(x_{0:n+1}\)</span>. Induct on: <span class="math inline">\(p-q\)</span> has <span class="math inline">\(\ge j\)</span> roots in <span class="math inline">\([x_0,x_j]\)</span>. Suppose this is first violated at <span class="math inline">\(k\)</span> and obtain a contradiction.)</p>
-<h2 id="hermite-integral-formula">11 Hermite integral formula</h2>
-<p><strong>Theorem</strong>. Let <span class="math inline">\(f\)</span> be analytic in a region <span class="math inline">\(\Om\)</span> containing distinct points <span class="math inline">\(x_0,\ldots, x_n\)</span> and <span class="math inline">\(\Ga\)</span> be a contour in <span class="math inline">\(\Om\)</span> looping once around them. The polynomial interpolant of degree <span class="math inline">\(\le n\)</span> to <span class="math inline">\(f\)</span> at <span class="math inline">\(\{x_j\}\)</span> is <span class="math display">\[p(x) = \rc{2\pi i} \int_{\Ga} \fc{f(t)(l(t)-l(x))}{l(t)(t-x)}\,dt\]</span> and if <span class="math inline">\(x\)</span> is enclosed by <span class="math inline">\(\Ga\)</span>, the error is <span class="math display">\[f(x) - p(x) = \rc{2\pi i}\int_{\Ga} \fc{l(x)}{l(t)} \fc{f(t)}{t-x}\,dt.\]</span></p>
-<p>This is useful because it gives an estimate for the error in terms of “analyticity” of <span class="math inline">\(f\)</span>. If <span class="math inline">\(f\)</span> is analytic on a larger region, we can take <span class="math inline">\(\Ga\)</span> to be bigger, and the ratio <span class="math inline">\(\fc{l(x)}{l(t)} = \prod_{j=0}^n \fc{x-x_j}{t-x_j}\)</span> is smaller. This also tells us a property we desire for the interpolation points: they should make <span class="math inline">\(l(x)\)</span> small. (We shouldn’t have to go far away to make the ratio <span class="math inline">\(\fc{l(x)}{l(t)}\)</span> small.)</p>
-<p><em>Proof</em>.</p>
-<ol type="1">
-<li>Let <span class="math inline">\(\Ga_j\)</span> enclose <span class="math inline">\(x_j\)</span> only, and not <span class="math inline">\(x\)</span> By Cauchy, <span class="math display">\[l_j(x) = \fc{l(x)}{l'(x_j)(x-x_j)} = \Res_{x_j}\pf{l(x)}{l(t)(x-t)}\,dt = \rc{2\pi i} \int_{\Ga_j} \fc{l(x)}{l(t)(x-t)}\,dt.\]</span></li>
-<li>Similarly, if <span class="math inline">\(\Ga'\)</span> encloses all <span class="math inline">\(x_j\)</span> but not <span class="math inline">\(x\)</span>, <span class="math display">\[\rc{2\pi i} \int_{\Ga'} \fc{l(x)f(t)}{l(t)(x-t)}\,dt = \sum_j \Res_{x_j} \pf{l(x)f(t)}{l(t)(x-t)} =\sum_j f(x_j)\ell_j(x)=p(x).\]</span></li>
-<li>If <span class="math inline">\(\Ga\)</span> encloses all <span class="math inline">\(x_j,x\)</span>, then this adds <span class="math inline">\(\Res_x\pf{l(x)f(t)}{l(t)(x-t)} = -f(x)\)</span>, so <span class="math display">\[p(x) - f(x) = \rc{2\pi i}\int_{\Ga} \fc{l(x)}{l(t)} \fc{f(t)}{x-t}\,dt.\]</span></li>
-<li>For the first equation, note <span class="math inline">\(f(x) = \rc{2\pi i}\int_\Ga \fc{l(t)f(t)}{l(t)(t-x)}\)</span>.</li>
-</ol>
-<h2 id="potential-theory-and-applications">12 Potential theory and applications</h2>
-\begin{align}
-\ga_n(x,t) &amp;= \prod_{j=0}^n \pf{|t-x_j|}{|x-x_j|}^{\rc{n+1}}\\
-\af{l(x)}{l(t)} &amp;= \ga_n(x,t)^{-n-1}\\
-\al_n &amp;= \min_{x\in X, t\in \Ga} \ga_n(x,t)\\
-\log\ga_n(x,t) &amp;= \ub{\rc{n+1}\sumz jn \log |t-x_j|}{u_n(t)} - \ub{\rc{n+1} \sumz jn \log |x-x_j|}{u_n(s)} \le \al_{n}^{-(n+1)}\\
-\log\al_n&amp;= \min_{t\in \G}u_n(t) - \max_{x\in X}u_n(x).
-\end{align}
-<p>We want to lower bound <span class="math inline">\(\al_n\)</span> to get exponential convergence.</p>
-<p>Think of <span class="math inline">\(u\)</span> as a discrete approximation for a continuous potential <span class="math display">\[u(s) = \int_{-1}^1 \ln |s-\tau| \,d\mu(\tau).\]</span> On <span class="math inline">\([-1,1]\)</span>, equally spaced grids converge to <span class="math inline">\(\mu(\tau)=\rc2\)</span> and Chebyshev grids converge to <span class="math inline">\(\mu(\tau) = \rc{\pi \sqrt{1-\tau^2}}\)</span> in weak*.</p>
-<p><em>Key property</em>. The Chebyshev measure generates constant potential on <span class="math inline">\([-1,1]\)</span>, and so minimizes <span class="math inline">\(I(\mu)\)</span> (proof omitted).</p>
-<p>Some alterntive views.</p>
-<ul>
-<li>It’s 1 unit of charge in equilibrium, minimal-energy distributoin, where the potential function is logarithmic. The energy is <span class="math display">\[ I(\mu) = -\int_{-1}^1 \int_{-1}^1 \log |s-\tau|\,d\mu(\tau)\,d\mu(s).\]</span></li>
-<li><span class="math inline">\(u\)</span> is the functiton in the complex <span class="math inline">\(s\)</span>-plane that is harmonic outside <span class="math inline">\([-1,1]\)</span>, approaches a constant value <span class="math inline">\(s\to [-1,1]\)</span>, and is <span class="math inline">\(\log|s|+O(s^{-1})\)</span> (to make total amount of charge 1). To solve this, find a conformal map mapping the exterior of the interval to the exterior of a disk, <span class="math display">\[\phi(s) = \rc2 (s+i\sqrt{1-s^2}).\]</span> The solution there is <span class="math inline">\(\log|z|\)</span>. Map it back to get <span class="math inline">\(u(s) = \log |s+i\sqrt{1-s^2}|-\log 2\)</span>.
-<ul>
-<li>From this we wee that the equipotentials are the Bernstein ellipses: <span class="math inline">\(\rh=2e^{u_0}\)</span> gives <span class="math inline">\(u(s)=u_0\)</span>.</li>
-</ul></li>
-</ul>
-<p>The capacity is <span class="math inline">\(\min_\mu I(\mu)\)</span>; for <span class="math inline">\([-1,1]\)</span> it is <span class="math inline">\(\log 2\)</span>. (Each grid point is at an average distance of <span class="math inline">\(\rc2\)</span> from the others in geometric mean.)</p>
-<p>How to generalize to other regions (compact sets of <span class="math inline">\(\C\)</span>)?</p>
-<ul>
-<li>Fekete points: <span class="math inline">\(\prod_{j\ne k} |x_j-x_k|^{\fc{2}{n(n+1)}}\)</span> as large as possible. (This decreases to <span class="math inline">\(c(E)\)</span>.) This is mathematically nice but computationally difficult.</li>
-<li>Fejer points: <span class="math inline">\(\phi^{-1}(\{z_j\})\)</span> where <span class="math inline">\(z_j\)</span> are equally spaced around the unit circle, where <span class="math inline">\(\phi\)</span> maps the exterior of <span class="math inline">\(E\)</span> to the exterior of the unit circle.</li>
-<li>Leja points: greedy approximations to Fekete poits. Pick <span class="math inline">\(x_i\)</span> successively maximizing <span class="math inline">\(\prod_{j=0}^{n-1}|x_j-x_n|\)</span> at each step.</li>
-</ul>
-<p><strong>Theorem</strong>. Let <span class="math inline">\(f\in C([-1,1])\)</span>. Let <span class="math inline">\(\rh\)</span> be the parameter of the largest Bernstein ellipse <span class="math inline">\(E_\rh\)</span> where <span class="math inline">\(f\)</span> can be analytically continued, and <span class="math inline">\(p_n\)</span> be the interpolants to any sequence of grids with <span class="math inline">\(\lim_{n\to \iy}(\sup_{x\in [-1,1]}|l(x)|)^{\rc n}\)</span>. Then <span class="math inline">\(\lim_{n\to \iy} \ve{f-p_n}^{\rc n} = \rh^{-1}\)</span>.</p>
-<h2 id="equispaced-points-runge-phenomenon">13 Equispaced points, Runge phenomenon</h2>
-<p>Interpolation at equally spaced points can diverge exponentially (at the edges). Why? <span class="math inline">\([-1,1]\)</span> is far from being a level curve. The curve <span class="math inline">\(l(x)=l(t)\)</span> is a “football”; <span class="math inline">\(f\)</span> needs to be analytic inside this football for convergence. The football goes to <span class="math inline">\(\approx .526i\)</span>. Ex. <span class="math inline">\(f=\rc{1+25x^2}\)</span> is not analytic inside, so the interpolants diverge.</p>
-<p>Even if convergence should take place in theory (<span class="math inline">\(f\)</span> is analytic in the football), rounding errors can be amplified by <span class="math inline">\(O(2^n)\)</span> causing divergence in practice.</p>
-<h2 id="discussion-of-high-order-interpolation">14 Discussion of high-order interpolation</h2>
-<p>Much of the literature is skeptical of high-order interpolation because people saw it doesn’t work for equispaced point. However, Chebyshev interpolation does work.</p>
-<p>2 important issues:</p>
-<ol type="1">
-<li>Conditioning of the problem: interpolation points must be properly spaced, so the interpolant does not depend sensitively on the data. Ill-conditioning can lead to Runge phenomenon.</li>
-<li>Stability of the algorithm: Interpolation algorithm must be stable (e.g. barycentric interpolation formula) even when the problem is well-conditioned. Vandermonde is very poorly conditioned.</li>
-</ol>
-<h2 id="lebesgue-constants">15 Lebesgue constants</h2>
-<p>The <strong>Lebesgue constant</strong> of a set of points <span class="math inline">\(S\sub [-1,1]\)</span> is <span class="math display">\[\La = \sup_f\fc{\ve{p}}{\ve{f}} = \sup_{x\in [-1,1]} \ub{\sumo jn |l_j(x)|}{\la(x)}\]</span> where <span class="math inline">\(p\)</span> is the interpolant of <span class="math inline">\(f\)</span> through <span class="math inline">\(S\)</span>.</p>
-<p>The largest possible interpolation error is at least <span class="math inline">\(\La-1\)</span>, and the interpolation error is at most <span class="math inline">\((\La+1) \ve{f-p^*}\)</span>.</p>
-<p>More generally, define the Lebesgue constant of any linear projection by <span class="math inline">\(\sup_f \fc{\ve{Lf}}{\ve{f}}\)</span>. Then <span class="math inline">\(\ve{f-p}\le (\La+1)\ve{f-p^*}\)</span>.</p>
-<p>No set of interpolation points can lead to convergence for all <span class="math inline">\(C([-1,1])\)</span> (PROOF?) so <span class="math inline">\(\lim_{n\to \iy} \La_n\)</span>.</p>
-<p><strong>Theorem</strong>.</p>
-<ol type="1">
-<li>Lebesgue constants for <span class="math inline">\(|S|=n+1\)</span> satisfy <span class="math inline">\(\La_n \ge \fc{2}{\pi}\log (n+1) + \fc{2}\pi (\ga + \log \pf{4}{\pi})\)</span>.</li>
-<li>For Chebyshev points, <span class="math inline">\(\La_n\le \fc{2}{\pi}\log (n+1) +1\)</span>.</li>
-<li>For equispaced points, <span class="math inline">\(\La_n&gt;\fc{2^{n-2}}{n^2}\)</span>.</li>
-<li>For Chebyshev projection, <span class="math inline">\(\La_n =\rc{2\pi}\int_{-\pi}^{\pi} \af{\sin((n+1/2)t)}{\sin(t/2)}\,dt\sim \fc{4}{\pi^2}\log n\)</span>.</li>
-</ol>
-<p>Instructive: Plot <span class="math inline">\(\la(x)\)</span> for equispaced and Chebyshev points.</p>
-<p>Intuition: The fastest a Lagrange polynomial can decay is <span class="math inline">\(O\prc{x}\)</span>, and adding up these alternating tails with alternating coefficients gives a harmonic series.</p>
-<p>Related: For Taylor projection of <span class="math inline">\(f\)</span> analytic on the unit disc, Landau constants <span class="math inline">\(\La_n \sim \rc{\pi}\log n\)</span>.</p>
-
-  </div>
-
-    
-
-    <!-- Extension : Sharing buttons @ www.sharethis.com -->
-    <span class='st_facebook_large' displayText='Facebook'></span>
-    <span class='st_twitter_large' displayText='Tweet'></span>
-    <span class='st_googleplus_large' displayText='Google +'></span>
-    <span class='st_reddit_large' displayText='Reddit'></span>
-    <span class='st__large' displayText=''></span>
-
-    <div id="disqus_thread"></div>
-    
-
-
-  
-    <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
-  </div>
-  
-</div>
-]]></summary>
-</entry>
-<entry>
-    <title>Weekly summary 2016-08-06</title>
-    <link href="http://holdenlee.github.io/notebook/posts/summaries/2016-08-06.html" />
-    <id>http://holdenlee.github.io/notebook/posts/summaries/2016-08-06.html</id>
-    <published>2016-08-06T00:00:00Z</published>
-    <updated>2016-08-06T00:00:00Z</updated>
-    <summary type="html"><![CDATA[
-<div class="container">
-  <div id="content">
-    <div class="page header">
-      <h1>Weekly summary 2016-08-06</h1>
-    </div>
-    <div class="info">
-      
-       
-        <p>Posted: 2016-08-06 
-          , Modified: 2016-08-06 
-	</p>
-      
-       <p>Tags: <a href="/tags/none.html">none</a></p> 
-    </div>
-    
-  </div>
-  <!--/div-->
-
-  <div class="toc"> <ul>
- <li><a href="#representation-learning">Representation learning</a></li>
- </ul> </div>
-
-  <div class="blog-main">
-    <ul>
-<li>Machine learning
-<ul>
-<li><a href="/posts/tcs/machine_learning/neural_nets/pmi_images.html">PMI images</a>
-<ul>
-<li>Understood <a href="/posts/tcs/machine_learning/nlp/pmi.html">PMI idea</a> more thoroughly.</li>
-<li>Got code from Ben. Having trouble running. See
-<ul>
-<li>https://www.mathworks.com/matlabcentral/newsreader/view_thread/345876#947272</li>
-<li>https://askrc.princeton.edu/question/255/matlab-on-nobel-error-using-mex/</li>
-<li>http://stackoverflow.com/questions/38723051/error-using-mex-g-error-no-such-file-or-directory</li>
-</ul></li>
-<li><a href="/posts/tcs/machine_learning/neural_nets/convnets_ideas.html">Brainstorm on convnets</a>. Skimmed the following. <strong>TODO</strong>: understand more thoroughly.
-<ul>
-<li>Fastfood - computing Hilbert space expansions in loglinear time
-<ul>
-<li>Deep-fried convnets</li>
-<li>Ailon-Chazelle</li>
-</ul></li>
-<li><a href="/posts/tcs/machine_learning/nlp/HA16.html">HA16</a> Unsupervised Learning of Word-Sequence Representations from Scratch via Convolutional Tensor Decomposition</li>
-<li>[MKHS14] Convolutional Kernel Networks</li>
-</ul></li>
-</ul></li>
-<li>Representation learning problem (see below)
-<ul>
-<li>Talked with Anand.</li>
-<li>Kernel dictionary learning idea. <strong>TODO</strong>: try to make this rigorous, and test it out.</li>
-</ul></li>
-<li><strong>TODO</strong>: Think about AGD, talk with Cyril.
-<ul>
-<li><a href="/posts/math/analysis/numerica/chebyshev.html">Chebyshev polynomials</a></li>
-</ul></li>
-</ul></li>
-<li>Probability
-<ul>
-<li><a href="/posts/math/probability/random_matrices/hi_dim_prob.html">HDP</a> Chapters 2-3</li>
-</ul></li>
-<li>TT/ATP/PL
-<ul>
-<li>Reviewed HMTI, read more on type theory. See <a href="/posts/cs/type_theory/types_and_pl.html">Types and PL</a>, <a href="/posts/cs/type_theory/type_theory.html">Type theory</a>.</li>
-</ul></li>
-</ul>
-<h2 id="representation-learning">Representation learning</h2>
-<p>In dictionary learning, we assume we have samples <span class="math inline">\(y = Ax + e\)</span> where <span class="math inline">\(x\)</span> comes from a sparse distribution (ex. <span class="math inline">\(x_i\)</span> independent, <span class="math inline">\(x_i\neq 0\)</span> with probability <span class="math inline">\(s/n\)</span> and then is drawn from some distribution not concentrated at 0) and <span class="math inline">\(e\)</span> is error (ex. Gaussian).</p>
-<p>The way we stated our problem is that <span class="math inline">\(x\cdot a_i\)</span> is large for only a few <span class="math inline">\(i\)</span>. This is similar to dictionary learning with <span class="math inline">\((A^+)^T\)</span> where the columns of <span class="math inline">\(A\)</span> are the <span class="math inline">\(a_i\)</span>. (I.e. the <span class="math inline">\(x\)</span>’s here are really the <span class="math inline">\(y\)</span>’s in DL.)</p>
-<p>I may be wrong but I think that what’s different is that</p>
-<ul>
-<li>Dictionary learning on <span class="math inline">\((A^+)^T\)</span> would correspond to when <span class="math inline">\((x\cdot a_i)_i\)</span> is sparse + noise. Our assumption is a bit different that <span class="math inline">\(x\cdot a_i\)</span> is large for only a few <span class="math inline">\(i\)</span>, ex. large negative values don’t count against the assumption.</li>
-<li>we’re trying to relax the condition on the noise—ex. instead of saying that the noise in the other coordinates is random, we consider worst-case or make an assumption that they’re random-like in some way.</li>
-</ul>
-<p>(Actually, I think the undercomplete case when the number of <span class="math inline">\(a_i\)</span> is less than the dimension of <span class="math inline">\(n\)</span> doesn’t quite correspond to DL because the map <span class="math inline">\(x\mapsto (x\cdot a_i)_i\)</span> is not invertible…)</p>
-
-  </div>
-
-    
-
-    <!-- Extension : Sharing buttons @ www.sharethis.com -->
-    <span class='st_facebook_large' displayText='Facebook'></span>
-    <span class='st_twitter_large' displayText='Tweet'></span>
-    <span class='st_googleplus_large' displayText='Google +'></span>
-    <span class='st_reddit_large' displayText='Reddit'></span>
-    <span class='st__large' displayText=''></span>
-
-    <div id="disqus_thread"></div>
-    
-
-
-  
-    <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
-  </div>
-  
-</div>
-]]></summary>
-</entry>
-<entry>
-    <title>Chebyshev polynomials</title>
-    <link href="http://holdenlee.github.io/notebook/posts/math/analysis/numerical/chebyshev.html" />
-    <id>http://holdenlee.github.io/notebook/posts/math/analysis/numerical/chebyshev.html</id>
-    <published>2016-08-04T00:00:00Z</published>
-    <updated>2016-08-04T00:00:00Z</updated>
-    <summary type="html"><![CDATA[
-<div class="container">
-  <div id="content">
-    <div class="page header">
-      <h1>Chebyshev polynomials</h1>
-    </div>
-    <div class="info">
-      
-       
-        <p>Posted: 2016-08-04 
-          , Modified: 2016-08-04 
-	</p>
-      
-       <p>Tags: <a href="/tags/none.html">none</a></p> 
-    </div>
-    
-  </div>
-  <!--/div-->
-
-  
-
-  <div class="blog-main">
-    <p>References:</p>
-<ul>
-<li><a href="http://blog.mrtz.org/2013/09/07/the-zen-of-gradient-descent.html">The Zen of gradient descent</a></li>
-</ul>
-Define the Chebyshev polynomials by
-\begin{align}
-T_0 &amp;=1\\
-T_1 &amp;=x\\
-T_{n+1} &amp;= 2xT_n - T_{n-1}\\
-T_n(\cos x) &amp;= \cos(nx).
-\end{align}
-<strong>Theorem</strong>. There exists a polynomial <span class="math inline">\(p_k\)</span> such that
-\begin{align}
-\deg(p_k) &amp;= O\pa{\sqrt{\fc{L}{l}} \ln \prc{\ep}}\\
-p_k(0) &amp;= 1\\
-p_k(x)&amp;\le \ep, &amp;x\in [l,L]
-\end{align}
-<p>First attempt: Scale and translate the Chebyshev polynomial to be <span class="math inline">\(\le \ep\)</span> on <span class="math inline">\([l,L]\)</span>. A Chebyshev poly at <span class="math inline">\(x\)</span> is <span class="math inline">\(O(2^{n-1}x^n)\)</span>. Then the value at 0 is <span class="math inline">\(2^{n-1}\)</span> is <span class="math inline">\(2^{n-1}\pf{l}{(L-l)/2}^n\)</span>, it suffices for this to be <span class="math inline">\(\le 1\)</span>. But this only that <span class="math inline">\(n\le \fc{\ln \prc{\ep}}{\ln \pf{4l}{L-l}}\)</span> is sufficient.</p>
-<p>This is a bad approximation!</p>
-We know
-\begin{align}
-T_n\pf{e^x+e^{-x}}2 &amp;= \fc{e^{nx}+e^{-nx}}2\\
-T_n\pf{u+\rc u}{2} &amp;= \pf{u^n+\rc{u^n}}2.
-\end{align}
-Solving <span class="math inline">\(u+\rc{u} = x\)</span> gives <span class="math inline">\(u=x \pm\sqrt{x^2-1}\)</span> and <span class="math display">\[u^n +\rc{u^n} = (x+\sqrt{x^2-1})^n + (x-\sqrt{x^2-1})^n.\]</span> Thus it suffices to have (let <span class="math inline">\(k = \fc Ll\)</span>)
-\begin{align}
-2\ba{\pf{L+l}{L-l} + \sqrt{\pf{L+l}{L-l}^2 - 1}}^n \ep &amp;\le 1\\
-\iff n\ln \ba{\pf{L+l}{L-l} + \sqrt{\pf{L+l}{L-l}^2 - 1}} &amp; \le \ln \fc{2}{\ep}\\
-\iff n\ln \pf{(\sqrt k+1)^2}{k-1} &amp; \le \ln \pf 2\ep\\
-\Leftarrow n\pf{2+2\sqrt k}{k-1} &amp; \le \ln \pf 2\ep\\
-\Leftarrow n&amp;\le \fc{k-1}{2(\sqrt k + 1)}\ln \pf 2\ep\\
-&amp;=\rc{2}(\sqrt k - 1) \ln \pf 2\ep\\
-&amp;=O(\sqrt k \ln \prc{\ep}).
-\end{align}
-<p>Restatement: There exists a polynomial of degree <span class="math inline">\(O\pa{\sfc{L+l}{L-l}\ln \prc{\ep}}\)</span> such that <span class="math inline">\(p_k(L)=1\)</span> and <span class="math inline">\(p_k(x)=0\)</span> on <span class="math inline">\([-l,l]\)</span>.</p>
-Let’s solve <span class="math inline">\(Ax=b\)</span> when <span class="math inline">\(A\)</span> is positive definite. Consider <span class="math inline">\(f=\rc 2 x^TAx - b^Tx\)</span> starting at <span class="math inline">\(x_0=b\)</span>. Gradient descent with step size <span class="math inline">\(t\)</span> gives
-\begin{align}
-x_{k+1} &amp;= x_k - t (Ax_k-b)\\
-&amp;= (I-tA)x_k + tb\\
-x_k &amp;= (I+\cdots +(I-tA)^k)tb
-\end{align}
-Now <span class="math inline">\(p(x) = 1+\cdots + (1-x)^n\)</span> is an approximation of <span class="math inline">\(\rc{x} = \rc{1-(1-x)}\)</span>. Suppose all eigenvalues of <span class="math inline">\(A\)</span> are in <span class="math inline">\([l,L]\)</span>. Then diagonalizing, we get that (take <span class="math inline">\(t=1\)</span>?)
-\begin{align}
-\ve{(p(tA) - A^{-1})tb}_2 
-&amp;= \ve{tb}_2\max_{\la\text{ of }A} (p(\la) - \rc{\la})) \\
-&amp;= \ve{tb}_2\max_{x\in [l,L]} (p(x) - \rc x) \\
-&amp;= \ve{tb}_2 \ve{p(x) - \rc x}_{L^\iy([l,L])}.
-\end{align}
-<!-- (We may assume $A$ is diagonalizable with real eigenvalues by multiplying by a unitary.) -->
-<p>But <span class="math inline">\(p(x)\)</span>, although it is a power series expansion of <span class="math inline">\(\rc{x}\)</span>, is not the best estimator of <span class="math inline">\(\rc{x}\)</span> in the <span class="math inline">\(L^{\iy}\)</span> norm. Polynomials based on Chebyshev polynomials do better. The Chebyshev polynomials are defined by a recurrence, which corresponds to a different recurrence relation on the <span class="math inline">\(x_k\)</span>.</p>
-<p>For the above <span class="math inline">\(p\)</span>, the difference is <span class="math inline">\(\fc{(1-tx)^{n+1}}x\)</span>. Choosing <span class="math inline">\(t=\fc{2}{L+l}\)</span>, we get <span class="math inline">\(\pf{L-l}{L+l}^{n+1} = O\pf{\ka - 1}{\ka+1}^{n}\)</span> convergence.</p>
-<p>This motivates the following question.</p>
-<p><strong>Question</strong>. What is <span class="math display">\[
-\min_{\deg p = n} \ve{p(x) - \rc{x}}_{L^{\iy}([l,L])}?
-\]</span></p>
-<p>Interpolate at Chebyshev points? Conjugate gradients, etc.</p>
-<p>See exercise 8.10 in <a href="ATAP.html">ATAP</a>. First reposition at <span class="math inline">\([-1,1]\)</span> as above. <span class="math inline">\(\rc{x}\)</span> gets sent to <span class="math inline">\(\fc{k+1}{m(k-1)}\rc{x-\pf{k+1}{k-1}}\)</span>. For any <span class="math inline">\(\rh\)</span> such that <span class="math inline">\(\fc{\rh+\rh^{-1}}2\le \fc{k+1}{k-1}\)</span>, i.e., <span class="math inline">\(\rh \le 1+\fc{2}{\sqrt k - 1}\)</span>, we get a bound <span class="math display">\[
-\fc{k+1}{m(k-1)} \pa{\pf{k+1}{k-1}-\fc{\rh+\rh^{-1}}{2}} \rh^{-n} = \rc m O_{\rh}(\rh^{-n})
-\]</span> This is an upper bound on convergence of conjugate gradient, because conjugate gradient finds the vector in <span class="math inline">\(\spn(\{b, Ab, \ldots, A^{n}b\})\)</span> that is closest to <span class="math inline">\(A^{-1}b\)</span>.</p>
-<p>(Thus, conjugate gradient gets <span class="math inline">\(\ep\)</span>-close in <span class="math inline">\(O(\sqrt\ka \ln \prc{\ep})\)</span> steps.)</p>
-<p>(We can get a lower bound by computing the best possible <span class="math inline">\(L^2\)</span> of the approximation. It should be on the same order.)</p>
-Conjugate gradient:
-\begin{align}
-v_0&amp;=b\\
-w_i&amp;=Av_i\\
-v_i&amp;=w_i- \sumz j{i-1} \fc{\an{w_i,v_j}_A}{\an{v_j,v_j}_A}v_j.
-\end{align}
-<p>We have <span class="math inline">\(\an{w_{i+1},v_j} = \an{v_i,w_{j+1}}_A\)</span> and <span class="math inline">\(w_{i+1}\perp v_{i+2},ldots\)</span> so <span class="math inline">\(v_i\perp_A w_{i+3},\ldots\)</span>.</p>
-<!--We try to minimize $\max_\la (\la p(\la)-1)^2)$-->
-
-  </div>
-
-    
-
-    <!-- Extension : Sharing buttons @ www.sharethis.com -->
-    <span class='st_facebook_large' displayText='Facebook'></span>
-    <span class='st_twitter_large' displayText='Tweet'></span>
-    <span class='st_googleplus_large' displayText='Google +'></span>
-    <span class='st_reddit_large' displayText='Reddit'></span>
-    <span class='st__large' displayText=''></span>
-
-    <div id="disqus_thread"></div>
-    
-
-
-  
-    <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
-  </div>
-  
-</div>
-]]></summary>
-</entry>
-<entry>
-    <title>Neural net experiments</title>
-    <link href="http://holdenlee.github.io/notebook/posts/cs/neural_nets/experiments.html" />
-    <id>http://holdenlee.github.io/notebook/posts/cs/neural_nets/experiments.html</id>
-    <published>2016-08-03T00:00:00Z</published>
-    <updated>2016-08-03T00:00:00Z</updated>
-    <summary type="html"><![CDATA[
-<div class="container">
-  <div id="content">
-    <div class="page header">
-      <h1>Neural net experiments</h1>
-    </div>
-    <div class="info">
-      
-       
-        <p>Posted: 2016-08-03 
-          , Modified: 2016-08-03 
-	</p>
-      
-       <p>Tags: <a href="/tags/programming.html">programming</a></p> 
-    </div>
-    
-  </div>
-  <!--/div-->
-
-  
-
-  <div class="blog-main">
-    <h2 id="done">Done</h2>
-<ul>
-<li>MNIST basics</li>
-<li>CIFAR-10 basics</li>
-</ul>
-<h2 id="todo">Todo</h2>
-<p>See <a href="/tcs/machine_learning/neural_nets/convnets_ideas.html">Convnets ideas</a>.</p>
-<ul>
-<li>LSTM: generate text
-<ul>
-<li>Character by character</li>
-<li>Word by word, using word embeddings</li>
-<li>With restrictions</li>
-<li>With parse trees</li>
-</ul></li>
-<li>LSTM for algorithms
-<ul>
-<li>Thresholding</li>
-<li>Neural net Turing machines</li>
-</ul></li>
-<li>Rotational invariance, etc.</li>
-<li>Smoothness regularization in convolution kernels</li>
-<li>Get familiar with Tensorboard.</li>
-<li>Visualizing neural nets.</li>
-<li>Sparsification</li>
-<li>Reimplementations
-<ul>
-<li>Deep-fried convnets</li>
-<li>Fooling neural nets</li>
-<li>Deep reinforcement learning with Atari games</li>
-</ul></li>
-<li>“Train twice and put together”: independent ways of doing things (cf. boosting)</li>
-<li>Check claims of suspiciously good performance (ex. learning to execute…)</li>
-</ul>
-
-  </div>
-
-    
-
-    <!-- Extension : Sharing buttons @ www.sharethis.com -->
-    <span class='st_facebook_large' displayText='Facebook'></span>
-    <span class='st_twitter_large' displayText='Tweet'></span>
-    <span class='st_googleplus_large' displayText='Google +'></span>
-    <span class='st_reddit_large' displayText='Reddit'></span>
-    <span class='st__large' displayText=''></span>
-
-    <div id="disqus_thread"></div>
-    
-
-
-  
-    <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
-  </div>
-  
-</div>
-]]></summary>
-</entry>
-<entry>
-    <title>[HA16] Unsupervised Learning of Word-Sequence Representations from Scratch via Convolutional Tensor Decomposition</title>
-    <link href="http://holdenlee.github.io/notebook/posts/tcs/machine_learning/nlp/HA16.html" />
-    <id>http://holdenlee.github.io/notebook/posts/tcs/machine_learning/nlp/HA16.html</id>
-    <published>2016-08-02T00:00:00Z</published>
-    <updated>2016-08-02T00:00:00Z</updated>
-    <summary type="html"><![CDATA[
-<div class="container">
-  <div id="content">
-    <div class="page header">
-      <h1>[HA16] Unsupervised Learning of Word-Sequence Representations from Scratch via Convolutional Tensor Decomposition</h1>
-    </div>
-    <div class="info">
-      
-       
-        <p>Posted: 2016-08-02 
-          , Modified: 2016-08-02 
-	</p>
-      
-       <p>Tags: <a href="/tags/nlp.html">nlp</a>, <a href="/tags/word%20embeddings.html">word embeddings</a></p> 
-    </div>
-    
-  </div>
-  <!--/div-->
-
-  <div class="toc"></div>
-
-  <div class="blog-main">
-    <p>See also [HA15] Convolutional Dictionary Learning through Tensor Factorization.</p>
-<ol type="1">
-<li>Use PCA to reduce dimensionality of 1-hot encodings to <span class="math inline">\(k\)</span> dimensions. (Wouldn’t it be better to use word embeddings?)</li>
-<li>For each dimension and each sentence, obtain a vector <span class="math inline">\(x\)</span>. Train on this set. Minimize <span class="math display">\[\min_{f_i,w_i:\ve{f_i}=1} \ve{x-\sum_{i\in [L]} f_i * w_i}^2.
-\]</span> (How to avoid SGD or calculating the sum of these? Some tensor trickery?) <span class="math inline">\(f\)</span>’s are filters, <span class="math inline">\(w\)</span>’s are activation maps.</li>
-</ol>
-<p>Q: Why are we considering each dimension separately? Wouldn’t it make more sense to consider them together, and try to write <span class="math display">\[ X = \sum_{i\in [L]} F_i*w_i\]</span> where <span class="math inline">\(X\)</span> is a matrix corresponding to a sentence, and <span class="math inline">\(w_i\)</span> is in the row direction. In [HA16]’s way of doing it, you’re learning how a generic subject/theme/atom modulates throughout the space (sentence), not how combinations of subjects modulate. Is this what you want? This does need MUCH fewer atoms though, else you can expect <span class="math inline">\(k\)</span> times more.</p>
-<p>(T/F? Tensor algorithms are fragile in the sense that they depend on the model being exactly the way it is. Ex. tensor algorithm for NN—if you change the NN a bit it may fail.)</p>
-
-  </div>
-
-    
-
-    <!-- Extension : Sharing buttons @ www.sharethis.com -->
-    <span class='st_facebook_large' displayText='Facebook'></span>
-    <span class='st_twitter_large' displayText='Tweet'></span>
-    <span class='st_googleplus_large' displayText='Google +'></span>
-    <span class='st_reddit_large' displayText='Reddit'></span>
-    <span class='st__large' displayText=''></span>
-
-    <div id="disqus_thread"></div>
-    
-
-
-  
-    <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
-  </div>
-  
-</div>
-]]></summary>
-</entry>
-<entry>
-    <title>Convnets ideas</title>
-    <link href="http://holdenlee.github.io/notebook/posts/tcs/machine_learning/neural_nets/convnets_ideas.html" />
-    <id>http://holdenlee.github.io/notebook/posts/tcs/machine_learning/neural_nets/convnets_ideas.html</id>
-    <published>2016-08-02T00:00:00Z</published>
-    <updated>2016-08-02T00:00:00Z</updated>
-    <summary type="html"><![CDATA[
-<div class="container">
-  <div id="content">
-    <div class="page header">
-      <h1>Convnets ideas</h1>
-    </div>
-    <div class="info">
-      
-       
-        <p>Posted: 2016-08-02 
-          , Modified: 2016-08-02 
-	</p>
-      
-       <p>Tags: <a href="/tags/neural%20nets.html">neural nets</a></p> 
-    </div>
-    
-  </div>
-  <!--/div-->
-
-  <div class="toc"></div>
-
-  <div class="blog-main">
-    <ul>
-<li>In the Fourier basis translation is diagonalized. So can we train better in the Fourier basis?
-<ul>
-<li>This seems tempting, but it doesn’t seem to lead anywhere. Local convolution with shared parameters commutes with translation. Here, diagonal maps commute with translation (=multiplication by eigenfunctions). So in terms of computing a linear map, it’s easier.</li>
-<li>But then we follow by a nonlinearity: pointwise sigmoid, or local pooling. In the Fourier space, this doesn’t correspond to anything nice! Fourier transform scrambles locality, and locality is important here…</li>
-</ul></li>
-<li>Adding more invariances:
-<ul>
-<li>Rotational invariance. (See [CW16] Group Equivariant Convolutional Networks)
-<ul>
-<li>Make local rotated copies of the image (have to be careful with cropping, interpolating) and stack them. Now do a 3-D convolution in <span class="math inline">\((x,y,\te)\)</span> space.</li>
-<li>This is less efficient. We should be able to reduce the number of parameters, but by how much?</li>
-<li>Beyond translation symmetry, the dimensionality of symmetries becomes greater than the dimensionality of the image (there is more than one symmetry taking one point to another point). This redundancy causes inefficiency.</li>
-</ul></li>
-<li>Scaling invariance.
-<ul>
-<li>Run the same convnet on the picture at different scales.</li>
-</ul></li>
-<li>Coloration (does this cause problems typically?)</li>
-<li>There’s some classical result in theoretical computer vision that identifies the dimensionality of the manifold of image alterations… check Amit Singer’s notes.</li>
-</ul></li>
-<li>Apply the variant on convolutional dictionary learning <a href="../nlp/HA16.html">HA16</a>, except 2-D.</li>
-<li>What if we did global convolutions? (This would add many parameters…)</li>
-<li>Add regularization to penalize non-smooth/non-simple kernels. For example, write the kernel in a Fourier or wavelet basis, and penalize larger Fourier or wavelet vectors (ex. term based on Fourier expectation).</li>
-<li>I “get” max pooling now: it preserves translation invariance. Pool across close-by transformations.
-<ul>
-<li>Does overlapping impose consistency?</li>
-</ul></li>
-<li>Could you compute max-pooling across many local transformations (ex. <span class="math inline">\((x,y,\te)\)</span>) more efficiently? Ex. finding the distance from a manifold of transformations of the image.</li>
-<li>How to incorporate common sense? Ex. “A thin object in a person’s hand is likely to be a pencil.”</li>
-<li>Can we train on the quotient manifold, quotiented out by symmetries? The problem is that the quotient manifold has cusps. Ex. <span class="math inline">\(\R^2/(x,y)\mapsto (y,x)\)</span> has “cusps” at <span class="math inline">\((x,x)\)</span>. Add regularization/change metric to keep it away? cf. keeping things in the simplex.</li>
-<li>(General NN) How much can you sparsify a fully connected layer and still have it work? (cf. dropout)</li>
-<li>How much can you reduce parameters in a trained NN and still get similar performance? (+ an explanation of why more parameters that needed helps learning) Can you iterate reducing parameters and training?
-<ul>
-<li>READ: Deep-fried convnets.</li>
-</ul></li>
-<li>Fooling neural nets…</li>
-<li>Train twice independently and put together?</li>
-</ul>
-
-  </div>
-
-    
-
-    <!-- Extension : Sharing buttons @ www.sharethis.com -->
-    <span class='st_facebook_large' displayText='Facebook'></span>
-    <span class='st_twitter_large' displayText='Tweet'></span>
-    <span class='st_googleplus_large' displayText='Google +'></span>
-    <span class='st_reddit_large' displayText='Reddit'></span>
-    <span class='st__large' displayText=''></span>
-
-    <div id="disqus_thread"></div>
-    
-
-
-  
-    <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
-  </div>
-  
-</div>
-]]></summary>
-</entry>
-<entry>
-    <title>PMI for images</title>
-    <link href="http://holdenlee.github.io/notebook/posts/tcs/machine_learning/neural_nets/pmi_images.html" />
-    <id>http://holdenlee.github.io/notebook/posts/tcs/machine_learning/neural_nets/pmi_images.html</id>
-    <published>2016-08-01T00:00:00Z</published>
-    <updated>2016-08-01T00:00:00Z</updated>
-    <summary type="html"><![CDATA[
-<div class="container">
-  <div id="content">
-    <div class="page header">
-      <h1>PMI for images</h1>
-    </div>
-    <div class="info">
-      
-       
-        <p>Posted: 2016-08-01 
-          , Modified: 2016-08-01 
-	</p>
-      
-       <p>Tags: <a href="/tags/PMI.html">PMI</a>, <a href="/tags/neural%20nets.html">neural nets</a>, <a href="/tags/vision.html">vision</a></p> 
-    </div>
-    
-  </div>
-  <!--/div-->
-
-  <div class="toc"> <ul>
- <li><a href="#notes">Notes</a></li>
- <li><a href="#theory">Theory</a></li>
- <li><a href="#thoughts">Thoughts</a></li>
- <li><a href="#todo">Todo</a><ul>
- <li><a href="#coding">Coding</a></li>
- <li><a href="#theory-1">Theory</a></li>
- </ul></li>
- <li><a href="#scratch">Scratch</a></li>
- <li><a href="#steps">Steps</a></li>
- </ul> </div>
-
-  <div class="blog-main">
-    <h2 id="notes">Notes</h2>
-<p>Experiments:</p>
-<ul>
-<li><code>mnist_testing.m</code>: Prep data.</li>
-<li><code>svd_testing.m</code>: How does reducing the number of features through SVD affect classification accuracy?</li>
-<li><code>pairwise_mi.m</code>: Tests related to mutual information</li>
-<li><code>mi.m</code></li>
-<li><code>MI_GG.m</code></li>
-<li><code>rsvd.m</code></li>
-</ul>
-<pre><code>	         nlayers: 2
-             layer: {2x1 cell}
-    type_zerolayer: 2
-             ndesc: 7200
-
-
-                         numlayer: 1
-                        centering: 0
-    median_contrast_normalization: 0
-                           npatch: 5
-                      subsampling: 2
-                             smap: 50
-                   type_zerolayer: 2
-                            sigma: 0.7459
-                                Z: [25x50 double]
-                                w: [50x1 double]</code></pre>
-<p>In <code>pairwise_mi.m</code> there’s no normalization by scaling (<span class="math inline">\(-2\log\pat{scale}\)</span>).</p>
-<p>https://en.wikipedia.org/wiki/Conditional_mutual_information</p>
-<h2 id="theory">Theory</h2>
-<p>The right PMI measure to use here is <span class="math display">\[
-\ln \pf{\an{v,w}}{\an{v,\one}\an{w,\one}}.
-\]</span> Because if we assume the activations are like <span class="math inline">\((e^{\chi,v})_\chi\)</span>, then we still get that the expected dot product of these is <span class="math inline">\(\int e^{\an{\chi,v}}e^{\an{\chi,w}}\,d\chi\propto \exp\pa{\fc{\ve{v+w}^2}{2}}\)</span>.</p>
-<h2 id="thoughts">Thoughts</h2>
-<ul>
-<li>Is a picture more like a context or a document? We’re treating it like context (looking at all pairs of features there). But its size makes it seem more like a document. Or better: a sentence, because sentences are big enough to incorporate different features and small enough to still have a vector associated with it.</li>
-<li>How to incorporate convolutional ideas? Ex. if features <span class="math inline">\(f_1,f_2\)</span> are in the same relationship (translationally) as <span class="math inline">\(f_1',f_2'\)</span> then we expect PMI to be similar, so we should we really be looking at a <span class="math inline">\(7200\times 7200\)</span> matrix? How about look at PMI of adjacent features? (But they shouldn’t overlap…) Or look at PMI pre-convolution by another layer?</li>
-<li>What happens if you apply (convolutional?) DL to the learned features? Then apply SVD to the dimension-reduced vectors?</li>
-</ul>
-<h2 id="todo">Todo</h2>
-<h3 id="coding">Coding</h3>
-<ul>
-<li>Completed</li>
-<li>Compute PMI matrix.</li>
-<li>Plot histogram of PMI’s.</li>
-<li>Plot histogram of conditional PMI’s. (They don’t look like they have higher values… Try thresholding first? Look at features with largest PMI? Calculate entropies?)</li>
-<li>Look at correlations between PMI’s and distances between pairs. (There doesn’t seem to be any correlation.)</li>
-<li>Todo</li>
-<li>Train on feature vectors.</li>
-<li>Do weighted SVD on PMI matrix.</li>
-<li>Do dictionary learning on feature vectors/PMI vectors (?).</li>
-</ul>
-<p>(Compare to purely random.)</p>
-<h3 id="theory-1">Theory</h3>
-<p>Understand loss function for PMI.</p>
-<h2 id="scratch">Scratch</h2>
-<p>Qs</p>
-<ul>
-<li>Why is the normalization <code>nrm=mean(sqrt(sum(compTr.^2)))</code>?</li>
-</ul>
-<h2 id="steps">Steps</h2>
-<p>Run experiments.</p>
-<pre><code>nohup nice -19 matlab -nodisplay -nodesktop -nojvm -nosplash &lt; run_experiments2.m &gt; output_2016-08-07.txt 2&gt;&amp;1 &amp;</code></pre>
-<div class="sourceCode"><pre class="sourceCode matlab"><code class="sourceCode matlab"><span class="co">%Get psiTr</span>
-pmi_experiments(<span class="st">'logs/model_mnist_5_2_0_2_2_0_50_200_0_1.000000e-01_1.000000e-01_1.000000e-01_2.mat'</span>);
-<span class="co">%get percentiles for each feature</span>
-pc= get_percentiles(psiTr);
-save(<span class="st">'pc_1.mat'</span>,<span class="st">'pc'</span>,<span class="st">'-v7.3'</span>);
-<span class="co">%calculate PMI after normalizing and deleting zero rows.</span>
-[P, inds] = calculate_pmi(psiTr); <span class="co">%inds give the indices that are kept (indices of nonzero rows)</span>
-<span class="co">%exploratory analysis</span>
-<span class="co">%pmi_experiments(P);</span>
-[all_pmi_pairs, positions, dists] = pmi_experiments2(P, inds');
-save(<span class="st">'all_pmi_pairs_1.mat'</span>,<span class="st">'all_pmi_pairs'</span>);
-save(<span class="st">'positions_1.mat'</span>,<span class="st">'positions'</span>);
-save(<span class="st">'dists_1.mat'</span>,<span class="st">'dists'</span>);
-
-<span class="co">%cpmi matrices</span>
-Ps = calculate_cpmi(psiTr, Ytr, <span class="st">'1'</span>);
-cpmi_experiments(<span class="st">'P_1'</span>);</code></pre></div>
-<p>Over all pairs of features <span class="math inline">\(i,j\)</span>, this is the distribution of <span class="math inline">\(PMI(v_i,v_j)\)</span>:</p>
-<p><img src="/images/pmi/pmi_histogram_1.jpg"></p>
-<p>Is there a correlation between PMI and distance between features? (Distance ranges from <span class="math inline">\(0\)</span> to <span class="math inline">\(5\sqrt 2\)</span>.) It seems not.</p>
-<p><img src="/images/pmi/pmi_distance.jpg"></p>
-<p>Conditioned on the digit being a specific value, how does the PMI distribution look? Still about the same…</p>
-<p><img src="/images/pmi/hist_P_1_0.jpg"> <img src="/images/pmi/hist_P_1_1.jpg"> <img src="/images/pmi/hist_P_1_2.jpg"> <img src="/images/pmi/hist_P_1_3.jpg"> <img src="/images/pmi/hist_P_1_4.jpg"></p>
-
-  </div>
-
-    
-
-    <!-- Extension : Sharing buttons @ www.sharethis.com -->
-    <span class='st_facebook_large' displayText='Facebook'></span>
-    <span class='st_twitter_large' displayText='Tweet'></span>
-    <span class='st_googleplus_large' displayText='Google +'></span>
-    <span class='st_reddit_large' displayText='Reddit'></span>
-    <span class='st__large' displayText=''></span>
-
-    <div id="disqus_thread"></div>
-    
-
-
-  
-    <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
-  </div>
-  
-</div>
-]]></summary>
-</entry>
-<entry>
-    <title>High-dimensional probability</title>
-    <link href="http://holdenlee.github.io/notebook/posts/math/probability/random_matrices/hi_dim_prob.html" />
-    <id>http://holdenlee.github.io/notebook/posts/math/probability/random_matrices/hi_dim_prob.html</id>
-    <published>2016-08-01T00:00:00Z</published>
-    <updated>2016-08-01T00:00:00Z</updated>
-    <summary type="html"><![CDATA[
-<div class="container">
-  <div id="content">
-    <div class="page header">
-      <h1>High-dimensional probability</h1>
-    </div>
-    <div class="info">
-      
-       
-        <p>Posted: 2016-08-01 
-          , Modified: 2016-08-04 
-	</p>
-      
-       <p>Tags: <a href="/tags/random%20matrix.html">random matrix</a></p> 
-    </div>
-    
-  </div>
-  <!--/div-->
-
-  <div class="toc"> <ul>
- <li><a href="#introduction">Introduction</a></li>
- <li><a href="#variance-bounds-and-poincare-inequalities">Variance bounds and Poincare inequalities</a><ul>
- <li><a href="#section">2.1</a></li>
- <li><a href="#markov-semigroups">Markov semigroups</a></li>
- <li><a href="#variance-identities-and-exponential-ergodicity">2.4 Variance identities and exponential ergodicity</a></li>
- <li><a href="#problems">Problems</a></li>
- </ul></li>
- <li><a href="#subgaussian-concentration-and-log-sobolev-inequalities">3 Subgaussian concentration and log-Sobolev inequalities</a><ul>
- <li><a href="#the-martingale-method">3.2 The martingale method</a></li>
- <li><a href="#the-entropy-method">3.3 The entropy method</a></li>
- <li><a href="#log-sobolev-inequalities">3.4 Log-Sobolev inequalities</a></li>
- <li><a href="#problems-1">Problems</a></li>
- </ul></li>
- </ul> </div>
-
-  <div class="blog-main">
-    <p>Based on Ramon von Handel’s ORF570 notes.</p>
-<h2 id="introduction">Introduction</h2>
-<p>Themes:</p>
-<ul>
-<li>concentration: if <span class="math inline">\(X_{1:n}\)</span> are independent or weakly dependent random variables, and <span class="math inline">\(f\)</span> is not too <em>sensitive</em> to any coordinate, then <span class="math inline">\(f(X_{1:n})\)</span> is <em>close</em> to its mean.</li>
-<li>suprema</li>
-<li>universality</li>
-</ul>
-<h2 id="variance-bounds-and-poincare-inequalities">Variance bounds and Poincare inequalities</h2>
-<h3 id="section">2.1</h3>
-<p>Trivial bound: <span class="math display">\[ \Var[f(X)]\le \rc4 (\sup f - \inf f)^2 \qquad \Var[f(x)] \le \E[(f(X)-\inf f)^2].\]</span></p>
-<p>Tensorization gives a bound for functions of independent random variables from bounds for functions of each individual random variable.</p>
-<p><strong>Theorem</strong> (Tensorization of variance): <span class="math display">\[\Var[f(X_1,\ldots, X_n)]\le \E\ba{\sumo in \Var_i f(X_1,\ldots, X_n)}\]</span> whenever <span class="math inline">\(X_{1:n}\)</span> are independent.</p>
-<p>This is sharp for linear functions.</p>
-<em>Proof</em>. Write <span class="math display">\[ f(X_{1:n}) - \E f(X_{1:n}) = \sumo kn \ub{\E[f(X_{1:n}|X_{1:k})] - \E[f(X_{1:n})|X_{1:k-1}]}{\De_k}. \]</span> The <span class="math inline">\(\De_k\)</span> form a martingale. By independence of martingale increments,
-\begin{align}
-\Var(f) &amp;= \sumo kn \E[\De_k^2] \\
-\E[\De_k^2] &amp;= \E[\E[\wt \De_k |X_{1:k}]^2]\\
-&amp; \le  \E[(\ub{f - \E[f|X_{1:k-1,k+1:n}]}{\wt \De_k})^2] &amp; \text{Jensen}\\
-&amp;= \E\ba{\sumo in \Var_f f(X_1,\ldots, X_n)}.
-\end{align}
-Define
-\begin{align}
-D_i f(x) &amp;= (\sup_z-\inf_z)(f(x_{1:i-1},z,x_{i+1:n}))\\
-D_i^- f(x) &amp;= f(x) - \inf_z(f(x_{1:i-1},z,x_{i+1:n}))\\
-\end{align}
-<p><strong>Corollary</strong> (Bounded difference inequality): Tensorization + trivial inequality.</p>
-<p><strong>Example</strong>: Consider Bernoulli symmetric matrices. What is the variance of <span class="math inline">\(\la_{\max}(M) = \an{v_{\max}(M), Mv_{\max}(M)}\)</span>? Fix <span class="math inline">\(i,j\)</span>. Let <span class="math display">\[M^- = \amin_{\text{only }M_{ij} \text{ varies}} \la_{\max}(M).\]</span> Then <span class="math display">\[D_{ij}^-\la_{\max}(M) \le \an{v_{\max}(M), (M-M^-) v_{\max}(M)}\le 4|v_{\max}(M)_i||v_{\max}(M)_j|.\]</span> Use the corollary to get <span class="math inline">\(\le 16\)</span>.</p>
-<p>This is not sharp. (<span class="math inline">\(\sim n^{-\rc 3}\)</span> is correct.)</p>
-<p>Drawbacks to this method:</p>
-<ul>
-<li>bounds using bounded di↵erence inequalities are typically restricted to situations where the random variables <span class="math inline">\(X_i\)</span> and/or the function <span class="math inline">\(f\)</span> are bounded.</li>
-<li>Bounded difference inequalities do not capture any information on the distribution of <span class="math inline">\(X_i\)</span>. In the other direction, the tensorization inequality is too distribution-dependent.</li>
-<li>Tensorization depends on independence.</li>
-</ul>
-<p>Inequalities in this section are roughly of the following form (Poincare inequalities): <span class="math display">\[\Var(f) \le \E[\ve{\nb f}^2].\]</span> “The validity of a Poincar´e inequality for a given distribution is intimately connected the convergence rate of a Markov process that admits that distribution as a stationary measure.”</p>
-<h3 id="markov-semigroups">Markov semigroups</h3>
-<p>A <strong>Markov process</strong> satisfies: For every bounded measurable <span class="math inline">\(f\)</span> and <span class="math inline">\(s,t\in \R_+\)</span>, here is abounded measurable <span class="math inline">\(P_sf\)</span> such that <span class="math display">\[\E[f(X_{t+s})|\{X_r\}_{r\le t}] = (P_s f)(X_t).\]</span> <span class="math inline">\(\mu\)</span> is <strong>stationary</strong> if <span class="math inline">\(\mu(P_tf)=\mu(f)\)</span> for all <span class="math inline">\(t\in \R_+\)</span>, bounded measurable <span class="math inline">\(f\)</span>.</p>
-<p><strong>Lemma 2.7</strong>. <span class="math inline">\(\{P_t\}_{t\in \R_+}\)</span> defines a semigroup of linear operators on <span class="math inline">\(L^p(\mu)\)</span>. It is contractive and conservative (<span class="math inline">\(P_t1=1\)</span> <span class="math inline">\(\mu\)</span>-a.s.).</p>
-<p><em>Proof</em>. Jensen.</p>
-<p>The semigroup in fact acts on any <span class="math inline">\(f\in L^1(\mu)\)</span>.</p>
-<p><strong>Lemma 2.9</strong>. If <span class="math inline">\(\mu\)</span> is stationary, for every <span class="math inline">\(f\)</span>, <span class="math inline">\(\Var_\mu(P_tf)\)</span> is decreasing.</p>
-<p><em>Proof</em>. <span class="math inline">\(L^2\)</span> contractivity and semigroup property.</p>
-<p>The <strong>generator</strong> is <span class="math display">\[\cal L f = \lim_{t\searrow 0} \fc{P_tf-f}t.\]</span> The set of <span class="math inline">\(f\)</span> where this is defined is the domain; <span class="math inline">\(\cal L:\text{Dom}(\cal L) \to L^2(\mu)\)</span>.</p>
-<p>Warning: for Markov processes with continuous sample paths, such as Brownian motion, <span class="math inline">\(Dom(\cL)\sub L^2(\mu)\)</span>. Functional analysis is required for rigor, but results usually extend.</p>
-<p><span class="math inline">\(P_t\)</span> is the solution of the Kolmogorov equation <span class="math display">\[ \ddd{t} P_t f = P_t \cL f, \quad P_0f=f.\]</span> The generator and semigroup commute.</p>
-<p>A finite-state Markov process with <span class="math display">\[ \Pj[X_{t+\de}=j|X_t=i] = \la_{ij} \de + o(\de), \quad i\ne j\]</span> has generator equal to the transition matrix <span class="math inline">\(\La\)</span>.<a href="#fn1" class="footnoteRef" id="fnref1"><sup>1</sup></a></p>
-<p>Then <span class="math inline">\(P_t=e^{t\La}\)</span>. (In the non-finite case, this makes sense as a power series.)</p>
-<p><span class="math inline">\(P_t\)</span> is <strong>reversible</strong> if <span class="math inline">\(P_t\)</span> are self-adjoint on <span class="math inline">\(L^2(\mu)\)</span>: <span class="math display">\[\an{f,P_tg}_\mu = \an{P_tf,g}_\mu.\]</span> Reversibility implies <span class="math display">\[P_tf(x) =\E[f(X_t)|X_0=x] = \E[f(X_0)|X_t=x];\]</span> i.e., the Markov process viewed backwards has the same law. <!-- delta functions? --></p>
-<p>For finite state space, this is equivalent to <span class="math display">\[\mu_i \La_{ij} = \mu_j \La_{ji},\]</span> <strong>detailed balance</strong>.<a href="#fn2" class="footnoteRef" id="fnref2"><sup>2</sup></a></p>
-<p><strong>Definition</strong>. A Markov semigroup is <strong>ergodic</strong> if <span class="math inline">\(P_tf \to \mu f\)</span> in <span class="math inline">\(L^2(\mu)\)</span> as <span class="math inline">\(t\to \iy\)</span> for every <span class="math inline">\(f\in L^2(\mu)\)</span>.</p>
-<blockquote>
-<p>A measure <span class="math inline">\(\mu\)</span> satisfies a Poincare inequality for a certain notion of “gradient” if and only if an ergodic Markov semigroup associated to this “gradient” converges exponentially fast to <span class="math inline">\(\mu\)</span>.</p>
-</blockquote>
-<p>The <strong>Dirichlet form</strong> is <span class="math display">\[\cal E(f,g) = -\an{f,\cL g}_\mu.\]</span> Note: for complex-valued functions, we take the real part.</p>
-<p><strong>Theorem</strong> (Poincare inequality). Let <span class="math inline">\(P_t\)</span> be reversible ergodic Markov semigroup with stationary measure <span class="math inline">\(\mu\)</span>. For <span class="math inline">\(c\ge 0\)</span>, TFAE:</p>
-<ol type="1">
-<li>(Poincare inequality) <span class="math inline">\(\Var_\mu(f) \le c\cal E(f,f)\)</span></li>
-<li><span class="math inline">\(\forall f, t, \ve{P_t f- \mu f}_{L^2(\mu)} \le e^{-\fc tc}\ve{f-\mu f}_{L^2(\mu)}\)</span></li>
-<li><span class="math inline">\(\forall f, t, \cal E(P_t f, P_t f) \le e^{-2t/c} \cal E(f,f)\)</span></li>
-<li><span class="math inline">\(\forall f \exists \ka(f), \ve{P_t f-\mu f}_{L^2(\mu)} \le \ka(f) e^{-\fc tc}\)</span>.</li>
-<li><span class="math inline">\(\forall f \exists \ka(f), \cal E(P_tf,P_tf)\le \ka(f)e^{-2t/c}\)</span>.</li>
-</ol>
-<p>Note <span class="math inline">\(5\Leftarrow 3\implies 1\Leftrightarrow 2\Rightarrow 4\)</span> doesn’t require reversibility.</p>
-<p>Example: Gaussian distribution</p>
-<ol type="1">
-<li>Define the <strong>Ornstein-Uhlenbeck process</strong> by <span class="math display">\[X_t = e^{-t} X_0 + e^{-t} W_{e^{2t}-1}, \quad X_0\perp W\]</span> where <span class="math inline">\(W_t\)</span> is standard Brownian motion. Note <span class="math inline">\(N(0,1)\)</span> is stationary.</li>
-<li>Using Gaussian integration by parts <span class="math inline">\(\E_{N(0,1)} [\xi f(\xi)] = \E_{N(0,1)} [f'(\xi)]\)</span>, show that
-<ul>
-<li><span class="math inline">\(X_t\)</span> is a Markov process with semigroup <span class="math inline">\(\E[f(e^{-t} x + \sqrt{1-e^{-2t}}\xi)]\)</span>, <span class="math inline">\(\xi\in N(0,1)\)</span>.</li>
-<li>The generator is <span class="math inline">\(\cL f(x) = -xf'+f''\)</span>.</li>
-<li><span class="math inline">\(\cE (f,g) = \an{f',g'}_\mu\)</span>.</li>
-<li>In particular, <span class="math inline">\(\cE(f,f) = \ve{f'}^2_{L^2(\mu)} = \E[f'(\xi)^2]\)</span> is exctly the expected square gradient.</li>
-</ul></li>
-<li>From the expression for <span class="math inline">\(P_t\)</span> obtain <span class="math inline">\(\ddd{x} P_t f(x) = e^{-t} P_t f'(x)\)</span>. Then <span class="math inline">\(\cE (P_tf,P_tf) \le e^{-2t} \cE(f,f)\)</span>. Hence for <span class="math inline">\(\mu=N(0,1)\)</span>, <span class="math display">\[\Var_\mu(f) \le \ve{f'}_{L^2(\mu)}.\]</span></li>
-<li>By tensorization, <span class="math display">\[\Var_\mu(f) \le \E[\ve{\nb f(X_1,\ldots, X_n)}^2].\]</span></li>
-</ol>
-<p>Note: The O-U process is the solution of the stochastic differential equation <span class="math display">\[dX_t = -X_t \,dt + \sqrt2 \, dB_t.\]</span> Revisit this after I learn stochastic calculus.</p>
-<p>Tensorization using Poincare inequality:</p>
-<ol type="1">
-<li>Construct a random process <span class="math inline">\(X_t=(X_t^1,\ldots, X_t^n)\)</span> by having coordinates re-randomize according to independent Poisson processes.</li>
-<li>Then <span class="math display">\[P_tf(x) = \sum_{I\subeq [n]} (1-e^{-t})^{|I|} e^{-t(n-|I|)} \int f(x_1,\ldots, x_n) \prod_{i\in I}\mu_i(dx_i)+o(t).\]</span> (Note the integral is only over the indices in <span class="math inline">\(I\)</span>.) Only the <span class="math inline">\(|I|=1\)</span> terms matter in the limit (makes sense, we’re taking the derivative!),
-\begin{align}
-\cL f &amp;= -\sumo in \de_i f\\
-\de_if(x)&amp;:= f(x) - \int f(x_1,\ldots, x_{i-1}, z, x_{i+1},\ldots, x_n)\,\mu_i(dz).
-\end{align}</li>
-<li><span class="math inline">\(\int h\de_i g\,d\mu=0\)</span> if <span class="math inline">\(h\)</span> does not depend on <span class="math inline">\(x_i\)</span>. Thus <span class="math inline">\(\cE(f,g) = \sumo in \int \de_i f\de_i g\,d\mu\)</span>. This is symmetric, so the process is reversible.</li>
-<li>We have <span class="math inline">\(\cE(f,f) = \sumo in \int \Var_if \,d\mu\)</span>, so the tensorization inequality is exactly <span class="math inline">\(\Var_\mu(f) \le \cE(f,f)\)</span>.</li>
-<li>Conclude ergodicity. Conversely, we can prove the tensorization inequality from ergodicity: Note <span class="math display">\[\de_i P_t f=e^{-t} \sum_{I\nin i} (1-e^{-t})^{|I|} e^{-t(n-1-|I|)} \int \de_i f\prod_{i\in I}\mu_i(dx_i)\]</span> so <span class="math inline">\(\cE(P_tf,P_tf) \le \ka(f) e^{-2t}\)</span>.</li>
-</ol>
-<h3 id="variance-identities-and-exponential-ergodicity">2.4 Variance identities and exponential ergodicity</h3>
-<p>We prove the Poincare inequality.</p>
-<ol type="1">
-<li><strong>Lemma</strong>. <span class="math display">\[\ddd t \Var_\mu(P_t f) = -2\cal E(P_tf,P_tf)\]</span>. <em>Proof</em>. Use <span class="math inline">\(\mu(P_tf)=\mu(f)\)</span>. Both are equal to <span class="math inline">\(\mu(2P_t f\ddd tP_tf)\)</span>.</li>
-<li><strong>Corollary</strong>. <span class="math inline">\(\cE(f,f)\ge 0\)</span>.</li>
-<li>Integral representation of variance: If the Markov semigroup is ergodic, integrating gives <span class="math inline">\(\Var_\mu (f) = 2\iiy \cE(P_tf,P_tf)\,dt\)</span>.</li>
-<li>(<span class="math inline">\(3\implies1\)</span>) Use the integral representation.</li>
-<li>(<span class="math inline">\(1\implies2\)</span>) Using <span class="math inline">\(\cal E\propto -\ddd t \Var\)</span>, get a differential inequality that gives exponential decay.</li>
-<li>(<span class="math inline">\(2\implies1\)</span>) Write <span class="math inline">\(\cE\)</span> as a limit and apply the inequality to <span class="math inline">\(\Var\)</span>.</li>
-<li>If <span class="math inline">\(P_t\)</span> is reversible, then <span class="math inline">\(t\mapsto \log\ve{P_t f}_{L^2(\mu)}^2\)</span>, <span class="math inline">\(\log \cE(P_tf,P_tf)\)</span> are convex. Proof. First derivative is <span class="math inline">\(-\fc{2\an{\cL P_tf, f}}{\ve{P_tf}^2}\)</span>. Differentiate again, use CS.</li>
-<li>(<span class="math inline">\(2\implies3\)</span>) The first derivative is increasing. Rearrange to get <span class="math display">\[\fc{\cE(P_tf,P_tf)}{\cE(f,f)}\le \fc{\ve{P_tf}_{L^2(\mu)}^2}{\ve{f}_{L^2(\mu)}^2}\]</span>.</li>
-<li>(<span class="math inline">\(4\implies2\)</span>, <span class="math inline">\(5\implies3\)</span>) Use the lemma: if <span class="math inline">\(g\)</span> is convex and <span class="math inline">\(g(t)\le K-\al t\)</span> for <span class="math inline">\(t\ge 0\)</span> then <span class="math inline">\(g(t)\le g(0)-\al t\)</span> for <span class="math inline">\(t\ge 0\)</span>.</li>
-</ol>
-Intuition: If reversibility holds,
-\begin{align}
-\cE(f,g) &amp;=\rc2 \sum \mu_i \La_{ij} (f_i-f_j)(g_i-g_j)\\
-\cE(f,f) &amp;=\rc2 \sum \mu_i \La_{ij} (f_i-f_j)^2.
-\end{align}
-<p><a href="#fn3" class="footnoteRef" id="fnref3"><sup>3</sup></a>In finite dimensions, if <span class="math inline">\(\mu f=0\)</span>, <span class="math display">\[
-\cE(f,f) \ge (\ub{\la_1}0-\la_2) \Var_\mu(f).
-\]</span> The best constant in the Poincare inequality is the spectral gap. The spectral gap controls the exponential convergence rate. Note it’s essential that <span class="math inline">\(\La\)</span> admits a real spectral decomposition.</p>
-<h3 id="problems">Problems</h3>
-<ol type="1">
-<li>Use <span class="math inline">\(\Var\pa{\ve{\rc n \sumo kn X_k}_B} = \sup_{y\in B^*} \an{\rc n\sumo kn X_k, y}\)</span>. Use the corollary, get <span class="math inline">\(D_k^-\le 2 \sup_{y\in B^*}\an{\rc X_k,y} \le \fc{2C}{n}\)</span>. Now square and sum.</li>
-<li>.</li>
-<li>.</li>
-<li>.</li>
-<li>We have <span class="math inline">\((f(x) - f(..., a, ...))^2\le \ve{(b-a)\nb f}^2\)</span>. Now take expectations and sum over different coordinates.</li>
-<li>.</li>
-<li></li>
-<li><ol type="1">
-<li><p>Smooth <span class="math inline">\(f\)</span> and use the Gaussian Poincare inequality.</p>
-Note we have <span class="math inline">\(\Var[f(x)]\le \E[(f(x)-f(0))^2]\le \E L^2x^2 = L^2\)</span> but this doesn’t help us, because if we sum up derivatives along different coordinates, we overestimate <span class="math inline">\(L\)</span> to <span class="math inline">\(Ln\)</span> instead.</li>
-<li>Note <span class="math inline">\((\Si^{\rc Y})_i\)</span> is <span class="math inline">\(\ve{(\Si^{\rc 2})_i}\)</span>-Lipschitz, so <span class="math inline">\(\max((\Si^{\rc 2}Y)_i)\)</span> is <span class="math inline">\(\max \ve{(\Si^{\rc 2})_i}\)</span>-Lipschitz. By (a), <span class="math display">\[ \Var[\max_i X_i] \le \max\ve{(\Si^{\rc 2})_i} = \max \ve{\Si_{ii}} =\max_i \Var(X_i).\]</span></li>
-<li>The sum of variances on the LHS is <span class="math inline">\(\sum_j \sum_i F_{x_j}^2 = \ve{\nb F}^2\)</span>. Use the central limit theorem to show that the LHS var approaches the RHS var. There’s a factor of <span class="math inline">\((\max -\min)^2/4=1\)</span>.</li>
-</ol></li>
-<li></li>
-<li><ol type="1">
-<li>Let <span class="math inline">\(p_I\)</span> denote the probability of seeing sequence <span class="math inline">\(I\)</span> of jumps in <span class="math inline">\([0,t]\)</span>. (We don’t need to calculate it.) Let <span class="math inline">\(\Pj(x|I)\)</span> be the probability of <span class="math inline">\(x\)</span> after observing jumps in <span class="math inline">\(I\)</span>. We have <span class="math display">\[\E [f(Z_t)] = \sum_I p_I \int \Pj(x|I) f(x)\dx\]</span> which can be written <span class="math inline">\(P_tf\)</span>. Note this converges. (<span class="math inline">\(\sum_I p_I = 1\)</span>.)</li>
-<li><p>Only the <span class="math inline">\(|I|=\phi, 1\)</span> terms are significant as <span class="math inline">\(\sum_{|I|=k} p_I = Poisson(n, t, k)\)</span>.</p>
-\begin{align}\cL f &amp;= \lim_{t\to 0^+} \pf{e^{-tn} \E f - \E f + \sum (1-e^{-t}) e^{-t (n-1)} \int f\, \mu_i (dx_i|x)}{t}\\
-&amp;= \sum_{i=1}^n \ub{\pa{\pa{\int f(x)\mu_i(dx_i|x)} - f(x)}}{=: - \de_if}\\
-\cE (f, g) &amp;= -\int f \cL g\,d\mu\\
-&amp;= -\int \pa{-\sumo in f\de_i g}\,d\mu\\
-&amp;= \sumo in \int \de_if\de_ig\,d\mu
-\end{align}
-where we used <span class="math inline">\(\int (f-\de_if)\de_ig=0\)</span> because the first term has mean 0 and <span class="math inline">\(\de_ig\)</span> doesn’t depend on <span class="math inline">\(x_i\)</span>.</li>
-<li>\begin{align}
-\De_i f &amp;= \max_x |f(..., 1_i,...) - f(..., -1_i, ...)|\\
-\De_j f \,d\mu_i &amp; = \max_x \ab{\int f(\ldots 1_j\ldots)\,d\mu_i - \int f(\ldots -1_j\ldots)}\\
-&amp;\max_x |\Pj(x_i=1|x_{-i, j\leftarrow 1}) f(1_j1_i) - \Pj(x_i=1|x_{-i, j\leftarrow-1}) f(-1_j1_i) + \Pj(x=-1|\cdots)\cdots
-\end{align}
-The probabilities of <span class="math inline">\(=1|1\)</span> and <span class="math inline">\(=1|-1\)</span> differ by <span class="math inline">\(C_{ij}\)</span> (n.b. typo) so we get
-\begin{align}
-&amp;\le \max_x |f(x,1_j) - f(x,-1_j)| + C_{ij} \De_i f = \De_j f + \De_i fC_{ij}.
-\end{align}</li>
-<li>\begin{align}
-\De_j\pa{f+\fc tn \cL f} &amp;=
-\De_jf + \fc tn \De_j \pa{\pa{\int f(x) \,d\mu_i (dx_i|x)} - f(x)} \\
-&amp;\le \pa{1-\fc tn}\De_j f + \fc tn \sumo in \De_i fC_{ij}\\
-\De(f+t\cL f/n) &amp;\le \De f(I-t(I-C)/n).
-\end{align}</li>
-<li>Iterate <span class="math inline">\(n\)</span> times and take <span class="math inline">\(n\to \iy\)</span> to get <span class="math display">\[\De (e^{t\cL}f) = \De P_t f \le \De f e^{-t(I-C)}.\]</span></li>
-<li>\begin{align}
-\cE(f, f)&amp;=\sumo in \int (f-\int f\,d\mu_i)^2\,d\mu\\
-&amp;\le \sumo in |\De_i f|^2\\
-\cE(P_tf,P_tf) &amp;\le \sumo in \ve{\De f e^{-2t(I-C)}}^2\\
-&amp;\le \ka(f) (\la_{\min}(I-C))^{-1} \\
-&amp; = \ka(f) (1-\la_{\max}(C))^{-1}
-\end{align}
-<p>Use <span class="math inline">\(5\implies 1\)</span> of Poincare.</p></li>
-</ol></li>
-</ol>
-<h2 id="subgaussian-concentration-and-log-sobolev-inequalities">3 Subgaussian concentration and log-Sobolev inequalities</h2>
-<strong>Lemma 3.1</strong> (Cheroff bound). Define the <strong>log-moment generating function</strong>
-\begin{align}
-\psi(\la) :&amp;= \log \E[e^{\la (X-\E X)}]\\
-\psi^*(\la)&amp;=\sup_{\la \ge 0} (\la t-\psi(\la)).	
-\end{align}
-<p>Then <span class="math inline">\(\Pj(X-\E X \ge t) \le e^{-\psi^*(t)}\)</span> for all <span class="math inline">\(t\ge 0\)</span>.</p>
-<p><em>Proof</em>. Exponentiate and Markov.</p>
-<p>The log-moment generating function is continuous and can be investigated using calculus.</p>
-<p><strong>Example</strong>. Gaussian: <span class="math inline">\(\psi(\la) = \fc{\la^2\si^2}2\)</span> and <span class="math inline">\(\psi^*(t) = \fc{t^2}{2\si^2}\)</span> so bound of <span class="math inline">\(e^{-\fc{t^2}{2\si^2}}\)</span>.</p>
-<p>A rv is <span class="math inline">\(\si^2\)</span>-<strong>subgaussian</strong> if <span class="math inline">\(\psi(\la)\le \fc{\la^2\si^2}2\)</span>. Then we get tail bounds of <span class="math inline">\(e^{-\fc{t^2}{2\si^2}}\)</span>.</p>
-<p><strong>Lemma 3.6</strong> (Hoeffding): If <span class="math inline">\(X\in [a,b]\)</span> a.s., then <span class="math inline">\(X\)</span> is <span class="math inline">\((b-a)^2/4\)</span> subgaussian.</p>
-<p><em>Proof</em>. Interpret <span class="math inline">\(\psi''\)</span> as a variance, get <span class="math inline">\(\psi''\le \fc{(b-a)^2}{4}\)</span>, integrate twice.</p>
-<h3 id="the-martingale-method">3.2 The martingale method</h3>
-<p>We want to show <span class="math inline">\(f\)</span> is subgaussian with variance proxy controlled by a “square gradient” of <span class="math inline">\(f\)</span>.</p>
-<p>The subgaussian property does not tensorize.</p>
-<p>The proof of subgaussian inequailties can be reduced to a strengthened form of Poincare inequalities, <strong>log-Sobolev</strong> inequalities, that do tensorize.</p>
-<p><strong>Lemma</strong> (Azuma): Let <span class="math inline">\(\cF_k\)</span> be a filtration, and 1. (Martingale difference) <span class="math inline">\(\De_k\)</span> is <span class="math inline">\(\cF_k\)</span>-measurable, <span class="math inline">\(\E[\De_k |\cF_{k-1}]=0\)</span>. 2. (Conditional subgaussian) <span class="math inline">\(\E[e^{\la \De_k}|\cF_{k-1}]\le e^{\la^2\si_k^2/2}\)</span>. Then <span class="math inline">\(\sumo kn \De_k\)</span> is subgaussian with variance proxy <span class="math inline">\(\sumo kn \si_k^2\)</span>.</p>
-<p><strong>Corollary</strong> (Azuma-Hoeffding): Replace (2) by <span class="math inline">\(A_k\le \De_k\le B_k\)</span> where <span class="math inline">\(A_k,B_k\)</span> are <span class="math inline">\(\cF_{k-1}\)</span>-measurable. The variance proxy is <span class="math inline">\(\rc 4 \sumo kn \ve{B_k-A_k}^2_{\iy}\)</span>. The tail bound is <span class="math inline">\(\exp\pa{-\fc{2t^2}{\sumo kn \ve{B_k-A_k}^2_{\iy}}}\)</span>.</p>
-<p><strong>Theorem 3.11</strong> (McDiarmid): For <span class="math inline">\(X_{1:n}\)</span> independent, <span class="math inline">\(f(X)\)</span> is subgaussian with variance proxy <span class="math inline">\(\rc 4\sumo kn \ve{D_kf}_{\iy}^2\)</span> where <span class="math display">\[D_if(x) = (\sup_z-\inf_z)f(x_{1:i-1},z,x_{i+1:n}).\]</span></p>
-<p><em>Proof</em>. Use Azuma-Hoeffding on martingale differences <span class="math inline">\(\De_k =\E[f|X_{1:k}] - \E[f|X_{1:k-1}]\)</span>.</p>
-<p>This is unsatisfactory because the variance proxy is controlled by a uniform upper bound on square gradient rather than its expectation. Something like <span class="math inline">\(\ve{\sumo kn |D_kf|^2}_{\iy}\)</span> would be better.</p>
-<h3 id="the-entropy-method">3.3 The entropy method</h3>
-<p>The subgaussian property is equivalent to <span class="math inline">\(\la^{-1}\psi(\la)\precsim \la\)</span>, so it suffices to show <span class="math inline">\(\ddd{\la}(\la^{-1}\psi)\precsim 1\)</span>.</p>
-<ul>
-<li>Define <span class="math inline">\(\Ent(Z) = \E[Z\ln Z] - (\E Z)(\ln \E Z)\)</span>.</li>
-<li>(Entropic formulation of subgaussianity) <span class="math inline">\(\forall \la \ge 0, \Ent(e^{\la X}) \le \fc{\la^2\si^2}{2} \E e^{\la X}\implies \forall \la \ge 0, \psi(\la) \le \fc{\la^2\si^2}2\)</span>.
-<ul>
-<li><em>Proof</em>. Integrate <span class="math inline">\(\ddd{\la} \fc{\psi(\la)}{\la} = \rc{\la^2} \fc{\Ent(e^{\la x})}{\E (e^{\la x})}\)</span>.</li>
-</ul></li>
-<li>Variational characterization of entropy: <span class="math inline">\(\Ent(Z) = \sup\set{\E(ZX)}{\E(e^X)=1}\)</span>.
-<ul>
-<li><em>Proof</em>.
-\begin{align}
-\Ent(Z) - \E[ZX] &amp;= \Ent_Q (e^{-X}Z)\ge0
-\end{align}
-with equality when <span class="math inline">\(X=\ln\pf{Z}{\E Z}\)</span>.</li>
-</ul></li>
-<li>Tensorization: <span class="math inline">\(\Ent(f) \le \E\ba{\sumo in \Ent_i f}\)</span>.
-<ul>
-<li><em>Proof</em>. Let <span class="math inline">\(Z=f(X)\)</span>.
-\begin{align}
-U_k :&amp;= \ln \E[Z|X_{1:k}] - \ln \E[Z|X_{1:k-1}]\\
-\Ent (Z) &amp;= \sum \E[ZU_k]\\
-\E[e^{U_k}|X_{-k}]&amp;=1\implies &amp; \E[ZU_k|X_{-k}]&amp;\le \Ent_k f.
-\end{align}</li>
-</ul></li>
-</ul>
-<p>The entropic formulation of subgaussianity and the tensorization inequality tell us that if we prove (for some notion of <span class="math inline">\(\nb\)</span>) <span class="math display">\[ \Ent(e^g) \precsim \E[\ve{\nb g}^2]\]</span> in one dimension, then in any number of dimensions, <span class="math display">\[ \Ent(e^{\la f})\precsim \E[\ve{\nb (\la f)}^2e^{\la f}]\]</span> so <span class="math inline">\(f\)</span> is subgaussian with <span class="math inline">\(\max\ve{\nb f}^2\)</span>.</p>
-<ul>
-<li>Discrete log-Sobolev: Let <span class="math inline">\(D^-f=f-\inf f\)</span>. Then <span class="math display">\[\Ent[e^f] \le \Cov[f,e^f] \le \E[|D^-f|^2e^f].\]</span>
-<ul>
-<li><em>Proof</em>. Jensen and convexity.</li>
-</ul></li>
-<li>On product measure, <span class="math inline">\(f\)</span> is subgaussian with variance proxy <span class="math inline">\(2\ve{\sumo in |D_if|^2}_{\iy}\)</span>. Upper and lower tail bounds with <span class="math inline">\(D_i^-\)</span> and <span class="math inline">\(D_i^+\)</span>.</li>
-</ul>
-<p><strong>Example</strong> (Random Bernoulli symmetric matrices). Using <span class="math inline">\(D_{ij}^-\la_{\max(M)}\)</span>, get <span class="math display">\[ \Pj(\la_{\max}(M) - \E\la_{\max}(M)\ge t)\le e^{-\fc{t^2}{64}}. \]</span> We can’t use the same technique to look at the lower tail because the bound is in terms of different <span class="math inline">\(M^{(ij)}\)</span>’s.</p>
-<h3 id="log-sobolev-inequalities">3.4 Log-Sobolev inequalities</h3>
-<p>We have an entropic analogue of just the easy parts of the Poincare inequality equivalence.</p>
-<p><strong>Theorem</strong>. 1 and 2 are equivalent. 3 implies 1, 2 if <span class="math inline">\(\Ent_\mu(P_tf)\to 0\)</span> (entropic ergodicity).</p>
-<ol type="1">
-<li><span class="math inline">\(\Ent_\mu(f)\le c\cE(\ln f, f)\)</span> (log-Sobolev inequality)</li>
-<li><span class="math inline">\(\Ent_\mu(P_tf) \le e^{-t/c} \Ent_\mu(f)\)</span> (entropic exponential ergodicity)</li>
-<li><span class="math inline">\(\cE(\ln P_tf , P_tf) \le e^{-t/c}\cE(\ln f, f)\)</span>.</li>
-</ol>
-<p><em>Proof</em>.</p>
-<ul>
-<li>(<span class="math inline">\(3\implies1\)</span>) Note <span class="math inline">\(\ddd{t} \Ent_\mu(P_tf) = -\cE(\ln P_tf,P_tf)\)</span> using <span class="math inline">\(\mu(\cL P_tf)=0\)</span>. <span class="math inline">\(\Ent_\mu(f) = \lim -\iiy \ddd{\mu} \Ent_\mu(P_tf)\)</span>.</li>
-<li>(<span class="math inline">\(1\implies2\)</span>) Inequality for exponential decay</li>
-<li>(<span class="math inline">\(2\implies1\)</span>) Take the limit.</li>
-</ul>
-<strong>Example</strong> (Discrete log-Sobolev inequality). Consider Poisson resampling under <span class="math inline">\(\mu\)</span>. Then
-\begin{align}
-P_t f&amp;= e^{-t}f + (1-e^{-t}) \mu(f) \\
-\cE(f,g)&amp;=\int \de f\de g\,d\mu = \Cov_\mu[f,g]\\
-P_tf \ln (P_tf)&amp;\le e^{-t}\ln f + (1-e^{-t}) \mu f\ln \mu f\\
-\implies \Ent_\mu[P_t f] &amp;\le e^{-t} \Ent_\mu(f)\\
-\implies \Ent_\mu(f) &amp;\le \Cov_\mu(\ln f, f) &amp;(2\implies 1)
-\end{align}
-<p>The log-Sobolev equivalences cannot reproduce the tensorization inequality for entropy.</p>
-<strong>Theorem</strong> (Gaussian log-Sobolev). For independent Gaussian variables,
-\begin{align} 
-\Ent[f] &amp;\le \rc 2 \E [\nb f \cdot \nb \ln f]&amp; (f\ge 0)\\
-\Ent[e^f] &amp; \le \rc 2 \E[\ve{\nb f}^2 e^f].
-\end{align}
-<p>As a result <span class="math inline">\(f\)</span> is <span class="math inline">\(\si^2 = \ve{\ve{\nb f}^2}_{\iy}\)</span> subgaussian and we get Gaussian concentration, <span class="math display">\[\Pj[f - \E f\ge t] \le e^{-t^2/2\si^2}.\]</span></p>
-<em>Proof</em>. Recall <span class="math inline">\(\cE(f,g) = \mu(f'g')\)</span>, <span class="math inline">\((P_tf)' = e^{-t}P_t f'\)</span>. Note <span class="math inline">\(|P_t(fg)|^2 \le P_t(f^2)P_t(g^2)\)</span> by CS (expand out).
-\begin{align}
-(\ln P_t f)' (P_tf)' &amp;= e^{-2t} \fc{|P_tf|^2}{P_tf}\\
-|P_t f'|^2 &amp;\le P_t((\ln f)'f') P_t f&amp;\text{by CS}\\
-\implies \cE(\ln (P_tf), P_tf) &amp;\le e^{-2t}\cE(\ln f, f) &amp;\text{by }\int\\
-\implies \Ent_\mu(f) &amp;\le \cE(\ln f, f)&amp;(3\implies 1).
-\end{align}
-Note several different forms of log-Sobolev, equivalent in the Gaussian case (or anytime the chain rule holds for <span class="math inline">\(\cE\)</span>:
-\begin{align}
-\Ent(f) &amp;\le \rc 2 \E[\nb f \cdot \nb \ln f] = \rc2 \cE (\ln f, f)\\
-\Ent(f) &amp;\le \rc 2 \E\pf{\ve{\nb f}^2}{f}\\
-\Ent(e^f) &amp;\le \rc 2 \E[\ve{\nb f}^2 e^f]\\
-\Ent(f^2) &amp;\le 2\E[\ve{\nb f}^2] = 2\cE(f,f)\\
-\E(f^2\ln f)-\E[f^2]\ln \ve{f}_2 &amp;\le c\ve{\nb f}_2^2.
-\end{align}
-<p>Classical Sobolev inequalities are for <span class="math inline">\(\ved_q\)</span>, <span class="math inline">\(q\ge 2\)</span> and do not tensorize.</p>
-<p><strong>Lemma 3.28</strong>: Log-Sobolev <span class="math inline">\(\Ent(f) \le c\cE (\ln f, f)\)</span> implies the Poincare inequality <span class="math inline">\(\Var(f) \le 2c\cE (f,f)\)</span>.</p>
-<p><em>Proof</em>. <span class="math display">\[
-\ub{\E[\la f e^{\la f}]}{\la^2\cE(f,f) + o(\la^2)} - 
-\ub{\E[e^{\la f}] \ln \E[e^{\la f}]}{\la \E f + \la^2(\E[f^2] + \E[f]^2)/2 + o(\la^2)} = 
-\ub{\E[\la f e^{\la f}]}{\la \E f + \la^2 \E [f^2] + o(\la^2)}
-\]</span></p>
-<h3 id="problems-1">Problems</h3>
-<p>Equivalent conditions for subgaussianity:</p>
-<ol type="1">
-<li>The tails are dominated by the tails of the Gaussian: <span class="math display">\[\Pj(|X|\ge t) \le 2\exp(-t^2/K_1^2).\]</span></li>
-<li>Moments: For all <span class="math inline">\(p\ge 1\)</span>, <span class="math display">\[
-\ve{X}_p = (\E|X|^p)^{\rc p} \le K_2\sqrt p
-\]</span></li>
-<li>Moment generating function of <span class="math inline">\(X^2\)</span>: <span class="math display">\[\E\exp(X^2/K_3^2)\le 2.\]</span></li>
-<li>(If <span class="math inline">\(\E X=0\)</span>,) MGF of <span class="math inline">\(X\)</span>: <span class="math display">\[\E \exp(\la X) \le \exp(\la^2 K_4^2)\]</span> for all <span class="math inline">\(\la\in \R\)</span>.</li>
-</ol>
-<p>Problems</p>
-<ol type="1">
-<li><ol type="1">
-<li>Expanding <span class="math inline">\(\E(e^{\la (X-\E X)}) \le e^{\la^2\si^2/2}\)</span> gives <span class="math display">\[ 1+\fc{\la^2}2 (X-\E X)^2 \le 1+ \fc{\la^2}2 \si^2.\]</span></li>
-<li>Easy.</li>
-<li>(<span class="math inline">\(4\implies1\)</span>) This is Chernoff. <span class="math inline">\(\inf_\la \psi(\la)-\la t \le \inf \pa{\fc{\la^2\si^2}2 - \la t} = -\fc{t^2}{2\si^2}\)</span>.</li>
-<li>(<span class="math inline">\(1\implies 3\)</span>)
-\begin{align}
-\E e^{X^2/6\si^2} &amp;= 1+\iiy \fc{t}{3\si^2} e^{\fc{t^2}{6\si^2}} \Pj(|X|\ge t)\,dt\\
-&amp; = 1+\iiy \fc{t}{3\si^2} e^{\fc{t^2}{6\si^2}} e^{-\fc{t^2}{2\si^2}}\,dt=2.
-\end{align}</li>
-<li>? (<span class="math inline">\(3\implies 4\)</span>) <!--Expanding $\E e^{\la X}\le e^{\fc{\la^2\si^2}2 + \la \E X}$ gives--> Weaker: Expanding <span class="math inline">\(\E e^{X^2/6\si^2}\le 2\)</span> gives <span class="math inline">\(\rc{q!}\pf{X^2}{6\si^2}^q\le 1\)</span>, <span class="math inline">\(\E X^{2q}\le (6\si^2)^qq!\)</span>.</li>
-<li><span class="math inline">\(\E(e^{X^2/8\si^2}) = \E\pa{\sumz q\iy \rc{q!} \pf{x^2}{8\si^2}^q} \le \E\sumz q\iy\prc{2}^q=2\)</span>.</li>
-</ol></li>
-<li></li>
-<li></li>
-<li></li>
-<li></li>
-<li></li>
-<li></li>
-<li></li>
-<li></li>
-<li></li>
-<li></li>
-<li>Let <span class="math inline">\(Z=\fc{e^{\la X}}{\E e^{\la X}}\)</span>. Then
-\begin{align}
-\Ent(e^{\la X}) &amp;\le \E(e^{\la X}) \E(Z\ln Z)\\
-&amp;\le \E(e^{\la X}) \ln \pf{\E[(e^{\la X})^2]}{(\E e^{\la X})^2}\\
-&amp;\le \E(e^{\la X}) (\fc{\la^2\si^2}2 + \ln \pf{e^{2 \la \E X}}{\E(e^{\la X})^2})\\
-&amp;\le \E(e^{\la X}) (\fc{\la^2\si^2}2).
-\end{align}</li>
-<li><ol type="1">
-<li>We have
-\begin{align}
-\Ent Z &amp;= \inf_{t&gt;0} \E[Z\ln Z - Z\ln t - Z+t]\\
-\iff (\E Z)(\E \ln Z+1) &amp;=\inf_{t&gt;0} \E(-Z\ln t+t)
-\end{align}
-Take the derivative; this is minimized at <span class="math inline">\(t=\rc{\E Z}\)</span>.</li>
-<li>\begin{align}
-\Ent(e^f) &amp;=\inf_{t&gt;0}\E [e^f (f - \ln t - 1) + t]\\
-&amp;\le e^f (f-\inf f + e^{\inf f-f} - 1) &amp; t=e^{\inf f}.
-\end{align}</li>
-<li><span class="math inline">\(\phi(x) = e^{-x}+x-1 \le 1-x+\fc{x^2}2 + x-1 = \fc{x^2}2\)</span>.</li>
-<li><span class="math inline">\(\E[\ph(D^-f) e^f] \le \rc{2}\E[|D^-f|^2 e^f]\)</span>. ?? Stuck.</li>
-</ol></li>
-</ol>
-<section class="footnotes">
-<hr />
-<ol>
-<li id="fn1"><p>The kernel is the same as <span class="math inline">\(\La\)</span> except it also records the probbability of staying. <span class="math inline">\(K-I = \La\)</span>.<a href="#fnref1">↩</a></p></li>
-<li id="fn2"><p><span class="math inline">\(K^*(x,y) = \fc{K(y,x)}{\pi(x)}\pi(y)\)</span>.<a href="#fnref2">↩</a></p></li>
-<li id="fn3"><p>(cf. Laplacian)<a href="#fnref3">↩</a></p></li>
-</ol>
-</section>
 
   </div>
 

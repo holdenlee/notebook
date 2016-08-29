@@ -98,6 +98,8 @@
  <li><a href="#strong-duality">Strong duality</a></li>
  <li><a href="#intuition">Intuition</a></li>
  </ul></li>
+ <li><a href="#applications">Applications</a></li>
+ <li><a href="#review">Review</a></li>
  <li><a href="#questions">Questions</a></li>
  </ul> </div>
 
@@ -122,9 +124,12 @@ These problems are dual.
 </ol>
 <p>Interpretation:</p>
 <ul>
-<li>If <span class="math inline">\(x,\la,\nu\)</span> satisfy the conditions, then <span class="math inline">\(x\)</span> and <span class="math inline">\((\la,\nu)\)</span> are primal and dual optimal and the optimal values are equal.</li>
-<li>if Slater’s condition is satisfied, <span class="math inline">\(x\)</span> is optimal if and only if there exist, <span class="math inline">\(\la,\nu\)</span> that satisfy KKT conditions</li>
+<li>If <span class="math inline">\(x,\la,\nu\)</span> satisfy the conditions, then <span class="math inline">\(x\)</span> and <span class="math inline">\((\la,\nu)\)</span> are primal and dual optimal (and <span class="math inline">\(x\)</span> is a minimizer of <span class="math inline">\(\cL(x,\la,\nu)\)</span>) and the optimal values are equal.</li>
+<li>Conversely, if <span class="math inline">\(x\)</span> is any primal optimum, <span class="math inline">\((\la, \nu)\)</span> is any dual optimum, and the optimal values are equal, then KKT holds. (Proof: <span class="math inline">\(f(x) = g(\la,\nu) \le f(x)\)</span>.)</li>
+<li>If Slater’s condition is satisfied, <span class="math inline">\(x\)</span> is optimal if and only if there exist, <span class="math inline">\(\la,\nu\)</span> that satisfy KKT conditions.</li>
 </ul>
+<!-- (If $h_i\ne 0$, 
+If $f_i(x)>0$, then it would have been strictly better for P1 to choose $\la=0$. If -->
 <h3 id="examples">Examples</h3>
 <ol type="1">
 <li>Linear programming (equality when there exists a feasible solution)
@@ -160,17 +165,50 @@ These problems are dual.
 <h2 id="proofs-and-intuition">Proofs and intuition</h2>
 <h3 id="weak-duality">Weak duality</h3>
 <p>Given a dual feasible <span class="math inline">\(\la,\nu\)</span>, choose <span class="math inline">\(x=x^*\)</span>. Then <span class="math display">\[
-g(\la,\nu) = f(x^*) + \sum \la_i \ub{f_i(x^*)}_{\le 0} + \nu^T \ub{(Ax^*-b)}{=0}\le f(x^*).
+g(\la,\nu) \le f(x^*) + \sum \la_i \ub{f_i(x^*)}{\le 0} + \nu^T \ub{(Ax^*-b)}{=0}\le f(x^*).
 \]</span></p>
+<p>(Convexity not needed here.)</p>
 <h3 id="strong-duality">Strong duality</h3>
+<ol type="1">
+<li>Express in terms of graphs. Let
+\begin{align}
+\mathcal G &amp;= \{(\vec f, \vec h, f)\}\\
+\mathcal A &amp;= \mathcal G = (\R_+^m \times \{0\} \times \R_+).
+\end{align}
+Then
+\begin{align}
+p^* &amp;= \inf_{(u,v,t)\in \mathcal G, u\le 0, v=0} = \inf_{(0,0,t)\in \mathcal A} t\\
+g(\la,\nu) &amp;= \inf_{(u,v,t)\in \mathcal G\text{ (or }\mathcal A)} \an{(\la,\nu, 1),(u,v,t)}.
+\end{align}
+Each value of <span class="math inline">\(g(\la,\nu)\)</span> gives the <span class="math inline">\(t\)</span>-intercept of a nonverticl supporting hyperplane <span class="math inline">\(\an{(\la,\nu,1), (u,v,t)}\ge g(\la,\nu)\)</span>.</li>
+<li>Weak duality (again). Set <span class="math inline">\((\la,\nu)=(0,0)\)</span> to get <span class="math inline">\(g(0,0) = \inf_{(u,v,t)\in \mathcal A} t \le \inf_{(0,0,t)\in \mathcal A} = p^*\)</span>.</li>
+<li><!--We've interpreted $p^*$ as an "extreme" point of $\mathcal A$. Now we reinterpret the dual optimum.-->
+The idea is that there exists a supporting hyperplane tangent at <span class="math inline">\((0,0,p^*)\)</span>. To make this precise we separate <span class="math inline">\(\mathcal A\)</span> from a ray <span class="math display">\[ \mathcal B = \set{(0,0,s)}{s&lt;p^*}.\]</span> Note <span class="math inline">\(\mathcal A,\mathcal B\)</span> are disjoint. There is a separating hyperplane <span class="math display">\[ (u,v,t)\in \begin{cases}\mathcal A\\\mathcal B\end{cases} \implies \wt \la^T u + \wt \nu^T v + \mu t \begin{cases}\ge \\ \le \end{cases} \al.\]</span> By definition of <span class="math inline">\(\mathcal A\)</span>, <span class="math inline">\(\wt \la \ge 0, \mu\ge 0\)</span>. The second part in the equation gives <span class="math inline">\(\mu p^*\le \al\)</span>.</li>
+<li>Case <span class="math inline">\(\mu&gt;0\)</span>: Going back to the definition of <span class="math inline">\(\mathcal A\)</span>, we get <span class="math inline">\(L(x,\wt \la/\mu, \wt \nu/\mu)\ge p^*\)</span>. Then <span class="math inline">\(g(\wt \la/\mu, \wt \nu/\mu) \ge p^*\)</span>.</li>
+<li>Case <span class="math inline">\(\mu=0\)</span>: Applying the hyperplane inequality to the point <span class="math inline">\(\wt x\)</span> satisfying Slater, <span class="math inline">\(\sumo im \wt \la_i f_i(\wt x)\ge 0\)</span>. Get <span class="math inline">\(\wt \la=0\)</span>, <span class="math inline">\(\wt \nu\ne 0\)</span>. Assume <span class="math inline">\(\rank A=p\)</span> (what if this is not true?) Then there are points with <span class="math inline">\(\wt \nu^T (Ax-b)&lt;0\)</span>, contradiction. (Slater shows the hyperplane cannot be vertical.)</li>
+</ol>
+<p>(I don’t have intuition for this proof.)</p>
 <h3 id="intuition">Intuition</h3>
-<p>Think of the dual as (1) relaxing the strict conditions that <span class="math inline">\(f_i\le 0\)</span> and (2) being a game. If you fail to meet the constraint <span class="math inline">\(f_i\le 0\)</span>, you are penalized by cost <span class="math inline">\(\la_if_i\)</span> (and you gain money from constraints that are met). The adversary first sets “shadow prices” <span class="math inline">\(\la_i,\nu_i\)</span>, the cost for violating the constraints, and then you choose <span class="math inline">\(x^*\)</span>. Duality says you can’t do better in this game. (You can do just as well by choosing your original <span class="math inline">\(x^*\)</span>; this is weak duality.</p>
-Let <span class="math inline">\(p^*(u,v)\)</span> be the optima under constraints <span class="math inline">\(f_i\le u_i,h_i=v_i\)</span>. The sensitivity to the constraints are given by the dual optima. We have the following (the derivative equations hold if <span class="math inline">\(p^*\)</span> is differentiable.<a href="#fn1" class="footnoteRef" id="fnref1"><sup>1</sup></a>
+<p>Think of the dual as (1) relaxing the strict conditions that <span class="math inline">\(f_i\le 0\)</span> and (2) being a game. If you fail to meet the constraint <span class="math inline">\(f_i\le 0\)</span>, you are penalized by cost <span class="math inline">\(\la_if_i\)</span> (and you gain money from constraints that are met). The adversary first sets “shadow prices” <span class="math inline">\(\la_i,\nu_i\)</span>, the cost for violating the constraints, and then you choose <span class="math inline">\(x^*\)</span>. Duality says you can’t do better in this game. (You can do just as well by choosing your original <span class="math inline">\(x^*\)</span>; this is weak duality.)</p>
+Let <span class="math inline">\(p^*(u,v)\)</span> be the optima under constraints <span class="math inline">\(f_i\le u_i,h_i=v_i\)</span>. The sensitivity to the constraints are given by the dual optima. We have the following (the derivative equations hold if <span class="math inline">\(p^*\)</span> is differentiable).<a href="#fn1" class="footnoteRef" id="fnref1"><sup>1</sup></a>
 \begin{align}
 p^*(u,v) &amp;\ge p^*(0,0)-\la^{*T} u - \nu^{*T} v\\
 \pd{p^*}{v_i} &amp;= -\nu_i\\
 \pd{p^*}{u_i} &amp;= -\la_i.
 \end{align}
+<h2 id="applications">Applications</h2>
+<p>von Neumann minimax theorem. <span class="math display">\[
+\min_{1^T p = 1,p\ge 0} \max_{1^T q =1,q\ge 0} p^TAq = \max_q\min_p...
+\]</span> Proof: Write the LHS as <span class="math inline">\(\min_{p\ge 0, 1^Tp=1, P^Tp \le t\one}t\)</span> and use strong duality.</p>
+<h2 id="review">Review</h2>
+<ol type="1">
+<li>Give the dual problems for <span class="math inline">\(\min_{f_i\le 0, Ax=b}f\)</span>. Ditto for <span class="math inline">\(f_i\ge 0\)</span>.</li>
+<li>What is weak duality? Prove it.</li>
+<li>Give Slater’s conditions for equality (strong duality).</li>
+<li>Give the KKT conditions.</li>
+<li>What is duality for linear programming?</li>
+<li>Give intuition for duality. Explain what “shadow prices” are. What quantities represent sensitivity to constraints?</li>
+</ol>
 <h2 id="questions">Questions</h2>
 <p>If <span class="math inline">\(x\)</span> is a primal optimal, is there necessarily a <span class="math inline">\((\la,\nu)\)</span> that satisfies the equations? I think if <span class="math inline">\(x\)</span> is primal optimal and <span class="math inline">\((\la,\nu)\)</span> is dual optimal, <span class="math inline">\((x,\la,\nu)\)</span> does not necessarily satisfy. Check this.</p>
 <section class="footnotes">

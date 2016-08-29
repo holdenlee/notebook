@@ -10,27 +10,27 @@
   <meta name="description" content="Holden Lee's Research Notebook">
   <meta name="author" content="Holden Lee">
     
-  <title>Posts in category "cs"</title>
+  <title>Distribution of critical points</title>
 
   <!-- Bootstrap core CSS -->
-  <link href="../../bootstrap/css/bootstrap.min.css" rel="stylesheet">
+  <link href="../../../../bootstrap/css/bootstrap.min.css" rel="stylesheet">
 
   <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
   <!-- <link href="../../assets/css/ie10-viewport-bug-workaround.css" rel="stylesheet"> -->
 
   <!-- Custom styles for this template -->
-  <link href="../../css/blog.css" rel="stylesheet">
-  <link href="../../css/default.css" rel="stylesheet">
+  <link href="../../../../css/blog.css" rel="stylesheet">
+  <link href="../../../../css/default.css" rel="stylesheet">
 
   <!-- Extension : Footnotes -->
-  <link href="../../footnotes/css/footnotes.css" rel="stylesheet">
+  <link href="../../../../footnotes/css/footnotes.css" rel="stylesheet">
 
   <!-- Extension : InlineDisqussions @ https://github.com/tsi/inlineDisqussions -->
   
 
   <!-- Extension : Collapsible lists @ http://code.stephenmorley.org/javascript/collapsible-lists/-->
-  <link href="../../collapsible_lists/css/collapsible.css" rel="stylesheet">
-  <script type="text/javascript" src="../../collapsible_lists/js/CollapsibleLists.js"></script>
+  <link href="../../../../collapsible_lists/css/collapsible.css" rel="stylesheet">
+  <script type="text/javascript" src="../../../../collapsible_lists/js/CollapsibleLists.js"></script>
 
 </head>
 
@@ -48,12 +48,12 @@
           <span class="icon-bar"></span>
           <span class="icon-bar"></span>
         </button>
-        <a class="navbar-brand" href="../../">Notebook</a>
+        <a class="navbar-brand" href="../../../../">Notebook</a>
       </div>
       <div id="navbar" class="collapse navbar-collapse">
         <ul class="nav navbar-nav">
-          <li><a href="../../">Home</a></li>
-          <li><a href="../../sitemap.html">Sitemap</a></li>
+          <li><a href="../../../../">Home</a></li>
+          <li><a href="../../../../sitemap.html">Sitemap</a></li>
 <!-- TODO: Distinguish between PAPERS, RESEARCH QUESTIONS, BOOKS -->
 <!-- TODO: make this part a for loop over main pages -->
         </ul>
@@ -70,12 +70,16 @@
 <div class="container">
   <div id="content">
     <div class="page header">
-      <h1>Posts in category "cs"</h1>
+      <h1>Distribution of critical points</h1>
     </div>
     <div class="info">
       
+       
+        <p>Posted: 2016-08-13 
+          , Modified: 2016-08-13 
+	</p>
       
-      
+       <p>Tags: <a href="../../../../tags/none.html">none</a></p> 
     </div>
     
   </div>
@@ -84,61 +88,30 @@
   
 
   <div class="blog-main">
-    <ul>
-    
-        <li>
-            <a href="../../posts/cs/ai/control/truth_in_prob_logic.html">[CYHB13] Definability of Truth in Probabilistic Logic</a> (2016-08-19)
-        </li>
-    
-        <li>
-            <a href="../../posts/cs/ai/control/technical_agenda.html">Technical agenda</a> (2016-08-19)
-        </li>
-    
-        <li>
-            <a href="../../posts/cs/ai/control/logical_uncertainty.html">[SF15] Questions of reasoning under logical uncertainty</a> (2016-08-19)
-        </li>
-    
-        <li>
-            <a href="../../posts/cs/ai/control/lobs_theorem.html">Lob's Theorem</a> (2016-08-19)
-        </li>
-    
-        <li>
-            <a href="../../posts/cs/neural_nets/experiments.html">Neural net experiments</a> (2016-08-03)
-        </li>
-    
-        <li>
-            <a href="../../posts/cs/type_theory/types_and_pl.html">Types and programming languages, Benjamin Pierce</a> (2016-07-31)
-        </li>
-    
-        <li>
-            <a href="../../posts/cs/type_theory/type_theory.html">Type theory</a> (2016-07-31)
-        </li>
-    
-        <li>
-            <a href="../../posts/cs/PL/llvm.html">LLVM tutorial</a> (2016-07-31)
-        </li>
-    
-        <li>
-            <a href="../../posts/cs/neural_nets/tensorflow.html">Tensorflow setup</a> (2016-07-22)
-        </li>
-    
-        <li>
-            <a href="../../posts/cs/functional_programming/haskell.html">Haskell</a> (2016-04-03)
-        </li>
-    
-        <li>
-            <a href="../../posts/cs/ai/control/refs.html">AI Control References</a> (2016-02-27)
-        </li>
-    
-</ul>
-
-
+    <p><a href="http://mathoverflow.net/questions/247469/expected-number-of-local-minima-of-random-polynomial-in-high-dimensions">MO question</a></p>
+<p>Consider the inner product space <span class="math inline">\(P_k\)</span> of polynomials of degree <span class="math inline">\(\le k\)</span> on the unit sphere <span class="math inline">\(\mathbb S^{n-1}\subset \mathbb R^n\)</span>. Let <span class="math inline">\(p\sim N(0,\sigma^2 I)\)</span> be a randomly chosen polynomial in <span class="math inline">\(P_k\)</span>, according to the standard Gaussian distribution. What is the average number of local minima of <span class="math inline">\(p\)</span>?</p>
+<p><a href="http://arxiv.org/pdf/1101.5990.pdf">Nicolaescu</a> used the Kac-Rice formula to address the case where <span class="math inline">\(n\)</span> is kept fixed and <span class="math inline">\(k\to \infty\)</span>. In fact, his result is more general: the manifold is fixed and the space of eigenfunctions of the Laplacian with eigenvalue <span class="math inline">\(\le L\)</span> is considered.</p>
+<p>However, I’m interested in the asymptotics when <span class="math inline">\(k\)</span> is fixed (ex. take <span class="math inline">\(k=3\)</span> or 4) and <span class="math inline">\(n\to \infty\)</span>, in order to help understand the tractability of random optimization problems as <span class="math inline">\(n\to \infty\)</span>. I’m also interested in any other asymptotics that are known, e.g. distribution of values at local minima, distribution of other critical points, etc.</p>
+<!--  (modulo $\sum_{i=1}^{n} x_i^2-1$)-->
 
   </div>
 
     
 
+    <!-- Extension : Sharing buttons @ www.sharethis.com -->
+    <span class="st_facebook_large" displayText="Facebook"></span>
+    <span class="st_twitter_large" displayText="Tweet"></span>
+    <span class="st_googleplus_large" displayText="Google +"></span>
+    <span class="st_reddit_large" displayText="Reddit"></span>
+    <span class="st__large" displayText></span>
 
+    <div id="disqus_thread"></div>
+    
+
+
+  
+    <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+  </div>
   
 </div>
 
@@ -166,12 +139,12 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
 <script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
 
-<script src="../../bootstrap/js/bootstrap.min.js"></script>
+<script src="../../../../bootstrap/js/bootstrap.min.js"></script>
 
 <!-- Extension : Highlight.js @ https://highlightjs.org/ -->
 <!-- Syntax highlighting tomorrow-night-bright, agate-->
-<link rel="stylesheet" href="../../highlight/css/tomorrow-night-bright.css">
-<script src="../../highlight/js/highlight.pack.js"></script>
+<link rel="stylesheet" href="../../../../highlight/css/tomorrow-night-bright.css">
+<script src="../../../../highlight/js/highlight.pack.js"></script>
 <script>hljs.initHighlightingOnLoad();</script>
 
 <!-- Extension : MathJax @ https://docs.mathjax.org/en/v2.5-latest/tex.html -->
@@ -179,10 +152,13 @@
 <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML,http://holdenlee.github.io/notebook/MathJax/config/local/local"></script>
 
 <!-- Extension : Footnotes @ http://ignorethecode.net/blog/2010/04/20/footnotes/ -->
-<script src="../../footnotes/js/footnotes.js"></script>
+<script src="../../../../footnotes/js/footnotes.js"></script>
 
 <!-- Extension : Disqus @ http://disqus.com -->
 <!-- Extension : InlineDisqussions @ https://github.com/tsi/inlineDisqussions -->
+
+<script src="../../../../disqus/js/disqus.js"></script>
+
 
 
 <!-- Extension : Google Analytics -->

@@ -99,6 +99,9 @@
  <li><a href="#log-sobolev-inequalities">3.4 Log-Sobolev inequalities</a></li>
  <li><a href="#problems-1">Problems</a></li>
  </ul></li>
+ <li><a href="#lipschitz-concentration-and-transportation-inequalities">4 Lipschitz concentration and transportation inequalities</a><ul>
+ <li><a href="#concentration-in-metric-spaces">4.1 Concentration in metric spaces</a></li>
+ </ul></li>
  </ul> </div>
 
   <div class="blog-main">
@@ -358,7 +361,7 @@ P_tf \ln (P_tf)&amp;\le e^{-t}\ln f + (1-e^{-t}) \mu f\ln \mu f\\
 \implies \cE(\ln (P_tf), P_tf) &amp;\le e^{-2t}\cE(\ln f, f) &amp;\text{by }\int\\
 \implies \Ent_\mu(f) &amp;\le \cE(\ln f, f)&amp;(3\implies 1).
 \end{align}
-Note several different forms of log-Sobolev, equivalent in the Gaussian case (or anytime the chain rule holds for <span class="math inline">\(\cE\)</span>:
+Note several different forms of log-Sobolev, equivalent in the Gaussian case (or anytime the chain rule holds for <span class="math inline">\(\cE\)</span>):
 \begin{align}
 \Ent(f) &amp;\le \rc 2 \E[\nb f \cdot \nb \ln f] = \rc2 \cE (\ln f, f)\\
 \Ent(f) &amp;\le \rc 2 \E\pf{\ve{\nb f}^2}{f}\\
@@ -428,6 +431,58 @@ Take the derivative; this is minimized at <span class="math inline">\(t=\rc{\E Z
 <li><span class="math inline">\(\phi(x) = e^{-x}+x-1 \le 1-x+\fc{x^2}2 + x-1 = \fc{x^2}2\)</span>.</li>
 <li><span class="math inline">\(\E[\ph(D^-f) e^f] \le \rc{2}\E[|D^-f|^2 e^f]\)</span>. ?? Stuck.</li>
 </ol></li>
+</ol>
+<h2 id="lipschitz-concentration-and-transportation-inequalities">4 Lipschitz concentration and transportation inequalities</h2>
+<blockquote>
+<p>Rather than measuring the sensitivity of the function f in terms of a gradient, we will introduce a metric viewpoint that emphasizes the role of Lipschitz functions.</p>
+</blockquote>
+<h3 id="concentration-in-metric-spaces">4.1 Concentration in metric spaces</h3>
+<p>We can express Gaussian concentration and McDiarmid’s inequalities in terms of Lipschitz functions.</p>
+<ul>
+<li>Gaussian concentration:
+<ul>
+<li>For <span class="math inline">\(X\sim N(0,I)\)</span>, <span class="math inline">\(f\)</span> is <span class="math inline">\(\ve{\ve{\nb f}^2}_{\iy}\)</span>-subgaussian.</li>
+<li><strong>Lemma 4.3</strong> For <span class="math inline">\(f:\R^n\to \R\)</span> a <span class="math inline">\(C^1\)</span> function. $_{}L^2 <span class="math inline">\(f\)</span> is <span class="math inline">\(L\)</span>-Lipschitz.</li>
+</ul></li>
+<li>McDiarmid’s inequality
+<ul>
+<li>For <span class="math inline">\(X_i\in \mathbb X_i\)</span> independent, <span class="math inline">\(f\)</span> is <span class="math inline">\(\rc 4 \sumo kn \ve{D_k f}_{\iy}^2\)</span>-subgaussian.</li>
+<li><strong>Lemma 4.5</strong> Define weighted Hamming distance <span class="math inline">\(d_c(x,y) = \sumo in c_i 1_{x_i\ne y_i}\)</span>. For <span class="math inline">\(f:\mathbb X_1\times \cdots \mathbb X_n\to \R\)</span>, <span class="math inline">\(\ve{D_i f}_{\iy}\le c_i\)</span> for all <span class="math inline">\(i\)</span> iff <span class="math inline">\(f\)</span> is 1-Lipschitz with respect to <span class="math inline">\((\prod \mathbb X_i , d_c)\)</span>. (Proof: telescope.)</li>
+<li>So <span class="math inline">\(f\)</span> is <span class="math inline">\(\rc{4}\ve{c}^2\)</span>-subgaussian.</li>
+</ul></li>
+</ul>
+<blockquote>
+<p>In the case of gradient bounds, the sensitivity of the function f is measured locally, while the Lipschitz property quantifies the sensitivity in a global manner.</p>
+</blockquote>
+<p>Basic question:</p>
+<blockquote>
+<p>For which probability measures μ on the metric space <span class="math inline">\((X, d)\)</span> is it true that if <span class="math inline">\(X\sim \mu\)</span>, then <span class="math inline">\(f(X)\)</span> is <span class="math inline">\(\si^2\)</span>-subgaussian for every <span class="math inline">\(f \in Lip(\mathbb X)\)</span>?</p>
+</blockquote>
+<p><strong>Wasserstein distance</strong>: For <span class="math inline">\(\mu,\nu\in \cP_1(\mathbb X)=\set{\rh}{\int d(x_0,x)\rh(dx)&lt;\iy}\)</span>, the Wasserstein distance is <span class="math display">\[ W_1(\mu, \nu) := \sup_{f\in Lip(\mathbb X)} \ab{\int f\,d\mu - \int f\,d\nu}.\]</span></p>
+<p><strong>Relative entropy</strong>: <span class="math inline">\(D(\nu||\mu) = \Ent_{\mu}\pa{\dd{\nu}{\mu}}\)</span>.</p>
+<p><strong>Theorem 4.8 (Bobkov-Gotze)</strong>: Let <span class="math inline">\(\mu\in \cP_1(\mathbb X)\)</span>. TFAE for <span class="math inline">\(X\sim \mu\)</span>:</p>
+<ol type="1">
+<li><span class="math inline">\(f(X)\)</span> is <span class="math inline">\(si^2\)</span>-subgaussian for <span class="math inline">\(f\in Lip(\mathbb X)\)</span>.</li>
+<li><span class="math inline">\(W_1(\nu,\mu)\le \sqrt{2\si^2 D(\nu||\mu)\)</span>.</li>
+</ol>
+<p><strong>Example (Pinsker’s inequality)</strong>:</p>
+<ul>
+<li>Hoeffding: <span class="math inline">\(f\)</span> is <span class="math inline">\(\rc 4 (\sup f - \inf f)\)</span>-subgaussian.</li>
+<li>Pinsker: <span class="math inline">\(\ve{\mu-\nu}_{TV} \le \sqrt{\rc 2 D(\nu||\mu)}\)</span>.</li>
+</ul>
+<p><em>Proof</em>.</p>
+<ol type="1">
+<li><p><strong>Lemma 4.10 (Gibbs variational principle)</strong> <span class="math inline">\(\log \E_{\mu} e^f = \sup_\nu [\E_\nu [f] - D(\nu||\mu)]\)</span>.</p>
+<p><em>Proof</em>. <span class="math inline">\(\log \E_\mu[e^f] - D(\nu||\wt \mu) = \E_\n [f] - D(\nu||\mu)\)</span>.</p>
+(?? “Dual convex optimization to the variational formula for entropy.”)</li>
+<li>Restate
+\begin{align}
+\forall \la\in \R, f\in Lip(\mathbb X), \log \E_\mu[e^{\la (f-\E_\mu f)}]&amp;\le \fc{\la^2\si^2}2\\
+\sup_{\la\in \R, f\in Lip(\mathbb X), \nu} \ba{
+\la (\E_\nu f - \E_\mu f) - D(\nu||\mu) - \fc{\la^2\si^2}2
+},
+\end{align}
+<p>evaluate over <span class="math inline">\(f\)</span> to get <span class="math inline">\(W_1\)</span>, then evaluate over <span class="math inline">\(\la\)</span>.</p></li>
 </ol>
 <section class="footnotes">
 <hr />

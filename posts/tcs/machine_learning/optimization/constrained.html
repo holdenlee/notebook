@@ -104,19 +104,19 @@ Give the example for quadratic minimization. What do the KKT equations say?
 \begin{align}
 \min_{Ax=b} \rc 2 x^T P x + q^T x + r &amp; \\
 Px^* + q + A^T \nu^*&amp;=0\\
-\iff \matt{P}{A^T}{A}0 \coltwo{x^*}{\nu^*} &amp;= \coltwo{-1}{b}.\label{eq:kkt-mat}
+\iff \matt{P}{A^T}{A}0 \coltwo{x^*}{\nu^*} &amp;= \coltwo{-q}{b}.\label{eq:kkt-mat}
 \end{align}
 <p>This is unbounded below if there exist <span class="math inline">\(v,w\)</span> such that <span class="math inline">\(Pv+A^Tw=0\)</span>, <span class="math inline">\(Av=0\)</span>, <span class="math inline">\(-q^Tv+b^Tw&gt;0\)</span> (left-multiply by <span class="math inline">\((v^T\,w^T)\)</span>) to see that the equation above doesn’t have a solution).</p>
-<p>Recall the dual function. Why do we care about it? <span class="math display">\[g(\la,\nu) = \min_x f+\nu^T (Ax-b) = -\nu^Tb - f^*(-\nu^TA), \qquad f^(y)=\max y^Tx - f(x).\]</span> Equality constraints disappear in the dual. If the dual is nice, we can just solve an unconstrained problem <span class="math inline">\(\max_{\la \ge 0} g(\la,\nu)\)</span>.</p>
+<p>Recall the dual function. Why do we care about it? <span class="math display">\[g(\la,\nu) = \min_x f+\nu^T (Ax-b) = -\nu^Tb - f^*(-\nu^TA), \qquad f^*(y)=\max y^Tx - f(x).\]</span> Equality constraints disappear in the dual. If the dual is nice, we can just solve an unconstrained problem <span class="math inline">\(\max_{\la \ge 0} g(\la,\nu)\)</span>.</p>
 <h2 id="newton">Newton</h2>
 <h3 id="feasible-start">Feasible start</h3>
 <p>Describe the Newton method starting with a feasible <span class="math inline">\(x, Ax=b\)</span>. The Newton step is the minimizer for the quadratic approximation under the constraint. (Finding the minimum of a quadratic amounts to solving a linear equation.) Using  <span class="math display">\[\matt{\nb^2 f}{A^T}A0 \coltwo{\De x_{nt}}w = \coltwo{-\nb f}{0}.\]</span> Define <span class="math display">\[\la(x) = (\De x_{nt}^T \nb^2 f \De x_{nt})^{\rc 2}\]</span>.</p>
 <p>Note this <em>is</em> normal Newton if you use a parametrization.</p>
 <p>(Convexity makes the KKT matrix invertible.)</p>
 <h3 id="infeasible-start">Infeasible start</h3>
-<p>Describe the infeasible start Newton method. Approximate <span class="math inline">\(f\)</span> by a quadratic using <span class="math inline">\(P=\nb^2 f\)</span> in  and find <span class="math inline">\(\De x_{nt}\)</span> so that <span class="math inline">\(x+\De x_{nt}\)</span> satisfies the KKT conditions. The equation for <span class="math inline">\(\De x_{nt}\)</span> is <span class="math display">\[\matt{\nb^2 f}{A^T}A0 \coltwo{\De x_{nt}}w = \coltwo{-\nb f}{b-Ax}.\]</span></p>
+<p>Describe the infeasible start Newton method. Approximate <span class="math inline">\(f\)</span> by a quadratic using <span class="math inline">\(P=\nb^2 f\)</span> in <span class="math inline">\(\eqref{eq:kkt-mat}\)</span> and find <span class="math inline">\(\De x_{nt}\)</span> so that <span class="math inline">\(x+\De x_{nt}\)</span> satisfies the KKT conditions. The equation for <span class="math inline">\(\De x_{nt}\)</span> is <span class="math display">\[\matt{\nb^2 f}{A^T}A0 \coltwo{\De x_{nt}}w = \coltwo{-\nb f}{b-Ax}.\]</span></p>
 <p>Note here we’re just updating <span class="math inline">\(x\)</span> by solving for <span class="math inline">\(\De x_{nt}\)</span>. Ech time <span class="math inline">\(w\)</span> is treated just as an auxiliary variable. But <span class="math inline">\(w\)</span> comes from the dual solution <span class="math inline">\(\nu\)</span>. Can we look at <span class="math inline">\((x,\nu)\)</span> together as a primal-dual pair and update both of them?</p>
-Let the residual be
+Let the (dual and primal) residual be (recall KKT says we want <span class="math inline">\(\nb f + A^T\nu =0\)</span>)
 \begin{align}
 r &amp;= (\nb f + A^T \nu, Ax-b).
 \end{align}
