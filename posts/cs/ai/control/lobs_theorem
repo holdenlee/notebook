@@ -1,0 +1,31 @@
+---
+title: Lob's Theorem
+published: 2016-08-19
+modified: 2016-08-19
+tags: ai safety, logic
+type: notes
+showTOC: True
+---
+
+Does PA claim to be sound? (More standard notation: $\square X$ for $PA[X]$.)
+$$PA[PA[X]\implies X]$$
+No. Then PA would be inconsistent. (Why?)
+$$PA[PA[X]\implies X]\implies PA[X].$$
+(Converse is obviously true.)
+
+Alas, this means we can't prove PA sound with respect to any important
+class of statements. (?)
+
+Lob's sentence: L says "If a proof of L exists, then C."
+$$L = \square L \to C$$
+
+"If this sentence is true, then Santa Claus exists."[^f1]
+
+
+[^f1]: Confused ramblings (wrong?) This sentence is true---even if Santa Claus doesn't exist! The problem with provability logic - why you can't just add in $\square X \implies X$ as an axiom---is that you can now prove both $X, \neg X$ by constructing Lob's sentence! Reflection doesn't work---it's not that simple! You have to design a logic to make reflection not inconsistent!
+
+Questions: 
+
+* What happens if we add the axiom $\square X \implies X$?
+* "if PA asserted its own soundness (in general), PA would become inconsistent." Does this just mean we can't add this axiom, or that it being provable leads to a contradiction? (Can you get this from "This theorem is unprovable" type things?)
+

@@ -66,7 +66,7 @@ $$\fc{s-\rc{l}}{\rc{l}} = \fc{\rc L-s}{\rc L} \implies s = \fc{2}{L+l}.$$
 
 **Backtracking analysis:**
 
-* Translate to $(0,0)$ and look at 1-D slice. Then $f\le b x + \rc2 M x^2$, $b = \ve{\nb f(x)}$. The quadratic equals $\al bx $ at $x=\fc{2b(1-\al)}{M}$. 
+* Translate to $(0,0)$ and look at 1-D slice. Then $f\le b x + \rc2 M x^2$, $b = \ve{\nb f(x)}$. <!--The quadratic equals $\al bx$ at $x=\fc{2b(1-\al)}{M}$.--> 
 *   One of the following holds.
     \begin{align}
 	f(x+t_0\De x) &> f(x) + \al \nb f^T \De x\\
@@ -91,9 +91,9 @@ $$\fc{s-\rc{l}}{\rc{l}} = \fc{\rc L-s}{\rc L} \implies s = \fc{2}{L+l}.$$
 
     Alternate proof off by factor of $\log T$: reduce to $\ga$-convex by adding $\fc{\al}2\ve{x-x_1}^2$. 
 * $\al$-sc: Proof off by factor of $\log T$: average $f*\mu(\pl \bS_\de)$ is $\fc{dG}{\de}$ smooth; optimize parameters.
-* General case: Consider $g(x)=f(x) + \fc{\al}2\ve{x-x_1}^2$. Use the $\al$-sc case to get error $\fc{\al}2R^2 + \rc{\al T}$. Take $\al = \sfc{1}{TR}$ to get $\sfc{R}{\sqrt T}$.
+* General case: Consider $g(x)=f(x) + \fc{\al}2\ve{x-x_1}^2$. Use the $\al$-sc case to get error $\fc{\al}2R^2 + \rc{\al T}$. Take $\al \propto \rc{\sqrt T}$. <!-- Take $\al = \sfc{1}{TR}$ to get $\sfc{R}{\sqrt T}$.-->
 
-#Regret bounds
+# Regret bounds
 
 *   General (can replace gradient by subgradient): Suppose $\ve{\nb f(x)}_2\le M$ and $\ve{x_1-x^*}_2\le R$. 
 	\begin{align}
@@ -135,3 +135,10 @@ $$\fc{s-\rc{l}}{\rc{l}} = \fc{\rc L-s}{\rc L} \implies s = \fc{2}{L+l}.$$
     I'm very confused here. Isn't the above setting the $M$-smooth case, in which case you get $\rc{T}$ convergence? -->
 	Note this is a regret bound, and it gives a bound on $\ol x_K$ not $x_K$. For the bound on $x_K$ see [AO15](AO15.html). Note that proof starts with $f(x_k)-f(x^*)$ rather than $\ve{x_k-x^*}$, and telescopes on $\rc{D_k}$ instead of $\ve{x_k-x^*}$.
 
+# Review
+
+* What is the performance of GD, AGD, and regret GD on general, $\al$-convex, $\be$-smooth, and $\ga$-convex functions?
+* Describe gradient descent (a) when condition number is known and (b) using backtracking. What are parameters for backtracking?
+* State the gradient descent lemma and prove it. Prove GD for $\ga$-convex functions.
+* Prove the bound for $\al$-smooth functions.
+* Prove a regret bound in the general case.

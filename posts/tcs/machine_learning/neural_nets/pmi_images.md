@@ -83,7 +83,7 @@ Qs
 
 * Why is the normalization `nrm=mean(sqrt(sum(compTr.^2)))`?
 
-# Steps
+# Steps, Experiments
 
 Run experiments.
 
@@ -111,9 +111,13 @@ Ps = calculate_cpmi(psiTr, Ytr, '1');
 cpmi_experiments('P_1');
 ```
 
+# PMI distribution
+
 Over all pairs of features $i,j$, this is the distribution of $PMI(v_i,v_j)$:
 
 <img src="/images/pmi/pmi_histogram_1.jpg">
+
+(Question: is this what you would expect if the distribution were "random" or are the tails different than what we would expect?)
 
 Is there a correlation between PMI and distance between features? (Distance ranges from $0$ to $5\sqrt 2$.) It seems not.
 
@@ -126,3 +130,34 @@ Conditioned on the digit being a specific value, how does the PMI distribution l
 <img src="/images/pmi/hist_P_1_2.jpg">
 <img src="/images/pmi/hist_P_1_3.jpg">
 <img src="/images/pmi/hist_P_1_4.jpg">
+
+(The thing we saw with cutting off above a threshold?)
+
+# SVD-SVM
+
+Run `qsub svd_svm.cmd` which runs `svd_testing2.m`, or `sbatch slurm_svd.cmd`. The results are saved in `accs_1.mat`.
+
+Results:
+
+| Dimension | Last | Best |
+|---|---|---|
+|500|99.26|99.44|
+|100|97.5 |98.82|
+|50|96.84|96.84|
+
+# Weighted SVD-SVM
+
+Do weighted SVD and then train a SVM. Note this does worse than just SVD! Why?
+
+| Dimension | Last | Best |
+|---|---|---|
+|50|95.44|96.8|
+
+
+# Guide to data
+
+* `psiTr_1.mat`, `psiTe_1.mat` etc. are the feature vectors for the training/test sets and the different architectures. The architectures are
+    1. `test_ckn([5 2 0],[2 2 0],[50 200 0],2,'mnist');` (7200, 0.57%)
+	2. `test_ckn([1 3 0],[2 2 0],[12 50 0],3,'mnist');` (1800, 0.63%)
+	3. `test_ckn([1 3 0],[2 4 0],[12 400 0],3,'mnist');` (3600, 0.41%)
+* 

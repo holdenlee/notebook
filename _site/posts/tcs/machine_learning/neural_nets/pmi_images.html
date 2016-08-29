@@ -94,7 +94,11 @@
  <li><a href="#theory-1">Theory</a></li>
  </ul></li>
  <li><a href="#scratch">Scratch</a></li>
- <li><a href="#steps">Steps</a></li>
+ <li><a href="#steps-experiments">Steps, Experiments</a></li>
+ <li><a href="#pmi-distribution">PMI distribution</a></li>
+ <li><a href="#svd-svm">SVD-SVM</a></li>
+ <li><a href="#weighted-svd-svm">Weighted SVD-SVM</a></li>
+ <li><a href="#guide-to-data">Guide to data</a></li>
  </ul> </div>
 
   <div class="blog-main">
@@ -157,7 +161,7 @@
 <ul>
 <li>Why is the normalization <code>nrm=mean(sqrt(sum(compTr.^2)))</code>?</li>
 </ul>
-<h2 id="steps">Steps</h2>
+<h2 id="steps-experiments">Steps, Experiments</h2>
 <p>Run experiments.</p>
 <pre><code>nohup nice -19 matlab -nodisplay -nodesktop -nojvm -nosplash &lt; run_experiments2.m &gt; output_2016-08-07.txt 2&gt;&amp;1 &amp;</code></pre>
 <div class="sourceCode"><pre class="sourceCode matlab"><code class="sourceCode matlab"><span class="co">%Get psiTr</span>
@@ -177,12 +181,72 @@ save(<span class="st">'dists_1.mat'</span>,<span class="st">'dists'</span>);
 <span class="co">%cpmi matrices</span>
 Ps = calculate_cpmi(psiTr, Ytr, <span class="st">'1'</span>);
 cpmi_experiments(<span class="st">'P_1'</span>);</code></pre></div>
+<h2 id="pmi-distribution">PMI distribution</h2>
 <p>Over all pairs of features <span class="math inline">\(i,j\)</span>, this is the distribution of <span class="math inline">\(PMI(v_i,v_j)\)</span>:</p>
 <p><img src="../../../../images/pmi/pmi_histogram_1.jpg"></p>
+<p>(Question: is this what you would expect if the distribution were “random” or are the tails different than what we would expect?)</p>
 <p>Is there a correlation between PMI and distance between features? (Distance ranges from <span class="math inline">\(0\)</span> to <span class="math inline">\(5\sqrt 2\)</span>.) It seems not.</p>
 <p><img src="../../../../images/pmi/pmi_distance.jpg"></p>
 <p>Conditioned on the digit being a specific value, how does the PMI distribution look? Still about the same…</p>
 <p><img src="../../../../images/pmi/hist_P_1_0.jpg"> <img src="../../../../images/pmi/hist_P_1_1.jpg"> <img src="../../../../images/pmi/hist_P_1_2.jpg"> <img src="../../../../images/pmi/hist_P_1_3.jpg"> <img src="../../../../images/pmi/hist_P_1_4.jpg"></p>
+<p>(The thing we saw with cutting off above a threshold?)</p>
+<h2 id="svd-svm">SVD-SVM</h2>
+<p>Run <code>qsub svd_svm.cmd</code> which runs <code>svd_testing2.m</code>, or <code>sbatch slurm_svd.cmd</code>. The results are saved in <code>accs_1.mat</code>.</p>
+<p>Results:</p>
+<table>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Dimension</th>
+<th style="text-align: left;">Last</th>
+<th style="text-align: left;">Best</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">500</td>
+<td style="text-align: left;">99.26</td>
+<td style="text-align: left;">99.44</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">100</td>
+<td style="text-align: left;">97.5</td>
+<td style="text-align: left;">98.82</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">50</td>
+<td style="text-align: left;">96.84</td>
+<td style="text-align: left;">96.84</td>
+</tr>
+</tbody>
+</table>
+<h2 id="weighted-svd-svm">Weighted SVD-SVM</h2>
+<p>Do weighted SVD and then train a SVM. Note this does worse than just SVD! Why?</p>
+<table>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Dimension</th>
+<th style="text-align: left;">Last</th>
+<th style="text-align: left;">Best</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">50</td>
+<td style="text-align: left;">95.44</td>
+<td style="text-align: left;">96.8</td>
+</tr>
+</tbody>
+</table>
+<h2 id="guide-to-data">Guide to data</h2>
+<ul>
+<li><code>psiTr_1.mat</code>, <code>psiTe_1.mat</code> etc. are the feature vectors for the training/test sets and the different architectures. The architectures are
+<ol type="1">
+<li><code>test_ckn([5 2 0],[2 2 0],[50 200 0],2,'mnist');</code> (7200, 0.57%)</li>
+<li><code>test_ckn([1 3 0],[2 2 0],[12 50 0],3,'mnist');</code> (1800, 0.63%)</li>
+<li><code>test_ckn([1 3 0],[2 4 0],[12 400 0],3,'mnist');</code> (3600, 0.41%)</li>
+</ol></li>
+<li></li>
+</ul>
 
   </div>
 

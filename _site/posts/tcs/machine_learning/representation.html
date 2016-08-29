@@ -93,6 +93,7 @@
  <li><a href="#generalizing-agmm">Generalizing AGMM</a></li>
  <li><a href="#dl-vs.ica-tensor-decomposition">DL vs. ICA, tensor decomposition</a></li>
  </ul></li>
+ <li><a href="#previous-work">Previous work</a></li>
  </ul> </div>
 
   <div class="blog-main">
@@ -168,6 +169,21 @@ f^{-1}(A^+y) &amp;= x\\
 <li>Tensor decomposition in this regime just doesn’t work in practice. (Practically, what can you expect???)</li>
 </ol>
 <p>I think I need to familiarize myself with practical tensor decomposition and DL!</p>
+<h2 id="previous-work">Previous work</h2>
+<p>Unsupervised SVM</p>
+<ul>
+<li><a href="http://www.jmlr.org/proceedings/papers/v23/karnin12/karnin12.pdf">Unsupervised SVMs: On the Complexity of the Furthest Hyperplane Problem</a>. FHP is NP-hard.
+<ul>
+<li>Randomized algorithm, running time <span class="math inline">\(n^{O(1/\te^2)}\)</span>. (Exponential dependency tight assuming ETH)</li>
+<li>Approximation algorithm: <span class="math inline">\(1-3\al\)</span> fraction is <span class="math inline">\(\ge\al\)</span> times separation margin.</li>
+<li>No PTAS. Gap-preserving reduction from PCP.</li>
+</ul></li>
+<li><a href="https://www.quora.com/Is-it-possible-to-use-SVMs-for-unsupervised-learning-density-estimation">Quora</a>. One-class SVM, support vector clustering.</li>
+<li><a href="http://jmlr.csail.mit.edu/papers/volume2/horn01a/rev1/horn01ar1.pdf">Support vector clustering</a> “Data points are mapped by means of a Gaussian kernel to a high dimensional feature space, where we search for the minimal enclosing sphere.”</li>
+<li>? http://stats.stackexchange.com/questions/212080/yet-another-unsupervised-svm</li>
+<li><a href="https://www.uni-oldenburg.de/fileadmin/user_upload/informatik/download/Promotionen/phdthesis_fabian_gieseke.pdf">Unsupervised SVM (thesis)</a></li>
+<li><a href="http://www.aaai.org/Papers/AAAI/2005/AAAI05-143.pdf">Multi-class SVM</a></li>
+</ul>
 
   </div>
 

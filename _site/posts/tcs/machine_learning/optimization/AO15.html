@@ -85,7 +85,21 @@
   </div>
   <!--/div-->
 
-  
+  <div class="toc"> <ul>
+ <li><a href="#gradient-descent">Gradient Descent</a><ul>
+ <li><a href="#proof">Proof</a></li>
+ </ul></li>
+ <li><a href="#mirror-descent">Mirror descent</a><ul>
+ <li><a href="#examples">Examples</a></li>
+ <li><a href="#intuition">Intuition</a></li>
+ </ul></li>
+ <li><a href="#coupling">Coupling</a><ul>
+ <li><a href="#unconstrained-version-qr">Unconstrained version (Q=R)</a></li>
+ </ul></li>
+ <li><a href="#proof-1">Proof</a></li>
+ <li><a href="#index-cards">Index cards:</a></li>
+ <li><a href="#page-notes">Page notes</a></li>
+ </ul> </div>
 
   <div class="blog-main">
     <h2 id="gradient-descent">Gradient Descent</h2>
@@ -119,6 +133,7 @@ D_k^2 &amp; \le 2LR^2(D_k-D_{k+1})\\
 <strong>Definition</strong>: <span class="math inline">\(w(x):Q\to \R\)</span> (<span class="math inline">\(Q\)</span> convex) is a <strong>distance generating function</strong> if the following holds. Then define <strong>Bregman divergence</strong> as follows. For all <span class="math inline">\(x\in Q\bs \pl Q, y\in Q\)</span>,
 \begin{align}
 w(y) &amp;\ge w(x) + \an{\nb w(x),y-x} + \rc2\ve{x-y}^2\\
+V_x(y) &amp; = w(y) - \an{\nb w(x),y-x} - w(x).
 \end{align}
 <p>Note we can replace the gradient by a subgradient below.</p>
 <ul>
@@ -213,6 +228,10 @@ which still does not telescope.</li>
 <li>Linear coupling lemma</li>
 <li>Linear coupling guarantee</li>
 </ul>
+<ol type="1">
+<li>Describe the linear coupling framework. What are the update rules?</li>
+<li>Give the linear coupling lemma.</li>
+</ol>
 <h2 id="page-notes">Page notes</h2>
 <ol type="1">
 <li></li>

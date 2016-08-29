@@ -91,6 +91,7 @@
 
   <div class="blog-main">
     <p><a href="http://cs229.stanford.edu/notes/cs229-notes7a.pdf">Reference</a></p>
+<p><a href="https://en.wikipedia.org/wiki/K-means_clustering">wikipedia</a> (??Feature learning)</p>
 <p>The <span class="math inline">\(k\)</span>-means clustering is the following. (Lloyd’s algorithm) Let data points be <span class="math inline">\(x^{(i)}\)</span>.</p>
 <ol type="1">
 <li>Initialize <span class="math inline">\(\mu_1,\ldots, \mu_k\)</span>.</li>
@@ -101,8 +102,10 @@
 </ol></li>
 </ol>
 <p>This is alternating minimization on the distortion function <span class="math display">\[J(c,\mu) = \sumo im \ve{x^{(i)}-\mu_{c(i)}}^2\]</span> with respect to <span class="math inline">\(c\)</span> and <span class="math inline">\(\mu\)</span>. This value decreases and so converges (possible to local optimum); in practice, the <span class="math inline">\(\mu\)</span>’s converge.</p>
+<p>(Objective function <span class="math inline">\(\amin_S \sumo ik \sum_{x\in S_i} \ve{x-\mu_i}^2\)</span>.)</p>
 <h2 id="questions">Questions</h2>
 <p>Are there provable guarantees on <span class="math inline">\(k\)</span>-means clustering—if so, what? And/or is there a (worst-case) hardness result?</p>
+<p>See also <a href="https://en.wikipedia.org/wiki/K-nearest_neighbors_algorithm">k-NN</a>.</p>
 
   </div>
 

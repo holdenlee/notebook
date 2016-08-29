@@ -95,3 +95,17 @@ Reasons why this doesn't trivialize the problem?
 1. Tensor decomposition in this regime just doesn't work in practice. (Practically, what can you expect???)
 
 I think I need to familiarize myself with practical tensor decomposition and DL!
+
+# Previous work
+
+Unsupervised SVM
+
+* [Unsupervised SVMs: On the Complexity of the Furthest Hyperplane Problem](http://www.jmlr.org/proceedings/papers/v23/karnin12/karnin12.pdf). FHP is NP-hard.
+    * Randomized algorithm, running time $n^{O(1/\te^2)}$. (Exponential dependency tight assuming ETH)
+	* Approximation algorithm: $1-3\al$ fraction is $\ge\al$ times separation margin.
+	* No PTAS. Gap-preserving reduction from PCP.
+* [Quora](https://www.quora.com/Is-it-possible-to-use-SVMs-for-unsupervised-learning-density-estimation). One-class SVM, support vector clustering.
+* [Support vector clustering](http://jmlr.csail.mit.edu/papers/volume2/horn01a/rev1/horn01ar1.pdf) "Data points are mapped by means of a Gaussian kernel to a high dimensional feature space, where we search for the minimal enclosing sphere."
+* ? http://stats.stackexchange.com/questions/212080/yet-another-unsupervised-svm
+* [Unsupervised SVM (thesis)](https://www.uni-oldenburg.de/fileadmin/user_upload/informatik/download/Promotionen/phdthesis_fabian_gieseke.pdf)
+* [Multi-class SVM](http://www.aaai.org/Papers/AAAI/2005/AAAI05-143.pdf)

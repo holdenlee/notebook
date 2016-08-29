@@ -10,8 +10,14 @@ showTOC: True
 Notes: 
 
 * [Duality](duality.html) (BV Ch. 5)
+    * [SDP duality](sdp-duality.html)
 * [Convex problems](convex_problems.html)
-* [Gradient descent](GD.html) (BV Ch. 9)
-* [Newton's method](second-order.html) (BV Ch. 9)
+* First-order methods
+	* [Gradient descent](GD.html) (BV Ch. 9)
+	* [Mirror descent](mirror-descent.html) 
+	* [AGD by coupling](AO15.html)
+	* [AGD, intuition by Chebyshev](/posts/math/analysis/numerical/chebyshev.html) - actually covers conjugate gradients.
+* Second-order methods
+	* [Newton's method](second-order.html) (BV Ch. 9)
 * [Constrained optimization](constrained.html) (BV Ch. 10)
 * [Interior point methods](ipm.html) (BV Ch. 11)

@@ -379,7 +379,7 @@ $$\Pj[f - \E f\ge t] \le e^{-t^2/2\si^2}.$$
 \implies \Ent_\mu(f) &\le \cE(\ln f, f)&(3\implies 1).
 \end{align}
 
-Note several different forms of log-Sobolev, equivalent in the Gaussian case (or anytime the chain rule holds for $\cE$:
+Note several different forms of log-Sobolev, equivalent in the Gaussian case (or anytime the chain rule holds for $\cE$):
 \begin{align}
 \Ent(f) &\le \rc 2 \E[\nb f \cdot \nb \ln f] = \rc2 \cE (\ln f, f)\\
 \Ent(f) &\le \rc 2 \E\pf{\ve{\nb f}^2}{f}\\
@@ -460,3 +460,62 @@ Problems
 	3.  $\phi(x) = e^{-x}+x-1 \le 1-x+\fc{x^2}2 + x-1 = \fc{x^2}2$.
 	4.  $\E[\ph(D^-f) e^f] \le \rc{2}\E[|D^-f|^2 e^f]$.
 	    ?? Stuck.
+
+# 4 Lipschitz concentration and transportation inequalities
+
+> Rather than measuring the sensitivity of the function f
+> in terms of a gradient, we will introduce a metric viewpoint that emphasizes
+> the role of Lipschitz functions.
+
+## 4.1 Concentration in metric spaces
+
+We can express Gaussian concentration and McDiarmid's inequalities in terms of Lipschitz functions.
+
+* Gaussian concentration:
+	* For $X\sim N(0,I)$, $f$ is $\ve{\ve{\nb f}^2}_{\iy}$-subgaussian.
+    * **Lemma 4.3** For $f:\R^n\to \R$ a $C^1$ function. $\ve{\ve{\nb f}^2}_{\iy}\le L^2 \iff $f$ is $L$-Lipschitz.
+* McDiarmid's inequality
+	* For $X_i\in \mathbb X_i$ independent, $f$ is $\rc 4 \sumo kn \ve{D_k f}_{\iy}^2$-subgaussian.
+	* **Lemma 4.5** Define weighted Hamming distance $d_c(x,y) = \sumo in c_i 1_{x_i\ne y_i}$. For $f:\mathbb X_1\times \cdots \mathbb X_n\to \R$, $\ve{D_i f}_{\iy}\le c_i$ for all $i$ iff $f$ is 1-Lipschitz with respect to $(\prod \mathbb X_i , d_c)$. (Proof: telescope.)
+	* So $f$ is $\rc{4}\ve{c}^2$-subgaussian.
+
+> In the case of gradient bounds, the sensitivity of the function
+> f is measured locally, while the Lipschitz property quantifies the sensitivity
+> in a global manner.
+
+Basic question:
+
+> For which probability measures μ on the metric space $(X, d)$ is it true
+> that if $X\sim \mu$, then $f(X)$ is $\si^2$-subgaussian for every $f \in Lip(\mathbb X)$?
+
+**Wasserstein distance**: For $\mu,\nu\in \cP_1(\mathbb X)=\set{\rh}{\int d(x_0,x)\rh(dx)<\iy}$, the Wasserstein distance is
+$$ W_1(\mu, \nu) := \sup_{f\in Lip(\mathbb X)} \ab{\int f\,d\mu - \int f\,d\nu}.$$
+
+**Relative entropy**: $D(\nu||\mu) = \Ent_{\mu}\pa{\dd{\nu}{\mu}}$.
+
+**Theorem 4.8 (Bobkov-Gotze)**: Let $\mu\in \cP_1(\mathbb X)$. TFAE for $X\sim \mu$:
+
+1. $f(X)$ is $si^2$-subgaussian for $f\in Lip(\mathbb X)$.
+2. $W_1(\nu,\mu)\le \sqrt{2\si^2 D(\nu||\mu)$.
+
+**Example (Pinsker's inequality)**:
+
+* Hoeffding: $f$ is $\rc 4 (\sup f - \inf f)$-subgaussian.
+* Pinsker: $\ve{\mu-\nu}_{TV} \le \sqrt{\rc 2 D(\nu||\mu)}$.
+
+*Proof*. 
+
+1.  **Lemma 4.10 (Gibbs variational principle)** $\log \E_{\mu} e^f = \sup_\nu [\E_\nu [f] - D(\nu||\mu)]$. 
+    
+	*Proof*.  $\log \E_\mu[e^f] - D(\nu||\wt \mu) = \E_\n [f] - D(\nu||\mu)$.
+	
+	(?? "Dual convex optimization to the variational formula for entropy.")
+2.  Restate
+    \begin{align}
+	\forall \la\in \R, f\in Lip(\mathbb X), \log \E_\mu[e^{\la (f-\E_\mu f)}]&\le \fc{\la^2\si^2}2\\
+	\sup_{\la\in \R, f\in Lip(\mathbb X), \nu} \ba{
+	\la (\E_\nu f - \E_\mu f) - D(\nu||\mu) - \fc{\la^2\si^2}2
+	},
+	\end{align}
+	evaluate over $f$ to get $W_1$, then evaluate over $\la$.
+	

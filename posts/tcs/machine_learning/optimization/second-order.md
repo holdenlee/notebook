@@ -15,7 +15,7 @@ See [gradient descent](GD.html).
 	    $$x^{(t+1)} \leftarrow x+\tau \De x.$$
     3. Continue until stop criterion.
 
-#Main points
+# Main points
 
 * What's the shortcoming of gradient descent that we want to fix?
     * It is not invariant under linear transformation.
@@ -32,7 +32,7 @@ See [gradient descent](GD.html).
 		\De x_{nsd} &=\fc{H^{-1} \nb f}{\ve{H^{-\rc 2} \nb f}} = \fc{H^{-1} \nb f}{\la(x)^2}\\
 		\la(x) &= \ve{H^{-\rc 2}\nb f}^{\rc 2} = (\nb f^T H^{-1} \nb f)^{\rc 2}.
 	    \end{align}
-		Here $\la(x)$ is the Newton decrement.
+		Here $\la(x)$ is the Newton decrement. (Use $\Delta x = \Delta x_{nsd}$.)
 *   Newton for functions with Lipschitz Hessian: The number of steps to reach $\ep$ is
     $$\fc{f(x^{(0)}-p^*)}{\ga} + \ln\ln \fc{\ep_0}{\ep}, \ep_0=\fc{2m^3}{L^2}.$$
 *   $f$ is **self-concordant** if for all $v$, $\an{\nb^3 f, \De x^{\ot 3}} \le 2 \an{\nb^2 f, \De x^{\ot2}}^{\fc 32}$. For self-concordant functions, the number of steps to reach $\ep$ is
@@ -65,16 +65,16 @@ See [gradient descent](GD.html).
 
 * What is the main idea of Newton descent? Why/how do we get quadratic convergence?
     * Go in the direction of the minimum suggested by the Hessian (second order approximation).
-	*   The proof is organized as follows. If $\ve{\nb f(x^{(k)})^2}$ is
+	*   The proof is organized as follows. If $\ve{\nb f(x^{(k)})}^2$ is
 	    * large ($\ge \eta$), then make constant progress by $\ga$. This is the dampled phase; steps are small. Steps are small because the default Newton step $t=1$ is bad, and backtracking will choose a smaller $t$. (?) (It's "slow" in the sense it's not quadratically convergent, but it makes constant progress.)
-		* small ($<\eta$), then make quadratic progress, $\fc{L}{2m^2}\ve{\nb f(x^{(k+1)})}_2\le \ve{\nb f(x^{(k)})}_2^2$.
+		* small ($<\eta$), then make quadratic progress, $\ve{\nb f(x^{(k+1)})}_2\le \fc{L}{2m^2}\ve{\nb f(x^{(k)})}_2^2$.
 * What should $\eta$ depend on? $\al$ (the slope for backtracking), $m$ (strong convexity parameter), $L$ (Lipschitz constant on Hessian).
 
 *Proof (for Lipschitz)*. We do the calculations for 1 dimension. The calculations are the same, except we have to use matrices and vectors. Let $\te(y)$ be a quantity in $[-y,y]$. Suppose we are at $(0,0)$. Let $d=f'(0), a=f''(0), \la = \fc{d}{a^{\rc 2}}$, $\De x_{nt} = \fc{d}{a} = \fc{\la}{a^{\rc 2}}$.
 \begin{align}
 f(x) &= dx + \rc 2 ax^2 + \te\pa{\rc 6 Lx^3}\\
 f\pa{-\fc da} &= -\rc 2 \fc{d^2}a\\
-&\le -\fc{d^2}{a} ]ub{\pa{\rc 2 - \rc 6 L \fc{d}{a^2}}}{\ge \al}.
+&\le -\fc{d^2}{a} \ub{\pa{\rc 2 - \rc 6 L \fc{d}{a^2}}}{\ge \al}.
 \end{align}
 In order for the quantity to be $\ge \al$, noting $\fc{d}{a^2} = \fc{d}{a^{\fc 32}}$, we want $\la \le \fc{3(1-2\al) a^{\fc 32}}L$; it's sufficient for $f'\le \fc{3(1-2\al)m^2}{L}$.
 
@@ -146,7 +146,13 @@ Now consider 2 cases.
 2. Computing $\De x_{nt}=H^{-1}\nb f(x)$ is more efficient if $H$ has band structure, sparsity, etc.
 
 
-#Scraps
+# Review 
+
+1. Describe the Newton method. What is the step size and Newton decrement?
+2. What is the convergence rate for functions with Lipschitz Hessian?
+3. Define self-concordant. What is the convergence for self-concordant functions?
+
+# Scraps
 
 ? 9.31, 
 
