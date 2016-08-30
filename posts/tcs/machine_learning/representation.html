@@ -94,6 +94,7 @@
  <li><a href="#dl-vs.ica-tensor-decomposition">DL vs. ICA, tensor decomposition</a></li>
  </ul></li>
  <li><a href="#previous-work">Previous work</a></li>
+ <li><a href="#relaxing-independent-sparsity">Relaxing independent sparsity</a></li>
  </ul> </div>
 
   <div class="blog-main">
@@ -183,6 +184,15 @@ f^{-1}(A^+y) &amp;= x\\
 <li>? http://stats.stackexchange.com/questions/212080/yet-another-unsupervised-svm</li>
 <li><a href="https://www.uni-oldenburg.de/fileadmin/user_upload/informatik/download/Promotionen/phdthesis_fabian_gieseke.pdf">Unsupervised SVM (thesis)</a></li>
 <li><a href="http://www.aaai.org/Papers/AAAI/2005/AAAI05-143.pdf">Multi-class SVM</a></li>
+</ul>
+<h2 id="relaxing-independent-sparsity">Relaxing independent sparsity</h2>
+<p>Independent sparsity—required for <a href="matrices/AGM14.html">AGM14</a> and <a href="matrices/AGMM15.html">AGMM15</a> (actually, 2-wise “almost independence” is good)—is unrealistic because features may be correlated/co-occur. A first step may be to consider group sparsity.</p>
+<p>Google for “dictionary learning group sparsity”:</p>
+<ul>
+<li><a href="http://machinelearning.wustl.edu/mlpapers/paper_files/icml2010_JenattonMOB10.pdf">Proximal Methods for Sparse Hierarchical Dictionary Learning</a></li>
+<li><a href="http://www.cv-foundation.org/openaccess/content_iccv_2013/papers/Luo_Group_Sparsity_and_2013_ICCV_paper.pdf">Group Sparsity and Geometry Constrained Dictionary Learning for Action Recognition from Depth Maps</a></li>
+<li><a href="http://see.xidian.edu.cn/faculty/wsdong/Papers/Conference/0697.pdf">Sparsity-based Image Denoising via Dictionary Learning and Structural Clustering</a> (clustering based sparse representation)</li>
+<li><a href="http://ieeexplore.ieee.org/document/6296694/?arnumber=6296694">Dictionary Learning with Group Sparsity and Graph Regularization (DL-GSGR)</a></li>
 </ul>
 
   </div>

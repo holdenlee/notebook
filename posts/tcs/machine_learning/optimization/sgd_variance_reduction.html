@@ -10,7 +10,7 @@
   <meta name="description" content="Holden Lee's Research Notebook">
   <meta name="author" content="Holden Lee">
     
-  <title>Posts in category "tcs/machine_learning/optimization"</title>
+  <title>SGD Variance Reduction</title>
 
   <!-- Bootstrap core CSS -->
   <link href="../../../../bootstrap/css/bootstrap.min.css" rel="stylesheet">
@@ -70,95 +70,56 @@
 <div class="container">
   <div id="content">
     <div class="page header">
-      <h1>Posts in category "tcs/machine_learning/optimization"</h1>
+      <h1>SGD Variance Reduction</h1>
     </div>
     <div class="info">
       
+       
+        <p>Posted: 2016-03-04 
+          , Modified: 2016-03-04 
+	</p>
       
-      
+       <p>Tags: <a href="../../../../tags/convex%20optimization.html">convex optimization</a>, <a href="../../../../tags/sgd.html">sgd</a>, <a href="../../../../tags/variance%20reduction.html">variance reduction</a></p> 
     </div>
     
   </div>
   <!--/div-->
 
-  
+  <div class="toc"> <ul>
+ <li><a href="#svrg">SVRG</a></li>
+ <li><a href="#saga">SAGA</a></li>
+ <li><a href="#intuition">Intuition</a></li>
+ </ul> </div>
 
   <div class="blog-main">
-    <ul>
-    
-        <li>
-            <a href="../../../../posts/tcs/machine_learning/optimization/ellipsoid.html">Ellipsoid method</a> (2016-08-30)
-        </li>
-    
-        <li>
-            <a href="../../../../posts/tcs/machine_learning/optimization/ipm.html">Interior point methods</a> (2016-08-26)
-        </li>
-    
-        <li>
-            <a href="../../../../posts/tcs/machine_learning/optimization/distribution_of_critical_points.html">Distribution of critical points</a> (2016-08-13)
-        </li>
-    
-        <li>
-            <a href="../../../../posts/tcs/machine_learning/optimization/sampling.html">Sampling</a> (2016-05-17)
-        </li>
-    
-        <li>
-            <a href="../../../../posts/tcs/machine_learning/optimization/constrained.html">Constrained optimization</a> (2016-04-28)
-        </li>
-    
-        <li>
-            <a href="../../../../posts/tcs/machine_learning/optimization/convexity.html">Convexity</a> (2016-04-23)
-        </li>
-    
-        <li>
-            <a href="../../../../posts/tcs/machine_learning/optimization/convex_problems.html">Convex problems</a> (2016-04-23)
-        </li>
-    
-        <li>
-            <a href="../../../../posts/tcs/machine_learning/optimization/second-order.html">Second-order methods</a> (2016-04-22)
-        </li>
-    
-        <li>
-            <a href="../../../../posts/tcs/machine_learning/optimization/AO15.html">[AO15] Linear coupling</a> (2016-03-06)
-        </li>
-    
-        <li>
-            <a href="../../../../posts/tcs/machine_learning/optimization/mirror-descent.html">Mirror descent</a> (2016-03-05)
-        </li>
-    
-        <li>
-            <a href="../../../../posts/tcs/machine_learning/optimization/AGD.html">Accelerated Gradient descent</a> (2016-03-05)
-        </li>
-    
-        <li>
-            <a href="../../../../posts/tcs/machine_learning/optimization/sgd_variance_reduction.html">SGD Variance Reduction</a> (2016-03-04)
-        </li>
-    
-        <li>
-            <a href="../../../../posts/tcs/machine_learning/optimization/sdp-duality.html">SDP duality</a> (2016-03-04)
-        </li>
-    
-        <li>
-            <a href="../../../../posts/tcs/machine_learning/optimization/duality.html">Duality</a> (2016-03-04)
-        </li>
-    
-        <li>
-            <a href="../../../../posts/tcs/machine_learning/optimization/convex_optimization.html">Convex optimization</a> (2016-03-04)
-        </li>
-    
-        <li>
-            <a href="../../../../posts/tcs/machine_learning/optimization/GD.html">Gradient descent</a> (2016-03-04)
-        </li>
-    
-</ul>
-
-
+    <p><span class="math display">\[\min_{x\in \R^d} \set{F(x):=f(x)+\psi(x) := \rc n \sumo in f_i(x) + \psi(x).\]</span></p>
+<p>2 ways to choose a better gradient estimator.</p>
+<h2 id="svrg">SVRG</h2>
+<p>Keep a snapshot vector <span class="math inline">\(\wt x=x_k\)</span> every <span class="math inline">\(m\approx 2n\)</span> iterations. <span class="math display">\[\wt \nb_k := \nb f_i(x_k) - \nb f_i(\wt x) + \nb f(\wt x)\]</span> where <span class="math inline">\(i\sim[n]\)</span> randomly.</p>
+<h2 id="saga">SAGA</h2>
+<p>Store <span class="math inline">\(\phi_1,\ldots, \phi_n\)</span> in memory, initially 0. In iteration <span class="math inline">\(k\)</span>, <span class="math display">\[\wt \nb_k := \nb f_i(x_k) - \nb f_i(\phi_i) + \rc n \sumo jn \nb f_j(\phi_i),\]</span> where <span class="math inline">\(i\sim [n]\)</span>. Update <span class="math inline">\(\phi_i\leftarrow x_k\)</span>.</p>
+<h2 id="intuition">Intuition</h2>
+<p>Ensure variance approaches 0, <span class="math inline">\(\E\ba{\ve{\wt nb_k - \nb f(x_k)}^2} \le O(f(x_k) - f(x^*))\)</span>.</p>
+<p>Gradient complexity is <span class="math inline">\(O\pa{\pa{n+\fc L\si}\ln \prc{\ep}}\)</span>. (What is it for SGD?)</p>
 
   </div>
 
     
 
+    <!-- Extension : Sharing buttons @ www.sharethis.com -->
+    <span class="st_facebook_large" displayText="Facebook"></span>
+    <span class="st_twitter_large" displayText="Tweet"></span>
+    <span class="st_googleplus_large" displayText="Google +"></span>
+    <span class="st_reddit_large" displayText="Reddit"></span>
+    <span class="st__large" displayText></span>
 
+    <div id="disqus_thread"></div>
+    
+
+
+  
+    <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+  </div>
   
 </div>
 
@@ -203,6 +164,9 @@
 
 <!-- Extension : Disqus @ http://disqus.com -->
 <!-- Extension : InlineDisqussions @ https://github.com/tsi/inlineDisqussions -->
+
+<script src="../../../../disqus/js/disqus.js"></script>
+
 
 
 <!-- Extension : Google Analytics -->

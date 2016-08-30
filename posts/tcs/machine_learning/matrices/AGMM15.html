@@ -88,11 +88,9 @@
   <div class="toc"> <ul>
  <li><a href="#problemmodel-and-assumptions">Problem/Model and Assumptions</a></li>
  <li><a href="#algorithm">Algorithm</a><ul>
- <li><a href="#instantiation">Instantiation</a><ul>
  <li><a href="#version-1">Version 1</a></li>
  <li><a href="#version-2">Version 2</a></li>
- <li><a href="#instantiation-1">Instantiation</a></li>
- </ul></li>
+ <li><a href="#instantiation">Instantiation</a></li>
  </ul></li>
  <li><a href="#approximate-gradient-descent">Approximate gradient descent</a></li>
  <li><a href="#theorems">Theorems</a></li>
@@ -132,8 +130,7 @@
 </ul>
 <p>For example, we can take gradient steps.</p>
 <p>There are no results for general nonconvex <span class="math inline">\(f\)</span>; theoretical results tend to be ad hoc (for specific <span class="math inline">\(f\)</span>). AGMM make a general technique that can be used to analyze alternating minimization algorithms, <strong>approximate gradient descent</strong>.</p>
-<h3 id="instantiation">Instantiation</h3>
-<h4 id="version-1">Version 1</h4>
+<h3 id="version-1">Version 1</h3>
 <p>The algorithm is</p>
 <ul>
 <li>Input: initial guess <span class="math inline">\(A^0\)</span>, step size <span class="math inline">\(\eta\)</span>.</li>
@@ -150,20 +147,20 @@ A^{s+1} &amp;= A^s - \eta \wh g^s
 <p>The decoding step is doing a minimization with respect to <span class="math inline">\(x\)</span><a href="#fn2" class="footnoteRef" id="fnref2"><sup>2</sup></a>. Intuitively, since <span class="math inline">\(A^*\)</span> is incoherent (random-like), <span class="math inline">\((A^*)^TA^*\approx I\)</span>, so multiplying by <span class="math inline">\((A^*)^T\)</span> has the effect of inverting. The threshold acts as a denoiser.</p>
 <p>Note that we don’t quite take the gradient step: the gradient is <span class="math inline">\(2(y^{(i)} - Ax^{(i)})^T x^{(i)}\)</span>; we only take the sign of <span class="math inline">\(x^{(i)}\)</span>.<a href="#fn3" class="footnoteRef" id="fnref3"><sup>3</sup></a></p>
 <p>(There’s no regularization here?)</p>
-<h4 id="version-2">Version 2</h4>
+<h3 id="version-2">Version 2</h3>
 <p>A better version of the above is to use gradient descent (Olshausen-Field), rather than just the sign of the difference. Let <span class="math inline">\(A'=A - \eta g\)</span> where <span class="math inline">\(g=\E [(y-Ax) x^T]\)</span>. The complication is that this may not prserver <span class="math inline">\((\de,2)\)</span>-nearness, so the update rule is replaced by</p>
 \begin{align}
 \wh g^s &amp;=\rc p \sumo ip (y^{(i)} - A^{(s)}x^{(i)}) \sign(x^{(i)})^T\\
 A^{s+1} &amp;= \Proj_B(A^s - \eta \wh g^s)
 \end{align}
 <p>where <span class="math inline">\(B\)</span> is the set of <span class="math inline">\((\de_0,2)\)</span>-close matrices to <span class="math inline">\(A^*\)</span>.</p>
-<h4 id="instantiation-1">Instantiation</h4>
+<h3 id="instantiation">Instantiation</h3>
 <p>The algorithms above require a matrix that is <span class="math inline">\(O^*\prc{\log n}\)</span>-close to the true matrix. Algorithm 3 gives such a matrix.</p>
 <ul>
 <li>Set <span class="math inline">\(L=\phi\)</span>.</li>
 <li>While <span class="math inline">\(|L|&lt;m\)</span> choose samples <span class="math inline">\(u,v\)</span>. (We will need <span class="math inline">\(p_1\)</span> of these samples.)
 <ul>
-<li>Set <span class="math inline">\(\wh M_{u,v} - \EE_{i\in p_2}\)</span> y<sup>{(i)}y</sup>{(i)T}$. (Average over <span class="math inline">\(p_2\)</span> fresh samples.)</li>
+<li>Set <span class="math inline">\(\wh M_{u,v} - \EE_{i\in p_2}\an{y^{(i)},u}\an{y^{(i)},v} y^{(i)}y^{(i)T}\)</span>. (Average over <span class="math inline">\(p_2\)</span> fresh samples.)</li>
 <li>Compute the top two singular values <span class="math inline">\(\si_1,\si_2\)</span> and top singular vector <span class="math inline">\(z\)</span> of <span class="math inline">\(\wh M_{u,v}\)</span>.</li>
 <li>If <span class="math inline">\(\si_1\ge \Om\pf{k}{m}, \si_2&lt;O^*\pf{k}{m\log m}\)</span>, and <span class="math inline">\(\pm z\)</span> is not within distance <span class="math inline">\(\rc{\log m}\)</span> of any vector in <span class="math inline">\(L\)</span>, add <span class="math inline">\(z\)</span> to <span class="math inline">\(L\)</span>.</li>
 </ul></li>
