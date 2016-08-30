@@ -1,0 +1,574 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+
+  <meta name="description" content="Holden Lee's Research Notebook">
+  <meta name="author" content="Holden Lee">
+    
+  <title>High-dimensional probability</title>
+
+  <!-- Bootstrap core CSS -->
+  <link href="../../../../bootstrap/css/bootstrap.min.css" rel="stylesheet">
+
+  <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+  <!-- <link href="../../assets/css/ie10-viewport-bug-workaround.css" rel="stylesheet"> -->
+
+  <!-- Custom styles for this template -->
+  <link href="../../../../css/blog.css" rel="stylesheet">
+  <link href="../../../../css/default.css" rel="stylesheet">
+
+  <!-- Extension : Footnotes -->
+  <link href="../../../../footnotes/css/footnotes.css" rel="stylesheet">
+
+  <!-- Extension : InlineDisqussions @ https://github.com/tsi/inlineDisqussions -->
+  
+
+  <!-- Extension : Collapsible lists @ http://code.stephenmorley.org/javascript/collapsible-lists/-->
+  <link href="../../../../collapsible_lists/css/collapsible.css" rel="stylesheet">
+  <script type="text/javascript" src="../../../../collapsible_lists/js/CollapsibleLists.js"></script>
+
+</head>
+
+<body>
+
+<!-- Navigation bar. navbar-inverse is black, navbar-default is white.-->
+<!-- To make a button active (pressed), use <li class="active"> -->
+<div id="header">
+  <nav class="navbar navbar-inverse navbar-fixed-top">
+    <div class="container">
+      <div class="navbar-header">
+        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+          <span class="sr-only">Toggle navigation</span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="../../../../">Notebook</a>
+      </div>
+      <div id="navbar" class="collapse navbar-collapse">
+        <ul class="nav navbar-nav">
+          <li><a href="../../../../">Home</a></li>
+          <li><a href="../../../../sitemap.html">Sitemap</a></li>
+<!-- TODO: Distinguish between PAPERS, RESEARCH QUESTIONS, BOOKS -->
+<!-- TODO: make this part a for loop over main pages -->
+        </ul>
+      </div><!--/.nav-collapse -->
+    </div>
+  </nav>
+</div>
+<!-- Content -->
+<!--div id="content">
+  <h1>Mental Wilderness</h1>-->
+
+
+
+<div class="container">
+  <div id="content">
+    <div class="page header">
+      <h1>High-dimensional probability</h1>
+    </div>
+    <div class="info">
+      
+       
+        <p>Posted: 2016-08-01 
+          , Modified: 2016-08-04 
+	</p>
+      
+       <p>Tags: <a href="../../../../tags/random%20matrix.html">random matrix</a></p> 
+    </div>
+    
+  </div>
+  <!--/div-->
+
+  <div class="toc"> <ul>
+ <li><a href="#introduction">Introduction</a></li>
+ <li><a href="#variance-bounds-and-poincare-inequalities">Variance bounds and Poincare inequalities</a><ul>
+ <li><a href="#section">2.1</a></li>
+ <li><a href="#markov-semigroups">Markov semigroups</a></li>
+ <li><a href="#variance-identities-and-exponential-ergodicity">2.4 Variance identities and exponential ergodicity</a></li>
+ <li><a href="#problems">Problems</a></li>
+ </ul></li>
+ <li><a href="#subgaussian-concentration-and-log-sobolev-inequalities">3 Subgaussian concentration and log-Sobolev inequalities</a><ul>
+ <li><a href="#the-martingale-method">3.2 The martingale method</a></li>
+ <li><a href="#the-entropy-method">3.3 The entropy method</a></li>
+ <li><a href="#log-sobolev-inequalities">3.4 Log-Sobolev inequalities</a></li>
+ <li><a href="#problems-1">Problems</a></li>
+ </ul></li>
+ <li><a href="#lipschitz-concentration-and-transportation-inequalities">4 Lipschitz concentration and transportation inequalities</a><ul>
+ <li><a href="#concentration-in-metric-spaces">4.1 Concentration in metric spaces</a></li>
+ </ul></li>
+ </ul> </div>
+
+  <div class="blog-main">
+    <p>Based on Ramon von Handel’s ORF570 notes.</p>
+<h2 id="introduction">Introduction</h2>
+<p>Themes:</p>
+<ul>
+<li>concentration: if <span class="math inline">\(X_{1:n}\)</span> are independent or weakly dependent random variables, and <span class="math inline">\(f\)</span> is not too <em>sensitive</em> to any coordinate, then <span class="math inline">\(f(X_{1:n})\)</span> is <em>close</em> to its mean.</li>
+<li>suprema</li>
+<li>universality</li>
+</ul>
+<h2 id="variance-bounds-and-poincare-inequalities">Variance bounds and Poincare inequalities</h2>
+<h3 id="section">2.1</h3>
+<p>Trivial bound: <span class="math display">\[ \Var[f(X)]\le \rc4 (\sup f - \inf f)^2 \qquad \Var[f(x)] \le \E[(f(X)-\inf f)^2].\]</span></p>
+<p>Tensorization gives a bound for functions of independent random variables from bounds for functions of each individual random variable.</p>
+<p><strong>Theorem</strong> (Tensorization of variance): <span class="math display">\[\Var[f(X_1,\ldots, X_n)]\le \E\ba{\sumo in \Var_i f(X_1,\ldots, X_n)}\]</span> whenever <span class="math inline">\(X_{1:n}\)</span> are independent.</p>
+<p>This is sharp for linear functions.</p>
+<em>Proof</em>. Write <span class="math display">\[ f(X_{1:n}) - \E f(X_{1:n}) = \sumo kn \ub{\E[f(X_{1:n}|X_{1:k})] - \E[f(X_{1:n})|X_{1:k-1}]}{\De_k}. \]</span> The <span class="math inline">\(\De_k\)</span> form a martingale. By independence of martingale increments,
+\begin{align}
+\Var(f) &amp;= \sumo kn \E[\De_k^2] \\
+\E[\De_k^2] &amp;= \E[\E[\wt \De_k |X_{1:k}]^2]\\
+&amp; \le  \E[(\ub{f - \E[f|X_{1:k-1,k+1:n}]}{\wt \De_k})^2] &amp; \text{Jensen}\\
+&amp;= \E\ba{\sumo in \Var_f f(X_1,\ldots, X_n)}.
+\end{align}
+Define
+\begin{align}
+D_i f(x) &amp;= (\sup_z-\inf_z)(f(x_{1:i-1},z,x_{i+1:n}))\\
+D_i^- f(x) &amp;= f(x) - \inf_z(f(x_{1:i-1},z,x_{i+1:n}))\\
+\end{align}
+<p><strong>Corollary</strong> (Bounded difference inequality): Tensorization + trivial inequality.</p>
+<p><strong>Example</strong>: Consider Bernoulli symmetric matrices. What is the variance of <span class="math inline">\(\la_{\max}(M) = \an{v_{\max}(M), Mv_{\max}(M)}\)</span>? Fix <span class="math inline">\(i,j\)</span>. Let <span class="math display">\[M^- = \amin_{\text{only }M_{ij} \text{ varies}} \la_{\max}(M).\]</span> Then <span class="math display">\[D_{ij}^-\la_{\max}(M) \le \an{v_{\max}(M), (M-M^-) v_{\max}(M)}\le 4|v_{\max}(M)_i||v_{\max}(M)_j|.\]</span> Use the corollary to get <span class="math inline">\(\le 16\)</span>.</p>
+<p>This is not sharp. (<span class="math inline">\(\sim n^{-\rc 3}\)</span> is correct.)</p>
+<p>Drawbacks to this method:</p>
+<ul>
+<li>bounds using bounded di↵erence inequalities are typically restricted to situations where the random variables <span class="math inline">\(X_i\)</span> and/or the function <span class="math inline">\(f\)</span> are bounded.</li>
+<li>Bounded difference inequalities do not capture any information on the distribution of <span class="math inline">\(X_i\)</span>. In the other direction, the tensorization inequality is too distribution-dependent.</li>
+<li>Tensorization depends on independence.</li>
+</ul>
+<p>Inequalities in this section are roughly of the following form (Poincare inequalities): <span class="math display">\[\Var(f) \le \E[\ve{\nb f}^2].\]</span> “The validity of a Poincar´e inequality for a given distribution is intimately connected the convergence rate of a Markov process that admits that distribution as a stationary measure.”</p>
+<h3 id="markov-semigroups">Markov semigroups</h3>
+<p>A <strong>Markov process</strong> satisfies: For every bounded measurable <span class="math inline">\(f\)</span> and <span class="math inline">\(s,t\in \R_+\)</span>, here is abounded measurable <span class="math inline">\(P_sf\)</span> such that <span class="math display">\[\E[f(X_{t+s})|\{X_r\}_{r\le t}] = (P_s f)(X_t).\]</span> <span class="math inline">\(\mu\)</span> is <strong>stationary</strong> if <span class="math inline">\(\mu(P_tf)=\mu(f)\)</span> for all <span class="math inline">\(t\in \R_+\)</span>, bounded measurable <span class="math inline">\(f\)</span>.</p>
+<p><strong>Lemma 2.7</strong>. <span class="math inline">\(\{P_t\}_{t\in \R_+}\)</span> defines a semigroup of linear operators on <span class="math inline">\(L^p(\mu)\)</span>. It is contractive and conservative (<span class="math inline">\(P_t1=1\)</span> <span class="math inline">\(\mu\)</span>-a.s.).</p>
+<p><em>Proof</em>. Jensen.</p>
+<p>The semigroup in fact acts on any <span class="math inline">\(f\in L^1(\mu)\)</span>.</p>
+<p><strong>Lemma 2.9</strong>. If <span class="math inline">\(\mu\)</span> is stationary, for every <span class="math inline">\(f\)</span>, <span class="math inline">\(\Var_\mu(P_tf)\)</span> is decreasing.</p>
+<p><em>Proof</em>. <span class="math inline">\(L^2\)</span> contractivity and semigroup property.</p>
+<p>The <strong>generator</strong> is <span class="math display">\[\cal L f = \lim_{t\searrow 0} \fc{P_tf-f}t.\]</span> The set of <span class="math inline">\(f\)</span> where this is defined is the domain; <span class="math inline">\(\cal L:\text{Dom}(\cal L) \to L^2(\mu)\)</span>.</p>
+<p>Warning: for Markov processes with continuous sample paths, such as Brownian motion, <span class="math inline">\(Dom(\cL)\sub L^2(\mu)\)</span>. Functional analysis is required for rigor, but results usually extend.</p>
+<p><span class="math inline">\(P_t\)</span> is the solution of the Kolmogorov equation <span class="math display">\[ \ddd{t} P_t f = P_t \cL f, \quad P_0f=f.\]</span> The generator and semigroup commute.</p>
+<p>A finite-state Markov process with <span class="math display">\[ \Pj[X_{t+\de}=j|X_t=i] = \la_{ij} \de + o(\de), \quad i\ne j\]</span> has generator equal to the transition matrix <span class="math inline">\(\La\)</span>.<a href="#fn1" class="footnoteRef" id="fnref1"><sup>1</sup></a></p>
+<p>Then <span class="math inline">\(P_t=e^{t\La}\)</span>. (In the non-finite case, this makes sense as a power series.)</p>
+<p><span class="math inline">\(P_t\)</span> is <strong>reversible</strong> if <span class="math inline">\(P_t\)</span> are self-adjoint on <span class="math inline">\(L^2(\mu)\)</span>: <span class="math display">\[\an{f,P_tg}_\mu = \an{P_tf,g}_\mu.\]</span> Reversibility implies <span class="math display">\[P_tf(x) =\E[f(X_t)|X_0=x] = \E[f(X_0)|X_t=x];\]</span> i.e., the Markov process viewed backwards has the same law. <!-- delta functions? --></p>
+<p>For finite state space, this is equivalent to <span class="math display">\[\mu_i \La_{ij} = \mu_j \La_{ji},\]</span> <strong>detailed balance</strong>.<a href="#fn2" class="footnoteRef" id="fnref2"><sup>2</sup></a></p>
+<p><strong>Definition</strong>. A Markov semigroup is <strong>ergodic</strong> if <span class="math inline">\(P_tf \to \mu f\)</span> in <span class="math inline">\(L^2(\mu)\)</span> as <span class="math inline">\(t\to \iy\)</span> for every <span class="math inline">\(f\in L^2(\mu)\)</span>.</p>
+<blockquote>
+<p>A measure <span class="math inline">\(\mu\)</span> satisfies a Poincare inequality for a certain notion of “gradient” if and only if an ergodic Markov semigroup associated to this “gradient” converges exponentially fast to <span class="math inline">\(\mu\)</span>.</p>
+</blockquote>
+<p>The <strong>Dirichlet form</strong> is <span class="math display">\[\cal E(f,g) = -\an{f,\cL g}_\mu.\]</span> Note: for complex-valued functions, we take the real part.</p>
+<p><strong>Theorem</strong> (Poincare inequality). Let <span class="math inline">\(P_t\)</span> be reversible ergodic Markov semigroup with stationary measure <span class="math inline">\(\mu\)</span>. For <span class="math inline">\(c\ge 0\)</span>, TFAE:</p>
+<ol type="1">
+<li>(Poincare inequality) <span class="math inline">\(\Var_\mu(f) \le c\cal E(f,f)\)</span></li>
+<li><span class="math inline">\(\forall f, t, \ve{P_t f- \mu f}_{L^2(\mu)} \le e^{-\fc tc}\ve{f-\mu f}_{L^2(\mu)}\)</span></li>
+<li><span class="math inline">\(\forall f, t, \cal E(P_t f, P_t f) \le e^{-2t/c} \cal E(f,f)\)</span></li>
+<li><span class="math inline">\(\forall f \exists \ka(f), \ve{P_t f-\mu f}_{L^2(\mu)} \le \ka(f) e^{-\fc tc}\)</span>.</li>
+<li><span class="math inline">\(\forall f \exists \ka(f), \cal E(P_tf,P_tf)\le \ka(f)e^{-2t/c}\)</span>.</li>
+</ol>
+<p>Note <span class="math inline">\(5\Leftarrow 3\implies 1\Leftrightarrow 2\Rightarrow 4\)</span> doesn’t require reversibility.</p>
+<p>Example: Gaussian distribution</p>
+<ol type="1">
+<li>Define the <strong>Ornstein-Uhlenbeck process</strong> by <span class="math display">\[X_t = e^{-t} X_0 + e^{-t} W_{e^{2t}-1}, \quad X_0\perp W\]</span> where <span class="math inline">\(W_t\)</span> is standard Brownian motion. Note <span class="math inline">\(N(0,1)\)</span> is stationary.</li>
+<li>Using Gaussian integration by parts <span class="math inline">\(\E_{N(0,1)} [\xi f(\xi)] = \E_{N(0,1)} [f'(\xi)]\)</span>, show that
+<ul>
+<li><span class="math inline">\(X_t\)</span> is a Markov process with semigroup <span class="math inline">\(\E[f(e^{-t} x + \sqrt{1-e^{-2t}}\xi)]\)</span>, <span class="math inline">\(\xi\in N(0,1)\)</span>.</li>
+<li>The generator is <span class="math inline">\(\cL f(x) = -xf'+f''\)</span>.</li>
+<li><span class="math inline">\(\cE (f,g) = \an{f',g'}_\mu\)</span>.</li>
+<li>In particular, <span class="math inline">\(\cE(f,f) = \ve{f'}^2_{L^2(\mu)} = \E[f'(\xi)^2]\)</span> is exctly the expected square gradient.</li>
+</ul></li>
+<li>From the expression for <span class="math inline">\(P_t\)</span> obtain <span class="math inline">\(\ddd{x} P_t f(x) = e^{-t} P_t f'(x)\)</span>. Then <span class="math inline">\(\cE (P_tf,P_tf) \le e^{-2t} \cE(f,f)\)</span>. Hence for <span class="math inline">\(\mu=N(0,1)\)</span>, <span class="math display">\[\Var_\mu(f) \le \ve{f'}_{L^2(\mu)}.\]</span></li>
+<li>By tensorization, <span class="math display">\[\Var_\mu(f) \le \E[\ve{\nb f(X_1,\ldots, X_n)}^2].\]</span></li>
+</ol>
+<p>Note: The O-U process is the solution of the stochastic differential equation <span class="math display">\[dX_t = -X_t \,dt + \sqrt2 \, dB_t.\]</span> Revisit this after I learn stochastic calculus.</p>
+<p>Tensorization using Poincare inequality:</p>
+<ol type="1">
+<li>Construct a random process <span class="math inline">\(X_t=(X_t^1,\ldots, X_t^n)\)</span> by having coordinates re-randomize according to independent Poisson processes.</li>
+<li>Then <span class="math display">\[P_tf(x) = \sum_{I\subeq [n]} (1-e^{-t})^{|I|} e^{-t(n-|I|)} \int f(x_1,\ldots, x_n) \prod_{i\in I}\mu_i(dx_i)+o(t).\]</span> (Note the integral is only over the indices in <span class="math inline">\(I\)</span>.) Only the <span class="math inline">\(|I|=1\)</span> terms matter in the limit (makes sense, we’re taking the derivative!),
+\begin{align}
+\cL f &amp;= -\sumo in \de_i f\\
+\de_if(x)&amp;:= f(x) - \int f(x_1,\ldots, x_{i-1}, z, x_{i+1},\ldots, x_n)\,\mu_i(dz).
+\end{align}</li>
+<li><span class="math inline">\(\int h\de_i g\,d\mu=0\)</span> if <span class="math inline">\(h\)</span> does not depend on <span class="math inline">\(x_i\)</span>. Thus <span class="math inline">\(\cE(f,g) = \sumo in \int \de_i f\de_i g\,d\mu\)</span>. This is symmetric, so the process is reversible.</li>
+<li>We have <span class="math inline">\(\cE(f,f) = \sumo in \int \Var_if \,d\mu\)</span>, so the tensorization inequality is exactly <span class="math inline">\(\Var_\mu(f) \le \cE(f,f)\)</span>.</li>
+<li>Conclude ergodicity. Conversely, we can prove the tensorization inequality from ergodicity: Note <span class="math display">\[\de_i P_t f=e^{-t} \sum_{I\nin i} (1-e^{-t})^{|I|} e^{-t(n-1-|I|)} \int \de_i f\prod_{i\in I}\mu_i(dx_i)\]</span> so <span class="math inline">\(\cE(P_tf,P_tf) \le \ka(f) e^{-2t}\)</span>.</li>
+</ol>
+<h3 id="variance-identities-and-exponential-ergodicity">2.4 Variance identities and exponential ergodicity</h3>
+<p>We prove the Poincare inequality.</p>
+<ol type="1">
+<li><strong>Lemma</strong>. <span class="math display">\[\ddd t \Var_\mu(P_t f) = -2\cal E(P_tf,P_tf)\]</span>. <em>Proof</em>. Use <span class="math inline">\(\mu(P_tf)=\mu(f)\)</span>. Both are equal to <span class="math inline">\(\mu(2P_t f\ddd tP_tf)\)</span>.</li>
+<li><strong>Corollary</strong>. <span class="math inline">\(\cE(f,f)\ge 0\)</span>.</li>
+<li>Integral representation of variance: If the Markov semigroup is ergodic, integrating gives <span class="math inline">\(\Var_\mu (f) = 2\iiy \cE(P_tf,P_tf)\,dt\)</span>.</li>
+<li>(<span class="math inline">\(3\implies1\)</span>) Use the integral representation.</li>
+<li>(<span class="math inline">\(1\implies2\)</span>) Using <span class="math inline">\(\cal E\propto -\ddd t \Var\)</span>, get a differential inequality that gives exponential decay.</li>
+<li>(<span class="math inline">\(2\implies1\)</span>) Write <span class="math inline">\(\cE\)</span> as a limit and apply the inequality to <span class="math inline">\(\Var\)</span>.</li>
+<li>If <span class="math inline">\(P_t\)</span> is reversible, then <span class="math inline">\(t\mapsto \log\ve{P_t f}_{L^2(\mu)}^2\)</span>, <span class="math inline">\(\log \cE(P_tf,P_tf)\)</span> are convex. Proof. First derivative is <span class="math inline">\(-\fc{2\an{\cL P_tf, f}}{\ve{P_tf}^2}\)</span>. Differentiate again, use CS.</li>
+<li>(<span class="math inline">\(2\implies3\)</span>) The first derivative is increasing. Rearrange to get <span class="math display">\[\fc{\cE(P_tf,P_tf)}{\cE(f,f)}\le \fc{\ve{P_tf}_{L^2(\mu)}^2}{\ve{f}_{L^2(\mu)}^2}\]</span>.</li>
+<li>(<span class="math inline">\(4\implies2\)</span>, <span class="math inline">\(5\implies3\)</span>) Use the lemma: if <span class="math inline">\(g\)</span> is convex and <span class="math inline">\(g(t)\le K-\al t\)</span> for <span class="math inline">\(t\ge 0\)</span> then <span class="math inline">\(g(t)\le g(0)-\al t\)</span> for <span class="math inline">\(t\ge 0\)</span>.</li>
+</ol>
+Intuition: If reversibility holds,
+\begin{align}
+\cE(f,g) &amp;=\rc2 \sum \mu_i \La_{ij} (f_i-f_j)(g_i-g_j)\\
+\cE(f,f) &amp;=\rc2 \sum \mu_i \La_{ij} (f_i-f_j)^2.
+\end{align}
+<p><a href="#fn3" class="footnoteRef" id="fnref3"><sup>3</sup></a>In finite dimensions, if <span class="math inline">\(\mu f=0\)</span>, <span class="math display">\[
+\cE(f,f) \ge (\ub{\la_1}0-\la_2) \Var_\mu(f).
+\]</span> The best constant in the Poincare inequality is the spectral gap. The spectral gap controls the exponential convergence rate. Note it’s essential that <span class="math inline">\(\La\)</span> admits a real spectral decomposition.</p>
+<h3 id="problems">Problems</h3>
+<ol type="1">
+<li>Use <span class="math inline">\(\Var\pa{\ve{\rc n \sumo kn X_k}_B} = \sup_{y\in B^*} \an{\rc n\sumo kn X_k, y}\)</span>. Use the corollary, get <span class="math inline">\(D_k^-\le 2 \sup_{y\in B^*}\an{\rc X_k,y} \le \fc{2C}{n}\)</span>. Now square and sum.</li>
+<li>.</li>
+<li>.</li>
+<li>.</li>
+<li>We have <span class="math inline">\((f(x) - f(..., a, ...))^2\le \ve{(b-a)\nb f}^2\)</span>. Now take expectations and sum over different coordinates.</li>
+<li>.</li>
+<li></li>
+<li><ol type="1">
+<li><p>Smooth <span class="math inline">\(f\)</span> and use the Gaussian Poincare inequality.</p>
+Note we have <span class="math inline">\(\Var[f(x)]\le \E[(f(x)-f(0))^2]\le \E L^2x^2 = L^2\)</span> but this doesn’t help us, because if we sum up derivatives along different coordinates, we overestimate <span class="math inline">\(L\)</span> to <span class="math inline">\(Ln\)</span> instead.</li>
+<li>Note <span class="math inline">\((\Si^{\rc Y})_i\)</span> is <span class="math inline">\(\ve{(\Si^{\rc 2})_i}\)</span>-Lipschitz, so <span class="math inline">\(\max((\Si^{\rc 2}Y)_i)\)</span> is <span class="math inline">\(\max \ve{(\Si^{\rc 2})_i}\)</span>-Lipschitz. By (a), <span class="math display">\[ \Var[\max_i X_i] \le \max\ve{(\Si^{\rc 2})_i} = \max \ve{\Si_{ii}} =\max_i \Var(X_i).\]</span></li>
+<li>The sum of variances on the LHS is <span class="math inline">\(\sum_j \sum_i F_{x_j}^2 = \ve{\nb F}^2\)</span>. Use the central limit theorem to show that the LHS var approaches the RHS var. There’s a factor of <span class="math inline">\((\max -\min)^2/4=1\)</span>.</li>
+</ol></li>
+<li></li>
+<li><ol type="1">
+<li>Let <span class="math inline">\(p_I\)</span> denote the probability of seeing sequence <span class="math inline">\(I\)</span> of jumps in <span class="math inline">\([0,t]\)</span>. (We don’t need to calculate it.) Let <span class="math inline">\(\Pj(x|I)\)</span> be the probability of <span class="math inline">\(x\)</span> after observing jumps in <span class="math inline">\(I\)</span>. We have <span class="math display">\[\E [f(Z_t)] = \sum_I p_I \int \Pj(x|I) f(x)\dx\]</span> which can be written <span class="math inline">\(P_tf\)</span>. Note this converges. (<span class="math inline">\(\sum_I p_I = 1\)</span>.)</li>
+<li><p>Only the <span class="math inline">\(|I|=\phi, 1\)</span> terms are significant as <span class="math inline">\(\sum_{|I|=k} p_I = Poisson(n, t, k)\)</span>.</p>
+\begin{align}\cL f &amp;= \lim_{t\to 0^+} \pf{e^{-tn} \E f - \E f + \sum (1-e^{-t}) e^{-t (n-1)} \int f\, \mu_i (dx_i|x)}{t}\\
+&amp;= \sum_{i=1}^n \ub{\pa{\pa{\int f(x)\mu_i(dx_i|x)} - f(x)}}{=: - \de_if}\\
+\cE (f, g) &amp;= -\int f \cL g\,d\mu\\
+&amp;= -\int \pa{-\sumo in f\de_i g}\,d\mu\\
+&amp;= \sumo in \int \de_if\de_ig\,d\mu
+\end{align}
+where we used <span class="math inline">\(\int (f-\de_if)\de_ig=0\)</span> because the first term has mean 0 and <span class="math inline">\(\de_ig\)</span> doesn’t depend on <span class="math inline">\(x_i\)</span>.</li>
+<li>\begin{align}
+\De_i f &amp;= \max_x |f(..., 1_i,...) - f(..., -1_i, ...)|\\
+\De_j f \,d\mu_i &amp; = \max_x \ab{\int f(\ldots 1_j\ldots)\,d\mu_i - \int f(\ldots -1_j\ldots)}\\
+&amp;\max_x |\Pj(x_i=1|x_{-i, j\leftarrow 1}) f(1_j1_i) - \Pj(x_i=1|x_{-i, j\leftarrow-1}) f(-1_j1_i) + \Pj(x=-1|\cdots)\cdots
+\end{align}
+The probabilities of <span class="math inline">\(=1|1\)</span> and <span class="math inline">\(=1|-1\)</span> differ by <span class="math inline">\(C_{ij}\)</span> (n.b. typo) so we get
+\begin{align}
+&amp;\le \max_x |f(x,1_j) - f(x,-1_j)| + C_{ij} \De_i f = \De_j f + \De_i fC_{ij}.
+\end{align}</li>
+<li>\begin{align}
+\De_j\pa{f+\fc tn \cL f} &amp;=
+\De_jf + \fc tn \De_j \pa{\pa{\int f(x) \,d\mu_i (dx_i|x)} - f(x)} \\
+&amp;\le \pa{1-\fc tn}\De_j f + \fc tn \sumo in \De_i fC_{ij}\\
+\De(f+t\cL f/n) &amp;\le \De f(I-t(I-C)/n).
+\end{align}</li>
+<li>Iterate <span class="math inline">\(n\)</span> times and take <span class="math inline">\(n\to \iy\)</span> to get <span class="math display">\[\De (e^{t\cL}f) = \De P_t f \le \De f e^{-t(I-C)}.\]</span></li>
+<li>\begin{align}
+\cE(f, f)&amp;=\sumo in \int (f-\int f\,d\mu_i)^2\,d\mu\\
+&amp;\le \sumo in |\De_i f|^2\\
+\cE(P_tf,P_tf) &amp;\le \sumo in \ve{\De f e^{-2t(I-C)}}^2\\
+&amp;\le \ka(f) (\la_{\min}(I-C))^{-1} \\
+&amp; = \ka(f) (1-\la_{\max}(C))^{-1}
+\end{align}
+<p>Use <span class="math inline">\(5\implies 1\)</span> of Poincare.</p></li>
+</ol></li>
+</ol>
+<h2 id="subgaussian-concentration-and-log-sobolev-inequalities">3 Subgaussian concentration and log-Sobolev inequalities</h2>
+<strong>Lemma 3.1</strong> (Cheroff bound). Define the <strong>log-moment generating function</strong>
+\begin{align}
+\psi(\la) :&amp;= \log \E[e^{\la (X-\E X)}]\\
+\psi^*(\la)&amp;=\sup_{\la \ge 0} (\la t-\psi(\la)).	
+\end{align}
+<p>Then <span class="math inline">\(\Pj(X-\E X \ge t) \le e^{-\psi^*(t)}\)</span> for all <span class="math inline">\(t\ge 0\)</span>.</p>
+<p><em>Proof</em>. Exponentiate and Markov.</p>
+<p>The log-moment generating function is continuous and can be investigated using calculus.</p>
+<p><strong>Example</strong>. Gaussian: <span class="math inline">\(\psi(\la) = \fc{\la^2\si^2}2\)</span> and <span class="math inline">\(\psi^*(t) = \fc{t^2}{2\si^2}\)</span> so bound of <span class="math inline">\(e^{-\fc{t^2}{2\si^2}}\)</span>.</p>
+<p>A rv is <span class="math inline">\(\si^2\)</span>-<strong>subgaussian</strong> if <span class="math inline">\(\psi(\la)\le \fc{\la^2\si^2}2\)</span>. Then we get tail bounds of <span class="math inline">\(e^{-\fc{t^2}{2\si^2}}\)</span>.</p>
+<p><strong>Lemma 3.6</strong> (Hoeffding): If <span class="math inline">\(X\in [a,b]\)</span> a.s., then <span class="math inline">\(X\)</span> is <span class="math inline">\((b-a)^2/4\)</span> subgaussian.</p>
+<p><em>Proof</em>. Interpret <span class="math inline">\(\psi''\)</span> as a variance, get <span class="math inline">\(\psi''\le \fc{(b-a)^2}{4}\)</span>, integrate twice.</p>
+<h3 id="the-martingale-method">3.2 The martingale method</h3>
+<p>We want to show <span class="math inline">\(f\)</span> is subgaussian with variance proxy controlled by a “square gradient” of <span class="math inline">\(f\)</span>.</p>
+<p>The subgaussian property does not tensorize.</p>
+<p>The proof of subgaussian inequailties can be reduced to a strengthened form of Poincare inequalities, <strong>log-Sobolev</strong> inequalities, that do tensorize.</p>
+<p><strong>Lemma</strong> (Azuma): Let <span class="math inline">\(\cF_k\)</span> be a filtration, and 1. (Martingale difference) <span class="math inline">\(\De_k\)</span> is <span class="math inline">\(\cF_k\)</span>-measurable, <span class="math inline">\(\E[\De_k |\cF_{k-1}]=0\)</span>. 2. (Conditional subgaussian) <span class="math inline">\(\E[e^{\la \De_k}|\cF_{k-1}]\le e^{\la^2\si_k^2/2}\)</span>. Then <span class="math inline">\(\sumo kn \De_k\)</span> is subgaussian with variance proxy <span class="math inline">\(\sumo kn \si_k^2\)</span>.</p>
+<p><strong>Corollary</strong> (Azuma-Hoeffding): Replace (2) by <span class="math inline">\(A_k\le \De_k\le B_k\)</span> where <span class="math inline">\(A_k,B_k\)</span> are <span class="math inline">\(\cF_{k-1}\)</span>-measurable. The variance proxy is <span class="math inline">\(\rc 4 \sumo kn \ve{B_k-A_k}^2_{\iy}\)</span>. The tail bound is <span class="math inline">\(\exp\pa{-\fc{2t^2}{\sumo kn \ve{B_k-A_k}^2_{\iy}}}\)</span>.</p>
+<p><strong>Theorem 3.11</strong> (McDiarmid): For <span class="math inline">\(X_{1:n}\)</span> independent, <span class="math inline">\(f(X)\)</span> is subgaussian with variance proxy <span class="math inline">\(\rc 4\sumo kn \ve{D_kf}_{\iy}^2\)</span> where <span class="math display">\[D_if(x) = (\sup_z-\inf_z)f(x_{1:i-1},z,x_{i+1:n}).\]</span></p>
+<p><em>Proof</em>. Use Azuma-Hoeffding on martingale differences <span class="math inline">\(\De_k =\E[f|X_{1:k}] - \E[f|X_{1:k-1}]\)</span>.</p>
+<p>This is unsatisfactory because the variance proxy is controlled by a uniform upper bound on square gradient rather than its expectation. Something like <span class="math inline">\(\ve{\sumo kn |D_kf|^2}_{\iy}\)</span> would be better.</p>
+<h3 id="the-entropy-method">3.3 The entropy method</h3>
+<p>The subgaussian property is equivalent to <span class="math inline">\(\la^{-1}\psi(\la)\precsim \la\)</span>, so it suffices to show <span class="math inline">\(\ddd{\la}(\la^{-1}\psi)\precsim 1\)</span>.</p>
+<ul>
+<li>Define <span class="math inline">\(\Ent(Z) = \E[Z\ln Z] - (\E Z)(\ln \E Z)\)</span>.</li>
+<li>(Entropic formulation of subgaussianity) <span class="math inline">\(\forall \la \ge 0, \Ent(e^{\la X}) \le \fc{\la^2\si^2}{2} \E e^{\la X}\implies \forall \la \ge 0, \psi(\la) \le \fc{\la^2\si^2}2\)</span>.
+<ul>
+<li><em>Proof</em>. Integrate <span class="math inline">\(\ddd{\la} \fc{\psi(\la)}{\la} = \rc{\la^2} \fc{\Ent(e^{\la x})}{\E (e^{\la x})}\)</span>.</li>
+</ul></li>
+<li>Variational characterization of entropy: <span class="math inline">\(\Ent(Z) = \sup\set{\E(ZX)}{\E(e^X)=1}\)</span>.
+<ul>
+<li><em>Proof</em>.
+\begin{align}
+\Ent(Z) - \E[ZX] &amp;= \Ent_Q (e^{-X}Z)\ge0
+\end{align}
+with equality when <span class="math inline">\(X=\ln\pf{Z}{\E Z}\)</span>.</li>
+</ul></li>
+<li>Tensorization: <span class="math inline">\(\Ent(f) \le \E\ba{\sumo in \Ent_i f}\)</span>.
+<ul>
+<li><em>Proof</em>. Let <span class="math inline">\(Z=f(X)\)</span>.
+\begin{align}
+U_k :&amp;= \ln \E[Z|X_{1:k}] - \ln \E[Z|X_{1:k-1}]\\
+\Ent (Z) &amp;= \sum \E[ZU_k]\\
+\E[e^{U_k}|X_{-k}]&amp;=1\implies &amp; \E[ZU_k|X_{-k}]&amp;\le \Ent_k f.
+\end{align}</li>
+</ul></li>
+</ul>
+<p>The entropic formulation of subgaussianity and the tensorization inequality tell us that if we prove (for some notion of <span class="math inline">\(\nb\)</span>) <span class="math display">\[ \Ent(e^g) \precsim \E[\ve{\nb g}^2]\]</span> in one dimension, then in any number of dimensions, <span class="math display">\[ \Ent(e^{\la f})\precsim \E[\ve{\nb (\la f)}^2e^{\la f}]\]</span> so <span class="math inline">\(f\)</span> is subgaussian with <span class="math inline">\(\max\ve{\nb f}^2\)</span>.</p>
+<ul>
+<li>Discrete log-Sobolev: Let <span class="math inline">\(D^-f=f-\inf f\)</span>. Then <span class="math display">\[\Ent[e^f] \le \Cov[f,e^f] \le \E[|D^-f|^2e^f].\]</span>
+<ul>
+<li><em>Proof</em>. Jensen and convexity.</li>
+</ul></li>
+<li>On product measure, <span class="math inline">\(f\)</span> is subgaussian with variance proxy <span class="math inline">\(2\ve{\sumo in |D_if|^2}_{\iy}\)</span>. Upper and lower tail bounds with <span class="math inline">\(D_i^-\)</span> and <span class="math inline">\(D_i^+\)</span>.</li>
+</ul>
+<p><strong>Example</strong> (Random Bernoulli symmetric matrices). Using <span class="math inline">\(D_{ij}^-\la_{\max(M)}\)</span>, get <span class="math display">\[ \Pj(\la_{\max}(M) - \E\la_{\max}(M)\ge t)\le e^{-\fc{t^2}{64}}. \]</span> We can’t use the same technique to look at the lower tail because the bound is in terms of different <span class="math inline">\(M^{(ij)}\)</span>’s.</p>
+<h3 id="log-sobolev-inequalities">3.4 Log-Sobolev inequalities</h3>
+<p>We have an entropic analogue of just the easy parts of the Poincare inequality equivalence.</p>
+<p><strong>Theorem</strong>. 1 and 2 are equivalent. 3 implies 1, 2 if <span class="math inline">\(\Ent_\mu(P_tf)\to 0\)</span> (entropic ergodicity).</p>
+<ol type="1">
+<li><span class="math inline">\(\Ent_\mu(f)\le c\cE(\ln f, f)\)</span> (log-Sobolev inequality)</li>
+<li><span class="math inline">\(\Ent_\mu(P_tf) \le e^{-t/c} \Ent_\mu(f)\)</span> (entropic exponential ergodicity)</li>
+<li><span class="math inline">\(\cE(\ln P_tf , P_tf) \le e^{-t/c}\cE(\ln f, f)\)</span>.</li>
+</ol>
+<p><em>Proof</em>.</p>
+<ul>
+<li>(<span class="math inline">\(3\implies1\)</span>) Note <span class="math inline">\(\ddd{t} \Ent_\mu(P_tf) = -\cE(\ln P_tf,P_tf)\)</span> using <span class="math inline">\(\mu(\cL P_tf)=0\)</span>. <span class="math inline">\(\Ent_\mu(f) = \lim -\iiy \ddd{\mu} \Ent_\mu(P_tf)\)</span>.</li>
+<li>(<span class="math inline">\(1\implies2\)</span>) Inequality for exponential decay</li>
+<li>(<span class="math inline">\(2\implies1\)</span>) Take the limit.</li>
+</ul>
+<strong>Example</strong> (Discrete log-Sobolev inequality). Consider Poisson resampling under <span class="math inline">\(\mu\)</span>. Then
+\begin{align}
+P_t f&amp;= e^{-t}f + (1-e^{-t}) \mu(f) \\
+\cE(f,g)&amp;=\int \de f\de g\,d\mu = \Cov_\mu[f,g]\\
+P_tf \ln (P_tf)&amp;\le e^{-t}\ln f + (1-e^{-t}) \mu f\ln \mu f\\
+\implies \Ent_\mu[P_t f] &amp;\le e^{-t} \Ent_\mu(f)\\
+\implies \Ent_\mu(f) &amp;\le \Cov_\mu(\ln f, f) &amp;(2\implies 1)
+\end{align}
+<p>The log-Sobolev equivalences cannot reproduce the tensorization inequality for entropy.</p>
+<strong>Theorem</strong> (Gaussian log-Sobolev). For independent Gaussian variables,
+\begin{align} 
+\Ent[f] &amp;\le \rc 2 \E [\nb f \cdot \nb \ln f]&amp; (f\ge 0)\\
+\Ent[e^f] &amp; \le \rc 2 \E[\ve{\nb f}^2 e^f].
+\end{align}
+<p>As a result <span class="math inline">\(f\)</span> is <span class="math inline">\(\si^2 = \ve{\ve{\nb f}^2}_{\iy}\)</span> subgaussian and we get Gaussian concentration, <span class="math display">\[\Pj[f - \E f\ge t] \le e^{-t^2/2\si^2}.\]</span></p>
+<em>Proof</em>. Recall <span class="math inline">\(\cE(f,g) = \mu(f'g')\)</span>, <span class="math inline">\((P_tf)' = e^{-t}P_t f'\)</span>. Note <span class="math inline">\(|P_t(fg)|^2 \le P_t(f^2)P_t(g^2)\)</span> by CS (expand out).
+\begin{align}
+(\ln P_t f)' (P_tf)' &amp;= e^{-2t} \fc{|P_tf|^2}{P_tf}\\
+|P_t f'|^2 &amp;\le P_t((\ln f)'f') P_t f&amp;\text{by CS}\\
+\implies \cE(\ln (P_tf), P_tf) &amp;\le e^{-2t}\cE(\ln f, f) &amp;\text{by }\int\\
+\implies \Ent_\mu(f) &amp;\le \cE(\ln f, f)&amp;(3\implies 1).
+\end{align}
+Note several different forms of log-Sobolev, equivalent in the Gaussian case (or anytime the chain rule holds for <span class="math inline">\(\cE\)</span>):
+\begin{align}
+\Ent(f) &amp;\le \rc 2 \E[\nb f \cdot \nb \ln f] = \rc2 \cE (\ln f, f)\\
+\Ent(f) &amp;\le \rc 2 \E\pf{\ve{\nb f}^2}{f}\\
+\Ent(e^f) &amp;\le \rc 2 \E[\ve{\nb f}^2 e^f]\\
+\Ent(f^2) &amp;\le 2\E[\ve{\nb f}^2] = 2\cE(f,f)\\
+\E(f^2\ln f)-\E[f^2]\ln \ve{f}_2 &amp;\le c\ve{\nb f}_2^2.
+\end{align}
+<p>Classical Sobolev inequalities are for <span class="math inline">\(\ved_q\)</span>, <span class="math inline">\(q\ge 2\)</span> and do not tensorize.</p>
+<p><strong>Lemma 3.28</strong>: Log-Sobolev <span class="math inline">\(\Ent(f) \le c\cE (\ln f, f)\)</span> implies the Poincare inequality <span class="math inline">\(\Var(f) \le 2c\cE (f,f)\)</span>.</p>
+<p><em>Proof</em>. <span class="math display">\[
+\ub{\E[\la f e^{\la f}]}{\la^2\cE(f,f) + o(\la^2)} - 
+\ub{\E[e^{\la f}] \ln \E[e^{\la f}]}{\la \E f + \la^2(\E[f^2] + \E[f]^2)/2 + o(\la^2)} = 
+\ub{\E[\la f e^{\la f}]}{\la \E f + \la^2 \E [f^2] + o(\la^2)}
+\]</span></p>
+<h3 id="problems-1">Problems</h3>
+<p>Equivalent conditions for subgaussianity:</p>
+<ol type="1">
+<li>The tails are dominated by the tails of the Gaussian: <span class="math display">\[\Pj(|X|\ge t) \le 2\exp(-t^2/K_1^2).\]</span></li>
+<li>Moments: For all <span class="math inline">\(p\ge 1\)</span>, <span class="math display">\[
+\ve{X}_p = (\E|X|^p)^{\rc p} \le K_2\sqrt p
+\]</span></li>
+<li>Moment generating function of <span class="math inline">\(X^2\)</span>: <span class="math display">\[\E\exp(X^2/K_3^2)\le 2.\]</span></li>
+<li>(If <span class="math inline">\(\E X=0\)</span>,) MGF of <span class="math inline">\(X\)</span>: <span class="math display">\[\E \exp(\la X) \le \exp(\la^2 K_4^2)\]</span> for all <span class="math inline">\(\la\in \R\)</span>.</li>
+</ol>
+<p>Problems</p>
+<ol type="1">
+<li><ol type="1">
+<li>Expanding <span class="math inline">\(\E(e^{\la (X-\E X)}) \le e^{\la^2\si^2/2}\)</span> gives <span class="math display">\[ 1+\fc{\la^2}2 (X-\E X)^2 \le 1+ \fc{\la^2}2 \si^2.\]</span></li>
+<li>Easy.</li>
+<li>(<span class="math inline">\(4\implies1\)</span>) This is Chernoff. <span class="math inline">\(\inf_\la \psi(\la)-\la t \le \inf \pa{\fc{\la^2\si^2}2 - \la t} = -\fc{t^2}{2\si^2}\)</span>.</li>
+<li>(<span class="math inline">\(1\implies 3\)</span>)
+\begin{align}
+\E e^{X^2/6\si^2} &amp;= 1+\iiy \fc{t}{3\si^2} e^{\fc{t^2}{6\si^2}} \Pj(|X|\ge t)\,dt\\
+&amp; = 1+\iiy \fc{t}{3\si^2} e^{\fc{t^2}{6\si^2}} e^{-\fc{t^2}{2\si^2}}\,dt=2.
+\end{align}</li>
+<li>? (<span class="math inline">\(3\implies 4\)</span>) <!--Expanding $\E e^{\la X}\le e^{\fc{\la^2\si^2}2 + \la \E X}$ gives--> Weaker: Expanding <span class="math inline">\(\E e^{X^2/6\si^2}\le 2\)</span> gives <span class="math inline">\(\rc{q!}\pf{X^2}{6\si^2}^q\le 1\)</span>, <span class="math inline">\(\E X^{2q}\le (6\si^2)^qq!\)</span>.</li>
+<li><span class="math inline">\(\E(e^{X^2/8\si^2}) = \E\pa{\sumz q\iy \rc{q!} \pf{x^2}{8\si^2}^q} \le \E\sumz q\iy\prc{2}^q=2\)</span>.</li>
+</ol></li>
+<li></li>
+<li></li>
+<li></li>
+<li></li>
+<li></li>
+<li></li>
+<li></li>
+<li></li>
+<li></li>
+<li></li>
+<li>Let <span class="math inline">\(Z=\fc{e^{\la X}}{\E e^{\la X}}\)</span>. Then
+\begin{align}
+\Ent(e^{\la X}) &amp;\le \E(e^{\la X}) \E(Z\ln Z)\\
+&amp;\le \E(e^{\la X}) \ln \pf{\E[(e^{\la X})^2]}{(\E e^{\la X})^2}\\
+&amp;\le \E(e^{\la X}) (\fc{\la^2\si^2}2 + \ln \pf{e^{2 \la \E X}}{\E(e^{\la X})^2})\\
+&amp;\le \E(e^{\la X}) (\fc{\la^2\si^2}2).
+\end{align}</li>
+<li><ol type="1">
+<li>We have
+\begin{align}
+\Ent Z &amp;= \inf_{t&gt;0} \E[Z\ln Z - Z\ln t - Z+t]\\
+\iff (\E Z)(\E \ln Z+1) &amp;=\inf_{t&gt;0} \E(-Z\ln t+t)
+\end{align}
+Take the derivative; this is minimized at <span class="math inline">\(t=\rc{\E Z}\)</span>.</li>
+<li>\begin{align}
+\Ent(e^f) &amp;=\inf_{t&gt;0}\E [e^f (f - \ln t - 1) + t]\\
+&amp;\le e^f (f-\inf f + e^{\inf f-f} - 1) &amp; t=e^{\inf f}.
+\end{align}</li>
+<li><span class="math inline">\(\phi(x) = e^{-x}+x-1 \le 1-x+\fc{x^2}2 + x-1 = \fc{x^2}2\)</span>.</li>
+<li><span class="math inline">\(\E[\ph(D^-f) e^f] \le \rc{2}\E[|D^-f|^2 e^f]\)</span>. ?? Stuck.</li>
+</ol></li>
+</ol>
+<h2 id="lipschitz-concentration-and-transportation-inequalities">4 Lipschitz concentration and transportation inequalities</h2>
+<blockquote>
+<p>Rather than measuring the sensitivity of the function f in terms of a gradient, we will introduce a metric viewpoint that emphasizes the role of Lipschitz functions.</p>
+</blockquote>
+<h3 id="concentration-in-metric-spaces">4.1 Concentration in metric spaces</h3>
+<p>We can express Gaussian concentration and McDiarmid’s inequalities in terms of Lipschitz functions.</p>
+<ul>
+<li>Gaussian concentration:
+<ul>
+<li>For <span class="math inline">\(X\sim N(0,I)\)</span>, <span class="math inline">\(f\)</span> is <span class="math inline">\(\ve{\ve{\nb f}^2}_{\iy}\)</span>-subgaussian.</li>
+<li><strong>Lemma 4.3</strong> For <span class="math inline">\(f:\R^n\to \R\)</span> a <span class="math inline">\(C^1\)</span> function. $_{}L^2 <span class="math inline">\(f\)</span> is <span class="math inline">\(L\)</span>-Lipschitz.</li>
+</ul></li>
+<li>McDiarmid’s inequality
+<ul>
+<li>For <span class="math inline">\(X_i\in \mathbb X_i\)</span> independent, <span class="math inline">\(f\)</span> is <span class="math inline">\(\rc 4 \sumo kn \ve{D_k f}_{\iy}^2\)</span>-subgaussian.</li>
+<li><strong>Lemma 4.5</strong> Define weighted Hamming distance <span class="math inline">\(d_c(x,y) = \sumo in c_i 1_{x_i\ne y_i}\)</span>. For <span class="math inline">\(f:\mathbb X_1\times \cdots \mathbb X_n\to \R\)</span>, <span class="math inline">\(\ve{D_i f}_{\iy}\le c_i\)</span> for all <span class="math inline">\(i\)</span> iff <span class="math inline">\(f\)</span> is 1-Lipschitz with respect to <span class="math inline">\((\prod \mathbb X_i , d_c)\)</span>. (Proof: telescope.)</li>
+<li>So <span class="math inline">\(f\)</span> is <span class="math inline">\(\rc{4}\ve{c}^2\)</span>-subgaussian.</li>
+</ul></li>
+</ul>
+<blockquote>
+<p>In the case of gradient bounds, the sensitivity of the function f is measured locally, while the Lipschitz property quantifies the sensitivity in a global manner.</p>
+</blockquote>
+<p>Basic question:</p>
+<blockquote>
+<p>For which probability measures μ on the metric space <span class="math inline">\((X, d)\)</span> is it true that if <span class="math inline">\(X\sim \mu\)</span>, then <span class="math inline">\(f(X)\)</span> is <span class="math inline">\(\si^2\)</span>-subgaussian for every <span class="math inline">\(f \in Lip(\mathbb X)\)</span>?</p>
+</blockquote>
+<p><strong>Wasserstein distance</strong>: For <span class="math inline">\(\mu,\nu\in \cP_1(\mathbb X)=\set{\rh}{\int d(x_0,x)\rh(dx)&lt;\iy}\)</span>, the Wasserstein distance is <span class="math display">\[ W_1(\mu, \nu) := \sup_{f\in Lip(\mathbb X)} \ab{\int f\,d\mu - \int f\,d\nu}.\]</span></p>
+<p><strong>Relative entropy</strong>: <span class="math inline">\(D(\nu||\mu) = \Ent_{\mu}\pa{\dd{\nu}{\mu}}\)</span>.</p>
+<p><strong>Theorem 4.8 (Bobkov-Gotze)</strong>: Let <span class="math inline">\(\mu\in \cP_1(\mathbb X)\)</span>. TFAE for <span class="math inline">\(X\sim \mu\)</span>:</p>
+<ol type="1">
+<li><span class="math inline">\(f(X)\)</span> is <span class="math inline">\(si^2\)</span>-subgaussian for <span class="math inline">\(f\in Lip(\mathbb X)\)</span>.</li>
+<li><span class="math inline">\(W_1(\nu,\mu)\le \sqrt{2\si^2 D(\nu||\mu)\)</span>.</li>
+</ol>
+<p><strong>Example (Pinsker’s inequality)</strong>:</p>
+<ul>
+<li>Hoeffding: <span class="math inline">\(f\)</span> is <span class="math inline">\(\rc 4 (\sup f - \inf f)\)</span>-subgaussian.</li>
+<li>Pinsker: <span class="math inline">\(\ve{\mu-\nu}_{TV} \le \sqrt{\rc 2 D(\nu||\mu)}\)</span>.</li>
+</ul>
+<p><em>Proof</em>.</p>
+<ol type="1">
+<li><p><strong>Lemma 4.10 (Gibbs variational principle)</strong> <span class="math inline">\(\log \E_{\mu} e^f = \sup_\nu [\E_\nu [f] - D(\nu||\mu)]\)</span>.</p>
+<p><em>Proof</em>. <span class="math inline">\(\log \E_\mu[e^f] - D(\nu||\wt \mu) = \E_\n [f] - D(\nu||\mu)\)</span>.</p>
+(?? “Dual convex optimization to the variational formula for entropy.”)</li>
+<li>Restate
+\begin{align}
+\forall \la\in \R, f\in Lip(\mathbb X), \log \E_\mu[e^{\la (f-\E_\mu f)}]&amp;\le \fc{\la^2\si^2}2\\
+\sup_{\la\in \R, f\in Lip(\mathbb X), \nu} \ba{
+\la (\E_\nu f - \E_\mu f) - D(\nu||\mu) - \fc{\la^2\si^2}2
+},
+\end{align}
+<p>evaluate over <span class="math inline">\(f\)</span> to get <span class="math inline">\(W_1\)</span>, then evaluate over <span class="math inline">\(\la\)</span>.</p></li>
+</ol>
+<section class="footnotes">
+<hr />
+<ol>
+<li id="fn1"><p>The kernel is the same as <span class="math inline">\(\La\)</span> except it also records the probbability of staying. <span class="math inline">\(K-I = \La\)</span>.<a href="#fnref1">↩</a></p></li>
+<li id="fn2"><p><span class="math inline">\(K^*(x,y) = \fc{K(y,x)}{\pi(x)}\pi(y)\)</span>.<a href="#fnref2">↩</a></p></li>
+<li id="fn3"><p>(cf. Laplacian)<a href="#fnref3">↩</a></p></li>
+</ol>
+</section>
+
+  </div>
+
+    
+
+    <!-- Extension : Sharing buttons @ www.sharethis.com -->
+    <span class="st_facebook_large" displayText="Facebook"></span>
+    <span class="st_twitter_large" displayText="Tweet"></span>
+    <span class="st_googleplus_large" displayText="Google +"></span>
+    <span class="st_reddit_large" displayText="Reddit"></span>
+    <span class="st__large" displayText></span>
+
+    <div id="disqus_thread"></div>
+    
+
+
+  
+    <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+  </div>
+  
+</div>
+
+
+<!-- Footer -->
+<div id="footer">
+  <div class="container">
+    Built with
+    <a href="http://jaspervdj.be/hakyll">Hakyll</a> 
+    using 
+    <a href="http://www.getbootstrap.com">Bootstrap</a>, 
+    <a href="http://www.disqus.com">Disqus</a>,
+    <a href="http://ignorethecode.net/blog/2010/04/20/footnotes/">Footnotes.js</a>,
+    <a href="http://highlightjs.org/">Highlight.js</a>, 
+    <a href="http://www.mathjax.org">MathJax</a>, 
+    and <a href="http://www.sharethis.com">ShareThis</a>.
+  </div>
+</div>
+</body>
+
+</html>
+
+<!-- SCRIPTS -->
+<!-- jQuery-->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+<script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
+
+<script src="../../../../bootstrap/js/bootstrap.min.js"></script>
+
+<!-- Extension : Highlight.js @ https://highlightjs.org/ -->
+<!-- Syntax highlighting tomorrow-night-bright, agate-->
+<link rel="stylesheet" href="../../../../highlight/css/tomorrow-night-bright.css">
+<script src="../../../../highlight/js/highlight.pack.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+
+<!-- Extension : MathJax @ https://docs.mathjax.org/en/v2.5-latest/tex.html -->
+<!-- MathJax/config/local/local.js contains macros. Need to provide entire URL-->
+<script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML,http://holdenlee.github.io/notebook/MathJax/config/local/local"></script>
+
+<!-- Extension : Footnotes @ http://ignorethecode.net/blog/2010/04/20/footnotes/ -->
+<script src="../../../../footnotes/js/footnotes.js"></script>
+
+<!-- Extension : Disqus @ http://disqus.com -->
+<!-- Extension : InlineDisqussions @ https://github.com/tsi/inlineDisqussions -->
+
+<script src="../../../../disqus/js/disqus.js"></script>
+
+
+
+<!-- Extension : Google Analytics -->
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-73261814-1', 'auto');
+  ga('send', 'pageview');
+
+</script>
+

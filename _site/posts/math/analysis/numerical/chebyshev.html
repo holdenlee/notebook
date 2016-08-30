@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+
+  <meta name="description" content="Holden Lee's Research Notebook">
+  <meta name="author" content="Holden Lee">
+    
+  <title>Chebyshev polynomials</title>
+
+  <!-- Bootstrap core CSS -->
+  <link href="../../../../bootstrap/css/bootstrap.min.css" rel="stylesheet">
+
+  <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+  <!-- <link href="../../assets/css/ie10-viewport-bug-workaround.css" rel="stylesheet"> -->
+
+  <!-- Custom styles for this template -->
+  <link href="../../../../css/blog.css" rel="stylesheet">
+  <link href="../../../../css/default.css" rel="stylesheet">
+
+  <!-- Extension : Footnotes -->
+  <link href="../../../../footnotes/css/footnotes.css" rel="stylesheet">
+
+  <!-- Extension : InlineDisqussions @ https://github.com/tsi/inlineDisqussions -->
+  
+
+  <!-- Extension : Collapsible lists @ http://code.stephenmorley.org/javascript/collapsible-lists/-->
+  <link href="../../../../collapsible_lists/css/collapsible.css" rel="stylesheet">
+  <script type="text/javascript" src="../../../../collapsible_lists/js/CollapsibleLists.js"></script>
+
+</head>
+
+<body>
+
+<!-- Navigation bar. navbar-inverse is black, navbar-default is white.-->
+<!-- To make a button active (pressed), use <li class="active"> -->
+<div id="header">
+  <nav class="navbar navbar-inverse navbar-fixed-top">
+    <div class="container">
+      <div class="navbar-header">
+        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+          <span class="sr-only">Toggle navigation</span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="../../../../">Notebook</a>
+      </div>
+      <div id="navbar" class="collapse navbar-collapse">
+        <ul class="nav navbar-nav">
+          <li><a href="../../../../">Home</a></li>
+          <li><a href="../../../../sitemap.html">Sitemap</a></li>
+<!-- TODO: Distinguish between PAPERS, RESEARCH QUESTIONS, BOOKS -->
+<!-- TODO: make this part a for loop over main pages -->
+        </ul>
+      </div><!--/.nav-collapse -->
+    </div>
+  </nav>
+</div>
+<!-- Content -->
+<!--div id="content">
+  <h1>Mental Wilderness</h1>-->
+
+
+
+<div class="container">
+  <div id="content">
+    <div class="page header">
+      <h1>Chebyshev polynomials</h1>
+    </div>
+    <div class="info">
+      
+       
+        <p>Posted: 2016-08-04 
+          , Modified: 2016-08-04 
+	</p>
+      
+       <p>Tags: <a href="../../../../tags/none.html">none</a></p> 
+    </div>
+    
+  </div>
+  <!--/div-->
+
+  
+
+  <div class="blog-main">
+    <p>References:</p>
+<ul>
+<li><a href="http://blog.mrtz.org/2013/09/07/the-zen-of-gradient-descent.html">The Zen of gradient descent</a></li>
+</ul>
+Define the Chebyshev polynomials by
+\begin{align}
+T_0 &amp;=1\\
+T_1 &amp;=x\\
+T_{n+1} &amp;= 2xT_n - T_{n-1}\\
+T_n(\cos x) &amp;= \cos(nx).
+\end{align}
+<strong>Theorem</strong>. There exists a polynomial <span class="math inline">\(p_k\)</span> such that
+\begin{align}
+\deg(p_k) &amp;= O\pa{\sqrt{\fc{L}{l}} \ln \prc{\ep}}\\
+p_k(0) &amp;= 1\\
+p_k(x)&amp;\le \ep, &amp;x\in [l,L]
+\end{align}
+<p>First attempt: Scale and translate the Chebyshev polynomial to be <span class="math inline">\(\le \ep\)</span> on <span class="math inline">\([l,L]\)</span>. A Chebyshev poly at <span class="math inline">\(x\)</span> is <span class="math inline">\(O(2^{n-1}x^n)\)</span>. Then the value at 0 is <span class="math inline">\(2^{n-1}\)</span> is <span class="math inline">\(2^{n-1}\pf{l}{(L-l)/2}^n\)</span>, it suffices for this to be <span class="math inline">\(\le 1\)</span>. But this only that <span class="math inline">\(n\le \fc{\ln \prc{\ep}}{\ln \pf{4l}{L-l}}\)</span> is sufficient.</p>
+<p>This is a bad approximation!</p>
+We know
+\begin{align}
+T_n\pf{e^x+e^{-x}}2 &amp;= \fc{e^{nx}+e^{-nx}}2\\
+T_n\pf{u+\rc u}{2} &amp;= \pf{u^n+\rc{u^n}}2.
+\end{align}
+Solving <span class="math inline">\(u+\rc{u} = x\)</span> gives <span class="math inline">\(u=x \pm\sqrt{x^2-1}\)</span> and <span class="math display">\[u^n +\rc{u^n} = (x+\sqrt{x^2-1})^n + (x-\sqrt{x^2-1})^n.\]</span> Thus it suffices to have (let <span class="math inline">\(k = \fc Ll\)</span>)
+\begin{align}
+2\ba{\pf{L+l}{L-l} + \sqrt{\pf{L+l}{L-l}^2 - 1}}^n \ep &amp;\le 1\\
+\iff n\ln \ba{\pf{L+l}{L-l} + \sqrt{\pf{L+l}{L-l}^2 - 1}} &amp; \le \ln \fc{2}{\ep}\\
+\iff n\ln \pf{(\sqrt k+1)^2}{k-1} &amp; \le \ln \pf 2\ep\\
+\Leftarrow n\pf{2+2\sqrt k}{k-1} &amp; \le \ln \pf 2\ep\\
+\Leftarrow n&amp;\le \fc{k-1}{2(\sqrt k + 1)}\ln \pf 2\ep\\
+&amp;=\rc{2}(\sqrt k - 1) \ln \pf 2\ep\\
+&amp;=O(\sqrt k \ln \prc{\ep}).
+\end{align}
+<p>Restatement: There exists a polynomial of degree <span class="math inline">\(O\pa{\sfc{L+l}{L-l}\ln \prc{\ep}}\)</span> such that <span class="math inline">\(p_k(L)=1\)</span> and <span class="math inline">\(p_k(x)=0\)</span> on <span class="math inline">\([-l,l]\)</span>.</p>
+Let’s solve <span class="math inline">\(Ax=b\)</span> when <span class="math inline">\(A\)</span> is positive definite. Consider <span class="math inline">\(f=\rc 2 x^TAx - b^Tx\)</span> starting at <span class="math inline">\(x_0=b\)</span>. Gradient descent with step size <span class="math inline">\(t\)</span> gives
+\begin{align}
+x_{k+1} &amp;= x_k - t (Ax_k-b)\\
+&amp;= (I-tA)x_k + tb\\
+x_k &amp;= (I+\cdots +(I-tA)^k)tb
+\end{align}
+Now <span class="math inline">\(p(x) = 1+\cdots + (1-x)^n\)</span> is an approximation of <span class="math inline">\(\rc{x} = \rc{1-(1-x)}\)</span>. Suppose all eigenvalues of <span class="math inline">\(A\)</span> are in <span class="math inline">\([l,L]\)</span>. Then diagonalizing, we get that (take <span class="math inline">\(t=1\)</span>?)
+\begin{align}
+\ve{(p(tA) - A^{-1})tb}_2 
+&amp;= \ve{tb}_2\max_{\la\text{ of }A} (p(\la) - \rc{\la})) \\
+&amp;= \ve{tb}_2\max_{x\in [l,L]} (p(x) - \rc x) \\
+&amp;= \ve{tb}_2 \ve{p(x) - \rc x}_{L^\iy([l,L])}.
+\end{align}
+<!-- (We may assume $A$ is diagonalizable with real eigenvalues by multiplying by a unitary.) -->
+<p>But <span class="math inline">\(p(x)\)</span>, although it is a power series expansion of <span class="math inline">\(\rc{x}\)</span>, is not the best estimator of <span class="math inline">\(\rc{x}\)</span> in the <span class="math inline">\(L^{\iy}\)</span> norm. Polynomials based on Chebyshev polynomials do better. The Chebyshev polynomials are defined by a recurrence, which corresponds to a different recurrence relation on the <span class="math inline">\(x_k\)</span>.</p>
+<p>For the above <span class="math inline">\(p\)</span>, the difference is <span class="math inline">\(\fc{(1-tx)^{n+1}}x\)</span>. Choosing <span class="math inline">\(t=\fc{2}{L+l}\)</span>, we get <span class="math inline">\(\pf{L-l}{L+l}^{n+1} = O\pf{\ka - 1}{\ka+1}^{n}\)</span> convergence.</p>
+<p>This motivates the following question.</p>
+<p><strong>Question</strong>. What is <span class="math display">\[
+\min_{\deg p = n} \ve{p(x) - \rc{x}}_{L^{\iy}([l,L])}?
+\]</span></p>
+<p>Interpolate at Chebyshev points? Conjugate gradients, etc.</p>
+<p>See exercise 8.10 in <a href="ATAP.html">ATAP</a>. First reposition at <span class="math inline">\([-1,1]\)</span> as above. <span class="math inline">\(\rc{x}\)</span> gets sent to <span class="math inline">\(\fc{k+1}{m(k-1)}\rc{x-\pf{k+1}{k-1}}\)</span>. For any <span class="math inline">\(\rh\)</span> such that <span class="math inline">\(\fc{\rh+\rh^{-1}}2\le \fc{k+1}{k-1}\)</span>, i.e., <span class="math inline">\(\rh \le 1+\fc{2}{\sqrt k - 1}\)</span>, we get a bound <span class="math display">\[
+\fc{k+1}{m(k-1)} \pa{\pf{k+1}{k-1}-\fc{\rh+\rh^{-1}}{2}} \rh^{-n} = \rc m O_{\rh}(\rh^{-n})
+\]</span> This is an upper bound on convergence of conjugate gradient, because conjugate gradient finds the vector in <span class="math inline">\(\spn(\{b, Ab, \ldots, A^{n}b\})\)</span> that is closest to <span class="math inline">\(A^{-1}b\)</span>.</p>
+<p>(Thus, conjugate gradient gets <span class="math inline">\(\ep\)</span>-close in <span class="math inline">\(O(\sqrt\ka \ln \prc{\ep})\)</span> steps.)</p>
+<p>(We can get a lower bound by computing the best possible <span class="math inline">\(L^2\)</span> of the approximation. It should be on the same order.)</p>
+Conjugate gradient:
+\begin{align}
+v_0&amp;=b\\
+w_i&amp;=Av_i\\
+v_i&amp;=w_i- \sumz j{i-1} \fc{\an{w_i,v_j}_A}{\an{v_j,v_j}_A}v_j.
+\end{align}
+<p>We have <span class="math inline">\(\an{w_{i+1},v_j} = \an{v_i,w_{j+1}}_A\)</span> and <span class="math inline">\(w_{i+1}\perp v_{i+2},ldots\)</span> so <span class="math inline">\(v_i\perp_A w_{i+3},\ldots\)</span>.</p>
+<!--We try to minimize $\max_\la (\la p(\la)-1)^2)$-->
+
+  </div>
+
+    
+
+    <!-- Extension : Sharing buttons @ www.sharethis.com -->
+    <span class="st_facebook_large" displayText="Facebook"></span>
+    <span class="st_twitter_large" displayText="Tweet"></span>
+    <span class="st_googleplus_large" displayText="Google +"></span>
+    <span class="st_reddit_large" displayText="Reddit"></span>
+    <span class="st__large" displayText></span>
+
+    <div id="disqus_thread"></div>
+    
+
+
+  
+    <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+  </div>
+  
+</div>
+
+
+<!-- Footer -->
+<div id="footer">
+  <div class="container">
+    Built with
+    <a href="http://jaspervdj.be/hakyll">Hakyll</a> 
+    using 
+    <a href="http://www.getbootstrap.com">Bootstrap</a>, 
+    <a href="http://www.disqus.com">Disqus</a>,
+    <a href="http://ignorethecode.net/blog/2010/04/20/footnotes/">Footnotes.js</a>,
+    <a href="http://highlightjs.org/">Highlight.js</a>, 
+    <a href="http://www.mathjax.org">MathJax</a>, 
+    and <a href="http://www.sharethis.com">ShareThis</a>.
+  </div>
+</div>
+</body>
+
+</html>
+
+<!-- SCRIPTS -->
+<!-- jQuery-->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+<script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
+
+<script src="../../../../bootstrap/js/bootstrap.min.js"></script>
+
+<!-- Extension : Highlight.js @ https://highlightjs.org/ -->
+<!-- Syntax highlighting tomorrow-night-bright, agate-->
+<link rel="stylesheet" href="../../../../highlight/css/tomorrow-night-bright.css">
+<script src="../../../../highlight/js/highlight.pack.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+
+<!-- Extension : MathJax @ https://docs.mathjax.org/en/v2.5-latest/tex.html -->
+<!-- MathJax/config/local/local.js contains macros. Need to provide entire URL-->
+<script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML,http://holdenlee.github.io/notebook/MathJax/config/local/local"></script>
+
+<!-- Extension : Footnotes @ http://ignorethecode.net/blog/2010/04/20/footnotes/ -->
+<script src="../../../../footnotes/js/footnotes.js"></script>
+
+<!-- Extension : Disqus @ http://disqus.com -->
+<!-- Extension : InlineDisqussions @ https://github.com/tsi/inlineDisqussions -->
+
+<script src="../../../../disqus/js/disqus.js"></script>
+
+
+
+<!-- Extension : Google Analytics -->
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-73261814-1', 'auto');
+  ga('send', 'pageview');
+
+</script>
+
