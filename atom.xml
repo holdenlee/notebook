@@ -113,6 +113,190 @@ D' &amp;= \fc{n^2}{n^2-1} \pa{D-\fc{2}{n+1}\fc{Daa^TD}{a^TDa}}\\
 ]]></summary>
 </entry>
 <entry>
+    <title>Weekly summary 2016-09-03</title>
+    <link href="http://holdenlee.github.io/notebook/posts/summaries/2016-09-03.html" />
+    <id>http://holdenlee.github.io/notebook/posts/summaries/2016-09-03.html</id>
+    <published>2016-08-30T00:00:00Z</published>
+    <updated>2016-08-30T00:00:00Z</updated>
+    <summary type="html"><![CDATA[
+<div class="container">
+  <div id="content">
+    <div class="page header">
+      <h1>Weekly summary 2016-09-03</h1>
+    </div>
+    <div class="info">
+      
+       
+        <p>Posted: 2016-08-30 
+          , Modified: 2016-08-30 
+	</p>
+      
+       <p>Tags: <a href="/tags/none.html">none</a></p> 
+    </div>
+    
+  </div>
+  <!--/div-->
+
+  <div class="toc"> <ul>
+ <li><a href="#threads">Threads</a></li>
+ </ul> </div>
+
+  <div class="blog-main">
+    <h2 id="threads">Threads</h2>
+<ul>
+<li>Relaxing sparsity assumption: Independent sparsity is an unrealistic assumption. For example, many features tend to co-occur with each other. Re-analyze algorithms that rely on independent sparsity under looser conditions on the distribution.
+<ul>
+<li>Two ways to loosen the conditions:
+<ul>
+<li>Drop the condition of independence.
+<ul>
+<li>A first step is “group sparsity”. See <a href="/posts/tcs/machine_learning/representation.html">representation learning</a> for references.</li>
+<li>A next step is to do away with independence entirely. (Certain distributions may be intractable… if so, obtain a hardness result and then add some looser assumption.)</li>
+</ul></li>
+<li>Drop the condition of sparsity.
+<ul>
+<li>Instead have some condition on moments/tails so that each vector is well-approximated by a sparse vector, cf. “flatness”, ex. 99% of weight is on <span class="math inline">\(o\prc{\sqrt n}\)</span> of coordinates.</li>
+<li>The difference with adding noise is that
+<ul>
+<li>Noise is added to <span class="math inline">\(x\)</span> (pre-coding) rather than <span class="math inline">\(y\)</span> (post-coding)</li>
+<li>Noise can be correlated with the vector, not independent. (if it were independent, there’s not that much difference from adding on the <span class="math inline">\(y\)</span>-side)</li>
+</ul></li>
+</ul></li>
+</ul></li>
+<li>Sparse recovery. Ex. basis pursuit.</li>
+<li>Dictionary learning
+<ul>
+<li>Q (<span class="citation" data-cites="Arora">@Arora</span>): How does dictionary learning perform in real life? What is it applied to? Applying it to problems traditionally solved with SVM’s and neural nets, how does it compare? How do AGM14, AGMM15 perform?</li>
+<li>Re-analyze AGM14, AGMM15 with group sparsity.</li>
+<li>Re-analyze with arbitrary sparselike distribution.</li>
+</ul></li>
+</ul></li>
+<li>Representation learning: general problem
+<ul>
+<li>The main bottleneck is that the problem “sort-of” reduces to tensor decomposition, but I don’t understand much of how TD performs in theory and in practice.</li>
+<li>Read papers on TD (Ge, Anandkumar).</li>
+</ul></li>
+<li>PMI for images
+<ul>
+<li>I don’t have any positive results when I build on top of the CKN.
+<ul>
+<li>May try some alternatives: work with CIFAR instead, do some thresholding thing, do things in middle layer… (but unlikely to work if first thing didn’t work?)</li>
+</ul></li>
+<li>Do experiments on a more basic level.
+<ul>
+<li>Try unsupervised multiclass SVM on both the original image and on the CKN features. How does this compare to clustering? (Look at the actual pics.)</li>
+<li>Have a programming setup where you can visualize clusters and features.</li>
+</ul></li>
+<li>DL for images
+<ul>
+<li>If you do DL, do you obtain the categories? (ex. digits)</li>
+<li>If you do DL, is training on top of the DL easier?</li>
+<li>How does (H)DL compare to the CKN and other unsupervised methods? Make DL convolutional.</li>
+<li>What is the typical sparsity of a trained NN? (cf. dropout?)</li>
+</ul></li>
+<li>Use DL/weighted SVD with the natural proximity/distance in images. Get “context vectors” for different parts of the image. (Hierarchical fashion?) A global context vector would be the classification?</li>
+<li>(images not just DL/SVM because adding something in perpendicular direction wrecks things?)</li>
+</ul></li>
+</ul>
+<p>@Arora: in what way is DL “just” tensor decomposition?</p>
+<p>(Is there a relationship between weighted SVD for PMI and DL? It’s not at all clear to me. Somehow neural nets do something “like” DL (does the CKN do this though?) but then we’re trying to see if the features can be SVD’d with PMI. Learning with 2 “layers”:</p>
+<ol type="1">
+<li>Representation - with NN/DL</li>
+<li>Classification - (on top) with SVD/PMI.</li>
+</ol>
+<p>Also how do hierarchical methods come in?)</p>
+<p>Things meriting a further look</p>
+<ul>
+<li>Traditional learning theory (ex. learning SAT)</li>
+<li>Probabilistic view of dictionary learning (LDA, hierarchical DP, etc.) <span class="citation" data-cites="Bianca">@Bianca</span></li>
+<li>Pattern theory—how they model images. Traditional image things—wavelets etc.</li>
+</ul>
+
+  </div>
+
+    
+
+    <!-- Extension : Sharing buttons @ www.sharethis.com -->
+    <span class='st_facebook_large' displayText='Facebook'></span>
+    <span class='st_twitter_large' displayText='Tweet'></span>
+    <span class='st_googleplus_large' displayText='Google +'></span>
+    <span class='st_reddit_large' displayText='Reddit'></span>
+    <span class='st__large' displayText=''></span>
+
+    <div id="disqus_thread"></div>
+    
+
+
+  
+    <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+  </div>
+  
+</div>
+]]></summary>
+</entry>
+<entry>
+    <title>Matrix perturbation</title>
+    <link href="http://holdenlee.github.io/notebook/posts/math/linear_algebra/matrix_analysis/perturbation.html" />
+    <id>http://holdenlee.github.io/notebook/posts/math/linear_algebra/matrix_analysis/perturbation.html</id>
+    <published>2016-08-30T00:00:00Z</published>
+    <updated>2016-08-30T00:00:00Z</updated>
+    <summary type="html"><![CDATA[
+<div class="container">
+  <div id="content">
+    <div class="page header">
+      <h1>Matrix perturbation</h1>
+    </div>
+    <div class="info">
+      
+       
+        <p>Posted: 2016-08-30 
+          , Modified: 2016-08-30 
+	</p>
+      
+       <p>Tags: <a href="/tags/matrices.html">matrices</a></p> 
+    </div>
+    
+  </div>
+  <!--/div-->
+
+  <div class="toc"> <ul>
+ <li><a href="#davis-kahan">Davis-Kahan</a></li>
+ <li><a href="#weyls-theorem">Weyl’s Theorem</a></li>
+ <li><a href="#wedins-theorem">Wedin’s Theorem</a></li>
+ </ul> </div>
+
+  <div class="blog-main">
+    <h2 id="davis-kahan">Davis-Kahan</h2>
+<p>(Theorem 4.8 <a href="http://ocw.mit.edu/courses/mathematics/18-s997-high-dimensional-statistics-spring-2015/lecture-notes/MIT18_S997S15_Chapter4.pdf">here</a>)</p>
+<p>Distance between eigenvectors.</p>
+<h2 id="weyls-theorem">Weyl’s Theorem</h2>
+<h2 id="wedins-theorem">Wedin’s Theorem</h2>
+<p>Let <span class="math inline">\(v_1(A)\)</span> be the top eigenvector of <span class="math inline">\(A\)</span>. If <span class="math inline">\(\de=|\la_1(A)-\la_2(A)|\)</span>, then <span class="math inline">\(\sin(\angle (v_1(A), v_1(A+E)))\le \fc{\ve{E}_2}{\de}\)</span>.</p>
+<p>?? What’s the analogue of this for subspaces? Ex. <span class="math inline">\(\la_1,\ldots, \la_c\)</span> large and <span class="math inline">\(\la_{c+1}\)</span> small.</p>
+
+  </div>
+
+    
+
+    <!-- Extension : Sharing buttons @ www.sharethis.com -->
+    <span class='st_facebook_large' displayText='Facebook'></span>
+    <span class='st_twitter_large' displayText='Tweet'></span>
+    <span class='st_googleplus_large' displayText='Google +'></span>
+    <span class='st_reddit_large' displayText='Reddit'></span>
+    <span class='st__large' displayText=''></span>
+
+    <div id="disqus_thread"></div>
+    
+
+
+  
+    <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+  </div>
+  
+</div>
+]]></summary>
+</entry>
+<entry>
     <title>Weekly summary 2016-08-27</title>
     <link href="http://holdenlee.github.io/notebook/posts/summaries/2016-08-27.html" />
     <id>http://holdenlee.github.io/notebook/posts/summaries/2016-08-27.html</id>
@@ -169,9 +353,10 @@ D' &amp;= \fc{n^2}{n^2-1} \pa{D-\fc{2}{n+1}\fc{Daa^TD}{a^TDa}}\\
 <ul>
 <li>PMI
 <ul>
-<li>Run weighted SVD and compare</li>
+<li>Run weighted SVD and compared</li>
 </ul></li>
 <li>HDP started Ch. 4</li>
+<li>Reviewed convex optimization.</li>
 </ul>
 
   </div>
@@ -1115,149 +1300,6 @@ P_n(\phi_n)&amp;\nin (a-\ep,b+\ep) &amp;\Leftarrow P_n('P_n(\phi_n)\in (a,b)') &
 <li id="fn1"><p>Confused ramblings (wrong?) This sentence is true—even if Santa Claus doesn’t exist! The problem with provability logic - why you can’t just add in <span class="math inline">\(\square X \implies X\)</span> as an axiom—is that you can now prove both <span class="math inline">\(X, \neg X\)</span> by constructing Lob’s sentence! Reflection doesn’t work—it’s not that simple! You have to design a logic to make reflection not inconsistent!<a href="#fnref1">↩</a></p></li>
 </ol>
 </section>
-
-  </div>
-
-    
-
-    <!-- Extension : Sharing buttons @ www.sharethis.com -->
-    <span class='st_facebook_large' displayText='Facebook'></span>
-    <span class='st_twitter_large' displayText='Tweet'></span>
-    <span class='st_googleplus_large' displayText='Google +'></span>
-    <span class='st_reddit_large' displayText='Reddit'></span>
-    <span class='st__large' displayText=''></span>
-
-    <div id="disqus_thread"></div>
-    
-
-
-  
-    <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
-  </div>
-  
-</div>
-]]></summary>
-</entry>
-<entry>
-    <title>Distribution of critical points</title>
-    <link href="http://holdenlee.github.io/notebook/posts/tcs/machine_learning/optimization/distribution_of_critical_points.html" />
-    <id>http://holdenlee.github.io/notebook/posts/tcs/machine_learning/optimization/distribution_of_critical_points.html</id>
-    <published>2016-08-13T00:00:00Z</published>
-    <updated>2016-08-13T00:00:00Z</updated>
-    <summary type="html"><![CDATA[
-<div class="container">
-  <div id="content">
-    <div class="page header">
-      <h1>Distribution of critical points</h1>
-    </div>
-    <div class="info">
-      
-       
-        <p>Posted: 2016-08-13 
-          , Modified: 2016-08-13 
-	</p>
-      
-       <p>Tags: <a href="/tags/none.html">none</a></p> 
-    </div>
-    
-  </div>
-  <!--/div-->
-
-  
-
-  <div class="blog-main">
-    <p><a href="http://mathoverflow.net/questions/247469/expected-number-of-local-minima-of-random-polynomial-in-high-dimensions">MO question</a></p>
-<p>Consider the inner product space <span class="math inline">\(P_k\)</span> of polynomials of degree <span class="math inline">\(\le k\)</span> on the unit sphere <span class="math inline">\(\mathbb S^{n-1}\subset \mathbb R^n\)</span>. Let <span class="math inline">\(p\sim N(0,\sigma^2 I)\)</span> be a randomly chosen polynomial in <span class="math inline">\(P_k\)</span>, according to the standard Gaussian distribution. What is the average number of local minima of <span class="math inline">\(p\)</span>?</p>
-<p><a href="http://arxiv.org/pdf/1101.5990.pdf">Nicolaescu</a> used the Kac-Rice formula to address the case where <span class="math inline">\(n\)</span> is kept fixed and <span class="math inline">\(k\to \infty\)</span>. In fact, his result is more general: the manifold is fixed and the space of eigenfunctions of the Laplacian with eigenvalue <span class="math inline">\(\le L\)</span> is considered.</p>
-<p>However, I’m interested in the asymptotics when <span class="math inline">\(k\)</span> is fixed (ex. take <span class="math inline">\(k=3\)</span> or 4) and <span class="math inline">\(n\to \infty\)</span>, in order to help understand the tractability of random optimization problems as <span class="math inline">\(n\to \infty\)</span>. I’m also interested in any other asymptotics that are known, e.g. distribution of values at local minima, distribution of other critical points, etc.</p>
-<!--  (modulo $\sum_{i=1}^{n} x_i^2-1$)-->
-
-  </div>
-
-    
-
-    <!-- Extension : Sharing buttons @ www.sharethis.com -->
-    <span class='st_facebook_large' displayText='Facebook'></span>
-    <span class='st_twitter_large' displayText='Tweet'></span>
-    <span class='st_googleplus_large' displayText='Google +'></span>
-    <span class='st_reddit_large' displayText='Reddit'></span>
-    <span class='st__large' displayText=''></span>
-
-    <div id="disqus_thread"></div>
-    
-
-
-  
-    <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
-  </div>
-  
-</div>
-]]></summary>
-</entry>
-<entry>
-    <title>Weekly summary 2016-08-13</title>
-    <link href="http://holdenlee.github.io/notebook/posts/summaries/2016-08-13.html" />
-    <id>http://holdenlee.github.io/notebook/posts/summaries/2016-08-13.html</id>
-    <published>2016-08-13T00:00:00Z</published>
-    <updated>2016-08-13T00:00:00Z</updated>
-    <summary type="html"><![CDATA[
-<div class="container">
-  <div id="content">
-    <div class="page header">
-      <h1>Weekly summary 2016-08-13</h1>
-    </div>
-    <div class="info">
-      
-       
-        <p>Posted: 2016-08-13 
-          , Modified: 2016-08-13 
-	</p>
-      
-       <p>Tags: <a href="/tags/none.html">none</a></p> 
-    </div>
-    
-  </div>
-  <!--/div-->
-
-  <div class="toc"></div>
-
-  <div class="blog-main">
-    <p>Goals:</p>
-<ul>
-<li>Run basic PMI experiments
-<ul>
-<li><a href="/posts/tcs/machine_learning/neural_nets/pmi_images.html">PMI images</a>, <a href="/posts/tcs/machine_learning/nlp/pmi.html">PMI idea</a></li>
-<li>Get dictionary learning/weighted SVD code from Yingyu.</li>
-<li>Write up findings.</li>
-</ul></li>
-<li>Learning
-<ul>
-<li>Go through half of ATAP.</li>
-<li>Ch. 4 of HDP.</li>
-<li>Understand conjugate gradients using Chebyshev polys. Look at AGD from this point of view.</li>
-<li>Summarize bandit paper.</li>
-</ul></li>
-<li>Representation learning
-<ul>
-<li>Clarify idea.</li>
-</ul></li>
-<li>Tensorflow
-<ul>
-<li>Get basic LSTM running.</li>
-<li>Play with parameters in MNIST.</li>
-</ul></li>
-</ul>
-<p>Summary:</p>
-<ul>
-<li>Got PMI code running.</li>
-<li><a href="/posts/math/analysis/numerical/ATAP.html">Approximation theory and approximation practice</a>: Notes
-<ul>
-<li>Understood conjugate gradient bound using Chebyshev polynomials (<span class="citation" data-cites="Cyril">@Cyril</span>). <a href="/posts/math/analysis/numerical/chebyshev.html">Notes</a></li>
-</ul></li>
-<li>Talk: Yuanzhi on Bandit convex optimization (FOLLOW UP)</li>
-<li>Representation learning <a href="/posts/tcs/machine_learning/representation.html">summary</a>. Talked to Yingyu and kernel DL.</li>
-<li>Read <a href="/posts/tcs/machine_learning/matrices/BH16.html">BH16</a>.</li>
-</ul>
 
   </div>
 
