@@ -7,7 +7,7 @@ type: paper
 showTOC: True
 ---
 
-#Problem/Model and Assumptions
+# Problem/Model and Assumptions
 
 Given many independent samples $y=A^*x^*+N$, recover $(A^*,x^*)$. Here,
 
@@ -26,7 +26,7 @@ Given many independent samples $y=A^*x^*+N$, recover $(A^*,x^*)$. Here,
 
 [^q1]: What is the magnitude? I think this is responsible for the $\ga$'s that appear, but which are swept under the rug.
 
-#Algorithm
+# Algorithm
 
 The algorithm is alternating minimization. In alternating minimization, we want to minimize a function $f(x,y)$. It is difficult to minimize with respect to $(x,y)$ together (e.g., because $f$ is nonconvex when taken as a joint function of $x,y$) but easy to minimize with respect to $x$ or $y$ while keeping the other fixed (e.g., because $f$ is convex in $x$ and in $y$). Alternate between
 
@@ -37,9 +37,7 @@ For example, we can take gradient steps.
 
 There are no results for general nonconvex $f$; theoretical results tend to be ad hoc (for specific $f$). AGMM make a general technique that can be used to analyze alternating minimization algorithms, **approximate gradient descent**.
 
-##Instantiation
-
-###Version 1
+## Version 1
 
 The algorithm is
 
@@ -62,7 +60,7 @@ Note that we don't quite take the gradient step: the gradient is $2(y^{(i)} - Ax
 
 (There's no regularization here?)
 
-###Version 2
+## Version 2
 
 A better version of the above is to use gradient descent (Olshausen-Field), rather than just the sign of the difference. Let $A'=A - \eta g$ where $g=\E [(y-Ax) x^T]$. The complication is that this may not prserver $(\de,2)$-nearness, so the update rule is replaced by
 
@@ -72,13 +70,13 @@ A^{s+1} &= \Proj_B(A^s - \eta \wh g^s)
 \end{align}
 where $B$ is the set of $(\de_0,2)$-close matrices to $A^*$.
 
-###Instantiation
+## Instantiation
 
 The algorithms above require a matrix that is $O^*\prc{\log n}$-close to the true matrix. Algorithm 3 gives such a matrix.
 
 *   Set $L=\phi$.
 *   While $|L|<m$ choose samples $u,v$. (We will need $p_1$ of these samples.)
-    *   Set $\wh M_{u,v} - \EE_{i\in p_2}$\an{y^{(i)},u}\an{y^{(i)},v} y^{(i)}y^{(i)T}$. (Average over $p_2$ fresh samples.)
+    *   Set $\wh M_{u,v} - \EE_{i\in p_2}\an{y^{(i)},u}\an{y^{(i)},v} y^{(i)}y^{(i)T}$. (Average over $p_2$ fresh samples.)
 	*   Compute the top two singular values $\si_1,\si_2$ and top singular vector $z$ of $\wh M_{u,v}$.
 	*    If $\si_1\ge \Om\pf{k}{m}, \si_2<O^*\pf{k}{m\log m}$, and $\pm z$ is not within distance $\rc{\log m}$ of any vector in $L$, add $z$ to $L$.
 * Let $z\in L$ be the columns of $\wt A$. Let $A=\Proj_B\wt A$.
@@ -116,7 +114,7 @@ $$\ve{z_t-z^*}^2\le (1-\al \eta)^t \ve{z_0-z^*}^2.$$
 
 In actuality, we'll need a weaker form of this, "$(\al,\be,\ep_s)$-correlated with high probability" (Definition 38). There is an analogue of the theorem in this setting (Theorem 40).
 
-#Theorems
+# Theorems
 
 * Theorem 2, 9 give the convergence of the main alternating minimization algorithm for sparse coding, given good initialization. Theorem 14 is the simpler case where we have an infinite number of samples in each step (so we can actually minimize in $A$ at each step, rather than just take a step towards the minimum). We show Theorem 14.
 * Theorem 3, 13 give the convergence of a more sophisticated algorithm which achieves better additive error.

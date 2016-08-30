@@ -8,8 +8,111 @@
         <name>Holden Lee</name>
         <email>oldheneel@gmail.com</email>
     </author>
-    <updated>2016-08-27T00:00:00Z</updated>
+    <updated>2016-08-30T00:00:00Z</updated>
     <entry>
+    <title>Ellipsoid method</title>
+    <link href="http://holdenlee.github.io/notebook/posts/tcs/machine_learning/optimization/ellipsoid.html" />
+    <id>http://holdenlee.github.io/notebook/posts/tcs/machine_learning/optimization/ellipsoid.html</id>
+    <published>2016-08-30T00:00:00Z</published>
+    <updated>2016-08-30T00:00:00Z</updated>
+    <summary type="html"><![CDATA[
+<div class="container">
+  <div id="content">
+    <div class="page header">
+      <h1>Ellipsoid method</h1>
+    </div>
+    <div class="info">
+      
+       
+        <p>Posted: 2016-08-30 
+          , Modified: 2016-08-30 
+	</p>
+      
+       <p>Tags: <a href="/tags/linear%20programming.html">linear programming</a>, <a href="/tags/algorithms.html">algorithms</a></p> 
+    </div>
+    
+  </div>
+  <!--/div-->
+
+  
+
+  <div class="blog-main">
+    <ul>
+<li><a href="http://ocw.mit.edu/courses/mathematics/18-433-combinatorial-optimization-fall-2003/lecture-notes/l1617.pdf">OCW 18.433</a></li>
+<li><a href="http://www.cs.princeton.edu/courses/archive/fall15/cos521/lecnotes/lec17.pdf">Arora’s course</a> (<a href="http://www.cs.princeton.edu/courses/archive/fall15/cos521/">course site</a>)</li>
+<li>LSW15 <a href="http://arxiv.org/abs/1508.04874">paper</a></li>
+</ul>
+<h2 id="ellipsoid-method">Ellipsoid method</h2>
+<p>This is a very general <em>polynomial time</em> algorithm for convex optimization. We can use it to solve convex optimization problems that are even too large to write down. <!--faster than gradient descent.--></p>
+<ol type="1">
+<li>LP: <span class="math inline">\(f(x)=c^T\cdot x\)</span>.</li>
+<li>SDP: Infinitely many constraints <span class="math inline">\(a^TXa\ge 0\)</span>.</li>
+<li>Held-Karp relaxation for traveling salesman: <span class="math inline">\(\min \sum_{i,j}c_{i,j}X_{i,j}\)</span> under conditions
+\begin{align}
+0 \le X_{ij} &amp;\le 1\\
+\forall S\ne \phi, V, \quad \sum_{i\in S, j\in \ol S} X_{ij} &amp;\ge 2
+\end{align}
+(Last constraint is subtour elimination constraints. We can find a violation by finding a minimum cut with capacity <span class="math inline">\(&lt;2\)</span>.)</li>
+</ol>
+<!--
+Recall convex optimization. In general there is no succinct description for $K$.
+\begin{enumerate}
+\item
+LP: $f(x)=c^T\cdot x$.
+\item
+SDP: Think of $a^TXa\ge 0$ as infinitely many linear constraints. 
+\item
+Held-Karp relaxation for traveling salesman: $\min \sum_{i,j}c_{i,j}X_{i,j}$; for all $\sum_j X_{ij}=2$. 
+\fixme{Can't require eigenvalue $>$something?}
+To prevent disjoint cycles, for all $S\subeq [n],S\ne \phi,[n]$, $\sum_{i\in S,j\in \ol S} X_{ij}\ge 2$. (Exponentially many constraints. Nevertheless we can solve it!)
+\end{enumerate}
+We only need to be able to project to the convex body.-->
+<p><strong>Separation oracle</strong> for convex <span class="math inline">\(K\)</span>: given <span class="math inline">\(x\)</span>, gives a plane that separates <span class="math inline">\(K\)</span> from <span class="math inline">\(x\)</span> in polynomial time. Think of hyperplane as “feedback” on why <span class="math inline">\(x\nin K\)</span>.</p>
+<p><strong>Farkas’s Lemma</strong>: If <span class="math inline">\(K\)</span> is convex, for all <span class="math inline">\(x\nin K\)</span>, there is a hyperplane <span class="math inline">\(a^T\cdot x=b\)</span> such that <span class="math inline">\(K\)</span> lies on one side and <span class="math inline">\(y\)</span> on the other.</p>
+<p>Ex. 1. PSD: Compute eigenvalues of <span class="math inline">\(Y\)</span>. Say there is eigenvectors <span class="math inline">\(u\)</span> such that <span class="math inline">\(u^TYu&lt;0\)</span>. Use this hyperplane. 2. Traveling salesman: Cut with <span class="math inline">\(&lt;2\)</span>.</p>
+<p>An ellipsoid is <span class="math inline">\((X-a)^TBB^T(X-a)\le 1\)</span> where <span class="math inline">\(B\)</span> is PSD. The ellipsoid algorithm: given: an ellipsoid <span class="math inline">\(\cal E\)</span> containing <span class="math inline">\(K\)</span> and <span class="math inline">\(K\)</span> has a poly-time separation oracle.</p>
+<p>To find a point of <span class="math inline">\(K\)</span>, recurse:</p>
+<ol type="1">
+<li>Is the center <span class="math inline">\(x\)</span> in <span class="math inline">\(K\)</span>? If so, done.</li>
+<li>Else, find a separating hyperplane <span class="math inline">\(H\)</span> going through <span class="math inline">\(x\)</span>. Find the smallest ellipsoid containing the half cut by <span class="math inline">\(H\)</span>. (<span class="math inline">\(E_{i+1}=E_i\cap \set{x}{a^Tx\le b}\)</span>) This can be found in poly time with ellipsoids.</li>
+</ol>
+<p><strong>Theorem</strong>: <span class="math inline">\(\Vol(E_{i+1})\le \pa{1-\rc{2n}}\Vol(E_i)\)</span>.</p>
+<p>What we need: 1. Rephrase optimization as feasibility. (Binary search.) 2. Find a “reasonably snug” bounding ellipsoid for <span class="math inline">\(K\)</span>. 3. Implement separation oracle for <span class="math inline">\(K\)</span>. 4. Implement computation to find <span class="math inline">\(E_{i+1}\)</span> given <span class="math inline">\(E_i\)</span> and separation oracle.</p>
+<strong>Lemma</strong>. The minimum volume ellipsoid containing <span class="math inline">\(Ell(D,z)\cap \set{x}{a\cdot x\le a\cdot z}\)</span> is <span class="math inline">\(E'=Ell(D',z')\)</span> where
+\begin{align}
+z' &amp;= z-\rc{n+1} \fc{Da}{\sqrt{a^TDa}}\\
+D' &amp;= \fc{n^2}{n^2-1} \pa{D-\fc{2}{n+1}\fc{Daa^TD}{a^TDa}}\\
+\fc{\Vol(E')}{\Vol(E)} &amp;\le e^{-\rc{2n+2}}.
+\end{align}
+<p><em>Proof</em>. It suffices to prove this for <span class="math inline">\(D=I\)</span>, <span class="math inline">\(a=e_1\)</span>. Here <span class="math display">\[ D' = \fc{n^2}{n^2-1} \mattn{1-\fc{2}{n+1}}0{\cdots}0{1}{\cdots}{\vdots}{\vdots}{\ddots}.\]</span> Volume bound follows from determinant calculation.</p>
+<p>The number of steps needed is <span class="math inline">\(n\ln \pf{V_1}{V_0}\)</span> where <span class="math inline">\(V_1\)</span> is the volume of the smallest ellipsoid containing the body and <span class="math inline">\(V_0\)</span> is volume of the starting ellipsoid. Ex. If <span class="math inline">\(P\)</span> is a polyhedron, and <span class="math inline">\(\nu\)</span> is the number of bits required to write down any <span class="math inline">\(n\times n\)</span> subset of <span class="math inline">\((A,b)\)</span>, then <span class="math inline">\(\Vol(P)\ge 2^{-2n\nu}\)</span>. (Use Cramer’s rule to get expressions for vertices of <span class="math inline">\(Ax\le b\)</span>.) Then the number of iterations is <span class="math inline">\(O(n^2)\)</span>. ?? Each step takes <span class="math inline">\(O(n^2L)O(mn)\)</span> time (<span class="math inline">\(L\)</span>-bit numbers, check validity of point) for a total of <span class="math inline">\(O(mn^5L)\)</span>.</p>
+<blockquote>
+<p>How do you find a lion in the Sahara? Split it in half and recurse.</p>
+</blockquote>
+
+  </div>
+
+    
+
+    <!-- Extension : Sharing buttons @ www.sharethis.com -->
+    <span class='st_facebook_large' displayText='Facebook'></span>
+    <span class='st_twitter_large' displayText='Tweet'></span>
+    <span class='st_googleplus_large' displayText='Google +'></span>
+    <span class='st_reddit_large' displayText='Reddit'></span>
+    <span class='st__large' displayText=''></span>
+
+    <div id="disqus_thread"></div>
+    
+
+
+  
+    <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+  </div>
+  
+</div>
+]]></summary>
+</entry>
+<entry>
     <title>Weekly summary 2016-08-27</title>
     <link href="http://holdenlee.github.io/notebook/posts/summaries/2016-08-27.html" />
     <id>http://holdenlee.github.io/notebook/posts/summaries/2016-08-27.html</id>
@@ -1154,126 +1257,6 @@ P_n(\phi_n)&amp;\nin (a-\ep,b+\ep) &amp;\Leftarrow P_n('P_n(\phi_n)\in (a,b)') &
 <li>Talk: Yuanzhi on Bandit convex optimization (FOLLOW UP)</li>
 <li>Representation learning <a href="/posts/tcs/machine_learning/representation.html">summary</a>. Talked to Yingyu and kernel DL.</li>
 <li>Read <a href="/posts/tcs/machine_learning/matrices/BH16.html">BH16</a>.</li>
-</ul>
-
-  </div>
-
-    
-
-    <!-- Extension : Sharing buttons @ www.sharethis.com -->
-    <span class='st_facebook_large' displayText='Facebook'></span>
-    <span class='st_twitter_large' displayText='Tweet'></span>
-    <span class='st_googleplus_large' displayText='Google +'></span>
-    <span class='st_reddit_large' displayText='Reddit'></span>
-    <span class='st__large' displayText=''></span>
-
-    <div id="disqus_thread"></div>
-    
-
-
-  
-    <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
-  </div>
-  
-</div>
-]]></summary>
-</entry>
-<entry>
-    <title>[BH16] Algorithms for generalized topic modeling</title>
-    <link href="http://holdenlee.github.io/notebook/posts/tcs/machine_learning/matrices/BH16.html" />
-    <id>http://holdenlee.github.io/notebook/posts/tcs/machine_learning/matrices/BH16.html</id>
-    <published>2016-08-12T00:00:00Z</published>
-    <updated>2016-08-12T00:00:00Z</updated>
-    <summary type="html"><![CDATA[
-<div class="container">
-  <div id="content">
-    <div class="page header">
-      <h1>[BH16] Algorithms for generalized topic modeling</h1>
-    </div>
-    <div class="info">
-      
-       
-        <p>Posted: 2016-08-12 
-          , Modified: 2016-08-12 
-	</p>
-      
-       <p>Tags: <a href="/tags/topic%20modeling.html">topic modeling</a></p> 
-    </div>
-    
-  </div>
-  <!--/div-->
-
-  <div class="toc"> <ul>
- <li><a href="#problem">Problem</a><ul>
- <li><a href="#assumptions-non-noisy-case">Assumptions (Non-noisy case)</a></li>
- <li><a href="#assumptions-noisy-case">Assumptions (Noisy case)</a></li>
- </ul></li>
- <li><a href="#algorithm">Algorithm</a><ul>
- <li><a href="#non-noisy-case">Non-noisy case</a></li>
- <li><a href="#noisy-case">Noisy case</a></li>
- <li><a href="#lower-bounds">Lower bounds</a></li>
- </ul></li>
- </ul> </div>
-
-  <div class="blog-main">
-    <h2 id="problem">Problem</h2>
-<h3 id="assumptions-non-noisy-case">Assumptions (Non-noisy case)</h3>
-<p>Each document has two views <span class="math inline">\((x^1,x^2)\)</span>, ex., representing two paragraphs. There are <span class="math inline">\(k\)</span> topic vectors <span class="math inline">\(v_1,\ldots, v_k\)</span>.</p>
-<ol type="1">
-<li>Each document has a topic vector <span class="math inline">\(w\)</span> associated to it, satisfying <span class="math display">\[\an{w,v_i}=w_i\]</span> with <span class="math inline">\(\sum w_i=1\)</span> (<span class="math inline">\(w=(w_1,\ldots, w_k)\)</span> (<span class="math inline">\(\sum w_i=1\)</span>) is the mixture coefficients). Alternatively, letting <span class="math inline">\(A\)</span> be such that <span class="math inline">\(V^TA=I\)</span>, <span class="math display">\[\pi_{v_1,\ldots, v_k}(x^1)=\pi_{v_1,\ldots, v_k}(x^k) = w^TA.\]</span> (Let <span class="math inline">\(\De=\conv A\)</span>.)</li>
-<li>There exist pure documents: $&gt;$.</li>
-<li>Non-correlation: For all <span class="math inline">\(Z\sub \text{\null}\{v_1,\ldots, v_k\}\)</span>, <span class="math inline">\(\dim Z&lt;n-k\)</span>, <span class="math display">\[\Pj_{(x^1,x^2)\sim D^w} ((x^1-x^2)\nin \Z) \ge \ze.\]</span></li>
-</ol>
-<p>Problem: find <span class="math inline">\(w_i\)</span>.</p>
-<h3 id="assumptions-noisy-case">Assumptions (Noisy case)</h3>
-<ol type="1">
-<li>Observe <span class="math inline">\(\wh x_i^j=\begin{cases} x_i^j&amp;\text{w.p. }1-p_0\\ x_i^j + N(0,\si^2I_n)&amp;\text{w.p. }p_0\end{cases}\)</span>.</li>
-<li>The least nonzero singular value of <span class="math inline">\(\Var(x^1-x^2)\)</span> is <span class="math inline">\(\ge \si^2 + \de_0\)</span>.</li>
-<li><span class="math inline">\(\ve{x_i^j}_2\le M\)</span>.</li>
-</ol>
-<h2 id="algorithm">Algorithm</h2>
-<h3 id="non-noisy-case">Non-noisy case</h3>
-<ol type="1">
-<li>Let <span class="math inline">\(X_1,X_2\)</span> have <span class="math inline">\(x^1\)</span> and <span class="math inline">\(x^2\)</span>’s in their columns. Let <span class="math inline">\(P\)</span> be the projection onto the last <span class="math inline">\(k\)</span> singular vectors of <span class="math inline">\(X_1-X_2\)</span>.</li>
-<li>Let <span class="math inline">\(S_\parallel = \{Px_i^j\}\)</span>. Let <span class="math inline">\(A\)</span> be the extreme points of the convex hull.</li>
-<li>Return <span class="math inline">\(A^+=[v_1,\ldots, v_k]\)</span>.</li>
-</ol>
-<p><em>Proof</em>.</p>
-<ol type="1">
-<li><p>With <span class="math inline">\(O\pa{\fc{n-k}{\ze}\ln \prc{\de}}\)</span> samples, with probability <span class="math inline">\(1-\de\)</span>, <span class="math inline">\(\rank(Z)=n-k\)</span>.</p>
-<em>Proof</em>. Induct: <span class="math inline">\(\rank\set{x_i^1-x_i^2}{i&lt;\fc{j}{ze}\ln \pf{n}{\de}}&lt;j\)</span> with probability <span class="math inline">\(\fc{j\de}{n}\)</span>.</li>
-<li><span class="math inline">\(x_{\parallel} = \pi_{v_1,\ldots, v_k}(x) = \sum (v_i \cdot x)a_i = AV^T x\)</span>.</li>
-<li><p>Takig <span class="math inline">\(m=\Om(\rc{\ze}\ln \pf{k}{\de})\)</span> samples, wp <span class="math inline">\(1-\de\)</span>, <span class="math inline">\(\{a_1,\ldots, a_k\}\)</span> are extreme points of <span class="math inline">\(\conv(S_{\parallel})\)</span>.</p></li>
-</ol>
-<h3 id="noisy-case">Noisy case</h3>
-<ol type="1">
-<li>Let <span class="math inline">\(P\)</span> be the projection onto the last <span class="math inline">\(k\)</span> left singular values of <span class="math inline">\(\wh X_1-\wh X_2\)</span>.</li>
-<li><p>Take <span class="math inline">\(m_2\)</span> fresh samples and let <span class="math inline">\(\wh S_{\parallel} = \{\wh P \wh x_i^1\}\)</span>.</p>
-Let <span class="math inline">\(\ep' = \fc{\ep}{8r}\)</span>. Remove <span class="math inline">\(\wh x_{\parallel}\)</span> from <span class="math inline">\(\wh S_{\parallel}\)</span> if <span class="math inline">\(&lt;\fc{p_0 \xi m_2}2\)</span> points in <span class="math inline">\(B_{\fc{\ep'}2}(\wh x_{\parallel})\)</span>.</li>
-<li><p>If <span class="math inline">\(d(\wh x_{\parallel}, \conv (\wh S_{\parallel}\bs B_{6r \ep'}(\wh x))\ge 2\ep'\)</span>, add <span class="math inline">\(\wh x_{\parallel}\)</span> to <span class="math inline">\(C\)</span>.</p>
-<p>Cluster <span class="math inline">\(C\)</span> by single linkage (i.e. put in same cluster if <span class="math inline">\(\le\)</span>) <span class="math inline">\(16r\ep'=2\ep\)</span>. Return any point from cluster <span class="math inline">\(i\)</span> as <span class="math inline">\(\wh a_i\)</span>.</p></li>
-</ol>
-<p>Here, <span class="math inline">\(r\)</span> is the smallest value such that <span class="math inline">\(d(a_i, \conv(\De\bs B(a_i,r\ep))) \ge \ep\)</span>.</p>
-<p><em>Proof</em>.</p>
-<ol type="1">
-<li><p>Show whp <span class="math inline">\(\ve{P-\wh P}_2\le \ep\)</span>.</p>
-<p>Let <span class="math inline">\(D=X_1-X_2\)</span>. Split <span class="math display">\[ \rc m \wh D \wh D^T - \si^2 I_n -\rc{m} DD^T = \pa{\rc m EE^T - \si^2 I_n} + \pa{\rc m DE^T + \rc m ED^T}. \]</span> Establish 2 properties:</p>
-<ol type="1">
-<li>Whp, this is <span class="math inline">\(\le \ep\)</span>. Use Matrix Bernstein on each term above.</li>
-<li>Whp <span class="math inline">\(\la_{n-k} \pa{\rc m \wh D \wh D^T) &gt; \si^2 +\fc{\de_0}2\)</span>. Bound by the spectral norm of the difference.</li>
-</ol>
-Now use Davis-Kahan.</li>
-<li><p>(Denoising) For appropriate <span class="math inline">\(\ep'\)</span>, <span class="math inline">\(m\)</span>, for any <span class="math inline">\(x\in \wh S_{\parallel}\)</span>, <span class="math inline">\(d(x,\De)\le \ep'\)</span> (points that are kept are close), and for all <span class="math inline">\(i\in [k]\)</span>, there is <span class="math inline">\(\wh a_i\in \wh S_{\parallel}\)</span> such that <span class="math inline">\(\ve{\wh a_i-a_i}\le \ep'\)</span>.</p>
-<em>Proof</em> Use Gaussian anticoncentration, and the fact that in a large sample set, the fraction of samples within any region is close to the density of the region.</li>
-<li><p>Returns <span class="math inline">\(\ve{a_i-\wh a_i}\le \ep\)</span>. Use the definition of <span class="math inline">\(r\)</span> and some geometry.</p></li>
-</ol>
-<h3 id="lower-bounds">Lower bounds</h3>
-<p>Any algorithm requires <span class="math inline">\(\Om(n)\)</span>, not <span class="math inline">\(\Om(k)\)</span> samples.</p>
-<p>Further study:</p>
-<ul>
-<li>Agnostic noise</li>
-<li>General functions <span class="math inline">\(f\)</span>: look at the convex cone of projected samples.</li>
-<li>More general class of similarity functions, e.g. kernels.</li>
 </ul>
 
   </div>

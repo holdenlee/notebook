@@ -109,3 +109,16 @@ Unsupervised SVM
 * ? http://stats.stackexchange.com/questions/212080/yet-another-unsupervised-svm
 * [Unsupervised SVM (thesis)](https://www.uni-oldenburg.de/fileadmin/user_upload/informatik/download/Promotionen/phdthesis_fabian_gieseke.pdf)
 * [Multi-class SVM](http://www.aaai.org/Papers/AAAI/2005/AAAI05-143.pdf)
+
+# Relaxing independent sparsity
+
+Independent sparsity---required for [AGM14](matrices/AGM14.html) and [AGMM15](matrices/AGMM15.html) (actually, 2-wise "almost independence" is good)---is unrealistic because features may be correlated/co-occur. A first step may be to consider group sparsity.
+
+Google for "dictionary learning group sparsity":
+
+* [Proximal Methods for Sparse Hierarchical Dictionary Learning](http://machinelearning.wustl.edu/mlpapers/paper_files/icml2010_JenattonMOB10.pdf)
+* [Group Sparsity and Geometry Constrained Dictionary Learning for Action
+Recognition from Depth Maps](http://www.cv-foundation.org/openaccess/content_iccv_2013/papers/Luo_Group_Sparsity_and_2013_ICCV_paper.pdf)
+* [Sparsity-based Image Denoising via Dictionary Learning and Structural
+Clustering](http://see.xidian.edu.cn/faculty/wsdong/Papers/Conference/0697.pdf) (clustering based sparse representation)
+* [Dictionary Learning with Group Sparsity and Graph Regularization (DL-GSGR)](http://ieeexplore.ieee.org/document/6296694/?arnumber=6296694)
