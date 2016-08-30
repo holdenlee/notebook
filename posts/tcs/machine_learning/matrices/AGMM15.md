@@ -189,7 +189,7 @@ The strategy is to show that step is correlated with the actual minimum, and the
 
 [^q5]: Do we need concentration too?
 
-##Initialization
+## Initialization
 
 *   (Lemma 20) Write $M_{u,v}=\EE[\an{u,y}\an{v,y}yy^T]$ as a main term plus error terms. (Why does this only give up to $\rc{\log n}$?)
     $$ M_{u,v} = \sum_{i\in U\cap V} q_ic_i\be_i\be_i' A_i^*,A_i^{*T}+E_1+E_2+E_3$$
@@ -200,12 +200,12 @@ The strategy is to show that step is correlated with the actual minimum, and the
 	*   (Lemma 37) If there is a gap between the largest and second largest singular values as in the algorithm, then w.h.p. $u,v$ share a unique dictionary element. (Proof uses Weyl's Theorem, HJ90---check this out.)
 	*   Finally, $\Pj(|U\cap V|=\{i\}) = \Om\pf{k^2}{m^2}$.
 
-#Bird's eye view
+# Bird's eye view
 
 *   Main technique: Alternating minimization. Crystallize out a weaker form of gradient descent, what is *actually* needed.
 *   Threshold to denoise and cancel out the vectors that are 0.
 *   For initialization, try to find the columns as the largest eigenvector of some matrix (SVD). Which matrix? $\E\an{y,u}\an{y,v}yy^T$, because intuitively the large singular values will correspond to indices shared by $u,v$, and with good probability $u,v$ have only one index in common in their support. 
 
-#Questions
+# Questions
 
 * Presence of multiple local minima?
