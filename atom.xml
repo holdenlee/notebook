@@ -8,8 +8,193 @@
         <name>Holden Lee</name>
         <email>oldheneel@gmail.com</email>
     </author>
-    <updated>2016-08-30T00:00:00Z</updated>
+    <updated>2016-08-31T00:00:00Z</updated>
     <entry>
+    <title>Transductive learning</title>
+    <link href="http://holdenlee.github.io/notebook/posts/tcs/machine_learning/transduction.html" />
+    <id>http://holdenlee.github.io/notebook/posts/tcs/machine_learning/transduction.html</id>
+    <published>2016-08-31T00:00:00Z</published>
+    <updated>2016-08-31T00:00:00Z</updated>
+    <summary type="html"><![CDATA[
+<div class="container">
+  <div id="content">
+    <div class="page header">
+      <h1>Transductive learning</h1>
+    </div>
+    <div class="info">
+      
+       
+        <p>Posted: 2016-08-31 
+          , Modified: 2016-08-31 
+	</p>
+      
+       <p>Tags: <a href="/tags/self-taught%20learning.html">self-taught learning</a>, <a href="/tags/dictionary%20learning.html">dictionary learning</a>, <a href="/tags/sparse%20coding.html">sparse coding</a></p> 
+    </div>
+    
+  </div>
+  <!--/div-->
+
+  <div class="toc"></div>
+
+  <div class="blog-main">
+    <p>From <a href="https://en.wikipedia.org/wiki/Transduction_(machine_learning)">wikipedia</a></p>
+<blockquote>
+<p>In logic, statistical inference, and supervised learning, transduction or transductive inference is reasoning from observed, specific (training) cases to specific (test) cases. In contrast, induction is reasoning from observed training cases to general rules, which are then applied to the test cases. The distinction is most interesting in cases where the predictions of the transductive model are not achievable by any inductive model. Note that this is caused by transductive inference on different test sets producing mutually inconsistent predictions.</p>
+</blockquote>
+<p>Ex. Semi-supervised clustering</p>
+
+  </div>
+
+    
+
+    <!-- Extension : Sharing buttons @ www.sharethis.com -->
+    <span class='st_facebook_large' displayText='Facebook'></span>
+    <span class='st_twitter_large' displayText='Tweet'></span>
+    <span class='st_googleplus_large' displayText='Google +'></span>
+    <span class='st_reddit_large' displayText='Reddit'></span>
+    <span class='st__large' displayText=''></span>
+
+    <div id="disqus_thread"></div>
+    
+
+
+  
+    <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+  </div>
+  
+</div>
+]]></summary>
+</entry>
+<entry>
+    <title>Self-taught learning ([RBLPN07] Self-taught Learning: Transfer Learning from Unlabeled Data)</title>
+    <link href="http://holdenlee.github.io/notebook/posts/tcs/machine_learning/self_taught_learning.html" />
+    <id>http://holdenlee.github.io/notebook/posts/tcs/machine_learning/self_taught_learning.html</id>
+    <published>2016-08-31T00:00:00Z</published>
+    <updated>2016-08-31T00:00:00Z</updated>
+    <summary type="html"><![CDATA[
+<div class="container">
+  <div id="content">
+    <div class="page header">
+      <h1>Self-taught learning ([RBLPN07] Self-taught Learning: Transfer Learning from Unlabeled Data)</h1>
+    </div>
+    <div class="info">
+      
+       
+        <p>Posted: 2016-08-31 
+          , Modified: 2016-08-31 
+	</p>
+      
+       <p>Tags: <a href="/tags/self-taught%20learning.html">self-taught learning</a>, <a href="/tags/dictionary%20learning.html">dictionary learning</a>, <a href="/tags/sparse%20coding.html">sparse coding</a></p> 
+    </div>
+    
+  </div>
+  <!--/div-->
+
+  <div class="toc"> <ul>
+ <li><a href="#definition">Definition</a></li>
+ <li><a href="#approach">Approach</a></li>
+ <li><a href="#discussion">Discussion</a></li>
+ </ul> </div>
+
+  <div class="blog-main">
+    <p><a href="http://www.andrewng.org/portfolio/self-taught-learning-transfer-learning-from-unlabeled-data/">website</a></p>
+<h2 id="definition">Definition</h2>
+<p>Unlabeled data (ex. random Internet images, unlimited audio) need not have the same class labels or generative distribution as labeled data. This is different from</p>
+<ul>
+<li>semi-supervised learning setting (same distribution/classes)</li>
+<li>transfer learning (requires labels for both groups)</li>
+</ul>
+<p>Makes ML easier and cheaper. Much of human learning is believed to be from unlabeled data. (Order of magnitude: <span class="math inline">\(10^{14}\pat{synapses}/10^9s=10^5\)</span>bits/s)</p>
+<!-- (? Ex. maybe just overlap in dictionary features?)-->
+<h2 id="approach">Approach</h2>
+<ol type="1">
+<li><p>Use sparse coding to construct higher-level features using unlabeled data. (cf. representation learning)</p>
+They use <span class="math inline">\(L^1\)</span> norm regularization. <span class="math inline">\(\min_{A,x, \ve{A_{\cdot j}}\le 1} \sum_i \ve{y^{(i)} - Ax}_2^2 + \be \ve{x}_1\)</span>. Use AM.</li>
+<li>For each input, do sparse recovery (same objective, fixing the <span class="math inline">\(A\)</span> now). This is a convex problem.</li>
+<li><p>Now apply supervised learning algorithm, e.g. SVM.</p></li>
+</ol>
+<h2 id="discussion">Discussion</h2>
+<p>?? Sparse coding model also suggests a specific specialized similarity function (kernel) for the learned representations. Once the bases b have been learned using unlabeled data, we obtain a complete generative model for the input x. Thus, we can compute the Fisher kernel to measure the similarity between new inputs.</p>
+<p>(Disadvantages of PCA: linear and undercomplete)</p>
+<p>What about auto-encoders and NMF?</p>
+
+  </div>
+
+    
+
+    <!-- Extension : Sharing buttons @ www.sharethis.com -->
+    <span class='st_facebook_large' displayText='Facebook'></span>
+    <span class='st_twitter_large' displayText='Tweet'></span>
+    <span class='st_googleplus_large' displayText='Google +'></span>
+    <span class='st_reddit_large' displayText='Reddit'></span>
+    <span class='st__large' displayText=''></span>
+
+    <div id="disqus_thread"></div>
+    
+
+
+  
+    <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+  </div>
+  
+</div>
+]]></summary>
+</entry>
+<entry>
+    <title>Nash equilibrium</title>
+    <link href="http://holdenlee.github.io/notebook/posts/tcs/algorithmic_game_theory/nash_equilibrium.html" />
+    <id>http://holdenlee.github.io/notebook/posts/tcs/algorithmic_game_theory/nash_equilibrium.html</id>
+    <published>2016-08-31T00:00:00Z</published>
+    <updated>2016-08-31T00:00:00Z</updated>
+    <summary type="html"><![CDATA[
+<div class="container">
+  <div id="content">
+    <div class="page header">
+      <h1>Nash equilibrium</h1>
+    </div>
+    <div class="info">
+      
+       
+        <p>Posted: 2016-08-31 
+          , Modified: 2016-08-31 
+	</p>
+      
+       <p>Tags: <a href="/tags/game%20theory.html">game theory</a>, <a href="/tags/Nash.html">Nash</a></p> 
+    </div>
+    
+  </div>
+  <!--/div-->
+
+  <div class="toc"> <ul>
+ <li><a href="#definitions">Definitions</a></li>
+ </ul> </div>
+
+  <div class="blog-main">
+    <h2 id="definitions">Definitions</h2>
+
+  </div>
+
+    
+
+    <!-- Extension : Sharing buttons @ www.sharethis.com -->
+    <span class='st_facebook_large' displayText='Facebook'></span>
+    <span class='st_twitter_large' displayText='Tweet'></span>
+    <span class='st_googleplus_large' displayText='Google +'></span>
+    <span class='st_reddit_large' displayText='Reddit'></span>
+    <span class='st__large' displayText=''></span>
+
+    <div id="disqus_thread"></div>
+    
+
+
+  
+    <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+  </div>
+  
+</div>
+]]></summary>
+</entry>
+<entry>
     <title>Ellipsoid method</title>
     <link href="http://holdenlee.github.io/notebook/posts/tcs/machine_learning/optimization/ellipsoid.html" />
     <id>http://holdenlee.github.io/notebook/posts/tcs/machine_learning/optimization/ellipsoid.html</id>
@@ -113,6 +298,178 @@ D' &amp;= \fc{n^2}{n^2-1} \pa{D-\fc{2}{n+1}\fc{Daa^TD}{a^TDa}}\\
 ]]></summary>
 </entry>
 <entry>
+    <title>Tensor decomposition</title>
+    <link href="http://holdenlee.github.io/notebook/posts/tcs/machine_learning/matrices/tensor_decomposition.html" />
+    <id>http://holdenlee.github.io/notebook/posts/tcs/machine_learning/matrices/tensor_decomposition.html</id>
+    <published>2016-08-30T00:00:00Z</published>
+    <updated>2016-08-30T00:00:00Z</updated>
+    <summary type="html"><![CDATA[
+<div class="container">
+  <div id="content">
+    <div class="page header">
+      <h1>Tensor decomposition</h1>
+    </div>
+    <div class="info">
+      
+       
+        <p>Posted: 2016-08-30 
+          , Modified: 2016-08-30 
+	</p>
+      
+       <p>Tags: <a href="/tags/tensors.html">tensors</a></p> 
+    </div>
+    
+  </div>
+  <!--/div-->
+
+  <div class="toc"> <ul>
+ <li><a href="#basics">Basics</a></li>
+ </ul> </div>
+
+  <div class="blog-main">
+    <h2 id="basics">Basics</h2>
+<p>See “Tensor methods” in <code>new_thread.pdf</code>.</p>
+<p>Review questions:</p>
+<ol type="1">
+<li>Define tensor and tensor decomposition. When is it unique? Discuss the intractability of tensor problems. Why would we work with them? Give an example where matrix methods fail but tensor methods work because of uniqueness.</li>
+<li>What properties of matrix rank fail for tensor rank?</li>
+<li>(*) Give Jeinrich’s algorithm. When does it work, and what is its complexity?
+<ul>
+<li>Suppose <span class="math inline">\(T=\sum^r u_i\ot v_i\ot w_i\)</span>, where <span class="math inline">\(\{u_i\}\)</span> is linearly independent, <span class="math inline">\(\{v_i\}\)</span> is l.i., and every pair in <span class="math inline">\(\{w_i\}\)</span> is l.i. Then this decomposition is unique and there is an efficient algorithm to find it.</li>
+<li>For a tensor <span class="math inline">\(T\in V^{\ot 3}\)</span>, view <span class="math inline">\(T_{\bullet}\in V\ot V^*\ot V^*\)</span>, with <span class="math inline">\(\bullet\)</span> corresponding to the last <span class="math inline">\(V^*\)</span>. The slices are sums of rank 1 matrices <span class="math inline">\(u_iv_i^*\)</span> with coefficients given by the projections of <span class="math inline">\(w_i\)</span> onto <span class="math inline">\(a\)</span>.
+\begin{align}
+T_a &amp;=\sum \an{w_i,a}u_iv_i^* =: UD_aV^*
+T_aT_b^+ &amp;= UD_aD_b^+ U^+\\
+T_b^+T_a &amp;= VD_b^+D_a V^+
+\end{align}
+WHP diagonalization recovers <span class="math inline">\(U,V\)</span>.</li>
+</ul></li>
+<li>Give a perturbation bound for finding eigenvalues and eigenvectors of a matrix. What does the bound depend on, in what way (polynomial?)? Make it quantitative. Use this to give a bound on convergence in tensor decomposition.</li>
+<li>What is the Kruskal rank, why is it important?</li>
+<li>Describe the phylogenetic tree/HMM setup. How can you solve it with tensor methods?</li>
+<li>What about the non-full-rank case? (Give a reduction from noisy parity.)</li>
+<li>Give the block stochastic model. When is it information theoretically posible to find the groups (is this exact, or up to some error)? Compare spectral algorithms with tensor methods. (What are the assumptions? Why are tensor methods more flexible?)</li>
+<li>(*) Describe and prove the tensor algorithm for the block stochastic model.</li>
+<li>(*) Give a tensor algorithm for a pure topic model, and then generalize under latent dirichlet allocation. Why is the Dirichlet distribution particularly nice here? Find the complexity and error in terms of parameters.</li>
+<li>(*) Give a tensor algorithm for independent component analysis. There is a dependence on non-Gaussianlity: explain.</li>
+<li>Define the cumulants of a distribution. Why are they nice to work with, and how do they help in algorithms?</li>
+</ol>
+
+  </div>
+
+    
+
+    <!-- Extension : Sharing buttons @ www.sharethis.com -->
+    <span class='st_facebook_large' displayText='Facebook'></span>
+    <span class='st_twitter_large' displayText='Tweet'></span>
+    <span class='st_googleplus_large' displayText='Google +'></span>
+    <span class='st_reddit_large' displayText='Reddit'></span>
+    <span class='st__large' displayText=''></span>
+
+    <div id="disqus_thread"></div>
+    
+
+
+  
+    <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+  </div>
+  
+</div>
+]]></summary>
+</entry>
+<entry>
+    <title>[BKS15] Dictionary Learning and Tensor Decomposition via the Sum-of-Squares Method</title>
+    <link href="http://holdenlee.github.io/notebook/posts/tcs/machine_learning/matrices/BKS15.html" />
+    <id>http://holdenlee.github.io/notebook/posts/tcs/machine_learning/matrices/BKS15.html</id>
+    <published>2016-08-30T00:00:00Z</published>
+    <updated>2016-08-30T00:00:00Z</updated>
+    <summary type="html"><![CDATA[
+<div class="container">
+  <div id="content">
+    <div class="page header">
+      <h1>[BKS15] Dictionary Learning and Tensor Decomposition via the Sum-of-Squares Method</h1>
+    </div>
+    <div class="info">
+      
+       
+        <p>Posted: 2016-08-30 
+          , Modified: 2016-08-30 
+	</p>
+      
+       <p>Tags: <a href="/tags/dictionary%20learning.html">dictionary learning</a>, <a href="/tags/tensor.html">tensor</a>, <a href="/tags/sparse%20coding.html">sparse coding</a></p> 
+    </div>
+    
+  </div>
+  <!--/div-->
+
+  <div class="toc"> <ul>
+ <li><a href="#noisy-tensor-decomposition">Noisy tensor decomposition</a><ul>
+ <li><a href="#reduction">Reduction</a></li>
+ <li><a href="#algorithm">Algorithm</a></li>
+ </ul></li>
+ </ul> </div>
+
+  <div class="blog-main">
+    <p><strong>Theorem</strong>. Given <span class="math inline">\(\ep&gt;0,\si\ge 1, \de&gt;0\)</span> there exists <span class="math inline">\(d\)</span> and a polytime algorithm that given input</p>
+<ul>
+<li>a <span class="math inline">\(\si\)</span>-dictionary <span class="math inline">\(n\times m\)</span>,</li>
+<li><span class="math inline">\((d,\tau=n^{-\de})\)</span>-nice <span class="math inline">\(\{x\}\)</span>,</li>
+<li><span class="math inline">\(n^{O(1)}\)</span> samples from <span class="math inline">\(y=Ax\)</span>,</li>
+</ul>
+<p>outputs with probability <span class="math inline">\(\ge 0.9\)</span> a set <span class="math inline">\(\ep\)</span>-close to columns of <span class="math inline">\(A\)</span>.</p>
+<ul>
+<li>A <span class="math inline">\(\si\)</span>-dictionary has <span class="math inline">\(AA^T\preceq \si I\)</span> (analytic proxy for overcompleteness <span class="math inline">\(\fc mn\)</span>).</li>
+<li>A distribution is <span class="math inline">\((d,\tau)\)</span>-nice if <span class="math inline">\(\E x_i^{d/2}x_j^{d/2}\le \tau\)</span> for all <span class="math inline">\(i\ne j\)</span>, and <span class="math inline">\(\E x^\al=0\)</span> for all <span class="math inline">\(|\al|\le d\)</span>. (Ex. Bernoulli(<span class="math inline">\(\tau\)</span>) times Gaussian with <span class="math inline">\(\E z_i^d = \rc\tau\)</span>.)</li>
+</ul>
+<p>Note on running time:</p>
+<ul>
+<li><span class="math inline">\(\ep\)</span>-accuracy with running time depending on <span class="math inline">\(\poly\prc{\ep}\)</span> in the exponent. So this is better for giving an initial solution for local search methods.</li>
+</ul>
+<h2 id="noisy-tensor-decomposition">Noisy tensor decomposition</h2>
+<p>Given noisy version of <span class="math inline">\(\sumo im \an{a^i, u}^d = \ve{A^Tu}_d^d\)</span>, recover <span class="math inline">\(\{a^1,\ldots, a^m\}\)</span>.</p>
+<p><strong>Theorem</strong> (Noisy tensor decomposition). For every <span class="math inline">\(\ep&gt;0,\si\ge 1\)</span> there exist <span class="math inline">\(d,\tau\)</span> such that a probabilistic <span class="math inline">\(n^{O(\ln n)}\)</span>-time agorithm, given <span class="math inline">\(P\)</span> with <span class="math display">\[\ve{A^T u}_d^d - \tau \ve{u}_2^d \preceq P \preceq \ve{A^Tu}_d^d + \tau \ve{u}_2^d,\]</span> outputs with probability 0.9 <span class="math inline">\(S\)</span> that is <span class="math inline">\(\ep\)</span>-close to <span class="math inline">\(\{a^1,\ldots, a^m\}\)</span>. (<span class="math inline">\(\preceq\)</span> means the difference is a sum of squares.)</p>
+<p>Note this allows significant noise since we expect <span class="math inline">\(\ve{A^Tu}_d^d\sim mn^{-\fc d2}\ll \tau\)</span>.</p>
+<h3 id="reduction">Reduction</h3>
+<p>Take <span class="math display">\[ P = \EE_{i} \an{y_i, u}^{2d}.\]</span></p>
+<h3 id="algorithm">Algorithm</h3>
+<ol type="1">
+<li>Use SoS to find degree-<span class="math inline">\(k\)</span> pseudo-distribution <span class="math inline">\(\{u\}\)</span> that maximizes <span class="math inline">\(P(u)\)</span> under <span class="math inline">\(\ve{u}^2=1\)</span>.</li>
+<li>Let <span class="math inline">\(W\)</span> be a product of <span class="math inline">\(O(\ln n)\)</span> rndom linear functions.</li>
+<li>Output top eigenvector of <span class="math inline">\(M\)</span>, <span class="math inline">\(M_{ij} = \wt \E W(u)^2 u_iu_j\)</span>.</li>
+</ol>
+<p>SoS Algorithm: given <span class="math inline">\(\ep&gt;0, k,n,M\)</span>, <span class="math inline">\(P_1,\ldots, P_m\in \R[x_1,\ldots, x_n]\)</span> with coefficients in <span class="math inline">\([0,M]\)</span>, if there exists a degree <span class="math inline">\(k\)</span> pseudo-distribution with <span class="math inline">\(P_i=0,i\in [m]\)</span>, then we can find <span class="math inline">\(u'\)</span> satisfying <span class="math inline">\(P_i\le \ep, P_i\ge -\ep\)</span> for every <span class="math inline">\(i\in [m]\)</span> in time <span class="math inline">\((n\polylog\prc{M}{\ep})^{O(k)}\)</span>.</p>
+<p>(This is a feasibility problem? Use ellipsoid method?)</p>
+<p>Steps</p>
+<ol type="1">
+<li>If <span class="math inline">\(u\)</span> is an actual distribution, the the output is close to a column.</li>
+<li>Generalize to pseudo-distributions.</li>
+<li>Generalize to getting all columns.</li>
+</ol>
+<p>Idea: If not correlated, then <span class="math inline">\(P(u)\)</span> is small. The inequalities can be turned into polynomial inequalities provable by SoS.</p>
+
+  </div>
+
+    
+
+    <!-- Extension : Sharing buttons @ www.sharethis.com -->
+    <span class='st_facebook_large' displayText='Facebook'></span>
+    <span class='st_twitter_large' displayText='Tweet'></span>
+    <span class='st_googleplus_large' displayText='Google +'></span>
+    <span class='st_reddit_large' displayText='Reddit'></span>
+    <span class='st__large' displayText=''></span>
+
+    <div id="disqus_thread"></div>
+    
+
+
+  
+    <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+  </div>
+  
+</div>
+]]></summary>
+</entry>
+<entry>
     <title>Weekly summary 2016-09-03</title>
     <link href="http://holdenlee.github.io/notebook/posts/summaries/2016-09-03.html" />
     <id>http://holdenlee.github.io/notebook/posts/summaries/2016-09-03.html</id>
@@ -139,6 +496,8 @@ D' &amp;= \fc{n^2}{n^2-1} \pa{D-\fc{2}{n+1}\fc{Daa^TD}{a^TDa}}\\
 
   <div class="toc"> <ul>
  <li><a href="#threads">Threads</a></li>
+ <li><a href="#summary">Summary</a></li>
+ <li><a href="#conversation-with-arora">Conversation with Arora</a></li>
  </ul> </div>
 
   <div class="blog-main">
@@ -211,6 +570,26 @@ D' &amp;= \fc{n^2}{n^2-1} \pa{D-\fc{2}{n+1}\fc{Daa^TD}{a^TDa}}\\
 <li>Probabilistic view of dictionary learning (LDA, hierarchical DP, etc.) <span class="citation" data-cites="Bianca">@Bianca</span></li>
 <li>Pattern theory—how they model images. Traditional image things—wavelets etc.</li>
 </ul>
+<h2 id="summary">Summary</h2>
+<ul>
+<li>Reading
+<ul>
+<li><a href="../tcs/machine_learning/self_taught_learning.html">Self-taught learning</a></li>
+<li><a href="../tcs/machine_learning/transduction.html">Transduction</a></li>
+<li><a href="../tcs/machine_learning/tensor/BKS15.html">BKS15 Dictionary Learning and Tensor Decomposition via the Sum-of-Squares Method</a></li>
+</ul></li>
+</ul>
+<h2 id="conversation-with-arora">Conversation with Arora</h2>
+<ul>
+<li>“Show that backprop works.”
+<ul>
+<li>Assume a generative distribution: <span class="math inline">\(x\)</span> from sparse distribution, observe <span class="math inline">\(y\approx Ax\)</span>, there is a SVM classifier depending on <span class="math inline">\(x\)</span>. Show that backprop for a 2-layer NN works. (<span class="citation" data-cites="Tengyu">@Tengyu</span>)</li>
+</ul></li>
+<li>PMI: restrict to features that co-occur.</li>
+<li>SoS for TD + AM for DL gives <span class="math inline">\(n^{O(\log n)}\)</span> algorithm for sparsity <span class="math inline">\(n^{1-\ep}\)</span>. Check this (don’t need sparsity after initialization).</li>
+<li>(Hard) Kernel SVM’s can’t learn DL + classifier (essentially 2-layer NN).</li>
+</ul>
+<!--1-layer NN is like sparse recovery.-->
 
   </div>
 
@@ -578,728 +957,6 @@ Solving for <span class="math inline">\(\De \la\)</span> and substituting gives
 <ul>
 <li>Each constraint has the force <span class="math inline">\(\rc{f_i(x)}\nb f_i(x)\)</span> and the objective force field is <span class="math inline">\(-t\nb f_0(x)\)</span>.</li>
 </ul>
-
-  </div>
-
-    
-
-    <!-- Extension : Sharing buttons @ www.sharethis.com -->
-    <span class='st_facebook_large' displayText='Facebook'></span>
-    <span class='st_twitter_large' displayText='Tweet'></span>
-    <span class='st_googleplus_large' displayText='Google +'></span>
-    <span class='st_reddit_large' displayText='Reddit'></span>
-    <span class='st__large' displayText=''></span>
-
-    <div id="disqus_thread"></div>
-    
-
-
-  
-    <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
-  </div>
-  
-</div>
-]]></summary>
-</entry>
-<entry>
-    <title>Logic of provability</title>
-    <link href="http://holdenlee.github.io/notebook/posts/math/logic/logic_of_provability.html" />
-    <id>http://holdenlee.github.io/notebook/posts/math/logic/logic_of_provability.html</id>
-    <published>2016-08-25T00:00:00Z</published>
-    <updated>2016-08-25T00:00:00Z</updated>
-    <summary type="html"><![CDATA[
-<div class="container">
-  <div id="content">
-    <div class="page header">
-      <h1>Logic of provability</h1>
-    </div>
-    <div class="info">
-      
-       
-        <p>Posted: 2016-08-25 
-          , Modified: 2016-08-25 
-	</p>
-      
-       <p>Tags: <a href="/tags/logic.html">logic</a>, <a href="/tags/self-reference.html">self-reference</a>, <a href="/tags/provability.html">provability</a></p> 
-    </div>
-    
-  </div>
-  <!--/div-->
-
-  <div class="toc"> <ul>
- <li><a href="#systems">Systems</a></li>
- <li><a href="#questions">Questions</a></li>
- </ul> </div>
-
-  <div class="blog-main">
-    <p>George Boolos</p>
-<h2 id="systems">Systems</h2>
-<p>Normal: all tautologies, distribution axioms, closed under MP, necessitation (???), substitution.</p>
-<p>(I’m confused about necessitation. Aren’t there true things without proof? Yes, but you couldn’t have written them down in the first place! The fact that you can write down <span class="math inline">\(A\)</span> as a result of some deductions means you proved <span class="math inline">\(A\)</span>, so you might as well say you proved <span class="math inline">\(\square A\)</span> too! Note <span class="math inline">\(A\implies \square A\)</span> is a deduction rule, but <span class="math inline">\(A\to \square A\)</span> is NOT TRUE! The difference is that in the deduction rule, <span class="math inline">\(A\)</span> must have been deduced as well. I hesitate to call this a deduction rule, actually… This can only be done top-level, you can’t do it on <span class="math inline">\(A\wedge \neg A\)</span>… A rule of inference cannot always be interpreted as an axiom! This inference rule is sort-of like Kripke… I think you have to be very careful here to avoid <span class="math inline">\(A\to \square A, \neg A \to \square \neg A, \square A \wedge \square \neg A\)</span>.)</p>
-<p>Additional axioms.</p>
-<ul>
-<li>K (Kripke): no more.</li>
-<li>K4: <span class="math inline">\(\square A \to \square\square A\)</span>. This is true and provable in PA.</li>
-<li>T: <span class="math inline">\(\square A \to A\)</span>. This is NOT provable in PA. What happens if we add it?</li>
-<li>S4: K4+T.</li>
-<li>B: T+<span class="math inline">\(\square \diamond A\)</span>.</li>
-<li>S5: T+<span class="math inline">\(\diamond A \to \square \diamond A\)</span>.</li>
-<li>GL: Lob’s Theorem <span class="math inline">\(\square (\square A \to A) \to \square A\)</span>.</li>
-</ul>
-<p>Inclusions: Note K4<span class="math inline">\(\subeq\)</span>GL, B<span class="math inline">\(\subeq\)</span>S5.</p>
-<p>Question: Why doesn’t K4 imply GL?</p>
-<h2 id="questions">Questions</h2>
-<p>https://en.wikipedia.org/wiki/G%C3%B6del%27s_incompleteness_theorems</p>
-<p>What is true arithmetic?</p>
-<p>Undecidable: <span class="math inline">\(\neg \square X \wedge \neg \square \neg X\)</span>.</p>
-<ul>
-<li>Let <span class="math inline">\(S\)</span> be the sentence such that <span class="math inline">\(S=\neg \square S\)</span>.
-<ul>
-<li>Is it true that <span class="math inline">\(\neg \square S \wedge \neg \square \neg S\)</span>?</li>
-<li>Is $ (S S)$?</li>
-<li>Is $ ((S S))$?</li>
-</ul></li>
-<li>What happens if we add <span class="math inline">\(\neg \square \perp\)</span> as an axiom?</li>
-<li>I don’t understand <span class="math inline">\(\om\)</span>-consistency. First incompleteness: if arithmetic is <span class="math inline">\(\om\)</span>-consistent, then arithmetic is incomplete. Is this weaker or stronger than consistency? 1-consistency is stronger, because <span class="math inline">\(\square \cdots \square \perp\)</span> are not theorems. (?) <span class="math inline">\(\om\)</span>-consistency implies 1-consistency, so <span class="math inline">\(\om\)</span>-consistency is strongest.</li>
-</ul>
-<p>GLS: GL+<span class="math inline">\(\square A\to A\)</span>, only MP.</p>
-<p>GL, GLS have decision procedures. (They only capture part of PA.)</p>
-<p>Formalizing existence?</p>
-<p>If <span class="math inline">\(X\)</span> is true (in all consistent extensions) but not provable, then is <span class="math inline">\(\square X\)</span> decidable? What about <span class="math inline">\(\square \square X\)</span>? Etc.</p>
-<p>Suppose <span class="math inline">\(X=\neg \square X\)</span>. Why doesn’t <span class="math inline">\(\neg X \to \square X \to X\)</span> so <span class="math inline">\(\neg X\to \perp\)</span> constitute a proof of <span class="math inline">\(X\)</span>?</p>
-<ul>
-<li>Because you can’t use the law of the excluded middle. (Is it true that <span class="math inline">\(\square (X\to Y), \square (\neg X\to Y)\)</span> imply <span class="math inline">\(\square Y\)</span>? I think there shouldn’t be any problem.)</li>
-<li>Because you can’t use <span class="math inline">\(\square X \to X\)</span>. You don’t have the axiom <span class="math inline">\(\square X\to X\)</span>, and by Lob, <span class="math inline">\(\square (\square X\to X)\)</span> only when <span class="math inline">\(\square X\)</span>.</li>
-</ul>
-
-  </div>
-
-    
-
-    <!-- Extension : Sharing buttons @ www.sharethis.com -->
-    <span class='st_facebook_large' displayText='Facebook'></span>
-    <span class='st_twitter_large' displayText='Tweet'></span>
-    <span class='st_googleplus_large' displayText='Google +'></span>
-    <span class='st_reddit_large' displayText='Reddit'></span>
-    <span class='st__large' displayText=''></span>
-
-    <div id="disqus_thread"></div>
-    
-
-
-  
-    <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
-  </div>
-  
-</div>
-]]></summary>
-</entry>
-<entry>
-    <title>[CYHB13] Definability of Truth in Probabilistic Logic</title>
-    <link href="http://holdenlee.github.io/notebook/posts/cs/ai/control/truth_in_prob_logic.html" />
-    <id>http://holdenlee.github.io/notebook/posts/cs/ai/control/truth_in_prob_logic.html</id>
-    <published>2016-08-19T00:00:00Z</published>
-    <updated>2016-08-19T00:00:00Z</updated>
-    <summary type="html"><![CDATA[
-<div class="container">
-  <div id="content">
-    <div class="page header">
-      <h1>[CYHB13] Definability of Truth in Probabilistic Logic</h1>
-    </div>
-    <div class="info">
-      
-       
-        <p>Posted: 2016-08-19 
-          , Modified: 2016-08-26 
-	</p>
-      
-       <p>Tags: <a href="/tags/ai%20safety.html">ai safety</a>, <a href="/tags/logic.html">logic</a></p> 
-    </div>
-    
-  </div>
-  <!--/div-->
-
-  <div class="toc"> <ul>
- <li><a href="#intro">Intro</a></li>
- <li><a href="#reflection">Reflection</a></li>
- </ul> </div>
-
-  <div class="blog-main">
-    <!--Can't have True predicate,
-$$\forall \ph: True(\ce{\ph}) \iff \ph.$$-->
-<!--don't need to be computable, just definable. already impossible-->
-<h2 id="intro">Intro</h2>
-<p>Undefinability of truth: no expressive and consistent language can contain its own truth predicate, satisfying <span class="math display">\[\forall \ph: True(\ce{\ph}) \iff \ph.\]</span></p>
-<p>Responses:</p>
-<ol type="1">
-<li>Work with meta-languages.</li>
-<li>Accept some sentences are neither true nor false.</li>
-</ol>
-<p>“Then we may continue to define True by the strong strong reflection property that the truth values of <span class="math inline">\(\ph\)</span> and <span class="math inline">\(True(\ce{\ph})\)</span> are the same for every <span class="math inline">\(\ph\)</span>. (?)</p>
-<p>Unsatisfying.</p>
-<ul>
-<li>No way test if <span class="math inline">\(\ph\)</span> is undefined</li>
-<li>No bound on number of undefined sentences.</li>
-</ul>
-<p>Possible over prob. logic!</p>
-<!-- can... -->
-<p>Fix a theory <span class="math inline">\(T\)</span> over a language <span class="math inline">\(L\)</span>. (We will let also let <span class="math inline">\(L\)</span> denote the set of sentences.)</p>
-<p><strong>Definition</strong>: A probability function <span class="math inline">\(\Pj:L\to [0,1]\)</span> is <strong>coherent</strong> if there is a probability measure <span class="math inline">\(\mu\)</span> over models of <span class="math inline">\(L\)</span> such that <span class="math display">\[\Pj(\ph) = \mu(\set{\mathcal M}{\mathcal M \vDash \ph}).\]</span></p>
-<p><strong>Theorem</strong>: <span class="math inline">\(\Pj\)</span> is coherent iff all these hold.</p>
-<ol type="1">
-<li>For each <span class="math inline">\(\ph,\psi\)</span>, <span class="math inline">\(\Pj(\ph)=\Pj(\ph\wedge \psi)+\Pj(\ph\wedge \neg \psi)\)</span>.</li>
-<li>For each tautology (something that is true in all models) <span class="math inline">\(\Pj(\ph)=1\)</span>.</li>
-<li>For each contradiction <span class="math inline">\(\ph\)</span>, <span class="math inline">\(\Pj(\ph)=0\)</span>.</li>
-</ol>
-<p><em>Proof</em>. Define <span class="math inline">\(T_{i+1}\)</span> iteratively by choosing the first statement independent of <span class="math inline">\(T_i\)</span>, and including it with probability <span class="math inline">\(\Pj(\ph_j|T_i)\)</span> and its negation otherwise. Let <span class="math inline">\(T=\bigcup_i T_i\)</span>. (Consistent by compactness.)</p>
-<p>Axiom 1 implies <span class="math inline">\(\Pj(\ph|T_i)\)</span> is a martingale. It eventually stabilizes at 0 or 1; the martingale property implies <span class="math inline">\(T\vdash \ph\)</span> with probability <span class="math inline">\(\Pj(\ph|T_0)\)</span>.</p>
-<h2 id="reflection">Reflection</h2>
-<p>This reflection principle doesn’t work: <span class="math display">\[\forall \ph\in L', \forall a,b\in \Q: a&lt;\Pj(\ph)&lt;b\iff \Pj(a&lt;\Pj(\ce{\ph})&lt;b)=1\]</span> because we can construct <span class="math inline">\(G\iff \Pj(\ce{G})&lt;1\)</span>, <span class="math display">\[\Pj(G)&lt;1\iff \Pj(\Pj(\ce{G})&lt;1)=1 \iff \Pj(G)=1.\]</span></p>
-Instead imagine <span class="math inline">\(\Pj\)</span> having arbitrarily precise information about <span class="math inline">\(\Pj\)</span>. Say <span class="math inline">\(\Pj\)</span> is <strong>reflectively consistent</strong> if (these are equivalent)
-\begin{align}
-\forall \ph\in L',\forall a,b\in \Q: (a&lt;\Pj(\ph)&lt;b) &amp;\implies \Pj(a&lt;\Pj(\ce{\phi})&lt;b) &amp;= 1\\
-\forall \ph\in L',\forall a,b\in \Q:  (a\le \Pj(\ph)\le b) &amp;\Leftarrow \Pj(a\le \Pj(\ce{\phi})\le b) &amp;= 1
-\end{align}
-<p><strong>Theorem</strong> (Consistency of reflection): Let <span class="math inline">\(T\)</span> be a consistent theory over <span class="math inline">\(L\)</span> where <span class="math inline">\((\Q,+)\)</span> can be embedded, and <span class="math inline">\(L'\)</span> be the extension of <span class="math inline">\(L\)</span> by <span class="math inline">\(\Pj\)</span>. There is a coherent probability function <span class="math inline">\(\Pj\)</span> over <span class="math inline">\(L'\)</span> assigning probability 1 to <span class="math inline">\(T\)</span> and satisfying the reflection principle.</p>
-<p><em>Proof</em>.</p>
-<p><strong>Theorem (Kakutani fixed point)</strong>: <a href="https://en.wikipedia.org/wiki/Kakutani_fixed-point_theorem">wikipedia</a></p>
-<ol type="1">
-<li>Let <span class="math inline">\(S\subeq \R^n\)</span> be non-empty compact convex, <span class="math inline">\(\ph:S\to 2^S\)</span> such that <span class="math inline">\(\ph(x)\)</span> is non-empty and convex for all <span class="math inline">\(x\in S\)</span>, and <span class="math inline">\(\ph\)</span> has closed graph. Then <span class="math inline">\(\ph\)</span> has a fixed point (<span class="math inline">\(x\in \ph(x)\)</span>).</li>
-<li><span class="math inline">\(\ph:X\to 2^Y\)</span>is upper hemicontinuous if for every open <span class="math inline">\(W\subeq Y\)</span>, <span class="math inline">\(\set{x}{\ph(x)\subeq W}\)</span> is open in <span class="math inline">\(X\)</span>. If <span class="math inline">\(X,Y\)</span> are topological vector spaces, <span class="math inline">\(\ph:X\to 2^Y\)</span>, <span class="math inline">\(Y\)</span> convex, then <span class="math inline">\(\ph\)</span> is Kakutani if it is upper hemicontinuous and <span class="math inline">\(\ph(x)\)</span> is non-empty, compact and convex. If <span class="math inline">\(S\)</span> is non-empty, compact, convex subset of Hausdorff locally convex topological vector space, and <span class="math inline">\(\ph:S\to 2^S\)</span> is Kakutani, then it has a fixed point.</li>
-</ol>
-<ul>
-<li>Let <span class="math inline">\(\cA\sub [0,1]^{L'}\)</span> be the set of coherent probability distributions which assign probability 1 to <span class="math inline">\(T\)</span>. <span class="math inline">\(\cA\)</span> is nonempty convex and closed (in a compact set), so compact. (?? Nonempty because can set <span class="math inline">\(\Pj(\ce{\ph})\)</span> arbitrarily and it still satisfies these.</li>
-<li>Given <span class="math inline">\(\Pj\in \cA\)</span>, let <span class="math inline">\(R_{\Pj}\)</span> be axioms of the form <span class="math inline">\(a&lt;\Pj(\ce{\ph})&lt;b\)</span> where <span class="math inline">\(a&lt;\Pj(\ph)&lt;b\)</span>. Let <span class="math display">\[ f(\Pj') = \set{\Pj\in \cA}{\Pj(R_{\Pj'}) = 1}.\]</span></li>
-<li>Show that <span class="math inline">\(f\)</span> has a closed graph and use Kakutani fixed point.</li>
-</ul>
-<p>(Why do we care that <span class="math inline">\(R_{\Pj'}\)</span> is countable?)</p>
-<blockquote>
-<p>“we don’t want P to assert that P is reflectively consistent, we want it to actually <em>be</em> reflectively consistent.”</p>
-</blockquote>
-<blockquote>
-<p>our work shows that the obstructions presented by the liar’s paradox can be overcome by tolerating an infinitesimal error, and that Tarski’s result on the undefinability of truth is in some sense an artifact of the infinite precision demanded by reasoning about complete certainty.</p>
-</blockquote>
-<p>(Don’t understand the last page: revisit.)</p>
-
-  </div>
-
-    
-
-    <!-- Extension : Sharing buttons @ www.sharethis.com -->
-    <span class='st_facebook_large' displayText='Facebook'></span>
-    <span class='st_twitter_large' displayText='Tweet'></span>
-    <span class='st_googleplus_large' displayText='Google +'></span>
-    <span class='st_reddit_large' displayText='Reddit'></span>
-    <span class='st__large' displayText=''></span>
-
-    <div id="disqus_thread"></div>
-    
-
-
-  
-    <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
-  </div>
-  
-</div>
-]]></summary>
-</entry>
-<entry>
-    <title>Technical agenda</title>
-    <link href="http://holdenlee.github.io/notebook/posts/cs/ai/control/technical_agenda.html" />
-    <id>http://holdenlee.github.io/notebook/posts/cs/ai/control/technical_agenda.html</id>
-    <published>2016-08-19T00:00:00Z</published>
-    <updated>2016-08-19T00:00:00Z</updated>
-    <summary type="html"><![CDATA[
-<div class="container">
-  <div id="content">
-    <div class="page header">
-      <h1>Technical agenda</h1>
-    </div>
-    <div class="info">
-      
-       
-        <p>Posted: 2016-08-19 
-          , Modified: 2016-08-19 
-	</p>
-      
-       <p>Tags: <a href="/tags/ai%20safety.html">ai safety</a></p> 
-    </div>
-    
-  </div>
-  <!--/div-->
-
-  <div class="toc"> <ul>
- <li><a href="#intro">Intro</a></li>
- <li><a href="#highly-reliable-agent-designs">Highly reliable agent designs</a><ul>
- <li><a href="#realistic-world-models">Realistic world models</a></li>
- <li><a href="#decision-theory-w-game-theory">Decision theory (w/ game theory)</a></li>
- <li><a href="#logical-uncertainty">Logical uncertainty</a></li>
- <li><a href="#vingean-reflection">Vingean reflection</a></li>
- </ul></li>
- <li><a href="#error-tolerant-agent-designs">Error-tolerant agent designs</a></li>
- <li><a href="#value-specification">Value specification</a></li>
- <li><a href="#discussion">Discussion</a></li>
- </ul> </div>
-
-  <div class="blog-main">
-    <p>[SF14] Agent Foundations for Aligning Machine Intelligence with Human Interests: A Technical Research Agenda</p>
-<h2 id="intro">Intro</h2>
-<ol type="1">
-<li>How can we create an agent that will reliably pursue the goals it is given? (Find an agent architecture to reliably and autonomously pursue a set of objectives.)</li>
-<li>How can we formally specify beneficial goals?<br />
-</li>
-<li>And how can we ensure that this agent will assist and cooperate with its programmers as they improve its design, given that mistakes in early AI systems are inevitable?</li>
-</ol>
-<p>Make tolerant of human error.</p>
-<p>Value learning: how to construct agents that learn what to value?</p>
-<p>There are theoretical prerequisits for designing aligned AI above what is require to design misaligned AI.</p>
-<p>Topics that are tractable, uncrowded, focused, unable to be outsourced (to machines).</p>
-<h2 id="highly-reliable-agent-designs">Highly reliable agent designs</h2>
-<p>It’s not sufficient to verify the algorithm behaves well in test settings.</p>
-<p>Ex. Bird and Layzell (2002) describe a genetic algorithm which, tasked with making an oscillator, re-purposed the printed circuit board tracks on the motherboard as a makeshift radio to amplify oscillating signals from nearby computers.</p>
-<p>Ex. Chess: Trees and backtracking do not immediately yield a solution but they are the conceptual tools; you need them before you can make heuristics work.</p>
-<p>In safety-critical applications, it is crucial that theoretical insights come first.</p>
-<h3 id="realistic-world-models">Realistic world models</h3>
-<p>What is the set of/distribution over possible realities? How are agents scored?</p>
-<p>Solomonoff induction (agent predicts, does not affect)</p>
-<ol type="1">
-<li>Computable environment.</li>
-<li>Evaluated by simplicity</li>
-<li>Scored by ability to predict next observation.</li>
-</ol>
-<p>Legg and Hutter define universal measure of intelligence, but high-scoring agents may manipulate the reward function.</p>
-<p><strong>Naturalized induction</strong>: But what about an agent learning about environment when embedded within it?</p>
-<p>Hutter, <strong>interaction problem</strong>: agent learns and acts upon environment. Maximize reward function.</p>
-<p>Human goals are specified in terms of high-level notions.</p>
-<p><strong>Ontology identification</strong> (?)</p>
-<h3 id="decision-theory-w-game-theory">Decision theory (w/ game theory)</h3>
-<p>What does it mean for a decision to be good?</p>
-<p>How to construct the <strong>counterfactual</strong> environment?</p>
-<p>Ex. different agents logically constrained to behave identically.</p>
-<p>Standard causal reasoning identifies “defection” as the best strategy.</p>
-<p><strong>Logical counterfactuals</strong> problem.</p>
-<p>Updateless decision theory, Wei Dai.</p>
-<p>Check out: Model with Haskell implementation of multi-agent games where agents have access to each others’ source code and base decisions on what they can prove. Possible to achieve robust cooperation while remaining unexploitable.</p>
-<h3 id="logical-uncertainty">Logical uncertainty</h3>
-<p>Knowing the machine/system exactly but not knowing the action/result. ex. reasoning about environment.</p>
-<p>What are logically <strong>impossible possibilities</strong>? (???)</p>
-<p>How can probabilities be assigned to sentences? Preserving all logical implications requires the system to be deductively omnipotent.</p>
-<p>A coherent assignment of probabilities corresponds to a probability distribution over complete, consistent logical theories.</p>
-<p>Start with rough approximation of prior and refine.</p>
-<p><strong>Logical priors</strong>: What is a satisfactory set of priors over logical sentences that a bounded reasoner can approximate?</p>
-<h3 id="vingean-reflection">Vingean reflection</h3>
-<p>Humans may specify generally intelligent systems that then create superintelligence.</p>
-<p>A self-modifying agent (or any that constructs new agents more intelligent than itself) must reason about the behavior of a system that is more intelligent than the reasoner.</p>
-<p>Vingean principle: a parent agent cannot simply check what its successor agent would do in all scenarios, for if it could, then it would already know what actions its successor will take, and the successor would not in any way be smarter. (So it must reason abstractly.)</p>
-<p>Study first in the domain of formal logic.</p>
-<p><strong>Lobian obstacle</strong>: How can agents gain very high confidence in agents that use similar reasoning system avoiding self-reference paradoxes?</p>
-<p>(Carry over into probabilistic logics.)</p>
-<h2 id="error-tolerant-agent-designs">Error-tolerant agent designs</h2>
-<p>Intelligent systems must be amenable to correction.</p>
-<p>Design agents which do not have incentives to escape, manipulate, or deceive. <strong>corrigibility</strong></p>
-<p>Ex. moral uncertainty frameworks still incentivize agents not to change the moral framework if it’s flawed.</p>
-<p>Toy problem: Shut-down problem: don’t incentivize the agent to cause or prevent pressing the button.</p>
-<p><strong>Utility indifference</strong>. Make agents switch preferences on demand without having incentives to cause/prevent switching.</p>
-<p><strong>Domesticity</strong>. Incentivize low impact.</p>
-<h2 id="value-specification">Value specification</h2>
-<p>Not sufficient to construct systems smart enough to figure out intended goals.</p>
-<p><strong>Multi-level world-models</strong></p>
-<p>Complexities of value: ex. happiness is not smiling humans.</p>
-<p><strong>Ambiguity identification</strong>: Identify dimensions neglected by training data.</p>
-<p><strong>Operator modeling</strong></p>
-<p><strong>Normative uncertainty</strong>: What to do when uncertain about what one should do?</p>
-<h2 id="discussion">Discussion</h2>
-<p>Why progress can be made today?</p>
-
-  </div>
-
-    
-
-    <!-- Extension : Sharing buttons @ www.sharethis.com -->
-    <span class='st_facebook_large' displayText='Facebook'></span>
-    <span class='st_twitter_large' displayText='Tweet'></span>
-    <span class='st_googleplus_large' displayText='Google +'></span>
-    <span class='st_reddit_large' displayText='Reddit'></span>
-    <span class='st__large' displayText=''></span>
-
-    <div id="disqus_thread"></div>
-    
-
-
-  
-    <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
-  </div>
-  
-</div>
-]]></summary>
-</entry>
-<entry>
-    <title>[SF15] Questions of reasoning under logical uncertainty</title>
-    <link href="http://holdenlee.github.io/notebook/posts/cs/ai/control/logical_uncertainty.html" />
-    <id>http://holdenlee.github.io/notebook/posts/cs/ai/control/logical_uncertainty.html</id>
-    <published>2016-08-19T00:00:00Z</published>
-    <updated>2016-08-19T00:00:00Z</updated>
-    <summary type="html"><![CDATA[
-<div class="container">
-  <div id="content">
-    <div class="page header">
-      <h1>[SF15] Questions of reasoning under logical uncertainty</h1>
-    </div>
-    <div class="info">
-      
-       
-        <p>Posted: 2016-08-19 
-          , Modified: 2016-08-19 
-	</p>
-      
-       <p>Tags: <a href="/tags/ai%20safety.html">ai safety</a></p> 
-    </div>
-    
-  </div>
-  <!--/div-->
-
-  <div class="toc"> <ul>
- <li><a href="#introduction">Introduction</a></li>
- <li><a href="#impossible-possibilities">Impossible possibilities</a></li>
- <li><a href="#logical-priors">Logical priors</a></li>
- <li><a href="#beyond-logical-systems">Beyond logical systems</a></li>
- <li><a href="#discussion">Discussion</a></li>
- <li><a href="#logical-induction-andrew-critch-820">Logical induction, Andrew Critch (8/20)</a><ul>
- <li><a href="#technical">Technical</a></li>
- </ul></li>
- </ul> </div>
-
-  <div class="blog-main">
-    <h2 id="introduction">Introduction</h2>
-<p>Knowing how the system behaves but not the result, because of lack of computational resources.</p>
-<p>Standard probability theory assumes logical omniscience.</p>
-<p>What are logically impossible possibilities? (Things that are logically incorrect, but kept as a possibility because you don’t have the computational power to see they’re incorrect.) Reasonable prior?</p>
-<h2 id="impossible-possibilities">Impossible possibilities</h2>
-<p>Consider truth values of sentences of logic.</p>
-<p>Must preserve some structure: Ex. if probability 1 for <span class="math inline">\(\phi,\phi\implies \psi\)</span>, then probability 1 for <span class="math inline">\(\psi\)</span>.</p>
-<p>2 types of logical uncertainty</p>
-<ol type="1">
-<li>Logical theory</li>
-<li>Limited deductive capabilities</li>
-</ol>
-<p>Complete logical theory: for every sentence <span class="math inline">\(\phi\)</span>, either <span class="math inline">\(\phi\in T\)</span> or <span class="math inline">\(\neg \phi\in T\)</span>.</p>
-<p>Incomplete theories can be completed. (Use Zorn.)</p>
-<p>(In what sense is there a “true arithmetic”? In the sense that you believe there is a true answer of whether a Turing machine halts!)<a href="#fn1" class="footnoteRef" id="fnref1"><sup>1</sup></a></p>
-<p>For a deductively unlimited reasoner, an impossible possibiity is any complete theory of logic.</p>
-<p>Deductively limited reasoners entertain inconsistent impossible possibilities.</p>
-<p>An “impossible possibility,” then, could be any assignment of truth values to logical sentences which does not allow a short proof of inconsistency.</p>
-<p>No precise statements about its performance have yet been proven.</p>
-<h2 id="logical-priors">Logical priors</h2>
-<p>How to construct a weak (e.g. maximum entropy) prior over complete theories? (It’s easy to place 0 probability on complete theories.)</p>
-<p><strong>Hutter prior</strong>: For each sentence, select a model in which that sentence is true, and in which certain desirable properties hold (the “Gaifman condition” and the “Cournot condition” (Hutter et al. 2013)). Add the complete theory of that model to the distribution with measure in proportion to the probability of the sentence.</p>
-<p>Demski’s prior over complete theories extending <span class="math inline">\(B\)</span>.</p>
-<ul>
-<li>Take initial set <span class="math inline">\(B\)</span> of known sentences.</li>
-<li>Construct complete theory <span class="math inline">\(T\)</span> by starting with <span class="math inline">\(B\)</span> and selecting <span class="math inline">\(\phi\in \Phi\)</span> randomly. (Ex. <span class="math inline">\(\Phi\)</span> is simplicity prior.)</li>
-<li>Add <span class="math inline">\(\phi\)</span> to <span class="math inline">\(T\)</span> if consistent, else <span class="math inline">\(\neg \phi\)</span>.</li>
-</ul>
-<p>Resulting prior probability is uncomputable but approximable.</p>
-<p>Christiano uses standard ML techniques.</p>
-<p>Undesirable: If <span class="math inline">\(B=\phi\)</span>, then 0 probabilities on complete theories where PA holds—any theory not finitely axiomatizable.<a href="#fn2" class="footnoteRef" id="fnref2"><sup>2</sup></a></p>
-<p>Two ways to update Demski’s prior:</p>
-<ol type="1">
-<li>completely regenerate from <span class="math inline">\(B\cup \{\phi\}\)</span></li>
-<li>condition on <span class="math inline">\(\phi\)</span>.</li>
-</ol>
-<p>Why these are different: Consider <span class="math inline">\(\psi,\neg \psi\)</span> consistent with <span class="math inline">\(\phi\)</span>.</p>
-<ol type="1">
-<li>Regenerate: <span class="math inline">\(\ge 2^{-|\psi|}\)</span> probability on <span class="math inline">\(\psi\)</span>.</li>
-<li>Conditioned on <span class="math inline">\(\phi\)</span>: may be arbitrarily low. Ex.
-<ul>
-<li><span class="math inline">\(\neg \psi \to \phi\)</span></li>
-<li>almost all theories with <span class="math inline">\(\psi\)</span> also contain <span class="math inline">\(\neg \phi\)</span>.</li>
-</ul></li>
-</ol>
-<p>Intuition</p>
-<ol type="1">
-<li>Regenerating: doesn’t alter lower bound. (It learns differently from facts it always knew.)</li>
-<li>Conditioning: favor explanations</li>
-</ol>
-<p>Desiderata</p>
-<ol type="1">
-<li>Coherence: probability distribution over complete theories.</li>
-<li>Computable approximation</li>
-<li>Occam property: length-based lower bound on probability of consistent sentence.</li>
-<li>Inductive: <span class="math inline">\(\Pj(\forall n.\psi(n))\to 1\)</span> as get more confirmations</li>
-<li>PA-weakness: nonzero probability on set of complete extensions of PA.</li>
-<li>Bounded regret: Regret at most constant worse than other distributions over complete theories</li>
-<li>Practicality</li>
-<li>Reflectivity: There is <span class="math inline">\(P\)</span> in the language which can be interpreted as representation of <span class="math inline">\(\Pj\)</span>.</li>
-</ol>
-<p>Note approximations must be incoherent. Reflectivity is possible up to infinitesimal error but difficult.</p>
-<ul>
-<li>Hutter: coherent (1), inductive (4), PA-weak (5) as long as prob. dist generated from has Occam property. Not computably approximable, practical</li>
-<li>Demski: coherent, computably approximable (2), Occam if <span class="math inline">\(\Phi\)</span> (3).</li>
-</ul>
-<p>Inductivity is the Gaifman condition: If <span class="math inline">\(\Pj\)</span> is logical prior and <span class="math inline">\(\phi\)</span> is true <span class="math inline">\(\Pi_1\)</span> sentence <span class="math inline">\(\forall n:\psi(n)\)</span>, then <span class="math inline">\(\Pj(\cdot |\text{true for }1,...,N)\to 1\)</span>. But must assign probability 0 to some true <span class="math inline">\(\Pi_2\)</span> sentences. These priors are not weak enough!</p>
-<p><span class="math inline">\(\Pi_1\)</span>: <span class="math inline">\(\psi\)</span> decidable by primitive recursive function. <span class="math inline">\(\Pi_2\)</span>: <span class="math inline">\(\forall\exists\)</span>.</p>
-<p>(Why do we care about statements that don’t follow from PA? Toy problem for reasoning about uncertainty… is this the right problem?)</p>
-<p>Desirable property:</p>
-<ul>
-<li>If prior conditioned on <span class="math inline">\(\phi\)</span> true for <span class="math inline">\(p\)</span> of first <span class="math inline">\(L\)</span> numbers (<span class="math inline">\(L\)</span> large), then <span class="math inline">\(\phi(0)\)</span> has probability <span class="math inline">\(p\)</span>.</li>
-</ul>
-<h2 id="beyond-logical-systems">Beyond logical systems</h2>
-<p>Logical sentences are not the right tool for reasoning about the behavior of objects in the real world.</p>
-<p>Realistic reasoning shortcuts. (cf. regret?)</p>
-<p>It is not clear that sentences of first order logic are the “correct” underlying structure for logically uncertain reasoning about the world.</p>
-<p>Ex. billiards player (?)</p>
-<h2 id="discussion">Discussion</h2>
-<h2 id="logical-induction-andrew-critch-820">Logical induction, Andrew Critch (8/20)</h2>
-<table style="width:25%;">
-<colgroup>
-<col style="width: 5%" />
-<col style="width: 5%" />
-<col style="width: 5%" />
-<col style="width: 5%" />
-<col style="width: 5%" />
-</colgroup>
-<thead>
-<tr class="header">
-<th style="text-align: left;">Domain</th>
-<th style="text-align: left;">Agent</th>
-<th style="text-align: left;">Minimal sufficient conditions</th>
-<th style="text-align: left;">Desirability arguments</th>
-<th style="text-align: left;">Feasibility</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td style="text-align: left;">Rational choice</td>
-<td style="text-align: left;">VNM utility maximizer</td>
-<td style="text-align: left;">VNM axioms</td>
-<td style="text-align: left;">Dutch book arguments, compelling axioms</td>
-<td style="text-align: left;">AIXI, POMDP solvers</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Probability</td>
-<td style="text-align: left;">Bayesian updater</td>
-<td style="text-align: left;">axioms of probability theory</td>
-<td style="text-align: left;">Dutch book arguments, compelling axioms</td>
-<td style="text-align: left;">Solomonoff induction</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Logical uncertainty</td>
-<td style="text-align: left;">Garrabrant inductor</td>
-<td style="text-align: left;">???</td>
-<td style="text-align: left;">Dutch book arguments, historical desiderata</td>
-<td style="text-align: left;">LIA2016</td>
-</tr>
-</tbody>
-</table>
-<ol type="1">
-<li>Improve logical uncertainty theory (min conditions, more conseq)</li>
-<li>Using Garrabrant inductors</li>
-<li></li>
-</ol>
-<p>Replace logical omniscience with logical uncertain.</p>
-<p>Logical uncertainty was a roadblock to decision theory, etc.</p>
-<p>(What would you do tomorrow if you found Critch changed <span class="math inline">\(\pi\)</span> to 4? Would you still go to work? Will pigs fly?)</p>
-<p>Suppose you’re an algorithm. What if I do x?</p>
-<p>Algorithm: what if I did this thing I didn’t do?</p>
-<!-- Gameable but works.
-Bayesian updaters don't exist.
-Use AI to research AI safety.
-when ask question about themselves, as q about math objects. Theory about understanding place in world.
-converge to paper \iy
--->
-<h3 id="technical">Technical</h3>
-<ul>
-<li><span class="math inline">\(\Ga\)</span> language for encoding and proving statements about variables and computer programs (PA)</li>
-<li><span class="math inline">\(\La\)</span> all sentences expresible in <span class="math inline">\(\Ga\)</span>.</li>
-<li>Belief state: <span class="math inline">\(\La\to [0,1]\)</span> constant outside some finite subset (of things you’ve thought of)</li>
-<li>Reasoning process: computable sequence of belief states <span class="math inline">\(\set{P_n}{L\to [0,1]}\)</span>.</li>
-</ul>
-<p>Put criteria for reasoning in a good language.</p>
-<p>A good reasoning process <span class="math inline">\(P\)</span> should satisfy</p>
-<ol type="1">
-<li>computability of <span class="math inline">\(P_n(\phi)\)</span> for any <span class="math inline">\((n,\phi)\)</span>.</li>
-<li>convergence: <span class="math inline">\(P_\iy(phi) = \lim_{n\to \iy} P_n(\phi)\)</span> exists</li>
-<li>coherent limit: <span class="math inline">\(P_{\iy}\)</span> should be coherent probability distribution, <span class="math inline">\(P_\iy(A\wedge B) +P_iy( A \vee B) = P(A) + P(B)\)</span>.</li>
-<li>non-dogmatism: If <span class="math inline">\(\Ga \not \vdash \phi\)</span> then <span class="math inline">\(P_\iy(\phi)&lt;1\)</span> and if <span class="math inline">\(\Ga \not \vdash \neg\phi\)</span> then <span class="math inline">\(P_\iy(\phi)&gt;0\)</span>.</li>
-</ol>
-<p>There’s a secret property (master criterion) that implies all 4 of these.</p>
-<p>Conservatism (not too extreme)</p>
-<ul>
-<li>Uniform non-dogmatism: for any recursively enumerable sequence of sentences <span class="math inline">\(\{\phi_n\}\)</span> such that <span class="math inline">\(\Ga \cup \{\phi_n\}\)</span> is consistent, there is <span class="math inline">\(\ep&gt;0\)</span> such that for all <span class="math inline">\(n\)</span>, <span class="math inline">\(P_\iy(\phi_n) \ge \ep\)</span>.</li>
-<li>Occam bonds: <span class="math inline">\(\ka\)</span> Kolmogorov complexity, <span class="math inline">\(P_\iy(phi) \ge 2^{-\ka(\phi)}\)</span>, <span class="math inline">\(P_\iy(\phi)\le 1-C2^{-\ka(\phi)}\)</span>. (Occam: Simple things shouldn’t be too extreme.)</li>
-</ul>
-<p>Self-reflection</p>
-<p>Tension between Godel (can’t prove soundness/consistency), vs. can notice certain things about own sanity.</p>
-<ul>
-<li>Belief in consistency: <span class="math inline">\(con(t)=\)</span> “There is no proof of <span class="math inline">\(\perp\)</span> from <span class="math inline">\(\Ga\)</span> using <span class="math inline">\(t\)</span> or fewer symbols.” Then <span class="math inline">\(\lim_{n\to \iy} P_n(con(n))=1\)</span>.</li>
-<li>Belief in future consistency: For any encoding <span class="math inline">\(\ol f\)</span> of computable <span class="math inline">\(f:\N\to \N\)</span>, <span class="math display">\[
-\lim_{n\to \iy} P_n(con(\ol f(n)))=1.
-\]</span> Ex. <span class="math inline">\(f(n) = Ack(n,n)\)</span></li>
-</ul>
-<p>Sequence of statements <span class="math inline">\(\phi\)</span> is polytime generable if <span class="math inline">\(M(n)=\phi_n\)</span> polytime.</p>
-<p>Sequence of T/F questions relatively easy to generate, but can be arbitrarily difficult to answer deductively as <span class="math inline">\(n\)</span> grows. p.g. statements are easy to state, hard to verify.</p>
-<!--2nd problem hard -->
-<p>Ex. <span class="math inline">\(G(\ol n)\iff\)</span> There is no proof of <span class="math inline">\(\ol G(\ol n)\)</span> in <span class="math inline">\(\le \ol f (\ol n)\)</span> characters.</p>
-<p>True, but can’t be proven in fewer characters.</p>
-<ul>
-<li>Provability induction: Any p.g. sequence of provable theorems <span class="math inline">\(\phi_n\)</span> will eventually be believed by <span class="math inline">\(P_n\)</span> as soon as they are generated, <span class="math inline">\(\lim_{n\to \iy} P_n(\phi_n)=1\)</span>. <span class="math inline">\(P\)</span> outpaces deduction. <!-- p.g. sufficiently expressive for writing down. Failing to have makes exploitable. Can make larger class.--></li>
-</ul>
-<p>Analogy: Ramanujan vs. Hardy.</p>
-Timely manner:
-\begin{align}
-x_n \simeq_n y_n \iff \lim_{n\to \iy} x_n-y_n=0\\
-x_n \gtrsim_n y_n\iff \lim\inf &gt;0\\
-...
-\end{align}
-<ul>
-<li>Timely adoption of limits. <span class="math inline">\(p\)</span> sequence of rational probabilities. If <span class="math inline">\(P_\iy(\phi_n) \simeq_n p_n\)</span> then <span class="math inline">\(P_n(\phi_n) \simeq_n p_n\)</span>. (Keep up with todo list.)</li>
-<li>Introspection: ask about themselves. Knows what its own beliefs are at time it has them. For any pg <span class="math inline">\(\phi_n\)</span>, any <span class="math inline">\((a,b)\)</span> (or sequence of intervals), any <span class="math inline">\(\ep&gt;0\)</span>, large enough <span class="math inline">\(n\)</span>,
-\begin{align}
-P_n(\phi_n)&amp;\in (a+\ep,b-\ep) &amp;\implies P_n'P_n(\phi_n)\in (a,b)' &gt; 1-\ep\\
-P_n(\phi_n)&amp;\nin (a-\ep,b+\ep) &amp;\Leftarrow P_n('P_n(\phi_n)\in (a,b)') &lt;\ep
-\end{align}
-(Spit out at once at time <span class="math inline">\(n\)</span>. It’s one static table with introspective property.)</li>
-<li>Liar’s paradox resistance: Liar sentences <span class="math inline">\(L_n\)</span>, <span class="math inline">\(\Ga\vdash L_n \iff 'P_n(L_n)\le p'\)</span>. Then <span class="math inline">\(\lim_{n\to \iy} P_n(L_n)=p\)</span>. (Oscillations…)</li>
-</ul>
-<p>(How sure of being sure…)</p>
-<p>Self-trust</p>
-<ul>
-<li>Trust in future beliefs: For any computable <span class="math inline">\(f(n)&gt;n\)</span>, <span class="math display">\[''P(\phi_n | ' P_{f(n)}(\phi_n) \ge p_n') \gtrsim_n p_n''\]</span> Precise statement <!--$$ \E_n([\phi_n \Ind_{\de_n} (' P_{f(n)}(\phi_n) \ge p_n') \gtr$$--></li>
-</ul>
-<p>Learning statistical patterns.</p>
-<p>Learning provable relationships:</p>
-<ul>
-<li>case breakdowns: Let <span class="math inline">\(\phi^1,\ldots, \phi^k\)</span> be <span class="math inline">\(k\)</span> p.g. sequences of sentences such that for each <span class="math inline">\(n\)</span>, <span class="math inline">\(\Ga\)</span> proves that <span class="math inline">\(\phi_n^1,\ldots, \phi_n^k\)</span> are exclusive and exhaustive. Then <span class="math display">\[ \lim_{n\to \iy} \sum P (\phi_i)= 1.\]</span></li>
-<li>affine relations</li>
-</ul>
-<p>No study of convergence rates. Point is that it verifies desiderata (first 9) are not contradictory.</p>
-<p><strong>Open question</strong>: Continuum hyp, bounded by Kolm complexity. depend on how parametrized. Different versions of Garrabrant inductors. Probabilities dominate each other? All universal semimeasures dominate each other. Garrabrant dominate universal semimeasures. Are all the different good ways comparable?</p>
-<p>(Ex. <span class="math inline">\(\phi_n\)</span>: Turing machine has not halted by time <span class="math inline">\(n\)</span>.)</p>
-<p>Try not to lose a lot of money on bets. (On agents simpler than you.)</p>
-<p>A tad under doubly exponential time.</p>
-<p>Mentally simulate all polytime traders. Run Wall Street traders in head output algebraic expressions. Open, algorithms respond. Algorithms respond to beliefs. This is what beliefs are, this is what I wish instead. Find fixpoint. Computably approximate.</p>
-<p>Property: can’t lost too much money to polytime traders.</p>
-<p>Pascal’s mugging. Where’s your <span class="math inline">\(\iy\)</span> dollars. Bring the briefcase with the cash!</p>
-<p>Start with finite budget, inversely proportional to complexity. By being complicated, smarter. Smart ones gain more money, larger bets, affect market prices more. Smart ones get rick and fill the market.</p>
-<p>(Maybe that’s what neurons are! jk. SoM: Competing processes.)</p>
-<section class="footnotes">
-<hr />
-<ol>
-<li id="fn1"><p>Try to define like this. If there is no proof for “Turing machine halts” then say it is false. (This is a tie-breaker.) Now derive all logical consequences. Take some unknown statement <span class="math inline">\(X\)</span>. Consider machines trying to find proofs of <span class="math inline">\(X,\neg X\)</span>. Neither will halt. But this doesn’t say anything about <span class="math inline">\(X\)</span>! Why is there a true arithmetic?<a href="#fnref1">↩</a></p></li>
-<li id="fn2"><p>Induction schema consists of infinitely many axioms. What if we tried to do this with higher-order logic? What difficulties arise?<a href="#fnref2">↩</a></p></li>
-</ol>
-</section>
-
-  </div>
-
-    
-
-    <!-- Extension : Sharing buttons @ www.sharethis.com -->
-    <span class='st_facebook_large' displayText='Facebook'></span>
-    <span class='st_twitter_large' displayText='Tweet'></span>
-    <span class='st_googleplus_large' displayText='Google +'></span>
-    <span class='st_reddit_large' displayText='Reddit'></span>
-    <span class='st__large' displayText=''></span>
-
-    <div id="disqus_thread"></div>
-    
-
-
-  
-    <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
-  </div>
-  
-</div>
-]]></summary>
-</entry>
-<entry>
-    <title>Lob's Theorem</title>
-    <link href="http://holdenlee.github.io/notebook/posts/cs/ai/control/lobs_theorem.html" />
-    <id>http://holdenlee.github.io/notebook/posts/cs/ai/control/lobs_theorem.html</id>
-    <published>2016-08-19T00:00:00Z</published>
-    <updated>2016-08-19T00:00:00Z</updated>
-    <summary type="html"><![CDATA[
-<div class="container">
-  <div id="content">
-    <div class="page header">
-      <h1>Lob's Theorem</h1>
-    </div>
-    <div class="info">
-      
-       
-        <p>Posted: 2016-08-19 
-          , Modified: 2016-08-19 
-	</p>
-      
-       <p>Tags: <a href="/tags/ai%20safety.html">ai safety</a>, <a href="/tags/logic.html">logic</a></p> 
-    </div>
-    
-  </div>
-  <!--/div-->
-
-  <div class="toc"> <ul>
- <li><a href="#proof">Proof</a></li>
- <li><a href="#questions">Questions:</a></li>
- </ul> </div>
-
-  <div class="blog-main">
-    <p>Does PA claim to be sound? (More standard notation: <span class="math inline">\(\square X\)</span> for <span class="math inline">\(PA[X]\)</span>.) <span class="math display">\[PA[PA[X]\implies X]\]</span> No. Then PA would be inconsistent. (Why?) <span class="math display">\[PA[PA[X]\implies X]\implies PA[X].\]</span> (Converse is obviously true.)</p>
-<p>Alas, this means we can’t prove PA sound with respect to any important class of statements. (?)</p>
-<p>Lob’s sentence: L says “If a proof of L exists, then C.” <span class="math display">\[L = \square L \implies C\]</span> (?If we assume <span class="math inline">\(\square L \implies L\)</span>, then <span class="math inline">\(\square L \implies C\)</span>. Assuming <span class="math inline">\(\neg \square L\)</span> doesn’t give anything.)</p>
-<p>cf. “If this sentence is true, then Santa Claus exists.”<a href="#fn1" class="footnoteRef" id="fnref1"><sup>1</sup></a></p>
-<p>For a sentence to refer to itself, it must contain a self-replicating recipe - when the recipe is executed, it produces a copy of the complete sentence, including the recipe itself</p>
-<p>Generalities about Lob.</p>
-<ol type="1">
-<li>The difference between truth and provability. If we defined <span class="math inline">\(\square\)</span> correctly, <span class="math inline">\(\square S \to S\)</span> looks to always be true. However, it’s not provable, unless <span class="math inline">\(S\)</span> is provable!</li>
-<li><span class="math inline">\(\square\)</span> seems like negation in some way. (Cf. proof by contradiction)</li>
-<li>We would want PA on occassion to assert its own soundness. But no, it only asserts its soundness on statements that are actually provable.</li>
-<li><span class="math inline">\(\square (\square S \to S)\)</span> only when <span class="math inline">\(S\)</span> is provable.</li>
-<li>It seems bizarre!</li>
-</ol>
-<h2 id="proof">Proof</h2>
-<p>Note:</p>
-<ul>
-<li><span class="math inline">\(\implies\)</span> means a deduction rule. From <span class="math inline">\(A\)</span> you can deduce <span class="math inline">\(B\)</span>. <span class="math inline">\(A\implies B\)</span> is not a statement within PA, it is within the meta-logic you’re defining everything in (which can be PA if you want!). (But you can consider <span class="math inline">\(A\to B\)</span>, which is a statement in PA.)</li>
-<li><span class="math inline">\(\to\)</span> is a statement in PA. <span class="math inline">\(\to\)</span> is turned into <span class="math inline">\(\implies\)</span> by MP.</li>
-</ul>
-<p>I’m not distinguishing between <span class="math inline">\(PA \vdash X\)</span> and <span class="math inline">\(\square X\)</span>. They are equivalent (in the meta-logic).</p>
-<p>Use</p>
-<ol type="1">
-<li>(A1) <span class="math inline">\(\square X \implies \square \square X\)</span>. This takes work to prove. Show that given a proof of <span class="math inline">\(X\)</span>, you can turn it into a proof that a proof of <span class="math inline">\(X\)</span> exist! Mind-bending.</li>
-<li>(A2) <span class="math inline">\(\square (\square X \to \square \square X)\)</span>. (A1) is provable.</li>
-<li>(A3) <span class="math inline">\(\square (\square (A \to B) \to (\square A \to \square B))\)</span>. This is straightforward: if you have a proof of <span class="math inline">\(A\)</span>, and a proof of <span class="math inline">\(A\to B\)</span>, you can make a proof of <span class="math inline">\(B\)</span> by joining the proofs together and adding a modus ponens at the end. You can furthermore prove this within PA.</li>
-<li>(MP) <span class="math inline">\(\square A, \square (A\to B)\implies \square B\)</span>. The non-meta version of the above.</li>
-<li>(B1) <span class="math inline">\(\square (A\to B), \square (B\to C), \implies \square (A\to C)\)</span>.</li>
-<li>(B2) <span class="math inline">\(\square (A\to B), \square (A\to (B\to C)), \implies \square (A\to C)\)</span>.</li>
-</ol>
-<p>Let <span class="math inline">\(L=\square L \to C\)</span>. If <span class="math inline">\(L\)</span> is provable, then <span class="math inline">\(C\)</span>.</p>
-<ol type="1">
-<li><span class="math inline">\(\square (\square L \lra \square (\square L \to C))\)</span>. Unpack the box.</li>
-<li><span class="math inline">\(\square (\square C\to C)\)</span>. Lob’s hypothesis. <!--We aim to show that if $L$ is provable, then we can prove $C$ is provable, and hence $C$ is provable.--></li>
-<li><span class="math inline">\(\square (\square (\square L \to C) \to (\square(\square L)\to \square C))\)</span> by A3.</li>
-<li><span class="math inline">\(\square( \square L \to (\square (\square L)\to \square C))\)</span>. I.e., we distributed the <span class="math inline">\(\square\)</span> in (1). If <span class="math inline">\(\square L\)</span> and <span class="math inline">\(\square \square L\)</span>, then <span class="math inline">\(C\)</span>. But this means we can get <span class="math inline">\(C\)</span> from just <span class="math inline">\(\square L\)</span>, because of A2!</li>
-<li>Use A2.</li>
-<li><span class="math inline">\(\square (\square L \to \square C)\)</span>.</li>
-<li><span class="math inline">\(\square (\square L \to C)\)</span>.</li>
-<li><span class="math inline">\(\square\square (\square L \to C)\)</span>.</li>
-<li><span class="math inline">\(\square\square L\)</span>. KEY! To prove <span class="math inline">\(L\)</span>, you just have to prove <span class="math inline">\(\square L \to C\)</span>, by definition of <span class="math inline">\(L\)</span>! So you get <span class="math inline">\(\square\square L\)</span> for free! (Not <span class="math inline">\(\square L\)</span>.) How did we get <span class="math inline">\(\square\square L\)</span>? We used Lob’s hypothesis and A2.</li>
-<li><span class="math inline">\(\square C\)</span>.</li>
-</ol>
-<h2 id="questions">Questions:</h2>
-<ul>
-<li>What happens if we add the axiom <span class="math inline">\(\square X \implies X\)</span>? What might break? Is Proofs can now include the statement “<span class="math inline">\(\square X \implies X\)</span>”?</li>
-<li>“if PA asserted its own soundness (in general), PA would become inconsistent.” Does this just mean we can’t add this axiom, or that it being provable leads to a contradiction? (Can you get this from “This theorem is unprovable” type things?)</li>
-<li>Undefinability of truth: no predicate True such that <span class="math inline">\(True(X)\text{ xor } True(\neg X)\)</span> and <span class="math inline">\(True(X)\implies X\)</span>. Or: if you extend with primitive “True” you get a contradiction.</li>
-</ul>
-<p>Intuition: If a program doesn’t have native support for meta-programming, then you can’t program in meta-programming. Here, I mean: take a data structure and splice it into the program itself. (But you could always write a compiler in the language, and apply the compiler to the string…)</p>
-<p>This setting is different. To prove something, you have to write down the entire proof. You aren’t allowed to make a program that writes down the proof. Ex. you want to show <span class="math inline">\(\forall x, P(x)\)</span>. You are not allowed to write down a program that given <span class="math inline">\(x\)</span>, spits out a proof of <span class="math inline">\(x\)</span>.</p>
-<p>If you try the recursive fix, it’s not clear that the language is still consistent. Perhaps now <span class="math inline">\(\square \perp\)</span>, and hence <span class="math inline">\(\perp\)</span>!</p>
-<section class="footnotes">
-<hr />
-<ol>
-<li id="fn1"><p>Confused ramblings (wrong?) This sentence is true—even if Santa Claus doesn’t exist! The problem with provability logic - why you can’t just add in <span class="math inline">\(\square X \implies X\)</span> as an axiom—is that you can now prove both <span class="math inline">\(X, \neg X\)</span> by constructing Lob’s sentence! Reflection doesn’t work—it’s not that simple! You have to design a logic to make reflection not inconsistent!<a href="#fnref1">↩</a></p></li>
-</ol>
-</section>
 
   </div>
 

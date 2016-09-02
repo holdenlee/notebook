@@ -10,7 +10,7 @@
   <meta name="description" content="Holden Lee's Research Notebook">
   <meta name="author" content="Holden Lee">
     
-  <title>Posts in category "tcs/machine_learning/matrices"</title>
+  <title>Tensor decomposition</title>
 
   <!-- Bootstrap core CSS -->
   <link href="../../../../bootstrap/css/bootstrap.min.css" rel="stylesheet">
@@ -70,107 +70,72 @@
 <div class="container">
   <div id="content">
     <div class="page header">
-      <h1>Posts in category "tcs/machine_learning/matrices"</h1>
+      <h1>Tensor decomposition</h1>
     </div>
     <div class="info">
       
+       
+        <p>Posted: 2016-08-30 
+          , Modified: 2016-08-30 
+	</p>
       
-      
+       <p>Tags: <a href="../../../../tags/tensors.html">tensors</a></p> 
     </div>
     
   </div>
   <!--/div-->
 
-  
+  <div class="toc"> <ul>
+ <li><a href="#basics">Basics</a></li>
+ </ul> </div>
 
   <div class="blog-main">
-    <ul>
-    
-        <li>
-            <a href="../../../../posts/tcs/machine_learning/matrices/tensor_decomposition.html">Tensor decomposition</a> (2016-08-30)
-        </li>
-    
-        <li>
-            <a href="../../../../posts/tcs/machine_learning/matrices/BKS15.html">[BKS15] Dictionary Learning and Tensor Decomposition via the Sum-of-Squares Method</a> (2016-08-30)
-        </li>
-    
-        <li>
-            <a href="../../../../posts/tcs/machine_learning/matrices/BH16.html">[BH16] Algorithms for generalized topic modeling</a> (2016-08-12)
-        </li>
-    
-        <li>
-            <a href="../../../../posts/tcs/machine_learning/matrices/k-means.html">k-means clustering</a> (2016-06-28)
-        </li>
-    
-        <li>
-            <a href="../../../../posts/tcs/machine_learning/matrices/ica.html">ICA (Independent components analysis)</a> (2016-06-28)
-        </li>
-    
-        <li>
-            <a href="../../../../posts/tcs/machine_learning/matrices/factor-analysis.html">Factor analysis</a> (2016-06-28)
-        </li>
-    
-        <li>
-            <a href="../../../../posts/tcs/machine_learning/matrices/dimensionality_reduction.html">Linear dimensionality reduction ([CG15])</a> (2016-06-28)
-        </li>
-    
-        <li>
-            <a href="../../../../posts/tcs/machine_learning/matrices/cca.html">CCA (Canonical correlation analysis)</a> (2016-06-28)
-        </li>
-    
-        <li>
-            <a href="../../../../posts/tcs/machine_learning/matrices/BGKP16.html">[BGKP16] Non-negative matrix factorization under heavy noise</a> (2016-06-27)
-        </li>
-    
-        <li>
-            <a href="../../../../posts/tcs/machine_learning/matrices/relevant_coordinates_svd.html">Relevant coordinates: Low-rank</a> (2016-06-07)
-        </li>
-    
-        <li>
-            <a href="../../../../posts/tcs/machine_learning/matrices/relevant_coordinates.html">Relevant coordinates</a> (2016-06-02)
-        </li>
-    
-        <li>
-            <a href="../../../../posts/tcs/machine_learning/matrices/topic_code.html">Inference for topic models: Code</a> (2016-05-18)
-        </li>
-    
-        <li>
-            <a href="../../../../posts/tcs/machine_learning/matrices/streaming_PCA.html">Towards a better understanding of streaming PCA (Yuanzhi Li)</a> (2016-05-10)
-        </li>
-    
-        <li>
-            <a href="../../../../posts/tcs/machine_learning/matrices/nmf_algorithm.html">NMF algorithm</a> (2016-04-22)
-        </li>
-    
-        <li>
-            <a href="../../../../posts/tcs/machine_learning/matrices/matrix-factorization.html">Matrix factorizations</a> (2016-04-04)
-        </li>
-    
-        <li>
-            <a href="../../../../posts/tcs/machine_learning/matrices/arora-topic-models.html">[A16] Provable algorithms for inference in topic models</a> (2016-04-04)
-        </li>
-    
-        <li>
-            <a href="../../../../posts/tcs/machine_learning/matrices/AGM14.html">[AGM14] New algorithms for learning incoherent and overcomplete dictionaries</a> (2016-04-02)
-        </li>
-    
-        <li>
-            <a href="../../../../posts/tcs/machine_learning/matrices/NMF.html">Non-negative matrix factorization</a> (2016-03-26)
-        </li>
-    
-        <li>
-            <a href="../../../../posts/tcs/machine_learning/matrices/AGMM15.html">[AGMM15] Simple, efficient, and neural algorithms for sparse coding</a> (2016-03-25)
-        </li>
-    
-</ul>
-
-
+    <h2 id="basics">Basics</h2>
+<p>See “Tensor methods” in <code>new_thread.pdf</code>.</p>
+<p>Review questions:</p>
+<ol type="1">
+<li>Define tensor and tensor decomposition. When is it unique? Discuss the intractability of tensor problems. Why would we work with them? Give an example where matrix methods fail but tensor methods work because of uniqueness.</li>
+<li>What properties of matrix rank fail for tensor rank?</li>
+<li>(*) Give Jeinrich’s algorithm. When does it work, and what is its complexity?
+<ul>
+<li>Suppose <span class="math inline">\(T=\sum^r u_i\ot v_i\ot w_i\)</span>, where <span class="math inline">\(\{u_i\}\)</span> is linearly independent, <span class="math inline">\(\{v_i\}\)</span> is l.i., and every pair in <span class="math inline">\(\{w_i\}\)</span> is l.i. Then this decomposition is unique and there is an efficient algorithm to find it.</li>
+<li>For a tensor <span class="math inline">\(T\in V^{\ot 3}\)</span>, view <span class="math inline">\(T_{\bullet}\in V\ot V^*\ot V^*\)</span>, with <span class="math inline">\(\bullet\)</span> corresponding to the last <span class="math inline">\(V^*\)</span>. The slices are sums of rank 1 matrices <span class="math inline">\(u_iv_i^*\)</span> with coefficients given by the projections of <span class="math inline">\(w_i\)</span> onto <span class="math inline">\(a\)</span>.
+\begin{align}
+T_a &amp;=\sum \an{w_i,a}u_iv_i^* =: UD_aV^*
+T_aT_b^+ &amp;= UD_aD_b^+ U^+\\
+T_b^+T_a &amp;= VD_b^+D_a V^+
+\end{align}
+WHP diagonalization recovers <span class="math inline">\(U,V\)</span>.</li>
+</ul></li>
+<li>Give a perturbation bound for finding eigenvalues and eigenvectors of a matrix. What does the bound depend on, in what way (polynomial?)? Make it quantitative. Use this to give a bound on convergence in tensor decomposition.</li>
+<li>What is the Kruskal rank, why is it important?</li>
+<li>Describe the phylogenetic tree/HMM setup. How can you solve it with tensor methods?</li>
+<li>What about the non-full-rank case? (Give a reduction from noisy parity.)</li>
+<li>Give the block stochastic model. When is it information theoretically posible to find the groups (is this exact, or up to some error)? Compare spectral algorithms with tensor methods. (What are the assumptions? Why are tensor methods more flexible?)</li>
+<li>(*) Describe and prove the tensor algorithm for the block stochastic model.</li>
+<li>(*) Give a tensor algorithm for a pure topic model, and then generalize under latent dirichlet allocation. Why is the Dirichlet distribution particularly nice here? Find the complexity and error in terms of parameters.</li>
+<li>(*) Give a tensor algorithm for independent component analysis. There is a dependence on non-Gaussianlity: explain.</li>
+<li>Define the cumulants of a distribution. Why are they nice to work with, and how do they help in algorithms?</li>
+</ol>
 
   </div>
 
     
 
+    <!-- Extension : Sharing buttons @ www.sharethis.com -->
+    <span class="st_facebook_large" displayText="Facebook"></span>
+    <span class="st_twitter_large" displayText="Tweet"></span>
+    <span class="st_googleplus_large" displayText="Google +"></span>
+    <span class="st_reddit_large" displayText="Reddit"></span>
+    <span class="st__large" displayText></span>
 
+    <div id="disqus_thread"></div>
+    
+
+
+  
+    <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+  </div>
   
 </div>
 
@@ -215,6 +180,9 @@
 
 <!-- Extension : Disqus @ http://disqus.com -->
 <!-- Extension : InlineDisqussions @ https://github.com/tsi/inlineDisqussions -->
+
+<script src="../../../../disqus/js/disqus.js"></script>
+
 
 
 <!-- Extension : Google Analytics -->
