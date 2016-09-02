@@ -87,6 +87,8 @@
 
   <div class="toc"> <ul>
  <li><a href="#threads">Threads</a></li>
+ <li><a href="#summary">Summary</a></li>
+ <li><a href="#conversation-with-arora">Conversation with Arora</a></li>
  </ul> </div>
 
   <div class="blog-main">
@@ -159,6 +161,26 @@
 <li>Probabilistic view of dictionary learning (LDA, hierarchical DP, etc.) <span class="citation" data-cites="Bianca">@Bianca</span></li>
 <li>Pattern theory—how they model images. Traditional image things—wavelets etc.</li>
 </ul>
+<h2 id="summary">Summary</h2>
+<ul>
+<li>Reading
+<ul>
+<li><a href="../tcs/machine_learning/self_taught_learning.html">Self-taught learning</a></li>
+<li><a href="../tcs/machine_learning/transduction.html">Transduction</a></li>
+<li><a href="../tcs/machine_learning/tensor/BKS15.html">BKS15 Dictionary Learning and Tensor Decomposition via the Sum-of-Squares Method</a></li>
+</ul></li>
+</ul>
+<h2 id="conversation-with-arora">Conversation with Arora</h2>
+<ul>
+<li>“Show that backprop works.”
+<ul>
+<li>Assume a generative distribution: <span class="math inline">\(x\)</span> from sparse distribution, observe <span class="math inline">\(y\approx Ax\)</span>, there is a SVM classifier depending on <span class="math inline">\(x\)</span>. Show that backprop for a 2-layer NN works. (<span class="citation" data-cites="Tengyu">@Tengyu</span>)</li>
+</ul></li>
+<li>PMI: restrict to features that co-occur.</li>
+<li>SoS for TD + AM for DL gives <span class="math inline">\(n^{O(\log n)}\)</span> algorithm for sparsity <span class="math inline">\(n^{1-\ep}\)</span>. Check this (don’t need sparsity after initialization).</li>
+<li>(Hard) Kernel SVM’s can’t learn DL + classifier (essentially 2-layer NN).</li>
+</ul>
+<!--1-layer NN is like sparse recovery.-->
 
   </div>
 
