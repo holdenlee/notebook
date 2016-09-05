@@ -10,7 +10,7 @@
   <meta name="description" content="Holden Lee's Research Notebook">
   <meta name="author" content="Holden Lee">
     
-  <title>[BKS15] Dictionary Learning and Tensor Decomposition via the Sum-of-Squares Method</title>
+  <title>LDA (Linear discriminant analysis)</title>
 
   <!-- Bootstrap core CSS -->
   <link href="../../../../bootstrap/css/bootstrap.min.css" rel="stylesheet">
@@ -70,65 +70,31 @@
 <div class="container">
   <div id="content">
     <div class="page header">
-      <h1>[BKS15] Dictionary Learning and Tensor Decomposition via the Sum-of-Squares Method</h1>
+      <h1>LDA (Linear discriminant analysis)</h1>
     </div>
     <div class="info">
       
        
-        <p>Posted: 2016-08-30 
-          , Modified: 2016-08-30 
+        <p>Posted: 2016-09-04 
+          , Modified: 2016-09-04 
 	</p>
       
-       <p>Tags: <a href="../../../../tags/dictionary%20learning.html">dictionary learning</a>, <a href="../../../../tags/tensor.html">tensor</a>, <a href="../../../../tags/sparse%20coding.html">sparse coding</a></p> 
+       <p>Tags: <a href="../../../../tags/LDA.html">LDA</a>, <a href="../../../../tags/dimensionality%20reduction.html">dimensionality reduction</a></p> 
     </div>
     
   </div>
   <!--/div-->
 
-  <div class="toc"> <ul>
- <li><a href="#noisy-tensor-decomposition">Noisy tensor decomposition</a><ul>
- <li><a href="#reduction">Reduction</a></li>
- <li><a href="#algorithm">Algorithm</a></li>
- </ul></li>
- </ul> </div>
+  <div class="toc"></div>
 
   <div class="blog-main">
-    <p><strong>Theorem</strong>. Given <span class="math inline">\(\ep&gt;0,\si\ge 1, \de&gt;0\)</span> there exists <span class="math inline">\(d\)</span> and a polytime algorithm that given input</p>
-<ul>
-<li>a <span class="math inline">\(\si\)</span>-dictionary <span class="math inline">\(n\times m\)</span>,</li>
-<li><span class="math inline">\((d,\tau=n^{-\de})\)</span>-nice <span class="math inline">\(\{x\}\)</span>,</li>
-<li><span class="math inline">\(n^{O(1)}\)</span> samples from <span class="math inline">\(y=Ax\)</span>,</li>
-</ul>
-<p>outputs with probability <span class="math inline">\(\ge 0.9\)</span> a set <span class="math inline">\(\ep\)</span>-close to columns of <span class="math inline">\(A\)</span>.</p>
-<ul>
-<li>A <span class="math inline">\(\si\)</span>-dictionary has <span class="math inline">\(AA^T\preceq \si I\)</span> (analytic proxy for overcompleteness <span class="math inline">\(\fc mn\)</span>).</li>
-<li>A distribution is <span class="math inline">\((d,\tau)\)</span>-nice if <span class="math inline">\(\E x_i^{d/2}x_j^{d/2}\le \tau\)</span> for all <span class="math inline">\(i\ne j\)</span>, and <span class="math inline">\(\E x^\al=0\)</span> for all <span class="math inline">\(|\al|\le d\)</span>. (Ex. Bernoulli(<span class="math inline">\(\tau\)</span>) times Gaussian with <span class="math inline">\(\E z_i^d = \rc\tau\)</span>.)</li>
-</ul>
-<p>Note on running time:</p>
-<ul>
-<li><span class="math inline">\(\ep\)</span>-accuracy with running time depending on <span class="math inline">\(\poly\prc{\ep}\)</span> in the exponent. So this is better for giving an initial solution for local search methods.</li>
-</ul>
-<h2 id="noisy-tensor-decomposition">Noisy tensor decomposition</h2>
-<p>Given noisy version of <span class="math inline">\(\sumo im \an{a^i, u}^d = \ve{A^Tu}_d^d\)</span>, recover <span class="math inline">\(\{a^1,\ldots, a^m\}\)</span>.</p>
-<p><strong>Theorem</strong> (Noisy tensor decomposition). For every <span class="math inline">\(\ep&gt;0,\si\ge 1\)</span> there exist <span class="math inline">\(d,\tau\)</span> such that a probabilistic <span class="math inline">\(n^{O(\ln n)}\)</span>-time agorithm, given <span class="math inline">\(P\)</span> with <span class="math display">\[\ve{A^T u}_d^d - \tau \ve{u}_2^d \preceq P \preceq \ve{A^Tu}_d^d + \tau \ve{u}_2^d,\]</span> outputs with probability 0.9 <span class="math inline">\(S\)</span> that is <span class="math inline">\(\ep\)</span>-close to <span class="math inline">\(\{a^1,\ldots, a^m\}\)</span>. (<span class="math inline">\(\preceq\)</span> means the difference is a sum of squares.)</p>
-<p>Note this allows significant noise since we expect <span class="math inline">\(\ve{A^Tu}_d^d\sim mn^{-\fc d2}\ll \tau\)</span>.</p>
-<h3 id="reduction">Reduction</h3>
-<p>Take <span class="math display">\[ P = \EE_{i} \an{y_i, u}^{2d}.\]</span></p>
-<h3 id="algorithm">Algorithm</h3>
-<ol type="1">
-<li>Use SoS to find degree-<span class="math inline">\(k\)</span> pseudo-distribution <span class="math inline">\(\{u\}\)</span> that maximizes <span class="math inline">\(P(u)\)</span> under <span class="math inline">\(\ve{u}^2=1\)</span>.</li>
-<li>Let <span class="math inline">\(W\)</span> be a product of <span class="math inline">\(O(\ln n)\)</span> rndom linear functions.</li>
-<li>Output top eigenvector of <span class="math inline">\(M\)</span>, <span class="math inline">\(M_{ij} = \wt \E W(u)^2 u_iu_j\)</span>.</li>
-</ol>
-<p>SoS Algorithm: given <span class="math inline">\(\ep&gt;0, k,n,M\)</span>, <span class="math inline">\(P_1,\ldots, P_m\in \R[x_1,\ldots, x_n]\)</span> with coefficients in <span class="math inline">\([0,M]\)</span>, if there exists a degree <span class="math inline">\(k\)</span> pseudo-distribution with <span class="math inline">\(P_i=0,i\in [m]\)</span>, then we can find <span class="math inline">\(u'\)</span> satisfying <span class="math inline">\(P_i\le \ep, P_i\ge -\ep\)</span> for every <span class="math inline">\(i\in [m]\)</span> in time <span class="math inline">\((n\polylog\prc{M}{\ep})^{O(k)}\)</span>.</p>
-<p>(This is a feasibility problem? Use ellipsoid method?)</p>
-<p>Steps</p>
-<ol type="1">
-<li>If <span class="math inline">\(u\)</span> is an actual distribution, the the output is close to a column.</li>
-<li>Generalize to pseudo-distributions.</li>
-<li>Generalize to getting all columns.</li>
-</ol>
-<p>Idea: If not correlated, then <span class="math inline">\(P(u)\)</span> is small. The inequalities can be turned into polynomial inequalities provable by SoS.</p>
+    \begin{align}
+\Ga_c &amp;= \rc{|S_c|} \sum_{i\in S_c} \ol X_i\\
+\Si_c &amp;= \rc{|S_c|} \sum_{i\in S_c} (\ol X_i - \Ga_c)(\ol X_i - \Ga_c)^T\\
+\Phi &amp;= \rc{C} \sumo cC  (\Ga_c-\Ga) (\Ga_c-\Ga)^T\\
+\max_{V\in \R^{k\times L}, V^TV=I_L} \fc{\Tr(V^T\Phi V)}{\Tr(V^T \sumo cC \si_c v)}
+&amp;= L_1\text{ principal eigenvectors of }(\wt \Phi = \pa{\sumo cC \Si_c}^+ \Phi).
+\end{align}
 
   </div>
 
