@@ -8,8 +8,213 @@
         <name>Holden Lee</name>
         <email>oldheneel@gmail.com</email>
     </author>
-    <updated>2016-08-31T00:00:00Z</updated>
+    <updated>2016-09-04T00:00:00Z</updated>
     <entry>
+    <title>LDA (Linear discriminant analysis)</title>
+    <link href="http://holdenlee.github.io/notebook/posts/tcs/machine_learning/matrices/lda.html" />
+    <id>http://holdenlee.github.io/notebook/posts/tcs/machine_learning/matrices/lda.html</id>
+    <published>2016-09-04T00:00:00Z</published>
+    <updated>2016-09-04T00:00:00Z</updated>
+    <summary type="html"><![CDATA[
+<div class="container">
+  <div id="content">
+    <div class="page header">
+      <h1>LDA (Linear discriminant analysis)</h1>
+    </div>
+    <div class="info">
+      
+       
+        <p>Posted: 2016-09-04 
+          , Modified: 2016-09-04 
+	</p>
+      
+       <p>Tags: <a href="/tags/LDA.html">LDA</a>, <a href="/tags/dimensionality%20reduction.html">dimensionality reduction</a></p> 
+    </div>
+    
+  </div>
+  <!--/div-->
+
+  <div class="toc"></div>
+
+  <div class="blog-main">
+    \begin{align}
+\Ga_c &amp;= \rc{|S_c|} \sum_{i\in S_c} \ol X_i\\
+\Si_c &amp;= \rc{|S_c|} \sum_{i\in S_c} (\ol X_i - \Ga_c)(\ol X_i - \Ga_c)^T\\
+\Phi &amp;= \rc{C} \sumo cC  (\Ga_c-\Ga) (\Ga_c-\Ga)^T\\
+\max_{V\in \R^{k\times L}, V^TV=I_L} \fc{\Tr(V^T\Phi V)}{\Tr(V^T \sumo cC \si_c v)}
+&amp;= L_1\text{ principal eigenvectors of }(\wt \Phi = \pa{\sumo cC \Si_c}^+ \Phi).
+\end{align}
+
+  </div>
+
+    
+
+    <!-- Extension : Sharing buttons @ www.sharethis.com -->
+    <span class='st_facebook_large' displayText='Facebook'></span>
+    <span class='st_twitter_large' displayText='Tweet'></span>
+    <span class='st_googleplus_large' displayText='Google +'></span>
+    <span class='st_reddit_large' displayText='Reddit'></span>
+    <span class='st__large' displayText=''></span>
+
+    <div id="disqus_thread"></div>
+    
+
+
+  
+    <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+  </div>
+  
+</div>
+]]></summary>
+</entry>
+<entry>
+    <title>Weekly summary 2016-09-10</title>
+    <link href="http://holdenlee.github.io/notebook/posts/summaries/2016-09-10.html" />
+    <id>http://holdenlee.github.io/notebook/posts/summaries/2016-09-10.html</id>
+    <published>2016-09-04T00:00:00Z</published>
+    <updated>2016-09-04T00:00:00Z</updated>
+    <summary type="html"><![CDATA[
+<div class="container">
+  <div id="content">
+    <div class="page header">
+      <h1>Weekly summary 2016-09-10</h1>
+    </div>
+    <div class="info">
+      
+       
+        <p>Posted: 2016-09-04 
+          , Modified: 2016-09-04 
+	</p>
+      
+       <p>Tags: <a href="/tags/none.html">none</a></p> 
+    </div>
+    
+  </div>
+  <!--/div-->
+
+  <div class="toc"> <ul>
+ <li><a href="#threads">Threads</a></li>
+ <li><a href="#pcanet-a-simple-deep-learning-baseline-for-image-classification">PCANet: A simple deep learning baseline for image classification?</a></li>
+ <li><a href="#architecture">Architecture</a><ul>
+ <li><a href="#variations">Variations</a></li>
+ </ul></li>
+ <li><a href="#experiments">Experiments</a></li>
+ <li><a href="#questions">Questions</a></li>
+ </ul> </div>
+
+  <div class="blog-main">
+    <h2 id="threads">Threads</h2>
+<p>Continue from <a href="2016-09-03.html">last week</a>.</p>
+<h2 id="pcanet-a-simple-deep-learning-baseline-for-image-classification">PCANet: A simple deep learning baseline for image classification?</h2>
+<p>Each stage in a CNN consists of 3 layers:</p>
+<ul>
+<li>convolutional filter bank</li>
+<li>nonlinear processing</li>
+<li>feature pooling</li>
+</ul>
+<p>Replace these:</p>
+<table>
+<thead>
+<tr class="header">
+<th style="text-align: left;">CNN</th>
+<th style="text-align: left;">PCANet</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">convolutional filter bank</td>
+<td style="text-align: left;">PCA filter</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">nonlinear processing</td>
+<td style="text-align: left;">binary quantization (hashing)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">feature pooling</td>
+<td style="text-align: left;">block-wise histograms of binary codes</td>
+</tr>
+</tbody>
+</table>
+<p>Lesson: Deep learning has a lot of hype, but in fact simpler, better theoretically justifiable architectures can do just as well or better! In particular, one weakness of DL is that it depends on parameter tuning expertise and <em>ad hoc</em> tricks.</p>
+<p>Examples:</p>
+<ul>
+<li>ScatNet (wavelet scattering network): filters are wavelet operators, so no learning is needed. (These don’t work so well when there is intra-class variability with illumination change and corruption.)</li>
+<li>PCANet cf. OPCA.</li>
+</ul>
+<p>Motivations:</p>
+<ol type="1">
+<li>design a simple deep learning network which should be very easy, even trivial, to train and to adapt to different data and tasks.</li>
+<li>such a basic network could serve as a good baseline for people to empirically justify the use of more advanced processing components or more sophisticated architectures for their deep learning networks.</li>
+</ol>
+<h2 id="architecture">Architecture</h2>
+<p>Input: <span class="math inline">\(N\)</span> training images <span class="math inline">\(\{I_i\}_{i=1}^N\)</span> of size <span class="math inline">\(m\times n\)</span>.</p>
+<ol type="1">
+<li><p>Learn PCA: Vectorize all <span class="math inline">\(k_1\times k_2\)</span> patches, mean-center and put them all in a matrix <span class="math inline">\(X\in \R^{k_1k_2\times Nmn}\)</span><a href="#fn1" class="footnoteRef" id="fnref1"><sup>1</sup></a>. Do rank <span class="math inline">\(L_1\)</span> PCA on <span class="math inline">\(X\)</span>. The <span class="math inline">\(l\)</span>th filter (<span class="math inline">\(l\in [L_1]\)</span>) is <span class="math display">\[ W_l^1 := mat_{k_1,k_2}(q_l(XX^T))\]</span> where <span class="math inline">\(mat_{k_1,k_2}\)</span> maps <span class="math inline">\(\R^{k_1k_2}\to \R^{k_1\times k_2}\)</span> and <span class="math inline">\(q_l\)</span> is the <span class="math inline">\(l\)</span> largest eigenvectors.</p>
+<p>Now let <span class="math inline">\(I_i^l = I_i * W_l^1\)</span>. (Zero-pad <span class="math inline">\(I_i\)</span> so that <span class="math inline">\(I_i^l\)</span> has the same size.)</p>
+You can apply this multiple times. Suppose we apply it twice to get <span class="math inline">\(I_i^{l_1, l_2}\)</span>.</li>
+<li>Hashing: Binarize the outputs to get <span class="math display">\[\{b_{l_1,l_2} = H(I_i^{l_1,l_2})\}\]</span> where <span class="math inline">\(H\)</span> is Heaviside function. Let <span class="math display">\[T_i^{l_1} := \sumo{l_2}{L_2} 2^{l_2-1} b_{l_1,l_2}.\]</span> (I.e., treat <span class="math inline">\((b_{l_1,l_2})_{l_2=1}^{L_2}\)</span> categorically.)</li>
+<li><p>Histogram: Express histogram with <span class="math inline">\(L_2\)</span> bins as a vector <span class="math inline">\(Bhist(T_i^l)\)</span>. The feature vector of <span class="math inline">\(I_i\)</span> is <span class="math display">\[f_i := \text{map Bhist }[T_i^{1:L_1}]\in \R^{2^{L_2}L_1B}.\]</span></p></li>
+</ol>
+<p><strong>On many layers</strong>: Note that we DON’T stack by repeating 1-3. Instead, 2-3 happen only once at the end. The stacking happens within 1—doing PCA multiple times.</p>
+<p>Note:</p>
+<ul>
+<li>Nonoverlapping blocks are suitable for faces.</li>
+<li>Overlapping blacks are useful for digits, textures, and objects.</li>
+<li>Histogram gives some translation invariance (why??).</li>
+<li>Model parameters <span class="math inline">\(k_1,k_2,L_1,L_2\)</span>. Ex. <span class="math inline">\(L_1=L_2=8\)</span>.</li>
+<li>Two-stage PCANet is good.</li>
+<li>PCANet with absolute rectification layer (??) after the first stage doesn’t help.</li>
+<li>The overall process is linear. ?? Combining two stages. Two stages works better. Two-stage PCA filters have a low-rank factorization. It has <span class="math inline">\(L_1k_1^2 + L_2k_2^2\)</span> rather than $L_1L_2(k_1+k_2-1)^2 $ variables.</li>
+</ul>
+<h3 id="variations">Variations</h3>
+<ul>
+<li>RandNet: use random filters (from standard Gaussian)</li>
+<li>LDANet: Use multi-class linear discriminant analysis. (Think: supervised version of PCA.) <a href="../tcs/machine_learning/matrices/lda.html">LDA</a></li>
+</ul>
+<p>(Does this mean LDANet will fail on things like concentric circles?)</p>
+<h2 id="experiments">Experiments</h2>
+<p>Face recognition, MNIST.</p>
+<p>MNIST: basic (10000-2000-50000), rot, noise bg, image bg, etc.</p>
+<h2 id="questions">Questions</h2>
+<ul>
+<li>What is “block size”? (vs. filter, image size)</li>
+<li>How do you classify using PCANet? (ex. do you train a SVM on top?)</li>
+<li>How about stacking?
+<ul>
+<li>An intriguing research direction will then be how to construct a more complicated (say more sophisticated filters possibly with discriminative learning) or deeper (more number of stages) PCANet.</li>
+<li>Some preprocessing of pose alignment and scale normalization might be needed for good performance guarantee. The current bottleneck that keeps PCANet from growing deeper (e.g., more than two stages) is that the dimension of the resulted feature would increase exponentially with the number of stages.</li>
+</ul></li>
+</ul>
+<section class="footnotes">
+<hr />
+<ol>
+<li id="fn1"><p>Or <span class="math inline">\(N(m-k_1+1)(n-k_1+1)\)</span> if you don’t go past the border.<a href="#fnref1">↩</a></p></li>
+</ol>
+</section>
+
+  </div>
+
+    
+
+    <!-- Extension : Sharing buttons @ www.sharethis.com -->
+    <span class='st_facebook_large' displayText='Facebook'></span>
+    <span class='st_twitter_large' displayText='Tweet'></span>
+    <span class='st_googleplus_large' displayText='Google +'></span>
+    <span class='st_reddit_large' displayText='Reddit'></span>
+    <span class='st__large' displayText=''></span>
+
+    <div id="disqus_thread"></div>
+    
+
+
+  
+    <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+  </div>
+  
+</div>
+]]></summary>
+</entry>
+<entry>
     <title>Transductive learning</title>
     <link href="http://holdenlee.github.io/notebook/posts/tcs/machine_learning/transduction.html" />
     <id>http://holdenlee.github.io/notebook/posts/tcs/machine_learning/transduction.html</id>
@@ -195,6 +400,307 @@ They use <span class="math inline">\(L^1\)</span> norm regularization. <span cla
 ]]></summary>
 </entry>
 <entry>
+    <title>Tensor decomposition</title>
+    <link href="http://holdenlee.github.io/notebook/posts/tcs/machine_learning/tensors/tensor_decomposition.html" />
+    <id>http://holdenlee.github.io/notebook/posts/tcs/machine_learning/tensors/tensor_decomposition.html</id>
+    <published>2016-08-30T00:00:00Z</published>
+    <updated>2016-08-30T00:00:00Z</updated>
+    <summary type="html"><![CDATA[
+<div class="container">
+  <div id="content">
+    <div class="page header">
+      <h1>Tensor decomposition</h1>
+    </div>
+    <div class="info">
+      
+       
+        <p>Posted: 2016-08-30 
+          , Modified: 2016-08-30 
+	</p>
+      
+       <p>Tags: <a href="/tags/tensors.html">tensors</a></p> 
+    </div>
+    
+  </div>
+  <!--/div-->
+
+  <div class="toc"> <ul>
+ <li><a href="#basics">Basics</a></li>
+ </ul> </div>
+
+  <div class="blog-main">
+    <h2 id="basics">Basics</h2>
+<p>See “Tensor methods” in <code>new_thread.pdf</code>.</p>
+<p>Review questions:</p>
+<ol type="1">
+<li>Define tensor and tensor decomposition. When is it unique? Discuss the intractability of tensor problems. Why would we work with them? Give an example where matrix methods fail but tensor methods work because of uniqueness.</li>
+<li>What properties of matrix rank fail for tensor rank?</li>
+<li>(*) Give Jeinrich’s algorithm. When does it work, and what is its complexity?
+<ul>
+<li>Suppose <span class="math inline">\(T=\sum^r u_i\ot v_i\ot w_i\)</span>, where <span class="math inline">\(\{u_i\}\)</span> is linearly independent, <span class="math inline">\(\{v_i\}\)</span> is l.i., and every pair in <span class="math inline">\(\{w_i\}\)</span> is l.i. Then this decomposition is unique and there is an efficient algorithm to find it.</li>
+<li>For a tensor <span class="math inline">\(T\in V^{\ot 3}\)</span>, view <span class="math inline">\(T_{\bullet}\in V\ot V^*\ot V^*\)</span>, with <span class="math inline">\(\bullet\)</span> corresponding to the last <span class="math inline">\(V^*\)</span>. The slices are sums of rank 1 matrices <span class="math inline">\(u_iv_i^*\)</span> with coefficients given by the projections of <span class="math inline">\(w_i\)</span> onto <span class="math inline">\(a\)</span>.
+\begin{align}
+T_a &amp;=\sum \an{w_i,a}u_iv_i^* =: UD_aV^*
+T_aT_b^+ &amp;= UD_aD_b^+ U^+\\
+T_b^+T_a &amp;= VD_b^+D_a V^+
+\end{align}
+WHP diagonalization recovers <span class="math inline">\(U,V\)</span>.</li>
+</ul></li>
+<li>Give a perturbation bound for finding eigenvalues and eigenvectors of a matrix. What does the bound depend on, in what way (polynomial?)? Make it quantitative. Use this to give a bound on convergence in tensor decomposition.</li>
+<li>What is the Kruskal rank, why is it important?</li>
+<li>Describe the phylogenetic tree/HMM setup. How can you solve it with tensor methods?</li>
+<li>What about the non-full-rank case? (Give a reduction from noisy parity.)</li>
+<li>Give the block stochastic model. When is it information theoretically posible to find the groups (is this exact, or up to some error)? Compare spectral algorithms with tensor methods. (What are the assumptions? Why are tensor methods more flexible?)</li>
+<li>(*) Describe and prove the tensor algorithm for the block stochastic model.</li>
+<li>(*) Give a tensor algorithm for a pure topic model, and then generalize under latent dirichlet allocation. Why is the Dirichlet distribution particularly nice here? Find the complexity and error in terms of parameters.</li>
+<li>(*) Give a tensor algorithm for independent component analysis. There is a dependence on non-Gaussianlity: explain.</li>
+<li>Define the cumulants of a distribution. Why are they nice to work with, and how do they help in algorithms?</li>
+</ol>
+
+  </div>
+
+    
+
+    <!-- Extension : Sharing buttons @ www.sharethis.com -->
+    <span class='st_facebook_large' displayText='Facebook'></span>
+    <span class='st_twitter_large' displayText='Tweet'></span>
+    <span class='st_googleplus_large' displayText='Google +'></span>
+    <span class='st_reddit_large' displayText='Reddit'></span>
+    <span class='st__large' displayText=''></span>
+
+    <div id="disqus_thread"></div>
+    
+
+
+  
+    <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+  </div>
+  
+</div>
+]]></summary>
+</entry>
+<entry>
+    <title>[BKS15] Dictionary Learning and Tensor Decomposition via the Sum-of-Squares Method</title>
+    <link href="http://holdenlee.github.io/notebook/posts/tcs/machine_learning/tensors/BKS15.html" />
+    <id>http://holdenlee.github.io/notebook/posts/tcs/machine_learning/tensors/BKS15.html</id>
+    <published>2016-08-30T00:00:00Z</published>
+    <updated>2016-08-30T00:00:00Z</updated>
+    <summary type="html"><![CDATA[
+<div class="container">
+  <div id="content">
+    <div class="page header">
+      <h1>[BKS15] Dictionary Learning and Tensor Decomposition via the Sum-of-Squares Method</h1>
+    </div>
+    <div class="info">
+      
+       
+        <p>Posted: 2016-08-30 
+          , Modified: 2016-08-30 
+	</p>
+      
+       <p>Tags: <a href="/tags/dictionary%20learning.html">dictionary learning</a>, <a href="/tags/tensor.html">tensor</a>, <a href="/tags/sparse%20coding.html">sparse coding</a></p> 
+    </div>
+    
+  </div>
+  <!--/div-->
+
+  <div class="toc"> <ul>
+ <li><a href="#noisy-tensor-decomposition-1">Noisy tensor decomposition 1</a><ul>
+ <li><a href="#reduction">Reduction</a></li>
+ <li><a href="#algorithm">Algorithm</a></li>
+ </ul></li>
+ <li><a href="#noisy-tensor-decomposition">Noisy tensor decomposition</a><ul>
+ <li><a href="#algorithm-1">Algorithm</a><ul>
+ <li><a href="#sampling-pseudo-distributions">Sampling pseudo-distributions</a></li>
+ </ul></li>
+ <li><a href="#proof">Proof</a></li>
+ </ul></li>
+ <li><a href="#dictionary-learning">Dictionary learning</a></li>
+ <li><a href="#todo">Todo</a></li>
+ </ul> </div>
+
+  <div class="blog-main">
+    <p><strong>Theorem</strong>. Given <span class="math inline">\(\ep&gt;0,\si\ge 1, \de&gt;0\)</span> there exists <span class="math inline">\(d\)</span> and a polytime algorithm that given input</p>
+<ul>
+<li>a <span class="math inline">\(\si\)</span>-dictionary <span class="math inline">\(n\times m\)</span>,</li>
+<li><span class="math inline">\((d,\tau=n^{-\de})\)</span>-nice <span class="math inline">\(\{x\}\)</span>,</li>
+<li><span class="math inline">\(n^{O(1)}\)</span> samples from <span class="math inline">\(y=Ax\)</span>,</li>
+</ul>
+<p>outputs with probability <span class="math inline">\(\ge 0.9\)</span> a set <span class="math inline">\(\ep\)</span>-close to columns of <span class="math inline">\(A\)</span>.</p>
+<ul>
+<li>A <span class="math inline">\(\si\)</span>-dictionary has <span class="math inline">\(AA^T\preceq \si I\)</span> (analytic proxy for overcompleteness <span class="math inline">\(\fc mn\)</span>).</li>
+<li>A distribution is <span class="math inline">\((d,\tau)\)</span>-nice if <span class="math inline">\(\E x_i^{d/2}x_j^{d/2}\le \tau\)</span> for all <span class="math inline">\(i\ne j\)</span>, and <span class="math inline">\(\E x^\al=0\)</span> for all <span class="math inline">\(|\al|\le d\)</span>. (Ex. Bernoulli(<span class="math inline">\(\tau\)</span>) times Gaussian with <span class="math inline">\(\E z_i^d = \rc\tau\)</span>.)</li>
+</ul>
+<p>Note on running time:</p>
+<ul>
+<li><span class="math inline">\(\ep\)</span>-accuracy with running time depending on <span class="math inline">\(\poly\prc{\ep}\)</span> in the exponent. So this is better for giving an initial solution for local search methods.</li>
+</ul>
+<h2 id="noisy-tensor-decomposition-1">Noisy tensor decomposition 1</h2>
+<p>Given noisy version of <span class="math inline">\(\sumo im \an{a^i, u}^d = \ve{A^Tu}_d^d\)</span>, recover <span class="math inline">\(\{a^1,\ldots, a^m\}\)</span>.</p>
+<p><strong>Theorem</strong> (Noisy tensor decomposition). For every <span class="math inline">\(\ep&gt;0,\si\ge 1\)</span> there exist <span class="math inline">\(d,\tau\)</span> such that a probabilistic <span class="math inline">\(n^{O(\ln n)}\)</span>-time agorithm, given <span class="math inline">\(P\)</span> with <span class="math display">\[\ve{A^T u}_d^d - \tau \ve{u}_2^d \preceq P \preceq \ve{A^Tu}_d^d + \tau \ve{u}_2^d,\]</span> outputs with probability 0.9 <span class="math inline">\(S\)</span> that is <span class="math inline">\(\ep\)</span>-close to <span class="math inline">\(\{a^1,\ldots, a^m\}\)</span>. (<span class="math inline">\(\preceq\)</span> means the difference is a sum of squares.)</p>
+<p>Note this allows significant noise since we expect <span class="math inline">\(\ve{A^Tu}_d^d\sim mn^{-\fc d2}\ll \tau\)</span>.</p>
+<h3 id="reduction">Reduction</h3>
+<p>Take <span class="math display">\[ P = \EE_{i} \an{y_i, u}^{2d}.\]</span></p>
+<h3 id="algorithm">Algorithm</h3>
+<ol type="1">
+<li>Use SoS to find degree-<span class="math inline">\(k\)</span> pseudo-distribution <span class="math inline">\(\{u\}\)</span> that maximizes <span class="math inline">\(P(u)\)</span> under <span class="math inline">\(\ve{u}^2=1\)</span>.</li>
+<li>Let <span class="math inline">\(W\)</span> be a product of <span class="math inline">\(O(\ln n)\)</span> rndom linear functions.</li>
+<li>Output top eigenvector of <span class="math inline">\(M\)</span>, <span class="math inline">\(M_{ij} = \wt \E W(u)^2 u_iu_j\)</span>.</li>
+</ol>
+<p><strong>SoS Algorithm</strong>: given <span class="math inline">\(\ep&gt;0, k,n,M\)</span>, <span class="math inline">\(P_1,\ldots, P_m\in \R[x_1,\ldots, x_n]\)</span> with coefficients in <span class="math inline">\([0,M]\)</span>, if there exists a degree <span class="math inline">\(k\)</span> pseudo-distribution with <span class="math inline">\(P_i=0,i\in [m]\)</span>, then we can find <span class="math inline">\(u'\)</span> satisfying <span class="math inline">\(P_i\le \ep, P_i\ge -\ep\)</span> for every <span class="math inline">\(i\in [m]\)</span> in time <span class="math inline">\((n\polylog\prc{M}{\ep})^{O(k)}\)</span>.</p>
+<p>(Proof: This is a feasibility problem. Use ellipsoid method.)</p>
+<p>Steps</p>
+<ol type="1">
+<li>If <span class="math inline">\(u\)</span> is an actual distribution, the the output is close to a column.</li>
+<li>Generalize to pseudo-distributions.</li>
+<li>Generalize to getting all columns.</li>
+</ol>
+<p>Idea: If not correlated, then <span class="math inline">\(P(u)\)</span> is small. The inequalities can be turned into polynomial inequalities provable by SoS.</p>
+<h2 id="noisy-tensor-decomposition">Noisy tensor decomposition</h2>
+<p><strong>Theorem</strong> (Noisy tensor decomposition, 4.3). There is a probabilistic algorithm that given</p>
+<ul>
+<li><span class="math inline">\(\ep&gt;0\)</span></li>
+<li><span class="math inline">\(\si \ge 1\)</span></li>
+<li>degree <span class="math inline">\(d\ge d(\ep,\si) = O\pf{\ln \si}{\ep}\)</span></li>
+<li>noise parameter <span class="math inline">\(\tau \le \tau(\ep) = \Om(\ep)\)</span></li>
+<li>degree <span class="math inline">\(d\)</span> polynomial <span class="math inline">\(P\in \R[u]\)</span> such that <span class="math display">\[\ve{A^T u}_d^d - \tau \ve{u}_2^d \preceq P \preceq \ve{A^Tu}_d^d + \tau \ve{u}_2^d,\]</span> outputs with high probability <span class="math inline">\(S\)</span> that is <span class="math inline">\(\ep\)</span>-close to <span class="math inline">\(\{a^1,\ldots, a^m\}\)</span>. (<span class="math inline">\(\preceq\)</span> means the difference is a sum of squares.)</li>
+</ul>
+<h3 id="algorithm-1">Algorithm</h3>
+<ol type="1">
+<li>Start with <span class="math inline">\(S=\phi\)</span>. Let <span class="math inline">\(\ga = \fc{C}{\ep}\)</span> for <span class="math inline">\(C\)</span> large enough. ?? What’s <span class="math inline">\(k\)</span>?</li>
+<li>Loop:
+<ol type="1">
+<li>Attempt to find a degree <span class="math inline">\(k\)</span> pseudo-distribution <span class="math inline">\(U\)</span> satisfying the constraints <span class="math inline">\(P(U) \ge 1-\tau\)</span>, <span class="math inline">\(\ve{U}_2^2=1\)</span>, <span class="math inline">\(\an{s,U}^2\le 1-\ga\)</span> for every <span class="math inline">\(s\in S\)</span> (to repel it away from vectors we already found). If fail, stop.</li>
+<li>Use the “sampling pseudo-distributions” algorithm to obtain a unit vector <span class="math inline">\(c'\)</span> such that
+\begin{align}
+P(c') &amp; \ge e^{-\ep d} - \tau\\
+\ep &amp;:= O(\pf{\tau}{d} + \fc{\ln \si}{d} \fc{\ln m}k)
+\end{align}</li>
+<li>Add <span class="math inline">\(c'\)</span> to <span class="math inline">\(S\)</span>.</li>
+</ol></li>
+</ol>
+<h4 id="sampling-pseudo-distributions">Sampling pseudo-distributions</h4>
+<h3 id="proof">Proof</h3>
+<ol type="1">
+<li>Existence of <span class="math inline">\(c'\)</span>.
+<ul>
+<li><span class="math inline">\(U\)</span> exists because any column of <span class="math inline">\(A\)</span> is a solution. (CHECK columns far!!)</li>
+<li><span class="math inline">\(U\)</span> is correlated with <span class="math inline">\(A\)</span>: By assumption, for <span class="math inline">\(\ve{U}_2^2=1\)</span>, <span class="math inline">\(P\in \ve{A^T U}_d^d + \tau[-1,1]\)</span>. Thus <span class="math inline">\(P(U)\ge 1-\tau\)</span> implies <span class="math display">\[\ve{A^TU}_d^d \ge 1-2\tau.\]</span></li>
+<li><p>If <span class="math inline">\(U\)</span> correlates well with <span class="math inline">\(A\)</span>, then <span class="math inline">\(U\)</span> correlates with some column of <span class="math inline">\(A\)</span>. <!--Any column of $A$ satisfies $\wt \E \an{c,u}^k \ge e^{-\ep' k}$.--></p>
+<p><em>Lemma 6.1</em>. Given</p>
+<ul>
+<li><span class="math inline">\(A\)</span> is <span class="math inline">\(\si\)</span>-overcomplete</li>
+<li><span class="math inline">\(u\)</span> is degree <span class="math inline">\(3k\)</span> pd over <span class="math inline">\(\R^n\)</span> satisfying <span class="math inline">\(\ve{A^Tu}_d^d \ge e^{-\de d}, \ve{u}_2^2 = 1\)</span>,</li>
+<li><span class="math inline">\(d-2\mid k\)</span> (?? this seems to be necessary. Think of <span class="math inline">\(k\gg d\)</span>.)</li>
+</ul>
+<p>there exists a column of <span class="math inline">\(A\)</span> such that <span class="math inline">\(\wt \E \an{c,u}^k \ge e^{-\ep k}\)</span>, <span class="math inline">\(\ep=O(\de + \fc{\ln \si}{d} + \fc{\ln m}k)\)</span>.</p>
+<ul>
+<li>Motivation for proof: First, let’s see how to prove this if <span class="math inline">\(u\)</span> is an actual vector. By averaging, there is a column such that <span class="math display">\[ \ve{A_{\cdot i}^T u}_{k}^k \ge \pf{1-\ep}{m}\implies A_{\cdot i}^Tu \ge \pf{1-\ep}{m}^{\rc k}\approx e^{\fc{\ln m}{k}}.\]</span> (This also shows why we expect <span class="math inline">\(\ln m\)</span> in the exponent.) This averaging argument still works for pseudo-distributions when <span class="math inline">\(d=k\)</span>—the first inequality still holds true, if we have <span class="math inline">\(d=k\)</span>. (The first inequality would no longer imply the second, though.) (?? Why wouldn’t we take <span class="math inline">\(d=k\)</span>?)</li>
+<li>?? For some reason, we want to use an inequality not depending on <span class="math inline">\(m\)</span> (depending on <span class="math inline">\(\ve{A^Tu}_2\)</span> is good, because we have control of this using <span class="math inline">\(\si\)</span>), in which case instead of using the inequality <span class="math inline">\(\ve{v}_{\iy} \ge \fc{\ve{v}_d}{m^{\rc d}}\)</span> we use <span class="math inline">\(\ve{v}_{\iy}^{d-2}\ge \fc{\ve{v}_d^d}{\ve{v}_2^2}\)</span>. We need to change this into a SoS inequality, so replace <span class="math inline">\(\iy\)</span> by <span class="math inline">\(k\)</span> for <span class="math inline">\(k\)</span> large, <span class="math display">\[\ve{v}_d^{\fc{dk}{d-2}} \le \ve{v}_k^k (\ve{v}_2^2)^{\fc{k}{d-2}}\]</span> provable by SoS (expand and then use Muirhead/AM-GM).</li>
+<li><!-- For the actual proof, we just need to relate the $d$ and $k$ norms. We want to lower-bound the $k$th norm in terms of the $d$th norm. Use
+	$$ \ve{v}_k^{d-2} \ve{v}_2^2 \ge \ve{v}_d^d. $$
+	(This is true for $k=1$ by expanding, and hence for all $k$.)-->
+<em>Proof</em>. <span class="math display">\[
+\ve{A^Tu}_k^k \ge \fc{(\ve{A^Tu}_d^d)^{\fc k{d-2}}}{(\ve{A^Tu}_2^2)^{\fc{k}{d-2}}} \ge \fc{e^{-\de d}}{\si^{\fc k{d-2}}}.
+\]</span> Now use averaging on <span class="math inline">\(\ve{A^Tu}_k^k\)</span>.</li>
+</ul></li>
+<li>Here <span class="math inline">\(\de = O\pf{\tau}d\)</span> so we get <span class="math display">\[ \wt E \an{c,u}^k \ge e^{-\ep' k},\quad \ep' = O(\fc{\tau}d + \fc{\ln \si \ln m}{dk}).\]</span></li>
+<li>Example: if <span class="math inline">\(u\)</span> is the actual distribution <span class="math inline">\(u=A_{\cdot i}\)</span> with probability <span class="math inline">\(\rc{m}\)</span>, then <span class="math inline">\(\wt E\an{c,u}^k = \rc m\)</span>. Hence we can’t do better than <span class="math inline">\(k=\Om(\ln m)\)</span>.</li>
+</ul></li>
+<li><p>Now we analyze the algorithm to “sample pseudo-distributions”: given a PD that correlates with a vector, find a vector close to it. We prove:</p>
+<p><strong>Theorem 5.1</strong>. The “sample pseudo-distributions” algorithm, given</p>
+<ul>
+<li>even <span class="math inline">\(k\ge 0\)</span></li>
+<li>degree <span class="math inline">\(k\)</span> p.d. with <span class="math inline">\(\ve{u}_2^2=1\)</span> and <span class="math inline">\(\wt \E\an{c,u}^k \ge e^{-\ep k}\)</span> (?? I think we want this for <span class="math inline">\(k-2\)</span>.)</li>
+</ul>
+<p>outputs <span class="math inline">\(c'\in \R^n\)</span> with <span class="math inline">\(\an{c,c'}\ge 1-O(\ep)\)</span> with probability <span class="math inline">\(2^{-\fc{k}{\poly(\ep)}}\)</span>.</p>
+<ul>
+<li>Here is the idea. We want to compute the tensor decomposition by using SVD (because there aren’t other good ways to compute overcomplete tensor decomposition…). Suppose that <span class="math inline">\(u\)</span> were an actual distribution; since it is correlated with <span class="math inline">\(A\)</span>, it is approximately supported on columns of <span class="math inline">\(A\)</span>. Then <span class="math inline">\(\wt \E uu^T = \sum p_i a_i a_i^T\)</span>. The <span class="math inline">\(a_i\)</span> are not uniquely identifiable from this (that’s the whole problem with SVD, why we want tensors in the first place!). Idea: consider <span class="math inline">\(\wt \E p(u) uu^T = \sum p_i p(a_i) a_ia_i^T\)</span> instead. If <span class="math inline">\(p\)</span> is a function that is large on <span class="math inline">\(a_i\)</span> and small on all other <span class="math inline">\(a_j\)</span>, then we win. Take <span class="math inline">\(p\)</span> to be a product of linear factors. If we put in enough factors, then with good probability the <span class="math inline">\(p(a_i)\)</span> will become farther apart, and one outruns the others, <span class="math inline">\(|p(a_i)|\gg \sqrt m|p(a_i)|\)</span>. Take <span class="math inline">\(p =W^2\)</span> where <span class="math inline">\(W\)</span> is a product of <span class="math inline">\(O(\ln n)\)</span> random linear functions <span class="math inline">\(\an{u,v}, \ve{v}_2=1\)</span>.</li>
+<li><p>We are given <span class="math inline">\(c\)</span> such that <span class="math inline">\(\wt E\an{c,u}^k \ge e^{-\de d}\)</span> (high correlation) and we want that <span class="math inline">\(c\)</span> to be a value of <span class="math inline">\(v\)</span> that makes (the quadratic form) <span class="math inline">\(v\mapsto \wt \E W(U) \an{v,U}^2\)</span> large. In fact, what we want is that <!--the value is way bigger than any other singular values; i.e.,--> when normalized so the sum of the eigenvalues is 1, the singular value corresponding to <span class="math inline">\(c\)</span> is close to 1.</p>
+There are 3 parts. (a) We need to understand how “renormalization” of pseudo-distributions works. (b) We need to show that for our choice of <span class="math inline">\(W\)</span>, we have with some probability a lower bound for <span class="math inline">\(\wt \E W(U) \an{c,U}^2\)</span>. This is the hardest part. (c) We need to show that <span class="math inline">\(c\)</span> is close to the singular vector (which we output). (I think (c) is in essence a matrix/eigenvector perturbation result, but it’s cloaked in the language of SoS here—unravel!)</li>
+<li><strong>Lemma</strong> (reweighting). Let <span class="math inline">\(U\)</span> be a degree <span class="math inline">\(k\)</span> p.d. Then for every SoS polynomial <span class="math inline">\(W\)</span> of degree <span class="math inline">\(d&lt;k\)</span>, <span class="math inline">\(\wt \E W&gt;0\)</span>, there exists a degree <span class="math inline">\((k-d)\)</span> p.d. <span class="math inline">\(U'\)</span> such that for every <span class="math inline">\(\deg P \le k-d\)</span>, <span class="math display">\[\wt E_{U'} P(U') = \rc{\wt \E_U W(U)} \wt \E_{U} W(U)P(U).\]</span> <em>Proof</em>. Just verify the positivity property.</li>
+<li><p><strong>Lemma 5.2</strong>. Let <span class="math inline">\(U\)</span> be a degree-<span class="math inline">\(k+2\)</span> pseudo-distribution over <span class="math inline">\(\R^n\)</span> with <span class="math inline">\(\ve{U}_2^2=1\)</span> and such that there exists a unit vector <span class="math inline">\(c\in \R^n\)</span> such that <span class="math inline">\(\wt \E\an{c,u}^k \ge e^{-\ep k}\)</span>. <span class="math inline">\(W=\rc{M^{k/2}} \prod_{i=1}^{k/2} w^{(i)}\)</span> where <span class="math inline">\(w^{(i)}\)</span> are iid draws from <span class="math inline">\(w=\an{\xi,u}^2\)</span>, <span class="math inline">\(\xi\sim N(0,I_n)\)</span>. Then with probability <span class="math inline">\(2^{-O\pf{k}{\poly(\ep)}}\)</span>, <span class="math inline">\(\wt E\an{c,u}^2 \ge (1-O(\ep))\wt \E W\)</span>.</p>
+(?? Discrepancy between <span class="math inline">\(k\)</span> and <span class="math inline">\(k+2\)</span>.)</li>
+<li>By reweighting, there exists a degree 2 p.d. <span class="math inline">\(U'\)</span> such that <span class="math display">\[\wt \E_{U'} \an{v,u'}^2 = \rc{\wt \E_U W(U)} \wt\E_{U} W(U) \an{v,U}^2.\]</span> By Lemma 5.2, the value at <span class="math inline">\(c\)</span> is <span class="math inline">\(\ge 1-O(\ep)\)</span>.</li>
+<li><em>Proof</em> (Sketch). This is more likely to be true if <span class="math inline">\(\an{c,\xi}\)</span> is large. Let <span class="math inline">\(w=\an{\xi,u}^2\)</span>. Let <span class="math inline">\(\tau_M\)</span> be such that <span class="math inline">\(\E_{\xi_0|\xi_0\ge \tau_M}\xi_0^2 =M\)</span>. Conditioning on <span class="math inline">\(\an{c,\xi}\ge \tau_{M+1}\)</span> and expanding <span class="math inline">\(\xi=\an{c,\xi}c+\xi'\)</span>, find that <span class="math display">\[ \E_{\xi | \an{c,\xi}\ge \tau_{M+1}} w = M\an{c,u}^2 + \ve{U}_2^2.\]</span> Let <span class="math inline">\(\ol W = \E W = \pa{\an{c,U}^2 + \rc M}^{\fc k2}\)</span> (assume <span class="math inline">\(\ve{u}_2^2=1\)</span>). Algebra shows
+\begin{align}
+\ol W \an{c,U}^2 &amp;\succeq \pa{1-\fc 2M } \ol W - \pa{1-\rc M}^{\fc k2}\\
+\EE_W \wt \E W\an{c,u}^2 &amp; \ge (1-O(\ep)) \EE_W \wt \E W.
+\end{align}
+<p>(Take <span class="math inline">\(M=\rc{\ep}\ln \prc{\ep}\)</span>.) This is almost what we want, except that we conditioned on <span class="math inline">\(\an{c,\xi}\ge \tau_{M+1}\)</span> and that this is an inequality about absolute values.</p>
+<p>To get rid of the conditioning, note that the event <span class="math inline">\(\forall i, \an{\xi^{(i)},c}\ge \tau_{M+1}\)</span> has probability <span class="math inline">\(2^{-O(kM^2)}\)</span>.</p>
+To get the result with not-too-small probability, rearrange as <span class="math display">\[
+O(\ep) \EE_W \wt \E W \ge \EE_W \wt \E W - \EE_W \wt \E W\an{c,U}^2,
+\]</span> bound second moments <span class="math inline">\(\E_W(\wt \E W)^2\)</span>, and use
+<ul>
+<li><strong>Lemma 5.3</strong>. Let <span class="math inline">\(A,B\)</span> be distributions such that <span class="math inline">\(0\le A\le B\)</span>, <span class="math inline">\(\de \in [0,1]\)</span>. If <span class="math inline">\(\E A\le \ep \E B\)</span> and <span class="math inline">\(\E B^2 \le t(\E B)^2\)</span>, then <span class="math inline">\(\Pj(A\le e^\de \ep B) \ge \fc{\de^2}{9t}\)</span>.</li>
+</ul></li>
+<li><p>(From degree 2 p.d. to a vector)</p>
+<p><strong>Lemma 5.4</strong>. Let <span class="math inline">\(c\in \R^n\)</span> be unit and <span class="math inline">\(U\)</span> be a degree-2 p.d. over <span class="math inline">\(\R^n\)</span> satisfying <span class="math inline">\(\ve{U}_2^2=1\)</span>. If <span class="math inline">\(\wt \E\an{c,U}^2 \ge 1-\ep\)</span>, then letting <span class="math inline">\(\xi\)</span> match the first two moments of <span class="math inline">\(U\)</span> and <span class="math inline">\(v=\fc{\xi}{\ve{\xi}_2}\)</span>, we have <span class="math inline">\(\Pj[\an{c,v}^2 \ge 1-2\ep] =\Om(1)\)</span>.</p>
+<em>Proof</em>. Again use Lemma 5.3, just check <span class="math inline">\(\E\ve{\xi}_2^t \le O(\E\ve{\xi}_2^2)^2\)</span>.</li>
+<li>Summary of parameters in Theorem 5.1.
+<ul>
+<li>Running time <span class="math inline">\(n^{O(k)}\)</span>: Just to evaluate <span class="math inline">\(W\)</span> on a degree <span class="math inline">\(k\)</span> p.d. takes <span class="math inline">\(n^{O(k)}\)</span> time.</li>
+<li>Success probability <span class="math inline">\(2^{-k/\poly(\ep)}\)</span>: <span class="math inline">\(W\)</span> succeeded if each <span class="math inline">\(\an{c,\xi^{(i)}}\)</span> is large, so we get <span class="math inline">\(-k\)</span> in the exponent. (!! This seems like a very crude bound—I expect we can do much better, maybe even subexponential?) <span class="math inline">\(M\)</span> depends polynomially on <span class="math inline">\(\rc{\ep}\)</span>; <span class="math inline">\(\rc{\poly(\ep)}\)</span> is in the exponent because the algorithm relies on sampling to get close enough.</li>
+</ul></li>
+</ul></li>
+<li></li>
+</ol>
+<h2 id="dictionary-learning">Dictionary learning</h2>
+<p>Algorithm: Take ?? samples <span class="math inline">\(x^{(i)}\)</span> and apply noisy tensor decomposition to the polynomial <span class="math display">\[ 
+\EE_i x^{(i)} \an{Ax,u}^d
+\]</span> where <span class="math inline">\(d=??\)</span>.</p>
+<p>Note that <span class="math inline">\(\an{Ax,u}^d\)</span> is the polynomial (<span class="math inline">\(n\)</span>-ic form) corresponding to the tensor <span class="math inline">\((Ax)^{\ot d}\)</span>, just as <span class="math inline">\(u^T vv^Tu = \an{u,v}^2\)</span> is the quadratic form corresponding to the matrix <span class="math inline">\(vv^T\)</span>.</p>
+<p><em>Proof</em>.</p>
+<ol type="1">
+<li><p>(Calculate expectation) <em>Lemma 4.5</em>. If the distribution of <span class="math inline">\(x\)</span> is <span class="math inline">\((d,\tau)\)</span>-nice and <span class="math inline">\(A\)</span> is <span class="math inline">\(\si\)</span>-overcomplete, then <span class="math display">\[\EE_x \an{Ax,u}^d \in \ve{A^Tu}_d^d + [0,\tau \si^dd^d \ve{u}_2^d]\]</span> (where inequalities are in the SoS sense).</p>
+<em>Proof</em>. Expand the sum as <span class="math inline">\(\sum_\al x_\al (A^Tu)_\al\)</span>. For <span class="math inline">\(\al=[i,\ldots, i]\)</span> we get the term <span class="math inline">\((A^Tu)_i^d\)</span>. For the other terms, <!--each even term $\al\ne [i,\ldots, i]$ we get the term -->
+\begin{align}
+0 &amp;\le \sum_{\al \in [n]^d,\al \ne [i,\ldots, i] }(\E x_\al) (A^Tu)_\al \\
+&amp; \le \tau \sum_{\al \in [n]^d,\al \ne [i,\ldots, i] } (A^Tu)_\al \\
+&amp; \le \tau d^d\sum_{\be \in [n]^{d/2},\be \ne [i,\ldots, i] } (A^Tu)_\be\\
+&amp; \le \tau d^d\ve{A^Tu}_2^d \le \tau \si^d \ve{u}_2^d.
+\end{align}
+(The <span class="math inline">\(d^d\)</span> bound is crude; this is not the bottleneck.) Note the lower inequality depends on there only being even nonzero terms.</li>
+<li><p>(Calculate concentration, Proof of 4.2) We use a Chebyshev bound<a href="#fn1" class="footnoteRef" id="fnref1"><sup>1</sup></a>. We have <span class="math inline">\(|(A^Tx)_\al|\le 1\)</span>. <strong>I think we need assumption on <span class="math inline">\(\ve{A^Tx}_{\iy}\)</span></strong>. Thus taking <span class="math inline">\(\wt \Om\pf{n^{2d})}{\tau^2}\)</span> samples we get that the coefficients are whp <span class="math inline">\(\fc{\tau}{n^d}\)</span>-close. This means the value at <span class="math inline">\(u\)</span> is <span class="math inline">\(n^d \si^d\fc{\tau}{n^d}\)</span>-close, and we get whp <span class="math display">\[P\in \ve{A^Tu}_d^d + 2\tau \si^d d^d \ve{u}_2^d[-1,1].\]</span></p></li>
+</ol>
+<h2 id="todo">Todo</h2>
+<ul>
+<li>Finish noisy tensor decomp proof (look at <span class="math inline">\(S\)</span>, check value of <span class="math inline">\(k\)</span>)</li>
+<li>Go through parameters for DL.</li>
+<li>Summarize changes to get down to polytime. What’s the key idea?</li>
+</ul>
+<p>(Q: can you adapt something like this for NMF?)</p>
+<section class="footnotes">
+<hr />
+<ol>
+<li id="fn1"><p>Can we do better if we use polynomial concentration?<a href="#fnref1">↩</a></p></li>
+</ol>
+</section>
+
+  </div>
+
+    
+
+    <!-- Extension : Sharing buttons @ www.sharethis.com -->
+    <span class='st_facebook_large' displayText='Facebook'></span>
+    <span class='st_twitter_large' displayText='Tweet'></span>
+    <span class='st_googleplus_large' displayText='Google +'></span>
+    <span class='st_reddit_large' displayText='Reddit'></span>
+    <span class='st__large' displayText=''></span>
+
+    <div id="disqus_thread"></div>
+    
+
+
+  
+    <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+  </div>
+  
+</div>
+]]></summary>
+</entry>
+<entry>
     <title>Ellipsoid method</title>
     <link href="http://holdenlee.github.io/notebook/posts/tcs/machine_learning/optimization/ellipsoid.html" />
     <id>http://holdenlee.github.io/notebook/posts/tcs/machine_learning/optimization/ellipsoid.html</id>
@@ -274,178 +780,6 @@ D' &amp;= \fc{n^2}{n^2-1} \pa{D-\fc{2}{n+1}\fc{Daa^TD}{a^TDa}}\\
 <blockquote>
 <p>How do you find a lion in the Sahara? Split it in half and recurse.</p>
 </blockquote>
-
-  </div>
-
-    
-
-    <!-- Extension : Sharing buttons @ www.sharethis.com -->
-    <span class='st_facebook_large' displayText='Facebook'></span>
-    <span class='st_twitter_large' displayText='Tweet'></span>
-    <span class='st_googleplus_large' displayText='Google +'></span>
-    <span class='st_reddit_large' displayText='Reddit'></span>
-    <span class='st__large' displayText=''></span>
-
-    <div id="disqus_thread"></div>
-    
-
-
-  
-    <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
-  </div>
-  
-</div>
-]]></summary>
-</entry>
-<entry>
-    <title>Tensor decomposition</title>
-    <link href="http://holdenlee.github.io/notebook/posts/tcs/machine_learning/matrices/tensor_decomposition.html" />
-    <id>http://holdenlee.github.io/notebook/posts/tcs/machine_learning/matrices/tensor_decomposition.html</id>
-    <published>2016-08-30T00:00:00Z</published>
-    <updated>2016-08-30T00:00:00Z</updated>
-    <summary type="html"><![CDATA[
-<div class="container">
-  <div id="content">
-    <div class="page header">
-      <h1>Tensor decomposition</h1>
-    </div>
-    <div class="info">
-      
-       
-        <p>Posted: 2016-08-30 
-          , Modified: 2016-08-30 
-	</p>
-      
-       <p>Tags: <a href="/tags/tensors.html">tensors</a></p> 
-    </div>
-    
-  </div>
-  <!--/div-->
-
-  <div class="toc"> <ul>
- <li><a href="#basics">Basics</a></li>
- </ul> </div>
-
-  <div class="blog-main">
-    <h2 id="basics">Basics</h2>
-<p>See “Tensor methods” in <code>new_thread.pdf</code>.</p>
-<p>Review questions:</p>
-<ol type="1">
-<li>Define tensor and tensor decomposition. When is it unique? Discuss the intractability of tensor problems. Why would we work with them? Give an example where matrix methods fail but tensor methods work because of uniqueness.</li>
-<li>What properties of matrix rank fail for tensor rank?</li>
-<li>(*) Give Jeinrich’s algorithm. When does it work, and what is its complexity?
-<ul>
-<li>Suppose <span class="math inline">\(T=\sum^r u_i\ot v_i\ot w_i\)</span>, where <span class="math inline">\(\{u_i\}\)</span> is linearly independent, <span class="math inline">\(\{v_i\}\)</span> is l.i., and every pair in <span class="math inline">\(\{w_i\}\)</span> is l.i. Then this decomposition is unique and there is an efficient algorithm to find it.</li>
-<li>For a tensor <span class="math inline">\(T\in V^{\ot 3}\)</span>, view <span class="math inline">\(T_{\bullet}\in V\ot V^*\ot V^*\)</span>, with <span class="math inline">\(\bullet\)</span> corresponding to the last <span class="math inline">\(V^*\)</span>. The slices are sums of rank 1 matrices <span class="math inline">\(u_iv_i^*\)</span> with coefficients given by the projections of <span class="math inline">\(w_i\)</span> onto <span class="math inline">\(a\)</span>.
-\begin{align}
-T_a &amp;=\sum \an{w_i,a}u_iv_i^* =: UD_aV^*
-T_aT_b^+ &amp;= UD_aD_b^+ U^+\\
-T_b^+T_a &amp;= VD_b^+D_a V^+
-\end{align}
-WHP diagonalization recovers <span class="math inline">\(U,V\)</span>.</li>
-</ul></li>
-<li>Give a perturbation bound for finding eigenvalues and eigenvectors of a matrix. What does the bound depend on, in what way (polynomial?)? Make it quantitative. Use this to give a bound on convergence in tensor decomposition.</li>
-<li>What is the Kruskal rank, why is it important?</li>
-<li>Describe the phylogenetic tree/HMM setup. How can you solve it with tensor methods?</li>
-<li>What about the non-full-rank case? (Give a reduction from noisy parity.)</li>
-<li>Give the block stochastic model. When is it information theoretically posible to find the groups (is this exact, or up to some error)? Compare spectral algorithms with tensor methods. (What are the assumptions? Why are tensor methods more flexible?)</li>
-<li>(*) Describe and prove the tensor algorithm for the block stochastic model.</li>
-<li>(*) Give a tensor algorithm for a pure topic model, and then generalize under latent dirichlet allocation. Why is the Dirichlet distribution particularly nice here? Find the complexity and error in terms of parameters.</li>
-<li>(*) Give a tensor algorithm for independent component analysis. There is a dependence on non-Gaussianlity: explain.</li>
-<li>Define the cumulants of a distribution. Why are they nice to work with, and how do they help in algorithms?</li>
-</ol>
-
-  </div>
-
-    
-
-    <!-- Extension : Sharing buttons @ www.sharethis.com -->
-    <span class='st_facebook_large' displayText='Facebook'></span>
-    <span class='st_twitter_large' displayText='Tweet'></span>
-    <span class='st_googleplus_large' displayText='Google +'></span>
-    <span class='st_reddit_large' displayText='Reddit'></span>
-    <span class='st__large' displayText=''></span>
-
-    <div id="disqus_thread"></div>
-    
-
-
-  
-    <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
-  </div>
-  
-</div>
-]]></summary>
-</entry>
-<entry>
-    <title>[BKS15] Dictionary Learning and Tensor Decomposition via the Sum-of-Squares Method</title>
-    <link href="http://holdenlee.github.io/notebook/posts/tcs/machine_learning/matrices/BKS15.html" />
-    <id>http://holdenlee.github.io/notebook/posts/tcs/machine_learning/matrices/BKS15.html</id>
-    <published>2016-08-30T00:00:00Z</published>
-    <updated>2016-08-30T00:00:00Z</updated>
-    <summary type="html"><![CDATA[
-<div class="container">
-  <div id="content">
-    <div class="page header">
-      <h1>[BKS15] Dictionary Learning and Tensor Decomposition via the Sum-of-Squares Method</h1>
-    </div>
-    <div class="info">
-      
-       
-        <p>Posted: 2016-08-30 
-          , Modified: 2016-08-30 
-	</p>
-      
-       <p>Tags: <a href="/tags/dictionary%20learning.html">dictionary learning</a>, <a href="/tags/tensor.html">tensor</a>, <a href="/tags/sparse%20coding.html">sparse coding</a></p> 
-    </div>
-    
-  </div>
-  <!--/div-->
-
-  <div class="toc"> <ul>
- <li><a href="#noisy-tensor-decomposition">Noisy tensor decomposition</a><ul>
- <li><a href="#reduction">Reduction</a></li>
- <li><a href="#algorithm">Algorithm</a></li>
- </ul></li>
- </ul> </div>
-
-  <div class="blog-main">
-    <p><strong>Theorem</strong>. Given <span class="math inline">\(\ep&gt;0,\si\ge 1, \de&gt;0\)</span> there exists <span class="math inline">\(d\)</span> and a polytime algorithm that given input</p>
-<ul>
-<li>a <span class="math inline">\(\si\)</span>-dictionary <span class="math inline">\(n\times m\)</span>,</li>
-<li><span class="math inline">\((d,\tau=n^{-\de})\)</span>-nice <span class="math inline">\(\{x\}\)</span>,</li>
-<li><span class="math inline">\(n^{O(1)}\)</span> samples from <span class="math inline">\(y=Ax\)</span>,</li>
-</ul>
-<p>outputs with probability <span class="math inline">\(\ge 0.9\)</span> a set <span class="math inline">\(\ep\)</span>-close to columns of <span class="math inline">\(A\)</span>.</p>
-<ul>
-<li>A <span class="math inline">\(\si\)</span>-dictionary has <span class="math inline">\(AA^T\preceq \si I\)</span> (analytic proxy for overcompleteness <span class="math inline">\(\fc mn\)</span>).</li>
-<li>A distribution is <span class="math inline">\((d,\tau)\)</span>-nice if <span class="math inline">\(\E x_i^{d/2}x_j^{d/2}\le \tau\)</span> for all <span class="math inline">\(i\ne j\)</span>, and <span class="math inline">\(\E x^\al=0\)</span> for all <span class="math inline">\(|\al|\le d\)</span>. (Ex. Bernoulli(<span class="math inline">\(\tau\)</span>) times Gaussian with <span class="math inline">\(\E z_i^d = \rc\tau\)</span>.)</li>
-</ul>
-<p>Note on running time:</p>
-<ul>
-<li><span class="math inline">\(\ep\)</span>-accuracy with running time depending on <span class="math inline">\(\poly\prc{\ep}\)</span> in the exponent. So this is better for giving an initial solution for local search methods.</li>
-</ul>
-<h2 id="noisy-tensor-decomposition">Noisy tensor decomposition</h2>
-<p>Given noisy version of <span class="math inline">\(\sumo im \an{a^i, u}^d = \ve{A^Tu}_d^d\)</span>, recover <span class="math inline">\(\{a^1,\ldots, a^m\}\)</span>.</p>
-<p><strong>Theorem</strong> (Noisy tensor decomposition). For every <span class="math inline">\(\ep&gt;0,\si\ge 1\)</span> there exist <span class="math inline">\(d,\tau\)</span> such that a probabilistic <span class="math inline">\(n^{O(\ln n)}\)</span>-time agorithm, given <span class="math inline">\(P\)</span> with <span class="math display">\[\ve{A^T u}_d^d - \tau \ve{u}_2^d \preceq P \preceq \ve{A^Tu}_d^d + \tau \ve{u}_2^d,\]</span> outputs with probability 0.9 <span class="math inline">\(S\)</span> that is <span class="math inline">\(\ep\)</span>-close to <span class="math inline">\(\{a^1,\ldots, a^m\}\)</span>. (<span class="math inline">\(\preceq\)</span> means the difference is a sum of squares.)</p>
-<p>Note this allows significant noise since we expect <span class="math inline">\(\ve{A^Tu}_d^d\sim mn^{-\fc d2}\ll \tau\)</span>.</p>
-<h3 id="reduction">Reduction</h3>
-<p>Take <span class="math display">\[ P = \EE_{i} \an{y_i, u}^{2d}.\]</span></p>
-<h3 id="algorithm">Algorithm</h3>
-<ol type="1">
-<li>Use SoS to find degree-<span class="math inline">\(k\)</span> pseudo-distribution <span class="math inline">\(\{u\}\)</span> that maximizes <span class="math inline">\(P(u)\)</span> under <span class="math inline">\(\ve{u}^2=1\)</span>.</li>
-<li>Let <span class="math inline">\(W\)</span> be a product of <span class="math inline">\(O(\ln n)\)</span> rndom linear functions.</li>
-<li>Output top eigenvector of <span class="math inline">\(M\)</span>, <span class="math inline">\(M_{ij} = \wt \E W(u)^2 u_iu_j\)</span>.</li>
-</ol>
-<p>SoS Algorithm: given <span class="math inline">\(\ep&gt;0, k,n,M\)</span>, <span class="math inline">\(P_1,\ldots, P_m\in \R[x_1,\ldots, x_n]\)</span> with coefficients in <span class="math inline">\([0,M]\)</span>, if there exists a degree <span class="math inline">\(k\)</span> pseudo-distribution with <span class="math inline">\(P_i=0,i\in [m]\)</span>, then we can find <span class="math inline">\(u'\)</span> satisfying <span class="math inline">\(P_i\le \ep, P_i\ge -\ep\)</span> for every <span class="math inline">\(i\in [m]\)</span> in time <span class="math inline">\((n\polylog\prc{M}{\ep})^{O(k)}\)</span>.</p>
-<p>(This is a feasibility problem? Use ellipsoid method?)</p>
-<p>Steps</p>
-<ol type="1">
-<li>If <span class="math inline">\(u\)</span> is an actual distribution, the the output is close to a column.</li>
-<li>Generalize to pseudo-distributions.</li>
-<li>Generalize to getting all columns.</li>
-</ol>
-<p>Idea: If not correlated, then <span class="math inline">\(P(u)\)</span> is small. The inequalities can be turned into polynomial inequalities provable by SoS.</p>
 
   </div>
 
@@ -652,311 +986,6 @@ WHP diagonalization recovers <span class="math inline">\(U,V\)</span>.</li>
 <h2 id="wedins-theorem">Wedin’s Theorem</h2>
 <p>Let <span class="math inline">\(v_1(A)\)</span> be the top eigenvector of <span class="math inline">\(A\)</span>. If <span class="math inline">\(\de=|\la_1(A)-\la_2(A)|\)</span>, then <span class="math inline">\(\sin(\angle (v_1(A), v_1(A+E)))\le \fc{\ve{E}_2}{\de}\)</span>.</p>
 <p>?? What’s the analogue of this for subspaces? Ex. <span class="math inline">\(\la_1,\ldots, \la_c\)</span> large and <span class="math inline">\(\la_{c+1}\)</span> small.</p>
-
-  </div>
-
-    
-
-    <!-- Extension : Sharing buttons @ www.sharethis.com -->
-    <span class='st_facebook_large' displayText='Facebook'></span>
-    <span class='st_twitter_large' displayText='Tweet'></span>
-    <span class='st_googleplus_large' displayText='Google +'></span>
-    <span class='st_reddit_large' displayText='Reddit'></span>
-    <span class='st__large' displayText=''></span>
-
-    <div id="disqus_thread"></div>
-    
-
-
-  
-    <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
-  </div>
-  
-</div>
-]]></summary>
-</entry>
-<entry>
-    <title>Weekly summary 2016-08-27</title>
-    <link href="http://holdenlee.github.io/notebook/posts/summaries/2016-08-27.html" />
-    <id>http://holdenlee.github.io/notebook/posts/summaries/2016-08-27.html</id>
-    <published>2016-08-27T00:00:00Z</published>
-    <updated>2016-08-27T00:00:00Z</updated>
-    <summary type="html"><![CDATA[
-<div class="container">
-  <div id="content">
-    <div class="page header">
-      <h1>Weekly summary 2016-08-27</h1>
-    </div>
-    <div class="info">
-      
-       
-        <p>Posted: 2016-08-27 
-          , Modified: 2016-08-27 
-	</p>
-      
-       <p>Tags: <a href="/tags/none.html">none</a></p> 
-    </div>
-    
-  </div>
-  <!--/div-->
-
-  <div class="toc"> <ul>
- <li><a href="#goals">Goals</a></li>
- <li><a href="#summary">Summary:</a></li>
- </ul> </div>
-
-  <div class="blog-main">
-    <h2 id="goals">Goals</h2>
-<ul>
-<li>Review/learning
-<ul>
-<li>HDP Ch. 4</li>
-<li>Index-card AI safety notes</li>
-<li>Convex optimization, bandit optimization</li>
-</ul></li>
-<li>PMI
-<ul>
-<li>Organize code, data; write up what I’ve found so far.</li>
-</ul></li>
-<li>Representation learning
-<ul>
-<li>Experiment?</li>
-</ul></li>
-<li>Tensorflow
-<ul>
-<li>Get basic LSTM running.</li>
-<li>Play with parameters in MNIST.</li>
-</ul></li>
-</ul>
-<h2 id="summary">Summary:</h2>
-<ul>
-<li>PMI
-<ul>
-<li>Run weighted SVD and compared</li>
-</ul></li>
-<li>HDP started Ch. 4</li>
-<li>Reviewed convex optimization.</li>
-</ul>
-
-  </div>
-
-    
-
-    <!-- Extension : Sharing buttons @ www.sharethis.com -->
-    <span class='st_facebook_large' displayText='Facebook'></span>
-    <span class='st_twitter_large' displayText='Tweet'></span>
-    <span class='st_googleplus_large' displayText='Google +'></span>
-    <span class='st_reddit_large' displayText='Reddit'></span>
-    <span class='st__large' displayText=''></span>
-
-    <div id="disqus_thread"></div>
-    
-
-
-  
-    <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
-  </div>
-  
-</div>
-]]></summary>
-</entry>
-<entry>
-    <title>Interior point methods</title>
-    <link href="http://holdenlee.github.io/notebook/posts/tcs/machine_learning/optimization/ipm.html" />
-    <id>http://holdenlee.github.io/notebook/posts/tcs/machine_learning/optimization/ipm.html</id>
-    <published>2016-08-26T00:00:00Z</published>
-    <updated>2016-08-26T00:00:00Z</updated>
-    <summary type="html"><![CDATA[
-<div class="container">
-  <div id="content">
-    <div class="page header">
-      <h1>Interior point methods</h1>
-    </div>
-    <div class="info">
-      
-       
-        <p>Posted: 2016-08-26 
-          , Modified: 2016-08-26 
-	</p>
-      
-       <p>Tags: <a href="/tags/convex%20optimization.html">convex optimization</a></p> 
-    </div>
-    
-  </div>
-  <!--/div-->
-
-  <div class="toc"> <ul>
- <li><a href="#introduction">Introduction</a></li>
- <li><a href="#analysis-and-algorithm-explanation">Analysis and algorithm explanation</a><ul>
- <li><a href="#place-to-start">1 Place to start</a><ul>
- <li><a href="#termination-near-phase-ii-central-path">Termination near phase II central path</a></li>
- </ul></li>
- <li><a href="#inner-steps">2 Inner steps</a></li>
- <li><a href="#outer-steps">3 Outer steps</a></li>
- <li><a href="#total">Total</a></li>
- <li><a href="#variations">Variations</a></li>
- </ul></li>
- <li><a href="#primal-dual-ipm">Primal-dual IPM</a></li>
- <li><a href="#intuitions">Intuitions</a></li>
- </ul> </div>
-
-  <div class="blog-main">
-    <h2 id="introduction">Introduction</h2>
-<p>The idea: Given <span class="math inline">\(\min_{f_i\le 0} f\)</span>,</p>
-<ol type="1">
-<li>Find a feasible point.</li>
-<li>Turn into soft constraints: let <span class="math inline">\(F(t,x) = \min f+ \sum -\rc t \ln (-f_i)\)</span>. (Add a barrier function.) As <span class="math inline">\(t\to \iy\)</span>, <span class="math inline">\(F(t,x)\)</span> becomes steeper and <span class="math inline">\(\to f(x)\)</span> pointwise.</li>
-<li>Solve iteratively. Start at some <span class="math inline">\((x_0,t_0)\)</span>: Find a value within <span class="math inline">\(\ep\)</span> of <span class="math inline">\(\min F(t_i,x)\)</span>. (Centering)</li>
-<li>Set <span class="math inline">\(t_{i+1}=\ga t_i\)</span> (updating schedule).</li>
-<li>Go back to 3. Repeat until <span class="math inline">\(t\)</span> is large enough. (<span class="math inline">\(m/t&lt;\ep\)</span>)</li>
-</ol>
-<p>Define the central path. What are the properties of the central path. Explain the relationship to the dual problem.</p>
-<p><span class="math display">\[
-C = \set{(t,x)}{x=\amin f(x) + \sum -\rc t \ln (-f_i(x))}.
-\]</span> Now <span class="math inline">\(f(c(t))\to f(x^*)\)</span>. For <span class="math inline">\((t,x')\in C\)</span>, we have <span class="math display">\[ \nb f + \sum - \fc{\nb f_i}{tf_i}=0.\]</span> This is the first KKT condition with <span class="math inline">\(\la_i = -\rc{tf_i(x')}\)</span>. (Complementarity is not satisfied though: we have <span class="math inline">\(-\la_if_i=\rc t\)</span>, not 0.)</p>
-Let <span class="math inline">\(x^*=\amin_{f_i\le 0} f\)</span>, <span class="math inline">\(x'=\amin f - \sum \rc t \ln (-f_i)\)</span>. Substituting <span class="math inline">\(x',\la_i\)</span> in the dual problem, we get
-\begin{align}
-f(x^*) &amp;\ge \min_x f(x) - \sum \rc{t f_i(x')} f_i(x) \\
-&amp; = f(x') - \fc mt &amp; x=x'\\
-\implies f(x^*) \le f(x') &amp;\le f(x^*) + \fc mt.
-\end{align}
-<p>Now add in the condition <span class="math inline">\(Ax=b\)</span>, and the term <span class="math inline">\(\nu^T(Ax-b)\)</span>. The analysis stays the same.</p>
-<p>(<span class="math inline">\(\ln(-f_i)\)</span> has the magic that its gradient is <span class="math inline">\(\nb f_i\)</span> times something.)</p>
-<p>What questions do we need to address?</p>
-<ol type="1">
-<li>How do we find a point to start—find a feasible point?</li>
-<li>Given the previous almost-optimal solution, what’s the complexity of finding the next one, given ratio <span class="math inline">\(\mu\)</span>? (Number of inner steps)</li>
-<li>How many outer steps do we need? When to stop? (We’ve shown the gap is <span class="math inline">\(\fc mt\)</span>, so stop when <span class="math inline">\(t&gt;\fc m\ep\)</span>.</li>
-</ol>
-<p>What assumptions do we need?</p>
-<ul>
-<li><span class="math inline">\(tf_0+\phi\)</span> (<span class="math inline">\(\phi = -\sumo im \ln(-f_i)\)</span>) closed (??) and self-concordant for all <span class="math inline">\(t\ge t^{(0)}\)</span>.</li>
-<li>Sublevel sets of <span class="math inline">\(f_0\)</span> (<span class="math inline">\(f_i\le 0\)</span>, <span class="math inline">\(Ax=b\)</span>) are bounded. (This implies that <span class="math inline">\(\nb^2(tf_0+\phi)\)</span> is PD—why?)</li>
-</ul>
-<p>This is reasonable because it is self-concordant if all <span class="math inline">\(f_i\)</span> are linear or quadratic, and <span class="math inline">\(\ln\)</span> is good at making functions self-concordant.</p>
-<p>Give an example of a problem that can be reformulated to be self-concordant. Technique is to add redundant constraints or extra variables.</p>
-<ul>
-<li>For <span class="math inline">\(\min_{Fx\le g, Ax=b} \sumo in x_i\ln x_i\)</span>, <span class="math inline">\(tf_0(x)+\phi(x)\)</span> is not closed (?) or self-concordant. Using that <span class="math inline">\(ty\ln y - \ln y\)</span> is self-concordant, we add in the redundant constraint <span class="math inline">\(x\ge 0\)</span> to get <span class="math display">\[tf_0+\phi = \sumo in (tx_i\ln x_i - \ln x_i) - \sumo im \ln (g_i-f_i^Tx).\]</span></li>
-<li>For <span class="math inline">\(\min_{\ln(\sumo k{K_i}\exp(a_{ik}^T + b_{ik}))\le 0} \ln \pa{\sumo k{K_0} \exp(a_{0k}^Tx+b_{0k})}\)</span>, introduce the variables <span class="math inline">\(y_{ik}\)</span>. Change the problem to
-\begin{align}
-\min \sumo k{K_0} y_{0k}\\
-\sumo k{K_i} y_{ik} &amp;\le 1\\
-a_{ik}^T x+b_{ik} - \ln y_{ik} &amp;\le 0\\
-y_{ik} &amp;\ge 0.
-\end{align}</li>
-</ul>
-<h2 id="analysis-and-algorithm-explanation">Analysis and algorithm explanation</h2>
-<h3 id="place-to-start">1 Place to start</h3>
-<p>How to find a feasible point? A feasibility problem can be transformed into an optimization problem</p>
-<p><span class="math display">\[
-\exists x, f_i\le 0,  \iff \min_{f_i\le m} m\le 0.
-\]</span> <!-- Ax = b --> Assume <span class="math inline">\(\{\forall i, f_i\le 0\}\subeq B_R(0)\)</span>. Let <span class="math inline">\(\ol p^*\)</span> be the optimal value of this optimization problem.</p>
-Actually add an extra constraint (<span class="math inline">\(a\)</span> satisfies <span class="math inline">\(\ve{a}_2\le \rc R\)</span> so is redundant). <span class="math display">\[
-\min_{f_i\le s, a^Tx \le 1} s.
-\]</span> Choose <span class="math inline">\(a,s_0\)</span> so that <span class="math inline">\((x=0,s=s_0, t_0)\)</span> is on the central path (to make analysis easier), i.e., so <span class="math inline">\(x=0,s=s_0\)</span> minimizes <span class="math display">\[t^{(0)}s- \sumo im \ln (s-f_i(x)) - \ln (1-a^T x).\]</span> Set the gradient to 0 to see that we require
-\begin{align}
-t^{(0)} &amp;= \sumo im \rc{s_0 - f_i(0)}\\
-a &amp;= -\sumo im \rc{s_0-f_i(0)} \nb f_i(0).
-\end{align}
-<p>What to choose for <span class="math inline">\(s_0\)</span>? We need <span class="math inline">\(s_0&gt;F:=\max_i f_i(0)\)</span> and <span class="math inline">\(\ve{a}_2\le \rc{R}\)</span>. Upper bound <span class="math inline">\(\ve{a}_2\)</span> by <span class="math display">\[
-\ve{a}_2\le \sumo im \rc{s_0-f_i(0)}\ve{\nb f_i(0)} \le \fc{mG}{s_0-F},\quad G=\max_i \ve{\nb f_i(0)}_2,
-\]</span> so we can take <span class="math inline">\(\boxed{s_0=mGR+F}\)</span>. Then <span class="math inline">\(t^{(0)} \ge \rc{mGR}\)</span> so the initial duality gap is <span class="math inline">\(\fc{m+1}{t^{(0)}} \le (m+1) mGR\)</span>. Use the barrier method until the duality gap is <span class="math inline">\(&lt;|\ol p^*|\)</span>, so that we can determine <span class="math inline">\(\sgn(\ol p^*)\)</span>. This requires (take <span class="math inline">\(\mu = 1+\rc{\sqrt{m+1}}\)</span>) <span class="math display">\[
-\le \ce{\sqrt{m+1} \log_2 \fc{m(m+1)GR}{|\ol p^*|}}\pa{\rc{2\ga} + c}
-\]</span> Newton steps. (Interpret <span class="math inline">\(\lg\pf{GR}{|\ol p^*|}\)</span> as how close the feasibility problem is to the boundary between feasibility and infeasibility.)</p>
-<p>(Equality constraints don’t change things too much. ?? <span class="math inline">\(G\)</span>, <span class="math inline">\(R\)</span> refer to reduced/eliminated problem.)</p>
-Why did we add in <span class="math inline">\(a^Tx\le 1\)</span>? Otherwise, we minimize <span class="math inline">\(ts-\sum \ln (-(f_i-s))\)</span>, and
-\begin{align}
-\ddd{s} &amp;= t+\sum \rc{f_i-s} = 0\\
-\nb_x &amp;= \sum \fc{-\nb f_i}{f_i-s} =0.
-\end{align}
-<p>We can’t choose <span class="math inline">\(x=0\)</span> because we need <span class="math inline">\(s&gt;\max f_i\)</span>, and <span class="math inline">\(\nb_x&gt;0\)</span>.</p>
-<p>(Note if we add the constraint <span class="math inline">\(a^Tx\le 1\)</span> for phase 1, we have to include it for phase II as well.)</p>
-<h4 id="termination-near-phase-ii-central-path">Termination near phase II central path</h4>
-<p>During phase I, add in the extra constraint <span class="math inline">\(f_0(x)\le M\)</span> to make it intersect the phase II central path. (We can add the constraint <span class="math inline">\(a^Tx\le 1\)</span> below.) We want the point on the central path for phase I corresponding to <span class="math inline">\(s=0\)</span> to also be on the phase II central path. (I think you won’t get to <span class="math inline">\(s=0\)</span> exactly, but you get close—then the duality gap is <span class="math inline">\(m(M-f_0)+\)</span>(something small).)</p>
-\begin{align}
-\min_{f_i\le s, f_0\le M, Ax=b} s:&amp;&amp; \nb(ts + (\sum-\ln (s-f_i)) - \ln (M-f_0) + A^T \nu) &amp;=0\\
-\iff &amp;&amp; t&amp;=\sum \rc{s-f_i} = \sum -\rc{f_i}\\
-&amp;&amp; \rc{M-f_0} \nb f_0 + \sum\rc{s-f_i} \nb f_i + A^T\nu &amp;=0\\
-\min_{f_i\le 0, Ax=b}f_0:&amp;&amp; \nb(tf_0+\sum - \ln (-f_i) + A^T \nu) &amp;=0\\
-\iff &amp;&amp;t\nb f + \fc{\nb f_i}{f_i} + A^T \nu &amp;=0
-\end{align}
-<p>Make these match by setting <span class="math inline">\(t=\rc{M-f_0}\)</span>. I.e., the initial duality gap for phase 2 is <span class="math inline">\(\fc{m}{t} = m(M-f_0)\)</span>.</p>
-<h3 id="inner-steps">2 Inner steps</h3>
-<p>Given <span class="math inline">\(x^*(t)\)</span>, how many steps does it take to compute <span class="math inline">\(x^*(\mu t)\)</span>?</p>
-<p>How can you use the fact that <span class="math inline">\(x\)</span> is optimal for <span class="math inline">\(tf_0(x) + \phi(x)\)</span> to prove how optimal it is for <span class="math inline">\(\mu t f_0(x)+\phi(x)\)</span>?</p>
-<p>Let <span class="math inline">\(x=x^*(t)\)</span>, <span class="math inline">\(x^+=x^*(\mu t)\)</span>.</p>
-<p>It suffices to bound <span class="math display">\[\mu t f_0(x) + \phi(x) - \mu tf_0(x^+) - \phi(x^+).\]</span></p>
-<p>We can’t bound <span class="math inline">\(\ln(-f_i)\)</span> directly. We can hope to bound the dual function <span class="math inline">\(\cL\)</span> (we have info from the KKT conditions). Use the linear approximation to <span class="math inline">\(\ln\)</span>.</p>
-\begin{align}
-\mu t f_0(x) + \phi(x) - \mu tf_0(x^+) - \phi(x^+)
-&amp;= \mu t f_0(x) - \mu t f_0(x^+) + \sum \ln \pf{\mu f_i(x^+)}{\mu f_i(x^+)}\\
-&amp;\le \mu t f_0(x) - \mu t f_0(x^+) + \sum \pa{\fc{\mu f_i(x^+)}{f_i(x)} - 1 -\ln \mu}\\
-&amp;= \mu t f_0(x) - \mu t f_0(x^+) + t\pa{\sum \rc{tf_i} \mu f_i(x^+)} - m - m\ln \mu\\
-&amp;= \mu t f_0(x) - \mu t \cL(x^+, \la, \nu) - m - m \ln \mu &amp;Ax^+=b, \la_i  = \rc{tf_i}\\
-&amp;\le \mu tf_0(x) - \mu t g(\la, \nu) - m - m\ln \mu\\
-&amp;=m(\mu-1 - \ln \mu).
-\end{align}
-<p>Thus, the number of inner steps is <span class="math display">\[
-\fc{f(x)=p^*}{\ga}+c = \fc{m(\mu - 1 - \ln \mu)}{\ga} + c
-\]</span> (See <a href="second-order.html">Newton</a> for definition of <span class="math inline">\(\ga\)</span>. We approximate <span class="math inline">\(\ln\ln\)</span> by a constant.) This is approximately quadratic for small <span class="math inline">\(\mu\)</span> (<span class="math inline">\(O(m(\mu-1)^2)\)</span>), linear (<span class="math inline">\(O(m\mu)\)</span>) for large <span class="math inline">\(\mu\)</span>. (This does not depend on <span class="math inline">\(n,p\)</span>.)</p>
-<h3 id="outer-steps">3 Outer steps</h3>
-<p>The number of outer steps needed is <span class="math inline">\(\ce{\fc{\ln (m/(t^{(0)}\ep))}{\ln \mu}}\)</span> so the total number of Newton steps needed is <span class="math display">\[\ce{\log_\mu \pf{m}{t^{(0)}\ep)}} \pa{\fc{m(\mu - 1 - \ln \mu)}{\ga} + c}. \]</span></p>
-<ul>
-<li>Choosing <span class="math inline">\(\mu\)</span> constant, get <span class="math inline">\(O\pf{\pa{\ln\pf{m}\ep}m}{\ga}\)</span>.</li>
-<li>Set <span class="math inline">\(\mu\)</span> small to do better. Balance <span class="math inline">\((\mu-1-\ln \mu)m=O(m(\mu-1)^2)\)</span> and <span class="math inline">\(c\)</span> by setting <span class="math inline">\(\mu = 1+\rc{\sqrt m}\)</span>, and get <span class="math inline">\(O(\sqrt m)\)</span>. (Recall <span class="math inline">\(m\)</span> is number of constraints.)</li>
-<li>In practice, though, choose <span class="math inline">\(\mu\)</span> constant.</li>
-</ul>
-<h3 id="total">Total</h3>
-\begin{align}
-N_I &amp;= O(\sqrt m \log \pf{mGR}{|\ol p^*|} \rc{\ga})\\
-N_{II} &amp;= O(\sqrt m \log \pf{m(M-p^*)}{\ep}) \prc{\ga}.
-\end{align}
-<p>Explanation: The point at the end of phase I has duality gap <span class="math inline">\(\le (m+1)(M-p^*)\)</span>.</p>
-<h3 id="variations">Variations</h3>
-<p>What are other ways to do Phase I?</p>
-<ul>
-<li>Sum of infeasibilities <span class="math inline">\(\min_{f_i\le s_i, Ax=b, s\ge0} \one^Ts\)</span>. Why use this? When infeasible, the optimal point often violates a small unber of inequalities (cf. <span class="math inline">\(l_1\)</span>-regression, basis pursuit). Here the penalty is <span class="math inline">\(l_1\)</span> not <span class="math inline">\(l_\iy\)</span>.</li>
-<li>Use infeasible start Newton to solve the barrier formulation <span class="math display">\[\min_{f_i\le s, Ax=b, s=0} f_0\qquad \min_{Ax=b, s=0} t^{(0)} f_0-\sum \ln (s-f_i).\]</span> (Infeasible start means you can start with points violating equality constraints.)</li>
-</ul>
-<p>What if we don’t know a point in <span class="math inline">\(\bigcap dom(f_i)\)</span>? Add a translation, <span class="math inline">\(\min_{..., z_i=0} t^{(0)} f_0(x+z_0) - \sum \ln (s-f_i(x+z_i))\)</span>.</p>
-<p>Disadvantage: There is no good stopping criterion when infeasible.</p>
-<h2 id="primal-dual-ipm">Primal-dual IPM</h2>
-<p>Review <a href="constrained.html">constrained optimization</a>. Here there is no distinction between inner and outer iterations.</p>
-<p>Applying the infeasible start Newton method to the barrier problem gives <span class="math display">\[ \matt{t\nb^2 f_0+\nb^2 \phi A^T}{A^T}{A}{0} \coltwo{\De x_{nt}}{\nu_{nt}}  = -\coltwo{t\nb f_0+\nb \phi}{0}. \]</span> The residual is <span class="math inline">\((\nb f + \nb \phi + A^T\nu, Ax-b)\)</span>, <span class="math inline">\(\phi = -\sum \rc{t}\ln (-f_i)\)</span>.</p>
-<p>But here <span class="math inline">\(t\)</span> is fixed. We want to treat <span class="math inline">\(t\)</span> as a variable. Actually, we introduce <span class="math inline">\(\la\)</span>.</p>
-<p>Recall that a point on the central path gives a dual feasible <span class="math inline">\((\la, \nu)\)</span> with <span class="math inline">\(\la_if_i=-\rc t\)</span>. We write everything in terms of the primal <span class="math inline">\(x\)</span> and dual <span class="math inline">\((\la,\nu)\)</span>. Introduce <span class="math inline">\(\la\)</span> as a variable that we want to satisfy <span class="math inline">\(\la_if_i=-\rc t\)</span> (the modified KKT equation) to get the (dual, centrality, primal) residual <span class="math display">\[r_t(x,\la,\nu) = \colthree{\nb f + Df^T\la + A^T\nu}{-\diag(\la) f - \rc t \one}{Ax-b} =: \colthree{\De x}{\De \la}{\De \nu} = -\colthree{r_{dual}}{r_{cent}}{r_{pri}}.\]</span></p>
-The Newton step for solving the modified KKT equations
-\begin{align}
-\nb f_0 + Df^T \la + A^T\nu &amp;=0\\
--\la_i f_i &amp;=\rc t\\
-Ax-b &amp;=0
-\end{align}
-is hence (set the gradients of these equations to the negative residuals)
-\begin{align}
-\mattn{\nb^2 f_0+\sum \la_i \nb^2 f_i}{Df^T}{A^T}{-\diag(\la)Df}{-\diag(f)}{0}{A}00 \colthree{\De x}{\De \la}{\De \nu} = -\colthree{r_{dual}}{r_{cent}}{r_{pri}}.
-\end{align}
-<p>(<span class="math inline">\(Df\)</span> has <span class="math inline">\(\nb f_i\)</span> as rows.) The solution is the primal-dual search direction. It is not the same as the search direction in the barrier method (because here we’re changing <span class="math inline">\(\la\)</span>).</p>
-Solving for <span class="math inline">\(\De \la\)</span> and substituting gives
-\begin{align}
-\matt{\nb^2 f_0 + \sumo im \la_i \nb^2 f_i + \sumo im -\fc{\la_i}{f_i}\nb f_i \nb f_i^T}{A^T}A0 \coltwo{\De x_{pd}}{\De \nu_{pd}} &amp;= 
-\coltwo{r_{dual} - \sum \la_i \nb f_i - \sum \fc{\nb f_i}{tf_i}}{r_{pri}}\\
-&amp;=-\coltwo{\nb f_0 + \rc t \sumo im -\rc{f_i}\nb f_i+A^T\nu}{r_{pri}}.
-\end{align}
-<p>Compare to the Newton step for the centering method (<span class="math inline">\(t\)</span> fixed) in the barrier method. The upper-left entry is replaced by <span class="math inline">\(t\nb^2 f_0 + \sumo im -\rc{f_i} \nb^2 f_i + \sumo \rc{f_i^2} \nb f_i f_i^T\)</span>, and the dual residual is instead <span class="math inline">\(t\nb f_0 + \sumo im -\rc{f_i} \nb f_i\)</span>.</p>
-<p>The iterates are not necessarily feasible, so we can’t evaluate a duality gap. Define the <strong>surrogate duality gap</strong> for <span class="math inline">\(x,f(x)&lt;0, \la\ge 0\)</span> by <span class="math display">\[\wh \eta(x,\la) = -f^T\la.\]</span> It is the duality gap if <span class="math inline">\(x\)</span> were primal feasible and <span class="math inline">\(\la,\nu\)</span> were dual feasible (<span class="math inline">\(r_{pri}=0,r_{dual}=0\)</span>).</p>
-<p>The algorithm:</p>
-<p>(Feasible start) Start with <span class="math inline">\(x\)</span> such that <span class="math inline">\(f_i(x)&lt;0\)</span>, <span class="math inline">\(\la&gt;0\)</span>, <span class="math inline">\(\mu&gt;1\)</span>, <span class="math inline">\(\ep_{feas}&gt;0\)</span>, <span class="math inline">\(\ep&gt;0\)</span>.</p>
-<ol type="1">
-<li>Set <span class="math inline">\(t=\mu m/\wh eta\)</span>.</li>
-<li>Compute primal-dual search direction <span class="math inline">\(\De y_{pd}\)</span>.</li>
-<li>Line search and update.</li>
-<li>Repeat until <span class="math inline">\(\ve{r_{pri}}_2\le \ep_{feas}\)</span>, <span class="math inline">\(\ve{r_{dual}}_2\le \ep_{feas}\)</span>, and <span class="math inline">\(\wh \eta \le \ep\)</span>.</li>
-</ol>
-<p>(Note <span class="math inline">\(r_{cent}\)</span> means that we stick close to the central path.)</p>
-<h2 id="intuitions">Intuitions</h2>
-<ul>
-<li>Each constraint has the force <span class="math inline">\(\rc{f_i(x)}\nb f_i(x)\)</span> and the objective force field is <span class="math inline">\(-t\nb f_0(x)\)</span>.</li>
-</ul>
 
   </div>
 
