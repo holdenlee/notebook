@@ -114,8 +114,9 @@ outputs with high probability $S$ that is $\ep$-close to $\{a^1,\ldots, a^m\}$. 
 			$$
 			Now use averaging on $\ve{A^Tu}_k^k$.
 	*   Here $\de = O\pf{\tau}d$ so we get
-		$$ \wt E \an{c,u}^k \ge e^{-\ep' k},\quad \ep' = O(\fc{\tau}d + \fc{\ln \si \ln m}{dk}).$$
-	*   Example: if $u$ is the actual distribution $u=A_{\cdot i}$ with probability $\rc{m}$, then $\wt E\an{c,u}^k = \rc m$. Hence we can't do better than $k=\Om(\ln m)$.
+		$$ \wt E \an{c,u}^k \ge e^{-\ep' k},\quad \ep' = O(\fc{\tau}d + \fc{\ln \si}{d} +\fc{\ln m}{k}).$$
+		This means we set $k=\boxed{\frac{C\ln m}{\ep}}$. This also means we need $d=\Om(\rc{\ep}\ln \si)$, $\tau=O(\ep)$.
+	*   Example: if $u$ is the actual distribution $u=A_{\cdot i}$ with probability $\rc{m}$, then $\wt E\an{c,u}^k = \rc m$. Hence we can't do better than $k=\Om(\ln m)$. 
 2.  Now we analyze the algorithm to "sample pseudo-distributions": given a PD that correlates with a vector, find a vector close to it. We prove:
 
 	**Theorem 5.1**. The "sample pseudo-distributions" algorithm, given
@@ -134,7 +135,7 @@ outputs with high probability $S$ that is $\ep$-close to $\{a^1,\ldots, a^m\}$. 
 		*Proof*. Just verify the positivity property.
 	*   **Lemma 5.2**. Let $U$ be a degree-$k+2$ pseudo-distribution over $\R^n$ with $\ve{U}_2^2=1$ and
 		such that there exists a unit vector $c\in \R^n$ such that $\wt \E\an{c,u}^k \ge e^{-\ep k}$.
-		$W=\rc{M^{k/2}} \prod_{i=1}^{k/2} w^{(i)}$ where $w^{(i)}$ are iid draws from $w=\an{\xi,u}^2$, $\xi\sim N(0,I_n)$. Then with probability $2^{-O\pf{k}{\poly(\ep)}}$, $\wt E\an{c,u}^2 \ge (1-O(\ep))\wt \E W$.
+		$W=\rc{M^{k/2}} \prod_{i=1}^{k/2} w^{(i)}$ where $w^{(i)}$ are iid draws from $w=\an{\xi,u}^2$, $\xi\sim N(0,I_n)$. Then with probability $2^{-O\pf{k}{\poly(\ep)}}$, $\wt \E\an{c,u}^2W \ge (1-O(\ep))\wt \E W$.
 		
 		(?? Discrepancy between $k$ and $k+2$.)
 	*   By reweighting, there exists a degree 2 p.d. $U'$ such that 
@@ -166,15 +167,36 @@ outputs with high probability $S$ that is $\ep$-close to $\{a^1,\ldots, a^m\}$. 
 	* Summary of parameters in Theorem 5.1.
 		* Running time $n^{O(k)}$: Just to evaluate $W$ on a degree $k$ p.d. takes $n^{O(k)}$ time.
 		* Success probability $2^{-k/\poly(\ep)}$: $W$ succeeded if each $\an{c,\xi^{(i)}}$ is large, so we get $-k$ in the exponent. (!! This seems like a very crude bound---I expect we can do much better, maybe even subexponential?) $M$ depends polynomially on $\rc{\ep}$; $\rc{\poly(\ep)}$ is in the exponent because the algorithm relies on sampling to get close enough.
-3. 
+3. Finish.
+    * In step 1, from 6.1, we get $\wt \E \an{c,u}^k \ge e^{-\ep' k}$, $\ep' = O\pa{\fc\tau d+ \fc{\ln \si}d + \fc{\ln m}k}$.
+	* From 5.1, we get $c'$ close to a column $c$ of $A$: $\an{c,c'}\ge 1-O(\ep')$ with probability $2^{-\fc{k}{\poly(\ep')}}$. Repeat $2^{\fc{k}{\poly(\ep')}}$ times to get this with good probability. ($\ep = \Te(\ep')$.)
+	* (Far from other vectors already in $S$) We have $P(c') \ge c^Tc' - \tau\ve{c'}_2^2 \ge e^{-\ep d}-\tau$. Calculation using the triangle inequality on (after doing $\bullet^{\ot 2}$ because the inequality we have is $\an{s,U}^2\le 1-\ga$) gives $\an{c',s}\le 1-\fc{\ga}{10}$. (We chose $\ga = C\ep$.)
+	  <img src="/images/bks15-tri.png">
+	* (Every $s\in S$ is close to some column.) Use 6.1 on $s$ (which is an actual vector! not a p.d.), $\ve{A^T s}_d^d \ge e^{-\ep d}-2\tau$ to get $\an{s,c}^2 \ge 1-O(\ep)$. 
+	* (Can't have 2 $s\in S$ close to same $c$) More triangle inequalities. 
+	* The algorithm then terminates after $|S|=m$. The total time is $n^{O(k)/\poly(\ep)} = n^{\fc{\ln m}{\poly(\ep)}}$. There's an extra $d$ in the exponent because accessing $P$ takes $n^d$ time. (CHECK!!)
 
 # Dictionary learning
 
-Algorithm: Take ?? samples $x^{(i)}$ and apply noisy tensor decomposition to the polynomial 
+# Theorem
+
+The algorithm below, given 
+
+* $\ep>0$
+* overcompleteness $\si\ge 1$
+* $d\ge D:=O\pf{\ln \si}{\ep}$,
+* $\tau \le (D\si)^{-D}$. (In 4.2 it says $D^D$, but I think it should be this.)
+* $\wt O \pf{n^{2d}}{\tau^2}$ samples from $y=Ax$ for $(d,\tau)$-nice $x$,
+
+outputs in time $n^{\fc{d+\ln m}{\ep^{O(1)}}}$ a set of vectors $\ep$-close to $A$.
+
+## Algorithm
+
+Take $\wt O \fc{n^{2d}}{\tau^2}$ samples $x^{(i)}$ and apply noisy tensor decomposition to the polynomial 
 $$ 
 \EE_i x^{(i)} \an{Ax,u}^d
 $$
-where $d=??$.
+where $d\ge D:=O(\ep^{-1}\ln \si)$.
 
 Note that $\an{Ax,u}^d$ is the polynomial ($n$-ic form) corresponding to the tensor $(Ax)^{\ot d}$, just as $u^T vv^Tu = \an{u,v}^2$ is the quadratic form corresponding to the matrix $vv^T$.
 
@@ -192,15 +214,54 @@ Note that $\an{Ax,u}^d$ is the polynomial ($n$-ic form) corresponding to the ten
 	& \le \tau d^d\ve{A^Tu}_2^d \le \tau \si^d \ve{u}_2^d.
 	\end{align}
 	(The $d^d$ bound is crude; this is not the bottleneck.) Note the lower inequality depends on there only being even nonzero terms.
-2.  (Calculate concentration, Proof of 4.2) We use a Chebyshev bound[^cheb]. We have $|(A^Tx)_\al|\le 1$. **I think we need assumption on $\ve{A^Tx}_{\iy}$**. Thus taking $\wt \Om\pf{n^{2d})}{\tau^2}$ samples we get that the coefficients are whp $\fc{\tau}{n^d}$-close. This means the value at $u$ is $n^d \si^d\fc{\tau}{n^d}$-close, and we get whp
+2.  (Calculate concentration, Proof of 4.2) We use a Chebyshev bound[^cheb]. We have $|(A^Tx)_\al|\le 1$. **I think we need assumption on $\ve{A^Tx}_{\iy}$**. Thus taking $\wt \Om\pf{n^{2d}}{\tau^2}$ samples we get that the coefficients are whp $\fc{\tau}{n^d}$-close. This means the value at $u$ is $n^d \si^d\fc{\tau}{n^d}$-close, and we get whp
 	$$P\in \ve{A^Tu}_d^d + 2\tau \si^d d^d \ve{u}_2^d[-1,1].$$
+3.  Use noisy tensor decomposition. Check parameters. There we needed $d \ge D=O(\rc{\ep}\ln \si)$. We need $\tau\le \fc{\ep}{\si^DD^D}$. (**Errata?** The value of $\tau$ is different than in the theorem.)
 
 [^cheb]: Can we do better if we use polynomial concentration?
 
+# Polytime algorithm
+
+This means polytime for fixed $\ep$. Note to get $\rc{\ln n}$ closeness (ex. for initialization of an iterative DL algorithm), we need quasipolytime, $n^{O(\ln n)}$.
+
+The bottleneck is the $\ln m$ in Lemma 6.1, where we used averaging to conclude that if $U$ has large correlation with $A$, then $U$ has large correlation with a column of $A$.
+
+<!-- We want to sidestep this! So directly fix a column, and instead of comparing $W$ to -->
+
+| Before | Now |
+|---|---|
+| 5.2 | 7.2 |
+| 5.1 | 7.1 |
+| 6.1 | 7.3 |
+
+To summarize the previous argument, we show our distribution of $W$ satisfies inequalities given in 5.2, and then use reweighting to obtain that $u$ is correlated with some column in 5.1. Now we use the weak lemma 6.1 which recovers that column, with $\ln m$ loss.
+
+If we weaken the conclusion of 6.1, then we can hope that 6.1', i.e., 7.3, doesn't have a $\ln m$ in the place we care about. Then we need 5.1', i.e., 7.1, to work with these weaker conditions. Sparsity allows us to weaken the conditions on correlation, provided we have better bounds information about the distribution $W$ that we choose. 
+
+(Not quite: 5.2 was a lemma for 5.1. 7.1 is a lemma for 7.2, we use 7.1+5.1 to get 7.1.)
+
+Specifically, the condition on the p.d. $U$ (degree $2(1+2k)$) is (7.2)
+$$ \wt \E\an{c,U}^{2(1+2k)} \ge e^{-\ep k} \wt \E \an{c,U}^2, \qquad \wt E\an{c,u}^2\ge \tau^k.
+$$
+This is easier to satisfy: the $\rc m$ that causes problems is moved to the second inequality (as long as we have sparsity $\tau^k\le \rc m$ we are OK). The second inequality is true if sparsity is $\tau$ (CHECK!!). $k$ no longer needs a factor $\rc{\ln m}$ in the denominator to satisfy this.
+
+Note 5.2, 5.1 don't mention the sparsity at all, while 7.2, 7.1 mention $\tau$ which will be related to the sparsity.
+
+Some changes: instead of reducing from degree $k$ to $2$ we reduce from degree $\approx 4k$ to $2k$. (??)
+
+So how does the algorithm work now, given that our assumption is (7.2) rather than a bound on $\wt \E \an{c,u}$? 7.1 has the following inequality on $\ol W= \E_WW$, (7.1):
+$$\an{c,U}^{2(1+k)}\preceq \ol W \preceq (\an{c,U}^2 + \tau\ve{U}_2^2)^{1+k}.$$
+Using this, get an upper bound on $\wt \E \ol W$ and lower bound on $\wt \E \an{c,U}^{k}$ to get a lower bound on $\wt\E \ol W\an{c,U}^{2k}$:
+$$\wt \E \ol W\an{c,U}^{2k} \wt \E \ol W \ge [\wt \E(\ol W \an{c,U}^k)]^2.$$
+
+The bound on $\ol W$ comes from sparsity. Take $W=\prodo i{k/2-1} \an{y_i=Ax_i,U}^2$. $\ol W$ does not actually satisfy (7.1); it does after reweighting by $\prodo i{k/2-1} x_{i,1}^2$. (This is a distribution over polynomials. Take the probability that $\prod \an{Ax_i,U}^2$ is chosen and multiply it by $\prod x_{i,1}^2$ and normalize the probabilities. (Not multiply the polynomial.)) Consider $c\an{Ax,u}^2$ reweighted by $x_i^2$; expand and use sparsity to get a nice bound on expectations.
+
+This is much better than the previous analysis on $W$! It actually seems to take into account some kind of concentration...
+
+Final theorem is 7.6.
+
 # Todo
 
-* Finish noisy tensor decomp proof (look at $S$, check value of $k$)
-* Go through parameters for DL.
 * Summarize changes to get down to polytime. What's the key idea?
 
 (Q: can you adapt something like this for NMF?)

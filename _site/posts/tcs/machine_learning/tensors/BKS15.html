@@ -97,6 +97,10 @@
  <li><a href="#proof">Proof</a></li>
  </ul></li>
  <li><a href="#dictionary-learning">Dictionary learning</a></li>
+ <li><a href="#theorem">Theorem</a><ul>
+ <li><a href="#algorithm-2">Algorithm</a></li>
+ </ul></li>
+ <li><a href="#polytime-algorithm">Polytime algorithm</a></li>
  <li><a href="#todo">Todo</a></li>
  </ul> </div>
 
@@ -185,7 +189,7 @@ P(c') &amp; \ge e^{-\ep d} - \tau\\
 \ve{A^Tu}_k^k \ge \fc{(\ve{A^Tu}_d^d)^{\fc k{d-2}}}{(\ve{A^Tu}_2^2)^{\fc{k}{d-2}}} \ge \fc{e^{-\de d}}{\si^{\fc k{d-2}}}.
 \]</span> Now use averaging on <span class="math inline">\(\ve{A^Tu}_k^k\)</span>.</li>
 </ul></li>
-<li>Here <span class="math inline">\(\de = O\pf{\tau}d\)</span> so we get <span class="math display">\[ \wt E \an{c,u}^k \ge e^{-\ep' k},\quad \ep' = O(\fc{\tau}d + \fc{\ln \si \ln m}{dk}).\]</span></li>
+<li>Here <span class="math inline">\(\de = O\pf{\tau}d\)</span> so we get <span class="math display">\[ \wt E \an{c,u}^k \ge e^{-\ep' k},\quad \ep' = O(\fc{\tau}d + \fc{\ln \si}{d} +\fc{\ln m}{k}).\]</span> This means we set <span class="math inline">\(k=\boxed{\frac{C\ln m}{\ep}}\)</span>. This also means we need <span class="math inline">\(d=\Om(\rc{\ep}\ln \si)\)</span>, <span class="math inline">\(\tau=O(\ep)\)</span>.</li>
 <li>Example: if <span class="math inline">\(u\)</span> is the actual distribution <span class="math inline">\(u=A_{\cdot i}\)</span> with probability <span class="math inline">\(\rc{m}\)</span>, then <span class="math inline">\(\wt E\an{c,u}^k = \rc m\)</span>. Hence we can’t do better than <span class="math inline">\(k=\Om(\ln m)\)</span>.</li>
 </ul></li>
 <li><p>Now we analyze the algorithm to “sample pseudo-distributions”: given a PD that correlates with a vector, find a vector close to it. We prove:</p>
@@ -200,7 +204,7 @@ P(c') &amp; \ge e^{-\ep d} - \tau\\
 <li><p>We are given <span class="math inline">\(c\)</span> such that <span class="math inline">\(\wt E\an{c,u}^k \ge e^{-\de d}\)</span> (high correlation) and we want that <span class="math inline">\(c\)</span> to be a value of <span class="math inline">\(v\)</span> that makes (the quadratic form) <span class="math inline">\(v\mapsto \wt \E W(U) \an{v,U}^2\)</span> large. In fact, what we want is that <!--the value is way bigger than any other singular values; i.e.,--> when normalized so the sum of the eigenvalues is 1, the singular value corresponding to <span class="math inline">\(c\)</span> is close to 1.</p>
 There are 3 parts. (a) We need to understand how “renormalization” of pseudo-distributions works. (b) We need to show that for our choice of <span class="math inline">\(W\)</span>, we have with some probability a lower bound for <span class="math inline">\(\wt \E W(U) \an{c,U}^2\)</span>. This is the hardest part. (c) We need to show that <span class="math inline">\(c\)</span> is close to the singular vector (which we output). (I think (c) is in essence a matrix/eigenvector perturbation result, but it’s cloaked in the language of SoS here—unravel!)</li>
 <li><strong>Lemma</strong> (reweighting). Let <span class="math inline">\(U\)</span> be a degree <span class="math inline">\(k\)</span> p.d. Then for every SoS polynomial <span class="math inline">\(W\)</span> of degree <span class="math inline">\(d&lt;k\)</span>, <span class="math inline">\(\wt \E W&gt;0\)</span>, there exists a degree <span class="math inline">\((k-d)\)</span> p.d. <span class="math inline">\(U'\)</span> such that for every <span class="math inline">\(\deg P \le k-d\)</span>, <span class="math display">\[\wt E_{U'} P(U') = \rc{\wt \E_U W(U)} \wt \E_{U} W(U)P(U).\]</span> <em>Proof</em>. Just verify the positivity property.</li>
-<li><p><strong>Lemma 5.2</strong>. Let <span class="math inline">\(U\)</span> be a degree-<span class="math inline">\(k+2\)</span> pseudo-distribution over <span class="math inline">\(\R^n\)</span> with <span class="math inline">\(\ve{U}_2^2=1\)</span> and such that there exists a unit vector <span class="math inline">\(c\in \R^n\)</span> such that <span class="math inline">\(\wt \E\an{c,u}^k \ge e^{-\ep k}\)</span>. <span class="math inline">\(W=\rc{M^{k/2}} \prod_{i=1}^{k/2} w^{(i)}\)</span> where <span class="math inline">\(w^{(i)}\)</span> are iid draws from <span class="math inline">\(w=\an{\xi,u}^2\)</span>, <span class="math inline">\(\xi\sim N(0,I_n)\)</span>. Then with probability <span class="math inline">\(2^{-O\pf{k}{\poly(\ep)}}\)</span>, <span class="math inline">\(\wt E\an{c,u}^2 \ge (1-O(\ep))\wt \E W\)</span>.</p>
+<li><p><strong>Lemma 5.2</strong>. Let <span class="math inline">\(U\)</span> be a degree-<span class="math inline">\(k+2\)</span> pseudo-distribution over <span class="math inline">\(\R^n\)</span> with <span class="math inline">\(\ve{U}_2^2=1\)</span> and such that there exists a unit vector <span class="math inline">\(c\in \R^n\)</span> such that <span class="math inline">\(\wt \E\an{c,u}^k \ge e^{-\ep k}\)</span>. <span class="math inline">\(W=\rc{M^{k/2}} \prod_{i=1}^{k/2} w^{(i)}\)</span> where <span class="math inline">\(w^{(i)}\)</span> are iid draws from <span class="math inline">\(w=\an{\xi,u}^2\)</span>, <span class="math inline">\(\xi\sim N(0,I_n)\)</span>. Then with probability <span class="math inline">\(2^{-O\pf{k}{\poly(\ep)}}\)</span>, <span class="math inline">\(\wt \E\an{c,u}^2W \ge (1-O(\ep))\wt \E W\)</span>.</p>
 (?? Discrepancy between <span class="math inline">\(k\)</span> and <span class="math inline">\(k+2\)</span>.)</li>
 <li>By reweighting, there exists a degree 2 p.d. <span class="math inline">\(U'\)</span> such that <span class="math display">\[\wt \E_{U'} \an{v,u'}^2 = \rc{\wt \E_U W(U)} \wt\E_{U} W(U) \an{v,U}^2.\]</span> By Lemma 5.2, the value at <span class="math inline">\(c\)</span> is <span class="math inline">\(\ge 1-O(\ep)\)</span>.</li>
 <li><em>Proof</em> (Sketch). This is more likely to be true if <span class="math inline">\(\an{c,\xi}\)</span> is large. Let <span class="math inline">\(w=\an{\xi,u}^2\)</span>. Let <span class="math inline">\(\tau_M\)</span> be such that <span class="math inline">\(\E_{\xi_0|\xi_0\ge \tau_M}\xi_0^2 =M\)</span>. Conditioning on <span class="math inline">\(\an{c,\xi}\ge \tau_{M+1}\)</span> and expanding <span class="math inline">\(\xi=\an{c,\xi}c+\xi'\)</span>, find that <span class="math display">\[ \E_{\xi | \an{c,\xi}\ge \tau_{M+1}} w = M\an{c,u}^2 + \ve{U}_2^2.\]</span> Let <span class="math inline">\(\ol W = \E W = \pa{\an{c,U}^2 + \rc M}^{\fc k2}\)</span> (assume <span class="math inline">\(\ve{u}_2^2=1\)</span>). Algebra shows
@@ -225,12 +229,31 @@ O(\ep) \EE_W \wt \E W \ge \EE_W \wt \E W - \EE_W \wt \E W\an{c,U}^2,
 <li>Success probability <span class="math inline">\(2^{-k/\poly(\ep)}\)</span>: <span class="math inline">\(W\)</span> succeeded if each <span class="math inline">\(\an{c,\xi^{(i)}}\)</span> is large, so we get <span class="math inline">\(-k\)</span> in the exponent. (!! This seems like a very crude bound—I expect we can do much better, maybe even subexponential?) <span class="math inline">\(M\)</span> depends polynomially on <span class="math inline">\(\rc{\ep}\)</span>; <span class="math inline">\(\rc{\poly(\ep)}\)</span> is in the exponent because the algorithm relies on sampling to get close enough.</li>
 </ul></li>
 </ul></li>
-<li></li>
+<li>Finish.
+<ul>
+<li>In step 1, from 6.1, we get <span class="math inline">\(\wt \E \an{c,u}^k \ge e^{-\ep' k}\)</span>, <span class="math inline">\(\ep' = O\pa{\fc\tau d+ \fc{\ln \si}d + \fc{\ln m}k}\)</span>.</li>
+<li>From 5.1, we get <span class="math inline">\(c'\)</span> close to a column <span class="math inline">\(c\)</span> of <span class="math inline">\(A\)</span>: <span class="math inline">\(\an{c,c'}\ge 1-O(\ep')\)</span> with probability <span class="math inline">\(2^{-\fc{k}{\poly(\ep')}}\)</span>. Repeat <span class="math inline">\(2^{\fc{k}{\poly(\ep')}}\)</span> times to get this with good probability. (<span class="math inline">\(\ep = \Te(\ep')\)</span>.)</li>
+<li>(Far from other vectors already in <span class="math inline">\(S\)</span>) We have <span class="math inline">\(P(c') \ge c^Tc' - \tau\ve{c'}_2^2 \ge e^{-\ep d}-\tau\)</span>. Calculation using the triangle inequality on (after doing <span class="math inline">\(\bullet^{\ot 2}\)</span> because the inequality we have is <span class="math inline">\(\an{s,U}^2\le 1-\ga\)</span>) gives <span class="math inline">\(\an{c',s}\le 1-\fc{\ga}{10}\)</span>. (We chose <span class="math inline">\(\ga = C\ep\)</span>.) <img src="../../../../images/bks15-tri.png"></li>
+<li>(Every <span class="math inline">\(s\in S\)</span> is close to some column.) Use 6.1 on <span class="math inline">\(s\)</span> (which is an actual vector! not a p.d.), <span class="math inline">\(\ve{A^T s}_d^d \ge e^{-\ep d}-2\tau\)</span> to get <span class="math inline">\(\an{s,c}^2 \ge 1-O(\ep)\)</span>.</li>
+<li>(Can’t have 2 <span class="math inline">\(s\in S\)</span> close to same <span class="math inline">\(c\)</span>) More triangle inequalities.</li>
+<li>The algorithm then terminates after <span class="math inline">\(|S|=m\)</span>. The total time is <span class="math inline">\(n^{O(k)/\poly(\ep)} = n^{\fc{\ln m}{\poly(\ep)}}\)</span>. There’s an extra <span class="math inline">\(d\)</span> in the exponent because accessing <span class="math inline">\(P\)</span> takes <span class="math inline">\(n^d\)</span> time. (CHECK!!)</li>
+</ul></li>
 </ol>
 <h2 id="dictionary-learning">Dictionary learning</h2>
-<p>Algorithm: Take ?? samples <span class="math inline">\(x^{(i)}\)</span> and apply noisy tensor decomposition to the polynomial <span class="math display">\[ 
+<h2 id="theorem">Theorem</h2>
+<p>The algorithm below, given</p>
+<ul>
+<li><span class="math inline">\(\ep&gt;0\)</span></li>
+<li>overcompleteness <span class="math inline">\(\si\ge 1\)</span></li>
+<li><span class="math inline">\(d\ge D:=O\pf{\ln \si}{\ep}\)</span>,</li>
+<li><span class="math inline">\(\tau \le (D\si)^{-D}\)</span>. (In 4.2 it says <span class="math inline">\(D^D\)</span>, but I think it should be this.)</li>
+<li><span class="math inline">\(\wt O \pf{n^{2d}}{\tau^2}\)</span> samples from <span class="math inline">\(y=Ax\)</span> for <span class="math inline">\((d,\tau)\)</span>-nice <span class="math inline">\(x\)</span>,</li>
+</ul>
+<p>outputs in time <span class="math inline">\(n^{\fc{d+\ln m}{\ep^{O(1)}}}\)</span> a set of vectors <span class="math inline">\(\ep\)</span>-close to <span class="math inline">\(A\)</span>.</p>
+<h3 id="algorithm-2">Algorithm</h3>
+<p>Take <span class="math inline">\(\wt O \fc{n^{2d}}{\tau^2}\)</span> samples <span class="math inline">\(x^{(i)}\)</span> and apply noisy tensor decomposition to the polynomial <span class="math display">\[ 
 \EE_i x^{(i)} \an{Ax,u}^d
-\]</span> where <span class="math inline">\(d=??\)</span>.</p>
+\]</span> where <span class="math inline">\(d\ge D:=O(\ep^{-1}\ln \si)\)</span>.</p>
 <p>Note that <span class="math inline">\(\an{Ax,u}^d\)</span> is the polynomial (<span class="math inline">\(n\)</span>-ic form) corresponding to the tensor <span class="math inline">\((Ax)^{\ot d}\)</span>, just as <span class="math inline">\(u^T vv^Tu = \an{u,v}^2\)</span> is the quadratic form corresponding to the matrix <span class="math inline">\(vv^T\)</span>.</p>
 <p><em>Proof</em>.</p>
 <ol type="1">
@@ -243,12 +266,48 @@ O(\ep) \EE_W \wt \E W \ge \EE_W \wt \E W - \EE_W \wt \E W\an{c,U}^2,
 &amp; \le \tau d^d\ve{A^Tu}_2^d \le \tau \si^d \ve{u}_2^d.
 \end{align}
 (The <span class="math inline">\(d^d\)</span> bound is crude; this is not the bottleneck.) Note the lower inequality depends on there only being even nonzero terms.</li>
-<li><p>(Calculate concentration, Proof of 4.2) We use a Chebyshev bound<a href="#fn1" class="footnoteRef" id="fnref1"><sup>1</sup></a>. We have <span class="math inline">\(|(A^Tx)_\al|\le 1\)</span>. <strong>I think we need assumption on <span class="math inline">\(\ve{A^Tx}_{\iy}\)</span></strong>. Thus taking <span class="math inline">\(\wt \Om\pf{n^{2d})}{\tau^2}\)</span> samples we get that the coefficients are whp <span class="math inline">\(\fc{\tau}{n^d}\)</span>-close. This means the value at <span class="math inline">\(u\)</span> is <span class="math inline">\(n^d \si^d\fc{\tau}{n^d}\)</span>-close, and we get whp <span class="math display">\[P\in \ve{A^Tu}_d^d + 2\tau \si^d d^d \ve{u}_2^d[-1,1].\]</span></p></li>
+<li>(Calculate concentration, Proof of 4.2) We use a Chebyshev bound<a href="#fn1" class="footnoteRef" id="fnref1"><sup>1</sup></a>. We have <span class="math inline">\(|(A^Tx)_\al|\le 1\)</span>. <strong>I think we need assumption on <span class="math inline">\(\ve{A^Tx}_{\iy}\)</span></strong>. Thus taking <span class="math inline">\(\wt \Om\pf{n^{2d}}{\tau^2}\)</span> samples we get that the coefficients are whp <span class="math inline">\(\fc{\tau}{n^d}\)</span>-close. This means the value at <span class="math inline">\(u\)</span> is <span class="math inline">\(n^d \si^d\fc{\tau}{n^d}\)</span>-close, and we get whp <span class="math display">\[P\in \ve{A^Tu}_d^d + 2\tau \si^d d^d \ve{u}_2^d[-1,1].\]</span></li>
+<li><p>Use noisy tensor decomposition. Check parameters. There we needed <span class="math inline">\(d \ge D=O(\rc{\ep}\ln \si)\)</span>. We need <span class="math inline">\(\tau\le \fc{\ep}{\si^DD^D}\)</span>. (<strong>Errata?</strong> The value of <span class="math inline">\(\tau\)</span> is different than in the theorem.)</p></li>
 </ol>
+<h2 id="polytime-algorithm">Polytime algorithm</h2>
+<p>This means polytime for fixed <span class="math inline">\(\ep\)</span>. Note to get <span class="math inline">\(\rc{\ln n}\)</span> closeness (ex. for initialization of an iterative DL algorithm), we need quasipolytime, <span class="math inline">\(n^{O(\ln n)}\)</span>.</p>
+<p>The bottleneck is the <span class="math inline">\(\ln m\)</span> in Lemma 6.1, where we used averaging to conclude that if <span class="math inline">\(U\)</span> has large correlation with <span class="math inline">\(A\)</span>, then <span class="math inline">\(U\)</span> has large correlation with a column of <span class="math inline">\(A\)</span>.</p>
+<!-- We want to sidestep this! So directly fix a column, and instead of comparing $W$ to -->
+<table>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Before</th>
+<th style="text-align: left;">Now</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">5.2</td>
+<td style="text-align: left;">7.2</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">5.1</td>
+<td style="text-align: left;">7.1</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">6.1</td>
+<td style="text-align: left;">7.3</td>
+</tr>
+</tbody>
+</table>
+<p>To summarize the previous argument, we show our distribution of <span class="math inline">\(W\)</span> satisfies inequalities given in 5.2, and then use reweighting to obtain that <span class="math inline">\(u\)</span> is correlated with some column in 5.1. Now we use the weak lemma 6.1 which recovers that column, with <span class="math inline">\(\ln m\)</span> loss.</p>
+<p>If we weaken the conclusion of 6.1, then we can hope that 6.1’, i.e., 7.3, doesn’t have a <span class="math inline">\(\ln m\)</span> in the place we care about. Then we need 5.1’, i.e., 7.1, to work with these weaker conditions. Sparsity allows us to weaken the conditions on correlation, provided we have better bounds information about the distribution <span class="math inline">\(W\)</span> that we choose.</p>
+<p>(Not quite: 5.2 was a lemma for 5.1. 7.1 is a lemma for 7.2, we use 7.1+5.1 to get 7.1.)</p>
+<p>Specifically, the condition on the p.d. <span class="math inline">\(U\)</span> (degree <span class="math inline">\(2(1+2k)\)</span>) is (7.2) <span class="math display">\[ \wt \E\an{c,U}^{2(1+2k)} \ge e^{-\ep k} \wt \E \an{c,U}^2, \qquad \wt E\an{c,u}^2\ge \tau^k.
+\]</span> This is easier to satisfy: the <span class="math inline">\(\rc m\)</span> that causes problems is moved to the second inequality (as long as we have sparsity <span class="math inline">\(\tau^k\le \rc m\)</span> we are OK). The second inequality is true if sparsity is <span class="math inline">\(\tau\)</span> (CHECK!!). <span class="math inline">\(k\)</span> no longer needs a factor <span class="math inline">\(\rc{\ln m}\)</span> in the denominator to satisfy this.</p>
+<p>Note 5.2, 5.1 don’t mention the sparsity at all, while 7.2, 7.1 mention <span class="math inline">\(\tau\)</span> which will be related to the sparsity.</p>
+<p>Some changes: instead of reducing from degree <span class="math inline">\(k\)</span> to <span class="math inline">\(2\)</span> we reduce from degree <span class="math inline">\(\approx 4k\)</span> to <span class="math inline">\(2k\)</span>. (??)</p>
+<p>So how does the algorithm work now, given that our assumption is (7.2) rather than a bound on <span class="math inline">\(\wt \E \an{c,u}\)</span>? 7.1 has the following inequality on <span class="math inline">\(\ol W= \E_WW\)</span>, (7.1): <span class="math display">\[\an{c,U}^{2(1+k)}\preceq \ol W \preceq (\an{c,U}^2 + \tau\ve{U}_2^2)^{1+k}.\]</span> Using this, get an upper bound on <span class="math inline">\(\wt \E \ol W\)</span> and lower bound on <span class="math inline">\(\wt \E \an{c,U}^{k}\)</span> to get a lower bound on <span class="math inline">\(\wt\E \ol W\an{c,U}^{2k}\)</span>: <span class="math display">\[\wt \E \ol W\an{c,U}^{2k} \wt \E \ol W \ge [\wt \E(\ol W \an{c,U}^k)]^2.\]</span></p>
+<p>The bound on <span class="math inline">\(\ol W\)</span> comes from sparsity. Take <span class="math inline">\(W=\prodo i{k/2-1} \an{y_i=Ax_i,U}^2\)</span>. <span class="math inline">\(\ol W\)</span> does not actually satisfy (7.1); it does after reweighting by <span class="math inline">\(\prodo i{k/2-1} x_{i,1}^2\)</span>. (This is a distribution over polynomials. Take the probability that <span class="math inline">\(\prod \an{Ax_i,U}^2\)</span> is chosen and multiply it by <span class="math inline">\(\prod x_{i,1}^2\)</span> and normalize the probabilities. (Not multiply the polynomial.)) Consider <span class="math inline">\(c\an{Ax,u}^2\)</span> reweighted by <span class="math inline">\(x_i^2\)</span>; expand and use sparsity to get a nice bound on expectations.</p>
+<p>This is much better than the previous analysis on <span class="math inline">\(W\)</span>! It actually seems to take into account some kind of concentration…</p>
+<p>Final theorem is 7.6.</p>
 <h2 id="todo">Todo</h2>
 <ul>
-<li>Finish noisy tensor decomp proof (look at <span class="math inline">\(S\)</span>, check value of <span class="math inline">\(k\)</span>)</li>
-<li>Go through parameters for DL.</li>
 <li>Summarize changes to get down to polytime. What’s the key idea?</li>
 </ul>
 <p>(Q: can you adapt something like this for NMF?)</p>
