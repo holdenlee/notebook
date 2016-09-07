@@ -8,8 +8,86 @@
         <name>Holden Lee</name>
         <email>oldheneel@gmail.com</email>
     </author>
-    <updated>2016-09-04T00:00:00Z</updated>
+    <updated>2016-09-07T00:00:00Z</updated>
     <entry>
+    <title>[SV16] The mixing time of the Dikin walk in a polytope - a simple proof</title>
+    <link href="http://holdenlee.github.io/notebook/posts/tcs/machine_learning/optimization/SV16.html" />
+    <id>http://holdenlee.github.io/notebook/posts/tcs/machine_learning/optimization/SV16.html</id>
+    <published>2016-09-07T00:00:00Z</published>
+    <updated>2016-09-07T00:00:00Z</updated>
+    <summary type="html"><![CDATA[
+<div class="container">
+  <div id="content">
+    <div class="page header">
+      <h1>[SV16] The mixing time of the Dikin walk in a polytope - a simple proof</h1>
+    </div>
+    <div class="info">
+      
+       
+        <p>Posted: 2016-09-07 
+          , Modified: 2016-09-07 
+	</p>
+      
+       <p>Tags: <a href="/tags/gradient.html">gradient</a></p> 
+    </div>
+    
+  </div>
+  <!--/div-->
+
+  
+
+  <div class="blog-main">
+    <p>Problem: sample a point from the uniform distribution in a polytope <span class="math inline">\(K\subeq \R^n\)</span>. (This is used in many algorithms.)</p>
+<p>Main theorem (informal): From a warm start (i.e., density <span class="math inline">\(\Pj(A)\le C\Pj_{U_K}(A)\)</span> where <span class="math inline">\(U_K\)</span> is the uniform distribution on <span class="math inline">\(K\)</span>), the Dikin walk mixes in time <span class="math inline">\(O(mn)\)</span> for a <span class="math inline">\(n\)</span>-dimensional polytope described with <span class="math inline">\(m\)</span> inequalities.</p>
+<h2 id="dikin-walk">Dikin walk</h2>
+For <span class="math inline">\(K\)</span> defined by <span class="math inline">\(a_i^Tx\ge b\)</span>, let
+\begin{align}
+F(x) :&amp;= -\sum_{i\in [m]} \ln (a_i^Tx-b_i)\\
+H(x) = \nb^2F(x) &amp;= \sum_{i\in [m]} \rc{(a_i^Tx-b_i)^2}a_ia_i^T\\
+\ve{v}_x^2 :&amp;= v^TH(x)v.
+\text{Dikin ellipsoid }D_x:&amp;=\set{z}{\ve{z-x}_x\le 1}.
+\end{align}
+<p>Consider the random variable <span class="math inline">\(g_x\)</span> given by <span class="math display">\[ z = x + \fc{r}{\sqrt n} H(x)^{-\rc 2}g,\quad g\sim N(0,1),\]</span> i.e. it is a Gaussian with covariance matrix <span class="math inline">\(\fc{r^2}{n}H(x)^{-1}\)</span> centered at <span class="math inline">\(x\)</span>.</p>
+<p>Let <span class="math inline">\(p_x\)</span> be the <span class="math inline">\(g_x\)</span> with the Metropolis filter applied, <span class="math display">\[ p_x(z) = \min\{g_x(z),g_z(x)\}\]</span> (stay at <span class="math inline">\(x\)</span> with remaining probability).</p>
+<h2 id="theorem-and-proof">Theorem and Proof</h2>
+<p>Define <span class="math inline">\(\si(x,y) = \fc{|\ol{xy}||\ol{pq}|}{|\ol{px}||\ol{qy}|}\)</span>, where <span class="math inline">\(xy\)</span> hits the boundary of <span class="math inline">\(K\)</span> at <span class="math inline">\(p,q\)</span> (<span class="math inline">\(pxyq\)</span> are in that order). <span class="math inline">\(\ln (1+\si(x,y))\)</span> is a metric on <span class="math inline">\(K\)</span>.</p>
+<p><strong>Theorem 1</strong>: Given a reversible random walk in <span class="math inline">\(K\)</span> with stationary distribution uniform, suppose <span class="math inline">\(\exists \De&gt;0\)</span> such that for all <span class="math inline">\(x,y\in K\)</span> with <span class="math inline">\(\si(x,y)\le \De\)</span>, <span class="math inline">\(\ve{p_x-p_y}_1\le 1-\Om(1)\)</span>. Then after <span class="math inline">\(O(\De^{-2})\)</span>, the lazy version of the walk from a warm start is within <span class="math inline">\(\rc4\)</span> TV distance from the uniform distribution.</p>
+<p>(This is saying something about uniform continuity of <span class="math inline">\(x\mapsto p_x\)</span>. There’s a “smoothing out” effect.)</p>
+<p>Proof of main theorem.</p>
+<ol type="1">
+<li><strong>Theorem 2</strong>: For the Gaussian Dikin walk with <span class="math inline">\(r\le \fc{\ep}{400}\pa{\ln \pf{200}{\ep}}^{-\fc 32}\)</span>, for <span class="math inline">\(x,y\in K\)</span> with <span class="math inline">\(\ve{x-y}_x\le \fc{r}{\sqrt n}\)</span>, <span class="math inline">\(\ve{p_x-p_y}\le \ep\)</span>.
+<ul>
+<li><strong>Lemma 3</strong>: Let <span class="math inline">\(r\le 1, c\ge 0, c\le \min\{r,\rc 3\}\)</span>, <span class="math inline">\(x,y\in K\)</span>. If <span class="math inline">\(\ve{x-y}_x\le \fc{c}{\sqrt n}\)</span>, then <span class="math inline">\(\ve{g_x-g_y}_1\le 3c\)</span>. (Proof: KL divergence between Gaussians, Pinsker’s inequality.)</li>
+<li><strong>Lemma 4</strong>: Given <span class="math inline">\(\ep\in [0,\rc 2]\)</span>, for <span class="math inline">\(r\le \fc{\ep}{100}(\ln \fc{50}{\ep})^{-\fc 32}\)</span>, we have <span class="math inline">\(\ve{p_x-g_x}_1\le \ep\)</span>. (Proof: Hypercontractivity)</li>
+<li>Use triangle inequality.</li>
+</ul></li>
+<li>For any polytope <span class="math inline">\(K\)</span> described using <span class="math inline">\(m\)</span> inequalities, <span class="math inline">\(\si(x,y) \ge \rc{\sqrt m}\ve{x-y}_x\)</span>.</li>
+<li>Use Theorem 1. <span class="math inline">\(\si(x,y)\le \De\)</span> implies <span class="math inline">\(\ve{x-y}_x\le De\sqrt m\)</span>. Take <span class="math inline">\(\De =O\prc{\sqrt{mn}}\)</span>.</li>
+</ol>
+
+  </div>
+
+    
+
+    <!-- Extension : Sharing buttons @ www.sharethis.com -->
+    <span class='st_facebook_large' displayText='Facebook'></span>
+    <span class='st_twitter_large' displayText='Tweet'></span>
+    <span class='st_googleplus_large' displayText='Google +'></span>
+    <span class='st_reddit_large' displayText='Reddit'></span>
+    <span class='st__large' displayText=''></span>
+
+    <div id="disqus_thread"></div>
+    
+
+
+  
+    <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+  </div>
+  
+</div>
+]]></summary>
+</entry>
+<entry>
     <title>LDA (Linear discriminant analysis)</title>
     <link href="http://holdenlee.github.io/notebook/posts/tcs/machine_learning/matrices/lda.html" />
     <id>http://holdenlee.github.io/notebook/posts/tcs/machine_learning/matrices/lda.html</id>
@@ -983,68 +1061,6 @@ D' &amp;= \fc{n^2}{n^2-1} \pa{D-\fc{2}{n+1}\fc{Daa^TD}{a^TDa}}\\
 <li>(Hard) Kernel SVM’s can’t learn DL + classifier (essentially 2-layer NN).</li>
 </ul>
 <!--1-layer NN is like sparse recovery.-->
-
-  </div>
-
-    
-
-    <!-- Extension : Sharing buttons @ www.sharethis.com -->
-    <span class='st_facebook_large' displayText='Facebook'></span>
-    <span class='st_twitter_large' displayText='Tweet'></span>
-    <span class='st_googleplus_large' displayText='Google +'></span>
-    <span class='st_reddit_large' displayText='Reddit'></span>
-    <span class='st__large' displayText=''></span>
-
-    <div id="disqus_thread"></div>
-    
-
-
-  
-    <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
-  </div>
-  
-</div>
-]]></summary>
-</entry>
-<entry>
-    <title>Matrix perturbation</title>
-    <link href="http://holdenlee.github.io/notebook/posts/math/linear_algebra/matrix_analysis/perturbation.html" />
-    <id>http://holdenlee.github.io/notebook/posts/math/linear_algebra/matrix_analysis/perturbation.html</id>
-    <published>2016-08-30T00:00:00Z</published>
-    <updated>2016-08-30T00:00:00Z</updated>
-    <summary type="html"><![CDATA[
-<div class="container">
-  <div id="content">
-    <div class="page header">
-      <h1>Matrix perturbation</h1>
-    </div>
-    <div class="info">
-      
-       
-        <p>Posted: 2016-08-30 
-          , Modified: 2016-08-30 
-	</p>
-      
-       <p>Tags: <a href="/tags/matrices.html">matrices</a></p> 
-    </div>
-    
-  </div>
-  <!--/div-->
-
-  <div class="toc"> <ul>
- <li><a href="#davis-kahan">Davis-Kahan</a></li>
- <li><a href="#weyls-theorem">Weyl’s Theorem</a></li>
- <li><a href="#wedins-theorem">Wedin’s Theorem</a></li>
- </ul> </div>
-
-  <div class="blog-main">
-    <h2 id="davis-kahan">Davis-Kahan</h2>
-<p>(Theorem 4.8 <a href="http://ocw.mit.edu/courses/mathematics/18-s997-high-dimensional-statistics-spring-2015/lecture-notes/MIT18_S997S15_Chapter4.pdf">here</a>)</p>
-<p>Distance between eigenvectors.</p>
-<h2 id="weyls-theorem">Weyl’s Theorem</h2>
-<h2 id="wedins-theorem">Wedin’s Theorem</h2>
-<p>Let <span class="math inline">\(v_1(A)\)</span> be the top eigenvector of <span class="math inline">\(A\)</span>. If <span class="math inline">\(\de=|\la_1(A)-\la_2(A)|\)</span>, then <span class="math inline">\(\sin(\angle (v_1(A), v_1(A+E)))\le \fc{\ve{E}_2}{\de}\)</span>.</p>
-<p>?? What’s the analogue of this for subspaces? Ex. <span class="math inline">\(\la_1,\ldots, \la_c\)</span> large and <span class="math inline">\(\la_{c+1}\)</span> small.</p>
 
   </div>
 
