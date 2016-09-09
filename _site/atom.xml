@@ -44,13 +44,13 @@ For <span class="math inline">\(K\)</span> defined by <span class="math inline">
 \begin{align}
 F(x) :&amp;= -\sum_{i\in [m]} \ln (a_i^Tx-b_i)\\
 H(x) = \nb^2F(x) &amp;= \sum_{i\in [m]} \rc{(a_i^Tx-b_i)^2}a_ia_i^T\\
-\ve{v}_x^2 :&amp;= v^TH(x)v.
-\text{Dikin ellipsoid }D_x:&amp;=\set{z}{\ve{z-x}_x\le 1}.
+\ve{v}_x^2 :&amp;= v^TH(x)v\\
+\text{Dikin ellipsoid }\mathcal E_x:&amp;=\set{z}{\ve{z-x}_x\le 1}.
 \end{align}
 <p>Consider the random variable <span class="math inline">\(g_x\)</span> given by <span class="math display">\[ z = x + \fc{r}{\sqrt n} H(x)^{-\rc 2}g,\quad g\sim N(0,1),\]</span> i.e. it is a Gaussian with covariance matrix <span class="math inline">\(\fc{r^2}{n}H(x)^{-1}\)</span> centered at <span class="math inline">\(x\)</span>.</p>
 <p>Let <span class="math inline">\(p_x\)</span> be the <span class="math inline">\(g_x\)</span> with the Metropolis filter applied, <span class="math display">\[ p_x(z) = \min\{g_x(z),g_z(x)\}\]</span> (stay at <span class="math inline">\(x\)</span> with remaining probability).</p>
 <h2 id="theorem-and-proof">Theorem and Proof</h2>
-<p>Define <span class="math inline">\(\si(x,y) = \fc{|\ol{xy}||\ol{pq}|}{|\ol{px}||\ol{qy}|}\)</span>, where <span class="math inline">\(xy\)</span> hits the boundary of <span class="math inline">\(K\)</span> at <span class="math inline">\(p,q\)</span> (<span class="math inline">\(pxyq\)</span> are in that order). <span class="math inline">\(\ln (1+\si(x,y))\)</span> is a metric on <span class="math inline">\(K\)</span>.</p>
+<p>Define the cross-ratio distance <span class="math display">\[\si(x,y) = \fc{|\ol{xy}||\ol{pq}|}{|\ol{px}||\ol{qy}|},\]</span> where <span class="math inline">\(xy\)</span> hits the boundary of <span class="math inline">\(K\)</span> at <span class="math inline">\(p,q\)</span> (<span class="math inline">\(pxyq\)</span> are in that order). <span class="math inline">\(\ln (1+\si(x,y))\)</span> is a metric on <span class="math inline">\(K\)</span>.</p>
 <p><strong>Theorem 1</strong>: Given a reversible random walk in <span class="math inline">\(K\)</span> with stationary distribution uniform, suppose <span class="math inline">\(\exists \De&gt;0\)</span> such that for all <span class="math inline">\(x,y\in K\)</span> with <span class="math inline">\(\si(x,y)\le \De\)</span>, <span class="math inline">\(\ve{p_x-p_y}_1\le 1-\Om(1)\)</span>. Then after <span class="math inline">\(O(\De^{-2})\)</span>, the lazy version of the walk from a warm start is within <span class="math inline">\(\rc4\)</span> TV distance from the uniform distribution.</p>
 <p>(This is saying something about uniform continuity of <span class="math inline">\(x\mapsto p_x\)</span>. There’s a “smoothing out” effect.)</p>
 <p>Proof of main theorem.</p>

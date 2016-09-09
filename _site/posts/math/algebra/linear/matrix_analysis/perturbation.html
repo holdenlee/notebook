@@ -13,24 +13,24 @@
   <title>Matrix perturbation</title>
 
   <!-- Bootstrap core CSS -->
-  <link href="../../../../bootstrap/css/bootstrap.min.css" rel="stylesheet">
+  <link href="../../../../../bootstrap/css/bootstrap.min.css" rel="stylesheet">
 
   <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
   <!-- <link href="../../assets/css/ie10-viewport-bug-workaround.css" rel="stylesheet"> -->
 
   <!-- Custom styles for this template -->
-  <link href="../../../../css/blog.css" rel="stylesheet">
-  <link href="../../../../css/default.css" rel="stylesheet">
+  <link href="../../../../../css/blog.css" rel="stylesheet">
+  <link href="../../../../../css/default.css" rel="stylesheet">
 
   <!-- Extension : Footnotes -->
-  <link href="../../../../footnotes/css/footnotes.css" rel="stylesheet">
+  <link href="../../../../../footnotes/css/footnotes.css" rel="stylesheet">
 
   <!-- Extension : InlineDisqussions @ https://github.com/tsi/inlineDisqussions -->
   
 
   <!-- Extension : Collapsible lists @ http://code.stephenmorley.org/javascript/collapsible-lists/-->
-  <link href="../../../../collapsible_lists/css/collapsible.css" rel="stylesheet">
-  <script type="text/javascript" src="../../../../collapsible_lists/js/CollapsibleLists.js"></script>
+  <link href="../../../../../collapsible_lists/css/collapsible.css" rel="stylesheet">
+  <script type="text/javascript" src="../../../../../collapsible_lists/js/CollapsibleLists.js"></script>
 
 </head>
 
@@ -48,12 +48,12 @@
           <span class="icon-bar"></span>
           <span class="icon-bar"></span>
         </button>
-        <a class="navbar-brand" href="../../../../">Notebook</a>
+        <a class="navbar-brand" href="../../../../../">Notebook</a>
       </div>
       <div id="navbar" class="collapse navbar-collapse">
         <ul class="nav navbar-nav">
-          <li><a href="../../../../">Home</a></li>
-          <li><a href="../../../../sitemap.html">Sitemap</a></li>
+          <li><a href="../../../../../">Home</a></li>
+          <li><a href="../../../../../sitemap.html">Sitemap</a></li>
 <!-- TODO: Distinguish between PAPERS, RESEARCH QUESTIONS, BOOKS -->
 <!-- TODO: make this part a for loop over main pages -->
         </ul>
@@ -79,7 +79,7 @@
           , Modified: 2016-08-30 
 	</p>
       
-       <p>Tags: <a href="../../../../tags/matrices.html">matrices</a></p> 
+       <p>Tags: <a href="../../../../../tags/matrices.html">matrices</a></p> 
     </div>
     
   </div>
@@ -89,16 +89,29 @@
  <li><a href="#davis-kahan">Davis-Kahan</a></li>
  <li><a href="#weyls-theorem">Weyl’s Theorem</a></li>
  <li><a href="#wedins-theorem">Wedin’s Theorem</a></li>
+ <li><a href="#other">Other</a></li>
  </ul> </div>
 
   <div class="blog-main">
     <h2 id="davis-kahan">Davis-Kahan</h2>
 <p>(Theorem 4.8 <a href="http://ocw.mit.edu/courses/mathematics/18-s997-high-dimensional-statistics-spring-2015/lecture-notes/MIT18_S997S15_Chapter4.pdf">here</a>)</p>
+<p><a href="http://epubs.siam.org/doi/pdf/10.1137/0707001">Original paper</a> (In a different form here—how does it connect?)</p>
 <p>Distance between eigenvectors.</p>
+<p>Theorem 1 <a href="http://www.statslab.cam.ac.uk/~yy366/index_files/Biometrika-2015-Yu-biomet_asv008.pdf">here</a>, Theorem V.3.6 in Stewart and sun</p>
+<p>Let <span class="math inline">\(\Si,\wh \Si\)</span> be symmetric with eigenvalues <span class="math inline">\(\la_1\ge \cdots la_p\)</span>, <span class="math inline">\(\wh \la_1\ge \cdots \ge \wh \la_p\)</span> corresponding to eigenvectors <span class="math inline">\(\la_i,\wh\la_i\)</span>. Fix <span class="math inline">\(1\le r\le s\le p\)</span>. Suppose <span class="math inline">\(\wh \la_{r-1}&gt;\la_r \ge \la_s &gt;\wh \la_{s+1}\)</span>, <span class="math inline">\(\de = \min (\wh \la_{r-1}-\la_r, \la_s - \wh \la_{s+1}\)</span>. (Let <span class="math inline">\(\wh \la_0=-\iy, \wh \la_{p+1}=\iy\)</span>.) Then <span class="math display">\[\ve{\sin \Te(\wh V, V)}_F \le \fc{\ve{\wh \Si - \Si}_F}{\de}.\]</span> (<span class="math inline">\(\ve{\sin \Te(\wh V, V)}_F\)</span> has some definition as a matrix, but I think you can interpret the LHS as the sin of the angle between the spaces.)</p>
+<p>Question: is the following true? Or something like it?</p>
+<p><strong>Conjecture</strong>: Let <span class="math inline">\(A\)</span> have eigenvalues, vectprs <span class="math inline">\(\la_i, v_i\)</span>, and <span class="math inline">\(A+E\)</span> have eigenvalues, vectors <span class="math inline">\(\wh \la_i, \wh v_i\)</span>. Suppose <span class="math inline">\(\la_s-\ve{E}_2&gt;\la_t\)</span>. Then <span class="math display">\[\sin \angle' (\spn (\wh v_1, \ldots, \wh v_s), \spn (v_1,\ldots, v_{s+t})) \le \fc{ve{E}_2}{\la_s-\ve{E}_2 - \la_t}\]</span> where <span class="math inline">\(\angle'(U,V)\)</span> is asymmetrically defined as <span class="math display">\[
+\max_{u\in U}\min_{v\in V} \angle(u,v).
+\]</span></p>
 <h2 id="weyls-theorem">Weyl’s Theorem</h2>
 <h2 id="wedins-theorem">Wedin’s Theorem</h2>
+<p>(Davis-Kahan for <span class="math inline">\(r=s=1\)</span>.)</p>
 <p>Let <span class="math inline">\(v_1(A)\)</span> be the top eigenvector of <span class="math inline">\(A\)</span>. If <span class="math inline">\(\de=|\la_1(A)-\la_2(A)|\)</span>, then <span class="math inline">\(\sin(\angle (v_1(A), v_1(A+E)))\le \fc{\ve{E}_2}{\de}\)</span>.</p>
-<p>?? What’s the analogue of this for subspaces? Ex. <span class="math inline">\(\la_1,\ldots, \la_c\)</span> large and <span class="math inline">\(\la_{c+1}\)</span> small.</p>
+<!--?? What's the analogue of this for subspaces? Ex. $\la_1,\ldots, \la_c$ large and $\la_{c+1}$ small.-->
+<h2 id="other">Other</h2>
+<ul>
+<li><a href="https://arxiv.org/pdf/1004.2000.pdf">singular vectors under random perturbation</a></li>
+</ul>
 
   </div>
 
@@ -145,12 +158,12 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
 <script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
 
-<script src="../../../../bootstrap/js/bootstrap.min.js"></script>
+<script src="../../../../../bootstrap/js/bootstrap.min.js"></script>
 
 <!-- Extension : Highlight.js @ https://highlightjs.org/ -->
 <!-- Syntax highlighting tomorrow-night-bright, agate-->
-<link rel="stylesheet" href="../../../../highlight/css/tomorrow-night-bright.css">
-<script src="../../../../highlight/js/highlight.pack.js"></script>
+<link rel="stylesheet" href="../../../../../highlight/css/tomorrow-night-bright.css">
+<script src="../../../../../highlight/js/highlight.pack.js"></script>
 <script>hljs.initHighlightingOnLoad();</script>
 
 <!-- Extension : MathJax @ https://docs.mathjax.org/en/v2.5-latest/tex.html -->
@@ -158,12 +171,12 @@
 <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML,http://holdenlee.github.io/notebook/MathJax/config/local/local"></script>
 
 <!-- Extension : Footnotes @ http://ignorethecode.net/blog/2010/04/20/footnotes/ -->
-<script src="../../../../footnotes/js/footnotes.js"></script>
+<script src="../../../../../footnotes/js/footnotes.js"></script>
 
 <!-- Extension : Disqus @ http://disqus.com -->
 <!-- Extension : InlineDisqussions @ https://github.com/tsi/inlineDisqussions -->
 
-<script src="../../../../disqus/js/disqus.js"></script>
+<script src="../../../../../disqus/js/disqus.js"></script>
 
 
 
