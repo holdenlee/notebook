@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+
+  <meta name="description" content="Holden Lee's Research Notebook">
+  <meta name="author" content="Holden Lee">
+    
+  <title>[SF15] Questions of reasoning under logical uncertainty</title>
+
+  <!-- Bootstrap core CSS -->
+  <link href="../../../../bootstrap/css/bootstrap.min.css" rel="stylesheet">
+
+  <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+  <!-- <link href="../../assets/css/ie10-viewport-bug-workaround.css" rel="stylesheet"> -->
+
+  <!-- Custom styles for this template -->
+  <link href="../../../../css/blog.css" rel="stylesheet">
+  <link href="../../../../css/default.css" rel="stylesheet">
+
+  <!-- Extension : Footnotes -->
+  <link href="../../../../footnotes/css/footnotes.css" rel="stylesheet">
+
+  <!-- Extension : InlineDisqussions @ https://github.com/tsi/inlineDisqussions -->
+  
+
+  <!-- Extension : Collapsible lists @ http://code.stephenmorley.org/javascript/collapsible-lists/-->
+  <link href="../../../../collapsible_lists/css/collapsible.css" rel="stylesheet">
+  <script type="text/javascript" src="../../../../collapsible_lists/js/CollapsibleLists.js"></script>
+
+</head>
+
+<body>
+
+<!-- Navigation bar. navbar-inverse is black, navbar-default is white.-->
+<!-- To make a button active (pressed), use <li class="active"> -->
+<div id="header">
+  <nav class="navbar navbar-inverse navbar-fixed-top">
+    <div class="container">
+      <div class="navbar-header">
+        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+          <span class="sr-only">Toggle navigation</span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="../../../../">Notebook</a>
+      </div>
+      <div id="navbar" class="collapse navbar-collapse">
+        <ul class="nav navbar-nav">
+          <li><a href="../../../../">Home</a></li>
+          <li><a href="../../../../sitemap.html">Sitemap</a></li>
+<!-- TODO: Distinguish between PAPERS, RESEARCH QUESTIONS, BOOKS -->
+<!-- TODO: make this part a for loop over main pages -->
+        </ul>
+      </div><!--/.nav-collapse -->
+    </div>
+  </nav>
+</div>
+<!-- Content -->
+<!--div id="content">
+  <h1>Mental Wilderness</h1>-->
+
+
+
+<div class="container">
+  <div id="content">
+    <div class="page header">
+      <h1>[SF15] Questions of reasoning under logical uncertainty</h1>
+    </div>
+    <div class="info">
+      
+       
+        <p>Posted: 2016-08-19 
+          , Modified: 2016-08-19 
+	</p>
+      
+       <p>Tags: <a href="../../../../tags/ai%20safety.html">ai safety</a></p> 
+    </div>
+    
+  </div>
+  <!--/div-->
+
+  <div class="toc"> <ul>
+ <li><a href="#introduction">Introduction</a></li>
+ <li><a href="#impossible-possibilities">Impossible possibilities</a></li>
+ <li><a href="#logical-priors">Logical priors</a></li>
+ <li><a href="#beyond-logical-systems">Beyond logical systems</a></li>
+ <li><a href="#discussion">Discussion</a></li>
+ <li><a href="#logical-induction-andrew-critch-820">Logical induction, Andrew Critch (8/20)</a><ul>
+ <li><a href="#technical">Technical</a></li>
+ </ul></li>
+ </ul> </div>
+
+  <div class="blog-main">
+    <h2 id="introduction">Introduction</h2>
+<p>Knowing how the system behaves but not the result, because of lack of computational resources.</p>
+<p>Standard probability theory assumes logical omniscience.</p>
+<p>What are logically impossible possibilities? (Things that are logically incorrect, but kept as a possibility because you don’t have the computational power to see they’re incorrect.) Reasonable prior?</p>
+<h2 id="impossible-possibilities">Impossible possibilities</h2>
+<p>Consider truth values of sentences of logic.</p>
+<p>Must preserve some structure: Ex. if probability 1 for <span class="math inline">\(\phi,\phi\implies \psi\)</span>, then probability 1 for <span class="math inline">\(\psi\)</span>.</p>
+<p>2 types of logical uncertainty</p>
+<ol type="1">
+<li>Logical theory</li>
+<li>Limited deductive capabilities</li>
+</ol>
+<p>Complete logical theory: for every sentence <span class="math inline">\(\phi\)</span>, either <span class="math inline">\(\phi\in T\)</span> or <span class="math inline">\(\neg \phi\in T\)</span>.</p>
+<p>Incomplete theories can be completed. (Use Zorn.)</p>
+<p>(In what sense is there a “true arithmetic”? In the sense that you believe there is a true answer of whether a Turing machine halts!)<a href="#fn1" class="footnoteRef" id="fnref1"><sup>1</sup></a></p>
+<p>For a deductively unlimited reasoner, an impossible possibiity is any complete theory of logic.</p>
+<p>Deductively limited reasoners entertain inconsistent impossible possibilities.</p>
+<p>An “impossible possibility,” then, could be any assignment of truth values to logical sentences which does not allow a short proof of inconsistency.</p>
+<p>No precise statements about its performance have yet been proven.</p>
+<h2 id="logical-priors">Logical priors</h2>
+<p>How to construct a weak (e.g. maximum entropy) prior over complete theories? (It’s easy to place 0 probability on complete theories.)</p>
+<p><strong>Hutter prior</strong>: For each sentence, select a model in which that sentence is true, and in which certain desirable properties hold (the “Gaifman condition” and the “Cournot condition” (Hutter et al. 2013)). Add the complete theory of that model to the distribution with measure in proportion to the probability of the sentence.</p>
+<p>Demski’s prior over complete theories extending <span class="math inline">\(B\)</span>.</p>
+<ul>
+<li>Take initial set <span class="math inline">\(B\)</span> of known sentences.</li>
+<li>Construct complete theory <span class="math inline">\(T\)</span> by starting with <span class="math inline">\(B\)</span> and selecting <span class="math inline">\(\phi\in \Phi\)</span> randomly. (Ex. <span class="math inline">\(\Phi\)</span> is simplicity prior.)</li>
+<li>Add <span class="math inline">\(\phi\)</span> to <span class="math inline">\(T\)</span> if consistent, else <span class="math inline">\(\neg \phi\)</span>.</li>
+</ul>
+<p>Resulting prior probability is uncomputable but approximable.</p>
+<p>Christiano uses standard ML techniques.</p>
+<p>Undesirable: If <span class="math inline">\(B=\phi\)</span>, then 0 probabilities on complete theories where PA holds—any theory not finitely axiomatizable.<a href="#fn2" class="footnoteRef" id="fnref2"><sup>2</sup></a></p>
+<p>Two ways to update Demski’s prior:</p>
+<ol type="1">
+<li>completely regenerate from <span class="math inline">\(B\cup \{\phi\}\)</span></li>
+<li>condition on <span class="math inline">\(\phi\)</span>.</li>
+</ol>
+<p>Why these are different: Consider <span class="math inline">\(\psi,\neg \psi\)</span> consistent with <span class="math inline">\(\phi\)</span>.</p>
+<ol type="1">
+<li>Regenerate: <span class="math inline">\(\ge 2^{-|\psi|}\)</span> probability on <span class="math inline">\(\psi\)</span>.</li>
+<li>Conditioned on <span class="math inline">\(\phi\)</span>: may be arbitrarily low. Ex.
+<ul>
+<li><span class="math inline">\(\neg \psi \to \phi\)</span></li>
+<li>almost all theories with <span class="math inline">\(\psi\)</span> also contain <span class="math inline">\(\neg \phi\)</span>.</li>
+</ul></li>
+</ol>
+<p>Intuition</p>
+<ol type="1">
+<li>Regenerating: doesn’t alter lower bound. (It learns differently from facts it always knew.)</li>
+<li>Conditioning: favor explanations</li>
+</ol>
+<p>Desiderata</p>
+<ol type="1">
+<li>Coherence: probability distribution over complete theories.</li>
+<li>Computable approximation</li>
+<li>Occam property: length-based lower bound on probability of consistent sentence.</li>
+<li>Inductive: <span class="math inline">\(\Pj(\forall n.\psi(n))\to 1\)</span> as get more confirmations</li>
+<li>PA-weakness: nonzero probability on set of complete extensions of PA.</li>
+<li>Bounded regret: Regret at most constant worse than other distributions over complete theories</li>
+<li>Practicality</li>
+<li>Reflectivity: There is <span class="math inline">\(P\)</span> in the language which can be interpreted as representation of <span class="math inline">\(\Pj\)</span>.</li>
+</ol>
+<p>Note approximations must be incoherent. Reflectivity is possible up to infinitesimal error but difficult.</p>
+<ul>
+<li>Hutter: coherent (1), inductive (4), PA-weak (5) as long as prob. dist generated from has Occam property. Not computably approximable, practical</li>
+<li>Demski: coherent, computably approximable (2), Occam if <span class="math inline">\(\Phi\)</span> (3).</li>
+</ul>
+<p>Inductivity is the Gaifman condition: If <span class="math inline">\(\Pj\)</span> is logical prior and <span class="math inline">\(\phi\)</span> is true <span class="math inline">\(\Pi_1\)</span> sentence <span class="math inline">\(\forall n:\psi(n)\)</span>, then <span class="math inline">\(\Pj(\cdot |\text{true for }1,...,N)\to 1\)</span>. But must assign probability 0 to some true <span class="math inline">\(\Pi_2\)</span> sentences. These priors are not weak enough!</p>
+<p><span class="math inline">\(\Pi_1\)</span>: <span class="math inline">\(\psi\)</span> decidable by primitive recursive function. <span class="math inline">\(\Pi_2\)</span>: <span class="math inline">\(\forall\exists\)</span>.</p>
+<p>(Why do we care about statements that don’t follow from PA? Toy problem for reasoning about uncertainty… is this the right problem?)</p>
+<p>Desirable property:</p>
+<ul>
+<li>If prior conditioned on <span class="math inline">\(\phi\)</span> true for <span class="math inline">\(p\)</span> of first <span class="math inline">\(L\)</span> numbers (<span class="math inline">\(L\)</span> large), then <span class="math inline">\(\phi(0)\)</span> has probability <span class="math inline">\(p\)</span>.</li>
+</ul>
+<h2 id="beyond-logical-systems">Beyond logical systems</h2>
+<p>Logical sentences are not the right tool for reasoning about the behavior of objects in the real world.</p>
+<p>Realistic reasoning shortcuts. (cf. regret?)</p>
+<p>It is not clear that sentences of first order logic are the “correct” underlying structure for logically uncertain reasoning about the world.</p>
+<p>Ex. billiards player (?)</p>
+<h2 id="discussion">Discussion</h2>
+<h2 id="logical-induction-andrew-critch-820">Logical induction, Andrew Critch (8/20)</h2>
+<table style="width:25%;">
+<colgroup>
+<col style="width: 5%" />
+<col style="width: 5%" />
+<col style="width: 5%" />
+<col style="width: 5%" />
+<col style="width: 5%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Domain</th>
+<th style="text-align: left;">Agent</th>
+<th style="text-align: left;">Minimal sufficient conditions</th>
+<th style="text-align: left;">Desirability arguments</th>
+<th style="text-align: left;">Feasibility</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Rational choice</td>
+<td style="text-align: left;">VNM utility maximizer</td>
+<td style="text-align: left;">VNM axioms</td>
+<td style="text-align: left;">Dutch book arguments, compelling axioms</td>
+<td style="text-align: left;">AIXI, POMDP solvers</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Probability</td>
+<td style="text-align: left;">Bayesian updater</td>
+<td style="text-align: left;">axioms of probability theory</td>
+<td style="text-align: left;">Dutch book arguments, compelling axioms</td>
+<td style="text-align: left;">Solomonoff induction</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Logical uncertainty</td>
+<td style="text-align: left;">Garrabrant inductor</td>
+<td style="text-align: left;">???</td>
+<td style="text-align: left;">Dutch book arguments, historical desiderata</td>
+<td style="text-align: left;">LIA2016</td>
+</tr>
+</tbody>
+</table>
+<ol type="1">
+<li>Improve logical uncertainty theory (min conditions, more conseq)</li>
+<li>Using Garrabrant inductors</li>
+<li></li>
+</ol>
+<p>Replace logical omniscience with logical uncertain.</p>
+<p>Logical uncertainty was a roadblock to decision theory, etc.</p>
+<p>(What would you do tomorrow if you found Critch changed <span class="math inline">\(\pi\)</span> to 4? Would you still go to work? Will pigs fly?)</p>
+<p>Suppose you’re an algorithm. What if I do x?</p>
+<p>Algorithm: what if I did this thing I didn’t do?</p>
+<!-- Gameable but works.
+Bayesian updaters don't exist.
+Use AI to research AI safety.
+when ask question about themselves, as q about math objects. Theory about understanding place in world.
+converge to paper \iy
+-->
+<h3 id="technical">Technical</h3>
+<ul>
+<li><span class="math inline">\(\Ga\)</span> language for encoding and proving statements about variables and computer programs (PA)</li>
+<li><span class="math inline">\(\La\)</span> all sentences expresible in <span class="math inline">\(\Ga\)</span>.</li>
+<li>Belief state: <span class="math inline">\(\La\to [0,1]\)</span> constant outside some finite subset (of things you’ve thought of)</li>
+<li>Reasoning process: computable sequence of belief states <span class="math inline">\(\set{P_n}{L\to [0,1]}\)</span>.</li>
+</ul>
+<p>Put criteria for reasoning in a good language.</p>
+<p>A good reasoning process <span class="math inline">\(P\)</span> should satisfy</p>
+<ol type="1">
+<li>computability of <span class="math inline">\(P_n(\phi)\)</span> for any <span class="math inline">\((n,\phi)\)</span>.</li>
+<li>convergence: <span class="math inline">\(P_\iy(phi) = \lim_{n\to \iy} P_n(\phi)\)</span> exists</li>
+<li>coherent limit: <span class="math inline">\(P_{\iy}\)</span> should be coherent probability distribution, <span class="math inline">\(P_\iy(A\wedge B) +P_iy( A \vee B) = P(A) + P(B)\)</span>.</li>
+<li>non-dogmatism: If <span class="math inline">\(\Ga \not \vdash \phi\)</span> then <span class="math inline">\(P_\iy(\phi)&lt;1\)</span> and if <span class="math inline">\(\Ga \not \vdash \neg\phi\)</span> then <span class="math inline">\(P_\iy(\phi)&gt;0\)</span>.</li>
+</ol>
+<p>There’s a secret property (master criterion) that implies all 4 of these.</p>
+<p>Conservatism (not too extreme)</p>
+<ul>
+<li>Uniform non-dogmatism: for any recursively enumerable sequence of sentences <span class="math inline">\(\{\phi_n\}\)</span> such that <span class="math inline">\(\Ga \cup \{\phi_n\}\)</span> is consistent, there is <span class="math inline">\(\ep&gt;0\)</span> such that for all <span class="math inline">\(n\)</span>, <span class="math inline">\(P_\iy(\phi_n) \ge \ep\)</span>.</li>
+<li>Occam bonds: <span class="math inline">\(\ka\)</span> Kolmogorov complexity, <span class="math inline">\(P_\iy(phi) \ge 2^{-\ka(\phi)}\)</span>, <span class="math inline">\(P_\iy(\phi)\le 1-C2^{-\ka(\phi)}\)</span>. (Occam: Simple things shouldn’t be too extreme.)</li>
+</ul>
+<p>Self-reflection</p>
+<p>Tension between Godel (can’t prove soundness/consistency), vs. can notice certain things about own sanity.</p>
+<ul>
+<li>Belief in consistency: <span class="math inline">\(con(t)=\)</span> “There is no proof of <span class="math inline">\(\perp\)</span> from <span class="math inline">\(\Ga\)</span> using <span class="math inline">\(t\)</span> or fewer symbols.” Then <span class="math inline">\(\lim_{n\to \iy} P_n(con(n))=1\)</span>.</li>
+<li>Belief in future consistency: For any encoding <span class="math inline">\(\ol f\)</span> of computable <span class="math inline">\(f:\N\to \N\)</span>, <span class="math display">\[
+\lim_{n\to \iy} P_n(con(\ol f(n)))=1.
+\]</span> Ex. <span class="math inline">\(f(n) = Ack(n,n)\)</span></li>
+</ul>
+<p>Sequence of statements <span class="math inline">\(\phi\)</span> is polytime generable if <span class="math inline">\(M(n)=\phi_n\)</span> polytime.</p>
+<p>Sequence of T/F questions relatively easy to generate, but can be arbitrarily difficult to answer deductively as <span class="math inline">\(n\)</span> grows. p.g. statements are easy to state, hard to verify.</p>
+<!--2nd problem hard -->
+<p>Ex. <span class="math inline">\(G(\ol n)\iff\)</span> There is no proof of <span class="math inline">\(\ol G(\ol n)\)</span> in <span class="math inline">\(\le \ol f (\ol n)\)</span> characters.</p>
+<p>True, but can’t be proven in fewer characters.</p>
+<ul>
+<li>Provability induction: Any p.g. sequence of provable theorems <span class="math inline">\(\phi_n\)</span> will eventually be believed by <span class="math inline">\(P_n\)</span> as soon as they are generated, <span class="math inline">\(\lim_{n\to \iy} P_n(\phi_n)=1\)</span>. <span class="math inline">\(P\)</span> outpaces deduction. <!-- p.g. sufficiently expressive for writing down. Failing to have makes exploitable. Can make larger class.--></li>
+</ul>
+<p>Analogy: Ramanujan vs. Hardy.</p>
+Timely manner:
+\begin{align}
+x_n \simeq_n y_n \iff \lim_{n\to \iy} x_n-y_n=0\\
+x_n \gtrsim_n y_n\iff \lim\inf &gt;0\\
+...
+\end{align}
+<ul>
+<li>Timely adoption of limits. <span class="math inline">\(p\)</span> sequence of rational probabilities. If <span class="math inline">\(P_\iy(\phi_n) \simeq_n p_n\)</span> then <span class="math inline">\(P_n(\phi_n) \simeq_n p_n\)</span>. (Keep up with todo list.)</li>
+<li>Introspection: ask about themselves. Knows what its own beliefs are at time it has them. For any pg <span class="math inline">\(\phi_n\)</span>, any <span class="math inline">\((a,b)\)</span> (or sequence of intervals), any <span class="math inline">\(\ep&gt;0\)</span>, large enough <span class="math inline">\(n\)</span>,
+\begin{align}
+P_n(\phi_n)&amp;\in (a+\ep,b-\ep) &amp;\implies P_n'P_n(\phi_n)\in (a,b)' &gt; 1-\ep\\
+P_n(\phi_n)&amp;\nin (a-\ep,b+\ep) &amp;\Leftarrow P_n('P_n(\phi_n)\in (a,b)') &lt;\ep
+\end{align}
+(Spit out at once at time <span class="math inline">\(n\)</span>. It’s one static table with introspective property.)</li>
+<li>Liar’s paradox resistance: Liar sentences <span class="math inline">\(L_n\)</span>, <span class="math inline">\(\Ga\vdash L_n \iff 'P_n(L_n)\le p'\)</span>. Then <span class="math inline">\(\lim_{n\to \iy} P_n(L_n)=p\)</span>. (Oscillations…)</li>
+</ul>
+<p>(How sure of being sure…)</p>
+<p>Self-trust</p>
+<ul>
+<li>Trust in future beliefs: For any computable <span class="math inline">\(f(n)&gt;n\)</span>, <span class="math display">\[''P(\phi_n | ' P_{f(n)}(\phi_n) \ge p_n') \gtrsim_n p_n''\]</span> Precise statement <!--$$ \E_n([\phi_n \Ind_{\de_n} (' P_{f(n)}(\phi_n) \ge p_n') \gtr$$--></li>
+</ul>
+<p>Learning statistical patterns.</p>
+<p>Learning provable relationships:</p>
+<ul>
+<li>case breakdowns: Let <span class="math inline">\(\phi^1,\ldots, \phi^k\)</span> be <span class="math inline">\(k\)</span> p.g. sequences of sentences such that for each <span class="math inline">\(n\)</span>, <span class="math inline">\(\Ga\)</span> proves that <span class="math inline">\(\phi_n^1,\ldots, \phi_n^k\)</span> are exclusive and exhaustive. Then <span class="math display">\[ \lim_{n\to \iy} \sum P (\phi_i)= 1.\]</span></li>
+<li>affine relations</li>
+</ul>
+<p>No study of convergence rates. Point is that it verifies desiderata (first 9) are not contradictory.</p>
+<p><strong>Open question</strong>: Continuum hyp, bounded by Kolm complexity. depend on how parametrized. Different versions of Garrabrant inductors. Probabilities dominate each other? All universal semimeasures dominate each other. Garrabrant dominate universal semimeasures. Are all the different good ways comparable?</p>
+<p>(Ex. <span class="math inline">\(\phi_n\)</span>: Turing machine has not halted by time <span class="math inline">\(n\)</span>.)</p>
+<p>Try not to lose a lot of money on bets. (On agents simpler than you.)</p>
+<p>A tad under doubly exponential time.</p>
+<p>Mentally simulate all polytime traders. Run Wall Street traders in head output algebraic expressions. Open, algorithms respond. Algorithms respond to beliefs. This is what beliefs are, this is what I wish instead. Find fixpoint. Computably approximate.</p>
+<p>Property: can’t lost too much money to polytime traders.</p>
+<p>Pascal’s mugging. Where’s your <span class="math inline">\(\iy\)</span> dollars. Bring the briefcase with the cash!</p>
+<p>Start with finite budget, inversely proportional to complexity. By being complicated, smarter. Smart ones gain more money, larger bets, affect market prices more. Smart ones get rick and fill the market.</p>
+<p>(Maybe that’s what neurons are! jk. SoM: Competing processes.)</p>
+<section class="footnotes">
+<hr />
+<ol>
+<li id="fn1"><p>Try to define like this. If there is no proof for “Turing machine halts” then say it is false. (This is a tie-breaker.) Now derive all logical consequences. Take some unknown statement <span class="math inline">\(X\)</span>. Consider machines trying to find proofs of <span class="math inline">\(X,\neg X\)</span>. Neither will halt. But this doesn’t say anything about <span class="math inline">\(X\)</span>! Why is there a true arithmetic?<a href="#fnref1">↩</a></p></li>
+<li id="fn2"><p>Induction schema consists of infinitely many axioms. What if we tried to do this with higher-order logic? What difficulties arise?<a href="#fnref2">↩</a></p></li>
+</ol>
+</section>
+
+  </div>
+
+    
+
+    <!-- Extension : Sharing buttons @ www.sharethis.com -->
+    <span class="st_facebook_large" displayText="Facebook"></span>
+    <span class="st_twitter_large" displayText="Tweet"></span>
+    <span class="st_googleplus_large" displayText="Google +"></span>
+    <span class="st_reddit_large" displayText="Reddit"></span>
+    <span class="st__large" displayText></span>
+
+    <div id="disqus_thread"></div>
+    
+
+
+  
+    <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+  </div>
+  
+</div>
+
+
+<!-- Footer -->
+<div id="footer">
+  <div class="container">
+    Built with
+    <a href="http://jaspervdj.be/hakyll">Hakyll</a> 
+    using 
+    <a href="http://www.getbootstrap.com">Bootstrap</a>, 
+    <a href="http://www.disqus.com">Disqus</a>,
+    <a href="http://ignorethecode.net/blog/2010/04/20/footnotes/">Footnotes.js</a>,
+    <a href="http://highlightjs.org/">Highlight.js</a>, 
+    <a href="http://www.mathjax.org">MathJax</a>, 
+    and <a href="http://www.sharethis.com">ShareThis</a>.
+  </div>
+</div>
+</body>
+
+</html>
+
+<!-- SCRIPTS -->
+<!-- jQuery-->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+<script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
+
+<script src="../../../../bootstrap/js/bootstrap.min.js"></script>
+
+<!-- Extension : Highlight.js @ https://highlightjs.org/ -->
+<!-- Syntax highlighting tomorrow-night-bright, agate-->
+<link rel="stylesheet" href="../../../../highlight/css/tomorrow-night-bright.css">
+<script src="../../../../highlight/js/highlight.pack.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+
+<!-- Extension : MathJax @ https://docs.mathjax.org/en/v2.5-latest/tex.html -->
+<!-- MathJax/config/local/local.js contains macros. Need to provide entire URL-->
+<script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML,http://holdenlee.github.io/notebook/MathJax/config/local/local"></script>
+
+<!-- Extension : Footnotes @ http://ignorethecode.net/blog/2010/04/20/footnotes/ -->
+<script src="../../../../footnotes/js/footnotes.js"></script>
+
+<!-- Extension : Disqus @ http://disqus.com -->
+<!-- Extension : InlineDisqussions @ https://github.com/tsi/inlineDisqussions -->
+
+<script src="../../../../disqus/js/disqus.js"></script>
+
+
+
+<!-- Extension : Google Analytics -->
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-73261814-1', 'auto');
+  ga('send', 'pageview');
+
+</script>
+

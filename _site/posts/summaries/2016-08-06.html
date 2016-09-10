@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+
+  <meta name="description" content="Holden Lee's Research Notebook">
+  <meta name="author" content="Holden Lee">
+    
+  <title>Weekly summary 2016-08-06</title>
+
+  <!-- Bootstrap core CSS -->
+  <link href="../../bootstrap/css/bootstrap.min.css" rel="stylesheet">
+
+  <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+  <!-- <link href="../../assets/css/ie10-viewport-bug-workaround.css" rel="stylesheet"> -->
+
+  <!-- Custom styles for this template -->
+  <link href="../../css/blog.css" rel="stylesheet">
+  <link href="../../css/default.css" rel="stylesheet">
+
+  <!-- Extension : Footnotes -->
+  <link href="../../footnotes/css/footnotes.css" rel="stylesheet">
+
+  <!-- Extension : InlineDisqussions @ https://github.com/tsi/inlineDisqussions -->
+  
+
+  <!-- Extension : Collapsible lists @ http://code.stephenmorley.org/javascript/collapsible-lists/-->
+  <link href="../../collapsible_lists/css/collapsible.css" rel="stylesheet">
+  <script type="text/javascript" src="../../collapsible_lists/js/CollapsibleLists.js"></script>
+
+</head>
+
+<body>
+
+<!-- Navigation bar. navbar-inverse is black, navbar-default is white.-->
+<!-- To make a button active (pressed), use <li class="active"> -->
+<div id="header">
+  <nav class="navbar navbar-inverse navbar-fixed-top">
+    <div class="container">
+      <div class="navbar-header">
+        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+          <span class="sr-only">Toggle navigation</span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="../../">Notebook</a>
+      </div>
+      <div id="navbar" class="collapse navbar-collapse">
+        <ul class="nav navbar-nav">
+          <li><a href="../../">Home</a></li>
+          <li><a href="../../sitemap.html">Sitemap</a></li>
+<!-- TODO: Distinguish between PAPERS, RESEARCH QUESTIONS, BOOKS -->
+<!-- TODO: make this part a for loop over main pages -->
+        </ul>
+      </div><!--/.nav-collapse -->
+    </div>
+  </nav>
+</div>
+<!-- Content -->
+<!--div id="content">
+  <h1>Mental Wilderness</h1>-->
+
+
+
+<div class="container">
+  <div id="content">
+    <div class="page header">
+      <h1>Weekly summary 2016-08-06</h1>
+    </div>
+    <div class="info">
+      
+       
+        <p>Posted: 2016-08-06 
+          , Modified: 2016-08-06 
+	</p>
+      
+       <p>Tags: <a href="../../tags/none.html">none</a></p> 
+    </div>
+    
+  </div>
+  <!--/div-->
+
+  <div class="toc"> <ul>
+ <li><a href="#representation-learning">Representation learning</a></li>
+ </ul> </div>
+
+  <div class="blog-main">
+    <ul>
+<li>Machine learning
+<ul>
+<li><a href="../../posts/tcs/machine_learning/neural_nets/pmi_images.html">PMI images</a>
+<ul>
+<li>Understood <a href="../../posts/tcs/machine_learning/nlp/pmi.html">PMI idea</a> more thoroughly.</li>
+<li>Got code from Ben. Having trouble running. See
+<ul>
+<li>https://www.mathworks.com/matlabcentral/newsreader/view_thread/345876#947272</li>
+<li>https://askrc.princeton.edu/question/255/matlab-on-nobel-error-using-mex/</li>
+<li>http://stackoverflow.com/questions/38723051/error-using-mex-g-error-no-such-file-or-directory</li>
+</ul></li>
+<li><a href="../../posts/tcs/machine_learning/neural_nets/convnets_ideas.html">Brainstorm on convnets</a>. Skimmed the following. <strong>TODO</strong>: understand more thoroughly.
+<ul>
+<li>Fastfood - computing Hilbert space expansions in loglinear time
+<ul>
+<li>Deep-fried convnets</li>
+<li>Ailon-Chazelle</li>
+</ul></li>
+<li><a href="../../posts/tcs/machine_learning/nlp/HA16.html">HA16</a> Unsupervised Learning of Word-Sequence Representations from Scratch via Convolutional Tensor Decomposition</li>
+<li>[MKHS14] Convolutional Kernel Networks</li>
+</ul></li>
+</ul></li>
+<li>Representation learning problem (see below)
+<ul>
+<li>Talked with Anand.</li>
+<li>Kernel dictionary learning idea. <strong>TODO</strong>: try to make this rigorous, and test it out.</li>
+</ul></li>
+<li><strong>TODO</strong>: Think about AGD, talk with Cyril.
+<ul>
+<li><a href="../../posts/math/analysis/numerica/chebyshev.html">Chebyshev polynomials</a></li>
+</ul></li>
+</ul></li>
+<li>Probability
+<ul>
+<li><a href="../../posts/math/probability/random_matrices/hi_dim_prob.html">HDP</a> Chapters 2-3</li>
+</ul></li>
+<li>TT/ATP/PL
+<ul>
+<li>Reviewed HMTI, read more on type theory. See <a href="../../posts/cs/type_theory/types_and_pl.html">Types and PL</a>, <a href="../../posts/cs/type_theory/type_theory.html">Type theory</a>.</li>
+</ul></li>
+</ul>
+<h2 id="representation-learning">Representation learning</h2>
+<p>In dictionary learning, we assume we have samples <span class="math inline">\(y = Ax + e\)</span> where <span class="math inline">\(x\)</span> comes from a sparse distribution (ex. <span class="math inline">\(x_i\)</span> independent, <span class="math inline">\(x_i\neq 0\)</span> with probability <span class="math inline">\(s/n\)</span> and then is drawn from some distribution not concentrated at 0) and <span class="math inline">\(e\)</span> is error (ex. Gaussian).</p>
+<p>The way we stated our problem is that <span class="math inline">\(x\cdot a_i\)</span> is large for only a few <span class="math inline">\(i\)</span>. This is similar to dictionary learning with <span class="math inline">\((A^+)^T\)</span> where the columns of <span class="math inline">\(A\)</span> are the <span class="math inline">\(a_i\)</span>. (I.e. the <span class="math inline">\(x\)</span>’s here are really the <span class="math inline">\(y\)</span>’s in DL.)</p>
+<p>I may be wrong but I think that what’s different is that</p>
+<ul>
+<li>Dictionary learning on <span class="math inline">\((A^+)^T\)</span> would correspond to when <span class="math inline">\((x\cdot a_i)_i\)</span> is sparse + noise. Our assumption is a bit different that <span class="math inline">\(x\cdot a_i\)</span> is large for only a few <span class="math inline">\(i\)</span>, ex. large negative values don’t count against the assumption.</li>
+<li>we’re trying to relax the condition on the noise—ex. instead of saying that the noise in the other coordinates is random, we consider worst-case or make an assumption that they’re random-like in some way.</li>
+</ul>
+<p>(Actually, I think the undercomplete case when the number of <span class="math inline">\(a_i\)</span> is less than the dimension of <span class="math inline">\(n\)</span> doesn’t quite correspond to DL because the map <span class="math inline">\(x\mapsto (x\cdot a_i)_i\)</span> is not invertible…)</p>
+
+  </div>
+
+    
+
+    <!-- Extension : Sharing buttons @ www.sharethis.com -->
+    <span class="st_facebook_large" displayText="Facebook"></span>
+    <span class="st_twitter_large" displayText="Tweet"></span>
+    <span class="st_googleplus_large" displayText="Google +"></span>
+    <span class="st_reddit_large" displayText="Reddit"></span>
+    <span class="st__large" displayText></span>
+
+    <div id="disqus_thread"></div>
+    
+
+
+  
+    <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+  </div>
+  
+</div>
+
+
+<!-- Footer -->
+<div id="footer">
+  <div class="container">
+    Built with
+    <a href="http://jaspervdj.be/hakyll">Hakyll</a> 
+    using 
+    <a href="http://www.getbootstrap.com">Bootstrap</a>, 
+    <a href="http://www.disqus.com">Disqus</a>,
+    <a href="http://ignorethecode.net/blog/2010/04/20/footnotes/">Footnotes.js</a>,
+    <a href="http://highlightjs.org/">Highlight.js</a>, 
+    <a href="http://www.mathjax.org">MathJax</a>, 
+    and <a href="http://www.sharethis.com">ShareThis</a>.
+  </div>
+</div>
+</body>
+
+</html>
+
+<!-- SCRIPTS -->
+<!-- jQuery-->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+<script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
+
+<script src="../../bootstrap/js/bootstrap.min.js"></script>
+
+<!-- Extension : Highlight.js @ https://highlightjs.org/ -->
+<!-- Syntax highlighting tomorrow-night-bright, agate-->
+<link rel="stylesheet" href="../../highlight/css/tomorrow-night-bright.css">
+<script src="../../highlight/js/highlight.pack.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+
+<!-- Extension : MathJax @ https://docs.mathjax.org/en/v2.5-latest/tex.html -->
+<!-- MathJax/config/local/local.js contains macros. Need to provide entire URL-->
+<script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML,http://holdenlee.github.io/notebook/MathJax/config/local/local"></script>
+
+<!-- Extension : Footnotes @ http://ignorethecode.net/blog/2010/04/20/footnotes/ -->
+<script src="../../footnotes/js/footnotes.js"></script>
+
+<!-- Extension : Disqus @ http://disqus.com -->
+<!-- Extension : InlineDisqussions @ https://github.com/tsi/inlineDisqussions -->
+
+<script src="../../disqus/js/disqus.js"></script>
+
+
+
+<!-- Extension : Google Analytics -->
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-73261814-1', 'auto');
+  ga('send', 'pageview');
+
+</script>
+

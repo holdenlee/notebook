@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+
+  <meta name="description" content="Holden Lee's Research Notebook">
+  <meta name="author" content="Holden Lee">
+    
+  <title>Weekly summary 2016-09-03</title>
+
+  <!-- Bootstrap core CSS -->
+  <link href="../../bootstrap/css/bootstrap.min.css" rel="stylesheet">
+
+  <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+  <!-- <link href="../../assets/css/ie10-viewport-bug-workaround.css" rel="stylesheet"> -->
+
+  <!-- Custom styles for this template -->
+  <link href="../../css/blog.css" rel="stylesheet">
+  <link href="../../css/default.css" rel="stylesheet">
+
+  <!-- Extension : Footnotes -->
+  <link href="../../footnotes/css/footnotes.css" rel="stylesheet">
+
+  <!-- Extension : InlineDisqussions @ https://github.com/tsi/inlineDisqussions -->
+  
+
+  <!-- Extension : Collapsible lists @ http://code.stephenmorley.org/javascript/collapsible-lists/-->
+  <link href="../../collapsible_lists/css/collapsible.css" rel="stylesheet">
+  <script type="text/javascript" src="../../collapsible_lists/js/CollapsibleLists.js"></script>
+
+</head>
+
+<body>
+
+<!-- Navigation bar. navbar-inverse is black, navbar-default is white.-->
+<!-- To make a button active (pressed), use <li class="active"> -->
+<div id="header">
+  <nav class="navbar navbar-inverse navbar-fixed-top">
+    <div class="container">
+      <div class="navbar-header">
+        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+          <span class="sr-only">Toggle navigation</span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="../../">Notebook</a>
+      </div>
+      <div id="navbar" class="collapse navbar-collapse">
+        <ul class="nav navbar-nav">
+          <li><a href="../../">Home</a></li>
+          <li><a href="../../sitemap.html">Sitemap</a></li>
+<!-- TODO: Distinguish between PAPERS, RESEARCH QUESTIONS, BOOKS -->
+<!-- TODO: make this part a for loop over main pages -->
+        </ul>
+      </div><!--/.nav-collapse -->
+    </div>
+  </nav>
+</div>
+<!-- Content -->
+<!--div id="content">
+  <h1>Mental Wilderness</h1>-->
+
+
+
+<div class="container">
+  <div id="content">
+    <div class="page header">
+      <h1>Weekly summary 2016-09-03</h1>
+    </div>
+    <div class="info">
+      
+       
+        <p>Posted: 2016-08-30 
+          , Modified: 2016-08-30 
+	</p>
+      
+       <p>Tags: <a href="../../tags/none.html">none</a></p> 
+    </div>
+    
+  </div>
+  <!--/div-->
+
+  <div class="toc"> <ul>
+ <li><a href="#threads">Threads</a></li>
+ <li><a href="#summary">Summary</a></li>
+ <li><a href="#conversation-with-arora">Conversation with Arora</a></li>
+ </ul> </div>
+
+  <div class="blog-main">
+    <h2 id="threads">Threads</h2>
+<ul>
+<li>Relaxing sparsity assumption: Independent sparsity is an unrealistic assumption. For example, many features tend to co-occur with each other. Re-analyze algorithms that rely on independent sparsity under looser conditions on the distribution.
+<ul>
+<li>Two ways to loosen the conditions:
+<ul>
+<li>Drop the condition of independence.
+<ul>
+<li>A first step is “group sparsity”. See <a href="../../posts/tcs/machine_learning/representation.html">representation learning</a> for references.</li>
+<li>A next step is to do away with independence entirely. (Certain distributions may be intractable… if so, obtain a hardness result and then add some looser assumption.)</li>
+</ul></li>
+<li>Drop the condition of sparsity.
+<ul>
+<li>Instead have some condition on moments/tails so that each vector is well-approximated by a sparse vector, cf. “flatness”, ex. 99% of weight is on <span class="math inline">\(o\prc{\sqrt n}\)</span> of coordinates.</li>
+<li>The difference with adding noise is that
+<ul>
+<li>Noise is added to <span class="math inline">\(x\)</span> (pre-coding) rather than <span class="math inline">\(y\)</span> (post-coding)</li>
+<li>Noise can be correlated with the vector, not independent. (if it were independent, there’s not that much difference from adding on the <span class="math inline">\(y\)</span>-side)</li>
+</ul></li>
+</ul></li>
+</ul></li>
+<li>Sparse recovery. Ex. basis pursuit.</li>
+<li>Dictionary learning
+<ul>
+<li>Q (<span class="citation" data-cites="Arora">@Arora</span>): How does dictionary learning perform in real life? What is it applied to? Applying it to problems traditionally solved with SVM’s and neural nets, how does it compare? How do AGM14, AGMM15 perform?</li>
+<li>Re-analyze AGM14, AGMM15 with group sparsity.</li>
+<li>Re-analyze with arbitrary sparselike distribution.</li>
+</ul></li>
+</ul></li>
+<li>Representation learning: general problem
+<ul>
+<li>The main bottleneck is that the problem “sort-of” reduces to tensor decomposition, but I don’t understand much of how TD performs in theory and in practice.</li>
+<li>Read papers on TD (Ge, Anandkumar).</li>
+</ul></li>
+<li>PMI for images
+<ul>
+<li>I don’t have any positive results when I build on top of the CKN.
+<ul>
+<li>May try some alternatives: work with CIFAR instead, do some thresholding thing, do things in middle layer… (but unlikely to work if first thing didn’t work?)</li>
+</ul></li>
+<li>Do experiments on a more basic level.
+<ul>
+<li>Try unsupervised multiclass SVM on both the original image and on the CKN features. How does this compare to clustering? (Look at the actual pics.)</li>
+<li>Have a programming setup where you can visualize clusters and features.</li>
+</ul></li>
+<li>DL for images
+<ul>
+<li>If you do DL, do you obtain the categories? (ex. digits)</li>
+<li>If you do DL, is training on top of the DL easier?</li>
+<li>How does (H)DL compare to the CKN and other unsupervised methods? Make DL convolutional.</li>
+<li>What is the typical sparsity of a trained NN? (cf. dropout?)</li>
+</ul></li>
+<li>Use DL/weighted SVD with the natural proximity/distance in images. Get “context vectors” for different parts of the image. (Hierarchical fashion?) A global context vector would be the classification?</li>
+<li>(images not just DL/SVM because adding something in perpendicular direction wrecks things?)</li>
+</ul></li>
+</ul>
+<p>@Arora: in what way is DL “just” tensor decomposition?</p>
+<p>(Is there a relationship between weighted SVD for PMI and DL? It’s not at all clear to me. Somehow neural nets do something “like” DL (does the CKN do this though?) but then we’re trying to see if the features can be SVD’d with PMI. Learning with 2 “layers”:</p>
+<ol type="1">
+<li>Representation - with NN/DL</li>
+<li>Classification - (on top) with SVD/PMI.</li>
+</ol>
+<p>Also how do hierarchical methods come in?)</p>
+<p>Things meriting a further look</p>
+<ul>
+<li>Traditional learning theory (ex. learning SAT)</li>
+<li>Probabilistic view of dictionary learning (LDA, hierarchical DP, etc.) <span class="citation" data-cites="Bianca">@Bianca</span></li>
+<li>Pattern theory—how they model images. Traditional image things—wavelets etc.</li>
+</ul>
+<h2 id="summary">Summary</h2>
+<ul>
+<li>Reading
+<ul>
+<li><a href="../tcs/machine_learning/self_taught_learning.html">Self-taught learning</a></li>
+<li><a href="../tcs/machine_learning/transduction.html">Transduction</a></li>
+<li><a href="../tcs/machine_learning/tensor/BKS15.html">BKS15 Dictionary Learning and Tensor Decomposition via the Sum-of-Squares Method</a></li>
+</ul></li>
+</ul>
+<h2 id="conversation-with-arora">Conversation with Arora</h2>
+<ul>
+<li>“Show that backprop works.”
+<ul>
+<li>Assume a generative distribution: <span class="math inline">\(x\)</span> from sparse distribution, observe <span class="math inline">\(y\approx Ax\)</span>, there is a SVM classifier depending on <span class="math inline">\(x\)</span>. Show that backprop for a 2-layer NN works. (<span class="citation" data-cites="Tengyu">@Tengyu</span>)</li>
+</ul></li>
+<li>PMI: restrict to features that co-occur.</li>
+<li>SoS for TD + AM for DL gives <span class="math inline">\(n^{O(\log n)}\)</span> algorithm for sparsity <span class="math inline">\(n^{1-\ep}\)</span>. Check this (don’t need sparsity after initialization).</li>
+<li>(Hard) Kernel SVM’s can’t learn DL + classifier (essentially 2-layer NN).</li>
+</ul>
+<!--1-layer NN is like sparse recovery.-->
+
+  </div>
+
+    
+
+    <!-- Extension : Sharing buttons @ www.sharethis.com -->
+    <span class="st_facebook_large" displayText="Facebook"></span>
+    <span class="st_twitter_large" displayText="Tweet"></span>
+    <span class="st_googleplus_large" displayText="Google +"></span>
+    <span class="st_reddit_large" displayText="Reddit"></span>
+    <span class="st__large" displayText></span>
+
+    <div id="disqus_thread"></div>
+    
+
+
+  
+    <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+  </div>
+  
+</div>
+
+
+<!-- Footer -->
+<div id="footer">
+  <div class="container">
+    Built with
+    <a href="http://jaspervdj.be/hakyll">Hakyll</a> 
+    using 
+    <a href="http://www.getbootstrap.com">Bootstrap</a>, 
+    <a href="http://www.disqus.com">Disqus</a>,
+    <a href="http://ignorethecode.net/blog/2010/04/20/footnotes/">Footnotes.js</a>,
+    <a href="http://highlightjs.org/">Highlight.js</a>, 
+    <a href="http://www.mathjax.org">MathJax</a>, 
+    and <a href="http://www.sharethis.com">ShareThis</a>.
+  </div>
+</div>
+</body>
+
+</html>
+
+<!-- SCRIPTS -->
+<!-- jQuery-->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+<script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
+
+<script src="../../bootstrap/js/bootstrap.min.js"></script>
+
+<!-- Extension : Highlight.js @ https://highlightjs.org/ -->
+<!-- Syntax highlighting tomorrow-night-bright, agate-->
+<link rel="stylesheet" href="../../highlight/css/tomorrow-night-bright.css">
+<script src="../../highlight/js/highlight.pack.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+
+<!-- Extension : MathJax @ https://docs.mathjax.org/en/v2.5-latest/tex.html -->
+<!-- MathJax/config/local/local.js contains macros. Need to provide entire URL-->
+<script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML,http://holdenlee.github.io/notebook/MathJax/config/local/local"></script>
+
+<!-- Extension : Footnotes @ http://ignorethecode.net/blog/2010/04/20/footnotes/ -->
+<script src="../../footnotes/js/footnotes.js"></script>
+
+<!-- Extension : Disqus @ http://disqus.com -->
+<!-- Extension : InlineDisqussions @ https://github.com/tsi/inlineDisqussions -->
+
+<script src="../../disqus/js/disqus.js"></script>
+
+
+
+<!-- Extension : Google Analytics -->
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-73261814-1', 'auto');
+  ga('send', 'pageview');
+
+</script>
+

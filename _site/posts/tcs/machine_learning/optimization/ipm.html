@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+
+  <meta name="description" content="Holden Lee's Research Notebook">
+  <meta name="author" content="Holden Lee">
+    
+  <title>Interior point methods</title>
+
+  <!-- Bootstrap core CSS -->
+  <link href="../../../../bootstrap/css/bootstrap.min.css" rel="stylesheet">
+
+  <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+  <!-- <link href="../../assets/css/ie10-viewport-bug-workaround.css" rel="stylesheet"> -->
+
+  <!-- Custom styles for this template -->
+  <link href="../../../../css/blog.css" rel="stylesheet">
+  <link href="../../../../css/default.css" rel="stylesheet">
+
+  <!-- Extension : Footnotes -->
+  <link href="../../../../footnotes/css/footnotes.css" rel="stylesheet">
+
+  <!-- Extension : InlineDisqussions @ https://github.com/tsi/inlineDisqussions -->
+  
+
+  <!-- Extension : Collapsible lists @ http://code.stephenmorley.org/javascript/collapsible-lists/-->
+  <link href="../../../../collapsible_lists/css/collapsible.css" rel="stylesheet">
+  <script type="text/javascript" src="../../../../collapsible_lists/js/CollapsibleLists.js"></script>
+
+</head>
+
+<body>
+
+<!-- Navigation bar. navbar-inverse is black, navbar-default is white.-->
+<!-- To make a button active (pressed), use <li class="active"> -->
+<div id="header">
+  <nav class="navbar navbar-inverse navbar-fixed-top">
+    <div class="container">
+      <div class="navbar-header">
+        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+          <span class="sr-only">Toggle navigation</span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="../../../../">Notebook</a>
+      </div>
+      <div id="navbar" class="collapse navbar-collapse">
+        <ul class="nav navbar-nav">
+          <li><a href="../../../../">Home</a></li>
+          <li><a href="../../../../sitemap.html">Sitemap</a></li>
+<!-- TODO: Distinguish between PAPERS, RESEARCH QUESTIONS, BOOKS -->
+<!-- TODO: make this part a for loop over main pages -->
+        </ul>
+      </div><!--/.nav-collapse -->
+    </div>
+  </nav>
+</div>
+<!-- Content -->
+<!--div id="content">
+  <h1>Mental Wilderness</h1>-->
+
+
+
+<div class="container">
+  <div id="content">
+    <div class="page header">
+      <h1>Interior point methods</h1>
+    </div>
+    <div class="info">
+      
+       
+        <p>Posted: 2016-08-26 
+          , Modified: 2016-08-26 
+	</p>
+      
+       <p>Tags: <a href="../../../../tags/convex%20optimization.html">convex optimization</a></p> 
+    </div>
+    
+  </div>
+  <!--/div-->
+
+  <div class="toc"> <ul>
+ <li><a href="#introduction">Introduction</a></li>
+ <li><a href="#analysis-and-algorithm-explanation">Analysis and algorithm explanation</a><ul>
+ <li><a href="#place-to-start">1 Place to start</a><ul>
+ <li><a href="#termination-near-phase-ii-central-path">Termination near phase II central path</a></li>
+ </ul></li>
+ <li><a href="#inner-steps">2 Inner steps</a></li>
+ <li><a href="#outer-steps">3 Outer steps</a></li>
+ <li><a href="#total">Total</a></li>
+ <li><a href="#variations">Variations</a></li>
+ </ul></li>
+ <li><a href="#primal-dual-ipm">Primal-dual IPM</a></li>
+ <li><a href="#intuitions">Intuitions</a></li>
+ </ul> </div>
+
+  <div class="blog-main">
+    <h2 id="introduction">Introduction</h2>
+<p>The idea: Given <span class="math inline">\(\min_{f_i\le 0} f\)</span>,</p>
+<ol type="1">
+<li>Find a feasible point.</li>
+<li>Turn into soft constraints: let <span class="math inline">\(F(t,x) = \min f+ \sum -\rc t \ln (-f_i)\)</span>. (Add a barrier function.) As <span class="math inline">\(t\to \iy\)</span>, <span class="math inline">\(F(t,x)\)</span> becomes steeper and <span class="math inline">\(\to f(x)\)</span> pointwise.</li>
+<li>Solve iteratively. Start at some <span class="math inline">\((x_0,t_0)\)</span>: Find a value within <span class="math inline">\(\ep\)</span> of <span class="math inline">\(\min F(t_i,x)\)</span>. (Centering)</li>
+<li>Set <span class="math inline">\(t_{i+1}=\ga t_i\)</span> (updating schedule).</li>
+<li>Go back to 3. Repeat until <span class="math inline">\(t\)</span> is large enough. (<span class="math inline">\(m/t&lt;\ep\)</span>)</li>
+</ol>
+<p>Define the central path. What are the properties of the central path. Explain the relationship to the dual problem.</p>
+<p><span class="math display">\[
+C = \set{(t,x)}{x=\amin f(x) + \sum -\rc t \ln (-f_i(x))}.
+\]</span> Now <span class="math inline">\(f(c(t))\to f(x^*)\)</span>. For <span class="math inline">\((t,x')\in C\)</span>, we have <span class="math display">\[ \nb f + \sum - \fc{\nb f_i}{tf_i}=0.\]</span> This is the first KKT condition with <span class="math inline">\(\la_i = -\rc{tf_i(x')}\)</span>. (Complementarity is not satisfied though: we have <span class="math inline">\(-\la_if_i=\rc t\)</span>, not 0.)</p>
+Let <span class="math inline">\(x^*=\amin_{f_i\le 0} f\)</span>, <span class="math inline">\(x'=\amin f - \sum \rc t \ln (-f_i)\)</span>. Substituting <span class="math inline">\(x',\la_i\)</span> in the dual problem, we get
+\begin{align}
+f(x^*) &amp;\ge \min_x f(x) - \sum \rc{t f_i(x')} f_i(x) \\
+&amp; = f(x') - \fc mt &amp; x=x'\\
+\implies f(x^*) \le f(x') &amp;\le f(x^*) + \fc mt.
+\end{align}
+<p>Now add in the condition <span class="math inline">\(Ax=b\)</span>, and the term <span class="math inline">\(\nu^T(Ax-b)\)</span>. The analysis stays the same.</p>
+<p>(<span class="math inline">\(\ln(-f_i)\)</span> has the magic that its gradient is <span class="math inline">\(\nb f_i\)</span> times something.)</p>
+<p>What questions do we need to address?</p>
+<ol type="1">
+<li>How do we find a point to start—find a feasible point?</li>
+<li>Given the previous almost-optimal solution, what’s the complexity of finding the next one, given ratio <span class="math inline">\(\mu\)</span>? (Number of inner steps)</li>
+<li>How many outer steps do we need? When to stop? (We’ve shown the gap is <span class="math inline">\(\fc mt\)</span>, so stop when <span class="math inline">\(t&gt;\fc m\ep\)</span>.</li>
+</ol>
+<p>What assumptions do we need?</p>
+<ul>
+<li><span class="math inline">\(tf_0+\phi\)</span> (<span class="math inline">\(\phi = -\sumo im \ln(-f_i)\)</span>) closed (??) and self-concordant for all <span class="math inline">\(t\ge t^{(0)}\)</span>.</li>
+<li>Sublevel sets of <span class="math inline">\(f_0\)</span> (<span class="math inline">\(f_i\le 0\)</span>, <span class="math inline">\(Ax=b\)</span>) are bounded. (This implies that <span class="math inline">\(\nb^2(tf_0+\phi)\)</span> is PD—why?)</li>
+</ul>
+<p>This is reasonable because it is self-concordant if all <span class="math inline">\(f_i\)</span> are linear or quadratic, and <span class="math inline">\(\ln\)</span> is good at making functions self-concordant.</p>
+<p>Give an example of a problem that can be reformulated to be self-concordant. Technique is to add redundant constraints or extra variables.</p>
+<ul>
+<li>For <span class="math inline">\(\min_{Fx\le g, Ax=b} \sumo in x_i\ln x_i\)</span>, <span class="math inline">\(tf_0(x)+\phi(x)\)</span> is not closed (?) or self-concordant. Using that <span class="math inline">\(ty\ln y - \ln y\)</span> is self-concordant, we add in the redundant constraint <span class="math inline">\(x\ge 0\)</span> to get <span class="math display">\[tf_0+\phi = \sumo in (tx_i\ln x_i - \ln x_i) - \sumo im \ln (g_i-f_i^Tx).\]</span></li>
+<li>For <span class="math inline">\(\min_{\ln(\sumo k{K_i}\exp(a_{ik}^T + b_{ik}))\le 0} \ln \pa{\sumo k{K_0} \exp(a_{0k}^Tx+b_{0k})}\)</span>, introduce the variables <span class="math inline">\(y_{ik}\)</span>. Change the problem to
+\begin{align}
+\min \sumo k{K_0} y_{0k}\\
+\sumo k{K_i} y_{ik} &amp;\le 1\\
+a_{ik}^T x+b_{ik} - \ln y_{ik} &amp;\le 0\\
+y_{ik} &amp;\ge 0.
+\end{align}</li>
+</ul>
+<h2 id="analysis-and-algorithm-explanation">Analysis and algorithm explanation</h2>
+<h3 id="place-to-start">1 Place to start</h3>
+<p>How to find a feasible point? A feasibility problem can be transformed into an optimization problem</p>
+<p><span class="math display">\[
+\exists x, f_i\le 0,  \iff \min_{f_i\le m} m\le 0.
+\]</span> <!-- Ax = b --> Assume <span class="math inline">\(\{\forall i, f_i\le 0\}\subeq B_R(0)\)</span>. Let <span class="math inline">\(\ol p^*\)</span> be the optimal value of this optimization problem.</p>
+Actually add an extra constraint (<span class="math inline">\(a\)</span> satisfies <span class="math inline">\(\ve{a}_2\le \rc R\)</span> so is redundant). <span class="math display">\[
+\min_{f_i\le s, a^Tx \le 1} s.
+\]</span> Choose <span class="math inline">\(a,s_0\)</span> so that <span class="math inline">\((x=0,s=s_0, t_0)\)</span> is on the central path (to make analysis easier), i.e., so <span class="math inline">\(x=0,s=s_0\)</span> minimizes <span class="math display">\[t^{(0)}s- \sumo im \ln (s-f_i(x)) - \ln (1-a^T x).\]</span> Set the gradient to 0 to see that we require
+\begin{align}
+t^{(0)} &amp;= \sumo im \rc{s_0 - f_i(0)}\\
+a &amp;= -\sumo im \rc{s_0-f_i(0)} \nb f_i(0).
+\end{align}
+<p>What to choose for <span class="math inline">\(s_0\)</span>? We need <span class="math inline">\(s_0&gt;F:=\max_i f_i(0)\)</span> and <span class="math inline">\(\ve{a}_2\le \rc{R}\)</span>. Upper bound <span class="math inline">\(\ve{a}_2\)</span> by <span class="math display">\[
+\ve{a}_2\le \sumo im \rc{s_0-f_i(0)}\ve{\nb f_i(0)} \le \fc{mG}{s_0-F},\quad G=\max_i \ve{\nb f_i(0)}_2,
+\]</span> so we can take <span class="math inline">\(\boxed{s_0=mGR+F}\)</span>. Then <span class="math inline">\(t^{(0)} \ge \rc{mGR}\)</span> so the initial duality gap is <span class="math inline">\(\fc{m+1}{t^{(0)}} \le (m+1) mGR\)</span>. Use the barrier method until the duality gap is <span class="math inline">\(&lt;|\ol p^*|\)</span>, so that we can determine <span class="math inline">\(\sgn(\ol p^*)\)</span>. This requires (take <span class="math inline">\(\mu = 1+\rc{\sqrt{m+1}}\)</span>) <span class="math display">\[
+\le \ce{\sqrt{m+1} \log_2 \fc{m(m+1)GR}{|\ol p^*|}}\pa{\rc{2\ga} + c}
+\]</span> Newton steps. (Interpret <span class="math inline">\(\lg\pf{GR}{|\ol p^*|}\)</span> as how close the feasibility problem is to the boundary between feasibility and infeasibility.)</p>
+<p>(Equality constraints don’t change things too much. ?? <span class="math inline">\(G\)</span>, <span class="math inline">\(R\)</span> refer to reduced/eliminated problem.)</p>
+Why did we add in <span class="math inline">\(a^Tx\le 1\)</span>? Otherwise, we minimize <span class="math inline">\(ts-\sum \ln (-(f_i-s))\)</span>, and
+\begin{align}
+\ddd{s} &amp;= t+\sum \rc{f_i-s} = 0\\
+\nb_x &amp;= \sum \fc{-\nb f_i}{f_i-s} =0.
+\end{align}
+<p>We can’t choose <span class="math inline">\(x=0\)</span> because we need <span class="math inline">\(s&gt;\max f_i\)</span>, and <span class="math inline">\(\nb_x&gt;0\)</span>.</p>
+<p>(Note if we add the constraint <span class="math inline">\(a^Tx\le 1\)</span> for phase 1, we have to include it for phase II as well.)</p>
+<h4 id="termination-near-phase-ii-central-path">Termination near phase II central path</h4>
+<p>During phase I, add in the extra constraint <span class="math inline">\(f_0(x)\le M\)</span> to make it intersect the phase II central path. (We can add the constraint <span class="math inline">\(a^Tx\le 1\)</span> below.) We want the point on the central path for phase I corresponding to <span class="math inline">\(s=0\)</span> to also be on the phase II central path. (I think you won’t get to <span class="math inline">\(s=0\)</span> exactly, but you get close—then the duality gap is <span class="math inline">\(m(M-f_0)+\)</span>(something small).)</p>
+\begin{align}
+\min_{f_i\le s, f_0\le M, Ax=b} s:&amp;&amp; \nb(ts + (\sum-\ln (s-f_i)) - \ln (M-f_0) + A^T \nu) &amp;=0\\
+\iff &amp;&amp; t&amp;=\sum \rc{s-f_i} = \sum -\rc{f_i}\\
+&amp;&amp; \rc{M-f_0} \nb f_0 + \sum\rc{s-f_i} \nb f_i + A^T\nu &amp;=0\\
+\min_{f_i\le 0, Ax=b}f_0:&amp;&amp; \nb(tf_0+\sum - \ln (-f_i) + A^T \nu) &amp;=0\\
+\iff &amp;&amp;t\nb f + \fc{\nb f_i}{f_i} + A^T \nu &amp;=0
+\end{align}
+<p>Make these match by setting <span class="math inline">\(t=\rc{M-f_0}\)</span>. I.e., the initial duality gap for phase 2 is <span class="math inline">\(\fc{m}{t} = m(M-f_0)\)</span>.</p>
+<h3 id="inner-steps">2 Inner steps</h3>
+<p>Given <span class="math inline">\(x^*(t)\)</span>, how many steps does it take to compute <span class="math inline">\(x^*(\mu t)\)</span>?</p>
+<p>How can you use the fact that <span class="math inline">\(x\)</span> is optimal for <span class="math inline">\(tf_0(x) + \phi(x)\)</span> to prove how optimal it is for <span class="math inline">\(\mu t f_0(x)+\phi(x)\)</span>?</p>
+<p>Let <span class="math inline">\(x=x^*(t)\)</span>, <span class="math inline">\(x^+=x^*(\mu t)\)</span>.</p>
+<p>It suffices to bound <span class="math display">\[\mu t f_0(x) + \phi(x) - \mu tf_0(x^+) - \phi(x^+).\]</span></p>
+<p>We can’t bound <span class="math inline">\(\ln(-f_i)\)</span> directly. We can hope to bound the dual function <span class="math inline">\(\cL\)</span> (we have info from the KKT conditions). Use the linear approximation to <span class="math inline">\(\ln\)</span>.</p>
+\begin{align}
+\mu t f_0(x) + \phi(x) - \mu tf_0(x^+) - \phi(x^+)
+&amp;= \mu t f_0(x) - \mu t f_0(x^+) + \sum \ln \pf{\mu f_i(x^+)}{\mu f_i(x^+)}\\
+&amp;\le \mu t f_0(x) - \mu t f_0(x^+) + \sum \pa{\fc{\mu f_i(x^+)}{f_i(x)} - 1 -\ln \mu}\\
+&amp;= \mu t f_0(x) - \mu t f_0(x^+) + t\pa{\sum \rc{tf_i} \mu f_i(x^+)} - m - m\ln \mu\\
+&amp;= \mu t f_0(x) - \mu t \cL(x^+, \la, \nu) - m - m \ln \mu &amp;Ax^+=b, \la_i  = \rc{tf_i}\\
+&amp;\le \mu tf_0(x) - \mu t g(\la, \nu) - m - m\ln \mu\\
+&amp;=m(\mu-1 - \ln \mu).
+\end{align}
+<p>Thus, the number of inner steps is <span class="math display">\[
+\fc{f(x)=p^*}{\ga}+c = \fc{m(\mu - 1 - \ln \mu)}{\ga} + c
+\]</span> (See <a href="second-order.html">Newton</a> for definition of <span class="math inline">\(\ga\)</span>. We approximate <span class="math inline">\(\ln\ln\)</span> by a constant.) This is approximately quadratic for small <span class="math inline">\(\mu\)</span> (<span class="math inline">\(O(m(\mu-1)^2)\)</span>), linear (<span class="math inline">\(O(m\mu)\)</span>) for large <span class="math inline">\(\mu\)</span>. (This does not depend on <span class="math inline">\(n,p\)</span>.)</p>
+<h3 id="outer-steps">3 Outer steps</h3>
+<p>The number of outer steps needed is <span class="math inline">\(\ce{\fc{\ln (m/(t^{(0)}\ep))}{\ln \mu}}\)</span> so the total number of Newton steps needed is <span class="math display">\[\ce{\log_\mu \pf{m}{t^{(0)}\ep)}} \pa{\fc{m(\mu - 1 - \ln \mu)}{\ga} + c}. \]</span></p>
+<ul>
+<li>Choosing <span class="math inline">\(\mu\)</span> constant, get <span class="math inline">\(O\pf{\pa{\ln\pf{m}\ep}m}{\ga}\)</span>.</li>
+<li>Set <span class="math inline">\(\mu\)</span> small to do better. Balance <span class="math inline">\((\mu-1-\ln \mu)m=O(m(\mu-1)^2)\)</span> and <span class="math inline">\(c\)</span> by setting <span class="math inline">\(\mu = 1+\rc{\sqrt m}\)</span>, and get <span class="math inline">\(O(\sqrt m)\)</span>. (Recall <span class="math inline">\(m\)</span> is number of constraints.)</li>
+<li>In practice, though, choose <span class="math inline">\(\mu\)</span> constant.</li>
+</ul>
+<h3 id="total">Total</h3>
+\begin{align}
+N_I &amp;= O(\sqrt m \log \pf{mGR}{|\ol p^*|} \rc{\ga})\\
+N_{II} &amp;= O(\sqrt m \log \pf{m(M-p^*)}{\ep}) \prc{\ga}.
+\end{align}
+<p>Explanation: The point at the end of phase I has duality gap <span class="math inline">\(\le (m+1)(M-p^*)\)</span>.</p>
+<h3 id="variations">Variations</h3>
+<p>What are other ways to do Phase I?</p>
+<ul>
+<li>Sum of infeasibilities <span class="math inline">\(\min_{f_i\le s_i, Ax=b, s\ge0} \one^Ts\)</span>. Why use this? When infeasible, the optimal point often violates a small unber of inequalities (cf. <span class="math inline">\(l_1\)</span>-regression, basis pursuit). Here the penalty is <span class="math inline">\(l_1\)</span> not <span class="math inline">\(l_\iy\)</span>.</li>
+<li>Use infeasible start Newton to solve the barrier formulation <span class="math display">\[\min_{f_i\le s, Ax=b, s=0} f_0\qquad \min_{Ax=b, s=0} t^{(0)} f_0-\sum \ln (s-f_i).\]</span> (Infeasible start means you can start with points violating equality constraints.)</li>
+</ul>
+<p>What if we don’t know a point in <span class="math inline">\(\bigcap dom(f_i)\)</span>? Add a translation, <span class="math inline">\(\min_{..., z_i=0} t^{(0)} f_0(x+z_0) - \sum \ln (s-f_i(x+z_i))\)</span>.</p>
+<p>Disadvantage: There is no good stopping criterion when infeasible.</p>
+<h2 id="primal-dual-ipm">Primal-dual IPM</h2>
+<p>Review <a href="constrained.html">constrained optimization</a>. Here there is no distinction between inner and outer iterations.</p>
+<p>Applying the infeasible start Newton method to the barrier problem gives <span class="math display">\[ \matt{t\nb^2 f_0+\nb^2 \phi A^T}{A^T}{A}{0} \coltwo{\De x_{nt}}{\nu_{nt}}  = -\coltwo{t\nb f_0+\nb \phi}{0}. \]</span> The residual is <span class="math inline">\((\nb f + \nb \phi + A^T\nu, Ax-b)\)</span>, <span class="math inline">\(\phi = -\sum \rc{t}\ln (-f_i)\)</span>.</p>
+<p>But here <span class="math inline">\(t\)</span> is fixed. We want to treat <span class="math inline">\(t\)</span> as a variable. Actually, we introduce <span class="math inline">\(\la\)</span>.</p>
+<p>Recall that a point on the central path gives a dual feasible <span class="math inline">\((\la, \nu)\)</span> with <span class="math inline">\(\la_if_i=-\rc t\)</span>. We write everything in terms of the primal <span class="math inline">\(x\)</span> and dual <span class="math inline">\((\la,\nu)\)</span>. Introduce <span class="math inline">\(\la\)</span> as a variable that we want to satisfy <span class="math inline">\(\la_if_i=-\rc t\)</span> (the modified KKT equation) to get the (dual, centrality, primal) residual <span class="math display">\[r_t(x,\la,\nu) = \colthree{\nb f + Df^T\la + A^T\nu}{-\diag(\la) f - \rc t \one}{Ax-b} =: \colthree{\De x}{\De \la}{\De \nu} = -\colthree{r_{dual}}{r_{cent}}{r_{pri}}.\]</span></p>
+The Newton step for solving the modified KKT equations
+\begin{align}
+\nb f_0 + Df^T \la + A^T\nu &amp;=0\\
+-\la_i f_i &amp;=\rc t\\
+Ax-b &amp;=0
+\end{align}
+is hence (set the gradients of these equations to the negative residuals)
+\begin{align}
+\mattn{\nb^2 f_0+\sum \la_i \nb^2 f_i}{Df^T}{A^T}{-\diag(\la)Df}{-\diag(f)}{0}{A}00 \colthree{\De x}{\De \la}{\De \nu} = -\colthree{r_{dual}}{r_{cent}}{r_{pri}}.
+\end{align}
+<p>(<span class="math inline">\(Df\)</span> has <span class="math inline">\(\nb f_i\)</span> as rows.) The solution is the primal-dual search direction. It is not the same as the search direction in the barrier method (because here we’re changing <span class="math inline">\(\la\)</span>).</p>
+Solving for <span class="math inline">\(\De \la\)</span> and substituting gives
+\begin{align}
+\matt{\nb^2 f_0 + \sumo im \la_i \nb^2 f_i + \sumo im -\fc{\la_i}{f_i}\nb f_i \nb f_i^T}{A^T}A0 \coltwo{\De x_{pd}}{\De \nu_{pd}} &amp;= 
+\coltwo{r_{dual} - \sum \la_i \nb f_i - \sum \fc{\nb f_i}{tf_i}}{r_{pri}}\\
+&amp;=-\coltwo{\nb f_0 + \rc t \sumo im -\rc{f_i}\nb f_i+A^T\nu}{r_{pri}}.
+\end{align}
+<p>Compare to the Newton step for the centering method (<span class="math inline">\(t\)</span> fixed) in the barrier method. The upper-left entry is replaced by <span class="math inline">\(t\nb^2 f_0 + \sumo im -\rc{f_i} \nb^2 f_i + \sumo \rc{f_i^2} \nb f_i f_i^T\)</span>, and the dual residual is instead <span class="math inline">\(t\nb f_0 + \sumo im -\rc{f_i} \nb f_i\)</span>.</p>
+<p>The iterates are not necessarily feasible, so we can’t evaluate a duality gap. Define the <strong>surrogate duality gap</strong> for <span class="math inline">\(x,f(x)&lt;0, \la\ge 0\)</span> by <span class="math display">\[\wh \eta(x,\la) = -f^T\la.\]</span> It is the duality gap if <span class="math inline">\(x\)</span> were primal feasible and <span class="math inline">\(\la,\nu\)</span> were dual feasible (<span class="math inline">\(r_{pri}=0,r_{dual}=0\)</span>).</p>
+<p>The algorithm:</p>
+<p>(Feasible start) Start with <span class="math inline">\(x\)</span> such that <span class="math inline">\(f_i(x)&lt;0\)</span>, <span class="math inline">\(\la&gt;0\)</span>, <span class="math inline">\(\mu&gt;1\)</span>, <span class="math inline">\(\ep_{feas}&gt;0\)</span>, <span class="math inline">\(\ep&gt;0\)</span>.</p>
+<ol type="1">
+<li>Set <span class="math inline">\(t=\mu m/\wh eta\)</span>.</li>
+<li>Compute primal-dual search direction <span class="math inline">\(\De y_{pd}\)</span>.</li>
+<li>Line search and update.</li>
+<li>Repeat until <span class="math inline">\(\ve{r_{pri}}_2\le \ep_{feas}\)</span>, <span class="math inline">\(\ve{r_{dual}}_2\le \ep_{feas}\)</span>, and <span class="math inline">\(\wh \eta \le \ep\)</span>.</li>
+</ol>
+<p>(Note <span class="math inline">\(r_{cent}\)</span> means that we stick close to the central path.)</p>
+<h2 id="intuitions">Intuitions</h2>
+<ul>
+<li>Each constraint has the force <span class="math inline">\(\rc{f_i(x)}\nb f_i(x)\)</span> and the objective force field is <span class="math inline">\(-t\nb f_0(x)\)</span>.</li>
+</ul>
+
+  </div>
+
+    
+
+    <!-- Extension : Sharing buttons @ www.sharethis.com -->
+    <span class="st_facebook_large" displayText="Facebook"></span>
+    <span class="st_twitter_large" displayText="Tweet"></span>
+    <span class="st_googleplus_large" displayText="Google +"></span>
+    <span class="st_reddit_large" displayText="Reddit"></span>
+    <span class="st__large" displayText></span>
+
+    <div id="disqus_thread"></div>
+    
+
+
+  
+    <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+  </div>
+  
+</div>
+
+
+<!-- Footer -->
+<div id="footer">
+  <div class="container">
+    Built with
+    <a href="http://jaspervdj.be/hakyll">Hakyll</a> 
+    using 
+    <a href="http://www.getbootstrap.com">Bootstrap</a>, 
+    <a href="http://www.disqus.com">Disqus</a>,
+    <a href="http://ignorethecode.net/blog/2010/04/20/footnotes/">Footnotes.js</a>,
+    <a href="http://highlightjs.org/">Highlight.js</a>, 
+    <a href="http://www.mathjax.org">MathJax</a>, 
+    and <a href="http://www.sharethis.com">ShareThis</a>.
+  </div>
+</div>
+</body>
+
+</html>
+
+<!-- SCRIPTS -->
+<!-- jQuery-->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+<script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
+
+<script src="../../../../bootstrap/js/bootstrap.min.js"></script>
+
+<!-- Extension : Highlight.js @ https://highlightjs.org/ -->
+<!-- Syntax highlighting tomorrow-night-bright, agate-->
+<link rel="stylesheet" href="../../../../highlight/css/tomorrow-night-bright.css">
+<script src="../../../../highlight/js/highlight.pack.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+
+<!-- Extension : MathJax @ https://docs.mathjax.org/en/v2.5-latest/tex.html -->
+<!-- MathJax/config/local/local.js contains macros. Need to provide entire URL-->
+<script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML,http://holdenlee.github.io/notebook/MathJax/config/local/local"></script>
+
+<!-- Extension : Footnotes @ http://ignorethecode.net/blog/2010/04/20/footnotes/ -->
+<script src="../../../../footnotes/js/footnotes.js"></script>
+
+<!-- Extension : Disqus @ http://disqus.com -->
+<!-- Extension : InlineDisqussions @ https://github.com/tsi/inlineDisqussions -->
+
+<script src="../../../../disqus/js/disqus.js"></script>
+
+
+
+<!-- Extension : Google Analytics -->
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-73261814-1', 'auto');
+  ga('send', 'pageview');
+
+</script>
+

@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+
+  <meta name="description" content="Holden Lee's Research Notebook">
+  <meta name="author" content="Holden Lee">
+    
+  <title>Complexity of neural networks</title>
+
+  <!-- Bootstrap core CSS -->
+  <link href="../../../../bootstrap/css/bootstrap.min.css" rel="stylesheet">
+
+  <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+  <!-- <link href="../../assets/css/ie10-viewport-bug-workaround.css" rel="stylesheet"> -->
+
+  <!-- Custom styles for this template -->
+  <link href="../../../../css/blog.css" rel="stylesheet">
+  <link href="../../../../css/default.css" rel="stylesheet">
+
+  <!-- Extension : Footnotes -->
+  <link href="../../../../footnotes/css/footnotes.css" rel="stylesheet">
+
+  <!-- Extension : InlineDisqussions @ https://github.com/tsi/inlineDisqussions -->
+  
+
+  <!-- Extension : Collapsible lists @ http://code.stephenmorley.org/javascript/collapsible-lists/-->
+  <link href="../../../../collapsible_lists/css/collapsible.css" rel="stylesheet">
+  <script type="text/javascript" src="../../../../collapsible_lists/js/CollapsibleLists.js"></script>
+
+</head>
+
+<body>
+
+<!-- Navigation bar. navbar-inverse is black, navbar-default is white.-->
+<!-- To make a button active (pressed), use <li class="active"> -->
+<div id="header">
+  <nav class="navbar navbar-inverse navbar-fixed-top">
+    <div class="container">
+      <div class="navbar-header">
+        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+          <span class="sr-only">Toggle navigation</span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="../../../../">Notebook</a>
+      </div>
+      <div id="navbar" class="collapse navbar-collapse">
+        <ul class="nav navbar-nav">
+          <li><a href="../../../../">Home</a></li>
+          <li><a href="../../../../sitemap.html">Sitemap</a></li>
+<!-- TODO: Distinguish between PAPERS, RESEARCH QUESTIONS, BOOKS -->
+<!-- TODO: make this part a for loop over main pages -->
+        </ul>
+      </div><!--/.nav-collapse -->
+    </div>
+  </nav>
+</div>
+<!-- Content -->
+<!--div id="content">
+  <h1>Mental Wilderness</h1>-->
+
+
+
+<div class="container">
+  <div id="content">
+    <div class="page header">
+      <h1>Complexity of neural networks</h1>
+    </div>
+    <div class="info">
+      
+       
+        <p>Posted: 2016-07-25 
+          , Modified: 2016-07-25 
+	</p>
+      
+       <p>Tags: <a href="../../../../tags/neural%20net.html">neural net</a></p> 
+    </div>
+    
+  </div>
+  <!--/div-->
+
+  <div class="toc"> <ul>
+ <li><a href="#cs14-simnets---a-generalization-of-convolutional-networks">[CS14] SimNets - A Generalization of Convolutional Networks</a></li>
+ <li><a href="#cs16-convolutional-rectifier-networks-as-generalized-tensor-decompositions">[CS16] Convolutional Rectifier Networks as Generalized Tensor Decompositions</a></li>
+ <li><a href="#css16-on-the-expressive-power-of-deep-learning---a-tensor-analysis">[CSS16] On the Expressive Power of Deep Learning - A Tensor Analysis</a></li>
+ <li><a href="#misc">Misc</a></li>
+ </ul> </div>
+
+  <div class="blog-main">
+    <p><a href="http://www.cs.huji.ac.il/~cohennadav/index.html">Nadav Cohen’s webpage</a></p>
+<p>Papers:</p>
+<ul>
+<li>[CS14] SimNets - A Generalization of Convolutional Networks</li>
+<li>[CS16] Convolutional Rectifier Networks as Generalized Tensor Decompositions</li>
+<li>[CS16] Inductive Bias of Deep Convolutional Networks through Pooling Geometry</li>
+<li>[CSS16] Deep SimNets</li>
+<li>[CSS16] On the Expressive Power of Deep Learning - A Tensor Analysis</li>
+</ul>
+<h2 id="cs14-simnets---a-generalization-of-convolutional-networks">[CS14] SimNets - A Generalization of Convolutional Networks</h2>
+<p>A layer now looks like <span class="math display">\[ h(x) = MEX_\xi [u_l^T \phi(x,z_l) + b_l]_{l=1,\ldots, n} \]</span> where MEX is the exponential mean <span class="math display">\[
+\rc{\xi} \ln\pa{\rc n \sumo in \exp(\xi c_i)}
+\]</span> and <span class="math inline">\(\phi\)</span> is a kernel function, like <span class="math inline">\((x_iz_i)_i\)</span> or <span class="math inline">\((-|x_i-z_i|^p)_i\)</span>. These give rise to linear and generalized Gaussian kernels when composed with MEX.</p>
+<p>MEX interpolates between minimum, average, and maximum pooling.</p>
+<!--(This looks to be a generalization of $1\times 1$ convolution? What about larger?)-->
+<p>There’s a natural unsupervised initialization scheme for SimNets based on statistical estimation. Assume the data is drawn from a mixture of generalized Gaussians and find max-likelihood parameters.</p>
+<p>(cf. initialize the convolution kernels by looking at statistical properties of patches)</p>
+<h2 id="cs16-convolutional-rectifier-networks-as-generalized-tensor-decompositions">[CS16] Convolutional Rectifier Networks as Generalized Tensor Decompositions</h2>
+<p>ICML16.</p>
+<blockquote>
+<p>First, we show that convolutional rectifier networks are universal with max pooling but not with average pooling. Second, and more importantly, we show that depth efficiency is weaker with convolutional rectifier networks than it is with convolutional arithmetic circuits. This leads us to believe that developing effective methods for training convolutional arithmetic circuits, thereby fulfilling their expressive potential, may give rise to a deep learning architecture that is provably superior to convolutional rectifier networks but has so far been overlooked by practitioners.</p>
+</blockquote>
+<p>Generalized tensor decompositions</p>
+<p><span class="math display">\[(A\ot_gB)_{d_1,\ldots, d_{P+Q}} = g(A_{d_1,\ldots, d_P}, B_{d_{P+1},\ldots, d_{P+Q}}). \]</span></p>
+<p>For arbitrary commutative/associative pooling function, replace <span class="math inline">\(\ot\)</span> with <span class="math inline">\(\ot_g\)</span>.</p>
+<h2 id="css16-on-the-expressive-power-of-deep-learning---a-tensor-analysis">[CSS16] On the Expressive Power of Deep Learning - A Tensor Analysis</h2>
+<p>COLT2016.</p>
+<p><img src="../../../../images/deepnets_tensor_1.png"></p>
+<p>Consider a neural network defined on input <span class="math inline">\((x_1,\ldots, x_N)\in (\R^s)^N\)</span>, as follows.</p>
+\begin{align}
+rep(i,d) &amp;= f_{\te_d}(x_i)\\
+conv(i,z) &amp;= \an{a^{z,i}, rep(i,:)} = \sum_d a_d^{z,i} f_{\te_d}(x_i)\\
+pool(z) &amp;= \prod_{i=1}^N conv(i,z) = \prod_{i=1}^N \sum_d a_d^{z,i} f_{\te_d}(x_i)\\
+out(y) &amp;= \an{a_y, pool(:)} = \sum_{z=1}^Z a_{y,z} \prod_{i=1}^N\sum_d a_d^{z,i} f_{\te_d}(x_i)
+\end{align}
+<p>Note pool(z) is a 1-D tensor <span class="math display">\[ (a_d^{z,i\ot N *})_{i_1,\ldots, i_N, d} \ot (f_{\te_d}(x_i))^{i\ot N}_{d,i_1,\ldots, i_N} \]</span> so this is a rank <span class="math inline">\(Z\)</span> tensor.</p>
+<p>Think of conv as <span class="math inline">\(1\times 1\)</span> convolution. Weight sharing makes the tensor decomposition symmetric.</p>
+<p>Deep nets:</p>
+<p><img src="../../../../images/deepnets_tensor_2.png"></p>
+<p>(<strong>Warning: The indexing of <span class="math inline">\(a\)</span> has been switched around here.</strong></p>
+<p>We have a hierarchical decomposition. Ex. first layer:</p>
+\begin{align}
+conv_1(j,\ga) &amp;= \an{a^{1,j,\ga}, pool_0(j,:)}\\
+&amp;=\an{a^{1,j,\ga}, \pa{\prod_{j'\in \{2j-1,2j\}} conv_0(j',k)}_k}\\
+&amp;=\an{a^{1,j,\ga}, (\conv_0(2j-1,k)\conv_0(2j,k))_k}\\
+&amp;=\sum_k a^{1,j,k} \conv_0(2j-1, k) \conv_0(2j,k).
+\end{align}
+<p>Iterating this gives the <strong>hierarchical Tucker decomposition</strong></p>
+<p><img src="../../../../images/deepnets_ht.png"></p>
+<p><strong>Theorem 1</strong>: Consider the space of hierarchical tensors of order <span class="math inline">\(N\)</span> and dimension <span class="math inline">\(M\)</span> in each mode, parametrized by <span class="math inline">\(\{a^{l,j,\ga\}\)</span>. In this space, the tensor has CP-rank <span class="math inline">\(\ge r^{\fc N2}\)</span> a.e.</p>
+<p><em>Proof</em>: Because the space of tensors with CP-rank forms an algebraic variety, it suffices to show that there exists a tensor of this rank. Do this by induction on layers and work with the matricization of the tensors (<span class="math inline">\(\ot\)</span> corresponds to Kronecker product). The CP-rank equals the rank of the matricization.</p>
+<p>Question: what about convolution with larger windows?</p>
+<h2 id="misc">Misc</h2>
+<p>What is the motivation behind pooling? How much does it actually help?</p>
+<p>Do you want universality?</p>
+<p>Arithmetic circuits look much more like complexity-theoretic circuits! Training is harder. Product is AND, like soft version of min on <span class="math inline">\(\{0,1\}^n\)</span>?</p>
+<p>(Replacing sigmoids/relus by 0-1?)</p>
+
+  </div>
+
+    
+
+    <!-- Extension : Sharing buttons @ www.sharethis.com -->
+    <span class="st_facebook_large" displayText="Facebook"></span>
+    <span class="st_twitter_large" displayText="Tweet"></span>
+    <span class="st_googleplus_large" displayText="Google +"></span>
+    <span class="st_reddit_large" displayText="Reddit"></span>
+    <span class="st__large" displayText></span>
+
+    <div id="disqus_thread"></div>
+    
+
+
+  
+    <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+  </div>
+  
+</div>
+
+
+<!-- Footer -->
+<div id="footer">
+  <div class="container">
+    Built with
+    <a href="http://jaspervdj.be/hakyll">Hakyll</a> 
+    using 
+    <a href="http://www.getbootstrap.com">Bootstrap</a>, 
+    <a href="http://www.disqus.com">Disqus</a>,
+    <a href="http://ignorethecode.net/blog/2010/04/20/footnotes/">Footnotes.js</a>,
+    <a href="http://highlightjs.org/">Highlight.js</a>, 
+    <a href="http://www.mathjax.org">MathJax</a>, 
+    and <a href="http://www.sharethis.com">ShareThis</a>.
+  </div>
+</div>
+</body>
+
+</html>
+
+<!-- SCRIPTS -->
+<!-- jQuery-->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+<script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
+
+<script src="../../../../bootstrap/js/bootstrap.min.js"></script>
+
+<!-- Extension : Highlight.js @ https://highlightjs.org/ -->
+<!-- Syntax highlighting tomorrow-night-bright, agate-->
+<link rel="stylesheet" href="../../../../highlight/css/tomorrow-night-bright.css">
+<script src="../../../../highlight/js/highlight.pack.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+
+<!-- Extension : MathJax @ https://docs.mathjax.org/en/v2.5-latest/tex.html -->
+<!-- MathJax/config/local/local.js contains macros. Need to provide entire URL-->
+<script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML,http://holdenlee.github.io/notebook/MathJax/config/local/local"></script>
+
+<!-- Extension : Footnotes @ http://ignorethecode.net/blog/2010/04/20/footnotes/ -->
+<script src="../../../../footnotes/js/footnotes.js"></script>
+
+<!-- Extension : Disqus @ http://disqus.com -->
+<!-- Extension : InlineDisqussions @ https://github.com/tsi/inlineDisqussions -->
+
+<script src="../../../../disqus/js/disqus.js"></script>
+
+
+
+<!-- Extension : Google Analytics -->
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-73261814-1', 'auto');
+  ga('send', 'pageview');
+
+</script>
+

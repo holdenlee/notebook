@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+
+  <meta name="description" content="Holden Lee's Research Notebook">
+  <meta name="author" content="Holden Lee">
+    
+  <title>Representation learning</title>
+
+  <!-- Bootstrap core CSS -->
+  <link href="../../../bootstrap/css/bootstrap.min.css" rel="stylesheet">
+
+  <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+  <!-- <link href="../../assets/css/ie10-viewport-bug-workaround.css" rel="stylesheet"> -->
+
+  <!-- Custom styles for this template -->
+  <link href="../../../css/blog.css" rel="stylesheet">
+  <link href="../../../css/default.css" rel="stylesheet">
+
+  <!-- Extension : Footnotes -->
+  <link href="../../../footnotes/css/footnotes.css" rel="stylesheet">
+
+  <!-- Extension : InlineDisqussions @ https://github.com/tsi/inlineDisqussions -->
+  
+
+  <!-- Extension : Collapsible lists @ http://code.stephenmorley.org/javascript/collapsible-lists/-->
+  <link href="../../../collapsible_lists/css/collapsible.css" rel="stylesheet">
+  <script type="text/javascript" src="../../../collapsible_lists/js/CollapsibleLists.js"></script>
+
+</head>
+
+<body>
+
+<!-- Navigation bar. navbar-inverse is black, navbar-default is white.-->
+<!-- To make a button active (pressed), use <li class="active"> -->
+<div id="header">
+  <nav class="navbar navbar-inverse navbar-fixed-top">
+    <div class="container">
+      <div class="navbar-header">
+        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+          <span class="sr-only">Toggle navigation</span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="../../../">Notebook</a>
+      </div>
+      <div id="navbar" class="collapse navbar-collapse">
+        <ul class="nav navbar-nav">
+          <li><a href="../../../">Home</a></li>
+          <li><a href="../../../sitemap.html">Sitemap</a></li>
+<!-- TODO: Distinguish between PAPERS, RESEARCH QUESTIONS, BOOKS -->
+<!-- TODO: make this part a for loop over main pages -->
+        </ul>
+      </div><!--/.nav-collapse -->
+    </div>
+  </nav>
+</div>
+<!-- Content -->
+<!--div id="content">
+  <h1>Mental Wilderness</h1>-->
+
+
+
+<div class="container">
+  <div id="content">
+    <div class="page header">
+      <h1>Representation learning</h1>
+    </div>
+    <div class="info">
+      
+       
+        <p>Posted: 2016-07-28 
+          , Modified: 2016-08-13 
+	</p>
+      
+       <p>Tags: <a href="../../../tags/none.html">none</a></p> 
+    </div>
+    
+  </div>
+  <!--/div-->
+
+  <div class="toc"> <ul>
+ <li><a href="#low-dimensional-structure-in-high-dimensional-space">Low-dimensional structure in high-dimensional space</a></li>
+ <li><a href="#thoughts-8-13">Thoughts 8-13</a><ul>
+ <li><a href="#kernel-dictionary-learning">Kernel dictionary learning</a></li>
+ <li><a href="#try-to-use-kernel-dictionary-learning">Try to use kernel dictionary learning</a></li>
+ <li><a href="#generalizing-agmm">Generalizing AGMM</a></li>
+ <li><a href="#dl-vs.ica-tensor-decomposition">DL vs. ICA, tensor decomposition</a></li>
+ </ul></li>
+ <li><a href="#previous-work">Previous work</a></li>
+ <li><a href="#relaxing-independent-sparsity">Relaxing independent sparsity</a></li>
+ </ul> </div>
+
+  <div class="blog-main">
+    <p>Representation learning means you have to first find a good representation—some hidden structure—for the data in order to learn it.</p>
+<h2 id="low-dimensional-structure-in-high-dimensional-space">Low-dimensional structure in high-dimensional space</h2>
+<p>Consider a distribution on a low-dimensional space. Now suppose this low-dimensional space is embedded in a high-dimensional space, and noise in the complementary (may be orthogonal) subspace is added. Recover the low-dimensional space and the structure on this space.</p>
+<ul>
+<li>Suppose complementary noise is Gaussian. [TV16] show how to recover given that the fourth moments of the distribution on the low-dim space are bounded away from that of a Gaussian. (Ex. clusters; a product distribution is limited by the dimension closest to Gaussian, etc.)</li>
+<li>Can we weaken the assumption on the complementary noise? (Arora, Ge, Ma) Put an assumption on “unimodality” in other directions.</li>
+<li>Suppose the subspace is a coordinate subspace, and the structure is a low-rank subspace within that. See <a href="matrices/relevant_coordinates.html">relevant coordinates</a>.</li>
+</ul>
+<p>Consider a dictionary-learning setting. There are many variations here. What we want to say is the following: given there’s a transformation in a certain class—ex. a neural net—that makes the data structured, can you learn the structure/parameters?</p>
+<ul>
+<li>Suppose the samples are sparse linear combinations of <span class="math inline">\(a_i\)</span>. This is the setting of dictionary learning. See <a href="matrices/AGM14.html">AGM14</a>, <a href="matrices/AGMM15.html">AGMM15</a>
+<ul>
+<li>Can we generalize from independent <span class="math inline">\(p\de_0+(1-p)D\)</span> distributions to non-Gaussian distributions?</li>
+<li>Suppose that noise is added. The algorithm above works if the dot product between 2 noise vectors is <span class="math inline">\(o(1)\)</span>. Ex. each coordinate is <span class="math inline">\(o\prc{n^{\rc 4}}\)</span>. Then the dot product is summing <span class="math inline">\(n\)</span> numbers <span class="math inline">\(o\prc{n^{\rc 2}}\)</span> which is <span class="math inline">\(o(1)\)</span>. Can we do noise up to <span class="math inline">\(o(\sqrt n)\)</span>? The overlapping communities problem seems hard now. Before we could threshold at <span class="math inline">\(\rc 2\)</span>, but now, noise is up to <span class="math inline">\(\sqrt n\)</span>. cf. in SBM, you can deal with <span class="math inline">\(\rc{\sqrt n}\)</span> difference in probabilities; in SVD, you can add a random matrix of entries <span class="math inline">\(o(\sqrt n)\)</span> because the eigenvalues are much smaller.</li>
+<li>In the undercomplete case, if the noise is orthogonal to the subspace spanned by <span class="math inline">\(a_i\)</span>, we’re in the setting of [TV16]. Products of non-Gaussians are OK.</li>
+<li>Changing the formulation instead to that <span class="math inline">\((\an{x,a_i})_i\)</span> is sparse is equivalent to learning the dictionary <span class="math inline">\((A^+)^T\)</span>. (Warning: this looks different in the over/undercomplete case.)</li>
+</ul></li>
+</ul>
+<h2 id="thoughts-8-13">Thoughts 8-13</h2>
+<p>The problem here is really about <strong>unsupervised learning</strong>: given that there is a representation of a certain form on top of which you can train a classifier, etc., in the <em>absence of labels</em> find the representation.</p>
+<h3 id="kernel-dictionary-learning">Kernel dictionary learning</h3>
+<p>Let <span class="math inline">\(x\)</span>’s be the data points and <span class="math inline">\(X=[\Phi(x)]\)</span> be the image under <span class="math inline">\(\Phi\)</span>. <span class="math inline">\(\Phi\)</span> is such that <span class="math inline">\(K(x,y) = \an{\Phi(x),\Phi(y)}\)</span>. Kernel dictionary learning seeks to find <span class="math inline">\(X=DA\)</span>, <span class="math inline">\(D\in \R^{\iy\times k}\)</span>. But assume <span class="math inline">\(D=XE\)</span> is a linear combination of <span class="math inline">\(\Phi(x)\)</span>’s. Then the objective becomes minimizing <span class="math inline">\(\ve{X-XEA}\)</span> (what norm?) subject to sparsity constraints. Do alternting minimization, etc., using the fact that the norm (and gradients) can be evaluated easily using the kernel trick.</p>
+<h3 id="try-to-use-kernel-dictionary-learning">Try to use kernel dictionary learning</h3>
+<p>Warning: these steps are not justified.</p>
+Suppose that <span class="math inline">\(x\)</span>’s are latent variables, that are sparse<span class="math inline">\(+\)</span>noise, and we observe <span class="math display">\[y=Af(x).\]</span> In our case, <span class="math inline">\(f=\ln\)</span> (so that sparse<span class="math inline">\(+\)</span>positive noise becomes few large entries). Then (maybe we should have <span class="math inline">\(A^T\)</span>? Not sure)
+\begin{align}
+A^+ y &amp;= f(x)\\
+f^{-1}(A^+y) &amp;= x\\
+\Phi(A^+)\Phi(y) &amp;= x \\
+\Phi(y) &amp;=\Phi(A^+)^+ x.
+\end{align}
+<p>This suggests doing dictionary learning on <span class="math inline">\(\Phi(y)\)</span> (or a finite approximation of this), finding <span class="math inline">\(x\)</span>’s, then solving the system of equations <span class="math inline">\(A^TY=f(X)\)</span>. (Take many samples <span class="math inline">\((x,y)\)</span> and do least squares.) In order for this to work, we need to</p>
+<ul>
+<li>justify all the pseudo-inverses, transposes (e.g. OK if inputs random: <span class="math inline">\(A^TAx\approx x\)</span> coordinatewise so things like thresholding work)</li>
+<li>a finite approximation of <span class="math inline">\(\Phi\)</span> is OK.</li>
+<li>DL on <span class="math inline">\(\Phi(Y)\)</span> recovers something that is close to the desired solution.</li>
+<li>The noise model of <span class="math inline">\(x\)</span> meets the requirements for the DL algorithm.</li>
+</ul>
+<p>This does DL in the larger space though. Can we use the kernel trick to make it more efficient?</p>
+<ul>
+<li>We can try to do the kernel trick by first doing KSVD on <span class="math inline">\(\Phi(Y)\)</span>. (Find the singular vectors as linear combinations of <span class="math inline">\(\Phi(Y)\)</span>.)</li>
+<li>If the DL algorithm only relies on <span class="math inline">\(Y^TY\)</span>, we’re in good shape because we can compute this exactly using <span class="math inline">\(\Phi\)</span>.</li>
+</ul>
+<p>So an attempt at an algorithm.</p>
+<ol type="1">
+<li>KSVD</li>
+<li>DL/ICA to find <span class="math inline">\(X\)</span>.</li>
+<li>Solve for <span class="math inline">\(A\)</span>.</li>
+</ol>
+<h3 id="generalizing-agmm">Generalizing AGMM</h3>
+<ul>
+<li>Can we generalize to <span class="math inline">\(x=\)</span> sparse + noise rather than <span class="math inline">\(y=A\pat{sparse} + \pat{noise}\)</span>? We still need noise part to be <span class="math inline">\(o(1)\)</span> though so <span class="math inline">\(\E x_i =o(1)\)</span> (why? otherwise I don’t think you can even do sparse recovery.) Suppose the noise distribution is known; perhaps we can correct for the noise in the AGMM algorithm. If the noise is not known, ex. its mean is not known, this seems difficult.</li>
+<li>The algorithm involves thresholding and looking at a graph. Can we instead have weights, ex. a triangle has weight <span class="math inline">\(\an{u,v}\an{v,w}\an{w,u}\)</span>? The problem is if <span class="math inline">\(u,v,w\)</span> are in 2 communities this multiplies by 8. It’s not a natural additive decomposition. But perhaps something can still be done. Ex. Find overlapping communities such that most triangles are fully inside one community, and triangles occupy a large proportion of each community.</li>
+<li>AGMM just requires <span class="math inline">\(YY^T\)</span>, so knowledge of the dot products is enough. (Kernel trick works.)</li>
+<li>When threshold is not known? Noise is <span class="math inline">\(&lt;\al\)</span>, signal is <span class="math inline">\(&gt;\al\)</span>. Add an entry <span class="math inline">\(1\)</span> to every vector, but <em>that</em> entry is not 0-centered…</li>
+</ul>
+<p>Different optimization problem? (Ex. add sparsity regularization, ex. <span class="math inline">\(\ved_1\)</span>.) SDP relaxation? It’s hard to integrate the sparsity constraints.</p>
+<p>Redo analysis with continuous observations?</p>
+<p>Tensor decomp for mixed community detection [Anandkumar, Ge]: look at <span class="math inline">\((\E_{x\in X} \an{x,a}\an{x,b}\an{x,c})_{a,b,c}\)</span>.</p>
+<p>I think I’m trying to do too many things at once. Allow larger noise, agnostic noise, arbitrary mean/cutoff…</p>
+<p>Look at the simplest problem inspired by the problem. Ex. Assume there are <span class="math inline">\(k=10\)</span> functions <span class="math inline">\(\si_k(A_k^Tx+b_k)\)</span> (normalized) that map data to close to <span class="math inline">\(e_1,\ldots, e_{10}\)</span>? Completely unsupervised learning. AGM is much simpler with sparsity 1…</p>
+<h3 id="dl-vs.ica-tensor-decomposition">DL vs. ICA, tensor decomposition</h3>
+<p>Why can’t we just solve dictionary learning with tensor decomposition? Suppose <span class="math inline">\(x_i\)</span> are independent, symmetric, non-Gaussian, mean 0. (Symmetric mean 0 can probably be loosened if we modify this.) Then <span class="math display">\[\E y^{\ot 4} -(\E y^{\ot 2})^{\ot 2} =\sum_i A_i^{\ot 4} [(\E x_i)^4 - (\E x_i^2)^2].\]</span> We don’t even need the <span class="math inline">\(x_i\)</span> to be from a sparse distribution—any non-Gaussian distribution (actually, want 4th moments to be non-Gaussian) will do!</p>
+<p>Reasons why this doesn’t trivialize the problem?</p>
+<ol type="1">
+<li>Overcomplete tensor decomposition is hard/not well-understood.</li>
+<li>The <span class="math inline">\(x_i\)</span> aren’t completely independent. (But we can assume almost 4-wise independence, etc.—the AGMM algorithm also requires similar assumptions.)</li>
+<li>Tensor decomposition is inefficient.</li>
+<li>It doesn’t find <span class="math inline">\(x\)</span>’s. (But we can do inference separately.)</li>
+<li>Tensor decomposition in this regime just doesn’t work in practice. (Practically, what can you expect???)</li>
+</ol>
+<p>I think I need to familiarize myself with practical tensor decomposition and DL!</p>
+<h2 id="previous-work">Previous work</h2>
+<p>Unsupervised SVM</p>
+<ul>
+<li><a href="http://www.jmlr.org/proceedings/papers/v23/karnin12/karnin12.pdf">Unsupervised SVMs: On the Complexity of the Furthest Hyperplane Problem</a>. FHP is NP-hard.
+<ul>
+<li>Randomized algorithm, running time <span class="math inline">\(n^{O(1/\te^2)}\)</span>. (Exponential dependency tight assuming ETH)</li>
+<li>Approximation algorithm: <span class="math inline">\(1-3\al\)</span> fraction is <span class="math inline">\(\ge\al\)</span> times separation margin.</li>
+<li>No PTAS. Gap-preserving reduction from PCP.</li>
+</ul></li>
+<li><a href="https://www.quora.com/Is-it-possible-to-use-SVMs-for-unsupervised-learning-density-estimation">Quora</a>. One-class SVM, support vector clustering.</li>
+<li><a href="http://jmlr.csail.mit.edu/papers/volume2/horn01a/rev1/horn01ar1.pdf">Support vector clustering</a> “Data points are mapped by means of a Gaussian kernel to a high dimensional feature space, where we search for the minimal enclosing sphere.”</li>
+<li>? http://stats.stackexchange.com/questions/212080/yet-another-unsupervised-svm</li>
+<li><a href="https://www.uni-oldenburg.de/fileadmin/user_upload/informatik/download/Promotionen/phdthesis_fabian_gieseke.pdf">Unsupervised SVM (thesis)</a></li>
+<li><a href="http://www.aaai.org/Papers/AAAI/2005/AAAI05-143.pdf">Multi-class SVM</a></li>
+</ul>
+<h2 id="relaxing-independent-sparsity">Relaxing independent sparsity</h2>
+<p>Independent sparsity—required for <a href="matrices/AGM14.html">AGM14</a> and <a href="matrices/AGMM15.html">AGMM15</a> (actually, 2-wise “almost independence” is good)—is unrealistic because features may be correlated/co-occur. A first step may be to consider group sparsity.</p>
+<p>Google for “dictionary learning group sparsity”:</p>
+<ul>
+<li><a href="http://machinelearning.wustl.edu/mlpapers/paper_files/icml2010_JenattonMOB10.pdf">Proximal Methods for Sparse Hierarchical Dictionary Learning</a></li>
+<li><a href="http://www.cv-foundation.org/openaccess/content_iccv_2013/papers/Luo_Group_Sparsity_and_2013_ICCV_paper.pdf">Group Sparsity and Geometry Constrained Dictionary Learning for Action Recognition from Depth Maps</a></li>
+<li><a href="http://see.xidian.edu.cn/faculty/wsdong/Papers/Conference/0697.pdf">Sparsity-based Image Denoising via Dictionary Learning and Structural Clustering</a> (clustering based sparse representation)</li>
+<li><a href="http://ieeexplore.ieee.org/document/6296694/?arnumber=6296694">Dictionary Learning with Group Sparsity and Graph Regularization (DL-GSGR)</a></li>
+</ul>
+
+  </div>
+
+    
+
+    <!-- Extension : Sharing buttons @ www.sharethis.com -->
+    <span class="st_facebook_large" displayText="Facebook"></span>
+    <span class="st_twitter_large" displayText="Tweet"></span>
+    <span class="st_googleplus_large" displayText="Google +"></span>
+    <span class="st_reddit_large" displayText="Reddit"></span>
+    <span class="st__large" displayText></span>
+
+    <div id="disqus_thread"></div>
+    
+
+
+  
+    <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+  </div>
+  
+</div>
+
+
+<!-- Footer -->
+<div id="footer">
+  <div class="container">
+    Built with
+    <a href="http://jaspervdj.be/hakyll">Hakyll</a> 
+    using 
+    <a href="http://www.getbootstrap.com">Bootstrap</a>, 
+    <a href="http://www.disqus.com">Disqus</a>,
+    <a href="http://ignorethecode.net/blog/2010/04/20/footnotes/">Footnotes.js</a>,
+    <a href="http://highlightjs.org/">Highlight.js</a>, 
+    <a href="http://www.mathjax.org">MathJax</a>, 
+    and <a href="http://www.sharethis.com">ShareThis</a>.
+  </div>
+</div>
+</body>
+
+</html>
+
+<!-- SCRIPTS -->
+<!-- jQuery-->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+<script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
+
+<script src="../../../bootstrap/js/bootstrap.min.js"></script>
+
+<!-- Extension : Highlight.js @ https://highlightjs.org/ -->
+<!-- Syntax highlighting tomorrow-night-bright, agate-->
+<link rel="stylesheet" href="../../../highlight/css/tomorrow-night-bright.css">
+<script src="../../../highlight/js/highlight.pack.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+
+<!-- Extension : MathJax @ https://docs.mathjax.org/en/v2.5-latest/tex.html -->
+<!-- MathJax/config/local/local.js contains macros. Need to provide entire URL-->
+<script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML,http://holdenlee.github.io/notebook/MathJax/config/local/local"></script>
+
+<!-- Extension : Footnotes @ http://ignorethecode.net/blog/2010/04/20/footnotes/ -->
+<script src="../../../footnotes/js/footnotes.js"></script>
+
+<!-- Extension : Disqus @ http://disqus.com -->
+<!-- Extension : InlineDisqussions @ https://github.com/tsi/inlineDisqussions -->
+
+<script src="../../../disqus/js/disqus.js"></script>
+
+
+
+<!-- Extension : Google Analytics -->
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-73261814-1', 'auto');
+  ga('send', 'pageview');
+
+</script>
+

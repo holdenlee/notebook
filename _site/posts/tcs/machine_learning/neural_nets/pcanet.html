@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+
+  <meta name="description" content="Holden Lee's Research Notebook">
+  <meta name="author" content="Holden Lee">
+    
+  <title>PCANet: A simple deep learning baseline for image classification?</title>
+
+  <!-- Bootstrap core CSS -->
+  <link href="../../../../bootstrap/css/bootstrap.min.css" rel="stylesheet">
+
+  <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+  <!-- <link href="../../assets/css/ie10-viewport-bug-workaround.css" rel="stylesheet"> -->
+
+  <!-- Custom styles for this template -->
+  <link href="../../../../css/blog.css" rel="stylesheet">
+  <link href="../../../../css/default.css" rel="stylesheet">
+
+  <!-- Extension : Footnotes -->
+  <link href="../../../../footnotes/css/footnotes.css" rel="stylesheet">
+
+  <!-- Extension : InlineDisqussions @ https://github.com/tsi/inlineDisqussions -->
+  
+
+  <!-- Extension : Collapsible lists @ http://code.stephenmorley.org/javascript/collapsible-lists/-->
+  <link href="../../../../collapsible_lists/css/collapsible.css" rel="stylesheet">
+  <script type="text/javascript" src="../../../../collapsible_lists/js/CollapsibleLists.js"></script>
+
+</head>
+
+<body>
+
+<!-- Navigation bar. navbar-inverse is black, navbar-default is white.-->
+<!-- To make a button active (pressed), use <li class="active"> -->
+<div id="header">
+  <nav class="navbar navbar-inverse navbar-fixed-top">
+    <div class="container">
+      <div class="navbar-header">
+        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+          <span class="sr-only">Toggle navigation</span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="../../../../">Notebook</a>
+      </div>
+      <div id="navbar" class="collapse navbar-collapse">
+        <ul class="nav navbar-nav">
+          <li><a href="../../../../">Home</a></li>
+          <li><a href="../../../../sitemap.html">Sitemap</a></li>
+<!-- TODO: Distinguish between PAPERS, RESEARCH QUESTIONS, BOOKS -->
+<!-- TODO: make this part a for loop over main pages -->
+        </ul>
+      </div><!--/.nav-collapse -->
+    </div>
+  </nav>
+</div>
+<!-- Content -->
+<!--div id="content">
+  <h1>Mental Wilderness</h1>-->
+
+
+
+<div class="container">
+  <div id="content">
+    <div class="page header">
+      <h1>PCANet: A simple deep learning baseline for image classification?</h1>
+    </div>
+    <div class="info">
+      
+       
+        <p>Posted: 2016-09-10 
+          , Modified: 2016-09-10 
+	</p>
+      
+       <p>Tags: <a href="../../../../tags/pca.html">pca</a>, <a href="../../../../tags/neural%20net.html">neural net</a></p> 
+    </div>
+    
+  </div>
+  <!--/div-->
+
+  <div class="toc"> <ul>
+ <li><a href="#pcanet-a-simple-deep-learning-baseline-for-image-classification">PCANet: A simple deep learning baseline for image classification?</a></li>
+ <li><a href="#architecture">Architecture</a><ul>
+ <li><a href="#variations">Variations</a></li>
+ </ul></li>
+ <li><a href="#experiments">Experiments</a></li>
+ <li><a href="#questions">Questions</a></li>
+ </ul> </div>
+
+  <div class="blog-main">
+    <h2 id="pcanet-a-simple-deep-learning-baseline-for-image-classification">PCANet: A simple deep learning baseline for image classification?</h2>
+<p>Each stage in a CNN consists of 3 layers:</p>
+<ul>
+<li>convolutional filter bank</li>
+<li>nonlinear processing</li>
+<li>feature pooling</li>
+</ul>
+<p>Replace these:</p>
+<table>
+<thead>
+<tr class="header">
+<th style="text-align: left;">CNN</th>
+<th style="text-align: left;">PCANet</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">convolutional filter bank</td>
+<td style="text-align: left;">PCA filter</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">nonlinear processing</td>
+<td style="text-align: left;">binary quantization (hashing)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">feature pooling</td>
+<td style="text-align: left;">block-wise histograms of binary codes</td>
+</tr>
+</tbody>
+</table>
+<p>Lesson: Deep learning has a lot of hype, but in fact simpler, better theoretically justifiable architectures can do just as well or better! In particular, one weakness of DL is that it depends on parameter tuning expertise and <em>ad hoc</em> tricks.</p>
+<p>Examples:</p>
+<ul>
+<li>ScatNet (wavelet scattering network): filters are wavelet operators, so no learning is needed. (These don’t work so well when there is intra-class variability with illumination change and corruption.)</li>
+<li>PCANet cf. OPCA.</li>
+</ul>
+<p>Motivations:</p>
+<ol type="1">
+<li>design a simple deep learning network which should be very easy, even trivial, to train and to adapt to different data and tasks.</li>
+<li>such a basic network could serve as a good baseline for people to empirically justify the use of more advanced processing components or more sophisticated architectures for their deep learning networks.</li>
+</ol>
+<h2 id="architecture">Architecture</h2>
+<p>Input: <span class="math inline">\(N\)</span> training images <span class="math inline">\(\{I_i\}_{i=1}^N\)</span> of size <span class="math inline">\(m\times n\)</span>.</p>
+<ol type="1">
+<li><p>Learn PCA: Vectorize all <span class="math inline">\(k_1\times k_2\)</span> patches, mean-center and put them all in a matrix <span class="math inline">\(X\in \R^{k_1k_2\times Nmn}\)</span><a href="#fn1" class="footnoteRef" id="fnref1"><sup>1</sup></a>. Do rank <span class="math inline">\(L_1\)</span> PCA on <span class="math inline">\(X\)</span>. The <span class="math inline">\(l\)</span>th filter (<span class="math inline">\(l\in [L_1]\)</span>) is <span class="math display">\[ W_l^1 := mat_{k_1,k_2}(q_l(XX^T))\]</span> where <span class="math inline">\(mat_{k_1,k_2}\)</span> maps <span class="math inline">\(\R^{k_1k_2}\to \R^{k_1\times k_2}\)</span> and <span class="math inline">\(q_l\)</span> is the <span class="math inline">\(l\)</span> largest eigenvectors.</p>
+<p>Now let <span class="math inline">\(I_i^l = I_i * W_l^1\)</span>. (Zero-pad <span class="math inline">\(I_i\)</span> so that <span class="math inline">\(I_i^l\)</span> has the same size.)</p>
+You can apply this multiple times. Suppose we apply it twice to get <span class="math inline">\(I_i^{l_1, l_2}\)</span>.</li>
+<li>Hashing: Binarize the outputs to get <span class="math display">\[\{b_{l_1,l_2} = H(I_i^{l_1,l_2})\}\]</span> where <span class="math inline">\(H\)</span> is Heaviside function. Let <span class="math display">\[T_i^{l_1} := \sumo{l_2}{L_2} 2^{l_2-1} b_{l_1,l_2}.\]</span> (I.e., treat <span class="math inline">\((b_{l_1,l_2})_{l_2=1}^{L_2}\)</span> categorically.)</li>
+<li><p>Histogram: Express histogram with <span class="math inline">\(L_2\)</span> bins as a vector <span class="math inline">\(Bhist(T_i^l)\)</span>. The feature vector of <span class="math inline">\(I_i\)</span> is <span class="math display">\[f_i := \text{map Bhist }[T_i^{1:L_1}]\in \R^{2^{L_2}L_1B}.\]</span></p></li>
+</ol>
+<p><strong>On many layers</strong>: Note that we DON’T stack by repeating 1-3. Instead, 2-3 happen only once at the end. The stacking happens within 1—doing PCA multiple times.</p>
+<p>Note:</p>
+<ul>
+<li>Nonoverlapping blocks are suitable for faces.</li>
+<li>Overlapping blacks are useful for digits, textures, and objects.</li>
+<li>Histogram gives some translation invariance (why??).</li>
+<li>Model parameters <span class="math inline">\(k_1,k_2,L_1,L_2\)</span>. Ex. <span class="math inline">\(L_1=L_2=8\)</span>.</li>
+<li>Two-stage PCANet is good.</li>
+<li>PCANet with absolute rectification layer (??) after the first stage doesn’t help.</li>
+<li>The overall process is linear. ?? Combining two stages. Two stages works better. Two-stage PCA filters have a low-rank factorization. It has <span class="math inline">\(L_1k_1^2 + L_2k_2^2\)</span> rather than $L_1L_2(k_1+k_2-1)^2 $ variables.</li>
+</ul>
+<h3 id="variations">Variations</h3>
+<ul>
+<li>RandNet: use random filters (from standard Gaussian)</li>
+<li>LDANet: Use multi-class linear discriminant analysis. (Think: supervised version of PCA.) <a href="../tcs/machine_learning/matrices/lda.html">LDA</a></li>
+</ul>
+<p>(Does this mean LDANet will fail on things like concentric circles?)</p>
+<h2 id="experiments">Experiments</h2>
+<p>Face recognition, MNIST.</p>
+<p>MNIST: basic (10000-2000-50000), rot, noise bg, image bg, etc.</p>
+<h2 id="questions">Questions</h2>
+<ul>
+<li>What is “block size”? (vs. filter, image size)</li>
+<li>How do you classify using PCANet? (ex. do you train a SVM on top?)</li>
+<li>How about stacking?
+<ul>
+<li>An intriguing research direction will then be how to construct a more complicated (say more sophisticated filters possibly with discriminative learning) or deeper (more number of stages) PCANet.</li>
+<li>Some preprocessing of pose alignment and scale normalization might be needed for good performance guarantee. The current bottleneck that keeps PCANet from growing deeper (e.g., more than two stages) is that the dimension of the resulted feature would increase exponentially with the number of stages.</li>
+</ul></li>
+</ul>
+<section class="footnotes">
+<hr />
+<ol>
+<li id="fn1"><p>Or <span class="math inline">\(N(m-k_1+1)(n-k_1+1)\)</span> if you don’t go past the border.<a href="#fnref1">↩</a></p></li>
+</ol>
+</section>
+
+  </div>
+
+    
+
+    <!-- Extension : Sharing buttons @ www.sharethis.com -->
+    <span class="st_facebook_large" displayText="Facebook"></span>
+    <span class="st_twitter_large" displayText="Tweet"></span>
+    <span class="st_googleplus_large" displayText="Google +"></span>
+    <span class="st_reddit_large" displayText="Reddit"></span>
+    <span class="st__large" displayText></span>
+
+    <div id="disqus_thread"></div>
+    
+
+
+  
+    <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+  </div>
+  
+</div>
+
+
+<!-- Footer -->
+<div id="footer">
+  <div class="container">
+    Built with
+    <a href="http://jaspervdj.be/hakyll">Hakyll</a> 
+    using 
+    <a href="http://www.getbootstrap.com">Bootstrap</a>, 
+    <a href="http://www.disqus.com">Disqus</a>,
+    <a href="http://ignorethecode.net/blog/2010/04/20/footnotes/">Footnotes.js</a>,
+    <a href="http://highlightjs.org/">Highlight.js</a>, 
+    <a href="http://www.mathjax.org">MathJax</a>, 
+    and <a href="http://www.sharethis.com">ShareThis</a>.
+  </div>
+</div>
+</body>
+
+</html>
+
+<!-- SCRIPTS -->
+<!-- jQuery-->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+<script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
+
+<script src="../../../../bootstrap/js/bootstrap.min.js"></script>
+
+<!-- Extension : Highlight.js @ https://highlightjs.org/ -->
+<!-- Syntax highlighting tomorrow-night-bright, agate-->
+<link rel="stylesheet" href="../../../../highlight/css/tomorrow-night-bright.css">
+<script src="../../../../highlight/js/highlight.pack.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+
+<!-- Extension : MathJax @ https://docs.mathjax.org/en/v2.5-latest/tex.html -->
+<!-- MathJax/config/local/local.js contains macros. Need to provide entire URL-->
+<script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML,http://holdenlee.github.io/notebook/MathJax/config/local/local"></script>
+
+<!-- Extension : Footnotes @ http://ignorethecode.net/blog/2010/04/20/footnotes/ -->
+<script src="../../../../footnotes/js/footnotes.js"></script>
+
+<!-- Extension : Disqus @ http://disqus.com -->
+<!-- Extension : InlineDisqussions @ https://github.com/tsi/inlineDisqussions -->
+
+<script src="../../../../disqus/js/disqus.js"></script>
+
+
+
+<!-- Extension : Google Analytics -->
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-73261814-1', 'auto');
+  ga('send', 'pageview');
+
+</script>
+
