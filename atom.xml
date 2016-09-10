@@ -8,8 +8,152 @@
         <name>Holden Lee</name>
         <email>oldheneel@gmail.com</email>
     </author>
-    <updated>2016-09-07T00:00:00Z</updated>
+    <updated>2016-09-10T00:00:00Z</updated>
     <entry>
+    <title>PCANet: A simple deep learning baseline for image classification?</title>
+    <link href="http://holdenlee.github.io/notebook/posts/tcs/machine_learning/neural_nets/pcanet.html" />
+    <id>http://holdenlee.github.io/notebook/posts/tcs/machine_learning/neural_nets/pcanet.html</id>
+    <published>2016-09-10T00:00:00Z</published>
+    <updated>2016-09-10T00:00:00Z</updated>
+    <summary type="html"><![CDATA[
+<div class="container">
+  <div id="content">
+    <div class="page header">
+      <h1>PCANet: A simple deep learning baseline for image classification?</h1>
+    </div>
+    <div class="info">
+      
+       
+        <p>Posted: 2016-09-10 
+          , Modified: 2016-09-10 
+	</p>
+      
+       <p>Tags: <a href="/tags/pca.html">pca</a>, <a href="/tags/neural%20net.html">neural net</a></p> 
+    </div>
+    
+  </div>
+  <!--/div-->
+
+  <div class="toc"> <ul>
+ <li><a href="#pcanet-a-simple-deep-learning-baseline-for-image-classification">PCANet: A simple deep learning baseline for image classification?</a></li>
+ <li><a href="#architecture">Architecture</a><ul>
+ <li><a href="#variations">Variations</a></li>
+ </ul></li>
+ <li><a href="#experiments">Experiments</a></li>
+ <li><a href="#questions">Questions</a></li>
+ </ul> </div>
+
+  <div class="blog-main">
+    <h2 id="pcanet-a-simple-deep-learning-baseline-for-image-classification">PCANet: A simple deep learning baseline for image classification?</h2>
+<p>Each stage in a CNN consists of 3 layers:</p>
+<ul>
+<li>convolutional filter bank</li>
+<li>nonlinear processing</li>
+<li>feature pooling</li>
+</ul>
+<p>Replace these:</p>
+<table>
+<thead>
+<tr class="header">
+<th style="text-align: left;">CNN</th>
+<th style="text-align: left;">PCANet</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">convolutional filter bank</td>
+<td style="text-align: left;">PCA filter</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">nonlinear processing</td>
+<td style="text-align: left;">binary quantization (hashing)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">feature pooling</td>
+<td style="text-align: left;">block-wise histograms of binary codes</td>
+</tr>
+</tbody>
+</table>
+<p>Lesson: Deep learning has a lot of hype, but in fact simpler, better theoretically justifiable architectures can do just as well or better! In particular, one weakness of DL is that it depends on parameter tuning expertise and <em>ad hoc</em> tricks.</p>
+<p>Examples:</p>
+<ul>
+<li>ScatNet (wavelet scattering network): filters are wavelet operators, so no learning is needed. (These don’t work so well when there is intra-class variability with illumination change and corruption.)</li>
+<li>PCANet cf. OPCA.</li>
+</ul>
+<p>Motivations:</p>
+<ol type="1">
+<li>design a simple deep learning network which should be very easy, even trivial, to train and to adapt to different data and tasks.</li>
+<li>such a basic network could serve as a good baseline for people to empirically justify the use of more advanced processing components or more sophisticated architectures for their deep learning networks.</li>
+</ol>
+<h2 id="architecture">Architecture</h2>
+<p>Input: <span class="math inline">\(N\)</span> training images <span class="math inline">\(\{I_i\}_{i=1}^N\)</span> of size <span class="math inline">\(m\times n\)</span>.</p>
+<ol type="1">
+<li><p>Learn PCA: Vectorize all <span class="math inline">\(k_1\times k_2\)</span> patches, mean-center and put them all in a matrix <span class="math inline">\(X\in \R^{k_1k_2\times Nmn}\)</span><a href="#fn1" class="footnoteRef" id="fnref1"><sup>1</sup></a>. Do rank <span class="math inline">\(L_1\)</span> PCA on <span class="math inline">\(X\)</span>. The <span class="math inline">\(l\)</span>th filter (<span class="math inline">\(l\in [L_1]\)</span>) is <span class="math display">\[ W_l^1 := mat_{k_1,k_2}(q_l(XX^T))\]</span> where <span class="math inline">\(mat_{k_1,k_2}\)</span> maps <span class="math inline">\(\R^{k_1k_2}\to \R^{k_1\times k_2}\)</span> and <span class="math inline">\(q_l\)</span> is the <span class="math inline">\(l\)</span> largest eigenvectors.</p>
+<p>Now let <span class="math inline">\(I_i^l = I_i * W_l^1\)</span>. (Zero-pad <span class="math inline">\(I_i\)</span> so that <span class="math inline">\(I_i^l\)</span> has the same size.)</p>
+You can apply this multiple times. Suppose we apply it twice to get <span class="math inline">\(I_i^{l_1, l_2}\)</span>.</li>
+<li>Hashing: Binarize the outputs to get <span class="math display">\[\{b_{l_1,l_2} = H(I_i^{l_1,l_2})\}\]</span> where <span class="math inline">\(H\)</span> is Heaviside function. Let <span class="math display">\[T_i^{l_1} := \sumo{l_2}{L_2} 2^{l_2-1} b_{l_1,l_2}.\]</span> (I.e., treat <span class="math inline">\((b_{l_1,l_2})_{l_2=1}^{L_2}\)</span> categorically.)</li>
+<li><p>Histogram: Express histogram with <span class="math inline">\(L_2\)</span> bins as a vector <span class="math inline">\(Bhist(T_i^l)\)</span>. The feature vector of <span class="math inline">\(I_i\)</span> is <span class="math display">\[f_i := \text{map Bhist }[T_i^{1:L_1}]\in \R^{2^{L_2}L_1B}.\]</span></p></li>
+</ol>
+<p><strong>On many layers</strong>: Note that we DON’T stack by repeating 1-3. Instead, 2-3 happen only once at the end. The stacking happens within 1—doing PCA multiple times.</p>
+<p>Note:</p>
+<ul>
+<li>Nonoverlapping blocks are suitable for faces.</li>
+<li>Overlapping blacks are useful for digits, textures, and objects.</li>
+<li>Histogram gives some translation invariance (why??).</li>
+<li>Model parameters <span class="math inline">\(k_1,k_2,L_1,L_2\)</span>. Ex. <span class="math inline">\(L_1=L_2=8\)</span>.</li>
+<li>Two-stage PCANet is good.</li>
+<li>PCANet with absolute rectification layer (??) after the first stage doesn’t help.</li>
+<li>The overall process is linear. ?? Combining two stages. Two stages works better. Two-stage PCA filters have a low-rank factorization. It has <span class="math inline">\(L_1k_1^2 + L_2k_2^2\)</span> rather than $L_1L_2(k_1+k_2-1)^2 $ variables.</li>
+</ul>
+<h3 id="variations">Variations</h3>
+<ul>
+<li>RandNet: use random filters (from standard Gaussian)</li>
+<li>LDANet: Use multi-class linear discriminant analysis. (Think: supervised version of PCA.) <a href="../tcs/machine_learning/matrices/lda.html">LDA</a></li>
+</ul>
+<p>(Does this mean LDANet will fail on things like concentric circles?)</p>
+<h2 id="experiments">Experiments</h2>
+<p>Face recognition, MNIST.</p>
+<p>MNIST: basic (10000-2000-50000), rot, noise bg, image bg, etc.</p>
+<h2 id="questions">Questions</h2>
+<ul>
+<li>What is “block size”? (vs. filter, image size)</li>
+<li>How do you classify using PCANet? (ex. do you train a SVM on top?)</li>
+<li>How about stacking?
+<ul>
+<li>An intriguing research direction will then be how to construct a more complicated (say more sophisticated filters possibly with discriminative learning) or deeper (more number of stages) PCANet.</li>
+<li>Some preprocessing of pose alignment and scale normalization might be needed for good performance guarantee. The current bottleneck that keeps PCANet from growing deeper (e.g., more than two stages) is that the dimension of the resulted feature would increase exponentially with the number of stages.</li>
+</ul></li>
+</ul>
+<section class="footnotes">
+<hr />
+<ol>
+<li id="fn1"><p>Or <span class="math inline">\(N(m-k_1+1)(n-k_1+1)\)</span> if you don’t go past the border.<a href="#fnref1">↩</a></p></li>
+</ol>
+</section>
+
+  </div>
+
+    
+
+    <!-- Extension : Sharing buttons @ www.sharethis.com -->
+    <span class='st_facebook_large' displayText='Facebook'></span>
+    <span class='st_twitter_large' displayText='Tweet'></span>
+    <span class='st_googleplus_large' displayText='Google +'></span>
+    <span class='st_reddit_large' displayText='Reddit'></span>
+    <span class='st__large' displayText=''></span>
+
+    <div id="disqus_thread"></div>
+    
+
+
+  
+    <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+  </div>
+  
+</div>
+]]></summary>
+</entry>
+<entry>
     <title>[SV16] The mixing time of the Dikin walk in a polytope - a simple proof</title>
     <link href="http://holdenlee.github.io/notebook/posts/tcs/machine_learning/optimization/SV16.html" />
     <id>http://holdenlee.github.io/notebook/posts/tcs/machine_learning/optimization/SV16.html</id>
@@ -172,103 +316,31 @@ H(x) = \nb^2F(x) &amp;= \sum_{i\in [m]} \rc{(a_i^Tx-b_i)^2}a_ia_i^T\\
 
   <div class="toc"> <ul>
  <li><a href="#threads">Threads</a></li>
- <li><a href="#pcanet-a-simple-deep-learning-baseline-for-image-classification">PCANet: A simple deep learning baseline for image classification?</a></li>
- <li><a href="#architecture">Architecture</a><ul>
- <li><a href="#variations">Variations</a></li>
- </ul></li>
- <li><a href="#experiments">Experiments</a></li>
- <li><a href="#questions">Questions</a></li>
+ <li><a href="#conversation-with-arora">Conversation with Arora</a></li>
  </ul> </div>
 
   <div class="blog-main">
     <h2 id="threads">Threads</h2>
 <p>Continue from <a href="2016-09-03.html">last week</a>.</p>
-<h2 id="pcanet-a-simple-deep-learning-baseline-for-image-classification">PCANet: A simple deep learning baseline for image classification?</h2>
-<p>Each stage in a CNN consists of 3 layers:</p>
 <ul>
-<li>convolutional filter bank</li>
-<li>nonlinear processing</li>
-<li>feature pooling</li>
+<li>Work out optimality conditions for 2-layer net for DL.</li>
 </ul>
-<p>Replace these:</p>
-<table>
-<thead>
-<tr class="header">
-<th style="text-align: left;">CNN</th>
-<th style="text-align: left;">PCANet</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td style="text-align: left;">convolutional filter bank</td>
-<td style="text-align: left;">PCA filter</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">nonlinear processing</td>
-<td style="text-align: left;">binary quantization (hashing)</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">feature pooling</td>
-<td style="text-align: left;">block-wise histograms of binary codes</td>
-</tr>
-</tbody>
-</table>
-<p>Lesson: Deep learning has a lot of hype, but in fact simpler, better theoretically justifiable architectures can do just as well or better! In particular, one weakness of DL is that it depends on parameter tuning expertise and <em>ad hoc</em> tricks.</p>
-<p>Examples:</p>
+<p>(Threshold PMI’s first?)</p>
+<p><a href="../tcs/machine_learning/neural_nets/pcanet.html">PCANet</a>.</p>
+<h2 id="conversation-with-arora">Conversation with Arora</h2>
 <ul>
-<li>ScatNet (wavelet scattering network): filters are wavelet operators, so no learning is needed. (These don’t work so well when there is intra-class variability with illumination change and corruption.)</li>
-<li>PCANet cf. OPCA.</li>
-</ul>
-<p>Motivations:</p>
-<ol type="1">
-<li>design a simple deep learning network which should be very easy, even trivial, to train and to adapt to different data and tasks.</li>
-<li>such a basic network could serve as a good baseline for people to empirically justify the use of more advanced processing components or more sophisticated architectures for their deep learning networks.</li>
-</ol>
-<h2 id="architecture">Architecture</h2>
-<p>Input: <span class="math inline">\(N\)</span> training images <span class="math inline">\(\{I_i\}_{i=1}^N\)</span> of size <span class="math inline">\(m\times n\)</span>.</p>
-<ol type="1">
-<li><p>Learn PCA: Vectorize all <span class="math inline">\(k_1\times k_2\)</span> patches, mean-center and put them all in a matrix <span class="math inline">\(X\in \R^{k_1k_2\times Nmn}\)</span><a href="#fn1" class="footnoteRef" id="fnref1"><sup>1</sup></a>. Do rank <span class="math inline">\(L_1\)</span> PCA on <span class="math inline">\(X\)</span>. The <span class="math inline">\(l\)</span>th filter (<span class="math inline">\(l\in [L_1]\)</span>) is <span class="math display">\[ W_l^1 := mat_{k_1,k_2}(q_l(XX^T))\]</span> where <span class="math inline">\(mat_{k_1,k_2}\)</span> maps <span class="math inline">\(\R^{k_1k_2}\to \R^{k_1\times k_2}\)</span> and <span class="math inline">\(q_l\)</span> is the <span class="math inline">\(l\)</span> largest eigenvectors.</p>
-<p>Now let <span class="math inline">\(I_i^l = I_i * W_l^1\)</span>. (Zero-pad <span class="math inline">\(I_i\)</span> so that <span class="math inline">\(I_i^l\)</span> has the same size.)</p>
-You can apply this multiple times. Suppose we apply it twice to get <span class="math inline">\(I_i^{l_1, l_2}\)</span>.</li>
-<li>Hashing: Binarize the outputs to get <span class="math display">\[\{b_{l_1,l_2} = H(I_i^{l_1,l_2})\}\]</span> where <span class="math inline">\(H\)</span> is Heaviside function. Let <span class="math display">\[T_i^{l_1} := \sumo{l_2}{L_2} 2^{l_2-1} b_{l_1,l_2}.\]</span> (I.e., treat <span class="math inline">\((b_{l_1,l_2})_{l_2=1}^{L_2}\)</span> categorically.)</li>
-<li><p>Histogram: Express histogram with <span class="math inline">\(L_2\)</span> bins as a vector <span class="math inline">\(Bhist(T_i^l)\)</span>. The feature vector of <span class="math inline">\(I_i\)</span> is <span class="math display">\[f_i := \text{map Bhist }[T_i^{1:L_1}]\in \R^{2^{L_2}L_1B}.\]</span></p></li>
-</ol>
-<p><strong>On many layers</strong>: Note that we DON’T stack by repeating 1-3. Instead, 2-3 happen only once at the end. The stacking happens within 1—doing PCA multiple times.</p>
-<p>Note:</p>
+<li>PMI experiments
 <ul>
-<li>Nonoverlapping blocks are suitable for faces.</li>
-<li>Overlapping blacks are useful for digits, textures, and objects.</li>
-<li>Histogram gives some translation invariance (why??).</li>
-<li>Model parameters <span class="math inline">\(k_1,k_2,L_1,L_2\)</span>. Ex. <span class="math inline">\(L_1=L_2=8\)</span>.</li>
-<li>Two-stage PCANet is good.</li>
-<li>PCANet with absolute rectification layer (??) after the first stage doesn’t help.</li>
-<li>The overall process is linear. ?? Combining two stages. Two stages works better. Two-stage PCA filters have a low-rank factorization. It has <span class="math inline">\(L_1k_1^2 + L_2k_2^2\)</span> rather than $L_1L_2(k_1+k_2-1)^2 $ variables.</li>
-</ul>
-<h3 id="variations">Variations</h3>
+<li>Is PMI the right measure? Are the feature vectors close to sparse? if the average image there is <span class="math inline">\(&gt;20\%\)</span> activation, then no.</li>
+<li>Look for discriminative features, those that occur with one label and rarely for others.</li>
+<li>Do SVM coefficients have negative weights?</li>
+</ul></li>
+<li>Things to read
 <ul>
-<li>RandNet: use random filters (from standard Gaussian)</li>
-<li>LDANet: Use multi-class linear discriminant analysis. (Think: supervised version of PCA.) <a href="../tcs/machine_learning/matrices/lda.html">LDA</a></li>
-</ul>
-<p>(Does this mean LDANet will fail on things like concentric circles?)</p>
-<h2 id="experiments">Experiments</h2>
-<p>Face recognition, MNIST.</p>
-<p>MNIST: basic (10000-2000-50000), rot, noise bg, image bg, etc.</p>
-<h2 id="questions">Questions</h2>
-<ul>
-<li>What is “block size”? (vs. filter, image size)</li>
-<li>How do you classify using PCANet? (ex. do you train a SVM on top?)</li>
-<li>How about stacking?
-<ul>
-<li>An intriguing research direction will then be how to construct a more complicated (say more sophisticated filters possibly with discriminative learning) or deeper (more number of stages) PCANet.</li>
-<li>Some preprocessing of pose alignment and scale normalization might be needed for good performance guarantee. The current bottleneck that keeps PCANet from growing deeper (e.g., more than two stages) is that the dimension of the resulted feature would increase exponentially with the number of stages.</li>
+<li>[HRS16] Train faster, generalize better: stability of stochastic gradient descent <a href="https://arxiv.org/pdf/1509.01240v2">paper</a>. See also blog post.</li>
+<li>Teacher-training net</li>
 </ul></li>
 </ul>
-<section class="footnotes">
-<hr />
-<ol>
-<li id="fn1"><p>Or <span class="math inline">\(N(m-k_1+1)(n-k_1+1)\)</span> if you don’t go past the border.<a href="#fnref1">↩</a></p></li>
-</ol>
-</section>
 
   </div>
 
@@ -917,150 +989,6 @@ D' &amp;= \fc{n^2}{n^2-1} \pa{D-\fc{2}{n+1}\fc{Daa^TD}{a^TDa}}\\
 <blockquote>
 <p>How do you find a lion in the Sahara? Split it in half and recurse.</p>
 </blockquote>
-
-  </div>
-
-    
-
-    <!-- Extension : Sharing buttons @ www.sharethis.com -->
-    <span class='st_facebook_large' displayText='Facebook'></span>
-    <span class='st_twitter_large' displayText='Tweet'></span>
-    <span class='st_googleplus_large' displayText='Google +'></span>
-    <span class='st_reddit_large' displayText='Reddit'></span>
-    <span class='st__large' displayText=''></span>
-
-    <div id="disqus_thread"></div>
-    
-
-
-  
-    <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
-  </div>
-  
-</div>
-]]></summary>
-</entry>
-<entry>
-    <title>Weekly summary 2016-09-03</title>
-    <link href="http://holdenlee.github.io/notebook/posts/summaries/2016-09-03.html" />
-    <id>http://holdenlee.github.io/notebook/posts/summaries/2016-09-03.html</id>
-    <published>2016-08-30T00:00:00Z</published>
-    <updated>2016-08-30T00:00:00Z</updated>
-    <summary type="html"><![CDATA[
-<div class="container">
-  <div id="content">
-    <div class="page header">
-      <h1>Weekly summary 2016-09-03</h1>
-    </div>
-    <div class="info">
-      
-       
-        <p>Posted: 2016-08-30 
-          , Modified: 2016-08-30 
-	</p>
-      
-       <p>Tags: <a href="/tags/none.html">none</a></p> 
-    </div>
-    
-  </div>
-  <!--/div-->
-
-  <div class="toc"> <ul>
- <li><a href="#threads">Threads</a></li>
- <li><a href="#summary">Summary</a></li>
- <li><a href="#conversation-with-arora">Conversation with Arora</a></li>
- </ul> </div>
-
-  <div class="blog-main">
-    <h2 id="threads">Threads</h2>
-<ul>
-<li>Relaxing sparsity assumption: Independent sparsity is an unrealistic assumption. For example, many features tend to co-occur with each other. Re-analyze algorithms that rely on independent sparsity under looser conditions on the distribution.
-<ul>
-<li>Two ways to loosen the conditions:
-<ul>
-<li>Drop the condition of independence.
-<ul>
-<li>A first step is “group sparsity”. See <a href="/posts/tcs/machine_learning/representation.html">representation learning</a> for references.</li>
-<li>A next step is to do away with independence entirely. (Certain distributions may be intractable… if so, obtain a hardness result and then add some looser assumption.)</li>
-</ul></li>
-<li>Drop the condition of sparsity.
-<ul>
-<li>Instead have some condition on moments/tails so that each vector is well-approximated by a sparse vector, cf. “flatness”, ex. 99% of weight is on <span class="math inline">\(o\prc{\sqrt n}\)</span> of coordinates.</li>
-<li>The difference with adding noise is that
-<ul>
-<li>Noise is added to <span class="math inline">\(x\)</span> (pre-coding) rather than <span class="math inline">\(y\)</span> (post-coding)</li>
-<li>Noise can be correlated with the vector, not independent. (if it were independent, there’s not that much difference from adding on the <span class="math inline">\(y\)</span>-side)</li>
-</ul></li>
-</ul></li>
-</ul></li>
-<li>Sparse recovery. Ex. basis pursuit.</li>
-<li>Dictionary learning
-<ul>
-<li>Q (<span class="citation" data-cites="Arora">@Arora</span>): How does dictionary learning perform in real life? What is it applied to? Applying it to problems traditionally solved with SVM’s and neural nets, how does it compare? How do AGM14, AGMM15 perform?</li>
-<li>Re-analyze AGM14, AGMM15 with group sparsity.</li>
-<li>Re-analyze with arbitrary sparselike distribution.</li>
-</ul></li>
-</ul></li>
-<li>Representation learning: general problem
-<ul>
-<li>The main bottleneck is that the problem “sort-of” reduces to tensor decomposition, but I don’t understand much of how TD performs in theory and in practice.</li>
-<li>Read papers on TD (Ge, Anandkumar).</li>
-</ul></li>
-<li>PMI for images
-<ul>
-<li>I don’t have any positive results when I build on top of the CKN.
-<ul>
-<li>May try some alternatives: work with CIFAR instead, do some thresholding thing, do things in middle layer… (but unlikely to work if first thing didn’t work?)</li>
-</ul></li>
-<li>Do experiments on a more basic level.
-<ul>
-<li>Try unsupervised multiclass SVM on both the original image and on the CKN features. How does this compare to clustering? (Look at the actual pics.)</li>
-<li>Have a programming setup where you can visualize clusters and features.</li>
-</ul></li>
-<li>DL for images
-<ul>
-<li>If you do DL, do you obtain the categories? (ex. digits)</li>
-<li>If you do DL, is training on top of the DL easier?</li>
-<li>How does (H)DL compare to the CKN and other unsupervised methods? Make DL convolutional.</li>
-<li>What is the typical sparsity of a trained NN? (cf. dropout?)</li>
-</ul></li>
-<li>Use DL/weighted SVD with the natural proximity/distance in images. Get “context vectors” for different parts of the image. (Hierarchical fashion?) A global context vector would be the classification?</li>
-<li>(images not just DL/SVM because adding something in perpendicular direction wrecks things?)</li>
-</ul></li>
-</ul>
-<p>@Arora: in what way is DL “just” tensor decomposition?</p>
-<p>(Is there a relationship between weighted SVD for PMI and DL? It’s not at all clear to me. Somehow neural nets do something “like” DL (does the CKN do this though?) but then we’re trying to see if the features can be SVD’d with PMI. Learning with 2 “layers”:</p>
-<ol type="1">
-<li>Representation - with NN/DL</li>
-<li>Classification - (on top) with SVD/PMI.</li>
-</ol>
-<p>Also how do hierarchical methods come in?)</p>
-<p>Things meriting a further look</p>
-<ul>
-<li>Traditional learning theory (ex. learning SAT)</li>
-<li>Probabilistic view of dictionary learning (LDA, hierarchical DP, etc.) <span class="citation" data-cites="Bianca">@Bianca</span></li>
-<li>Pattern theory—how they model images. Traditional image things—wavelets etc.</li>
-</ul>
-<h2 id="summary">Summary</h2>
-<ul>
-<li>Reading
-<ul>
-<li><a href="../tcs/machine_learning/self_taught_learning.html">Self-taught learning</a></li>
-<li><a href="../tcs/machine_learning/transduction.html">Transduction</a></li>
-<li><a href="../tcs/machine_learning/tensor/BKS15.html">BKS15 Dictionary Learning and Tensor Decomposition via the Sum-of-Squares Method</a></li>
-</ul></li>
-</ul>
-<h2 id="conversation-with-arora">Conversation with Arora</h2>
-<ul>
-<li>“Show that backprop works.”
-<ul>
-<li>Assume a generative distribution: <span class="math inline">\(x\)</span> from sparse distribution, observe <span class="math inline">\(y\approx Ax\)</span>, there is a SVM classifier depending on <span class="math inline">\(x\)</span>. Show that backprop for a 2-layer NN works. (<span class="citation" data-cites="Tengyu">@Tengyu</span>)</li>
-</ul></li>
-<li>PMI: restrict to features that co-occur.</li>
-<li>SoS for TD + AM for DL gives <span class="math inline">\(n^{O(\log n)}\)</span> algorithm for sparsity <span class="math inline">\(n^{1-\ep}\)</span>. Check this (don’t need sparsity after initialization).</li>
-<li>(Hard) Kernel SVM’s can’t learn DL + classifier (essentially 2-layer NN).</li>
-</ul>
-<!--1-layer NN is like sparse recovery.-->
 
   </div>
 
