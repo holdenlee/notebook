@@ -76,7 +76,7 @@
       
        
         <p>Posted: 2016-08-01 
-          , Modified: 2016-09-05 
+          , Modified: 2016-09-11 
 	</p>
       
        <p>Tags: <a href="../../../../tags/PMI.html">PMI</a>, <a href="../../../../tags/neural%20nets.html">neural nets</a>, <a href="../../../../tags/vision.html">vision</a></p> 
@@ -87,43 +87,62 @@
 
   <div class="toc"> <ul>
  <li><a href="#results">Results</a><ul>
- <li><a href="#pmi-distribution">PMI distribution</a></li>
- <li><a href="#thresholded-pmi-distribution">Thresholded PMI distribution</a></li>
+ <li><a href="#distribution-of-pmi-pairs">Distribution of PMI pairs</a></li>
+ <li><a href="#thresholding-by-psitr">Thresholding by psiTr</a></li>
+ <li><a href="#pmi-suitability">PMI suitability</a></li>
  <li><a href="#svd-svm">SVD-SVM</a></li>
  <li><a href="#weighted-svd-svm">Weighted SVD-SVM</a></li>
- <li><a href="#unorganized">Unorganized</a></li>
+ <li><a href="#pmi-and-geometry">PMI and geometry</a><ul>
+ <li><a href="#are-the-largest-pmis-close-together">Are the largest PMI’s close together?</a></li>
  </ul></li>
- <li><a href="#notes">Notes</a></li>
- <li><a href="#theory">Theory</a></li>
- <li><a href="#thoughts">Thoughts</a></li>
- <li><a href="#todo">Todo</a><ul>
- <li><a href="#coding">Coding</a></li>
- <li><a href="#theory-1">Theory</a></li>
+ <li><a href="#largest-pmis">Largest PMIs</a></li>
  </ul></li>
- <li><a href="#scratch">Scratch</a></li>
- <li><a href="#steps-experiments">Steps, Experiments</a></li>
- <li><a href="#guide-to-data">Guide to data</a></li>
  </ul> </div>
 
   <div class="blog-main">
     <h2 id="results">Results</h2>
-<h3 id="pmi-distribution">PMI distribution</h3>
-<p><strong>Note: I think this subsection is not quite right because it doesn’t agree with the other data below. Todo: run again.</strong></p>
-<p>Over all pairs of features <span class="math inline">\(i,j\)</span>, this is the distribution of <span class="math inline">\(PMI(v_i,v_j)\)</span>:</p>
-<p><img src="../../../../images/pmi/pmi_histogram_1.jpg"></p>
-<p>(Question: is this what you would expect if the distribution were “random” or are the tails different than what we would expect?)</p>
-<p>Is there a correlation between PMI and distance between features? (Distance ranges from <span class="math inline">\(0\)</span> to <span class="math inline">\(5\sqrt 2\)</span>.) It seems not.</p>
-<p><img src="../../../../images/pmi/pmi_distance.jpg"></p>
-<p>Conditioned on the digit being a specific value, how does the PMI distribution look? Still about the same… except that 1 has much larger activation. These are digits 0-4.</p>
-<p><img src="../../../../images/pmi/hist_P_1_0.jpg"> <img src="../../../../images/pmi/hist_P_1_1.jpg"> <img src="../../../../images/pmi/hist_P_1_2.jpg"> <img src="../../../../images/pmi/hist_P_1_3.jpg"> <img src="../../../../images/pmi/hist_P_1_4.jpg"></p>
-<h3 id="thresholded-pmi-distribution">Thresholded PMI distribution</h3>
-<p>See script <code>pmi_thresholded.m</code>.</p>
-<p>Remove all features that do not have PMI <span class="math inline">\(&gt;1\)</span> with another feature. Now do the same thing.</p>
+<h3 id="distribution-of-pmi-pairs">Distribution of PMI pairs</h3>
+<p>CODE: First calculate <code>psiTr</code>. (It has been saved as <code>data/psiTr_1.mat</code>.) Then run <code>calculate_cpmi_unnormalized_script</code>.</p>
+<p>Over all pairs of nonzero features <span class="math inline">\(\{i,j\}\)</span>, this is the distribution of <span class="math inline">\(PMI(v_i,v_j)\)</span>. Note the long tails. Here we don’t normalize the features first. (You can also try with various normalizations, by passing in a normalization function to <code>calculate_cpmi_unnormalized</code>.) There are 5652/7200 nonzero features.</p>
+<p><img src="../../../../images/pmi/hist_1.jpg" width="500"></p>
+<p>Conditioned on the digit being a specific value, how does the PMI distribution look? Still about the same… except that 1 has much larger activation. These are digits 0-9 in order.</p>
+<p><img src="../../../../images/pmi/hist_1_0.jpg" width="500"> <img src="../../../../images/pmi/hist_1_1.jpg" width="500"> <img src="../../../../images/pmi/hist_1_2.jpg" width="500"> <img src="../../../../images/pmi/hist_1_3.jpg" width="500"> <img src="../../../../images/pmi/hist_1_4.jpg" width="500"> <img src="../../../../images/pmi/hist_1_5.jpg" width="500"> <img src="../../../../images/pmi/hist_1_6.jpg" width="500"> <img src="../../../../images/pmi/hist_1_7.jpg" width="500"> <img src="../../../../images/pmi/hist_1_8.jpg" width="500"> <img src="../../../../images/pmi/hist_1_9.jpg" width="500"></p>
+<p>Here are the 0, 10,…, 100 percentiles of these distributions. The first 10 rows are the CPMI distributions for digits 0-9; the last row is the PMI distribution. It’s not always true that the CPMI’s for a digit are larger.</p>
+<pre><code>  Columns 1 through 7
+
+   -1.3409   -0.0831   -0.0288   -0.0008    0.0178    0.0340    0.0520
+   -3.4897   -0.4067   -0.1484   -0.0196    0.0449    0.1054    0.1912
+   -1.2622   -0.1009   -0.0318    0.0013    0.0221    0.0404    0.0618
+   -1.3727   -0.0931   -0.0249    0.0067    0.0265    0.0458    0.0705
+   -2.5869   -0.0910   -0.0227    0.0091    0.0304    0.0524    0.0804
+   -1.4005   -0.0930   -0.0239    0.0113    0.0353    0.0582    0.0857
+   -2.6503   -0.0855   -0.0157    0.0134    0.0334    0.0555    0.0847
+   -3.1251   -0.1389   -0.0498   -0.0046    0.0237    0.0488    0.0796
+   -1.4074   -0.0984   -0.0277    0.0047    0.0240    0.0436    0.0701
+   -2.7278   -0.0846   -0.0149    0.0156    0.0372    0.0624    0.0966
+   -1.1984   -0.0727   -0.0094    0.0253    0.0534    0.0847    0.1241
+
+  Columns 8 through 11
+
+    0.0754    0.1111    0.1828    2.9385
+    0.3236    0.5373    0.9549    5.9331
+    0.0911    0.1378    0.2326    1.9094
+    0.1069    0.1677    0.2931    1.8452
+    0.1201    0.1838    0.3111    3.0054
+    0.1236    0.1841    0.3266    3.0518
+    0.1286    0.2034    0.3556    3.7582
+    0.1237    0.1959    0.3409    3.2767
+    0.1110    0.1844    0.3448    2.7204
+    0.1484    0.2350    0.4080    3.4744
+    0.1778    0.2587    0.4034    2.6897</code></pre>
+<h3 id="thresholding-by-psitr">Thresholding by psiTr</h3>
+<p>CODE: Run <code>top_pmis_script</code> which runs <code>pmi_threshold_f</code> and <code>check_top_pmis_f</code>.</p>
+<p>Remove all features that do not have activation <span class="math inline">\(&gt;1\)</span> in some image. Now do the same thing. (NOTE: the maximum PMI is less because the max PMI’s are between features that have small maximum activation. Try this again thresholding by PMI?)</p>
 <p>This is the distribution of <span class="math inline">\(PMI(v_i,v_j)\)</span>:</p>
 <p><img src="../../../../images/pmi/hist_thres05_1.jpg" width="500"></p>
-<p>These are digits 0-4.</p>
-<p><img src="../../../../images/pmi/hist_thres05_1_0.jpg" width="500"> <img src="../../../../images/pmi/hist_thres05_1_1.jpg" width="500"> <img src="../../../../images/pmi/hist_thres05_1_2.jpg" width="500"> <img src="../../../../images/pmi/hist_thres05_1_3.jpg" width="500"> <img src="../../../../images/pmi/hist_thres05_1_4.jpg" width="500"></p>
-<p>Percentiles of the distributions (<span class="math inline">\(i\)</span>th row is 0, 10, 20, … 100% for the CPMI’s of digit <span class="math inline">\(i\)</span>, last row is PMI over all digits).</p>
+<p>These are digits 0-9.</p>
+<p><img src="../../../../images/pmi/hist_thres05_1_0.jpg" width="500"> <img src="../../../../images/pmi/hist_thres05_1_1.jpg" width="500"> <img src="../../../../images/pmi/hist_thres05_1_2.jpg" width="500"> <img src="../../../../images/pmi/hist_thres05_1_3.jpg" width="500"> <img src="../../../../images/pmi/hist_thres05_1_4.jpg" width="500"> <img src="../../../../images/pmi/hist_thres05_1_5.jpg" width="500"> <img src="../../../../images/pmi/hist_thres05_1_6.jpg" width="500"> <img src="../../../../images/pmi/hist_thres05_1_7.jpg" width="500"> <img src="../../../../images/pmi/hist_thres05_1_8.jpg" width="500"> <img src="../../../../images/pmi/hist_thres05_1_9.jpg" width="500"></p>
+<p>Percentiles of the distributions (<span class="math inline">\(i\)</span>th row is 0, 10, 20, … 100% for the CPMI’s of digit <span class="math inline">\(i\)</span>, last row is PMI over all digits). (Note the last column is different)</p>
 <pre><code>  Columns 1 through 7
 
    -0.9746   -0.0588   -0.0140    0.0112    0.0306    0.0488    0.0681
@@ -152,8 +171,124 @@
     0.1344    0.1957    0.3210    2.7701
     0.1761    0.2406    0.3557    1.7908
 	</code></pre>
+<p><code>check_top_pmis</code> produces a graph showing which features are close to each other. It’s not very enlightening.</p>
+<h3 id="pmi-suitability">PMI suitability</h3>
+<p>CODE: Run <code>pmi_suitability.m</code>.</p>
+<blockquote>
+<p>Is PMI the right measure? Are the feature vectors close to sparse? if the average image there is <span class="math inline">\(&gt;20\%\)</span> activation, then no.</p>
+</blockquote>
+<p>For the first 10 images, this is what the percentiles look like:</p>
+<pre><code>percentiles:
+
+pcs =
+
+   100    99    95    90    80    70
+
+Image 1 (label 5)
+    2.3230
+    1.2966
+    0.8840
+    0.6766
+    0.4381
+    0.3140
+
+Image 2 (label 0)
+    2.1275
+    1.3604
+    0.9482
+    0.7418
+    0.5036
+    0.3769
+
+Image 3 (label 4)
+    1.7975
+    0.9874
+    0.6185
+    0.4704
+    0.3145
+    0.2247
+
+Image 4 (label 1)
+    2.2506
+    1.2399
+    0.7160
+    0.4949
+    0.3029
+    0.1992
+
+Image 5 (label 9)
+    2.0837
+    1.3970
+    0.8726
+    0.6461
+    0.3937
+    0.2707
+
+Image 6 (label 2)
+    2.4831
+    1.4978
+    1.0466
+    0.7880
+    0.5002
+    0.3544
+
+Image 7 (label 1)
+    2.5064
+    1.3688
+    0.7591
+    0.5203
+    0.3089
+    0.1935
+
+Image 8 (label 3)
+    3.3030
+    1.6943
+    1.1588
+    0.8658
+    0.5756
+    0.4070
+
+Image 9 (label 1)
+    2.2263
+    0.9396
+    0.4905
+    0.3279
+    0.1944
+    0.1178
+
+Image 10 (label 4)
+    2.2420
+    1.3486
+    0.8494
+    0.6169
+    0.3751
+    0.2586
+	</code></pre>
+<p>This looks pretty good—the top 1% of features are much larger than the rest.</p>
+<blockquote>
+<p>Look for discriminative features, those that occur with one label and rarely for others. (I arbitrarily define this as: the maximum average activation is <span class="math inline">\(&gt;1.5\)</span> times the second largest, and the maximum is at least 0.1. I exclude the digit 1 (indexed as 2).)</p>
+</blockquote>
+<div class="sourceCode"><pre class="sourceCode matlab"><code class="sourceCode matlab">sig_act_inds = intersect(find(m1&gt;=<span class="fl">1.5</span>*m2), find(m1&gt;<span class="fl">0.1</span>));
+sig_act_inds2 = intersect(sig_act_inds, find(am1 ~=<span class="fl">2</span>));</code></pre></div>
+<p>115/7200 features fit this criterion.</p>
 <h3 id="svd-svm">SVD-SVM</h3>
-<p>Run <code>qsub svd_svm.cmd</code> which runs <code>svd_testing2.m</code>, or <code>sbatch slurm_svd.cmd</code>. The results are saved in <code>accs_1.mat</code>.</p>
+<blockquote>
+<p>Do SVM coefficients have negative weights?</p>
+</blockquote>
+<p>They have both positive and negative weights.</p>
+<p><img src="../../../../images/pmi/coeffs.jpg"></p>
+<div class="sourceCode"><pre class="sourceCode matlab"><code class="sourceCode matlab">&gt;&gt; size(find(coeffs&gt;<span class="fl">0</span>))
+
+ans =
+
+           <span class="fl">1</span>       <span class="fl">26333</span>
+
+&gt;&gt; size(find(coeffs&lt;<span class="fl">0</span>))
+
+ans =
+
+           <span class="fl">1</span>       <span class="fl">30187</span></code></pre></div>
+<p>CODE: Run <code>svd_testing2.m</code>, or <code>sbatch slurm_svd.cmd</code>. The results are saved in <code>accs_1.mat</code>.</p>
 <p>Results:</p>
 <table>
 <thead>
@@ -165,16 +300,21 @@
 </thead>
 <tbody>
 <tr class="odd">
+<td style="text-align: left;">Original</td>
+<td style="text-align: left;">99.34</td>
+<td style="text-align: left;">99.44</td>
+</tr>
+<tr class="even">
 <td style="text-align: left;">500</td>
 <td style="text-align: left;">99.26</td>
 <td style="text-align: left;">99.44</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td style="text-align: left;">100</td>
 <td style="text-align: left;">97.5</td>
 <td style="text-align: left;">98.82</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td style="text-align: left;">50</td>
 <td style="text-align: left;">96.84</td>
 <td style="text-align: left;">96.84</td>
@@ -199,10 +339,60 @@
 </tr>
 </tbody>
 </table>
-<h3 id="unorganized">Unorganized</h3>
+<h3 id="pmi-and-geometry">PMI and geometry</h3>
+<p>CODE: Run <code>geo_pmi.m</code>.</p>
+<p>Hypothesis: The largest PMI values are for features that are for the same patch or adjacent patches.</p>
+<p>The features are in a <span class="math inline">\(6\times 6\)</span> grid; each of the 36 patches have a total of 200 features. We calculate the following PMI’s:</p>
+<ul>
+<li>Collect all the patches together, so we only have 200 features.</li>
+<li>Calculate PMI’s between pairs in the same patch. (without collecting, so 7200 features)</li>
+<li>Collect patches together, and calculate PMIs between each feature and the same feature translated right 1 patch.</li>
+<li>Calculate PMI’s only between pairs in horizontally adjacent patches.</li>
+<li>Collect patches together, and calculate PMIs between each feature and the same feature translated down 1 patch.</li>
+<li>Calculate PMI’s only between pairs in vertically adjacent patches.</li>
+<li>All PMI’s.</li>
+</ul>
+<p>The collection process reduces the PMI’s. It seems that many of the largest PMI’s do occur in the same or adjacent patch.</p>
+<pre><code>collect, same patch; no collect, same patch; horiz collect; horiz no collect; vert collect; vert no collect; all
+
+ans =
+
+  Columns 1 through 7
+
+   -0.9605   -0.3457   -0.2067   -0.1000   -0.0103    0.0783    0.1698
+   -1.0872   -0.0690   -0.0062    0.0281    0.0563    0.0880    0.1277
+   -1.5676   -0.3858   -0.2386   -0.1310   -0.0454    0.0409    0.1303
+   -0.9235   -0.0241    0.0307    0.0621    0.0919    0.1266    0.1695
+   -1.3763   -0.3810   -0.2237   -0.1053   -0.0072    0.0839    0.1708
+   -0.9163   -0.0108    0.0284    0.0530    0.0796    0.1093    0.1458
+   -1.1984   -0.0727   -0.0094    0.0253    0.0534    0.0847    0.1241
+
+  Columns 8 through 11
+
+    0.2735    0.3922    0.5678    1.3093
+    0.1821    0.2624    0.4080    2.4518
+    0.2220    0.3257    0.4557    1.1007
+    0.2240    0.3054    0.4534    2.6332
+    0.2607    0.3593    0.4863    0.9118
+    0.1942    0.2660    0.3970    2.6332
+    0.1778    0.2587    0.4034    2.6897</code></pre>
+<h4 id="are-the-largest-pmis-close-together">Are the largest PMI’s close together?</h4>
+<p>No.</p>
+<p>Pairs with large PMI aren’t necessarily adjacent. These are the top few PMI’s, with <span class="math inline">\((x_1,y_1), (x_2,y_2),\ve{(x_1,y_1)-(x_2,y_2)}\)</span> (locations within the grid). (The following data is without thresholding and excluding 1’s; with thresholding it also looks similar.)</p>
+<pre><code>    3.0000    4.0000    1.0000    1.0000    3.6056
+    1.0000    6.0000    1.0000    1.0000    5.0000
+    3.0000    5.0000    1.0000    1.0000    4.4721
+    2.0000    2.0000    1.0000    6.0000    4.1231
+    2.0000    2.0000    1.0000    1.0000    1.4142
+    1.0000    4.0000    1.0000    1.0000    3.0000
+    1.0000    1.0000    1.0000    1.0000         0
+    1.0000    4.0000    1.0000    1.0000    3.0000
+    3.0000    3.0000    1.0000    1.0000    2.8284
+    4.0000    5.0000    1.0000    1.0000    5.0000</code></pre>
+<h3 id="largest-pmis">Largest PMIs</h3>
 <p>I sorted pairs of features by PMI value and took the largest 10000 pairs. The majority of the pairs (~77%) have strongest activation with the digit 1. (The digit 1 has conditional PMI values that are much larger than all the other digits - don’t know what to do about this.) 85% of the pairs have highest activations with the same digit.</p>
 <p>If the pair has strong activation with 1, then it’s often much larger than the other activations.</p>
-<p>Otherwise this is not necessarily true. A typical non-1 feature has average activations with the 10 digits that looks something like this:</p>
+<p>Otherwise this is not necessarily true. A typical non-1 feature has average activations with the 10 digits that looks something like this: (NOTE: This was normalized—run again unnormalized to match the rest of the data.)</p>
 <pre><code>  Columns 1 through 7
 
     0.0708    0.2673    0.0940    0.1537    0.2122    0.1116    0.2627
@@ -211,95 +401,6 @@
 
     0.2947    0.1448    0.3361
 </code></pre>
-<h2 id="notes">Notes</h2>
-<p>Experiments:</p>
-<ul>
-<li><code>mnist_testing.m</code>: Prep data.</li>
-<li><code>svd_testing.m</code>: How does reducing the number of features through SVD affect classification accuracy?</li>
-<li><code>pairwise_mi.m</code>: Tests related to mutual information</li>
-<li><code>mi.m</code></li>
-<li><code>MI_GG.m</code></li>
-<li><code>rsvd.m</code></li>
-</ul>
-<pre><code>	         nlayers: 2
-             layer: {2x1 cell}
-    type_zerolayer: 2
-             ndesc: 7200
-
-
-                         numlayer: 1
-                        centering: 0
-    median_contrast_normalization: 0
-                           npatch: 5
-                      subsampling: 2
-                             smap: 50
-                   type_zerolayer: 2
-                            sigma: 0.7459
-                                Z: [25x50 double]
-                                w: [50x1 double]</code></pre>
-<p>In <code>pairwise_mi.m</code> there’s no normalization by scaling (<span class="math inline">\(-2\log\pat{scale}\)</span>).</p>
-<p>https://en.wikipedia.org/wiki/Conditional_mutual_information</p>
-<h2 id="theory">Theory</h2>
-<p>The right PMI measure to use here is <span class="math display">\[
-\ln \pf{\an{v,w}}{\an{v,\one}\an{w,\one}}.
-\]</span> Because if we assume the activations are like <span class="math inline">\((e^{\chi,v})_\chi\)</span>, then we still get that the expected dot product of these is <span class="math inline">\(\int e^{\an{\chi,v}}e^{\an{\chi,w}}\,d\chi\propto \exp\pa{\fc{\ve{v+w}^2}{2}}\)</span>.</p>
-<h2 id="thoughts">Thoughts</h2>
-<ul>
-<li>Is a picture more like a context or a document? We’re treating it like context (looking at all pairs of features there). But its size makes it seem more like a document. Or better: a sentence, because sentences are big enough to incorporate different features and small enough to still have a vector associated with it.</li>
-<li>How to incorporate convolutional ideas? Ex. if features <span class="math inline">\(f_1,f_2\)</span> are in the same relationship (translationally) as <span class="math inline">\(f_1',f_2'\)</span> then we expect PMI to be similar, so we should we really be looking at a <span class="math inline">\(7200\times 7200\)</span> matrix? How about look at PMI of adjacent features? (But they shouldn’t overlap…) Or look at PMI pre-convolution by another layer?</li>
-<li>What happens if you apply (convolutional?) DL to the learned features? Then apply SVD to the dimension-reduced vectors?</li>
-</ul>
-<h2 id="todo">Todo</h2>
-<h3 id="coding">Coding</h3>
-<ul>
-<li>Completed</li>
-<li>Compute PMI matrix.</li>
-<li>Plot histogram of PMI’s.</li>
-<li>Plot histogram of conditional PMI’s. (They don’t look like they have higher values… Try thresholding first? Look at features with largest PMI? Calculate entropies?)</li>
-<li>Look at correlations between PMI’s and distances between pairs. (There doesn’t seem to be any correlation.)</li>
-<li>Todo</li>
-<li>Train on feature vectors.</li>
-<li>Do weighted SVD on PMI matrix.</li>
-<li>Do dictionary learning on feature vectors/PMI vectors (?).</li>
-</ul>
-<p>(Compare to purely random.)</p>
-<h3 id="theory-1">Theory</h3>
-<p>Understand loss function for PMI.</p>
-<h2 id="scratch">Scratch</h2>
-<p>Qs</p>
-<ul>
-<li>Why is the normalization <code>nrm=mean(sqrt(sum(compTr.^2)))</code>?</li>
-</ul>
-<h2 id="steps-experiments">Steps, Experiments</h2>
-<p>Run experiments.</p>
-<pre><code>nohup nice -19 matlab -nodisplay -nodesktop -nojvm -nosplash &lt; run_experiments2.m &gt; output_2016-08-07.txt 2&gt;&amp;1 &amp;</code></pre>
-<div class="sourceCode"><pre class="sourceCode matlab"><code class="sourceCode matlab"><span class="co">%Get psiTr</span>
-pmi_experiments(<span class="st">'logs/model_mnist_5_2_0_2_2_0_50_200_0_1.000000e-01_1.000000e-01_1.000000e-01_2.mat'</span>);
-<span class="co">%get percentiles for each feature</span>
-pc= get_percentiles(psiTr);
-save(<span class="st">'pc_1.mat'</span>,<span class="st">'pc'</span>,<span class="st">'-v7.3'</span>);
-<span class="co">%calculate PMI after normalizing and deleting zero rows.</span>
-[P, inds] = calculate_pmi(psiTr); <span class="co">%inds give the indices that are kept (indices of nonzero rows)</span>
-<span class="co">%exploratory analysis</span>
-<span class="co">%pmi_experiments(P);</span>
-[all_pmi_pairs, positions, dists] = pmi_experiments2(P, inds');
-save(<span class="st">'all_pmi_pairs_1.mat'</span>,<span class="st">'all_pmi_pairs'</span>);
-save(<span class="st">'positions_1.mat'</span>,<span class="st">'positions'</span>);
-save(<span class="st">'dists_1.mat'</span>,<span class="st">'dists'</span>);
-
-<span class="co">%cpmi matrices</span>
-Ps = calculate_cpmi(psiTr, Ytr, <span class="st">'1'</span>);
-cpmi_experiments(<span class="st">'P_1'</span>);</code></pre></div>
-<h2 id="guide-to-data">Guide to data</h2>
-<ul>
-<li><code>psiTr_1.mat</code>, <code>psiTe_1.mat</code> etc. are the feature vectors for the training/test sets and the different architectures. The architectures are
-<ol type="1">
-<li><code>test_ckn([5 2 0],[2 2 0],[50 200 0],2,'mnist');</code> (7200, 0.57%)</li>
-<li><code>test_ckn([1 3 0],[2 2 0],[12 50 0],3,'mnist');</code> (1800, 0.63%)</li>
-<li><code>test_ckn([1 3 0],[2 4 0],[12 400 0],3,'mnist');</code> (3600, 0.41%)</li>
-</ol></li>
-<li></li>
-</ul>
 
   </div>
 
