@@ -76,7 +76,7 @@
       
        
         <p>Posted: 2016-08-01 
-          , Modified: 2016-09-11 
+          , Modified: 2016-09-14 
 	</p>
       
        <p>Tags: <a href="../../../../tags/PMI.html">PMI</a>, <a href="../../../../tags/neural%20nets.html">neural nets</a>, <a href="../../../../tags/vision.html">vision</a></p> 
@@ -92,6 +92,7 @@
  <li><a href="#pmi-suitability">PMI suitability</a></li>
  <li><a href="#svd-svm">SVD-SVM</a></li>
  <li><a href="#weighted-svd-svm">Weighted SVD-SVM</a></li>
+ <li><a href="#local-svd">Local SVD</a></li>
  <li><a href="#pmi-and-geometry">PMI and geometry</a><ul>
  <li><a href="#are-the-largest-pmis-close-together">Are the largest PMI’s close together?</a></li>
  </ul></li>
@@ -100,7 +101,8 @@
  </ul> </div>
 
   <div class="blog-main">
-    <h2 id="results">Results</h2>
+    <p><a href="pmi_images_scratch.html">scratch</a></p>
+<h2 id="results">Results</h2>
 <h3 id="distribution-of-pmi-pairs">Distribution of PMI pairs</h3>
 <p>CODE: First calculate <code>psiTr</code>. (It has been saved as <code>data/psiTr_1.mat</code>.) Then run <code>calculate_cpmi_unnormalized_script</code>.</p>
 <p>Over all pairs of nonzero features <span class="math inline">\(\{i,j\}\)</span>, this is the distribution of <span class="math inline">\(PMI(v_i,v_j)\)</span>. Note the long tails. Here we don’t normalize the features first. (You can also try with various normalizations, by passing in a normalization function to <code>calculate_cpmi_unnormalized</code>.) There are 5652/7200 nonzero features.</p>
@@ -339,6 +341,92 @@ ans =
 </tr>
 </tbody>
 </table>
+<h3 id="local-svd">Local SVD</h3>
+<p>CODE: Run <code>local_svd_svm.m</code> and <code>local_wsvm_script1.m</code>.</p>
+<p>Four settings:</p>
+<ul>
+<li>Run SVD with dimension 12 for each patch separately.</li>
+<li>Run SVD with dimension 12 for patches collectedly.</li>
+<li>Run WSVD with dimension 12 for each patch separately.</li>
+<li>Run WSVD with dimension 12 for patches collectedly.</li>
+</ul>
+<p>(Dimension <span class="math inline">\(36\times 12 = 432\)</span> total.)</p>
+<table>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Type</th>
+<th style="text-align: left;">Last</th>
+<th style="text-align: left;">Best</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">SVD, separately</td>
+<td style="text-align: left;">99.18</td>
+<td style="text-align: left;">99.24</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">SVD, collected</td>
+<td style="text-align: left;">99.34</td>
+<td style="text-align: left;">99.34</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">WSVD, separately</td>
+<td style="text-align: left;">99.1</td>
+<td style="text-align: left;">98.7</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">WSVD, collected</td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+</tr>
+</tbody>
+</table>
+<p>The training is stored in <code>../data/local_SVD.mat</code> (got overridden, unfortunately) and <code>../data/local_wsvd_collected.mat</code>.</p>
+<p>One instance of training collected SVD.</p>
+<pre><code>accVal =
+
+  Columns 1 through 7
+
+   85.6800   85.6800   85.6800   85.6800   85.7200   85.9200   85.9400
+
+  Columns 8 through 14
+
+   86.3400   87.1600   87.9600   89.3800   91.2400   92.6200   94.1400
+
+  Columns 15 through 21
+
+   95.3400   96.1400   96.8600   97.3200   97.8400   98.1200   98.4800
+
+  Columns 22 through 28
+
+   98.5800   98.8400   98.8600   98.9200   98.9600   99.0600   99.1600
+
+  Columns 29 through 31
+
+   99.1800   99.3000   99.2000
+</code></pre>
+<p>WSVD, separate</p>
+<pre><code>  Columns 1 through 7
+
+   92.1800   93.9200   95.0400   95.9400   96.6800   97.3400   97.8600
+
+  Columns 8 through 14
+
+   98.2200   98.4000   98.5800   98.7000   98.7600   98.9000   99.0000
+
+  Columns 15 through 21
+
+   99.0600   99.0400   99.0000   98.8600   99.1000   98.8800   98.3400
+
+  Columns 22 through 28
+
+   99.0000   98.9000   98.1600   98.9200   98.8200   99.0200   98.9800
+
+  Columns 29 through 31
+
+   98.9200   98.9600   98.7000
+</code></pre>
 <h3 id="pmi-and-geometry">PMI and geometry</h3>
 <p>CODE: Run <code>geo_pmi.m</code>.</p>
 <p>Hypothesis: The largest PMI values are for features that are for the same patch or adjacent patches.</p>
