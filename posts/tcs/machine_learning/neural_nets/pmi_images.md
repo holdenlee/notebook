@@ -1,7 +1,7 @@
 ---
 title: PMI for images
 published: 2016-08-01
-modified: 2016-09-14
+modified: 2016-09-15
 tags: PMI, neural nets, vision
 type: research
 showTOC: True
@@ -10,6 +10,22 @@ showTOC: True
 [scratch](pmi_images_scratch.html)
 
 # Results
+
+## Summary
+
+* Distribution of PMI of pairs of features has a longer tail than a Gaussian.
+* Restricting to one digit (conditional PMI) does not increase the PMI much, except for the digit 1, which has very large CPMI compared to all other digits.
+* Pairs of features with large PMI are more likely (weakly) to have large activation with the same digit.
+* Feature vectors are close to sparse. (See "PMI suitability" below.)
+* Call a feature discriminative if its maximum average activation with a digit is $\ge 0.1$ and is  $\ge 1.5$ times the average activation with the second most activated digit. There are 2080/7200 discriminative features, but only 155 of them do not correlate most strongly with "1", and some digits are not represented at all.
+* The maximum PMI (between a pair) is 2.69. However, the largest PMIs actually come from pairs with small maximum activation. If we remove all features that do not have an activation of $\ge 0.5, 1.0$ in some image, then the maximum PMI is 2.16, 1.79.
+* The learned SVM have both positive and negative weights. (The distribution of weights is roughly symmetric.)
+* Running SVM on the 500-dimensional SVD of the feature vectors results in performance that is as good as SVM on the feature vectors.
+* (Local SVD) Taking the 12-dimensional SVD of each of the 36 patches (either together or separately) (which reduces dimension to 432) results in similar performance.
+* Weighted SVD does not increase accuracy, though it seemed to make training faster in the local SVD experiment.
+* Some features from the same/adjacent patches have large PMI, but many (most) pairs with large PMI are not close by geometrically.
+* Most features do not have large activation with only one digit.
+
 
 ## Distribution of PMI pairs
 
@@ -229,8 +245,22 @@ sig_act_inds = intersect(find(m1>=1.5*m2), find(m1>0.1));
 sig_act_inds2 = intersect(sig_act_inds, find(am1 ~=2));
 ```
 
-115/7200 features fit this criterion. 
+2080/7200 features fit the first criteria, 115/7200 of them are not 1. The distribution across labels is
 
+```
+           0
+        1925
+           0
+           0
+           0
+         115
+          18
+           0
+           0
+          22
+
+```
+Some labels are not represented!
 
 ## SVD-SVM
 
@@ -238,7 +268,7 @@ sig_act_inds2 = intersect(sig_act_inds, find(am1 ~=2));
 
 They have both positive and negative weights.
 
-<img src="/images/pmi/coeffs.jpg">
+<img src="/images/pmi/coeffs.jpg"  width="500">
 
 ```matlab
 >> size(find(coeffs>0))
@@ -293,7 +323,7 @@ Four settings:
 |SVD, separately | 99.18 | 99.24 |
 |SVD, collected | 99.34 | 99.34 |
 |WSVD, separately | 99.1 | 98.7 |
-|WSVD, collected | | |
+|WSVD, collected | 99.2 | 99.2 |
 
 The training is stored in `../data/local_SVD.mat` (got overridden, unfortunately) and `../data/local_wsvd_collected.mat`.
 
