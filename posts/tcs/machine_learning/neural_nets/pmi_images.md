@@ -1,11 +1,13 @@
 ---
 title: PMI for images
 published: 2016-08-01
-modified: 2016-09-11
+modified: 2016-09-14
 tags: PMI, neural nets, vision
 type: research
 showTOC: True
 ---
+
+[scratch](pmi_images_scratch.html)
 
 # Results
 
@@ -271,6 +273,79 @@ Do weighted SVD (as in the NLP paper) and then train a SVM. Note this does worse
 | Dimension | Last | Best |
 |---|---|---|
 |50|95.44|96.8|
+
+## Local SVD
+
+CODE: Run `local_svd_svm.m` and `local_wsvm_script1.m`.
+
+Four settings:
+
+* Run SVD with dimension 12 for each patch separately. 
+* Run SVD with dimension 12 for patches collectedly.
+* Run WSVD with dimension 12 for each patch separately. 
+* Run WSVD with dimension 12 for patches collectedly.
+
+(Dimension $36\times 12 = 432$ total.)
+
+
+| Type | Last | Best |
+|---|---|---|
+|SVD, separately | 99.18 | 99.24 |
+|SVD, collected | 99.34 | 99.34 |
+|WSVD, separately | 99.1 | 98.7 |
+|WSVD, collected | | |
+
+The training is stored in `../data/local_SVD.mat` (got overridden, unfortunately) and `../data/local_wsvd_collected.mat`.
+
+One instance of training collected SVD.
+```
+accVal =
+
+  Columns 1 through 7
+
+   85.6800   85.6800   85.6800   85.6800   85.7200   85.9200   85.9400
+
+  Columns 8 through 14
+
+   86.3400   87.1600   87.9600   89.3800   91.2400   92.6200   94.1400
+
+  Columns 15 through 21
+
+   95.3400   96.1400   96.8600   97.3200   97.8400   98.1200   98.4800
+
+  Columns 22 through 28
+
+   98.5800   98.8400   98.8600   98.9200   98.9600   99.0600   99.1600
+
+  Columns 29 through 31
+
+   99.1800   99.3000   99.2000
+
+```
+
+WSVD, separate
+```
+  Columns 1 through 7
+
+   92.1800   93.9200   95.0400   95.9400   96.6800   97.3400   97.8600
+
+  Columns 8 through 14
+
+   98.2200   98.4000   98.5800   98.7000   98.7600   98.9000   99.0000
+
+  Columns 15 through 21
+
+   99.0600   99.0400   99.0000   98.8600   99.1000   98.8800   98.3400
+
+  Columns 22 through 28
+
+   99.0000   98.9000   98.1600   98.9200   98.8200   99.0200   98.9800
+
+  Columns 29 through 31
+
+   98.9200   98.9600   98.7000
+
+```
 
 ## PMI and geometry
 
