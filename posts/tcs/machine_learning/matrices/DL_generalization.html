@@ -10,7 +10,7 @@
   <meta name="description" content="Holden Lee's Research Notebook">
   <meta name="author" content="Holden Lee">
     
-  <title>Posts in category "tcs/machine_learning/matrices"</title>
+  <title>DL generalization</title>
 
   <!-- Bootstrap core CSS -->
   <link href="../../../../bootstrap/css/bootstrap.min.css" rel="stylesheet">
@@ -70,107 +70,59 @@
 <div class="container">
   <div id="content">
     <div class="page header">
-      <h1>Posts in category "tcs/machine_learning/matrices"</h1>
+      <h1>DL generalization</h1>
     </div>
     <div class="info">
       
+       
+        <p>Posted: 2016-09-19 
+          , Modified: 2016-09-19 
+	</p>
       
-      
+       <p>Tags: <a href="../../../../tags/dictionary%20learning.html">dictionary learning</a>, <a href="../../../../tags/sparse%20coding.html">sparse coding</a></p> 
     </div>
     
   </div>
   <!--/div-->
 
-  
+  <div class="toc"> <ul>
+ <li><a href="#group-sparsity">Group sparsity</a></li>
+ </ul> </div>
 
   <div class="blog-main">
-    <ul>
-    
-        <li>
-            <a href="../../../../posts/tcs/machine_learning/matrices/DL_generalization.html">DL generalization</a> (2016-09-19)
-        </li>
-    
-        <li>
-            <a href="../../../../posts/tcs/machine_learning/matrices/lda.html">LDA (Linear discriminant analysis)</a> (2016-09-04)
-        </li>
-    
-        <li>
-            <a href="../../../../posts/tcs/machine_learning/matrices/BH16.html">[BH16] Algorithms for generalized topic modeling</a> (2016-08-12)
-        </li>
-    
-        <li>
-            <a href="../../../../posts/tcs/machine_learning/matrices/k-means.html">k-means clustering</a> (2016-06-28)
-        </li>
-    
-        <li>
-            <a href="../../../../posts/tcs/machine_learning/matrices/ica.html">ICA (Independent components analysis)</a> (2016-06-28)
-        </li>
-    
-        <li>
-            <a href="../../../../posts/tcs/machine_learning/matrices/factor-analysis.html">Factor analysis</a> (2016-06-28)
-        </li>
-    
-        <li>
-            <a href="../../../../posts/tcs/machine_learning/matrices/dimensionality_reduction.html">Linear dimensionality reduction ([CG15])</a> (2016-06-28)
-        </li>
-    
-        <li>
-            <a href="../../../../posts/tcs/machine_learning/matrices/cca.html">CCA (Canonical correlation analysis)</a> (2016-06-28)
-        </li>
-    
-        <li>
-            <a href="../../../../posts/tcs/machine_learning/matrices/BGKP16.html">[BGKP16] Non-negative matrix factorization under heavy noise</a> (2016-06-27)
-        </li>
-    
-        <li>
-            <a href="../../../../posts/tcs/machine_learning/matrices/relevant_coordinates_svd.html">Relevant coordinates: Low-rank</a> (2016-06-07)
-        </li>
-    
-        <li>
-            <a href="../../../../posts/tcs/machine_learning/matrices/relevant_coordinates.html">Relevant coordinates</a> (2016-06-02)
-        </li>
-    
-        <li>
-            <a href="../../../../posts/tcs/machine_learning/matrices/topic_code.html">Inference for topic models: Code</a> (2016-05-18)
-        </li>
-    
-        <li>
-            <a href="../../../../posts/tcs/machine_learning/matrices/streaming_PCA.html">Towards a better understanding of streaming PCA (Yuanzhi Li)</a> (2016-05-10)
-        </li>
-    
-        <li>
-            <a href="../../../../posts/tcs/machine_learning/matrices/nmf_algorithm.html">NMF algorithm</a> (2016-04-22)
-        </li>
-    
-        <li>
-            <a href="../../../../posts/tcs/machine_learning/matrices/matrix-factorization.html">Matrix factorizations</a> (2016-04-04)
-        </li>
-    
-        <li>
-            <a href="../../../../posts/tcs/machine_learning/matrices/arora-topic-models.html">[A16] Provable algorithms for inference in topic models</a> (2016-04-04)
-        </li>
-    
-        <li>
-            <a href="../../../../posts/tcs/machine_learning/matrices/AGM14.html">[AGM14] New algorithms for learning incoherent and overcomplete dictionaries</a> (2016-04-02)
-        </li>
-    
-        <li>
-            <a href="../../../../posts/tcs/machine_learning/matrices/NMF.html">Non-negative matrix factorization</a> (2016-03-26)
-        </li>
-    
-        <li>
-            <a href="../../../../posts/tcs/machine_learning/matrices/AGMM15.html">[AGMM15] Simple, efficient, and neural algorithms for sparse coding</a> (2016-03-25)
-        </li>
-    
+    <h2 id="group-sparsity">Group sparsity</h2>
+<p>Suppose that we have group sparsity with partition <span class="math inline">\(\bigsqcup S_i\)</span>.</p>
+<p>In AGMM15, we get instead <span class="math inline">\(\ve{E_1+E_2+E_3}\le O^*\pa{\fc{\mu k^2 \ln^2 n}{m\sqrt n}\max |S_i|^2}\)</span>. For example, if <span class="math inline">\(\max|S_i|^2\)</span> is a constant, the bound is still the same. As long as this is <span class="math inline">\(\le O^*\pf{k}{m\ln m}\)</span>, the bound is still OK.</p>
+<p>(Basically we get larger terms in <span class="math inline">\(E_2,E_3\)</span>: In <span class="math inline">\(E_2\)</span> we have <span class="math inline">\(\sum_{i,j\in S_k, i\ne j} q_i \be_i\be_i' A_jA_j^T\)</span>—this is larger because <span class="math inline">\(i,j\)</span> cooccur, we have <span class="math inline">\(q_i\)</span> rather than <span class="math inline">\(q_{i,j}\)</span>, <span class="math inline">\(q_i\)</span> is <span class="math inline">\(\Te\pf km\)</span> not <span class="math inline">\(\Te \pf{k^2}{m^2}\)</span>. Lump these terms into the 1st sum. Ditto for <span class="math inline">\(E_3\)</span>.)</p>
+<p>See notebook 15 (end) for details.</p>
+<p>Rely on <a href="../../../../posts/math/algebra/linear/matrix_analysis/perturbation.html">modification of Davis-Kahan</a>.</p>
+<p>Take <span class="math inline">\(u,v\)</span> and estimate <span class="math inline">\(M_{u,v} = \E \an{u,Ax}\an{v,Ax}(Ax)(Ax)^T\)</span>. Instead of taking the largest singular vector, take the subspace spanned by all singular values of size <span class="math inline">\(\ge C_1 \fc{k}{m}\)</span>. What is the angle between this subspace and the projection of this onto the space of <span class="math inline">\(A_{\cdot i}\)</span> where <span class="math inline">\(i\in \Supp(u)\cap \Supp(v)\)</span>? By generalized Davis-Kahan, <span class="math inline">\(\fc{C_0\fc km - C_1\fc km}{C_2 \fc{k}{m\ln m}} = \fc{C_3}{\ln m}\)</span>.</p>
+<p>Now iteratively refine the set of subspaces <span class="math inline">\(\mathcal S\)</span>. Start with a subspace <span class="math inline">\(V\)</span>, and set of atoms <span class="math inline">\(\mathcal A=\phi\)</span>. Let <span class="math inline">\(\ep = \fc{C}{\ln m}\)</span>.</p>
+<p>Do a DFS.</p>
+<ul>
+<li>If the angle between <span class="math inline">\(V\)</span> and any other subspace in <span class="math inline">\(\mathcal S\)</span> is <span class="math inline">\(&gt;\ep\)</span>, not counting subspaces where all canonical angles between <span class="math inline">\(V\)</span> and it are <span class="math inline">\(&lt;\ep\)</span>, then find the orthogonal complement of atoms that are close to being in <span class="math inline">\(V\)</span>, and let that be an atomic subspace. Now go upwards in the tree.</li>
+<li>Otherwise, approximately intersect <span class="math inline">\(V\)</span> with a subspace making it smaller, to get <span class="math inline">\(W\)</span>. Draw <span class="math inline">\(V\to W\)</span>. Repeat with <span class="math inline">\(W\)</span>.</li>
 </ul>
-
-
+<p>NO: These subspaces aren’t spanned by the vectors!</p>
 
   </div>
 
     
 
+    <!-- Extension : Sharing buttons @ www.sharethis.com -->
+    <span class="st_facebook_large" displayText="Facebook"></span>
+    <span class="st_twitter_large" displayText="Tweet"></span>
+    <span class="st_googleplus_large" displayText="Google +"></span>
+    <span class="st_reddit_large" displayText="Reddit"></span>
+    <span class="st__large" displayText></span>
 
+    <div id="disqus_thread"></div>
+    
+
+
+  
+    <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+  </div>
   
 </div>
 
@@ -215,6 +167,9 @@
 
 <!-- Extension : Disqus @ http://disqus.com -->
 <!-- Extension : InlineDisqussions @ https://github.com/tsi/inlineDisqussions -->
+
+<script src="../../../../disqus/js/disqus.js"></script>
+
 
 
 <!-- Extension : Google Analytics -->

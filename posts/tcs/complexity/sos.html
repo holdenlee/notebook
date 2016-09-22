@@ -102,6 +102,9 @@
  <li><a href="#chapter-2-1">Chapter 2</a></li>
  </ul></li>
  <li><a href="#misc.">Misc.</a></li>
+ <li><a href="#proofs-beliefs-and-algorithms-through-the-lens-of-sum-of-squares">Proofs, Beliefs, and Algorithms through the lens of Sum-of-Squares</a><ul>
+ <li><a href="#reading">Reading</a></li>
+ </ul></li>
  </ul> </div>
 
   <div class="blog-main">
@@ -213,6 +216,71 @@ This is the <strong>max-cut</strong> problem.</li>
 <h2 id="misc.">Misc.</h2>
 <ul>
 <li>SoS in universal learning (Paul Christiano)</li>
+</ul>
+<h2 id="proofs-beliefs-and-algorithms-through-the-lens-of-sum-of-squares">Proofs, Beliefs, and Algorithms through the lens of Sum-of-Squares</h2>
+<ul>
+<li><a href="http://sos16.dsteurer.org">Course</a></li>
+<li><a href="http://sumofsquares.org">Lecture notes</a></li>
+</ul>
+<p>Applications</p>
+<ul>
+<li>Math</li>
+<li>Algorithms</li>
+<li>Complexity</li>
+<li>Information</li>
+<li>Physics</li>
+<li>Optimization</li>
+<li>Learning</li>
+</ul>
+<p>Sum-of-squares is a powerful meta-algorithm.</p>
+<p>Other meta-algorithms:</p>
+<ul>
+<li>Gradient descent
+<ul>
+<li>Multiplicative weight updates, FTRL</li>
+</ul></li>
+</ul>
+<p>Gradient descent, integer linear programming: for a given problem there are many ways of formulating it. It depends crucially on how you set it up. SoS doesn’t suffer this. There is a mechanical way to apply it.</p>
+<ul>
+<li>Applies to “any” problem</li>
+<li>Often matches best known theoretical guarantees</li>
+<li>Sometimes significantly better</li>
+<li>Plausible: SOS is “optimal” for many problems.</li>
+<li>Strongest evidence for difficulty of problems.</li>
+<li>SOS is driven by duality between proofs and beliefs. Compare to belief propagation.</li>
+</ul>
+<p>The vanilla version is impractical, but there are efforts to extract practical algorithms. They resemble heuristic algorithms used in practice.</p>
+<p>Given <span class="math inline">\(p\in \R[x_1,\ldots, x_n]\)</span>, <span class="math inline">\(p\ge 0\)</span> over <span class="math inline">\(\R^n\)</span>,</p>
+<ul>
+<li>(Hilbert) It is not always possible to write it as a sum of squares of polynomials.</li>
+<li>(Artin) It is always possible to write it as a sos of rational functions.</li>
+</ul>
+<p>Krivine characterized systems of polynomial inequalities without solutions over <span class="math inline">\(\R^n\)</span>. (Positivstellensatz, cf. Farkas lemma)</p>
+<p>Given <span class="math inline">\(f:\{0,1\}^n\to \R\)</span> (given as coefficients in monomial basis up to degree <span class="math inline">\(\deg f\)</span>), is <span class="math inline">\(f\ge 0\)</span> or <span class="math inline">\(\exists x\in \{0,1}^n, f(x)&lt;0\)</span>? The number of coefficients is <span class="math inline">\(\le n^{\deg f}\)</span>. (Every monomial is actually a subset.) This is NP-hard for degree 2.</p>
+<p>Max-cut: <span class="math display">\[
+\max cut(G) \le c \iff c - \sum_{\{i,j\}\in E(G)} (x_i-x_j)^2 \ge 0.
+\]</span></p>
+<p>Given <span class="math inline">\(f\)</span>, the algorithm outputs either a short proof for <span class="math inline">\(f&gt;0\)</span> or an object ptends to be a collection of <span class="math inline">\(x\in \{0,1\}^n\)</span>.</p>
+<p>Degree <span class="math inline">\(d\)</span> SoS certificate for <span class="math inline">\(f\)</span>: <span class="math inline">\(\deg g_i\le \fc d2\)</span>, <span class="math display">\[\forall x\in \{0,1\}^n, f(x) = \sumo iv g_i(x)^2.\]</span> It can be the case that <span class="math inline">\(\deg g_i&gt;\deg f\)</span>! That would be true over <span class="math inline">\(\R\)</span>, but we are working over <span class="math inline">\(\{0,1\}^n\)</span>.</p>
+<p>For degree 2, we can do this efficiently over <span class="math inline">\(\R\)</span>; this question is hard because we restrict to the hypercube.</p>
+<p>If <span class="math inline">\(f\)</span> has a degree <span class="math inline">\(d\)</span> sos certificate, we can find degree-<span class="math inline">\(d\)</span> certificate for <span class="math inline">\(f+2^{-n^d}\)</span> in time <span class="math inline">\(n^{O(d)}\)</span>. (Can’t solve general convex problems exactly.)</p>
+<!-- sdp feasibility -->
+<p><strong>Theorem</strong>. For all <span class="math inline">\(G\)</span>, there exists a degree-2 sos certificate, <span class="math inline">\(\max(f_G) - 0.878 f_G\)</span>. This estimates MAX-CUT up to <span class="math inline">\(0.878\)</span>.</p>
+<p>Open question: if we replace 2 by 4, can we replace <span class="math inline">\(0.878\)</span> by a larger constant? This would disprove unique games.</p>
+<!-- constructions of graphs? can make constant 1.-->
+<!-- known algorithms that solve decision problem solves search problem-->
+<!-- certificate starts existing in 0.878(max-cut) and (max-cut)-->
+<p><strong>Theorem 5</strong>. <span class="math inline">\(f\)</span> has degree-<span class="math inline">\(d\)</span> sos certificate iff there exists positive semidefinite <span class="math inline">\(A\)</span> such that <span class="math display">\[\forall x\in \{0,1\}^n, f(x) = \an{(1,x)^{\ot d2}, A (1,x)^{\ot \fc d2}}.\]</span> (Proof. <span class="math inline">\(A\)</span> has a square root.)</p>
+<!-- affine linear subspace -->
+<p><strong>Theorem</strong>. If <span class="math inline">\(f\ge 0\)</span>, then it has a degree <span class="math inline">\(2n\)</span> sos certificate.</p>
+<p><em>Proof</em>. <span class="math inline">\(f=g^2, g=\sqrt f\)</span>, <span class="math inline">\(\deg g\le n\)</span>, or <span class="math inline">\(f(x) = \sum_{y\in \{0,1\}^n} (\sqrt{f(y)}\one_y(x))^2\)</span>.</p>
+<p><em>Proof (finding sos certificates)</em>. <span class="math inline">\(f(x) = \an{(1,x)^{\ot d/2}, F(1,x)^{\ot d/2}}\)</span>. Find <span class="math inline">\(A\)</span>, <span class="math display">\[
+A-T\in W = \set{Q}{\an{(1,x)^{\ot d/2}, Q(1,x)^{\ot d/2}}\equiv 0\text{ over }\{0,1\}^n}.
+\]</span> Look at <span class="math inline">\(F+W\cap\)</span>cone.</p>
+<p>We just need an efficient separation oracle.</p>
+<h3 id="reading">Reading</h3>
+<ul>
+<li><a href="https://windowsontheory.org/2016/08/27/proofs-beliefs-and-algorithms-through-the-lens-of-sum-of-squares/">Windows on theory</a>, <a href="http://scrible.com/s/2KMCS">h</a></li>
 </ul>
 <section class="footnotes">
 <hr />
