@@ -9,7 +9,7 @@ showTOC: True
 
 Reference: Barak's notes. Barak and Steurer's survey.
 
-#Introduction
+# Introduction
 
 "Sum-of-squares" is an algorithm that attempts to find feasible solutions to systems of polynomial inequalities, or a proof that there is no solution. It is widely applicable because many computational problems can naturally be put into the form of polynomial inequalities (ex. $k$-SAT can be encoded with degree $k$). The degree $d$ of sum-of-squares is a tunable parameter; the algorithm runs in $n^d$ time. We can look at
 
@@ -139,9 +139,9 @@ $$\wt E\sum (x_i-x_{i+1})^2>4(n-1).$$
 
 Proof: The squared triangle inequality holds for degree-4 pseudodistributions. Sum up inequalities $\wt E(x_i-x_{i+1})^2 \le \sum_{j\ne i} \wt E(x_j+x_{j+1})^2$.
 
-#Exercises
+# Exercises
 
-##Chapter 1
+## Chapter 1
 
 1. 
 2. Use linearity.
@@ -159,10 +159,114 @@ Proof: The squared triangle inequality holds for degree-4 pseudodistributions. S
 14. 
 15. 
 
-##Chapter 2
+## Chapter 2
 
 1. Imitate the proof of CS. We have $\wt{\EE_{\mu}} t^2P^2-2tPQ+Q^2$. Now set the discriminant to be $\le 0$.
 
-#Misc.
+# Misc.
 
 * SoS in universal learning (Paul Christiano)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# Proofs, Beliefs, and Algorithms through the lens of Sum-of-Squares
+
+* [Course](http://sos16.dsteurer.org)
+* [Lecture notes](http://sumofsquares.org)
+
+Applications
+
+* Math
+* Algorithms
+* Complexity
+* Information
+* Physics
+* Optimization
+* Learning
+
+Sum-of-squares is a powerful meta-algorithm.
+
+Other meta-algorithms:
+
+* Gradient descent
+    * Multiplicative weight updates, FTRL
+
+Gradient descent, integer linear programming: for a given problem there are many ways of formulating it. It depends crucially on how you set it up. SoS doesn't suffer this. There is a mechanical way to apply it.
+
+* Applies to "any" problem
+* Often matches best known theoretical guarantees
+* Sometimes significantly better
+* Plausible: SOS is "optimal" for many problems.
+* Strongest evidence for difficulty of problems.
+* SOS is driven by duality between proofs and beliefs. Compare to belief propagation.
+
+The vanilla version is impractical, but there are efforts to extract practical algorithms. They resemble heuristic algorithms used in practice.
+
+Given $p\in \R[x_1,\ldots, x_n]$, $p\ge 0$ over $\R^n$, 
+
+* (Hilbert) It is not always possible to write it as a sum of squares of polynomials.
+* (Artin) It is always possible to write it as a sos of rational functions.
+
+Krivine characterized systems of polynomial inequalities without solutions over $\R^n$. (Positivstellensatz, cf. Farkas lemma)
+
+Given $f:\{0,1\}^n\to \R$ (given as coefficients in monomial basis up to degree $\deg f$), is $f\ge 0$ or $\exists x\in \{0,1}^n, f(x)<0$? The number of coefficients is $\le n^{\deg f}$. (Every monomial is actually a subset.) This is NP-hard for degree 2.
+
+Max-cut:
+$$
+\max cut(G) \le c \iff c - \sum_{\{i,j\}\in E(G)} (x_i-x_j)^2 \ge 0.
+$$
+
+Given $f$, the algorithm outputs either a short proof for $f>0$ or an object ptends to be a collection of $x\in \{0,1\}^n$.
+
+Degree $d$ SoS certificate for $f$: $\deg g_i\le \fc d2$, 
+$$\forall x\in \{0,1\}^n, f(x) = \sumo iv g_i(x)^2.$$
+It can be the case that $\deg g_i>\deg f$! That would be true over $\R$, but we are working over $\{0,1\}^n$.
+
+For degree 2, we can do this efficiently over $\R$; this question is hard because we restrict to the hypercube.
+
+If $f$ has a degree $d$ sos certificate, we can find degree-$d$ certificate for $f+2^{-n^d}$ in time $n^{O(d)}$. (Can't solve general convex problems exactly.)
+
+<!-- sdp feasibility -->
+
+**Theorem**. For all $G$, there exists a degree-2 sos certificate, $\max(f_G) - 0.878 f_G$. This estimates MAX-CUT up to $0.878$.
+
+Open question: if we replace 2 by 4, can we replace $0.878$ by a larger constant? This would disprove unique games.
+
+<!-- constructions of graphs? can make constant 1.-->
+
+<!-- known algorithms that solve decision problem solves search problem-->
+<!-- certificate starts existing in 0.878(max-cut) and (max-cut)-->
+
+**Theorem 5**. $f$ has degree-$d$ sos certificate iff there exists positive semidefinite $A$ such that 
+$$\forall x\in \{0,1\}^n, f(x) = \an{(1,x)^{\ot d2}, A (1,x)^{\ot \fc d2}}.$$
+(Proof. $A$ has a square root.)
+
+<!-- affine linear subspace -->
+
+**Theorem**. If $f\ge 0$, then it has a degree $2n$ sos certificate.
+
+*Proof*. $f=g^2, g=\sqrt f$, $\deg g\le n$, or $f(x) = \sum_{y\in \{0,1\}^n} (\sqrt{f(y)}\one_y(x))^2$.
+
+*Proof (finding sos certificates)*. $f(x) = \an{(1,x)^{\ot d/2}, F(1,x)^{\ot d/2}}$. Find $A$,
+$$
+A-T\in W = \set{Q}{\an{(1,x)^{\ot d/2}, Q(1,x)^{\ot d/2}}\equiv 0\text{ over }\{0,1\}^n}.
+$$
+Look at $F+W\cap$cone.
+
+We just need an efficient separation oracle.
+
+## Reading
+
+* [Windows on theory](https://windowsontheory.org/2016/08/27/proofs-beliefs-and-algorithms-through-the-lens-of-sum-of-squares/), [h](http://scrible.com/s/2KMCS)
