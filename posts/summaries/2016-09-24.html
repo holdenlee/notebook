@@ -10,7 +10,7 @@
   <meta name="description" content="Holden Lee's Research Notebook">
   <meta name="author" content="Holden Lee">
     
-  <title>Posts in category "summaries"</title>
+  <title>Weekly summary 2016-09-24</title>
 
   <!-- Bootstrap core CSS -->
   <link href="../../bootstrap/css/bootstrap.min.css" rel="stylesheet">
@@ -70,83 +70,64 @@
 <div class="container">
   <div id="content">
     <div class="page header">
-      <h1>Posts in category "summaries"</h1>
+      <h1>Weekly summary 2016-09-24</h1>
     </div>
     <div class="info">
       
+       
+        <p>Posted: 2016-09-23 
+          , Modified: 2016-09-23 
+	</p>
       
-      
+       <p>Tags: <a href="../../tags/none.html">none</a></p> 
     </div>
     
   </div>
   <!--/div-->
 
-  
+  <div class="toc"> <ul>
+ <li><a href="#threads">Threads</a></li>
+ </ul> </div>
 
   <div class="blog-main">
-    <ul>
-    
-        <li>
-            <a href="../../posts/summaries/2016-09-24.html">Weekly summary 2016-09-24</a> (2016-09-23)
-        </li>
-    
-        <li>
-            <a href="../../posts/summaries/2016-09-17.html">Weekly summary 2016-09-17</a> (2016-09-19)
-        </li>
-    
-        <li>
-            <a href="../../posts/summaries/2016-09-10.html">Weekly summary 2016-09-10</a> (2016-09-04)
-        </li>
-    
-        <li>
-            <a href="../../posts/summaries/2016-09-03.html">Weekly summary 2016-09-03</a> (2016-08-30)
-        </li>
-    
-        <li>
-            <a href="../../posts/summaries/2016-08-27.html">Weekly summary 2016-08-27</a> (2016-08-27)
-        </li>
-    
-        <li>
-            <a href="../../posts/summaries/2016-08-13.html">Weekly summary 2016-08-13</a> (2016-08-13)
-        </li>
-    
-        <li>
-            <a href="../../posts/summaries/2016-08-06.html">Weekly summary 2016-08-06</a> (2016-08-06)
-        </li>
-    
-        <li>
-            <a href="../../posts/summaries/2016-05-14.html">Weekly summary 5-14-16</a> (2016-05-11)
-        </li>
-    
-        <li>
-            <a href="../../posts/summaries/2016-04-30.html">Weekly summary 4-30-16</a> (2016-04-30)
-        </li>
-    
-        <li>
-            <a href="../../posts/summaries/notes_index.html">Notes index</a> (2016-04-08)
-        </li>
-    
-        <li>
-            <a href="../../posts/summaries/2016-04-09.html">Weekly summary 4-9-16</a> (2016-04-04)
-        </li>
-    
-        <li>
-            <a href="../../posts/summaries/2016-04-02.html">Weekly summary 4-2-16</a> (2016-04-02)
-        </li>
-    
-        <li>
-            <a href="../../posts/summaries/2016-02-24-zeev.html">Conversation with Zeev 2-24-16</a> (2016-02-27)
-        </li>
-    
+    <p><a href="2016-09-17.html">Last week</a>.</p>
+<h2 id="threads">Threads</h2>
+<ul>
+<li>PMI: WSVD + DL/NMF. <a href="../../posts/tcs/machine_learning/neural_nets/pmi_images.html">PMI for images</a>
+<ul>
+<li>Used NMF code from <a href="http://www.ee.columbia.edu/~grindlay/code.html">here</a>.</li>
+</ul></li>
+<li><a href="../../posts/tcs/machine_learning/matrices/DL_generalization.html">DL generalization</a>
+<ul>
+<li>Can we tackle NMF using similar algorithm as DL—trying to isolate a column of A by looking at samples which are close to a pair of samples? Before, closeness was inner product; now use another kernel? Ex. TV distance, or KL, or some kind of regularized KL. Ex.
+<ul>
+<li>In what sense is this important? I would still rely on a distributional assumption on the <span class="math inline">\(x\)</span>’s. (DL algorithm required this: sparsity and some kind of independence.) But topic modeling already solves this.</li>
+<li>Why can’t we solve NMF using the topic modeling, saying that the distribution is simply the samples that we get?</li>
+</ul></li>
+</ul></li>
+<li>SoS</li>
 </ul>
-
-
+<p>TODO: run again with 1800-dimensional.</p>
+<p>TODO: Review polysemy paper, and understand CKN paper well to rederive equations.</p>
 
   </div>
 
     
 
+    <!-- Extension : Sharing buttons @ www.sharethis.com -->
+    <span class="st_facebook_large" displayText="Facebook"></span>
+    <span class="st_twitter_large" displayText="Tweet"></span>
+    <span class="st_googleplus_large" displayText="Google +"></span>
+    <span class="st_reddit_large" displayText="Reddit"></span>
+    <span class="st__large" displayText></span>
 
+    <div id="disqus_thread"></div>
+    
+
+
+  
+    <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+  </div>
   
 </div>
 
@@ -191,6 +172,9 @@
 
 <!-- Extension : Disqus @ http://disqus.com -->
 <!-- Extension : InlineDisqussions @ https://github.com/tsi/inlineDisqussions -->
+
+<script src="../../disqus/js/disqus.js"></script>
+
 
 
 <!-- Extension : Google Analytics -->

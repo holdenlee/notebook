@@ -86,7 +86,15 @@
   <!--/div-->
 
   <div class="toc"> <ul>
- <li><a href="#group-sparsity">Group sparsity</a></li>
+ <li><a href="#group-sparsity">Group sparsity</a><ul>
+ <li><a href="#from-subspaces-to-vectors">From subspaces to vectors</a><ul>
+ <li><a href="#try-1">Try 1</a></li>
+ <li><a href="#try-2">Try 2</a></li>
+ </ul></li>
+ </ul></li>
+ <li><a href="#big-picture">Big picture</a><ul>
+ <li><a href="#dl-experiments">DL experiments</a></li>
+ </ul></li>
  </ul> </div>
 
   <div class="blog-main">
@@ -98,12 +106,72 @@
 <p>Rely on <a href="../../../../posts/math/algebra/linear/matrix_analysis/perturbation.html">modification of Davis-Kahan</a>.</p>
 <p>Take <span class="math inline">\(u,v\)</span> and estimate <span class="math inline">\(M_{u,v} = \E \an{u,Ax}\an{v,Ax}(Ax)(Ax)^T\)</span>. Instead of taking the largest singular vector, take the subspace spanned by all singular values of size <span class="math inline">\(\ge C_1 \fc{k}{m}\)</span>. What is the angle between this subspace and the projection of this onto the space of <span class="math inline">\(A_{\cdot i}\)</span> where <span class="math inline">\(i\in \Supp(u)\cap \Supp(v)\)</span>? By generalized Davis-Kahan, <span class="math inline">\(\fc{C_0\fc km - C_1\fc km}{C_2 \fc{k}{m\ln m}} = \fc{C_3}{\ln m}\)</span>.</p>
 <p>Now iteratively refine the set of subspaces <span class="math inline">\(\mathcal S\)</span>. Start with a subspace <span class="math inline">\(V\)</span>, and set of atoms <span class="math inline">\(\mathcal A=\phi\)</span>. Let <span class="math inline">\(\ep = \fc{C}{\ln m}\)</span>.</p>
+<h3 id="from-subspaces-to-vectors">From subspaces to vectors</h3>
+<h4 id="try-1">Try 1</h4>
 <p>Do a DFS.</p>
 <ul>
 <li>If the angle between <span class="math inline">\(V\)</span> and any other subspace in <span class="math inline">\(\mathcal S\)</span> is <span class="math inline">\(&gt;\ep\)</span>, not counting subspaces where all canonical angles between <span class="math inline">\(V\)</span> and it are <span class="math inline">\(&lt;\ep\)</span>, then find the orthogonal complement of atoms that are close to being in <span class="math inline">\(V\)</span>, and let that be an atomic subspace. Now go upwards in the tree.</li>
 <li>Otherwise, approximately intersect <span class="math inline">\(V\)</span> with a subspace making it smaller, to get <span class="math inline">\(W\)</span>. Draw <span class="math inline">\(V\to W\)</span>. Repeat with <span class="math inline">\(W\)</span>.</li>
 </ul>
 <p>NO: These subspaces aren’t spanned by the vectors!</p>
+<h4 id="try-2">Try 2</h4>
+<p>This seems difficult if we don’t make assumptions.</p>
+<p>Let’s suppose for each vector, it is in a small subset of things that cooccur. (Make this more precise.) Ex. constant size.</p>
+<p>The issue is that some subspaces/vectors will be inside a <span class="math inline">\(S_i\)</span> (one of the groups in group sparsity) completely—if we can get all the vectors inside a <span class="math inline">\(S_i\)</span> all we have to do is get a basis, good—but others will be inside <span class="math inline">\(\spn(S_i,S_j)\)</span>, or more, and we have to tell them apart.</p>
+<p>Idea: do a best-first search, adding subspaces until <span class="math inline">\(\si_{C+1}\)</span> is too large, in which case discard it. (Singular value may not be the right measure here. Maybe: max perpendicular to span of <span class="math inline">\(v_1,\ldots, v_C\)</span>?) The large subsets we get will be inside a <span class="math inline">\(S_i\)</span>.</p>
+<p>(Or some kind of clustering?)</p>
+<h2 id="big-picture">Big picture</h2>
+<p>What are we trying to do here?</p>
+<ul>
+<li>Generalize the settings under which we have provable DL.</li>
+<li>Define agnostic DL as something worth studying and approachable.
+<ul>
+<li>Idea that neural nets are easier to train if you have more nodes. More opportunities to converge to columns of <span class="math inline">\(A\)</span>.
+<ul>
+<li>Look at convergene in easy case?</li>
+</ul></li>
+<li>Have <em>any</em> provable result on agnostic DL.
+<ul>
+<li>Why we would have agnostic rather than normal: some features are correlated, so the basis could rotate within the subspace of correlated vectors.</li>
+</ul></li>
+</ul></li>
+</ul>
+<p>We already have practical DL algorithms that just rely on AM and adding sparsity penalty. How could theory improve this? (AGM14, AGMM15 don’t look like they are used in practice.) Are there theoretical guarantees for AM with sparsity penalty? (There are theoretical guarantees for AM w/ decoding.)</p>
+<p>What’s a better model in practice: DL with sparsity or <span class="math inline">\(L^1\)</span>? (And how does ICA compare?)</p>
+<p>TODO: program DL and look at empirical performance.</p>
+<p>TODO: 2-layer NN learning dictionary?</p>
+<p>Dual view between <span class="math inline">\(x=Ah\)</span> and <span class="math inline">\(h=A^Tx\)</span>?</p>
+<p>Sparse recovery has this thing where <span class="math inline">\(\ved_1\)</span> actually optimizes <span class="math inline">\(\ved_0\)</span>. Not true of sparse coding?</p>
+<h3 id="dl-experiments">DL experiments</h3>
+<p>What to try?</p>
+<ul>
+<li>Program classic AM DL with <span class="math inline">\(L^1\)</span> sparsity penalty.</li>
+<li>Program AGMM15 DL.</li>
+<li>ICA.</li>
+</ul>
+<p>Test sets</p>
+<ul>
+<li>Image patches</li>
+<li>Words embeddings</li>
+<li>Artificial data (sparse, Laplace, etc. <span class="citation" data-cites="Bianca">@Bianca</span>)</li>
+<li>Artificial group-sparse data, or data correlated in some way (ex. geometrically).</li>
+</ul>
+<p>How to evaluate?</p>
+<ul>
+<li>Closeness of columns.</li>
+<li>Loss: how much sparsity, and how far away. (Reconstruction error)
+<ul>
+<li>How does reconstruction error compare to SVD? (Make dimensions comparable.)</li>
+</ul></li>
+<li>Put in random SVM on top. Can it learn the SVM well?</li>
+</ul>
+<p>Experiments with NN</p>
+<ul>
+<li>Top-<span class="math inline">\(k\)</span> thresholding to enforce <span class="math inline">\(k\)</span>-sparsity. Autoencoder?</li>
+<li>Try group-sparse penalty/architecture.</li>
+<li>Does adding more nodes improve things (cf. agnostic DL)?</li>
+</ul>
+<p>I think sparseness helps interpretability. Does convergence become quicker if we have sparsity?</p>
 
   </div>
 
