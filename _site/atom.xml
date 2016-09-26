@@ -8,8 +8,199 @@
         <name>Holden Lee</name>
         <email>oldheneel@gmail.com</email>
     </author>
-    <updated>2016-09-19T00:00:00Z</updated>
+    <updated>2016-09-24T00:00:00Z</updated>
     <entry>
+    <title>Semantic shared response</title>
+    <link href="http://holdenlee.github.io/notebook/posts/cs/semantic_shared_response.html" />
+    <id>http://holdenlee.github.io/notebook/posts/cs/semantic_shared_response.html</id>
+    <published>2016-09-24T00:00:00Z</published>
+    <updated>2016-09-24T00:00:00Z</updated>
+    <summary type="html"><![CDATA[
+<div class="container">
+  <div id="content">
+    <div class="page header">
+      <h1>Semantic shared response</h1>
+    </div>
+    <div class="info">
+      
+       
+        <p>Posted: 2016-09-24 
+          , Modified: 2016-09-24 
+	</p>
+      
+       <p>Tags: <a href="/tags/neuroscience.html">neuroscience</a></p> 
+    </div>
+    
+  </div>
+  <!--/div-->
+
+  
+
+  <div class="blog-main">
+    <p>fMRI: <span class="math inline">\(10^5\)</span> <span class="math inline">\((3mm)^3\)</span> voxels, measuring blood flow.</p>
+<h2 id="prior-work">Prior work</h2>
+<ul>
+<li>Mitchell 08: pictures of concrete nouns</li>
+<li>Naselaris 09: images of scenes</li>
+<li>Pereira 11: generating words</li>
+<li>N11: reconstruct movie images</li>
+<li>Wehbe 14: chapter of Harry Potter (cf. speed reading)</li>
+<li>Huth 16: auditory stories</li>
+</ul>
+<h2 id="goal">Goal</h2>
+<ul>
+<li>Decode fMRI response semantics. Match fMRI responses to annotations
+<ul>
+<li>Sherlock scenes annotated. 2000 scenes.</li>
+</ul></li>
+<li>Leverage multiple subject views to extract better semantics. (16 subjects)</li>
+</ul>
+<h2 id="methods">Methods</h2>
+<ul>
+<li>Pick a few brain regions to focus on. Ex. default node network (2006): related to narrative.
+<ul>
+<li>Hypothesis: this region does the best.</li>
+<li><span class="math inline">\(\approx 2000\)</span> voxels for each mask. (Masks are a small part of <span class="math inline">\(10^5\)</span>.)</li>
+</ul></li>
+<li>Shared response model <span class="math display">\[\amin_{W^TW = I;S} \sumo ik \ve{X_i-W_iS}_F.\]</span> (Columns of <span class="math inline">\(W\)</span> orthogonal. voxels<span class="math inline">\(\times\)</span>features (<span class="math inline">\(2000 \times 20\)</span>)) <!-- features x times -->
+<ul>
+<li>Probabilistic model <span class="math inline">\(s_t\sim N(0,\Si_s)\)</span>. <span class="math inline">\(x_{it}|s_t\sim N(W_is_t+\mu_i, \rh_i^2I)\)</span>.</li>
+</ul></li>
+</ul>
+<p>Distributional hypothesis of meaning: meaning comes from co-occurrence.</p>
+<p>We have multiple words in each annotation. Approaches:</p>
+<ul>
+<li>Unweighted: Averaging</li>
+<li>Weighted: By inverse of frequency</li>
+</ul>
+<p>(Note: words have different meanings. Use DL to split up words into atoms. Ignores polysemy.)</p>
+<p>Let <span class="math inline">\(A=\)</span>fMRI, <span class="math inline">\(B=\)</span>text. We learn a linear map <span class="math inline">\(\Om A\approx B\)</span>. We can vary the way we constrain the maps.</p>
+<!--OLS-->
+<ol type="1">
+<li><span class="math inline">\(\Om\)</span> orthogonal.</li>
+<li><p>Ridge regression (penalizes by norm of columns).</p></li>
+<li>20 dimensional SRM vs. averaging</li>
+<li>Weighted vs. unweighted</li>
+<li>Procrustes vs. ridge</li>
+<li><p>Temporal average subtraction vs. not.</p></li>
+</ol>
+<p>Annotation vectors 1000-dimensional.</p>
+<p>Is true chunk in top 5? (See table in paper.)</p>
+<!--
+| Mask | Performance |
+|---|---|
+|DMN| -->
+<p>Average, else correlated</p>
+<!--
+Cathy - Cog neuro, Ken Norman
+Zach - Implementation, why does wordvec work?
+Howard - combine word vecs to word sequence vectors.
+Julie - translate scenes into numbers, word vectors.
+Shefali
+
+Learning relations from text.
+-->
+<p>Model</p>
+<ol type="1">
+<li>Unweighted <span class="math inline">\(\Pj(w|c) = \fc{\exp(v_w^T c)}{Z}\)</span>.</li>
+<li>Weighted <span class="math inline">\(\Pj(w|c) = \al p(w) + (1-\al) \fc{\exp(v_w^T c)}{Z}\)</span>, <span class="math inline">\(\al\in [0,1]\)</span>. (Ex. more accurate for common words.)</li>
+</ol>
+
+  </div>
+
+    
+
+    <!-- Extension : Sharing buttons @ www.sharethis.com -->
+    <span class='st_facebook_large' displayText='Facebook'></span>
+    <span class='st_twitter_large' displayText='Tweet'></span>
+    <span class='st_googleplus_large' displayText='Google +'></span>
+    <span class='st_reddit_large' displayText='Reddit'></span>
+    <span class='st__large' displayText=''></span>
+
+    <div id="disqus_thread"></div>
+    
+
+
+  
+    <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+  </div>
+  
+</div>
+]]></summary>
+</entry>
+<entry>
+    <title>Weekly summary 2016-09-24</title>
+    <link href="http://holdenlee.github.io/notebook/posts/summaries/2016-09-24.html" />
+    <id>http://holdenlee.github.io/notebook/posts/summaries/2016-09-24.html</id>
+    <published>2016-09-23T00:00:00Z</published>
+    <updated>2016-09-23T00:00:00Z</updated>
+    <summary type="html"><![CDATA[
+<div class="container">
+  <div id="content">
+    <div class="page header">
+      <h1>Weekly summary 2016-09-24</h1>
+    </div>
+    <div class="info">
+      
+       
+        <p>Posted: 2016-09-23 
+          , Modified: 2016-09-23 
+	</p>
+      
+       <p>Tags: <a href="/tags/none.html">none</a></p> 
+    </div>
+    
+  </div>
+  <!--/div-->
+
+  <div class="toc"> <ul>
+ <li><a href="#threads">Threads</a></li>
+ </ul> </div>
+
+  <div class="blog-main">
+    <p><a href="2016-09-17.html">Last week</a>.</p>
+<h2 id="threads">Threads</h2>
+<ul>
+<li>PMI: WSVD + DL/NMF. <a href="/posts/tcs/machine_learning/neural_nets/pmi_images.html">PMI for images</a>
+<ul>
+<li>Used NMF code from <a href="http://www.ee.columbia.edu/~grindlay/code.html">here</a>.</li>
+</ul></li>
+<li><a href="/posts/tcs/machine_learning/matrices/DL_generalization.html">DL generalization</a>
+<ul>
+<li>Can we tackle NMF using similar algorithm as DL—trying to isolate a column of A by looking at samples which are close to a pair of samples? Before, closeness was inner product; now use another kernel? Ex. TV distance, or KL, or some kind of regularized KL. Ex.
+<ul>
+<li>In what sense is this important? I would still rely on a distributional assumption on the <span class="math inline">\(x\)</span>’s. (DL algorithm required this: sparsity and some kind of independence.) But topic modeling already solves this.</li>
+<li>Why can’t we solve NMF using the topic modeling, saying that the distribution is simply the samples that we get?</li>
+</ul></li>
+</ul></li>
+<li>SoS</li>
+</ul>
+<p>TODO: run again with 1800-dimensional.</p>
+<p>TODO: Review polysemy paper, and understand CKN paper well to rederive equations.</p>
+
+  </div>
+
+    
+
+    <!-- Extension : Sharing buttons @ www.sharethis.com -->
+    <span class='st_facebook_large' displayText='Facebook'></span>
+    <span class='st_twitter_large' displayText='Tweet'></span>
+    <span class='st_googleplus_large' displayText='Google +'></span>
+    <span class='st_reddit_large' displayText='Reddit'></span>
+    <span class='st__large' displayText=''></span>
+
+    <div id="disqus_thread"></div>
+    
+
+
+  
+    <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+  </div>
+  
+</div>
+]]></summary>
+</entry>
+<entry>
     <title>DL generalization</title>
     <link href="http://holdenlee.github.io/notebook/posts/tcs/machine_learning/matrices/DL_generalization.html" />
     <id>http://holdenlee.github.io/notebook/posts/tcs/machine_learning/matrices/DL_generalization.html</id>
@@ -35,7 +226,15 @@
   <!--/div-->
 
   <div class="toc"> <ul>
- <li><a href="#group-sparsity">Group sparsity</a></li>
+ <li><a href="#group-sparsity">Group sparsity</a><ul>
+ <li><a href="#from-subspaces-to-vectors">From subspaces to vectors</a><ul>
+ <li><a href="#try-1">Try 1</a></li>
+ <li><a href="#try-2">Try 2</a></li>
+ </ul></li>
+ </ul></li>
+ <li><a href="#big-picture">Big picture</a><ul>
+ <li><a href="#dl-experiments">DL experiments</a></li>
+ </ul></li>
  </ul> </div>
 
   <div class="blog-main">
@@ -47,12 +246,72 @@
 <p>Rely on <a href="/posts/math/algebra/linear/matrix_analysis/perturbation.html">modification of Davis-Kahan</a>.</p>
 <p>Take <span class="math inline">\(u,v\)</span> and estimate <span class="math inline">\(M_{u,v} = \E \an{u,Ax}\an{v,Ax}(Ax)(Ax)^T\)</span>. Instead of taking the largest singular vector, take the subspace spanned by all singular values of size <span class="math inline">\(\ge C_1 \fc{k}{m}\)</span>. What is the angle between this subspace and the projection of this onto the space of <span class="math inline">\(A_{\cdot i}\)</span> where <span class="math inline">\(i\in \Supp(u)\cap \Supp(v)\)</span>? By generalized Davis-Kahan, <span class="math inline">\(\fc{C_0\fc km - C_1\fc km}{C_2 \fc{k}{m\ln m}} = \fc{C_3}{\ln m}\)</span>.</p>
 <p>Now iteratively refine the set of subspaces <span class="math inline">\(\mathcal S\)</span>. Start with a subspace <span class="math inline">\(V\)</span>, and set of atoms <span class="math inline">\(\mathcal A=\phi\)</span>. Let <span class="math inline">\(\ep = \fc{C}{\ln m}\)</span>.</p>
+<h3 id="from-subspaces-to-vectors">From subspaces to vectors</h3>
+<h4 id="try-1">Try 1</h4>
 <p>Do a DFS.</p>
 <ul>
 <li>If the angle between <span class="math inline">\(V\)</span> and any other subspace in <span class="math inline">\(\mathcal S\)</span> is <span class="math inline">\(&gt;\ep\)</span>, not counting subspaces where all canonical angles between <span class="math inline">\(V\)</span> and it are <span class="math inline">\(&lt;\ep\)</span>, then find the orthogonal complement of atoms that are close to being in <span class="math inline">\(V\)</span>, and let that be an atomic subspace. Now go upwards in the tree.</li>
 <li>Otherwise, approximately intersect <span class="math inline">\(V\)</span> with a subspace making it smaller, to get <span class="math inline">\(W\)</span>. Draw <span class="math inline">\(V\to W\)</span>. Repeat with <span class="math inline">\(W\)</span>.</li>
 </ul>
 <p>NO: These subspaces aren’t spanned by the vectors!</p>
+<h4 id="try-2">Try 2</h4>
+<p>This seems difficult if we don’t make assumptions.</p>
+<p>Let’s suppose for each vector, it is in a small subset of things that cooccur. (Make this more precise.) Ex. constant size.</p>
+<p>The issue is that some subspaces/vectors will be inside a <span class="math inline">\(S_i\)</span> (one of the groups in group sparsity) completely—if we can get all the vectors inside a <span class="math inline">\(S_i\)</span> all we have to do is get a basis, good—but others will be inside <span class="math inline">\(\spn(S_i,S_j)\)</span>, or more, and we have to tell them apart.</p>
+<p>Idea: do a best-first search, adding subspaces until <span class="math inline">\(\si_{C+1}\)</span> is too large, in which case discard it. (Singular value may not be the right measure here. Maybe: max perpendicular to span of <span class="math inline">\(v_1,\ldots, v_C\)</span>?) The large subsets we get will be inside a <span class="math inline">\(S_i\)</span>.</p>
+<p>(Or some kind of clustering?)</p>
+<h2 id="big-picture">Big picture</h2>
+<p>What are we trying to do here?</p>
+<ul>
+<li>Generalize the settings under which we have provable DL.</li>
+<li>Define agnostic DL as something worth studying and approachable.
+<ul>
+<li>Idea that neural nets are easier to train if you have more nodes. More opportunities to converge to columns of <span class="math inline">\(A\)</span>.
+<ul>
+<li>Look at convergene in easy case?</li>
+</ul></li>
+<li>Have <em>any</em> provable result on agnostic DL.
+<ul>
+<li>Why we would have agnostic rather than normal: some features are correlated, so the basis could rotate within the subspace of correlated vectors.</li>
+</ul></li>
+</ul></li>
+</ul>
+<p>We already have practical DL algorithms that just rely on AM and adding sparsity penalty. How could theory improve this? (AGM14, AGMM15 don’t look like they are used in practice.) Are there theoretical guarantees for AM with sparsity penalty? (There are theoretical guarantees for AM w/ decoding.)</p>
+<p>What’s a better model in practice: DL with sparsity or <span class="math inline">\(L^1\)</span>? (And how does ICA compare?)</p>
+<p>TODO: program DL and look at empirical performance.</p>
+<p>TODO: 2-layer NN learning dictionary?</p>
+<p>Dual view between <span class="math inline">\(x=Ah\)</span> and <span class="math inline">\(h=A^Tx\)</span>?</p>
+<p>Sparse recovery has this thing where <span class="math inline">\(\ved_1\)</span> actually optimizes <span class="math inline">\(\ved_0\)</span>. Not true of sparse coding?</p>
+<h3 id="dl-experiments">DL experiments</h3>
+<p>What to try?</p>
+<ul>
+<li>Program classic AM DL with <span class="math inline">\(L^1\)</span> sparsity penalty.</li>
+<li>Program AGMM15 DL.</li>
+<li>ICA.</li>
+</ul>
+<p>Test sets</p>
+<ul>
+<li>Image patches</li>
+<li>Words embeddings</li>
+<li>Artificial data (sparse, Laplace, etc. <span class="citation" data-cites="Bianca">@Bianca</span>)</li>
+<li>Artificial group-sparse data, or data correlated in some way (ex. geometrically).</li>
+</ul>
+<p>How to evaluate?</p>
+<ul>
+<li>Closeness of columns.</li>
+<li>Loss: how much sparsity, and how far away. (Reconstruction error)
+<ul>
+<li>How does reconstruction error compare to SVD? (Make dimensions comparable.)</li>
+</ul></li>
+<li>Put in random SVM on top. Can it learn the SVM well?</li>
+</ul>
+<p>Experiments with NN</p>
+<ul>
+<li>Top-<span class="math inline">\(k\)</span> thresholding to enforce <span class="math inline">\(k\)</span>-sparsity. Autoencoder?</li>
+<li>Try group-sparse penalty/architecture.</li>
+<li>Does adding more nodes improve things (cf. agnostic DL)?</li>
+</ul>
+<p>I think sparseness helps interpretability. Does convergence become quicker if we have sparsity?</p>
 
   </div>
 
@@ -599,140 +858,6 @@ They use <span class="math inline">\(L^1\)</span> norm regularization. <span cla
 <p>?? Sparse coding model also suggests a specific specialized similarity function (kernel) for the learned representations. Once the bases b have been learned using unlabeled data, we obtain a complete generative model for the input x. Thus, we can compute the Fisher kernel to measure the similarity between new inputs.</p>
 <p>(Disadvantages of PCA: linear and undercomplete)</p>
 <p>What about auto-encoders and NMF?</p>
-
-  </div>
-
-    
-
-    <!-- Extension : Sharing buttons @ www.sharethis.com -->
-    <span class='st_facebook_large' displayText='Facebook'></span>
-    <span class='st_twitter_large' displayText='Tweet'></span>
-    <span class='st_googleplus_large' displayText='Google +'></span>
-    <span class='st_reddit_large' displayText='Reddit'></span>
-    <span class='st__large' displayText=''></span>
-
-    <div id="disqus_thread"></div>
-    
-
-
-  
-    <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
-  </div>
-  
-</div>
-]]></summary>
-</entry>
-<entry>
-    <title>Nash equilibrium</title>
-    <link href="http://holdenlee.github.io/notebook/posts/tcs/algorithmic_game_theory/nash_equilibrium.html" />
-    <id>http://holdenlee.github.io/notebook/posts/tcs/algorithmic_game_theory/nash_equilibrium.html</id>
-    <published>2016-08-31T00:00:00Z</published>
-    <updated>2016-08-31T00:00:00Z</updated>
-    <summary type="html"><![CDATA[
-<div class="container">
-  <div id="content">
-    <div class="page header">
-      <h1>Nash equilibrium</h1>
-    </div>
-    <div class="info">
-      
-       
-        <p>Posted: 2016-08-31 
-          , Modified: 2016-08-31 
-	</p>
-      
-       <p>Tags: <a href="/tags/game%20theory.html">game theory</a>, <a href="/tags/Nash.html">Nash</a></p> 
-    </div>
-    
-  </div>
-  <!--/div-->
-
-  <div class="toc"> <ul>
- <li><a href="#definitions">Definitions</a></li>
- </ul> </div>
-
-  <div class="blog-main">
-    <h2 id="definitions">Definitions</h2>
-
-  </div>
-
-    
-
-    <!-- Extension : Sharing buttons @ www.sharethis.com -->
-    <span class='st_facebook_large' displayText='Facebook'></span>
-    <span class='st_twitter_large' displayText='Tweet'></span>
-    <span class='st_googleplus_large' displayText='Google +'></span>
-    <span class='st_reddit_large' displayText='Reddit'></span>
-    <span class='st__large' displayText=''></span>
-
-    <div id="disqus_thread"></div>
-    
-
-
-  
-    <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
-  </div>
-  
-</div>
-]]></summary>
-</entry>
-<entry>
-    <title>Tensor decomposition</title>
-    <link href="http://holdenlee.github.io/notebook/posts/tcs/machine_learning/tensors/tensor_decomposition.html" />
-    <id>http://holdenlee.github.io/notebook/posts/tcs/machine_learning/tensors/tensor_decomposition.html</id>
-    <published>2016-08-30T00:00:00Z</published>
-    <updated>2016-08-30T00:00:00Z</updated>
-    <summary type="html"><![CDATA[
-<div class="container">
-  <div id="content">
-    <div class="page header">
-      <h1>Tensor decomposition</h1>
-    </div>
-    <div class="info">
-      
-       
-        <p>Posted: 2016-08-30 
-          , Modified: 2016-08-30 
-	</p>
-      
-       <p>Tags: <a href="/tags/tensors.html">tensors</a></p> 
-    </div>
-    
-  </div>
-  <!--/div-->
-
-  <div class="toc"> <ul>
- <li><a href="#basics">Basics</a></li>
- </ul> </div>
-
-  <div class="blog-main">
-    <h2 id="basics">Basics</h2>
-<p>See “Tensor methods” in <code>new_thread.pdf</code>.</p>
-<p>Review questions:</p>
-<ol type="1">
-<li>Define tensor and tensor decomposition. When is it unique? Discuss the intractability of tensor problems. Why would we work with them? Give an example where matrix methods fail but tensor methods work because of uniqueness.</li>
-<li>What properties of matrix rank fail for tensor rank?</li>
-<li>(*) Give Jeinrich’s algorithm. When does it work, and what is its complexity?
-<ul>
-<li>Suppose <span class="math inline">\(T=\sum^r u_i\ot v_i\ot w_i\)</span>, where <span class="math inline">\(\{u_i\}\)</span> is linearly independent, <span class="math inline">\(\{v_i\}\)</span> is l.i., and every pair in <span class="math inline">\(\{w_i\}\)</span> is l.i. Then this decomposition is unique and there is an efficient algorithm to find it.</li>
-<li>For a tensor <span class="math inline">\(T\in V^{\ot 3}\)</span>, view <span class="math inline">\(T_{\bullet}\in V\ot V^*\ot V^*\)</span>, with <span class="math inline">\(\bullet\)</span> corresponding to the last <span class="math inline">\(V^*\)</span>. The slices are sums of rank 1 matrices <span class="math inline">\(u_iv_i^*\)</span> with coefficients given by the projections of <span class="math inline">\(w_i\)</span> onto <span class="math inline">\(a\)</span>.
-\begin{align}
-T_a &amp;=\sum \an{w_i,a}u_iv_i^* =: UD_aV^*
-T_aT_b^+ &amp;= UD_aD_b^+ U^+\\
-T_b^+T_a &amp;= VD_b^+D_a V^+
-\end{align}
-WHP diagonalization recovers <span class="math inline">\(U,V\)</span>.</li>
-</ul></li>
-<li>Give a perturbation bound for finding eigenvalues and eigenvectors of a matrix. What does the bound depend on, in what way (polynomial?)? Make it quantitative. Use this to give a bound on convergence in tensor decomposition.</li>
-<li>What is the Kruskal rank, why is it important?</li>
-<li>Describe the phylogenetic tree/HMM setup. How can you solve it with tensor methods?</li>
-<li>What about the non-full-rank case? (Give a reduction from noisy parity.)</li>
-<li>Give the block stochastic model. When is it information theoretically posible to find the groups (is this exact, or up to some error)? Compare spectral algorithms with tensor methods. (What are the assumptions? Why are tensor methods more flexible?)</li>
-<li>(*) Describe and prove the tensor algorithm for the block stochastic model.</li>
-<li>(*) Give a tensor algorithm for a pure topic model, and then generalize under latent dirichlet allocation. Why is the Dirichlet distribution particularly nice here? Find the complexity and error in terms of parameters.</li>
-<li>(*) Give a tensor algorithm for independent component analysis. There is a dependence on non-Gaussianlity: explain.</li>
-<li>Define the cumulants of a distribution. Why are they nice to work with, and how do they help in algorithms?</li>
-</ol>
 
   </div>
 

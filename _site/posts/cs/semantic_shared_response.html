@@ -10,7 +10,7 @@
   <meta name="description" content="Holden Lee's Research Notebook">
   <meta name="author" content="Holden Lee">
     
-  <title>Posts in category "summaries"</title>
+  <title>Semantic shared response</title>
 
   <!-- Bootstrap core CSS -->
   <link href="../../bootstrap/css/bootstrap.min.css" rel="stylesheet">
@@ -70,12 +70,16 @@
 <div class="container">
   <div id="content">
     <div class="page header">
-      <h1>Posts in category "summaries"</h1>
+      <h1>Semantic shared response</h1>
     </div>
     <div class="info">
       
+       
+        <p>Posted: 2016-09-24 
+          , Modified: 2016-09-24 
+	</p>
       
-      
+       <p>Tags: <a href="../../tags/neuroscience.html">neuroscience</a></p> 
     </div>
     
   </div>
@@ -84,69 +88,93 @@
   
 
   <div class="blog-main">
-    <ul>
-    
-        <li>
-            <a href="../../posts/summaries/2016-09-24.html">Weekly summary 2016-09-24</a> (2016-09-23)
-        </li>
-    
-        <li>
-            <a href="../../posts/summaries/2016-09-17.html">Weekly summary 2016-09-17</a> (2016-09-19)
-        </li>
-    
-        <li>
-            <a href="../../posts/summaries/2016-09-10.html">Weekly summary 2016-09-10</a> (2016-09-04)
-        </li>
-    
-        <li>
-            <a href="../../posts/summaries/2016-09-03.html">Weekly summary 2016-09-03</a> (2016-08-30)
-        </li>
-    
-        <li>
-            <a href="../../posts/summaries/2016-08-27.html">Weekly summary 2016-08-27</a> (2016-08-27)
-        </li>
-    
-        <li>
-            <a href="../../posts/summaries/2016-08-13.html">Weekly summary 2016-08-13</a> (2016-08-13)
-        </li>
-    
-        <li>
-            <a href="../../posts/summaries/2016-08-06.html">Weekly summary 2016-08-06</a> (2016-08-06)
-        </li>
-    
-        <li>
-            <a href="../../posts/summaries/2016-05-14.html">Weekly summary 5-14-16</a> (2016-05-11)
-        </li>
-    
-        <li>
-            <a href="../../posts/summaries/2016-04-30.html">Weekly summary 4-30-16</a> (2016-04-30)
-        </li>
-    
-        <li>
-            <a href="../../posts/summaries/notes_index.html">Notes index</a> (2016-04-08)
-        </li>
-    
-        <li>
-            <a href="../../posts/summaries/2016-04-09.html">Weekly summary 4-9-16</a> (2016-04-04)
-        </li>
-    
-        <li>
-            <a href="../../posts/summaries/2016-04-02.html">Weekly summary 4-2-16</a> (2016-04-02)
-        </li>
-    
-        <li>
-            <a href="../../posts/summaries/2016-02-24-zeev.html">Conversation with Zeev 2-24-16</a> (2016-02-27)
-        </li>
-    
+    <p>fMRI: <span class="math inline">\(10^5\)</span> <span class="math inline">\((3mm)^3\)</span> voxels, measuring blood flow.</p>
+<h2 id="prior-work">Prior work</h2>
+<ul>
+<li>Mitchell 08: pictures of concrete nouns</li>
+<li>Naselaris 09: images of scenes</li>
+<li>Pereira 11: generating words</li>
+<li>N11: reconstruct movie images</li>
+<li>Wehbe 14: chapter of Harry Potter (cf. speed reading)</li>
+<li>Huth 16: auditory stories</li>
 </ul>
+<h2 id="goal">Goal</h2>
+<ul>
+<li>Decode fMRI response semantics. Match fMRI responses to annotations
+<ul>
+<li>Sherlock scenes annotated. 2000 scenes.</li>
+</ul></li>
+<li>Leverage multiple subject views to extract better semantics. (16 subjects)</li>
+</ul>
+<h2 id="methods">Methods</h2>
+<ul>
+<li>Pick a few brain regions to focus on. Ex. default node network (2006): related to narrative.
+<ul>
+<li>Hypothesis: this region does the best.</li>
+<li><span class="math inline">\(\approx 2000\)</span> voxels for each mask. (Masks are a small part of <span class="math inline">\(10^5\)</span>.)</li>
+</ul></li>
+<li>Shared response model <span class="math display">\[\amin_{W^TW = I;S} \sumo ik \ve{X_i-W_iS}_F.\]</span> (Columns of <span class="math inline">\(W\)</span> orthogonal. voxels<span class="math inline">\(\times\)</span>features (<span class="math inline">\(2000 \times 20\)</span>)) <!-- features x times -->
+<ul>
+<li>Probabilistic model <span class="math inline">\(s_t\sim N(0,\Si_s)\)</span>. <span class="math inline">\(x_{it}|s_t\sim N(W_is_t+\mu_i, \rh_i^2I)\)</span>.</li>
+</ul></li>
+</ul>
+<p>Distributional hypothesis of meaning: meaning comes from co-occurrence.</p>
+<p>We have multiple words in each annotation. Approaches:</p>
+<ul>
+<li>Unweighted: Averaging</li>
+<li>Weighted: By inverse of frequency</li>
+</ul>
+<p>(Note: words have different meanings. Use DL to split up words into atoms. Ignores polysemy.)</p>
+<p>Let <span class="math inline">\(A=\)</span>fMRI, <span class="math inline">\(B=\)</span>text. We learn a linear map <span class="math inline">\(\Om A\approx B\)</span>. We can vary the way we constrain the maps.</p>
+<!--OLS-->
+<ol type="1">
+<li><span class="math inline">\(\Om\)</span> orthogonal.</li>
+<li><p>Ridge regression (penalizes by norm of columns).</p></li>
+<li>20 dimensional SRM vs. averaging</li>
+<li>Weighted vs. unweighted</li>
+<li>Procrustes vs. ridge</li>
+<li><p>Temporal average subtraction vs. not.</p></li>
+</ol>
+<p>Annotation vectors 1000-dimensional.</p>
+<p>Is true chunk in top 5? (See table in paper.)</p>
+<!--
+| Mask | Performance |
+|---|---|
+|DMN| -->
+<p>Average, else correlated</p>
+<!--
+Cathy - Cog neuro, Ken Norman
+Zach - Implementation, why does wordvec work?
+Howard - combine word vecs to word sequence vectors.
+Julie - translate scenes into numbers, word vectors.
+Shefali
 
-
+Learning relations from text.
+-->
+<p>Model</p>
+<ol type="1">
+<li>Unweighted <span class="math inline">\(\Pj(w|c) = \fc{\exp(v_w^T c)}{Z}\)</span>.</li>
+<li>Weighted <span class="math inline">\(\Pj(w|c) = \al p(w) + (1-\al) \fc{\exp(v_w^T c)}{Z}\)</span>, <span class="math inline">\(\al\in [0,1]\)</span>. (Ex. more accurate for common words.)</li>
+</ol>
 
   </div>
 
     
 
+    <!-- Extension : Sharing buttons @ www.sharethis.com -->
+    <span class="st_facebook_large" displayText="Facebook"></span>
+    <span class="st_twitter_large" displayText="Tweet"></span>
+    <span class="st_googleplus_large" displayText="Google +"></span>
+    <span class="st_reddit_large" displayText="Reddit"></span>
+    <span class="st__large" displayText></span>
 
+    <div id="disqus_thread"></div>
+    
+
+
+  
+    <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+  </div>
   
 </div>
 
@@ -191,6 +219,9 @@
 
 <!-- Extension : Disqus @ http://disqus.com -->
 <!-- Extension : InlineDisqussions @ https://github.com/tsi/inlineDisqussions -->
+
+<script src="../../disqus/js/disqus.js"></script>
+
 
 
 <!-- Extension : Google Analytics -->
