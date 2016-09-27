@@ -10,7 +10,7 @@
   <meta name="description" content="Holden Lee's Research Notebook">
   <meta name="author" content="Holden Lee">
     
-  <title>Posts in category "tcs/machine_learning/neural_nets"</title>
+  <title>[PMDH16] Convolutional Patch Representations for Image Retrieval - an Unsupervised Approach</title>
 
   <!-- Bootstrap core CSS -->
   <link href="../../../../bootstrap/css/bootstrap.min.css" rel="stylesheet">
@@ -70,79 +70,72 @@
 <div class="container">
   <div id="content">
     <div class="page header">
-      <h1>Posts in category "tcs/machine_learning/neural_nets"</h1>
+      <h1>[PMDH16] Convolutional Patch Representations for Image Retrieval - an Unsupervised Approach</h1>
     </div>
     <div class="info">
       
+       
+        <p>Posted: 2016-09-26 
+          , Modified: 2016-09-26 
+	</p>
       
-      
+       <p>Tags: <a href="../../../../tags/neural%20net.html">neural net</a>, <a href="../../../../tags/vision.html">vision</a></p> 
     </div>
     
   </div>
   <!--/div-->
 
-  
+  <div class="toc"> <ul>
+ <li><a href="#background">Background</a></li>
+ </ul> </div>
 
   <div class="blog-main">
-    <ul>
-    
-        <li>
-            <a href="../../../../posts/tcs/machine_learning/neural_nets/PMDH16.html">[PMDH16] Convolutional Patch Representations for Image Retrieval - an Unsupervised Approach</a> (2016-09-26)
-        </li>
-    
-        <li>
-            <a href="../../../../posts/tcs/machine_learning/neural_nets/pcanet.html">PCANet: A simple deep learning baseline for image classification?</a> (2016-09-10)
-        </li>
-    
-        <li>
-            <a href="../../../../posts/tcs/machine_learning/neural_nets/convnets_ideas.html">Convnets ideas</a> (2016-08-02)
-        </li>
-    
-        <li>
-            <a href="../../../../posts/tcs/machine_learning/neural_nets/pmi_images_scratch.html">PMI for images (scratch)</a> (2016-08-01)
-        </li>
-    
-        <li>
-            <a href="../../../../posts/tcs/machine_learning/neural_nets/pmi_images.html">PMI for images</a> (2016-08-01)
-        </li>
-    
-        <li>
-            <a href="../../../../posts/tcs/machine_learning/neural_nets/complexity_of_neural_nets.html">Complexity of neural networks</a> (2016-07-25)
-        </li>
-    
-        <li>
-            <a href="../../../../posts/tcs/machine_learning/neural_nets/JSA15.html">[JSA15] Beating the Perils of Non-Convexity - Guaranteed Training of Neural Networks using Tensor Methods</a> (2016-06-27)
-        </li>
-    
-        <li>
-            <a href="../../../../posts/tcs/machine_learning/neural_nets/lstm_code.html">LSTM Programming</a> (2016-03-19)
-        </li>
-    
-        <li>
-            <a href="../../../../posts/tcs/machine_learning/neural_nets/basics.html">Neural nets basics</a> (2016-03-13)
-        </li>
-    
-        <li>
-            <a href="../../../../posts/tcs/machine_learning/neural_nets/ALM16.html">[ALM16] WHY ARE DEEP NETS REVERSIBLE: A SIMPLE THEORY, WITH IMPLICATIONS FOR TRAINING</a> (2016-03-13)
-        </li>
-    
-        <li>
-            <a href="../../../../posts/tcs/machine_learning/neural_nets/CHMAL15.html">[CHMAL15] The Loss Surfaces of Multilayer Networks</a> (2016-03-07)
-        </li>
-    
-        <li>
-            <a href="../../../../posts/tcs/machine_learning/neural_nets/nn_modeling.html">Analysis of neural networks</a> (2016-03-05)
-        </li>
-    
+    <p>We write things in the continuous limit. In actuality we have to discretize.</p>
+Define the kernel <span class="math inline">\(K:(\Om \to \R)\times (\Om\to \R) \to \R\)</span> by
+\begin{align}
+K(M,M') = \sum_{z,z'\in \Om} e^{-\rc{2\be^2}\ve{z-z'}^2} \ka (P_z, P_{z'}')\\
+\ka(P_z,P_{z'}') &amp; = \ve{P_z}\ve{P_{z'}'} e^{-\rc{2\al^2} \ve{\wt P_z - \wt P_{z'}^2}^2
+\end{align}
+<p>where <span class="math inline">\(P_z =M_{z+[0,e)\times [0,e)\times [0,d)}\)</span>.</p>
+<h2 id="background">Background</h2>
+<p>A <a href="https://en.wikipedia.org/wiki/Reproducing_kernel_Hilbert_space">reproducing kernel Hilbert space (RKHS)</a> is a Hilbert space of functions <span class="math inline">\(X\to \R\)</span> in which point evaluation <span class="math inline">\(L_x[f] = f(x)\)</span> is a continuous linear functional. (Equivalently, it is bounded, <span class="math inline">\(f(x)\le M_x\ve{f}_H\)</span>.</p>
+<ul>
+<li><span class="math inline">\(L^2\)</span> is not a RKHS—it consists of equivalence classes of functions.</li>
+<li><span class="math inline">\(H=\set{f\in L_2(\R)}{\Supp(\phi)\subeq [-a,a]}\)</span> is RKHS. Here <span class="math inline">\(K_x(y) = \fc{\sin(a(y-x))}{\pi(y-x)}\)</span> (bandlimited Dirac delta).</li>
 </ul>
-
-
+<p><strong>Theorem</strong> A Hilbert space of functions is a RKHS iff for every <span class="math inline">\(x\in X\)</span>, there exists <span class="math inline">\(K_x\)</span> such that <span class="math inline">\(g(x) = \an{g, K_x}\)</span>.<a href="#fn1" class="footnoteRef" id="fnref1"><sup>1</sup></a></p>
+<p><em>Proof</em>. <span class="math inline">\(\Leftarrow\)</span>: inner product is continuous. <span class="math inline">\(\Rightarrow\)</span>: Riesz representation.</p>
+<p>Note <span class="math inline">\(K_x(y) = \an{K_x,K_y}=:K(x,y)\)</span>. <span class="math inline">\(K\)</span> is symmetric and positive definite. (Think of <span class="math inline">\(K\)</span> as <span class="math inline">\(X_0^\R\times X_0^\R\to \R\)</span> where <span class="math inline">\(X_0^\R\)</span> is the set of functions <span class="math inline">\(X\to \R\)</span> nonzero only at a finite number of <span class="math inline">\(x\)</span>’s. I.e. formal span of <span class="math inline">\(X\)</span>.)</p>
+<p><a href="https://en.wikipedia.org/wiki/Representer_theorem">Representer theorem</a> states that every function in an RKHS that minimises an empirical risk function can be written as a linear combination of the kernel function evaluated at the training points</p>
+<p><strong>Theorem (Moore-Aronszajn)</strong>. Suppose <span class="math inline">\(K\)</span> is a symmetric, positive definite kernel on a set <span class="math inline">\(X\)</span>. Then there is a unique Hilbert space of functions on <span class="math inline">\(X\)</span> for which <span class="math inline">\(K\)</span> is a reproducing kernel.</p>
+<p><em>Proof</em>. Extend <span class="math inline">\(K\)</span> by bilinearity to <span class="math inline">\(\spn(X)\)</span>. Take the completion. (Extend to functions <span class="math inline">\(f=\sumo i{\iy} a_i K_{x_i}(x)\)</span> where <span class="math inline">\(\sumo i{\iy} a_i^2 K(x_i,x_i)\)</span>.</p>
+<p>(Question: how to realize this inner product as an integral?)</p>
+<p>See also: Mercer’s theorem</p>
+<section class="footnotes">
+<hr />
+<ol>
+<li id="fn1"><p>Letting <span class="math inline">\(f_x=\delta_x\)</span> is cheating—we want actual functions, not distributions.<a href="#fnref1">↩</a></p></li>
+</ol>
+</section>
 
   </div>
 
     
 
+    <!-- Extension : Sharing buttons @ www.sharethis.com -->
+    <span class="st_facebook_large" displayText="Facebook"></span>
+    <span class="st_twitter_large" displayText="Tweet"></span>
+    <span class="st_googleplus_large" displayText="Google +"></span>
+    <span class="st_reddit_large" displayText="Reddit"></span>
+    <span class="st__large" displayText></span>
 
+    <div id="disqus_thread"></div>
+    
+
+
+  
+    <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+  </div>
   
 </div>
 
@@ -187,6 +180,9 @@
 
 <!-- Extension : Disqus @ http://disqus.com -->
 <!-- Extension : InlineDisqussions @ https://github.com/tsi/inlineDisqussions -->
+
+<script src="../../../../disqus/js/disqus.js"></script>
+
 
 
 <!-- Extension : Google Analytics -->
