@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+
+  <meta name="description" content="Holden Lee's Research Notebook">
+  <meta name="author" content="Holden Lee">
+    
+  <title>Reinforcement learning</title>
+
+  <!-- Bootstrap core CSS -->
+  <link href="../../../../bootstrap/css/bootstrap.min.css" rel="stylesheet">
+
+  <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+  <!-- <link href="../../assets/css/ie10-viewport-bug-workaround.css" rel="stylesheet"> -->
+
+  <!-- Custom styles for this template -->
+  <link href="../../../../css/blog.css" rel="stylesheet">
+  <link href="../../../../css/default.css" rel="stylesheet">
+
+  <!-- Extension : Footnotes -->
+  <link href="../../../../footnotes/css/footnotes.css" rel="stylesheet">
+
+  <!-- Extension : InlineDisqussions @ https://github.com/tsi/inlineDisqussions -->
+  
+
+  <!-- Extension : Collapsible lists @ http://code.stephenmorley.org/javascript/collapsible-lists/-->
+  <link href="../../../../collapsible_lists/css/collapsible.css" rel="stylesheet">
+  <script type="text/javascript" src="../../../../collapsible_lists/js/CollapsibleLists.js"></script>
+
+</head>
+
+<body>
+
+<!-- Navigation bar. navbar-inverse is black, navbar-default is white.-->
+<!-- To make a button active (pressed), use <li class="active"> -->
+<div id="header">
+  <nav class="navbar navbar-inverse navbar-fixed-top">
+    <div class="container">
+      <div class="navbar-header">
+        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+          <span class="sr-only">Toggle navigation</span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="../../../../">Notebook</a>
+      </div>
+      <div id="navbar" class="collapse navbar-collapse">
+        <ul class="nav navbar-nav">
+          <li><a href="../../../../">Home</a></li>
+          <li><a href="../../../../sitemap.html">Sitemap</a></li>
+<!-- TODO: Distinguish between PAPERS, RESEARCH QUESTIONS, BOOKS -->
+<!-- TODO: make this part a for loop over main pages -->
+        </ul>
+      </div><!--/.nav-collapse -->
+    </div>
+  </nav>
+</div>
+<!-- Content -->
+<!--div id="content">
+  <h1>Mental Wilderness</h1>-->
+
+
+
+<div class="container">
+  <div id="content">
+    <div class="page header">
+      <h1>Reinforcement learning</h1>
+    </div>
+    <div class="info">
+      
+       
+        <p>Posted: 2016-09-28 
+          , Modified: 2016-09-28 
+	</p>
+      
+       <p>Tags: <a href="../../../../tags/reinforcement%20learning.html">reinforcement learning</a></p> 
+    </div>
+    
+  </div>
+  <!--/div-->
+
+  <div class="toc"> <ul>
+ <li><a href="#references">References</a></li>
+ <li><a href="#section">3</a></li>
+ <li><a href="#dynamic-programming">4 Dynamic programming</a></li>
+ <li><a href="#monte-carlo-methods">5 Monte Carlo methods</a></li>
+ <li><a href="#temporal-difference-learning">6 Temporal-difference learning</a></li>
+ </ul> </div>
+
+  <div class="blog-main">
+    <h2 id="references">References</h2>
+<ul>
+<li>Barton, Sutto.</li>
+<li>Algorithms course Lecture 8</li>
+<li>…</li>
+</ul>
+<h2 id="section">3</h2>
+<p>Bellman optimality equations</p>
+\begin{align}
+v_*(s) &amp;= \max_\pi v_\pi(s)\\
+q_*(s,a) &amp;= \max_\pi q_\pi(s,a)\\
+v_*(s)&amp;= \max_{a\in \mathcal A(s)} \sum_{s'} p(s'|s,a) [r(s,a,s') + \ga v_*(s')\\
+q_*(s) &amp;= \sum_{s'} p(s'|s,a) [r(s,a,s') +\ga \max q_*(s',a')].
+\end{align}
+<p>3 assumptions that are rarely all true in practice:</p>
+<ol type="1">
+<li>Know dynamics of environment</li>
+<li>Have enough computational resources</li>
+<li>Markov property</li>
+</ol>
+<p>Many decision-making methods attempt to approximately solve the Bellman optimal equations.</p>
+<p>A RL algorithm puts more effort into learning good decisions for frequently encountered states.</p>
+<h2 id="dynamic-programming">4 Dynamic programming</h2>
+<p>Three classes of methods for solving MDP’s.</p>
+<ol type="1">
+<li>Dynamic programming
+<ul>
+<li>Well-developed mathematically</li>
+<li>Require complete, accurate model of environment</li>
+</ul></li>
+<li>Monte Carlo methods
+<ul>
+<li>Don’t require model, conceptually simple</li>
+<li>Not suitable for incremental computation</li>
+</ul></li>
+<li>Temporal-difference learning
+<ul>
+<li>Don’t require model, fully incremental</li>
+<li>Complex to analyze</li>
+</ul></li>
+</ol>
+<p>Think of other methods as attempts to achieve the same effect as DP with less computation and without a perfect model.</p>
+<p>Use value functions to organize the search for good policies.</p>
+<p>Iterative <strong>policy evaluation</strong>: (make value function consistent with current policy) <span class="math display">\[
+v_{k+1}(s) = \sum_a \pi(a|s) \sum_{s'} p(s'|s,a) [r(s,a,s') + \ga v_k(s')].
+\]</span> This is a full backup because we calculate <span class="math inline">\(v_k(s)\)</span> for all <span class="math inline">\(s\)</span> in each stage. (TODO: prove convergence.) Stop when maximum difference <span class="math inline">\(\max_{s\in S}|v_{k-1}(s)-v_k(s)|&lt;\te\)</span>.</p>
+<p>(Can also update in-place. Then update order makes a difference.)</p>
+<p><strong>Policy improvement theorem</strong>. If <span class="math inline">\(\pi,\pi'\)</span> are deterministic policies such that for all <span class="math inline">\(s\in S\)</span>, <span class="math display">\[q_\pi(s,\pi'(s))\ge v_\pi(s),\]</span> then <span class="math inline">\(\pi'\)</span> is at least as good as <span class="math inline">\(\pi\)</span>, <span class="math inline">\(v_{\pi'}(s) \ge v_\pi(s)\)</span>.</p>
+<p><em>Proof</em>. Unfold and note convergence.</p>
+<p>This shows that iterative policy improvement can only help: <span class="math display">\[
+\pi'(s) = \amax_a \sum_{s'} p(s'|s,a) [r(s,a,s') + \ga v_\pi(s')].
+\]</span> If it stops improving, then <span class="math inline">\(\pi'\)</span> is optimal.</p>
+<p>Policy iteration: <span class="math inline">\(\pi_k\xra E v_{\pi_k} \xra I \pi_{k+1}\)</span>. Alternately evaluate and improve.</p>
+<!-- assuming we know p's-->
+<!-- Value iteration is when policy evaluation is stopped after one sweep.-->
+<p>Above, to evaluate, we have to keep doing policy iterations until convergence. For speed, we just do one (or a few) step of policy evaluation. Combining the improvement and evaluation steps: <span class="math display">\[v_{k+1} := \max_a \sum_{s'} p(s'|s,a)[r(s,a,s') + \ga v_k(s')].\]</span> (cf. EM/AM?)</p>
+<!-- Q: if this stabilizes, does it mean we have converged? p. 100-->
+<p>Asynchronous DP: back up values of states in any order, using whatever values of other states are available. Can do with value iteration and policy iteration. Helps intermix computation with interaction (actually experiencing MDP—apply backups as agent visits states).</p>
+<p>The time that DP methods take is polynomial in number of states and actions. LP can be used to solve MDP’s but become impractical at smaller number of states than DP.</p>
+<!-- can such iterative methods solve LP? -->
+<h2 id="monte-carlo-methods">5 Monte Carlo methods</h2>
+<p>Don’t assume complete knowledge of the environment. Learn from online and simulated experience. The model only needs to generate sample transitions rather than give a complete probability distribution.</p>
+<p>MC assumes experience is divided into episodes.</p>
+<p>Each occurrence of a state in an episode is a <em>visit</em>.</p>
+<ul>
+<li>Every-visit MC: estimate <span class="math inline">\(v_\pi(s)\)</span> as the average of returns following all visits to <span class="math inline">\(s\)</span></li>
+<li>First-visit MC: average just returns following first visits (in an episode) to <span class="math inline">\(s\)</span>.</li>
+</ul>
+<p>DP shows all possible transitions but the MC diagram only shows those sampled on one episode.</p>
+<p>(Ex. of finding bubble surface given wire frame. Iterative = compute surface iteratively by averaging at each point. MC = take a random walk from each point; expected height at boundary is approximation of height. This is more efficient if we are interested in a small number of points.)</p>
+<p>If the model is not available, it’s mre useful to estimate action than state values. (From the action-value function <span class="math inline">\(q\)</span> we can directly construct the greedy policy.)</p>
+<p>Problem: if you follow a deterministic policy, you will only observe one action from each state.</p>
+<p>Solution: Explore! Assume each state-action pair has a nonzero probability of being selected at the start of an episode (exploring starts). More realistic: consider policies that are stochastic with nonzero probability of selecting all actions.</p>
+<p>This works assuming:</p>
+<ol type="1">
+<li>episodes have exploring starts</li>
+<li>policy evaluation can be done with infinitely many episodes.
+<ul>
+<li>Instead: approximate and keep track of error bounds. But this requires many episodes.</li>
+<li>Forgo policy evaluation: move value function toward <span class="math inline">\(q_{\pi_k}\)</span>.</li>
+</ul></li>
+</ol>
+<p>MC ES cannot converge to any suboptimal policy (if it did, the value function converges to the value function for that policy, and the policy changes). <em>Open question</em>: does it always converge? [Tsitsiklis02]</p>
+<p>5.4 On-policy MC control</p>
+<p>Improve the policy used to make decisions.</p>
+<p>Soft policy: <span class="math inline">\(\forall s,a\in \mathcal A(s), \pi(a|s)&gt;0\)</span>. <span class="math inline">\(\ep\)</span>-soft: <span class="math inline">\(\ge \fc{\ep}{|\mathcal A(s)|}\)</span>.</p>
+<p>Policy iterations works for <span class="math inline">\(\ep\)</span>-soft policies.</p>
+<ol type="1">
+<li>The policy improvement theorem shows that for any <span class="math inline">\(\ep\)</span>-soft <span class="math inline">\(\pi\)</span>, the <span class="math inline">\(\ep\)</span>-greedy policy wrt <span class="math inline">\(q_\pi\)</span> is at least as good as <span class="math inline">\(\pi\)</span>.</li>
+<li>Equality only when both <span class="math inline">\(\pi,pi'\)</span> are optimal among <span class="math inline">\(\ep\)</span>-soft. Use optimality for all policies, under the modified environment where an action is chosen randomly with probability <span class="math inline">\(\ep\)</span>.</li>
+</ol>
+<p>5.5 Evaluating One PolicyWhile Following An-other (Off-policy Policy Evaluation)</p>
+<p>What if we have episodes generated from a different policy?</p>
+<ul>
+<li><span class="math inline">\(\mu\)</span> behavior policy</li>
+<li><span class="math inline">\(\pi\)</span> target policy.</li>
+</ul>
+Require ratio <span class="math inline">\(\pi/\mu\)</span> not be too large. Weight episodes by this ratio.
+\begin{align}
+V(s) &amp;= \fc{\sumo i{n_s} \fc{p_i(s)}{p_i'(s)}G_i(s)}{\sumo i{n_s} \fc{p_i(s)}{p_i'(s)}}\\
+\fc{p_i(S_t)}{p_i'(S_t)}&amp;=\prod_{k=t}^{T_i(S_t)-1} \fc{\pi(A_k|S_k)}{\mu(A_k|S_k)}.
+\end{align}
+<p>5.6 Off-policy MC control</p>
+<p>Ex. estimation policy may be deterministic while behavior policy samples all possible actions.</p>
+<p>To do this, after generating an episode, look at the last time where <span class="math inline">\(A_\tau \ne \pi(S_\tau)\)</span>, and update <span class="math inline">\(Q\)</span> using pairs <span class="math inline">\((s,a)\)</span> appearing after that time.</p>
+<p>Note: only learns from tails of episodes. Learning is slow if nongreedy actions are frequent.</p>
+<p>5.7 Incremental implementation</p>
+For <span class="math inline">\(V_n=\fc{\sumo k{n-1}W_kG_k}{\sumo k{n-1}W_k}\)</span> is
+\begin{align}
+V_{n+1} &amp;=V_n+\fc{W_n}{C_n} (G_n-V_n)\\
+C_{n+1} &amp;=C_n+W_{n+1}.
+\end{align}
+<p>Advantages of MC:</p>
+<ol type="1">
+<li>learn optimal behavior directly from interaction without model</li>
+<li>used with simulation</li>
+<li>focus MC on small subset of states</li>
+<li>less harmed by violations of Markov property.</li>
+</ol>
+<p>Maintaining sufficient exploration is an issue.</p>
+<p>MC uses experience and does not bootstrap (update value based on other value estimates) (instead MC waits for a bunch of samples), unlike DP.</p>
+<p>Next chapter: experience + bootstrap.</p>
+<h2 id="temporal-difference-learning">6 Temporal-difference learning</h2>
+<p>MC methods can incrementally update <span class="math inline">\(V\)</span>, after waiting to get the actual return, <span class="math display">\[V(S_t) \mapsfrom V(S_t) + \al [G_t-V(S_t)].\]</span> (n.b. <span class="math inline">\(S_t\)</span> is the state at time <span class="math inline">\(t\)</span>, not the state labeled <span class="math inline">\(t\)</span>.) TD methods only wait until the next time step. <span class="math display">\[V(S_t) \mapsfrom V(S_t) + \al [R_{t+1} + \ga V(S_{t+1})-V(S_t)].
+\]</span> I.e., it uses the estimate of <span class="math inline">\(v_\pi = \EE_\pi [R_{t+1}+\ga v_\pi(S_{t+1})|S_t=s]\)</span> as a target.</p>
+<p>TD samples expected values and uses the current estimate <span class="math inline">\(V\)</span> instead of <span class="math inline">\(v_\pi\)</span>.</p>
+<p>Ech estimate is shifted towards the estimate that immediately follows it.</p>
+<p>p. 133: driving home example.</p>
+<p>In practice, TD methods converge faster than constant-<span class="math inline">\(\al\)</span> MC methods on stochastic tasks.</p>
+<p>6.3 Optimality of TD(0)</p>
+<p>Finite amount of experience: present it repeatedly until method converges. (cf. SGD?) Do batch updates.</p>
+<p>Ex. p.139 example is enlightening.</p>
+<p>Batch Monte Carlo methods always find the estimates that minimize mean-squared error on the training set, whereas batch TD(0) always finds the estimates that would be exactly correct for the maximum-likelihood model of the Markov process.</p>
+<!-- ? certainty-equivalence estimate-->
+<p>6.4 Sarsa: On-policy TD control</p>
+<p>For state-action pairs: <span class="math display">\[Q(S_t,A_t) \mapsfrom Q(S_t,A_t) + \al [R_{t+1} + \ga Q(S_{t+1}, A_{t+1})-Q(S_t,A_t)].
+\]</span> (<span class="math inline">\(A_{t+1}\)</span> is the action chosen by the (<span class="math inline">\(\ep\)</span>-greedy?<a href="#fn1" class="footnoteRef" id="fnref1"><sup>1</sup></a>) policy on <span class="math inline">\(S_{t+1}\)</span>.) SARSA refers to <span class="math inline">\((S_t,A_t,R_{t+1},S_{t+1},A_{t+1})\)</span>.</p>
+<p>(Convergence guarantees: p. 142)</p>
+<p>SARSA can learn during the episode!</p>
+<p>6.5 Q-learning: Off-policy TD control</p>
+<p>One-step Q-learning</p>
+<p><span class="math display">\[
+Q(S_t,A_t)\leftarrow Q(S_t,A_t) + \al [R_{t+1} + \ga \max_a Q(S_{t+1},a) - Q(S_t,A_t)].
+\]</span></p>
+<p><span class="math inline">\(Q\)</span> approximates the optimal <span class="math inline">\(q_*\)</span> <em>independently of the policy being followed</em>!</p>
+<p>TODO: prove this. [Watkins Dayan 1992] [JJS94] [T94]</p>
+<p>Ex. cliff</p>
+<ul>
+<li>SARSA learns the safe path steering clear of the cliff (because it takes account the <span class="math inline">\(\ep\)</span>-greedy exploration).</li>
+<li>Q-learning learns the short path at the edge of the cliff (the optimal).</li>
+</ul>
+<p>6.6 Games</p>
+<p>A conventional state-value function evaluates states in which the agent has the option of selecting an action (arrived at <span class="math inline">\(s'\)</span> where you will select a new <span class="math inline">\(a'\)</span>), but the state-value function in games of perfect information evaluates the board after the agent has mades its move—afterstates.</p>
+<p>This is more efficient: many position-move pairs produce the same resulting position.</p>
+<p>Often it’s useful to break the environment’s dynamics into</p>
+<ul>
+<li>immediate effect of action (deterministic) and</li>
+<li>unknown random processes.</li>
+</ul>
+<section class="footnotes">
+<hr />
+<ol>
+<li id="fn1"><p>Why not greedy?<a href="#fnref1">↩</a></p></li>
+</ol>
+</section>
+
+  </div>
+
+    
+
+    <!-- Extension : Sharing buttons @ www.sharethis.com -->
+    <span class="st_facebook_large" displayText="Facebook"></span>
+    <span class="st_twitter_large" displayText="Tweet"></span>
+    <span class="st_googleplus_large" displayText="Google +"></span>
+    <span class="st_reddit_large" displayText="Reddit"></span>
+    <span class="st__large" displayText></span>
+
+    <div id="disqus_thread"></div>
+    
+
+
+  
+    <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+  </div>
+  
+</div>
+
+
+<!-- Footer -->
+<div id="footer">
+  <div class="container">
+    Built with
+    <a href="http://jaspervdj.be/hakyll">Hakyll</a> 
+    using 
+    <a href="http://www.getbootstrap.com">Bootstrap</a>, 
+    <a href="http://www.disqus.com">Disqus</a>,
+    <a href="http://ignorethecode.net/blog/2010/04/20/footnotes/">Footnotes.js</a>,
+    <a href="http://highlightjs.org/">Highlight.js</a>, 
+    <a href="http://www.mathjax.org">MathJax</a>, 
+    and <a href="http://www.sharethis.com">ShareThis</a>.
+  </div>
+</div>
+</body>
+
+</html>
+
+<!-- SCRIPTS -->
+<!-- jQuery-->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+<script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
+
+<script src="../../../../bootstrap/js/bootstrap.min.js"></script>
+
+<!-- Extension : Highlight.js @ https://highlightjs.org/ -->
+<!-- Syntax highlighting tomorrow-night-bright, agate-->
+<link rel="stylesheet" href="../../../../highlight/css/tomorrow-night-bright.css">
+<script src="../../../../highlight/js/highlight.pack.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+
+<!-- Extension : MathJax @ https://docs.mathjax.org/en/v2.5-latest/tex.html -->
+<!-- MathJax/config/local/local.js contains macros. Need to provide entire URL-->
+<script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML,http://holdenlee.github.io/notebook/MathJax/config/local/local"></script>
+
+<!-- Extension : Footnotes @ http://ignorethecode.net/blog/2010/04/20/footnotes/ -->
+<script src="../../../../footnotes/js/footnotes.js"></script>
+
+<!-- Extension : Disqus @ http://disqus.com -->
+<!-- Extension : InlineDisqussions @ https://github.com/tsi/inlineDisqussions -->
+
+<script src="../../../../disqus/js/disqus.js"></script>
+
+
+
+<!-- Extension : Google Analytics -->
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-73261814-1', 'auto');
+  ga('send', 'pageview');
+
+</script>
+
