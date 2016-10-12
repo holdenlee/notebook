@@ -10,7 +10,7 @@
   <meta name="description" content="Holden Lee's Research Notebook">
   <meta name="author" content="Holden Lee">
     
-  <title>Posts in category "tcs/machine_learning/neural_nets"</title>
+  <title>Neural nets learn dictionaries</title>
 
   <!-- Bootstrap core CSS -->
   <link href="../../../../bootstrap/css/bootstrap.min.css" rel="stylesheet">
@@ -70,83 +70,63 @@
 <div class="container">
   <div id="content">
     <div class="page header">
-      <h1>Posts in category "tcs/machine_learning/neural_nets"</h1>
+      <h1>Neural nets learn dictionaries</h1>
     </div>
     <div class="info">
       
+       
+        <p>Posted: 2016-10-10 
+          , Modified: 2016-10-10 
+	</p>
       
-      
+       <p>Tags: <a href="../../../../tags/dictionary%20learning.html">dictionary learning</a>, <a href="../../../../tags/neural%20nets.html">neural nets</a></p> 
     </div>
     
   </div>
   <!--/div-->
 
-  
+  <div class="toc"> <ul>
+ <li><a href="#result">Result</a></li>
+ <li><a href="#proof">Proof</a></li>
+ <li><a href="#further-directions">Further directions</a></li>
+ </ul> </div>
 
   <div class="blog-main">
-    <ul>
-    
-        <li>
-            <a href="../../../../posts/tcs/machine_learning/neural_nets/nndl.html">Neural nets learn dictionaries</a> (2016-10-10)
-        </li>
-    
-        <li>
-            <a href="../../../../posts/tcs/machine_learning/neural_nets/PMDH16.html">[PMDH16] Convolutional Patch Representations for Image Retrieval - an Unsupervised Approach</a> (2016-09-26)
-        </li>
-    
-        <li>
-            <a href="../../../../posts/tcs/machine_learning/neural_nets/pcanet.html">PCANet: A simple deep learning baseline for image classification?</a> (2016-09-10)
-        </li>
-    
-        <li>
-            <a href="../../../../posts/tcs/machine_learning/neural_nets/convnets_ideas.html">Convnets ideas</a> (2016-08-02)
-        </li>
-    
-        <li>
-            <a href="../../../../posts/tcs/machine_learning/neural_nets/pmi_images_scratch.html">PMI for images (scratch)</a> (2016-08-01)
-        </li>
-    
-        <li>
-            <a href="../../../../posts/tcs/machine_learning/neural_nets/pmi_images.html">PMI for images</a> (2016-08-01)
-        </li>
-    
-        <li>
-            <a href="../../../../posts/tcs/machine_learning/neural_nets/complexity_of_neural_nets.html">Complexity of neural networks</a> (2016-07-25)
-        </li>
-    
-        <li>
-            <a href="../../../../posts/tcs/machine_learning/neural_nets/JSA15.html">[JSA15] Beating the Perils of Non-Convexity - Guaranteed Training of Neural Networks using Tensor Methods</a> (2016-06-27)
-        </li>
-    
-        <li>
-            <a href="../../../../posts/tcs/machine_learning/neural_nets/lstm_code.html">LSTM Programming</a> (2016-03-19)
-        </li>
-    
-        <li>
-            <a href="../../../../posts/tcs/machine_learning/neural_nets/basics.html">Neural nets basics</a> (2016-03-13)
-        </li>
-    
-        <li>
-            <a href="../../../../posts/tcs/machine_learning/neural_nets/ALM16.html">[ALM16] WHY ARE DEEP NETS REVERSIBLE: A SIMPLE THEORY, WITH IMPLICATIONS FOR TRAINING</a> (2016-03-13)
-        </li>
-    
-        <li>
-            <a href="../../../../posts/tcs/machine_learning/neural_nets/CHMAL15.html">[CHMAL15] The Loss Surfaces of Multilayer Networks</a> (2016-03-07)
-        </li>
-    
-        <li>
-            <a href="../../../../posts/tcs/machine_learning/neural_nets/nn_modeling.html">Analysis of neural networks</a> (2016-03-05)
-        </li>
-    
+    <h2 id="result">Result</h2>
+<p>General idea: when each row of <span class="math inline">\(B\)</span> is sufficiently close to the row of <span class="math inline">\(A^T\)</span>, gradient descent converges until <span class="math inline">\(B\)</span> is very close to <span class="math inline">\(A^T\)</span>.</p>
+<h2 id="proof">Proof</h2>
+<h2 id="further-directions">Further directions</h2>
+<ul>
+<li>What are the dynamics of the dictionary vectors learned? If we start them randomly, will they converge to the <span class="math inline">\(A_{\bullet i}\)</span> or combinations of the <span class="math inline">\(A_{\bullet i}\)</span>? Will they not be useless? Will they be far apart? (What if you simply do some sampling of <span class="math inline">\(Ah\)</span>?)</li>
+<li>Agnostic dictionary learning. Suppose we learn a good dictionary. Can we guarantee that it will do well in classification?</li>
+<li>Would a local min for this neural net be good? Generalization follows from Rademacher, so we just care about driving down the cost.</li>
+<li>What weird properties does a NP-hard distribution for DL have—is there a simple way to exclude those?</li>
+<li>Not overcomplete, but sparse + noise (e.g. componentwise). (If not overcomplete, then a linear classifier works. But thresholding could remove the noise, while averaging wouldn’t (ex. averaging could amplify it, though slowerly than linearly, <span class="math inline">\(\sqrt n\)</span>).)</li>
+<li>If don’t get <span class="math inline">\(b^Th\)</span> but only <span class="math inline">\(\sgn(b^Th)\)</span>.</li>
+<li>Provable convolutional DL. (The difficulty is that translates that are close by overlap and are not close to orthogonal.)
+<ul>
+<li>More general (mathematical) problem is DL under various invariances. Perhaps assuming locality of the filter and separation in distance of the nonzero patches (ex. different copies of the same filter don’t overlap).</li>
+</ul></li>
 </ul>
-
-
 
   </div>
 
     
 
+    <!-- Extension : Sharing buttons @ www.sharethis.com -->
+    <span class="st_facebook_large" displayText="Facebook"></span>
+    <span class="st_twitter_large" displayText="Tweet"></span>
+    <span class="st_googleplus_large" displayText="Google +"></span>
+    <span class="st_reddit_large" displayText="Reddit"></span>
+    <span class="st__large" displayText></span>
 
+    <div id="disqus_thread"></div>
+    
+
+
+  
+    <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+  </div>
   
 </div>
 
@@ -191,6 +171,9 @@
 
 <!-- Extension : Disqus @ http://disqus.com -->
 <!-- Extension : InlineDisqussions @ https://github.com/tsi/inlineDisqussions -->
+
+<script src="../../../../disqus/js/disqus.js"></script>
+
 
 
 <!-- Extension : Google Analytics -->

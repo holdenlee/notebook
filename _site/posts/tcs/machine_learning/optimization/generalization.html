@@ -10,7 +10,7 @@
   <meta name="description" content="Holden Lee's Research Notebook">
   <meta name="author" content="Holden Lee">
     
-  <title>Posts in category "tcs/machine_learning/neural_nets"</title>
+  <title>Generalization of neural nets</title>
 
   <!-- Bootstrap core CSS -->
   <link href="../../../../bootstrap/css/bootstrap.min.css" rel="stylesheet">
@@ -70,83 +70,63 @@
 <div class="container">
   <div id="content">
     <div class="page header">
-      <h1>Posts in category "tcs/machine_learning/neural_nets"</h1>
+      <h1>Generalization of neural nets</h1>
     </div>
     <div class="info">
       
+       
+        <p>Posted: 2016-10-10 
+          , Modified: 2016-10-10 
+	</p>
       
-      
+       <p>Tags: <a href="../../../../tags/neural%20nets.html">neural nets</a></p> 
     </div>
     
   </div>
   <!--/div-->
 
-  
+  <div class="toc"> <ul>
+ <li><a href="#rademacher-complexity">Rademacher complexity</a></li>
+ <li><a href="#local-minima-generalization">Local minima generalization</a></li>
+ <li><a href="#email">Email</a></li>
+ </ul> </div>
 
   <div class="blog-main">
-    <ul>
-    
-        <li>
-            <a href="../../../../posts/tcs/machine_learning/neural_nets/nndl.html">Neural nets learn dictionaries</a> (2016-10-10)
-        </li>
-    
-        <li>
-            <a href="../../../../posts/tcs/machine_learning/neural_nets/PMDH16.html">[PMDH16] Convolutional Patch Representations for Image Retrieval - an Unsupervised Approach</a> (2016-09-26)
-        </li>
-    
-        <li>
-            <a href="../../../../posts/tcs/machine_learning/neural_nets/pcanet.html">PCANet: A simple deep learning baseline for image classification?</a> (2016-09-10)
-        </li>
-    
-        <li>
-            <a href="../../../../posts/tcs/machine_learning/neural_nets/convnets_ideas.html">Convnets ideas</a> (2016-08-02)
-        </li>
-    
-        <li>
-            <a href="../../../../posts/tcs/machine_learning/neural_nets/pmi_images_scratch.html">PMI for images (scratch)</a> (2016-08-01)
-        </li>
-    
-        <li>
-            <a href="../../../../posts/tcs/machine_learning/neural_nets/pmi_images.html">PMI for images</a> (2016-08-01)
-        </li>
-    
-        <li>
-            <a href="../../../../posts/tcs/machine_learning/neural_nets/complexity_of_neural_nets.html">Complexity of neural networks</a> (2016-07-25)
-        </li>
-    
-        <li>
-            <a href="../../../../posts/tcs/machine_learning/neural_nets/JSA15.html">[JSA15] Beating the Perils of Non-Convexity - Guaranteed Training of Neural Networks using Tensor Methods</a> (2016-06-27)
-        </li>
-    
-        <li>
-            <a href="../../../../posts/tcs/machine_learning/neural_nets/lstm_code.html">LSTM Programming</a> (2016-03-19)
-        </li>
-    
-        <li>
-            <a href="../../../../posts/tcs/machine_learning/neural_nets/basics.html">Neural nets basics</a> (2016-03-13)
-        </li>
-    
-        <li>
-            <a href="../../../../posts/tcs/machine_learning/neural_nets/ALM16.html">[ALM16] WHY ARE DEEP NETS REVERSIBLE: A SIMPLE THEORY, WITH IMPLICATIONS FOR TRAINING</a> (2016-03-13)
-        </li>
-    
-        <li>
-            <a href="../../../../posts/tcs/machine_learning/neural_nets/CHMAL15.html">[CHMAL15] The Loss Surfaces of Multilayer Networks</a> (2016-03-07)
-        </li>
-    
-        <li>
-            <a href="../../../../posts/tcs/machine_learning/neural_nets/nn_modeling.html">Analysis of neural networks</a> (2016-03-05)
-        </li>
-    
+    <p>How can we show generalization error of neural networks is small?</p>
+<h2 id="rademacher-complexity">Rademacher complexity</h2>
+<p>The natural way to proceed is to calculate the Rademacher complexity of the neural net.</p>
+<p><a href="http://www.jmlr.org/papers/volume3/bartlett02a/bartlett02a.pdf">BM02</a> give generalization bounds for 2-layer NN and say that it generalizes to more layers, but I’m not sure how. (There’s a “trivial” way of doing it with Lipschitzness which seems to grow exponentially with depth; I feel there may be a more natural way to do it with “composition”.)</p>
+<p>Given the dimension of each layer, a Lipschitz sigmoid/threshold function, and a bound on the size of the coefficients, what are the bounds we get from Rademacher complexity? How are they unsatisfactory? (Ex. in practical cases, is the sample size too small? Is it, e.g., a difference between a sample of polynomial size and linear size, or something larger?)</p>
+<h2 id="local-minima-generalization">Local minima generalization</h2>
+<p>I thought a bit about whether local optima would generalize. Do you have any intuitions regarding why? This is meaningful if it generalizes with fewer samples than one would calculate from e.g. Rademacher complexity. (My first thought is that having derivative 0 in all directions (and also nonnegative Hessian) is much less likely to happen by chance than the value being small.)</p>
+<p>Also, is the right statement “under xx conditions whp all local optima generalize”? Given that there may be many local optima it seems there’s likely to be some (most) local optima that generalize well and some that don’t; perhaps it takes much fewer samples to have “most” local minima generalize. However, this seems a much more difficult statement to work with (ex. of the type people have been trying to get intuition from statistical physics). Perhaps we also need to tie it to the SGD algorithm in some way.</p>
+<h2 id="email">Email</h2>
+<p>I thought a bit about your suggestion that local optima would generalize. Do you have any intuitions regarding why or what a statement of this would be like?</p>
+<p>Here are some preliminary thoughts/questions I had.</p>
+<ul>
+<li>Focusing on neural networks: Rademacher complexity would give a baseline for generalization. Given the dimension of each layer, a Lipschitz sigmoid/threshold function, and a bound on the size of the coefficients, what are the bounds we get from Rademacher complexity? How are they unsatisfactory? (Ex. in practical cases, is the sample size too small? Is it, e.g., a difference between a sample of polynomial size and linear size, or something larger?) <a href="http://www.jmlr.org/papers/volume3/bartlett02a/bartlett02a.pdf">BM02</a></li>
+<li>Saying that local min generalizes is significant if it generalizes with fewer samples than one would calculate from e.g. Rademacher complexity.</li>
+<li>Is the right statement “under xx conditions whp all local optima generalize”? Given that there may be many local optima it seems there’s likely to be some (most) local optima that generalize well and some that don’t; perhaps it takes much fewer samples to have “most” local minima generalize. However, this seems a much more difficult statement to work with (ex. of the type people have been trying to get intuition from statistical physics). Perhaps we need to tie it to the SGD algorithm in some way.</li>
 </ul>
-
-
 
   </div>
 
     
 
+    <!-- Extension : Sharing buttons @ www.sharethis.com -->
+    <span class="st_facebook_large" displayText="Facebook"></span>
+    <span class="st_twitter_large" displayText="Tweet"></span>
+    <span class="st_googleplus_large" displayText="Google +"></span>
+    <span class="st_reddit_large" displayText="Reddit"></span>
+    <span class="st__large" displayText></span>
 
+    <div id="disqus_thread"></div>
+    
+
+
+  
+    <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+  </div>
   
 </div>
 
@@ -191,6 +171,9 @@
 
 <!-- Extension : Disqus @ http://disqus.com -->
 <!-- Extension : InlineDisqussions @ https://github.com/tsi/inlineDisqussions -->
+
+<script src="../../../../disqus/js/disqus.js"></script>
+
 
 
 <!-- Extension : Google Analytics -->

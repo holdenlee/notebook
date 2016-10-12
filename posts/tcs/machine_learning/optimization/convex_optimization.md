@@ -25,7 +25,7 @@ Notes:
 * Stochastic and online methods
 	* SGD
 	* [SGD variance reduction](sgd_variance_reduction.html) (SAGA, SVRG)
-* Bandit convex optimization
+* [Bandit convex optimization](bco.html) (OCO Ch. 6)
 
 To learn about: 
 

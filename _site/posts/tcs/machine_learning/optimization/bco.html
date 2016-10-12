@@ -10,7 +10,7 @@
   <meta name="description" content="Holden Lee's Research Notebook">
   <meta name="author" content="Holden Lee">
     
-  <title>Convex optimization</title>
+  <title>Bandit convex optimization</title>
 
   <!-- Bootstrap core CSS -->
   <link href="../../../../bootstrap/css/bootstrap.min.css" rel="stylesheet">
@@ -70,13 +70,13 @@
 <div class="container">
   <div id="content">
     <div class="page header">
-      <h1>Convex optimization</h1>
+      <h1>Bandit convex optimization</h1>
     </div>
     <div class="info">
       
        
-        <p>Posted: 2016-03-04 
-          , Modified: 2016-03-04 
+        <p>Posted: 2016-10-11 
+          , Modified: 2016-10-11 
 	</p>
       
        <p>Tags: <a href="../../../../tags/convex%20optimization.html">convex optimization</a></p> 
@@ -85,61 +85,77 @@
   </div>
   <!--/div-->
 
-  <div class="toc"></div>
+  <div class="toc"> <ul>
+ <li><a href="#multi-armed-bandit">Multi-armed bandit</a><ul>
+ <li><a href="#de-greedy-algorithm"><span class="math inline">$\de$</span>-greedy algorithm</a></li>
+ <li><a href="#exp3">EXP3</a></li>
+ <li><a href="#ucb1">UCB1</a></li>
+ </ul></li>
+ <li><a href="#blo">BLO</a><ul>
+ <li><a href="#scrible">SCRIBLE</a></li>
+ </ul></li>
+ <li><a href="#bco">BCO</a><ul>
+ <li><a href="#fkm">FKM</a></li>
+ </ul></li>
+ <li><a href="#contextual-bandits">Contextual bandits</a></li>
+ </ul> </div>
 
   <div class="blog-main">
-    <p>Notes:</p>
+    <p>Settings of increasing complexity:</p>
 <ul>
-<li><a href="duality.html">Duality</a> (BV Ch. 5)
-<ul>
-<li><a href="sdp-duality.html">SDP duality</a></li>
-</ul></li>
-<li><a href="convex_problems.html">Convex problems</a></li>
-<li>First-order methods
-<ul>
-<li><a href="GD.html">Gradient descent</a> (BV Ch. 9)</li>
-<li><a href="mirror-descent.html">Mirror descent</a></li>
-<li><a href="AO15.html">AGD by coupling</a></li>
-<li><a href="../../../../posts/math/analysis/numerical/chebyshev.html">AGD, intuition by Chebyshev</a> - actually covers conjugate gradients.</li>
-</ul></li>
-<li>Second-order methods
-<ul>
-<li><a href="second-order.html">Newton’s method</a> (BV Ch. 9)</li>
-</ul></li>
-<li><a href="constrained.html">Constrained optimization</a> (BV Ch. 10)</li>
-<li><a href="ipm.html">Interior point methods</a> (BV Ch. 11)</li>
-<li><a href="ellipsoid.html">Ellipsoid method</a></li>
-<li>Stochastic and online methods
-<ul>
-<li>SGD</li>
-<li><a href="sgd_variance_reduction.html">SGD variance reduction</a> (SAGA, SVRG)</li>
-</ul></li>
-<li><a href="bco.html">Bandit convex optimization</a> (OCO Ch. 6)</li>
+<li>Multi-armed bandit</li>
+<li>Bandit linear optimization</li>
+<li>Bandit convex optimization</li>
 </ul>
-<p>To learn about:</p>
+<h2 id="multi-armed-bandit">Multi-armed bandit</h2>
 <ul>
-<li>Accelerated gradient descent (see Bubeck, Moritz, Nesterov) (? see also: a universal catalyst, 4-12-16, S15 in alg-ml)</li>
-<li>AH15 Faster Convex Optimization: Simulated Annealing with an Efficient Universal Barrier <a href="http://arxiv.org/abs/1507.02528">paper</a> (see also: 2 cultures)</li>
-<li>Review online/bandit methods</li>
-<li>Bandit algorithms—recent progress by Bubeck.</li>
-<li>Ellipsoid method</li>
-<li>Sampling methods
+<li><span class="math inline">\(\de\)</span>-greedy algorithm: Balancing exploitation which gives <span class="math inline">\(O(\sqrt T)\)</span> regret and exploration which gives <span class="math inline">\(O(T^{\fc 34} \sqrt n)\)</span> regret.</li>
+</ul>
+<h3 id="de-greedy-algorithm"><span class="math inline">\(\de\)</span>-greedy algorithm</h3>
 <ul>
-<li><a href="http://www.minimizingregret.com/2016/03/the-two-cultures-of-optimization.html">Two cultures</a></li>
-<li>CV16 Gaussian cooling <a href="http://arxiv.org/pdf/1409.6011.pdf">paper</a> and <a href="http://link.springer.com/article/10.1007/s12532-015-0097-z">followup</a>. See Karan’s talk in alg-ml S4.</li>
+<li>With probability <span class="math inline">\(\de\)</span>, explore.
+<ul>
+<li>Play <span class="math inline">\(i_t\sim U_n\)</span>.</li>
+<li><span class="math inline">\(\wh f_t(x) = \wh \ell_t^T x\)</span>.</li>
+<li><span class="math inline">\(\wh \ell_t = \fc{n}{\de}\ell_t(i_t)e_{i_t}\)</span>.</li>
 </ul></li>
-<li>Allen-Zhu’s work. Posts from Minimizing regret
+<li>With probability <span class="math inline">\(1-\de\)</span>, exploit.
 <ul>
-<li>ICML 2016 papers.</li>
-<li><a href="http://www.minimizingregret.com/2016/07/faster-than-sgd-1-variance-reduction.html">Improvements since SGD</a></li>
-<li><a href="http://www.minimizingregret.com/2016/07/more-than-decade-of-online-convex.html">OCO</a></li>
-<li><a href="http://www.minimizingregret.com/2016/06/how-to-solve-classification-and-regression.html">Classification and regression</a></li>
-<li><a href="http://www.minimizingregret.com/2016/05/the-complexity-zoo-and-reductions-in.html">Reductions</a></li>
-<li><a href="http://www.minimizingregret.com/2016/03/making-second-order-methods-practical.html">LiSSA</a></li>
+<li>Play <span class="math inline">\(i_t\sim x_t\)</span>.</li>
+<li><span class="math inline">\(\wh f_t(x) = 0\)</span>. (We can’t use information here because it wasn’t uniformly generated.)</li>
 </ul></li>
-<li>Recht on SGD</li>
-<li>? Belief propagation</li>
-<li>Optimization on manifolds—write up notes.</li>
+<li>Update using a bandit algorithm <span class="math inline">\(x_{t+1} = A(\wh f_1,\ldots, \wh f_t)\)</span>.</li>
+</ul>
+<p>The <span class="math inline">\(\wh \ell_t\)</span> were chosen so <span class="math display">\[ \E \wh \ell_t(i) = \ell_t(i).\]</span> We have <span class="math display">\[\E R_T \le 3 GD\sqrt T + \de T,\]</span> where <span class="math inline">\(G\le \fc n\de\)</span>.</p>
+<h3 id="exp3">EXP3</h3>
+<p>Adversarial setting.</p>
+<p><a href="https://jeremykun.com/2013/11/08/adversarial-bandits-and-the-exp3-algorithm/">Blog post</a>.</p>
+<p>We can explore and exploit at the same time if we (a) keep track of a probability distribution and update it, and (b) if we reweight the loss functions to make the expected value correct.</p>
+<p>Idea: Use the MWU (hedge) algorithm.</p>
+<p>Get <span class="math inline">\(R_T\le O(\sqrt{Tn \ln n})\)</span>.</p>
+<h3 id="ucb1">UCB1</h3>
+<p>Stochastic setting.</p>
+<p>“Optimism in the face of uncertainty.”</p>
+<p><a href="https://jeremykun.com/2013/10/28/optimism-in-the-face-of-uncertainty-the-ucb1-algorithm/">Blog post</a>.</p>
+<h2 id="blo">BLO</h2>
+<h3 id="scrible">SCRIBLE</h3>
+<p>Attains <span class="math inline">\(O(\sqrt T\ln T)\)</span> regret.</p>
+<h2 id="bco">BCO</h2>
+<ul>
+<li>[BE16] [paper](https://arxiv.org/pdf/1507.06580v1.pdf) <a href="http://www.jmlr.org/proceedings/papers/v49/bubeck16.pdf">JMLR version</a> - inefficient, <span class="math inline">\(\wt O(\poly(n)\sqrt T)\)</span>-regret algorithm.</li>
+<li>[BEL16] [paper](https://arxiv.org/pdf/1607.03084.pdf) - <span class="math inline">\(\wt O(\poly(n)\sqrt T)\)</span>-regret and <span class="math inline">\(\poly(T)\)</span>-time algorithm.</li>
+</ul>
+<h3 id="fkm">FKM</h3>
+<p>Generic reduction from BCO to (first-order) OCO by using gradient estimators. FKM is an instantiation of the algorithm with regret <span class="math inline">\(O(T^{\fc 34})\)</span>.</p>
+<h2 id="contextual-bandits">Contextual bandits</h2>
+<ul>
+<li>EXP4 (?)</li>
+<li>[LCLS10] A Contextual-Bandit Approach to Personalized News Article Recommendation
+<ul>
+<li>Model: stochastic setting, expected payoff of <span class="math inline">\(a\)</span> is linear in feature <span class="math inline">\(x_{t,a}\)</span>, (<span class="math inline">\(\te_a^*\)</span> is the unknown coefficient vector) <span class="math display">\[ \E[r_{t,a}|x_{t,a}] = x_{t,a}^T\te_^*.\]</span></li>
+<li>Algorithm: LinUCB attains regret <span class="math inline">\(\wt O(\sqrt{KdT})\)</span>.</li>
+</ul></li>
+<li>[DHKK] Efficient Optimal Learning for Contextual Bandits</li>
 </ul>
 
   </div>
