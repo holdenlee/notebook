@@ -8,8 +8,491 @@
         <name>Holden Lee</name>
         <email>oldheneel@gmail.com</email>
     </author>
-    <updated>2016-09-30T00:00:00Z</updated>
+    <updated>2016-10-11T00:00:00Z</updated>
     <entry>
+    <title>Hidden Markov Models</title>
+    <link href="http://holdenlee.github.io/notebook/posts/tcs/machine_learning/probabilistic/hmm.html" />
+    <id>http://holdenlee.github.io/notebook/posts/tcs/machine_learning/probabilistic/hmm.html</id>
+    <published>2016-10-11T00:00:00Z</published>
+    <updated>2016-10-11T00:00:00Z</updated>
+    <summary type="html"><![CDATA[
+<div class="container">
+  <div id="content">
+    <div class="page header">
+      <h1>Hidden Markov Models</h1>
+    </div>
+    <div class="info">
+      
+       
+        <p>Posted: 2016-10-11 
+          , Modified: 2016-10-11 
+	</p>
+      
+       <p>Tags: <a href="/tags/none.html">none</a></p> 
+    </div>
+    
+  </div>
+  <!--/div-->
+
+  <div class="toc"></div>
+
+  <div class="blog-main">
+    <ul>
+<li>[HKZ12] A spectral algorithm for learning Hidden Markov Models</li>
+<li>Continuous HMM [LBGS10] [paper](http://repository.cmu.edu/cgi/viewcontent.cgi?article=1057&amp;context=machine_learning)</li>
+</ul>
+
+  </div>
+
+    
+
+    <!-- Extension : Sharing buttons @ www.sharethis.com -->
+    <span class='st_facebook_large' displayText='Facebook'></span>
+    <span class='st_twitter_large' displayText='Tweet'></span>
+    <span class='st_googleplus_large' displayText='Google +'></span>
+    <span class='st_reddit_large' displayText='Reddit'></span>
+    <span class='st__large' displayText=''></span>
+
+    <div id="disqus_thread"></div>
+    
+
+
+  
+    <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+  </div>
+  
+</div>
+]]></summary>
+</entry>
+<entry>
+    <title>Bandit convex optimization</title>
+    <link href="http://holdenlee.github.io/notebook/posts/tcs/machine_learning/optimization/bco.html" />
+    <id>http://holdenlee.github.io/notebook/posts/tcs/machine_learning/optimization/bco.html</id>
+    <published>2016-10-11T00:00:00Z</published>
+    <updated>2016-10-11T00:00:00Z</updated>
+    <summary type="html"><![CDATA[
+<div class="container">
+  <div id="content">
+    <div class="page header">
+      <h1>Bandit convex optimization</h1>
+    </div>
+    <div class="info">
+      
+       
+        <p>Posted: 2016-10-11 
+          , Modified: 2016-10-11 
+	</p>
+      
+       <p>Tags: <a href="/tags/convex%20optimization.html">convex optimization</a></p> 
+    </div>
+    
+  </div>
+  <!--/div-->
+
+  <div class="toc"> <ul>
+ <li><a href="#multi-armed-bandit">Multi-armed bandit</a><ul>
+ <li><a href="#de-greedy-algorithm"><span class="math inline">$\de$</span>-greedy algorithm</a></li>
+ <li><a href="#exp3">EXP3</a></li>
+ <li><a href="#ucb1">UCB1</a></li>
+ </ul></li>
+ <li><a href="#blo">BLO</a><ul>
+ <li><a href="#scrible">SCRIBLE</a></li>
+ </ul></li>
+ <li><a href="#bco">BCO</a><ul>
+ <li><a href="#fkm">FKM</a></li>
+ </ul></li>
+ <li><a href="#contextual-bandits">Contextual bandits</a></li>
+ </ul> </div>
+
+  <div class="blog-main">
+    <p>Settings of increasing complexity:</p>
+<ul>
+<li>Multi-armed bandit</li>
+<li>Bandit linear optimization</li>
+<li>Bandit convex optimization</li>
+</ul>
+<h2 id="multi-armed-bandit">Multi-armed bandit</h2>
+<ul>
+<li><span class="math inline">\(\de\)</span>-greedy algorithm: Balancing exploitation which gives <span class="math inline">\(O(\sqrt T)\)</span> regret and exploration which gives <span class="math inline">\(O(T^{\fc 34} \sqrt n)\)</span> regret.</li>
+</ul>
+<h3 id="de-greedy-algorithm"><span class="math inline">\(\de\)</span>-greedy algorithm</h3>
+<ul>
+<li>With probability <span class="math inline">\(\de\)</span>, explore.
+<ul>
+<li>Play <span class="math inline">\(i_t\sim U_n\)</span>.</li>
+<li><span class="math inline">\(\wh f_t(x) = \wh \ell_t^T x\)</span>.</li>
+<li><span class="math inline">\(\wh \ell_t = \fc{n}{\de}\ell_t(i_t)e_{i_t}\)</span>.</li>
+</ul></li>
+<li>With probability <span class="math inline">\(1-\de\)</span>, exploit.
+<ul>
+<li>Play <span class="math inline">\(i_t\sim x_t\)</span>.</li>
+<li><span class="math inline">\(\wh f_t(x) = 0\)</span>. (We can’t use information here because it wasn’t uniformly generated.)</li>
+</ul></li>
+<li>Update using a bandit algorithm <span class="math inline">\(x_{t+1} = A(\wh f_1,\ldots, \wh f_t)\)</span>.</li>
+</ul>
+<p>The <span class="math inline">\(\wh \ell_t\)</span> were chosen so <span class="math display">\[ \E \wh \ell_t(i) = \ell_t(i).\]</span> We have <span class="math display">\[\E R_T \le 3 GD\sqrt T + \de T,\]</span> where <span class="math inline">\(G\le \fc n\de\)</span>.</p>
+<h3 id="exp3">EXP3</h3>
+<p>Adversarial setting.</p>
+<p><a href="https://jeremykun.com/2013/11/08/adversarial-bandits-and-the-exp3-algorithm/">Blog post</a>.</p>
+<p>We can explore and exploit at the same time if we (a) keep track of a probability distribution and update it, and (b) if we reweight the loss functions to make the expected value correct.</p>
+<p>Idea: Use the MWU (hedge) algorithm.</p>
+<p>Get <span class="math inline">\(R_T\le O(\sqrt{Tn \ln n})\)</span>.</p>
+<h3 id="ucb1">UCB1</h3>
+<p>Stochastic setting.</p>
+<p>“Optimism in the face of uncertainty.”</p>
+<p><a href="https://jeremykun.com/2013/10/28/optimism-in-the-face-of-uncertainty-the-ucb1-algorithm/">Blog post</a>.</p>
+<h2 id="blo">BLO</h2>
+<h3 id="scrible">SCRIBLE</h3>
+<p>Attains <span class="math inline">\(O(\sqrt T\ln T)\)</span> regret.</p>
+<h2 id="bco">BCO</h2>
+<ul>
+<li>[BE16] [paper](https://arxiv.org/pdf/1507.06580v1.pdf) <a href="http://www.jmlr.org/proceedings/papers/v49/bubeck16.pdf">JMLR version</a> - inefficient, <span class="math inline">\(\wt O(\poly(n)\sqrt T)\)</span>-regret algorithm.</li>
+<li>[BEL16] [paper](https://arxiv.org/pdf/1607.03084.pdf) - <span class="math inline">\(\wt O(\poly(n)\sqrt T)\)</span>-regret and <span class="math inline">\(\poly(T)\)</span>-time algorithm.</li>
+</ul>
+<h3 id="fkm">FKM</h3>
+<p>Generic reduction from BCO to (first-order) OCO by using gradient estimators. FKM is an instantiation of the algorithm with regret <span class="math inline">\(O(T^{\fc 34})\)</span>.</p>
+<h2 id="contextual-bandits">Contextual bandits</h2>
+<ul>
+<li>EXP4 (?)</li>
+<li>[LCLS10] A Contextual-Bandit Approach to Personalized News Article Recommendation
+<ul>
+<li>Model: stochastic setting, expected payoff of <span class="math inline">\(a\)</span> is linear in feature <span class="math inline">\(x_{t,a}\)</span>, (<span class="math inline">\(\te_a^*\)</span> is the unknown coefficient vector) <span class="math display">\[ \E[r_{t,a}|x_{t,a}] = x_{t,a}^T\te_^*.\]</span></li>
+<li>Algorithm: LinUCB attains regret <span class="math inline">\(\wt O(\sqrt{KdT})\)</span>.</li>
+</ul></li>
+<li>[DHKK] Efficient Optimal Learning for Contextual Bandits</li>
+</ul>
+
+  </div>
+
+    
+
+    <!-- Extension : Sharing buttons @ www.sharethis.com -->
+    <span class='st_facebook_large' displayText='Facebook'></span>
+    <span class='st_twitter_large' displayText='Tweet'></span>
+    <span class='st_googleplus_large' displayText='Google +'></span>
+    <span class='st_reddit_large' displayText='Reddit'></span>
+    <span class='st__large' displayText=''></span>
+
+    <div id="disqus_thread"></div>
+    
+
+
+  
+    <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+  </div>
+  
+</div>
+]]></summary>
+</entry>
+<entry>
+    <title>Generalization of neural nets</title>
+    <link href="http://holdenlee.github.io/notebook/posts/tcs/machine_learning/optimization/generalization.html" />
+    <id>http://holdenlee.github.io/notebook/posts/tcs/machine_learning/optimization/generalization.html</id>
+    <published>2016-10-10T00:00:00Z</published>
+    <updated>2016-10-10T00:00:00Z</updated>
+    <summary type="html"><![CDATA[
+<div class="container">
+  <div id="content">
+    <div class="page header">
+      <h1>Generalization of neural nets</h1>
+    </div>
+    <div class="info">
+      
+       
+        <p>Posted: 2016-10-10 
+          , Modified: 2016-10-10 
+	</p>
+      
+       <p>Tags: <a href="/tags/neural%20nets.html">neural nets</a></p> 
+    </div>
+    
+  </div>
+  <!--/div-->
+
+  <div class="toc"> <ul>
+ <li><a href="#rademacher-complexity">Rademacher complexity</a></li>
+ <li><a href="#local-minima-generalization">Local minima generalization</a></li>
+ <li><a href="#email">Email</a></li>
+ </ul> </div>
+
+  <div class="blog-main">
+    <p>How can we show generalization error of neural networks is small?</p>
+<h2 id="rademacher-complexity">Rademacher complexity</h2>
+<p>The natural way to proceed is to calculate the Rademacher complexity of the neural net.</p>
+<p><a href="http://www.jmlr.org/papers/volume3/bartlett02a/bartlett02a.pdf">BM02</a> give generalization bounds for 2-layer NN and say that it generalizes to more layers, but I’m not sure how. (There’s a “trivial” way of doing it with Lipschitzness which seems to grow exponentially with depth; I feel there may be a more natural way to do it with “composition”.)</p>
+<p>Given the dimension of each layer, a Lipschitz sigmoid/threshold function, and a bound on the size of the coefficients, what are the bounds we get from Rademacher complexity? How are they unsatisfactory? (Ex. in practical cases, is the sample size too small? Is it, e.g., a difference between a sample of polynomial size and linear size, or something larger?)</p>
+<h2 id="local-minima-generalization">Local minima generalization</h2>
+<p>I thought a bit about whether local optima would generalize. Do you have any intuitions regarding why? This is meaningful if it generalizes with fewer samples than one would calculate from e.g. Rademacher complexity. (My first thought is that having derivative 0 in all directions (and also nonnegative Hessian) is much less likely to happen by chance than the value being small.)</p>
+<p>Also, is the right statement “under xx conditions whp all local optima generalize”? Given that there may be many local optima it seems there’s likely to be some (most) local optima that generalize well and some that don’t; perhaps it takes much fewer samples to have “most” local minima generalize. However, this seems a much more difficult statement to work with (ex. of the type people have been trying to get intuition from statistical physics). Perhaps we also need to tie it to the SGD algorithm in some way.</p>
+<h2 id="email">Email</h2>
+<p>I thought a bit about your suggestion that local optima would generalize. Do you have any intuitions regarding why or what a statement of this would be like?</p>
+<p>Here are some preliminary thoughts/questions I had.</p>
+<ul>
+<li>Focusing on neural networks: Rademacher complexity would give a baseline for generalization. Given the dimension of each layer, a Lipschitz sigmoid/threshold function, and a bound on the size of the coefficients, what are the bounds we get from Rademacher complexity? How are they unsatisfactory? (Ex. in practical cases, is the sample size too small? Is it, e.g., a difference between a sample of polynomial size and linear size, or something larger?) <a href="http://www.jmlr.org/papers/volume3/bartlett02a/bartlett02a.pdf">BM02</a></li>
+<li>Saying that local min generalizes is significant if it generalizes with fewer samples than one would calculate from e.g. Rademacher complexity.</li>
+<li>Is the right statement “under xx conditions whp all local optima generalize”? Given that there may be many local optima it seems there’s likely to be some (most) local optima that generalize well and some that don’t; perhaps it takes much fewer samples to have “most” local minima generalize. However, this seems a much more difficult statement to work with (ex. of the type people have been trying to get intuition from statistical physics). Perhaps we need to tie it to the SGD algorithm in some way.</li>
+</ul>
+
+  </div>
+
+    
+
+    <!-- Extension : Sharing buttons @ www.sharethis.com -->
+    <span class='st_facebook_large' displayText='Facebook'></span>
+    <span class='st_twitter_large' displayText='Tweet'></span>
+    <span class='st_googleplus_large' displayText='Google +'></span>
+    <span class='st_reddit_large' displayText='Reddit'></span>
+    <span class='st__large' displayText=''></span>
+
+    <div id="disqus_thread"></div>
+    
+
+
+  
+    <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+  </div>
+  
+</div>
+]]></summary>
+</entry>
+<entry>
+    <title>Neural nets learn dictionaries</title>
+    <link href="http://holdenlee.github.io/notebook/posts/tcs/machine_learning/neural_nets/nndl.html" />
+    <id>http://holdenlee.github.io/notebook/posts/tcs/machine_learning/neural_nets/nndl.html</id>
+    <published>2016-10-10T00:00:00Z</published>
+    <updated>2016-10-10T00:00:00Z</updated>
+    <summary type="html"><![CDATA[
+<div class="container">
+  <div id="content">
+    <div class="page header">
+      <h1>Neural nets learn dictionaries</h1>
+    </div>
+    <div class="info">
+      
+       
+        <p>Posted: 2016-10-10 
+          , Modified: 2016-10-10 
+	</p>
+      
+       <p>Tags: <a href="/tags/dictionary%20learning.html">dictionary learning</a>, <a href="/tags/neural%20nets.html">neural nets</a></p> 
+    </div>
+    
+  </div>
+  <!--/div-->
+
+  <div class="toc"> <ul>
+ <li><a href="#result">Result</a></li>
+ <li><a href="#proof">Proof</a></li>
+ <li><a href="#further-directions">Further directions</a></li>
+ </ul> </div>
+
+  <div class="blog-main">
+    <h2 id="result">Result</h2>
+<p>General idea: when each row of <span class="math inline">\(B\)</span> is sufficiently close to the row of <span class="math inline">\(A^T\)</span>, gradient descent converges until <span class="math inline">\(B\)</span> is very close to <span class="math inline">\(A^T\)</span>.</p>
+<h2 id="proof">Proof</h2>
+<h2 id="further-directions">Further directions</h2>
+<ul>
+<li>What are the dynamics of the dictionary vectors learned? If we start them randomly, will they converge to the <span class="math inline">\(A_{\bullet i}\)</span> or combinations of the <span class="math inline">\(A_{\bullet i}\)</span>? Will they not be useless? Will they be far apart? (What if you simply do some sampling of <span class="math inline">\(Ah\)</span>?)</li>
+<li>Agnostic dictionary learning. Suppose we learn a good dictionary. Can we guarantee that it will do well in classification?</li>
+<li>Would a local min for this neural net be good? Generalization follows from Rademacher, so we just care about driving down the cost.</li>
+<li>What weird properties does a NP-hard distribution for DL have—is there a simple way to exclude those?</li>
+<li>Not overcomplete, but sparse + noise (e.g. componentwise). (If not overcomplete, then a linear classifier works. But thresholding could remove the noise, while averaging wouldn’t (ex. averaging could amplify it, though slowerly than linearly, <span class="math inline">\(\sqrt n\)</span>).)</li>
+<li>If don’t get <span class="math inline">\(b^Th\)</span> but only <span class="math inline">\(\sgn(b^Th)\)</span>.</li>
+<li>Provable convolutional DL. (The difficulty is that translates that are close by overlap and are not close to orthogonal.)
+<ul>
+<li>More general (mathematical) problem is DL under various invariances. Perhaps assuming locality of the filter and separation in distance of the nonzero patches (ex. different copies of the same filter don’t overlap).</li>
+</ul></li>
+</ul>
+
+  </div>
+
+    
+
+    <!-- Extension : Sharing buttons @ www.sharethis.com -->
+    <span class='st_facebook_large' displayText='Facebook'></span>
+    <span class='st_twitter_large' displayText='Tweet'></span>
+    <span class='st_googleplus_large' displayText='Google +'></span>
+    <span class='st_reddit_large' displayText='Reddit'></span>
+    <span class='st__large' displayText=''></span>
+
+    <div id="disqus_thread"></div>
+    
+
+
+  
+    <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+  </div>
+  
+</div>
+]]></summary>
+</entry>
+<entry>
+    <title>Weekly summary 2016-10-15</title>
+    <link href="http://holdenlee.github.io/notebook/posts/summaries/2016-10-15.html" />
+    <id>http://holdenlee.github.io/notebook/posts/summaries/2016-10-15.html</id>
+    <published>2016-10-10T00:00:00Z</published>
+    <updated>2016-10-10T00:00:00Z</updated>
+    <summary type="html"><![CDATA[
+<div class="container">
+  <div id="content">
+    <div class="page header">
+      <h1>Weekly summary 2016-10-15</h1>
+    </div>
+    <div class="info">
+      
+       
+        <p>Posted: 2016-10-10 
+          , Modified: 2016-10-10 
+	</p>
+      
+       <p>Tags: <a href="/tags/none.html">none</a></p> 
+    </div>
+    
+  </div>
+  <!--/div-->
+
+  <div class="toc"> <ul>
+ <li><a href="#threads">Threads</a></li>
+ </ul> </div>
+
+  <div class="blog-main">
+    <h2 id="threads">Threads</h2>
+<ul>
+<li>PMI - get some results!</li>
+<li>SoS - lectures 2 and 3</li>
+<li>DL: do experiments suggested in <a href="/posts/tcs/machine_learning/matrices/DL_generalization.html">DL generalization</a>
+<ul>
+<li>(*) NN learns DL. (Finish)</li>
+<li>DL generalizations.</li>
+</ul></li>
+<li>Stability of SGD
+<ul>
+<li>@Elad: do local minima generalize? (write up a formal question)</li>
+</ul></li>
+<li>Graphical models reading</li>
+<li>Alexa</li>
+<li>Papers (finish reading, summarize)</li>
+<li>Papers (started reading)
+<ul>
+<li><a href="http://www.research.rutgers.edu/~lihong/pub/Li10Contextual.pdf">LCLS10 A Contextual-Bandit Approach to Personalized News Article Recommendation</a></li>
+<li><a href="http://www.cs.columbia.edu/~djhsu/papers/amo.pdf">DHKK Efficient Optimal Learning for Contextual Bandits</a></li>
+<li><a href="http://www.cs.columbia.edu/~djhsu/papers/poshmm-tacl.pdf">SCH Unsupervised Part-Of-Speech Tagging with Anchor Hidden Markov Models</a></li>
+<li><a href="http://www.cs.columbia.edu/~djhsu/papers/hmm-jcss-final.pdf">A spectral algorithm for learning Hidden Markov Models</a></li>
+</ul></li>
+</ul>
+
+  </div>
+
+    
+
+    <!-- Extension : Sharing buttons @ www.sharethis.com -->
+    <span class='st_facebook_large' displayText='Facebook'></span>
+    <span class='st_twitter_large' displayText='Tweet'></span>
+    <span class='st_googleplus_large' displayText='Google +'></span>
+    <span class='st_reddit_large' displayText='Reddit'></span>
+    <span class='st__large' displayText=''></span>
+
+    <div id="disqus_thread"></div>
+    
+
+
+  
+    <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+  </div>
+  
+</div>
+]]></summary>
+</entry>
+<entry>
+    <title>Weekly summary 2016-10-08</title>
+    <link href="http://holdenlee.github.io/notebook/posts/summaries/2016-10-08.html" />
+    <id>http://holdenlee.github.io/notebook/posts/summaries/2016-10-08.html</id>
+    <published>2016-10-08T00:00:00Z</published>
+    <updated>2016-10-08T00:00:00Z</updated>
+    <summary type="html"><![CDATA[
+<div class="container">
+  <div id="content">
+    <div class="page header">
+      <h1>Weekly summary 2016-10-08</h1>
+    </div>
+    <div class="info">
+      
+       
+        <p>Posted: 2016-10-08 
+          , Modified: 2016-10-10 
+	</p>
+      
+       <p>Tags: <a href="/tags/none.html">none</a></p> 
+    </div>
+    
+  </div>
+  <!--/div-->
+
+  <div class="toc"> <ul>
+ <li><a href="#done">Done</a></li>
+ <li><a href="#threads">Threads</a></li>
+ </ul> </div>
+
+  <div class="blog-main">
+    <h2 id="done">Done</h2>
+<ul>
+<li>DL
+<ul>
+<li>(*) NN learns DL. (Did half of calculations - see notebook.)</li>
+<li>DL generalizations.</li>
+</ul></li>
+<li>Papers (started reading)
+<ul>
+<li><a href="http://www.research.rutgers.edu/~lihong/pub/Li10Contextual.pdf">LCLS10 A Contextual-Bandit Approach to Personalized News Article Recommendation</a></li>
+<li><a href="http://www.cs.columbia.edu/~djhsu/papers/amo.pdf">DHKK Efficient Optimal Learning for Contextual Bandits</a></li>
+<li><a href="http://www.cs.columbia.edu/~djhsu/papers/poshmm-tacl.pdf">SCH Unsupervised Part-Of-Speech Tagging with Anchor Hidden Markov Models</a></li>
+<li><a href="http://www.cs.columbia.edu/~djhsu/papers/hmm-jcss-final.pdf">A spectral algorithm for learning Hidden Markov Models</a></li>
+</ul></li>
+<li><a href="/posts/tcs/machine_learning/reinforcement_learning/rl.html">RL</a>: read Ch. 7-8 (Fri)</li>
+<li>Avi’s birthday conference. Aaronson, Micali’s talks. (Micali has good general advice.)</li>
+<li>Alexa meeting.</li>
+<li>Thought a little about generalization of NN.</li>
+<li>Talked to Kiran on convolutional DL (Mon)</li>
+</ul>
+<h2 id="threads">Threads</h2>
+<ul>
+<li>PMI - get some results!</li>
+<li>SoS - lectures 2 and 3</li>
+<li>DL: do experiments suggested in <a href="/posts/tcs/machine_learning/matrices/DL_generalization.html">DL generalization</a>
+<ul>
+<li>(*) NN learns DL. (Finish)</li>
+<li>DL generalizations.</li>
+</ul></li>
+<li>Stability of SGD
+<ul>
+<li>@Elad: do local minima generalize? (write up a formal question)</li>
+</ul></li>
+<li>Graphical models reading</li>
+</ul>
+
+  </div>
+
+    
+
+    <!-- Extension : Sharing buttons @ www.sharethis.com -->
+    <span class='st_facebook_large' displayText='Facebook'></span>
+    <span class='st_twitter_large' displayText='Tweet'></span>
+    <span class='st_googleplus_large' displayText='Google +'></span>
+    <span class='st_reddit_large' displayText='Reddit'></span>
+    <span class='st__large' displayText=''></span>
+
+    <div id="disqus_thread"></div>
+    
+
+
+  
+    <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+  </div>
+  
+</div>
+]]></summary>
+</entry>
+<entry>
     <title>[WJ08] Graphical Models, Exponential Families, and Variational Inference</title>
     <link href="http://holdenlee.github.io/notebook/posts/tcs/machine_learning/probabilistic/graphical_models.html" />
     <id>http://holdenlee.github.io/notebook/posts/tcs/machine_learning/probabilistic/graphical_models.html</id>
@@ -96,7 +579,7 @@
       
        
         <p>Posted: 2016-09-28 
-          , Modified: 2016-09-28 
+          , Modified: 2016-10-07 
 	</p>
       
        <p>Tags: <a href="/tags/reinforcement%20learning.html">reinforcement learning</a></p> 
@@ -109,14 +592,50 @@
  <li><a href="#references">References</a></li>
  <li><a href="#section">3</a></li>
  <li><a href="#dynamic-programming">4 Dynamic programming</a></li>
- <li><a href="#monte-carlo-methods">5 Monte Carlo methods</a></li>
- <li><a href="#temporal-difference-learning">6 Temporal-difference learning</a></li>
+ <li><a href="#monte-carlo-methods">5 Monte Carlo methods</a><ul>
+ <li><a href="#on-policy-mc-control">5.4 On-policy MC control</a></li>
+ <li><a href="#evaluating-one-policywhile-following-an-other-off-policy-policy-evaluation">5.5 Evaluating One PolicyWhile Following An-other (Off-policy Policy Evaluation)</a></li>
+ <li><a href="#off-policy-mc-control">5.6 Off-policy MC control</a></li>
+ <li><a href="#incremental-implementation">5.7 Incremental implementation</a></li>
+ </ul></li>
+ <li><a href="#temporal-difference-learning">6 Temporal-difference learning</a><ul>
+ <li><a href="#optimality-of-td0">6.3 Optimality of TD(0)</a></li>
+ <li><a href="#sarsa-on-policy-td-control">6.4 Sarsa: On-policy TD control</a></li>
+ <li><a href="#q-learning-off-policy-td-control">6.5 Q-learning: Off-policy TD control</a></li>
+ <li><a href="#games">6.6 Games</a></li>
+ </ul></li>
+ <li><a href="#eligibility-traces">7 Eligibility traces</a><ul>
+ <li><a href="#n-step-td-prediction">7.1 n-step TD prediction</a></li>
+ <li><a href="#the-forward-view-of-tdla">7.2 The forward view of TD(<span class="math inline">$\la$</span>)</a></li>
+ <li><a href="#the-backward-view-of-tdla">7.3 The backward view of TD(<span class="math inline">$\la$</span>)</a></li>
+ <li><a href="#equivalence-of-forward-and-backward-views">7.4 Equivalence of forward and backward views</a></li>
+ </ul></li>
+ <li><a href="#sarsala">7.5 Sarsa(<span class="math inline">$\la$</span>)</a><ul>
+ <li><a href="#qla">7.6 <span class="math inline">$Q(\la)$</span></a><ul>
+ <li><a href="#watkins-qla">Watkin’s <span class="math inline">$Q(\la)$</span></a></li>
+ <li><a href="#pengs-qla">Peng’s <span class="math inline">$Q(\la)$</span></a></li>
+ </ul></li>
+ <li><a href="#replacing-traces">7.7 Replacing traces</a></li>
+ <li><a href="#implementation-issues">7.8 Implementation issues</a></li>
+ <li><a href="#variable-la">7.9 Variable <span class="math inline">$\la$</span></a></li>
+ </ul></li>
+ <li><a href="#planning-and-learning-with-tabular-methods">8 Planning and learning with tabular methods</a><ul>
+ <li><a href="#models-and-planning">8.1 Models and planning</a></li>
+ <li><a href="#integrating-planning-acting-and-learning">8.2 Integrating planning, acting, and learning</a></li>
+ <li><a href="#when-the-model-is-wrong">8.3 When the model is wrong</a></li>
+ <li><a href="#prioritized-sweeping">8.4 Prioritized sweeping</a></li>
+ <li><a href="#full-vs.sample-backups">8.5 Full vs. sample backups</a></li>
+ <li><a href="#trajectory-sampling">8.6 Trajectory sampling</a></li>
+ <li><a href="#heuristic-search">8.7 Heuristic search</a></li>
+ </ul></li>
+ <li><a href="#deep-rl">Deep RL</a></li>
  </ul> </div>
 
   <div class="blog-main">
     <h2 id="references">References</h2>
 <ul>
 <li>Barton, Sutto.</li>
+<li>Deep RL tutorial, ICML 2016.</li>
 <li>Algorithms course Lecture 8</li>
 <li>…</li>
 </ul>
@@ -197,7 +716,7 @@ v_{k+1}(s) = \sum_a \pi(a|s) \sum_{s'} p(s'|s,a) [r(s,a,s') + \ga v_k(s')].
 </ul></li>
 </ol>
 <p>MC ES cannot converge to any suboptimal policy (if it did, the value function converges to the value function for that policy, and the policy changes). <em>Open question</em>: does it always converge? [Tsitsiklis02]</p>
-<p>5.4 On-policy MC control</p>
+<h3 id="on-policy-mc-control">5.4 On-policy MC control</h3>
 <p>Improve the policy used to make decisions.</p>
 <p>Soft policy: <span class="math inline">\(\forall s,a\in \mathcal A(s), \pi(a|s)&gt;0\)</span>. <span class="math inline">\(\ep\)</span>-soft: <span class="math inline">\(\ge \fc{\ep}{|\mathcal A(s)|}\)</span>.</p>
 <p>Policy iterations works for <span class="math inline">\(\ep\)</span>-soft policies.</p>
@@ -205,7 +724,7 @@ v_{k+1}(s) = \sum_a \pi(a|s) \sum_{s'} p(s'|s,a) [r(s,a,s') + \ga v_k(s')].
 <li>The policy improvement theorem shows that for any <span class="math inline">\(\ep\)</span>-soft <span class="math inline">\(\pi\)</span>, the <span class="math inline">\(\ep\)</span>-greedy policy wrt <span class="math inline">\(q_\pi\)</span> is at least as good as <span class="math inline">\(\pi\)</span>.</li>
 <li>Equality only when both <span class="math inline">\(\pi,pi'\)</span> are optimal among <span class="math inline">\(\ep\)</span>-soft. Use optimality for all policies, under the modified environment where an action is chosen randomly with probability <span class="math inline">\(\ep\)</span>.</li>
 </ol>
-<p>5.5 Evaluating One PolicyWhile Following An-other (Off-policy Policy Evaluation)</p>
+<h3 id="evaluating-one-policywhile-following-an-other-off-policy-policy-evaluation">5.5 Evaluating One PolicyWhile Following An-other (Off-policy Policy Evaluation)</h3>
 <p>What if we have episodes generated from a different policy?</p>
 <ul>
 <li><span class="math inline">\(\mu\)</span> behavior policy</li>
@@ -216,11 +735,11 @@ Require ratio <span class="math inline">\(\pi/\mu\)</span> not be too large. Wei
 V(s) &amp;= \fc{\sumo i{n_s} \fc{p_i(s)}{p_i'(s)}G_i(s)}{\sumo i{n_s} \fc{p_i(s)}{p_i'(s)}}\\
 \fc{p_i(S_t)}{p_i'(S_t)}&amp;=\prod_{k=t}^{T_i(S_t)-1} \fc{\pi(A_k|S_k)}{\mu(A_k|S_k)}.
 \end{align}
-<p>5.6 Off-policy MC control</p>
+<h3 id="off-policy-mc-control">5.6 Off-policy MC control</h3>
 <p>Ex. estimation policy may be deterministic while behavior policy samples all possible actions.</p>
 <p>To do this, after generating an episode, look at the last time where <span class="math inline">\(A_\tau \ne \pi(S_\tau)\)</span>, and update <span class="math inline">\(Q\)</span> using pairs <span class="math inline">\((s,a)\)</span> appearing after that time.</p>
 <p>Note: only learns from tails of episodes. Learning is slow if nongreedy actions are frequent.</p>
-<p>5.7 Incremental implementation</p>
+<h3 id="incremental-implementation">5.7 Incremental implementation</h3>
 For <span class="math inline">\(V_n=\fc{\sumo k{n-1}W_kG_k}{\sumo k{n-1}W_k}\)</span> is
 \begin{align}
 V_{n+1} &amp;=V_n+\fc{W_n}{C_n} (G_n-V_n)\\
@@ -240,20 +759,20 @@ C_{n+1} &amp;=C_n+W_{n+1}.
 <p>MC methods can incrementally update <span class="math inline">\(V\)</span>, after waiting to get the actual return, <span class="math display">\[V(S_t) \mapsfrom V(S_t) + \al [G_t-V(S_t)].\]</span> (n.b. <span class="math inline">\(S_t\)</span> is the state at time <span class="math inline">\(t\)</span>, not the state labeled <span class="math inline">\(t\)</span>.) TD methods only wait until the next time step. <span class="math display">\[V(S_t) \mapsfrom V(S_t) + \al [R_{t+1} + \ga V(S_{t+1})-V(S_t)].
 \]</span> I.e., it uses the estimate of <span class="math inline">\(v_\pi = \EE_\pi [R_{t+1}+\ga v_\pi(S_{t+1})|S_t=s]\)</span> as a target.</p>
 <p>TD samples expected values and uses the current estimate <span class="math inline">\(V\)</span> instead of <span class="math inline">\(v_\pi\)</span>.</p>
-<p>Ech estimate is shifted towards the estimate that immediately follows it.</p>
+<p>Each estimate is shifted towards the estimate that immediately follows it.</p>
 <p>p. 133: driving home example.</p>
 <p>In practice, TD methods converge faster than constant-<span class="math inline">\(\al\)</span> MC methods on stochastic tasks.</p>
-<p>6.3 Optimality of TD(0)</p>
+<h3 id="optimality-of-td0">6.3 Optimality of TD(0)</h3>
 <p>Finite amount of experience: present it repeatedly until method converges. (cf. SGD?) Do batch updates.</p>
 <p>Ex. p.139 example is enlightening.</p>
 <p>Batch Monte Carlo methods always find the estimates that minimize mean-squared error on the training set, whereas batch TD(0) always finds the estimates that would be exactly correct for the maximum-likelihood model of the Markov process.</p>
 <!-- ? certainty-equivalence estimate-->
-<p>6.4 Sarsa: On-policy TD control</p>
+<h3 id="sarsa-on-policy-td-control">6.4 Sarsa: On-policy TD control</h3>
 <p>For state-action pairs: <span class="math display">\[Q(S_t,A_t) \mapsfrom Q(S_t,A_t) + \al [R_{t+1} + \ga Q(S_{t+1}, A_{t+1})-Q(S_t,A_t)].
 \]</span> (<span class="math inline">\(A_{t+1}\)</span> is the action chosen by the (<span class="math inline">\(\ep\)</span>-greedy?<a href="#fn1" class="footnoteRef" id="fnref1"><sup>1</sup></a>) policy on <span class="math inline">\(S_{t+1}\)</span>.) SARSA refers to <span class="math inline">\((S_t,A_t,R_{t+1},S_{t+1},A_{t+1})\)</span>.</p>
 <p>(Convergence guarantees: p. 142)</p>
 <p>SARSA can learn during the episode!</p>
-<p>6.5 Q-learning: Off-policy TD control</p>
+<h3 id="q-learning-off-policy-td-control">6.5 Q-learning: Off-policy TD control</h3>
 <p>One-step Q-learning</p>
 <p><span class="math display">\[
 Q(S_t,A_t)\leftarrow Q(S_t,A_t) + \al [R_{t+1} + \ga \max_a Q(S_{t+1},a) - Q(S_t,A_t)].
@@ -265,13 +784,242 @@ Q(S_t,A_t)\leftarrow Q(S_t,A_t) + \al [R_{t+1} + \ga \max_a Q(S_{t+1},a) - Q(S_t
 <li>SARSA learns the safe path steering clear of the cliff (because it takes account the <span class="math inline">\(\ep\)</span>-greedy exploration).</li>
 <li>Q-learning learns the short path at the edge of the cliff (the optimal).</li>
 </ul>
-<p>6.6 Games</p>
+<h3 id="games">6.6 Games</h3>
 <p>A conventional state-value function evaluates states in which the agent has the option of selecting an action (arrived at <span class="math inline">\(s'\)</span> where you will select a new <span class="math inline">\(a'\)</span>), but the state-value function in games of perfect information evaluates the board after the agent has mades its move—afterstates.</p>
 <p>This is more efficient: many position-move pairs produce the same resulting position.</p>
 <p>Often it’s useful to break the environment’s dynamics into</p>
 <ul>
 <li>immediate effect of action (deterministic) and</li>
 <li>unknown random processes.</li>
+</ul>
+<h2 id="eligibility-traces">7 Eligibility traces</h2>
+<p>A general mechanism that can be combined with any TD method.</p>
+<p>2 views:</p>
+<ol type="1">
+<li>(theoretical, forward) bridge from TD to MC. (understand what is computed)</li>
+<li>(mechanistic, backward) temporary record of event occurrence. Only “eligible” states/actions are assigned credit/blame. (intuition for algorithms)</li>
+</ol>
+<h3 id="n-step-td-prediction">7.1 n-step TD prediction</h3>
+<p>Perform backup based on an intermediate number of rewards. (MC depends on entire sequence until end of episode, TD depends on 1 next reward.)</p>
+Replace the 1-step target by <span class="math inline">\(n\)</span>-step target (corrected <span class="math inline">\(n\)</span>-step truncated return).
+\begin{align}
+G_t^{(1)} &amp;= R_{t+1} + \ga V(S_{t+1})\\
+G_t^{(n)} &amp;= \sumo i{n-1} \ga^{i-1} R_{t+i} + \ga^n V(S_{t+n})\\
+\De V_t(S_t) &amp;= \al [G_t^{(n)} - V_t(S_t)].
+\end{align}
+<p>MC methods are infinite-step returns.</p>
+<p>2 ways to update.</p>
+<ul>
+<li>Online updating: during episode.</li>
+<li>Offline updating: accumulated and not used to change estimates until the end.</li>
+</ul>
+<p>Error-reduction property of <span class="math inline">\(n\)</span>-step returns: (exponential reduction in worst-case error) <span class="math display">\[
+\max_s\ab{\EE_\pi\ba{G_t^{(n)} | S_t=s}-v_\pi(s)}
+\le \ga^n \max_s |v(s) - v_\pi(s)|.
+\]</span></p>
+<p>Rarely used because inconvenient to implement; waiting <span class="math inline">\(n\)</span> states is problematic.</p>
+<h3 id="the-forward-view-of-tdla">7.2 The forward view of TD(<span class="math inline">\(\la\)</span>)</h3>
+<p>Complex backup: Backup can be done toward any average of <span class="math inline">\(n\)</span>-step returns. <!--$G_t^{avg}= \rc2 G_t^{(2)} + \rc2 G_t^{(4)}$.--></p>
+<p><span class="math inline">\(TD(\la)\)</span> is averaging <span class="math inline">\(n\)</span>-step backups <span class="math inline">\(\propto \la^{n-1}\)</span>, i.e., with weights <span class="math inline">\((1-\la)\la^{n-1}\)</span>. The <span class="math inline">\(\la\)</span>-return is <span class="math display">\[
+G_t^\la = (1-\la) \sumo n\iy \la^{n-1}G_t^{(n)}.
+\]</span></p>
+<ul>
+<li><span class="math inline">\(\la=1\)</span> reduces to MC.</li>
+<li><span class="math inline">\(\la=0\)</span> reduces to <span class="math inline">\(G_t^{(1)}\)</span>, one-step return.</li>
+</ul>
+<p>Forward view: look forward to all future rewards and decide how to combine them.</p>
+<!-- don't you have to wait until end of episode?-->
+<h3 id="the-backward-view-of-tdla">7.3 The backward view of TD(<span class="math inline">\(\la\)</span>)</h3>
+<p>The <strong>eligibility trace</strong> is a memory variable associated with each state. It is a <em>random variable</em> <span class="math inline">\(Z_t(s)\in \R^+\)</span>, <span class="math display">\[
+Z_t(s) = \begin{cases} 
+\ga \la Z_{t-1}(s), &amp;\text{if }s\ne S_t\\
+\ga \la Z_{t-1}(s) + 1, &amp;\text{if }s=S_t.
+\end{cases}
+\]</span> <span class="math inline">\(\la\)</span> is the trace-decy parameter. Traces indicate the degree to which each state is eligible for undergoing learning changes. <span class="math display">\[\De V_t(s) = \al \ub{(R_{t+1}+\ga V_tS_{t+1} - V_t(S_t))}{\de_t} Z_t(s).\]</span> <!-- Q: \ga\la (Z+1) or \ga\la Z + 1? latter one. They update before multiplying by $\ga\la$--></p>
+<p>Note TD(1) is MC but it can also be applied to discounted continuing tasks, and can be applied incrementally and online.</p>
+<h3 id="equivalence-of-forward-and-backward-views">7.4 Equivalence of forward and backward views</h3>
+<!-- what if also influence actions/policy? -->
+<p>For offline updating, <span class="math display">\[\sumz t{T-1} \De V_t^{TD}(s) = 
+\sumz t{T-1} \al \de_t \sumz kt (\ga \la)^{t-k} I_{sS_k} =
+\sumz t{T-1} V_t^\la(S_t)I_{sS_t}.\]</span> (Online updating is different because <span class="math inline">\(V_t\)</span> changes as <span class="math inline">\(t\)</span>.)</p>
+<p>Online algorithm generally works better over a broader range of parameters.</p>
+<p>To maintain equivalence in online case, <span class="math inline">\(\de_t= R_{t+1} + \ga V_t(S_{t+1})-V_{t-1}(S_t)\)</span>, <span class="math inline">\(R_t^{(n)} = \sumo in \ga^{i-1}R_{t+i} + \ga^n V_{t+n-1}(S_{t+n})\)</span>.</p>
+<h2 id="sarsala">7.5 Sarsa(<span class="math inline">\(\la\)</span>)</h2>
+How to use eligibility traces for control? Learn <span class="math inline">\(q\)</span> rather than <span class="math inline">\(V\)</span>. Keep a trace for each <span class="math inline">\((s,a)\)</span>.
+\begin{align}
+Q_{t+1}(s,a) &amp;= Q_t(s,a) + \al \de_t Z_t(s,a)\\
+\de_t &amp;= R_{t+1} + \ga Q_t(S_{t+1}, A_{t+1}) - Q_t(S_t,A_t)\\
+Z_t(s,a) &amp;= \begin{cases}
+\ga \la Z_{t-1} (s,a) + 1, &amp;\text{if }s=S_t, a=A_t\\
+\ga \la Z_{t-1} (s,a), &amp;\text{otherwise.}
+\end{cases}
+\end{align}
+<h3 id="qla">7.6 <span class="math inline">\(Q(\la)\)</span></h3>
+<h4 id="watkins-qla">Watkin’s <span class="math inline">\(Q(\la)\)</span></h4>
+<p>We can use subsequent experience only as long as the greedy policy is being followed! Look ahead as far as the next exploratory action.</p>
+<p>If <span class="math inline">\(A_{t+n}\)</span> is first exploratory action, the longest backup is toward <span class="math display">\[
+ \sumo in \ga^{i-1}R_{t+i} + \ga^n \max_a Q_t(s_{t+n},a).
+\]</span> Q: why 1 step past?</p>
+<p>Set eligibility traces to 0 whenever an exploratory action is taken.</p>
+<p>But cutting off traces every time an exploratory action is taken loses the advantage of eligibility traces.</p>
+<h4 id="pengs-qla">Peng’s <span class="math inline">\(Q(\la)\)</span></h4>
+<p>Hybrid of Sarsa and Watkin’s <span class="math inline">\(Q(\la)\)</span>.</p>
+<p>Converges to some hybrid of <span class="math inline">\(q_\pi, q_*\)</span>. If made gradually more greedy, may still converge to <span class="math inline">\(q_*\)</span>.</p>
+<p>Cannot be implemented as simply.</p>
+<p>Naive <span class="math inline">\(Q(\la)\)</span>: traces not set to 0.</p>
+<!-- formula? -->
+<h3 id="replacing-traces">7.7 Replacing traces</h3>
+<p><span class="math display">\[Z_t (s) = \begin{cases}
+\ga \la Z_{t-1}(s), &amp; s\ne S_t\\
+1, &amp; s=S_t.
+\end{cases}\]</span> (Max out at 1.)</p>
+<p>Can produce significant improvement in learning rate.</p>
+<p>Ex. when this helps: reward at rightmost. Sequence WWWWWWWWWWRRRR (wrong stays, right goes right) reinforces W more times.</p>
+<p>Another solution: set the traces of all other actions from the revisited state to 0.</p>
+<!-- check 7.12-->
+<h3 id="implementation-issues">7.8 Implementation issues</h3>
+<p>Larger computational cost.</p>
+<h3 id="variable-la">7.9 Variable <span class="math inline">\(\la\)</span></h3>
+<p>Never been used practically, but interesting/useful theoretically.</p>
+<p>Ex. Vary as function of state: depend on confidence</p>
+<p><span class="math display">\[G_t^\la = \sum_{k=t+1}^{T-1} G_t^{(k-t)} (1-\la_k) \prod_{i=t+1}^{k-1} \la_i + G_t\prod_{i=t+1}^{T-1}\la_i.\]</span></p>
+<h2 id="planning-and-learning-with-tabular-methods">8 Planning and learning with tabular methods</h2>
+<p>Planning requires a model of the environment; learning methods don’t.</p>
+<h3 id="models-and-planning">8.1 Models and planning</h3>
+<p>A model is anything an agent cn use to predict how the environment responds to its actions.</p>
+<ul>
+<li>Distribution model (e.g. needed in DP)</li>
+<li>Sample model</li>
+</ul>
+<p>Models can simulate experience.</p>
+<p>Planning takes a model as input and produces or improves a policy.</p>
+<p>Approaches:</p>
+<ul>
+<li>State-space planning: search through state-space for optimal policy or path to goal.</li>
+<li>Plan-space planning: search through space of plans.
+<ul>
+<li>Evolutionary methods</li>
+<li>Partial-order planning</li>
+</ul></li>
+</ul>
+<p>State-space planning methods share common structure.</p>
+<ol type="1">
+<li>Involve computing value functions</li>
+<li>Compte value functions by backup applied to simulated experience.</li>
+</ol>
+<p>Go from… to…</p>
+<ol type="1">
+<li>model</li>
+<li>simulated experience</li>
+<li>values</li>
+<li>policy</li>
+</ol>
+<p>Common structure means many ideas/algorithms can be transferred between planning and learning. (They differ only in source of experience.)</p>
+<p>Planning in small incremental steps helps intermix plannig with acting/learnig.</p>
+<h3 id="integrating-planning-acting-and-learning">8.2 Integrating planning, acting, and learning</h3>
+<ul>
+<li>New information from interaction may change the model and interact with planning.</li>
+<li>Customize planning to the states/decisions under consideration or expect in the near future.</li>
+</ul>
+<p>Two roles for experience:</p>
+<ol type="1">
+<li>improve model (model-learning) - make fuller use of limited experience</li>
+<li>directly improve value function (direct reinforcement learning) - simpler, not affect by model biases</li>
+</ol>
+<p>Dyna-Q: repeat</p>
+<ol type="1">
+<li>Run (<span class="math inline">\(\ep\)</span>-greedy) Q-learning for 1 step.</li>
+<li>Update model (assume deterministic environment)</li>
+<li>Repeat <span class="math inline">\(n\)</span> times Q-learning using simulated experience. (Take a random <span class="math inline">\((S,A)\)</span> pair that has been observed.)</li>
+</ol>
+<!-- what if instead of greedy, use temperature? -->
+<p>Q: why is only 1 step added without planning? A: because rewards only go back 1 step.</p>
+<h3 id="when-the-model-is-wrong">8.3 When the model is wrong</h3>
+<ul>
+<li>Sometimes the suboptimal policy computed leads to discovery/correction of the modeling error. Happens when model is optimistic.</li>
+<li>Difficulties arise when the environment changes to become better and the formerly correct policy does not reveal the improvement.</li>
+</ul>
+<p>Dyna-Q+: This agent keeps track for each state{action pair of how many time steps have elapsed since the pair was last tried in a real interaction with the environment. The more time that has elapsed, the greater (we might presume) the chance that the dynamics of this pair has changed and that the model of it is incorrect. Bonus reward for long-untried actions, <span class="math inline">\(R+\ka \sqrt \tau\)</span> if not tried for <span class="math inline">\(\tau\)</span> time steps.</p>
+<h3 id="prioritized-sweeping">8.4 Prioritized sweeping</h3>
+<p>Planning can be more efficient if simulated transitions and backups are focused on particular state-action pairs.</p>
+<p>Work backwards from goal state/reward?</p>
+<p>Ex. change estimated value of 1 state. The only useful 1-state backups are those of actions leading directly into that state. Propagate.</p>
+<p>Prioritize backups according to urgency and perform in order of priority.</p>
+<ol type="1">
+<li>Execute 1 step of Q-learning</li>
+<li>If the update is <span class="math inline">\(&gt;\te\)</span>, insert <span class="math inline">\((S,A)\)</span> into the priority queue with priority |update|.</li>
+<li>Repeat <span class="math inline">\(n\)</span> steps: take <span class="math inline">\((S,A)\)</span> from the top of the queue. Update it. Then for all <span class="math inline">\((\ol S, \ol A)\)</span> predicted to lead to <span class="math inline">\(S\)</span>, update. If difference is <span class="math inline">\(&gt;\te\)</span>, insert into queue.</li>
+</ol>
+<p>Problem: algorithms rely on the assumption of discrete states.</p>
+<p>For stochastic environments: keep counts. Backup each pair with a full backup.</p>
+<h3 id="full-vs.sample-backups">8.5 Full vs. sample backups</h3>
+<p>1-step backups vary in 3 ways.</p>
+<ol type="1">
+<li>State vs. action values</li>
+<li>Estimate value for optimal policy vs. arbitrary policy.</li>
+<li>Full vs. sample backups.</li>
+</ol>
+<p>Sample backups are TD(0), Sarsa, and Q-learning.</p>
+<p>Full backup requires <span class="math inline">\(b\)</span> times as much computation, <span class="math inline">\(b\)</span> the branching factor.</p>
+<p>Sample backups have the advantage that the values backed up from successor states will be more accurate.</p>
+<h3 id="trajectory-sampling">8.6 Trajectory sampling</h3>
+<p>2 ways of distributing backups</p>
+<ol type="1">
+<li>(classical, DP, exhaustive) sweep through entire state space, backing up each state (or state-action pair) once per sweep.</li>
+<li>sample from state/state-action space according to distribution, ex. according to on-policy distribution. Simulate trajectories and perform backups at those encountered. (This ignores large, uninteresting parts of the space.)</li>
+</ol>
+<p>Experimentally: sampling according to on-policy results in faster planning initially and retarded planning in long run. (In the long run, commonly occurring states already have correct values.)</p>
+<h3 id="heuristic-search">8.7 Heuristic search</h3>
+<p>Heuristic search is concerned with policy computation, i.e., making improved action selections given the current value function.</p>
+<p>Unlike in usual heuristic search, it’s natural to consider allowing the value function to be improved.</p>
+<p>When we have a perfect model and imperfect <span class="math inline">\(Q\)</span>, deeper search usually yields better policies.</p>
+<p>Grow the search tree selectively. How to use this idea for backups?</p>
+<p>Focus on the states and actions that might immediately follow the current state.</p>
+<h2 id="deep-rl">Deep RL</h2>
+<p>“AI = RL + DL”: RL defines objective, DL gives mechanism.</p>
+<!-- value, policy, model-based -->
+<p>Use deep NN to represent value function, policy, and model.</p>
+<ul>
+<li><p>Value: <span class="math inline">\(Q\)</span>-network <span class="math inline">\(Q(s,a,w)\)</span>. (either accept <span class="math inline">\(a\)</span> as input, or list out <span class="math inline">\(Q\)</span> for all values of <span class="math inline">\(a\)</span>)</p>
+Tread <span class="math inline">\(r+\ga \max_{a'} Q(s',a',w)\)</span> as target. Minimize <span class="math display">\[I = (r+\ga \max_a Q(s',a',w) - Q(s,a,w))^2.\]</span>
+<ul>
+<li>Converges using lookup table representation, but diverges using NN due to
+<ul>
+<li>correlations between samples
+<ul>
+<li>To remove correlations, build data-set from agent’s own experience</li>
+</ul></li>
+<li>non-stationary targets
+<ul>
+<li>Hold target parameters <span class="math inline">\(w^-\)</span> fixed <span class="math display">\[I = (r+\ga \max_a Q(s',a',w^-) - Q(s,a,w))^2.\]</span></li>
+</ul></li>
+</ul></li>
+<li>Ex. Atari: Stack of 4 previous frames <span class="math inline">\(4\times 84\times 84\)</span>, conv layers. Output for 18 joystick positions. Reward is change in score.</li>
+<li>Double DQN: Remove upward bias caused by <span class="math inline">\(\max_a Q(s,a,w)\)</span> (?). Use current network to select actions and older network <span class="math inline">\(w^-\)</span> to evaluate actions. <span class="math display">\[ I = \pa{ r + \ga Q(s', \amax_{a'} Q(s', a', w), w^-) - Q(s,a,w)}^2.\]</span></li>
+<li>Prioritized replay: weight experience according to surprise. Priority queue according to <span class="math display">\[ |r + \ga \max_{a'} Q(s',a', w^-) - Q(s,a,w)|.\]</span></li>
+<li>Duelling network: Split <span class="math inline">\(Q\)</span>-network into 2 channels, <span class="math inline">\(Q(s,a) = V(s,v) + A(s,a,w)\)</span>.
+<ul>
+<li>Action-independent value function <span class="math inline">\(V(s,v)\)</span></li>
+<li>Action-dependent advantage function <span class="math inline">\(A(s,a,w)\)</span>.</li>
+</ul></li>
+<li>Asynchronous: execute instances in parallel.</li>
+</ul></li>
+<li>Policy: stochastic <span class="math inline">\(\pi(a|s,u)\)</span>, deterministic <span class="math inline">\(a=\pi(s,u)\)</span>, objective <span class="math display">\[ L(u) = \E\ba{\sumo n{\iy} \ga^{n-1}r_n|\pi(\cdot, u)}.\]</span>
+<ul>
+<li>Actor-critic: Estimate <span class="math inline">\(Q(s,a,w)\)</span> and update <span class="math inline">\(u\)</span> by SG ascent. (What more does this gain from just having Q-network? See below.)</li>
+<li>A3C, Asynchronous Advantage Actor-Critic: Estimate <span class="math inline">\(V\)</span>, <span class="math inline">\(Q\)</span> value estimated from <span class="math inline">\(V\)</span>, actor updated towards target, critic updated.</li>
+<li>High-dimensional continuous action spaces: Can’t compute <span class="math inline">\(\max_a Q(s,a)\)</span>, learn without max. <span class="math inline">\(Q\)</span> differentiable wrt <span class="math inline">\(a\)</span>.
+<ul>
+<li>DPG <span class="math display">\[I_w = \pa{r + \ga Q(s', \pi(s', u^-), w^-) - Q(s,a,w)}^2.\]</span> Actor improves <span class="math inline">\(Q\)</span>. Critic provides loss function for actor.</li>
+</ul></li>
+</ul></li>
+<li><p>Model - ???</p></li>
+</ul>
+<p>Notes:</p>
+<ul>
+<li>Can use LSTM (how?)</li>
+<li>Simulated physics.</li>
+<li>Fictitious self-play. Nash equilibria in multi-agent games?</li>
 </ul>
 <section class="footnotes">
 <hr />
@@ -359,81 +1107,6 @@ K(M,M') = \sum_{z,z'\in \Om} e^{-\rc{2\be^2}\ve{z-z'}^2} \ka (P_z, P_{z'}')\\
 <li id="fn1"><p>Letting <span class="math inline">\(f_x=\delta_x\)</span> is cheating—we want actual functions, not distributions.<a href="#fnref1">↩</a></p></li>
 </ol>
 </section>
-
-  </div>
-
-    
-
-    <!-- Extension : Sharing buttons @ www.sharethis.com -->
-    <span class='st_facebook_large' displayText='Facebook'></span>
-    <span class='st_twitter_large' displayText='Tweet'></span>
-    <span class='st_googleplus_large' displayText='Google +'></span>
-    <span class='st_reddit_large' displayText='Reddit'></span>
-    <span class='st__large' displayText=''></span>
-
-    <div id="disqus_thread"></div>
-    
-
-
-  
-    <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
-  </div>
-  
-</div>
-]]></summary>
-</entry>
-<entry>
-    <title>Weekly summary 2016-10-01</title>
-    <link href="http://holdenlee.github.io/notebook/posts/summaries/2016-10-08.html" />
-    <id>http://holdenlee.github.io/notebook/posts/summaries/2016-10-08.html</id>
-    <published>2016-09-26T00:00:00Z</published>
-    <updated>2016-09-26T00:00:00Z</updated>
-    <summary type="html"><![CDATA[
-<div class="container">
-  <div id="content">
-    <div class="page header">
-      <h1>Weekly summary 2016-10-01</h1>
-    </div>
-    <div class="info">
-      
-       
-        <p>Posted: 2016-09-26 
-          , Modified: 2016-09-26 
-	</p>
-      
-       <p>Tags: <a href="/tags/none.html">none</a></p> 
-    </div>
-    
-  </div>
-  <!--/div-->
-
-  <div class="toc"> <ul>
- <li><a href="#threads">Threads</a></li>
- </ul> </div>
-
-  <div class="blog-main">
-    <h2 id="threads">Threads</h2>
-<ul>
-<li>PMI - get some results!</li>
-<li>SoS - lectures 2 and 3</li>
-<li>DL: do experiments suggested in <a href="/posts/tcs/machine_learning/matrices/DL_generalization.html">DL generalization</a>
-<ul>
-<li>(*) NN learns DL.</li>
-<li>DL generalizations.</li>
-</ul></li>
-<li>Papers
-<ul>
-<li><a href="http://www.research.rutgers.edu/~lihong/pub/Li10Contextual.pdf">LCLS10 A Contextual-Bandit Approach to Personalized News Article Recommendation</a></li>
-<li><a href="http://www.cs.columbia.edu/~djhsu/papers/amo.pdf">DHKK Efficient Optimal Learning for Contextual Bandits</a></li>
-<li><a href="http://www.cs.columbia.edu/~djhsu/papers/poshmm-tacl.pdf">SCH Unsupervised Part-Of-Speech Tagging with Anchor Hidden Markov Models</a></li>
-<li><a href="http://www.cs.columbia.edu/~djhsu/papers/hmm-jcss-final.pdf">A spectral algorithm for learning Hidden Markov Models</a></li>
-</ul></li>
-<li>Stability of SGD
-<ul>
-<li>@Elad: do local minima generalize?</li>
-</ul></li>
-<li>Graphical models reading</li>
-</ul>
 
   </div>
 
@@ -562,536 +1235,6 @@ K(M,M') = \sum_{z,z'\in \Om} e^{-\rc{2\be^2}\ve{z-z'}^2} \ka (P_z, P_{z'}')\\
 <li>Think about the interpretability test above.</li>
 <li><span class="citation" data-cites="Tengyu">@Tengyu</span> on interpreting CKN as NMF.</li>
 </ul>
-
-  </div>
-
-    
-
-    <!-- Extension : Sharing buttons @ www.sharethis.com -->
-    <span class='st_facebook_large' displayText='Facebook'></span>
-    <span class='st_twitter_large' displayText='Tweet'></span>
-    <span class='st_googleplus_large' displayText='Google +'></span>
-    <span class='st_reddit_large' displayText='Reddit'></span>
-    <span class='st__large' displayText=''></span>
-
-    <div id="disqus_thread"></div>
-    
-
-
-  
-    <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
-  </div>
-  
-</div>
-]]></summary>
-</entry>
-<entry>
-    <title>Semantic shared response</title>
-    <link href="http://holdenlee.github.io/notebook/posts/cs/semantic_shared_response.html" />
-    <id>http://holdenlee.github.io/notebook/posts/cs/semantic_shared_response.html</id>
-    <published>2016-09-24T00:00:00Z</published>
-    <updated>2016-09-24T00:00:00Z</updated>
-    <summary type="html"><![CDATA[
-<div class="container">
-  <div id="content">
-    <div class="page header">
-      <h1>Semantic shared response</h1>
-    </div>
-    <div class="info">
-      
-       
-        <p>Posted: 2016-09-24 
-          , Modified: 2016-09-24 
-	</p>
-      
-       <p>Tags: <a href="/tags/neuroscience.html">neuroscience</a></p> 
-    </div>
-    
-  </div>
-  <!--/div-->
-
-  
-
-  <div class="blog-main">
-    <p>fMRI: <span class="math inline">\(10^5\)</span> <span class="math inline">\((3mm)^3\)</span> voxels, measuring blood flow.</p>
-<h2 id="prior-work">Prior work</h2>
-<ul>
-<li>Mitchell 08: pictures of concrete nouns</li>
-<li>Naselaris 09: images of scenes</li>
-<li>Pereira 11: generating words</li>
-<li>N11: reconstruct movie images</li>
-<li>Wehbe 14: chapter of Harry Potter (cf. speed reading)</li>
-<li>Huth 16: auditory stories</li>
-</ul>
-<h2 id="goal">Goal</h2>
-<ul>
-<li>Decode fMRI response semantics. Match fMRI responses to annotations
-<ul>
-<li>Sherlock scenes annotated. 2000 scenes.</li>
-</ul></li>
-<li>Leverage multiple subject views to extract better semantics. (16 subjects)</li>
-</ul>
-<h2 id="methods">Methods</h2>
-<ul>
-<li>Pick a few brain regions to focus on. Ex. default node network (2006): related to narrative.
-<ul>
-<li>Hypothesis: this region does the best.</li>
-<li><span class="math inline">\(\approx 2000\)</span> voxels for each mask. (Masks are a small part of <span class="math inline">\(10^5\)</span>.)</li>
-</ul></li>
-<li>Shared response model <span class="math display">\[\amin_{W^TW = I;S} \sumo ik \ve{X_i-W_iS}_F.\]</span> (Columns of <span class="math inline">\(W\)</span> orthogonal. voxels<span class="math inline">\(\times\)</span>features (<span class="math inline">\(2000 \times 20\)</span>)) <!-- features x times -->
-<ul>
-<li>Probabilistic model <span class="math inline">\(s_t\sim N(0,\Si_s)\)</span>. <span class="math inline">\(x_{it}|s_t\sim N(W_is_t+\mu_i, \rh_i^2I)\)</span>.</li>
-</ul></li>
-</ul>
-<p>Distributional hypothesis of meaning: meaning comes from co-occurrence.</p>
-<p>We have multiple words in each annotation. Approaches:</p>
-<ul>
-<li>Unweighted: Averaging</li>
-<li>Weighted: By inverse of frequency</li>
-</ul>
-<p>(Note: words have different meanings. Use DL to split up words into atoms. Ignores polysemy.)</p>
-<p>Let <span class="math inline">\(A=\)</span>fMRI, <span class="math inline">\(B=\)</span>text. We learn a linear map <span class="math inline">\(\Om A\approx B\)</span>. We can vary the way we constrain the maps.</p>
-<!--OLS-->
-<ol type="1">
-<li><span class="math inline">\(\Om\)</span> orthogonal.</li>
-<li><p>Ridge regression (penalizes by norm of columns).</p></li>
-<li>20 dimensional SRM vs. averaging</li>
-<li>Weighted vs. unweighted</li>
-<li>Procrustes vs. ridge</li>
-<li><p>Temporal average subtraction vs. not.</p></li>
-</ol>
-<p>Annotation vectors 1000-dimensional.</p>
-<p>Is true chunk in top 5? (See table in paper.)</p>
-<!--
-| Mask | Performance |
-|---|---|
-|DMN| -->
-<p>Average, else correlated</p>
-<!--
-Cathy - Cog neuro, Ken Norman
-Zach - Implementation, why does wordvec work?
-Howard - combine word vecs to word sequence vectors.
-Julie - translate scenes into numbers, word vectors.
-Shefali
-
-Learning relations from text.
--->
-<p>Model</p>
-<ol type="1">
-<li>Unweighted <span class="math inline">\(\Pj(w|c) = \fc{\exp(v_w^T c)}{Z}\)</span>.</li>
-<li>Weighted <span class="math inline">\(\Pj(w|c) = \al p(w) + (1-\al) \fc{\exp(v_w^T c)}{Z}\)</span>, <span class="math inline">\(\al\in [0,1]\)</span>. (Ex. more accurate for common words.)</li>
-</ol>
-
-  </div>
-
-    
-
-    <!-- Extension : Sharing buttons @ www.sharethis.com -->
-    <span class='st_facebook_large' displayText='Facebook'></span>
-    <span class='st_twitter_large' displayText='Tweet'></span>
-    <span class='st_googleplus_large' displayText='Google +'></span>
-    <span class='st_reddit_large' displayText='Reddit'></span>
-    <span class='st__large' displayText=''></span>
-
-    <div id="disqus_thread"></div>
-    
-
-
-  
-    <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
-  </div>
-  
-</div>
-]]></summary>
-</entry>
-<entry>
-    <title>Weekly summary 2016-09-24</title>
-    <link href="http://holdenlee.github.io/notebook/posts/summaries/2016-09-24.html" />
-    <id>http://holdenlee.github.io/notebook/posts/summaries/2016-09-24.html</id>
-    <published>2016-09-23T00:00:00Z</published>
-    <updated>2016-09-23T00:00:00Z</updated>
-    <summary type="html"><![CDATA[
-<div class="container">
-  <div id="content">
-    <div class="page header">
-      <h1>Weekly summary 2016-09-24</h1>
-    </div>
-    <div class="info">
-      
-       
-        <p>Posted: 2016-09-23 
-          , Modified: 2016-09-23 
-	</p>
-      
-       <p>Tags: <a href="/tags/none.html">none</a></p> 
-    </div>
-    
-  </div>
-  <!--/div-->
-
-  <div class="toc"> <ul>
- <li><a href="#threads">Threads</a></li>
- </ul> </div>
-
-  <div class="blog-main">
-    <p><a href="2016-09-17.html">Last week</a>.</p>
-<h2 id="threads">Threads</h2>
-<ul>
-<li>PMI: WSVD + DL/NMF. <a href="/posts/tcs/machine_learning/neural_nets/pmi_images.html">PMI for images</a>
-<ul>
-<li>Used NMF code from <a href="http://www.ee.columbia.edu/~grindlay/code.html">here</a>.</li>
-</ul></li>
-<li><a href="/posts/tcs/machine_learning/matrices/DL_generalization.html">DL generalization</a>
-<ul>
-<li>Can we tackle NMF using similar algorithm as DL—trying to isolate a column of A by looking at samples which are close to a pair of samples? Before, closeness was inner product; now use another kernel? Ex. TV distance, or KL, or some kind of regularized KL. Ex.
-<ul>
-<li>In what sense is this important? I would still rely on a distributional assumption on the <span class="math inline">\(x\)</span>’s. (DL algorithm required this: sparsity and some kind of independence.) But topic modeling already solves this.</li>
-<li>Why can’t we solve NMF using the topic modeling, saying that the distribution is simply the samples that we get?</li>
-</ul></li>
-</ul></li>
-<li>SoS</li>
-</ul>
-<p>TODO: run again with 1800-dimensional.</p>
-<p>TODO: Review polysemy paper, and understand CKN paper well to rederive equations.</p>
-
-  </div>
-
-    
-
-    <!-- Extension : Sharing buttons @ www.sharethis.com -->
-    <span class='st_facebook_large' displayText='Facebook'></span>
-    <span class='st_twitter_large' displayText='Tweet'></span>
-    <span class='st_googleplus_large' displayText='Google +'></span>
-    <span class='st_reddit_large' displayText='Reddit'></span>
-    <span class='st__large' displayText=''></span>
-
-    <div id="disqus_thread"></div>
-    
-
-
-  
-    <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
-  </div>
-  
-</div>
-]]></summary>
-</entry>
-<entry>
-    <title>DL generalization</title>
-    <link href="http://holdenlee.github.io/notebook/posts/tcs/machine_learning/matrices/DL_generalization.html" />
-    <id>http://holdenlee.github.io/notebook/posts/tcs/machine_learning/matrices/DL_generalization.html</id>
-    <published>2016-09-19T00:00:00Z</published>
-    <updated>2016-09-19T00:00:00Z</updated>
-    <summary type="html"><![CDATA[
-<div class="container">
-  <div id="content">
-    <div class="page header">
-      <h1>DL generalization</h1>
-    </div>
-    <div class="info">
-      
-       
-        <p>Posted: 2016-09-19 
-          , Modified: 2016-09-19 
-	</p>
-      
-       <p>Tags: <a href="/tags/dictionary%20learning.html">dictionary learning</a>, <a href="/tags/sparse%20coding.html">sparse coding</a></p> 
-    </div>
-    
-  </div>
-  <!--/div-->
-
-  <div class="toc"> <ul>
- <li><a href="#group-sparsity">Group sparsity</a><ul>
- <li><a href="#from-subspaces-to-vectors">From subspaces to vectors</a><ul>
- <li><a href="#try-1">Try 1</a></li>
- <li><a href="#try-2">Try 2</a></li>
- </ul></li>
- </ul></li>
- <li><a href="#big-picture">Big picture</a><ul>
- <li><a href="#dl-experiments">DL experiments</a></li>
- </ul></li>
- </ul> </div>
-
-  <div class="blog-main">
-    <h2 id="group-sparsity">Group sparsity</h2>
-<p>Suppose that we have group sparsity with partition <span class="math inline">\(\bigsqcup S_i\)</span>.</p>
-<p>In AGMM15, we get instead <span class="math inline">\(\ve{E_1+E_2+E_3}\le O^*\pa{\fc{\mu k^2 \ln^2 n}{m\sqrt n}\max |S_i|^2}\)</span>. For example, if <span class="math inline">\(\max|S_i|^2\)</span> is a constant, the bound is still the same. As long as this is <span class="math inline">\(\le O^*\pf{k}{m\ln m}\)</span>, the bound is still OK.</p>
-<p>(Basically we get larger terms in <span class="math inline">\(E_2,E_3\)</span>: In <span class="math inline">\(E_2\)</span> we have <span class="math inline">\(\sum_{i,j\in S_k, i\ne j} q_i \be_i\be_i' A_jA_j^T\)</span>—this is larger because <span class="math inline">\(i,j\)</span> cooccur, we have <span class="math inline">\(q_i\)</span> rather than <span class="math inline">\(q_{i,j}\)</span>, <span class="math inline">\(q_i\)</span> is <span class="math inline">\(\Te\pf km\)</span> not <span class="math inline">\(\Te \pf{k^2}{m^2}\)</span>. Lump these terms into the 1st sum. Ditto for <span class="math inline">\(E_3\)</span>.)</p>
-<p>See notebook 15 (end) for details.</p>
-<p>Rely on <a href="/posts/math/algebra/linear/matrix_analysis/perturbation.html">modification of Davis-Kahan</a>.</p>
-<p>Take <span class="math inline">\(u,v\)</span> and estimate <span class="math inline">\(M_{u,v} = \E \an{u,Ax}\an{v,Ax}(Ax)(Ax)^T\)</span>. Instead of taking the largest singular vector, take the subspace spanned by all singular values of size <span class="math inline">\(\ge C_1 \fc{k}{m}\)</span>. What is the angle between this subspace and the projection of this onto the space of <span class="math inline">\(A_{\cdot i}\)</span> where <span class="math inline">\(i\in \Supp(u)\cap \Supp(v)\)</span>? By generalized Davis-Kahan, <span class="math inline">\(\fc{C_0\fc km - C_1\fc km}{C_2 \fc{k}{m\ln m}} = \fc{C_3}{\ln m}\)</span>.</p>
-<p>Now iteratively refine the set of subspaces <span class="math inline">\(\mathcal S\)</span>. Start with a subspace <span class="math inline">\(V\)</span>, and set of atoms <span class="math inline">\(\mathcal A=\phi\)</span>. Let <span class="math inline">\(\ep = \fc{C}{\ln m}\)</span>.</p>
-<h3 id="from-subspaces-to-vectors">From subspaces to vectors</h3>
-<h4 id="try-1">Try 1</h4>
-<p>Do a DFS.</p>
-<ul>
-<li>If the angle between <span class="math inline">\(V\)</span> and any other subspace in <span class="math inline">\(\mathcal S\)</span> is <span class="math inline">\(&gt;\ep\)</span>, not counting subspaces where all canonical angles between <span class="math inline">\(V\)</span> and it are <span class="math inline">\(&lt;\ep\)</span>, then find the orthogonal complement of atoms that are close to being in <span class="math inline">\(V\)</span>, and let that be an atomic subspace. Now go upwards in the tree.</li>
-<li>Otherwise, approximately intersect <span class="math inline">\(V\)</span> with a subspace making it smaller, to get <span class="math inline">\(W\)</span>. Draw <span class="math inline">\(V\to W\)</span>. Repeat with <span class="math inline">\(W\)</span>.</li>
-</ul>
-<p>NO: These subspaces aren’t spanned by the vectors!</p>
-<h4 id="try-2">Try 2</h4>
-<p>This seems difficult if we don’t make assumptions.</p>
-<p>Let’s suppose for each vector, it is in a small subset of things that cooccur. (Make this more precise.) Ex. constant size.</p>
-<p>The issue is that some subspaces/vectors will be inside a <span class="math inline">\(S_i\)</span> (one of the groups in group sparsity) completely—if we can get all the vectors inside a <span class="math inline">\(S_i\)</span> all we have to do is get a basis, good—but others will be inside <span class="math inline">\(\spn(S_i,S_j)\)</span>, or more, and we have to tell them apart.</p>
-<p>Idea: do a best-first search, adding subspaces until <span class="math inline">\(\si_{C+1}\)</span> is too large, in which case discard it. (Singular value may not be the right measure here. Maybe: max perpendicular to span of <span class="math inline">\(v_1,\ldots, v_C\)</span>?) The large subsets we get will be inside a <span class="math inline">\(S_i\)</span>.</p>
-<p>(Or some kind of clustering?)</p>
-<h2 id="big-picture">Big picture</h2>
-<p>What are we trying to do here?</p>
-<ul>
-<li>Generalize the settings under which we have provable DL.</li>
-<li>Define agnostic DL as something worth studying and approachable.
-<ul>
-<li>Idea that neural nets are easier to train if you have more nodes. More opportunities to converge to columns of <span class="math inline">\(A\)</span>.
-<ul>
-<li>Look at convergene in easy case?</li>
-</ul></li>
-<li>Have <em>any</em> provable result on agnostic DL.
-<ul>
-<li>Why we would have agnostic rather than normal: some features are correlated, so the basis could rotate within the subspace of correlated vectors.</li>
-</ul></li>
-</ul></li>
-</ul>
-<p>We already have practical DL algorithms that just rely on AM and adding sparsity penalty. How could theory improve this? (AGM14, AGMM15 don’t look like they are used in practice.) Are there theoretical guarantees for AM with sparsity penalty? (There are theoretical guarantees for AM w/ decoding.)</p>
-<p>What’s a better model in practice: DL with sparsity or <span class="math inline">\(L^1\)</span>? (And how does ICA compare?)</p>
-<p>TODO: program DL and look at empirical performance.</p>
-<p>TODO: 2-layer NN learning dictionary?</p>
-<p>Dual view between <span class="math inline">\(x=Ah\)</span> and <span class="math inline">\(h=A^Tx\)</span>?</p>
-<p>Sparse recovery has this thing where <span class="math inline">\(\ved_1\)</span> actually optimizes <span class="math inline">\(\ved_0\)</span>. Not true of sparse coding?</p>
-<h3 id="dl-experiments">DL experiments</h3>
-<p>What to try?</p>
-<ul>
-<li>Program classic AM DL with <span class="math inline">\(L^1\)</span> sparsity penalty.</li>
-<li>Program AGMM15 DL.</li>
-<li>ICA.</li>
-</ul>
-<p>Test sets</p>
-<ul>
-<li>Image patches</li>
-<li>Words embeddings</li>
-<li>Artificial data (sparse, Laplace, etc. <span class="citation" data-cites="Bianca">@Bianca</span>)</li>
-<li>Artificial group-sparse data, or data correlated in some way (ex. geometrically).</li>
-</ul>
-<p>How to evaluate?</p>
-<ul>
-<li>Closeness of columns.</li>
-<li>Loss: how much sparsity, and how far away. (Reconstruction error)
-<ul>
-<li>How does reconstruction error compare to SVD? (Make dimensions comparable.)</li>
-</ul></li>
-<li>Put in random SVM on top. Can it learn the SVM well?</li>
-</ul>
-<p>Experiments with NN</p>
-<ul>
-<li>Top-<span class="math inline">\(k\)</span> thresholding to enforce <span class="math inline">\(k\)</span>-sparsity. Autoencoder?</li>
-<li>Try group-sparse penalty/architecture.</li>
-<li>Does adding more nodes improve things (cf. agnostic DL)?</li>
-</ul>
-<p>I think sparseness helps interpretability. Does convergence become quicker if we have sparsity?</p>
-
-  </div>
-
-    
-
-    <!-- Extension : Sharing buttons @ www.sharethis.com -->
-    <span class='st_facebook_large' displayText='Facebook'></span>
-    <span class='st_twitter_large' displayText='Tweet'></span>
-    <span class='st_googleplus_large' displayText='Google +'></span>
-    <span class='st_reddit_large' displayText='Reddit'></span>
-    <span class='st__large' displayText=''></span>
-
-    <div id="disqus_thread"></div>
-    
-
-
-  
-    <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
-  </div>
-  
-</div>
-]]></summary>
-</entry>
-<entry>
-    <title>Weekly summary 2016-09-17</title>
-    <link href="http://holdenlee.github.io/notebook/posts/summaries/2016-09-17.html" />
-    <id>http://holdenlee.github.io/notebook/posts/summaries/2016-09-17.html</id>
-    <published>2016-09-19T00:00:00Z</published>
-    <updated>2016-09-19T00:00:00Z</updated>
-    <summary type="html"><![CDATA[
-<div class="container">
-  <div id="content">
-    <div class="page header">
-      <h1>Weekly summary 2016-09-17</h1>
-    </div>
-    <div class="info">
-      
-       
-        <p>Posted: 2016-09-19 
-          , Modified: 2016-09-19 
-	</p>
-      
-       <p>Tags: <a href="/tags/none.html">none</a></p> 
-    </div>
-    
-  </div>
-  <!--/div-->
-
-  <div class="toc"> <ul>
- <li><a href="#threads">Threads</a></li>
- </ul> </div>
-
-  <div class="blog-main">
-    <p><a href="2016-09-10.html">Last week</a>.</p>
-<h2 id="threads">Threads</h2>
-<ul>
-<li>Wrote up <a href="/posts/tcs/machine_learning/neural_nets/pmi_images.html">PMI summary</a>.</li>
-<li>Conversation with Arora: incorporate 2nd paper into PMI experiments.</li>
-<li>Learned <a href="/posts/math/algebra/linear/matrix_analysis/perturbation.html">matrix perturbation theory</a> and applied to <a href="/posts/tcs/machine_learning/matrices/DL_generalization.html">DL assuming group sparsity</a>.</li>
-</ul>
-
-  </div>
-
-    
-
-    <!-- Extension : Sharing buttons @ www.sharethis.com -->
-    <span class='st_facebook_large' displayText='Facebook'></span>
-    <span class='st_twitter_large' displayText='Tweet'></span>
-    <span class='st_googleplus_large' displayText='Google +'></span>
-    <span class='st_reddit_large' displayText='Reddit'></span>
-    <span class='st__large' displayText=''></span>
-
-    <div id="disqus_thread"></div>
-    
-
-
-  
-    <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
-  </div>
-  
-</div>
-]]></summary>
-</entry>
-<entry>
-    <title>PCANet: A simple deep learning baseline for image classification?</title>
-    <link href="http://holdenlee.github.io/notebook/posts/tcs/machine_learning/neural_nets/pcanet.html" />
-    <id>http://holdenlee.github.io/notebook/posts/tcs/machine_learning/neural_nets/pcanet.html</id>
-    <published>2016-09-10T00:00:00Z</published>
-    <updated>2016-09-10T00:00:00Z</updated>
-    <summary type="html"><![CDATA[
-<div class="container">
-  <div id="content">
-    <div class="page header">
-      <h1>PCANet: A simple deep learning baseline for image classification?</h1>
-    </div>
-    <div class="info">
-      
-       
-        <p>Posted: 2016-09-10 
-          , Modified: 2016-09-10 
-	</p>
-      
-       <p>Tags: <a href="/tags/pca.html">pca</a>, <a href="/tags/neural%20net.html">neural net</a></p> 
-    </div>
-    
-  </div>
-  <!--/div-->
-
-  <div class="toc"> <ul>
- <li><a href="#pcanet-a-simple-deep-learning-baseline-for-image-classification">PCANet: A simple deep learning baseline for image classification?</a></li>
- <li><a href="#architecture">Architecture</a><ul>
- <li><a href="#variations">Variations</a></li>
- </ul></li>
- <li><a href="#experiments">Experiments</a></li>
- <li><a href="#questions">Questions</a></li>
- </ul> </div>
-
-  <div class="blog-main">
-    <h2 id="pcanet-a-simple-deep-learning-baseline-for-image-classification">PCANet: A simple deep learning baseline for image classification?</h2>
-<p>Each stage in a CNN consists of 3 layers:</p>
-<ul>
-<li>convolutional filter bank</li>
-<li>nonlinear processing</li>
-<li>feature pooling</li>
-</ul>
-<p>Replace these:</p>
-<table>
-<thead>
-<tr class="header">
-<th style="text-align: left;">CNN</th>
-<th style="text-align: left;">PCANet</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td style="text-align: left;">convolutional filter bank</td>
-<td style="text-align: left;">PCA filter</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">nonlinear processing</td>
-<td style="text-align: left;">binary quantization (hashing)</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">feature pooling</td>
-<td style="text-align: left;">block-wise histograms of binary codes</td>
-</tr>
-</tbody>
-</table>
-<p>Lesson: Deep learning has a lot of hype, but in fact simpler, better theoretically justifiable architectures can do just as well or better! In particular, one weakness of DL is that it depends on parameter tuning expertise and <em>ad hoc</em> tricks.</p>
-<p>Examples:</p>
-<ul>
-<li>ScatNet (wavelet scattering network): filters are wavelet operators, so no learning is needed. (These don’t work so well when there is intra-class variability with illumination change and corruption.)</li>
-<li>PCANet cf. OPCA.</li>
-</ul>
-<p>Motivations:</p>
-<ol type="1">
-<li>design a simple deep learning network which should be very easy, even trivial, to train and to adapt to different data and tasks.</li>
-<li>such a basic network could serve as a good baseline for people to empirically justify the use of more advanced processing components or more sophisticated architectures for their deep learning networks.</li>
-</ol>
-<h2 id="architecture">Architecture</h2>
-<p>Input: <span class="math inline">\(N\)</span> training images <span class="math inline">\(\{I_i\}_{i=1}^N\)</span> of size <span class="math inline">\(m\times n\)</span>.</p>
-<ol type="1">
-<li><p>Learn PCA: Vectorize all <span class="math inline">\(k_1\times k_2\)</span> patches, mean-center and put them all in a matrix <span class="math inline">\(X\in \R^{k_1k_2\times Nmn}\)</span><a href="#fn1" class="footnoteRef" id="fnref1"><sup>1</sup></a>. Do rank <span class="math inline">\(L_1\)</span> PCA on <span class="math inline">\(X\)</span>. The <span class="math inline">\(l\)</span>th filter (<span class="math inline">\(l\in [L_1]\)</span>) is <span class="math display">\[ W_l^1 := mat_{k_1,k_2}(q_l(XX^T))\]</span> where <span class="math inline">\(mat_{k_1,k_2}\)</span> maps <span class="math inline">\(\R^{k_1k_2}\to \R^{k_1\times k_2}\)</span> and <span class="math inline">\(q_l\)</span> is the <span class="math inline">\(l\)</span> largest eigenvectors.</p>
-<p>Now let <span class="math inline">\(I_i^l = I_i * W_l^1\)</span>. (Zero-pad <span class="math inline">\(I_i\)</span> so that <span class="math inline">\(I_i^l\)</span> has the same size.)</p>
-You can apply this multiple times. Suppose we apply it twice to get <span class="math inline">\(I_i^{l_1, l_2}\)</span>.</li>
-<li>Hashing: Binarize the outputs to get <span class="math display">\[\{b_{l_1,l_2} = H(I_i^{l_1,l_2})\}\]</span> where <span class="math inline">\(H\)</span> is Heaviside function. Let <span class="math display">\[T_i^{l_1} := \sumo{l_2}{L_2} 2^{l_2-1} b_{l_1,l_2}.\]</span> (I.e., treat <span class="math inline">\((b_{l_1,l_2})_{l_2=1}^{L_2}\)</span> categorically.)</li>
-<li><p>Histogram: Express histogram with <span class="math inline">\(L_2\)</span> bins as a vector <span class="math inline">\(Bhist(T_i^l)\)</span>. The feature vector of <span class="math inline">\(I_i\)</span> is <span class="math display">\[f_i := \text{map Bhist }[T_i^{1:L_1}]\in \R^{2^{L_2}L_1B}.\]</span></p></li>
-</ol>
-<p><strong>On many layers</strong>: Note that we DON’T stack by repeating 1-3. Instead, 2-3 happen only once at the end. The stacking happens within 1—doing PCA multiple times.</p>
-<p>Note:</p>
-<ul>
-<li>Nonoverlapping blocks are suitable for faces.</li>
-<li>Overlapping blacks are useful for digits, textures, and objects.</li>
-<li>Histogram gives some translation invariance (why??).</li>
-<li>Model parameters <span class="math inline">\(k_1,k_2,L_1,L_2\)</span>. Ex. <span class="math inline">\(L_1=L_2=8\)</span>.</li>
-<li>Two-stage PCANet is good.</li>
-<li>PCANet with absolute rectification layer (??) after the first stage doesn’t help.</li>
-<li>The overall process is linear. ?? Combining two stages. Two stages works better. Two-stage PCA filters have a low-rank factorization. It has <span class="math inline">\(L_1k_1^2 + L_2k_2^2\)</span> rather than $L_1L_2(k_1+k_2-1)^2 $ variables.</li>
-</ul>
-<h3 id="variations">Variations</h3>
-<ul>
-<li>RandNet: use random filters (from standard Gaussian)</li>
-<li>LDANet: Use multi-class linear discriminant analysis. (Think: supervised version of PCA.) <a href="../tcs/machine_learning/matrices/lda.html">LDA</a></li>
-</ul>
-<p>(Does this mean LDANet will fail on things like concentric circles?)</p>
-<h2 id="experiments">Experiments</h2>
-<p>Face recognition, MNIST.</p>
-<p>MNIST: basic (10000-2000-50000), rot, noise bg, image bg, etc.</p>
-<h2 id="questions">Questions</h2>
-<ul>
-<li>What is “block size”? (vs. filter, image size)</li>
-<li>How do you classify using PCANet? (ex. do you train a SVM on top?)</li>
-<li>How about stacking?
-<ul>
-<li>An intriguing research direction will then be how to construct a more complicated (say more sophisticated filters possibly with discriminative learning) or deeper (more number of stages) PCANet.</li>
-<li>Some preprocessing of pose alignment and scale normalization might be needed for good performance guarantee. The current bottleneck that keeps PCANet from growing deeper (e.g., more than two stages) is that the dimension of the resulted feature would increase exponentially with the number of stages.</li>
-</ul></li>
-</ul>
-<section class="footnotes">
-<hr />
-<ol>
-<li id="fn1"><p>Or <span class="math inline">\(N(m-k_1+1)(n-k_1+1)\)</span> if you don’t go past the border.<a href="#fnref1">↩</a></p></li>
-</ol>
-</section>
 
   </div>
 
