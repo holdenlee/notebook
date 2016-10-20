@@ -10,7 +10,7 @@
   <meta name="description" content="Holden Lee's Research Notebook">
   <meta name="author" content="Holden Lee">
     
-  <title>Convnets ideas</title>
+  <title>DL experiments</title>
 
   <!-- Bootstrap core CSS -->
   <link href="../../../../bootstrap/css/bootstrap.min.css" rel="stylesheet">
@@ -70,64 +70,86 @@
 <div class="container">
   <div id="content">
     <div class="page header">
-      <h1>Convnets ideas</h1>
+      <h1>DL experiments</h1>
     </div>
     <div class="info">
       
        
-        <p>Posted: 2016-08-02 
-          , Modified: 2016-08-02 
+        <p>Posted: 2016-10-17 
+          , Modified: 2016-10-17 
 	</p>
       
-       <p>Tags: <a href="../../../../tags/neural%20nets.html">neural nets</a></p> 
+       <p>Tags: <a href="../../../../tags/dictionary%20learning.html">dictionary learning</a></p> 
     </div>
     
   </div>
   <!--/div-->
 
-  <div class="toc"></div>
+  <div class="toc"> <ul>
+ <li><a href="#experiments">Experiments</a></li>
+ <li><a href="#results">Results</a><ul>
+ <li><a href="#first-observations">First observations</a></li>
+ </ul></li>
+ <li><a href="#evaluation">Evaluation</a></li>
+ </ul> </div>
 
   <div class="blog-main">
-    <ul>
-<li>In the Fourier basis translation is diagonalized. So can we train better in the Fourier basis?
+    <p>What are convergence guarantees for dictionary learning? Consider the settings</p>
 <ul>
-<li>This seems tempting, but it doesn’t seem to lead anywhere. Local convolution with shared parameters commutes with translation. Here, diagonal maps commute with translation (=multiplication by eigenfunctions). So in terms of computing a linear map, it’s easier.</li>
-<li>But then we follow by a nonlinearity: pointwise sigmoid, or local pooling. In the Fourier space, this doesn’t correspond to anything nice! Fourier transform scrambles locality, and locality is important here…</li>
-</ul></li>
-<li>Adding more invariances:
+<li>AGMM15 (Alternating minimization)</li>
+<li>2-layer NN
 <ul>
-<li>Rotational invariance. (See [CW16] Group Equivariant Convolutional Networks)
+<li>With <span class="math inline">\(b^Ty\)</span></li>
+<li>With <span class="math inline">\(\sgn(b^Ty)\)</span></li>
+</ul></li>
+</ul>
+<!--
+Sanjeev told me you did some experiments, so I wanted to check with you.
+
+Experimentally, does dictionary learning converge to the right dictionary under random initialization? What if we randomly initialize with samples drawn from $x=Ah$? What about for the neural net (backprop) model you showed me last time - does random initialization (with samples) converge to the dictionary? If you have code for experiments, please send it to me.
+
+I've done a lot of the calculations for neural nets learning dictionaries, and am getting stuck on the following: it appears that the gradient of the entire matrix is correlated with the right direction, but individual rows may not be (so a row may get far away until it no longer decodes correctly). Did you encounter something like this? If you have the bandwidth I'd be interested in working with you on this.
+
+-->
+<h2 id="experiments">Experiments</h2>
+<p>Code is in <code>dl_convergence.py</code>. Run on ionic.</p>
+<h2 id="results">Results</h2>
+<!--1218589: -->
 <ul>
-<li>Make local rotated copies of the image (have to be careful with cropping, interpolating) and stack them. Now do a 3-D convolution in <span class="math inline">\((x,y,\te)\)</span> space.</li>
-<li>This is less efficient. We should be able to reduce the number of parameters, but by how much?</li>
-<li>Beyond translation symmetry, the dimensionality of symmetries becomes greater than the dimensionality of the image (there is more than one symmetry taking one point to another point). This redundancy causes inefficiency.</li>
-<li>Do 3D convolution over <span class="math inline">\([0,1]\times[0,1]\times \mathbb S^1\)</span>.</li>
-</ul></li>
-<li>Scaling invariance.
+<li>s = 3</li>
+<li>m = 50 # hidden vector</li>
+<li>n = 25 # observed vector</li>
+<li>q = s/m</li>
+<li>alpha = .01</li>
+<li>batchsize = 1024</li>
+<li>vary sigma (how close initialization is) <!-- * Approximate convergence for sigma = .05, .1; not 0.5--></li>
+</ul>
+<p>Next,</p>
 <ul>
-<li>Run the same convnet on the picture at different scales.</li>
-</ul></li>
-<li>Coloration (does this cause problems typically?)</li>
-<li>There’s some classical result in theoretical computer vision that identifies the dimensionality of the manifold of image alterations… check Amit Singer’s notes.</li>
-</ul></li>
-<li>Apply the variant on convolutional dictionary learning <a href="../nlp/HA16.html">HA16</a>, except 2-D.</li>
-<li>What if we did global convolutions? (This would add many parameters…)</li>
-<li>Add regularization to penalize non-smooth/non-simple kernels. For example, write the kernel in a Fourier or wavelet basis, and penalize larger Fourier or wavelet vectors (ex. term based on Fourier expectation).</li>
-<li>I “get” max pooling now: it preserves translation invariance. Pool across close-by transformations.
+<li>add random initialization - check</li>
+<li>vary (s,m,n)</li>
+<li>check sparsity of learned vectors (do thresholding too) - check</li>
+<li>add initialization from samples - check
 <ul>
-<li>Does overlapping impose consistency?</li>
+<li>try overcomplete initialization from samples - check</li>
 </ul></li>
-<li>Could you compute max-pooling across many local transformations (ex. <span class="math inline">\((x,y,\te)\)</span>) more efficiently? Ex. finding the distance from a manifold of transformations of the image.</li>
-<li>How to incorporate common sense? Ex. “A thin object in a person’s hand is likely to be a pencil.”</li>
-<li>Can we train on the quotient manifold, quotiented out by symmetries? The problem is that the quotient manifold has cusps. Ex. <span class="math inline">\(\R^2/(x,y)\mapsto (y,x)\)</span> has “cusps” at <span class="math inline">\((x,x)\)</span>. Add regularization/change metric to keep it away? cf. keeping things in the simplex.</li>
-<li>(General NN) How much can you sparsify a fully connected layer and still have it work? (cf. dropout)</li>
-<li>How much can you reduce parameters in a trained NN and still get similar performance? (+ an explanation of why more parameters that needed helps learning) Can you iterate reducing parameters and training?
+</ul>
+<h3 id="first-observations">First observations</h3>
+<p>See <code>am_dl_3_50_25.txt</code> and <code>slurm-1218768.out</code></p>
 <ul>
-<li>READ: Deep-fried convnets.</li>
+<li>Converges when close enough (as in AGMM15). For this, even 0.5 is close enough. Note it doesn’t converge to <span class="math inline">\(A\)</span> - it converges to something that has columns <span class="math inline">\(\approx 0.1\)</span> away from <span class="math inline">\(A\)</span>, consistant bias. (This makes sense.)</li>
+<li>Random initialization does not converge to global optimum. Initialization with samples seems to do slightly better.</li>
+</ul>
+<h2 id="evaluation">Evaluation</h2>
+<p>How to evaluate?</p>
+<ul>
+<li>Closeness of columns.</li>
+<li>Loss: how much sparsity, and how far away. (Reconstruction error)
+<ul>
+<li>How does reconstruction error compare to SVD? (Make dimensions comparable.)</li>
 </ul></li>
-<li>Fooling neural nets…</li>
-<li>Train twice independently and put together?</li>
-<li>Hyperuniformity: sample at non-grid points.</li>
+<li>Put in random SVM on top. Can it learn the SVM well?</li>
+<li>Check framework in [HM16].</li>
 </ul>
 
   </div>

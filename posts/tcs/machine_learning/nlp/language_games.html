@@ -10,7 +10,7 @@
   <meta name="description" content="Holden Lee's Research Notebook">
   <meta name="author" content="Holden Lee">
     
-  <title>Convnets ideas</title>
+  <title>Language games</title>
 
   <!-- Bootstrap core CSS -->
   <link href="../../../../bootstrap/css/bootstrap.min.css" rel="stylesheet">
@@ -70,65 +70,79 @@
 <div class="container">
   <div id="content">
     <div class="page header">
-      <h1>Convnets ideas</h1>
+      <h1>Language games</h1>
     </div>
     <div class="info">
       
        
-        <p>Posted: 2016-08-02 
-          , Modified: 2016-08-02 
+        <p>Posted: 2016-10-13 
+          , Modified: 2016-10-13 
 	</p>
       
-       <p>Tags: <a href="../../../../tags/neural%20nets.html">neural nets</a></p> 
+       <p>Tags: <a href="../../../../tags/nlp.html">nlp</a>, <a href="../../../../tags/language.html">language</a>, <a href="../../../../tags/evolution.html">evolution</a></p> 
     </div>
     
   </div>
   <!--/div-->
 
-  <div class="toc"></div>
+  <div class="toc"> <ul>
+ <li><a href="#wlm16-learning-language-games-through-interaction">[WLM16] Learning Language Games through Interaction</a></li>
+ <li><a href="#fafw16-learning-to-communicate-with-deep-multi-agent-reinforcement-learning">[FAFW16] Learning to Communicate with Deep Multi-Agent Reinforcement Learning</a><ul>
+ <li><a href="#task">Task</a></li>
+ <li><a href="#model">Model</a></li>
+ <li><a href="#conclusions">Conclusions</a></li>
+ </ul></li>
+ </ul> </div>
 
   <div class="blog-main">
-    <ul>
-<li>In the Fourier basis translation is diagonalized. So can we train better in the Fourier basis?
+    <p>How does language develop?</p>
+<p>How to learn a language from scratch?</p>
+<p>Wittgenstein’s “language games”.</p>
+<h2 id="wlm16-learning-language-games-through-interaction">[WLM16] Learning Language Games through Interaction</h2>
+<p>See ML seminar notes.</p>
+<h2 id="fafw16-learning-to-communicate-with-deep-multi-agent-reinforcement-learning">[FAFW16] Learning to Communicate with Deep Multi-Agent Reinforcement Learning</h2>
+<p>Cooperative learning of communication protocols.</p>
+<p>see also Kasai [8].</p>
+<h3 id="task">Task</h3>
+<p>Multiple agents in fully cooperative, partially observable, sequential multi-agent decisiom-making problems. Each gets a private observation of the Markov state.</p>
 <ul>
-<li>This seems tempting, but it doesn’t seem to lead anywhere. Local convolution with shared parameters commutes with translation. Here, diagonal maps commute with translation (=multiplication by eigenfunctions). So in terms of computing a linear map, it’s easier.</li>
-<li>But then we follow by a nonlinearity: pointwise sigmoid, or local pooling. In the Fourier space, this doesn’t correspond to anything nice! Fourier transform scrambles locality, and locality is important here…</li>
-</ul></li>
-<li>Adding more invariances:
-<ul>
-<li>Rotational invariance. (See [CW16] Group Equivariant Convolutional Networks)
-<ul>
-<li>Make local rotated copies of the image (have to be careful with cropping, interpolating) and stack them. Now do a 3-D convolution in <span class="math inline">\((x,y,\te)\)</span> space.</li>
-<li>This is less efficient. We should be able to reduce the number of parameters, but by how much?</li>
-<li>Beyond translation symmetry, the dimensionality of symmetries becomes greater than the dimensionality of the image (there is more than one symmetry taking one point to another point). This redundancy causes inefficiency.</li>
-<li>Do 3D convolution over <span class="math inline">\([0,1]\times[0,1]\times \mathbb S^1\)</span>.</li>
-</ul></li>
-<li>Scaling invariance.
-<ul>
-<li>Run the same convnet on the picture at different scales.</li>
-</ul></li>
-<li>Coloration (does this cause problems typically?)</li>
-<li>There’s some classical result in theoretical computer vision that identifies the dimensionality of the manifold of image alterations… check Amit Singer’s notes.</li>
-</ul></li>
-<li>Apply the variant on convolutional dictionary learning <a href="../nlp/HA16.html">HA16</a>, except 2-D.</li>
-<li>What if we did global convolutions? (This would add many parameters…)</li>
-<li>Add regularization to penalize non-smooth/non-simple kernels. For example, write the kernel in a Fourier or wavelet basis, and penalize larger Fourier or wavelet vectors (ex. term based on Fourier expectation).</li>
-<li>I “get” max pooling now: it preserves translation invariance. Pool across close-by transformations.
-<ul>
-<li>Does overlapping impose consistency?</li>
-</ul></li>
-<li>Could you compute max-pooling across many local transformations (ex. <span class="math inline">\((x,y,\te)\)</span>) more efficiently? Ex. finding the distance from a manifold of transformations of the image.</li>
-<li>How to incorporate common sense? Ex. “A thin object in a person’s hand is likely to be a pencil.”</li>
-<li>Can we train on the quotient manifold, quotiented out by symmetries? The problem is that the quotient manifold has cusps. Ex. <span class="math inline">\(\R^2/(x,y)\mapsto (y,x)\)</span> has “cusps” at <span class="math inline">\((x,x)\)</span>. Add regularization/change metric to keep it away? cf. keeping things in the simplex.</li>
-<li>(General NN) How much can you sparsify a fully connected layer and still have it work? (cf. dropout)</li>
-<li>How much can you reduce parameters in a trained NN and still get similar performance? (+ an explanation of why more parameters that needed helps learning) Can you iterate reducing parameters and training?
-<ul>
-<li>READ: Deep-fried convnets.</li>
-</ul></li>
-<li>Fooling neural nets…</li>
-<li>Train twice independently and put together?</li>
-<li>Hyperuniformity: sample at non-grid points.</li>
+<li>Centralized learning (unrestricted communication)</li>
+<li>Decentralized execution (communicate only by discrete limited-bandwidth channel)</li>
 </ul>
+<p>Actual tasks</p>
+<ul>
+<li>Switch riddle
+<ul>
+<li>DIAL &gt; RIAL &gt; Baseline</li>
+</ul></li>
+<li>MNIST games: see 2 MNIST digits of some color. Reward depends on action, color, and parity. Send 1 bit of info. Agree to send either color or parity (parity better). (DIAL seems to get optimal here. RIAL fails.)</li>
+</ul>
+<h3 id="model">Model</h3>
+<ul>
+<li>Reinforced inter-agent learning (RIAL)
+<ul>
+<li>Deep Q-learning</li>
+<li>Independent Q-learning: learn own network parameters, treat other agents as part of environment.</li>
+<li>Deep recurrent Q-network. [17]
+<ul>
+<li><ul>
+<li>independent Q-learning = RIAL.</li>
+</ul></li>
+<li>Disable experience replay (experience obsolete and misleading)</li>
+</ul></li>
+</ul></li>
+<li>Differentiable inter-agent learning (DIAL)
+<ul>
+<li>Takes advantage of centralized learning.</li>
+<li>RIAL is only end-to-end within agent.</li>
+<li>Allows real-value messages to pass.</li>
+<li>(This is not realistic between agents in terms of evolution. But it can make sense within agents - ex. different brain parts)</li>
+<li>During centralized learning, communication replaced with direct connections between output of one agent’s network and input of another’s.</li>
+</ul></li>
+</ul>
+<p>Difficulty: positive rewards are sparse, arising only when sending and interpreting are properly coordinated.</p>
+<h3 id="conclusions">Conclusions</h3>
+<p>Why is language discrete? Noise forces messages into 2 different modes.</p>
 
   </div>
 

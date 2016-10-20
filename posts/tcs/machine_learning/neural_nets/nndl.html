@@ -92,8 +92,10 @@
  </ul> </div>
 
   <div class="blog-main">
-    <h2 id="result">Result</h2>
+    <p><a href="https://dl.dropboxusercontent.com/u/27883775/wiki/math/pdfs/nndl.pdf">writeup</a></p>
+<h2 id="result">Result</h2>
 <p>General idea: when each row of <span class="math inline">\(B\)</span> is sufficiently close to the row of <span class="math inline">\(A^T\)</span>, gradient descent converges until <span class="math inline">\(B\)</span> is very close to <span class="math inline">\(A^T\)</span>.</p>
+<p>PROBLEM: I’ve done a lot of the calculations for neural nets learning dictionaries, and am getting stuck on the following: it appears that the gradient of the entire matrix is correlated with the right direction, but individual rows may not be (so a row may get far away until it no longer decodes correctly).</p>
 <h2 id="proof">Proof</h2>
 <h2 id="further-directions">Further directions</h2>
 <ul>
@@ -106,6 +108,14 @@
 <li>Provable convolutional DL. (The difficulty is that translates that are close by overlap and are not close to orthogonal.)
 <ul>
 <li>More general (mathematical) problem is DL under various invariances. Perhaps assuming locality of the filter and separation in distance of the nonzero patches (ex. different copies of the same filter don’t overlap).</li>
+<li>What if we add rotation?</li>
+<li>Can’t do recovery by multiplying by transpose… (Multiplying by transpose doesn’t correspond to recovery.) Inverse is badly conditioned… Only allow sum of delta functions? Maybe represent as <span class="math inline">\(\al\de_\be\)</span>?</li>
+<li>Think of this as a kind of sparsity… Have both <span class="math inline">\(\al,\be\)</span> be nodes in the NN? Have location of max when max pooling?
+<ul>
+<li>Ex. angle: instead of having <span class="math inline">\(\R^{\mathbb S^1}\)</span>, represent by <span class="math inline">\(\R \times \bS^1\)</span> (delta function at one location, the max). But can’t combine values in <span class="math inline">\(\bS^1\)</span> with values in <span class="math inline">\(\R\)</span>. Still need some kernel parametrized by <span class="math inline">\(\bS\times \bS\)</span>. How are absolute vs. relative locations separated and kept? Kernel written as sum of simple basis functions?</li>
+</ul></li>
+<li>(Use less precision in training than evaluation? Prevent too many parameters.)</li>
+<li>Interpolation… lowpass filter?</li>
 </ul></li>
 </ul>
 

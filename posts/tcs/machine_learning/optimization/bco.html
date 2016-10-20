@@ -128,15 +128,46 @@
 </ul>
 <p>The <span class="math inline">\(\wh \ell_t\)</span> were chosen so <span class="math display">\[ \E \wh \ell_t(i) = \ell_t(i).\]</span> We have <span class="math display">\[\E R_T \le 3 GD\sqrt T + \de T,\]</span> where <span class="math inline">\(G\le \fc n\de\)</span>.</p>
 <h3 id="exp3">EXP3</h3>
+<p>Exponential weights for exploration and exploitation</p>
 <p>Adversarial setting.</p>
 <p><a href="https://jeremykun.com/2013/11/08/adversarial-bandits-and-the-exp3-algorithm/">Blog post</a>.</p>
 <p>We can explore and exploit at the same time if we (a) keep track of a probability distribution and update it, and (b) if we reweight the loss functions to make the expected value correct.</p>
 <p>Idea: Use the MWU (hedge) algorithm.</p>
+Updates
+\begin{align}
+y_{t+1}(i) &amp; = x_t(i) e^{\ep \wh\ell_t(i)}\\
+x_{t+1}&amp;= \pa{1-\rc{\sqrt T}} \fc{y_{t+1}}{\ve{y_{t+1}}_1} + \rc{n \sqrt T}\one.
+\end{align}
+<p><strong>Question</strong>: wht’s the purpose of the <span class="math inline">\(x_t\)</span> update? To make sure every arm is played at least with some probability? (E.g. will be played infinitely many times.)</p>
 <p>Get <span class="math inline">\(R_T\le O(\sqrt{Tn \ln n})\)</span>.</p>
 <h3 id="ucb1">UCB1</h3>
 <p>Stochastic setting.</p>
 <p>“Optimism in the face of uncertainty.”</p>
 <p><a href="https://jeremykun.com/2013/10/28/optimism-in-the-face-of-uncertainty-the-ucb1-algorithm/">Blog post</a>.</p>
+<p>Algorithm: first play each once; then at each step play the action with highest upper confidence bound <span class="math display">\[j = \amax_j \ol x_j + \ub{\sfc{2\ln T}{n_j}}{a(n_j, T)}.
+\]</span></p>
+<p>UCB on MAB with <span class="math inline">\(K\)</span> actions where <span class="math inline">\(X_{i,t}\in [0,1], X_{i,t}\sim D_i\)</span> are independent, has expected cumulative regret, <span class="math inline">\(\ol x_{i,s}\)</span> the empirical mean after playing <span class="math inline">\(i\)</span> <span class="math inline">\(s\)</span> times, <span class="math display">\[ \E R(T) = O(\sqrt{KT \ln T}). \]</span></p>
+<p><em>Proof.</em></p>
+<ol type="1">
+<li>Let <span class="math inline">\(\De_i = \mu^*-\mu_i\)</span>, <span class="math inline">\(P_i(T)\)</span> be the number of times <span class="math inline">\(i\)</span> is picked by time <span class="math inline">\(T\)</span>, <span class="math inline">\(I_t\)</span> be the <span class="math inline">\(t\)</span>th choice, <span class="math inline">\(a(s,t)\)</span> be the width of the CI at time <span class="math inline">\(t\)</span> after <span class="math inline">\(s\)</span> observations. Then
+\begin{align}
+\E G_A(T) &amp;= \sum_i \mu_i \E P_i(T)\\
+\E P_i(T) &amp;= 1+\sum_{t=K}^T (I_t=i)\\
+&amp;\le m + \sum_{t=K}^T (I_t=i\wedge P_i(t-1)\ge m)\\
+&amp;\le m + \sum_{t=K}^T (U_i(t-1) \ge U^*(t-1), P_i(t-1)\ge m)\\
+&amp;\le m + \sumo t{\iy} \sum_{s=m}^{t-1}\sum_{s'=1}^{t-1} (\ol x_{i,s} + a(s,t-1) \ge \ol x_{s'}^* + a(s',t-1))\\
+&amp;\le \ff{8\ln T}{\De_i^2} + \sumo t{\iy} \sum_{s=m}^t \sum_{s'=1}^t 2t^{-4} = \fc{8\ln T}{\De_i^2} + 1 + \fc{\pi^2}{3}.
+\end{align}
+We chose <span class="math inline">\(m\)</span> so that <span class="math inline">\(\mu^* \ge \mu_i +2a(m,t)\)</span>. This implies either
+\begin{align}
+\ol x_{s'}^* &amp;\le \mu^* - a(s',t)\\
+\ol x_{i,s} &amp; \ge \mu_i + a(s,t)
+\end{align}
+which happen with probabilities <span class="math inline">\(t^{-4}\)</span>.</li>
+<li>This gives regret <span class="math display">\[\E R(T) \le \min(8 \sum_{i:\mu_i &lt;\mu^*} \fc{\ln T}{\De_i} + \pa{1+\fc{\pi^2}3}\pa{\sumo jK\De_j}, \max \De_i T).\]</span></li>
+<li>Optimizing gives <span class="math inline">\(\De_i = O(\sqrt{\ln T})\)</span>.</li>
+</ol>
+<p>The idea is to upper bound by events that cover and we can better estimate. This involves summing over all <span class="math inline">\((s,s')\)</span>. The <span class="math inline">\(m\)</span> is introduced so that at that time <span class="math inline">\(\mu^*\)</span> and <span class="math inline">\(\mu_i\)</span> will be far enough apart.</p>
 <h2 id="blo">BLO</h2>
 <h3 id="scrible">SCRIBLE</h3>
 <p>Attains <span class="math inline">\(O(\sqrt T\ln T)\)</span> regret.</p>
@@ -149,14 +180,38 @@
 <p>Generic reduction from BCO to (first-order) OCO by using gradient estimators. FKM is an instantiation of the algorithm with regret <span class="math inline">\(O(T^{\fc 34})\)</span>.</p>
 <h2 id="contextual-bandits">Contextual bandits</h2>
 <ul>
-<li>EXP4 (?)</li>
+<li>EXP4 (adversarial) - Exponential weights for exploration and exploitation with expert advice. Do MWU with the experts. (Where does it use the context?)</li>
 <li>[LCLS10] A Contextual-Bandit Approach to Personalized News Article Recommendation
 <ul>
-<li>Model: stochastic setting, expected payoff of <span class="math inline">\(a\)</span> is linear in feature <span class="math inline">\(x_{t,a}\)</span>, (<span class="math inline">\(\te_a^*\)</span> is the unknown coefficient vector) <span class="math display">\[ \E[r_{t,a}|x_{t,a}] = x_{t,a}^T\te_^*.\]</span></li>
-<li>Algorithm: LinUCB attains regret <span class="math inline">\(\wt O(\sqrt{KdT})\)</span>.</li>
+<li>Model: stochastic setting, at time <span class="math inline">\(t\)</span>, expected payoff of <span class="math inline">\(a\)</span> is linear in feature <span class="math inline">\(x_{t,a}\)</span> (given for all <span class="math inline">\(a\)</span>, in the simplest case they are equal over all <span class="math inline">\(a\)</span>), (<span class="math inline">\(\te_a^*\)</span> is the unknown coefficient vector) <span class="math display">\[ \E[r_{t,a}|x_{t,a}] = x_{t,a}^T\te_a^*.\]</span></li>
+<li>Assume iid context and reward vectors. <!--(Did LCLS10 assume iid context?)--></li>
+<li>Algorithm: LinUCB attains regret <span class="math inline">\(\wt O(\sqrt{KdT})\)</span>. Combine UCB with linear regression. (Think of linear functions as the “policy space”.)</li>
+<li>Requires time at least linear in the number of arms.</li>
 </ul></li>
-<li>[DHKK] Efficient Optimal Learning for Contextual Bandits</li>
+<li>[DHKK] Efficient Optimal Learning for Contextual Bandits
+<ul>
+<li>Compare not to the best fixed policy (choosing the same arm), but best policy in some space <span class="math inline">\(\Pi\)</span>. (<strong>Question</strong>: what about comparing to best policy for other bandit problems? Ex. what’s the algorithm for vanilla MAB?)</li>
+<li>Solves the contextual bandit problem for large policy spaces (in tie <span class="math inline">\(\poly\log(N)\)</span>, <span class="math inline">\(K\)</span> the number of arms, and achieves regret <span class="math inline">\(O(\sqrt{TK\ln N})\)</span>). (Complexity analysis assumes existence of argmax oracle (AMO) which gives <span class="math inline">\(\amax_{\pi\in \Pi} \sumo{t'}t r_{t'}(\pi(x_{t'}))\)</span>.</li>
+<li>Idea:
+<ul>
+<li>Policy elimination (intractable)
+<ul>
+<li>Choose a distribution over the remaining experts that minimizes some kind of maximum variance.</li>
+<li>Eliminate bad experts: all policies that are suboptimal by more than <span class="math inline">\(2b_t\)</span>. (NTS: whp the best policy remains, <span class="math inline">\(\pi_{\max}\in \Pi_t\)</span>, and remaing policies are good, <span class="math inline">\(\eta_D(\pi_{\max}) - \eta_D(\pi) \le 4b_t\)</span>.</li>
+<li>Unbiased estimator of policy values <span class="math inline">\(\eta_t(\pi) = \rc{t} \sum \fc{r \one(\pi(x) = a)}{p}\)</span>.</li>
+</ul></li>
+<li>Randomized UCB (tractable given AMO; frequency of choosing, confidence bound determined by estimated regret)
+<ul>
+<li>Approximately minimize a certain variance. (Do this optimization problem with the argmax oracle. How?)</li>
+<li>Smooth out distribution and play according to it.</li>
+<li>No elimination here.</li>
+</ul></li>
+</ul></li>
+<li><strong>Question</strong>: how about nonfinite sets - ex. VC dimension, Rademacher complexity?</li>
+</ul></li>
 </ul>
+<p>Concrete Q: In the MAB setting, what if you compare to the best policy in a given set? I’m confused: can the policies have memory (depending on past results)? In this case, you can’t start following a policy midway. Let’s say they don’t. Now some policies may recommend the same action and some actions may not be recommended so scale accordingly.</p>
+<p>A: Yes. See [ACFS02]; they get regret <span class="math inline">\(O((\ln N)^{\rc 2}\sqrt{T})\)</span> where <span class="math inline">\(N\)</span> is the number of strategies.</p>
 
   </div>
 
