@@ -10,7 +10,7 @@
   <meta name="description" content="Holden Lee's Research Notebook">
   <meta name="author" content="Holden Lee">
     
-  <title>Convnets ideas</title>
+  <title>Alexa</title>
 
   <!-- Bootstrap core CSS -->
   <link href="../../../../bootstrap/css/bootstrap.min.css" rel="stylesheet">
@@ -70,65 +70,68 @@
 <div class="container">
   <div id="content">
     <div class="page header">
-      <h1>Convnets ideas</h1>
+      <h1>Alexa</h1>
     </div>
     <div class="info">
       
        
-        <p>Posted: 2016-08-02 
-          , Modified: 2016-08-02 
+        <p>Posted: 2016-10-13 
+          , Modified: 2016-10-13 
 	</p>
       
-       <p>Tags: <a href="../../../../tags/neural%20nets.html">neural nets</a></p> 
+       <p>Tags: <a href="../../../../tags/nlp.html">nlp</a>, <a href="../../../../tags/dialogue.html">dialogue</a></p> 
     </div>
     
   </div>
   <!--/div-->
 
-  <div class="toc"></div>
+  <div class="toc"> <ul>
+ <li><a href="#questions">Questions</a></li>
+ </ul> </div>
 
   <div class="blog-main">
-    <ul>
-<li>In the Fourier basis translation is diagonalized. So can we train better in the Fourier basis?
+    <p><a href="https://docs.google.com/document/d/1OtvefjviKSSWH2gzOtYo8T_DVEwPEsI2n0kdrC8WlZI/edit">References</a></p>
 <ul>
-<li>This seems tempting, but it doesn’t seem to lead anywhere. Local convolution with shared parameters commutes with translation. Here, diagonal maps commute with translation (=multiplication by eigenfunctions). So in terms of computing a linear map, it’s easier.</li>
-<li>But then we follow by a nonlinearity: pointwise sigmoid, or local pooling. In the Fourier space, this doesn’t correspond to anything nice! Fourier transform scrambles locality, and locality is important here…</li>
-</ul></li>
-<li>Adding more invariances:
+<li>Dialogue
 <ul>
-<li>Rotational invariance. (See [CW16] Group Equivariant Convolutional Networks)
+<li>[LMRG16] Deep reinforcement learning for dialogue generation <a href="https://arxiv.org/pdf/1606.01541.pdf">paper</a></li>
+<li>[DGZB16] EVALUATING PREREQUISITE QUALITIES FOR LEARNING END-TO-END DIALOG SYSTEMS <a href="https://arxiv.org/pdf/1511.06931v6.pdf">paper</a></li>
+<li>[VL15] A Neural Conversational Model <a href="https://arxiv.org/pdf/1506.05869.pdf">paper</a></li>
+</ul></li>
+<li>Neural nets
 <ul>
-<li>Make local rotated copies of the image (have to be careful with cropping, interpolating) and stack them. Now do a 3-D convolution in <span class="math inline">\((x,y,\te)\)</span> space.</li>
-<li>This is less efficient. We should be able to reduce the number of parameters, but by how much?</li>
-<li>Beyond translation symmetry, the dimensionality of symmetries becomes greater than the dimensionality of the image (there is more than one symmetry taking one point to another point). This redundancy causes inefficiency.</li>
-<li>Do 3D convolution over <span class="math inline">\([0,1]\times[0,1]\times \mathbb S^1\)</span>.</li>
-</ul></li>
-<li>Scaling invariance.
+<li>[SSWF15] End-To-End Memory Networks
 <ul>
-<li>Run the same convnet on the picture at different scales.</li>
-</ul></li>
-<li>Coloration (does this cause problems typically?)</li>
-<li>There’s some classical result in theoretical computer vision that identifies the dimensionality of the manifold of image alterations… check Amit Singer’s notes.</li>
-</ul></li>
-<li>Apply the variant on convolutional dictionary learning <a href="../nlp/HA16.html">HA16</a>, except 2-D.</li>
-<li>What if we did global convolutions? (This would add many parameters…)</li>
-<li>Add regularization to penalize non-smooth/non-simple kernels. For example, write the kernel in a Fourier or wavelet basis, and penalize larger Fourier or wavelet vectors (ex. term based on Fourier expectation).</li>
-<li>I “get” max pooling now: it preserves translation invariance. Pool across close-by transformations.
+<li>Architecture
 <ul>
-<li>Does overlapping impose consistency?</li>
+<li>Input <span class="math inline">\(x_i\)</span></li>
+<li>Convert input into memory <span class="math inline">\(m_i = A x_i\)</span>, <span class="math inline">\(A\in \R^{d\times V}\)</span></li>
+<li>Output vecor <span class="math inline">\(c_i = C x_i\)</span>.</li>
+<li>Query <span class="math inline">\(q\)</span></li>
+<li>Embedded query <span class="math inline">\(u=Bq\)</span>.</li>
+<li>Match between queries and memory <span class="math inline">\(p_i = \text{softmax}(u^Tm_i)\)</span>.</li>
+<li>Response is weighted sum <span class="math inline">\(o = \sum_i p_ic_i\)</span>.</li>
+<li>Predicted answer <span class="math inline">\(\wh a = \text{softmax}(W(o+u))\)</span>.</li>
 </ul></li>
-<li>Could you compute max-pooling across many local transformations (ex. <span class="math inline">\((x,y,\te)\)</span>) more efficiently? Ex. finding the distance from a manifold of transformations of the image.</li>
-<li>How to incorporate common sense? Ex. “A thin object in a person’s hand is likely to be a pencil.”</li>
-<li>Can we train on the quotient manifold, quotiented out by symmetries? The problem is that the quotient manifold has cusps. Ex. <span class="math inline">\(\R^2/(x,y)\mapsto (y,x)\)</span> has “cusps” at <span class="math inline">\((x,x)\)</span>. Add regularization/change metric to keep it away? cf. keeping things in the simplex.</li>
-<li>(General NN) How much can you sparsify a fully connected layer and still have it work? (cf. dropout)</li>
-<li>How much can you reduce parameters in a trained NN and still get similar performance? (+ an explanation of why more parameters that needed helps learning) Can you iterate reducing parameters and training?
+<li>For multiple layers, <span class="math inline">\(u^{k+1}=u^k + o^k\)</span>. Each layer has <span class="math inline">\(A^k,C^k\)</span> to embed inputs.
 <ul>
-<li>READ: Deep-fried convnets.</li>
+<li>Two types of weight tying
+<ul>
+<li>output = input above, <span class="math inline">\(A^{k+1}=C^k\)</span>.</li>
+<li>RNN: <span class="math inline">\(A^k =A, C^k=C\)</span>, and modify <span class="math inline">\(u^{k+1} = H u^k + o^k\)</span>.</li>
 </ul></li>
-<li>Fooling neural nets…</li>
-<li>Train twice independently and put together?</li>
-<li>Hyperuniformity: sample at non-grid points.</li>
+</ul></li>
+</ul></li>
+</ul></li>
+<li>OpenSubtitles
+<ul>
+<li><a href="http://www.opensubtitles.org/en/search">Main page</a></li>
+<li><a href="https://datahub.io/dataset/opus/resource/e5a441a7-73d5-4f8c-a4b5-4bab42a739f2">?</a></li>
+</ul></li>
 </ul>
+<h2 id="questions">Questions</h2>
+<p>How does the beam search actually work? Do we just have <span class="math inline">\(\Pj(w_1)\Pj(w_2|w_1)\Pj(w_3|w_2,w_1)\)</span> or is there some more complicated energy-based model? (Don’t normalize?)</p>
+<p>How to promote consistency in answers? Hidden state.</p>
 
   </div>
 

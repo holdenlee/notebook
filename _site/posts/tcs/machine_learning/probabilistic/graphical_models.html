@@ -87,7 +87,14 @@
 
   <div class="toc"> <ul>
  <li><a href="#introduction">1 Introduction</a></li>
- <li><a href="#graphical-models">2 Graphical models</a></li>
+ <li><a href="#graphical-models">2 Graphical models</a><ul>
+ <li><a href="#section">2.1</a></li>
+ <li><a href="#conditional-independence">2.2 Conditional independence</a></li>
+ <li><a href="#statistical-inference-and-exact-algorithms">2.3 Statistical inference and exact algorithms</a></li>
+ <li><a href="#applications">2.4 Applications</a></li>
+ <li><a href="#exact-inference-algorithms">2.5 Exact inference algorithms</a></li>
+ <li><a href="#message-passing-algorithms-for-approximate-inference">2.6 Message-passing algorithms for approximate inference</a></li>
+ </ul></li>
  <li><a href="#exponential-families">3 Exponential families</a></li>
  <li><a href="#bethe-approximation-and-sum-product-algorithm">4 Bethe approximation and sum-product algorithm</a></li>
  <li><a href="#mean-field-methods">5 Mean field methods</a></li>
@@ -101,6 +108,126 @@
     <h2 id="introduction">1 Introduction</h2>
 <p>Inference: computing marginal probabilities.</p>
 <h2 id="graphical-models">2 Graphical models</h2>
+<p>Probability distributions that factorize according to underlying graph.</p>
+<h3 id="section">2.1</h3>
+<ul>
+<li>Vertices <span class="math inline">\(s\in V\)</span> correspond to random variables <span class="math inline">\(X_s\sim \mathcal X_s\)</span>.</li>
+<li>DAG graphical model: <span class="math inline">\(\pi(s)\)</span> parents, <span class="math inline">\(p(x) = \prod_{s\in V} p_s(x_s|x_{\pi(s)})\)</span>.</li>
+<li>Undirected graphical model: Cliques have compatibility function <span class="math inline">\(\psi_C:(\bigot_{s\in C}\mathcal X_s)\to \R_+\)</span>. <span class="math display">\[ p(x) = \rc{Z}\prod_{C\in \mathcal C} \psi_C(x_C).\]</span>
+<ul>
+<li>A DAG can be thought of as undirected by having node-parent groups as cliques.</li>
+</ul></li>
+<li>Let <span class="math inline">\(F\)</span> be the set of factors for a graphical model (node-parents for DAGs, <span class="math inline">\(\mathcal C\)</span> for undirected GMs). The factor graph is the bipartite graph <span class="math inline">\((V,F,E')\)</span>.</li>
+</ul>
+<h3 id="conditional-independence">2.2 Conditional independence</h3>
+<ul>
+<li>Undirected: <span class="math inline">\(X_A\perp X_B| X_C\)</span> if there is no path from <span class="math inline">\(A\)</span> to <span class="math inline">\(B\)</span> removing <span class="math inline">\(C\)</span>.</li>
+<li>Directed ?? See Pearl?</li>
+</ul>
+<h3 id="statistical-inference-and-exact-algorithms">2.3 Statistical inference and exact algorithms</h3>
+<p>Computational inference problems</p>
+<ul>
+<li>Compute likelihood of observed data</li>
+<li>Compute marginal <span class="math inline">\(p(x_A)\)</span></li>
+<li>Compute conditional <span class="math inline">\(p(x_A|x_B)\)</span>.</li>
+<li>Compute mode <span class="math inline">\(\amax_{x\in \mathcal X^m} p(x)\)</span>.</li>
+</ul>
+<p>For undirected graphs without cycles or directed graphs where each node has a single parent, problems can be solved by recursive message-passing algorithms (cf. DP).</p>
+<ul>
+<li>Marginals: sum-product</li>
+<li>Modes: max-product</li>
+<li>Junction tree algorithm, exponential in treewidth.</li>
+</ul>
+<h3 id="applications">2.4 Applications</h3>
+<ul>
+<li>Hierarchical Bayesian model</li>
+<li>Contingency table analysis (<span class="math inline">\((X_1,\ldots, X_m)\)</span>, each takes <span class="math inline">\(r\)</span> possible values). A contingency table is a <span class="math inline">\(r\times \cdots \times r\)</span> tensor.
+<ul>
+<li>Ex. given 3 variables, are they independent, or pairwise independent, or is there 3-way interaction? Note the undirected graph can’t distinguish the last two.</li>
+</ul></li>
+<li>Constraint satisfaction and combintorial optimization
+<ul>
+<li><span class="math inline">\(\psi_{stu}=1\)</span> iff satisfied; get uniform distribution over satisfying assignments.</li>
+<li>Random 3-SAT instances tend to have locally tree-like structure. Phase transition?</li>
+<li>Survey propagation algorithm.</li>
+</ul></li>
+<li>Bioinformatics
+<ul>
+<li>Hidden Markov model
+<ul>
+<li>Junction tree becomes forward-backward algorithm, Viterbi algorithm (for MAP).</li>
+</ul></li>
+<li>Phylogeny</li>
+<li>Hidden Markov phylogeny</li>
+<li>Factorial HMM: multiple chains coupled by link to common set of observed variables.</li>
+</ul></li>
+<li>Language and speech processing
+<ul>
+<li>Also HMM.</li>
+<li>Coupled HMM (fuse pairs of data streams, e.g. audio and lip)</li>
+<li>Bag-of-words, ex. latent Dirichlet allocation</li>
+</ul></li>
+<li>Image processing and spatial statistics
+<ul>
+<li>2d lattice, potential functions enforce local smoothness</li>
+<li>Multiscale quad trees</li>
+</ul></li>
+<li>Error-correcting coding
+<ul>
+<li>Parity-check codes. Codewords are those satisfying all parity relations.
+<ul>
+<li>Most successful decoder for many graphical codes is sum-product algorithm. Martingale arguments [160, 199]</li>
+</ul></li>
+</ul></li>
+</ul>
+<h3 id="exact-inference-algorithms">2.5 Exact inference algorithms</h3>
+<p>Sum-product and junctio-tree algorithms are DP algorithms based on method for sharing intermediate terms.</p>
+<p>Transform directed to undirected graphical model by making it <strong>moral</strong>: parents of each child are linked.</p>
+Tree-structured graph: For <span class="math inline">\(u\in N(s)\)</span> let <span class="math inline">\(T_u=(V_u,E_u)\)</span> be the component of <span class="math inline">\(u\)</span> after deleting <span class="math inline">\(s\)</span>.
+\begin{align}
+p(x) &amp;= \rc Z \prod_{s\in V} \psi_s(x_s) \prod_{(s,t)}\psi_{st}(x_s,x_t)\\
+\mu_s(x_s) &amp; = \ka \psi_s(x_s) \prod_{t\in N(s)} M_{ts}^* (x_s)\\
+M_{ts}^*(x_s) &amp;= \sum_{x_{V_t}'} \psi_{st}(x_s,x_t') p(x_{V_t}'; T_t)
+\end{align}
+<!--p(x_{V_t}; T_t) &\propto \prod_{u\in V_t} \psi_u(x_u)-->
+<p>Compute marginals for all nodes simultaneously in parallel. <span class="math inline">\(M_{tu}(x_u)\)</span> is passed from <span class="math inline">\(t\)</span> to <span class="math inline">\(u\in N(t)\)</span>. <span class="math display">\[
+M_{ts}(x_s) \leftarrow \ka \sum_{x_t'} \ba{
+\psi_{st}(x_s,x_t') \psi_t(x_t') \prod_{u\in N(t)\bs \{s\}} M_{ut}(x_t')
+}.
+\]</span> (To see this holds for <span class="math inline">\(M^*\)</span> up to constant, expand out the <span class="math inline">\(p(x_{V_t}';T_t)\)</span>.) For tree-structured graphs, converges to unique fixed point after finite iterations, up to normalization equal to <span class="math inline">\(M_{ts}^*(x_s)\)</span>. (<strong>Why?</strong> TODO: derive this.)</p>
+<p>Max-product: replace <span class="math inline">\(\sum\)</span> with max. Backtracking computes the argmax.</p>
+<p>(Updates apply to arbitrary commutative semirings.)</p>
+<p>A clique tree is an acyclic graph whose nodes are maximal cliques of <span class="math inline">\(G\)</span>. Running intersection property: for any 2 clique nodes <span class="math inline">\(C_1\)</span>, <span class="math inline">\(C_2\)</span>, all nodes on the unique path joining them contain <span class="math inline">\(C_1\cap C_2\)</span>. Then it’s a <strong>junction tree</strong>.</p>
+<p><span class="math inline">\(G\)</span> has a junction tree iff it is triangulated.</p>
+<ol type="1">
+<li>Triangulage <span class="math inline">\(G\)</span>. (HOW)</li>
+<li>Form junction tree <span class="math inline">\(G\)</span>. (HOW? Naive way is take 2 vertices, sort into those in between, recurse.)</li>
+<li>Run tree inference on junction tree.</li>
+</ol>
+<p>The separators are the intersection of cliques adjacent in the junction tree.</p>
+Passing a message from <span class="math inline">\(B\)</span> to <span class="math inline">\(C\)</span> (through <span class="math inline">\(S\)</span>):
+\begin{align}
+\wt \phi_S(x_S) &amp;\leftarrow \sum_{x_{B\bs S}} \phi_B(x_B)\\
+\phi_C(x_C) &amp;\leftarrow \fc{\wt\phi_S(x_S)}{\phi_S(x_S)} \phi_C(x_C).
+\end{align}
+<p>After a round of message passing, clique potentials are proportional to marginal probabilities.</p>
+<p>For a separator set <span class="math inline">\(S\)</span>, let <span class="math inline">\(d(S)\)</span> be the number of maximal cliques to which it is adjacent. <span class="math display">\[p(x) = \fc{\prod_{C\in \mathcal C}\mu_C(x_C)}{\prod_{S\in \mathcal S} [\mu_S(x_S)]^{d(S)-1}}.\]</span> Ex. for <span class="math inline">\(x_1\to x_2\to x_3\)</span>, <span class="math inline">\(p(x) = \fc{p(x_1,x_2)p(x_2,x_3)}{p(x_2)}\)</span>.</p>
+<strong>Proposition 2.1</strong>. A candidate set of marginal distributions <span class="math inline">\(\tau_C, C\in \mathcal C, \mathcal S\)</span> is globally consistent iff
+\begin{align}
+\forall S, \sum_{x_S'} \tau_S(x_S') &amp;= 1\\
+\forall S\subeq C, \sum_{x_C'|x_S'=x_S} \tau_{C}(x_C') &amp;=\tau_S(x_S).
+\end{align}
+<p>Computational cost grows exponentially in size of maximal clique in junction tree. Minimal size of maximl clique over all possible triangulations <span class="math inline">\(-1\)</span> is <strong>treewidth</strong>.</p>
+<p>Alternate definition (why equivalent?): covered by subgraphs of <span class="math inline">\(k+1\)</span> nodes in treelike fashion.</p>
+<h3 id="message-passing-algorithms-for-approximate-inference">2.6 Message-passing algorithms for approximate inference</h3>
+<ul>
+<li>Sum-product message-passing applied to graph with cycles: loopy sum-product or BP.</li>
+<li>Naive mean field algorithm
+<ul>
+<li>Ex. Ising model. Apply Gibbs sampling to update a node.</li>
+<li>For dense graph, replace neighbors by their means. Hope LoLN works.</li>
+</ul></li>
+</ul>
 <h2 id="exponential-families">3 Exponential families</h2>
 <h2 id="bethe-approximation-and-sum-product-algorithm">4 Bethe approximation and sum-product algorithm</h2>
 <h2 id="mean-field-methods">5 Mean field methods</h2>

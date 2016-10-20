@@ -22,7 +22,7 @@ Bellman optimality equations
 v_*(s) &= \max_\pi v_\pi(s)\\
 q_*(s,a) &= \max_\pi q_\pi(s,a)\\
 v_*(s)&= \max_{a\in \mathcal A(s)} \sum_{s'} p(s'|s,a) [r(s,a,s') + \ga v_*(s')\\
-q_*(s) &= \sum_{s'} p(s'|s,a) [r(s,a,s') +\ga \max q_*(s',a')].
+q_*(s,a) &= \sum_{s'} p(s'|s,a) [r(s,a,s') +\ga \max_{a'} q_*(s',a')].
 \end{align}
 
 3 assumptions that are rarely all true in practice:
@@ -428,7 +428,7 @@ Go from... to...
 
 Common structure means many ideas/algorithms can be transferred between planning and learning. (They differ only in source of experience.)
 
-Planning in small incremental steps helps intermix plannig with acting/learnig.
+Planning in small incremental steps helps intermix planning with acting/learnig.
 
 ## 8.2 Integrating planning, acting, and learning
 
@@ -556,3 +556,7 @@ Notes:
 * Can use LSTM (how?)
 * Simulated physics.
 * Fictitious self-play. Nash equilibria in multi-agent games?
+
+# Search
+
+Tree search, etc.

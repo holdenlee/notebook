@@ -1,0 +1,30 @@
+"Close" is not that close. 
+
+See `am_dl.txt` and `slurm-1218713.out`. Rows being within $0.4$ distance is considered close (randomly, we would expect $\rc{\sqrt m}$. The closer the rows are at the beginning, the closer they are at the end. (I checked 0.05, 0.1, 0.2, 0.5.) These are all closer than 0.5.
+
+Note: I should repeat the experiment with the same $A$, else it's hard to compare!
+
+For initializations up to 0.2-close $A\wt A^T$ is larger on the diagonal $>0.5$ vs. off diagonal $<0.25$.
+(Note this is with random $\pm1$'s.)
+
+For random initialization, the output vectors are not close to sparse in the $A$ basis. Example of a row of $A\wt A^T$:
+```
+[ -1.19598507e-01   3.60885821e-03  -9.33382989e-02   1.45729327e-01
+    3.93053731e-02   7.66688172e-02  -1.07903621e-01  -1.48280846e-01
+   -1.58631695e-01   2.15477284e-01  -2.47668200e-01   8.84148554e-02
+    1.48983735e-01  -1.63602802e-02  -7.14448198e-02   1.32344443e-03
+   -9.22165204e-02   1.82439203e-01   7.92706501e-02  -3.10276608e-01
+    1.25210607e-01  -1.63858822e-01   1.37085587e-01   7.17627901e-02
+    2.14538838e-01  -5.93130261e-02  -1.29960999e-01   1.80746397e-01
+   -1.77296771e-01   1.75889257e-01   2.30445496e-01  -1.13918500e-01
+    9.81203325e-02  -5.71258855e-02  -1.77641643e-02  -1.30574153e-01
+    2.01676323e-01  -1.54340849e-01   7.11727577e-02  -2.93694101e-01
+    1.95734038e-01   9.69476595e-02  -3.54890396e-02  -9.40785385e-02
+    1.20294937e-01   2.74435515e-02   6.34966752e-02  -5.34643975e-02
+   -5.26111336e-02   1.98214062e-01]
+```
+There is not one coordinate that is much larger.
+
+Samples: some rows are 0. Is this because they were initialized as 0?
+
+THIS IS INCORRECT. Gradient should not flow through the $A^T$...

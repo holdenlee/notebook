@@ -34,6 +34,7 @@ To learn about:
 * Review online/bandit methods
 * Bandit algorithms---recent progress by Bubeck.
 * Ellipsoid method
+    * Yin-Tat Lee's improvements.
 * Sampling methods
     * [Two cultures](http://www.minimizingregret.com/2016/03/the-two-cultures-of-optimization.html)
 	* CV16 Gaussian cooling [paper](http://arxiv.org/pdf/1409.6011.pdf) and [followup](http://link.springer.com/article/10.1007/s12532-015-0097-z). See Karan's talk in alg-ml S4.

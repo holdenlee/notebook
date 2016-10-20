@@ -15,6 +15,7 @@ showTOC: True
 	    * Make local rotated copies of the image (have to be careful with cropping, interpolating) and stack them. Now do a 3-D convolution in $(x,y,\te)$ space.
 		* This is less efficient. We should be able to reduce the number of parameters, but by how much?
 		* Beyond translation symmetry, the dimensionality of symmetries becomes greater than the dimensionality of the image (there is more than one symmetry taking one point to another point). This redundancy causes inefficiency.
+		* Do 3D convolution over $[0,1]\times[0,1]\times \mathbb S^1$.
 	* Scaling invariance.
 	    * Run the same convnet on the picture at different scales.
 	* Coloration (does this cause problems typically?)
@@ -32,3 +33,4 @@ showTOC: True
     * READ: Deep-fried convnets.
 * Fooling neural nets...
 * Train twice independently and put together?
+* Hyperuniformity: sample at non-grid points. 
