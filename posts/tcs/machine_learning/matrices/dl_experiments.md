@@ -64,3 +64,10 @@ How to evaluate?
     * How does reconstruction error compare to SVD? (Make dimensions comparable.)
 * Put in random SVM on top. Can it learn the SVM well?
 * Check framework in [HM16].
+
+# Code
+
+* Displaying images
+	* [No PIL](http://stackoverflow.com/questions/902761/saving-a-numpy-array-as-an-image)
+	* [PIL](http://stackoverflow.com/questions/2659312/how-do-i-convert-a-numpy-array-to-and-display-an-image)
+	* [Pillow](https://pillow.readthedocs.io/en/3.4.x/reference/index.html)

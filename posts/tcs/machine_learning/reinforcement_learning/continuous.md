@@ -62,41 +62,38 @@ Captures deterministic MDP, but not probabilistic, by letting $A=\{e_i\}$.
 	* [Unified framework](http://castlelab.princeton.edu/jungle.htm#unifiedframework)
 * [Deep RL](https://github.com/andrewliao11/Deep-Reinforcement-Learning-Survey/blob/master/Reinforcement-Learning-Papers.md)
 
+
+
 ## Books
+
+[Recommendations](https://www.quora.com/What-are-the-best-books-about-reinforcement-learning)
 
 * [Puterman14](https://books.google.com/books?id=VvBjBAAAQBAJ&printsec=frontcover&dq=continuous+markov+decision+processes&hl=en&sa=X&ved=0ahUKEwjo3OLywOnPAhVHWD4KHXzgDWUQ6AEIKTAC#v=onepage&q=continuous%20markov%20decision%20processes&f=false)
 * [Bertsekas87](https://books.google.com/books?id=-6RiQgAACAAJ&dq=Dynamic+Programming:+Deterministic+and+Stochastic+Models&hl=en&sa=X&ved=0ahUKEwjc0pfAyefPAhUGFz4KHaVIDecQ6AEIHjAA)
 
+* [Optimal learning](http://site.ebrary.com/lib/princeton/detail.action?docID=10560566)
+* [Function approximators](http://www.crcnetbase.com/isbn/9781439821091)
+
+
 ## Papers
 
-* [AAKMR02] A Note on the Representational Incompatibility of Function Approximation and Factored Dynamics.pdf
-    * Barrier to solving factored MDP's is not just computational, it is representational (there is no succinct policy)
-	* DBN-MDP (factored MDP): transition law $\de$ is dynamic Bayes net. The first layer are the variables (and action) at time $t$, the second layer are the variables at time $t+1$, the graph is directed, the indegree of each second-layer node is at most constant.
-	* Rewards are linear.
-	* Connection with AM-games: V's state corresponds to state, P implements policy.
-	* If PSPACE is not contained in P/POLY, then there is a family of DBN-MDPs, such that for any two polynomials $s,a$, there exist infinitely many $n$ such that no circuit $C$ of size $s(n)$ can compute a policy having expected reward greater than $\rc{a(n)}$ times the optimum.
-	* (This is the policy optimization part. Can you learn Bayes nets? @Andrej)
-	* (Note that the "drifting context vector (RANDWALK)" model can be represented by a model with $1\to 1', 2\to 2',\ldots$.)
-	* What if you only compared to the best policy in a class of policies? (cf. EXP4)
-* (\*) [ALA16] Reinforcement Learning of POMDPs using Spectral Methods.pdf
-* [G] Reinforcement learning - a Tutorial Survey and Recent Advances.pdf
-* [HSMM15] Off-policy Model-based Learning under Unknown Factored Dynamics.pdf
-	* Under 3 assumptions, using a greedy approach to finding parents, estimate the transition function (parameters to Bayes net) (compre with prob models literature?)
-	* This is for off-policy evaluation; it doesn't tell us how to find the optimal policy.
-	* (Is the model learning and policy evaluation coupled or not?)
-	* (It seems to be learning the Bayes net rather than evaluating $\pi$. Ah, once you learn the Bayes net then you can evaluate just by sampling.)
-	* The difference from simpling learning a Bayes net is that the samples aren't independent---they were from following a certain policy. Assumptions will ensure that you can still learn the model even if you only have samples from that policy.
-* [KAL16] Contextual-MDPs for PAC-Reinforcement Learning with Rich Observations.pdf
-* [KLM96] Reinforcement Learning - A Survey.pdf
-* (\*) [P14] Clearing the Jungle of Stochastic Optimization.pdf
-* [P14] Energy and Uncertainty - models and algorithms for complex energy systems.pdf
-* (\*) [P16] A Unified Framework for Optimization under Uncertainty.pdf
-* [PB79] On the convergence of policy iteration in stationary dynamic programming.pdf
-* (\*) [SR04] Convergence properties of policy iteration.pdf
-* (\*) [WD92] Q-learning.pdf
+* [lin function approximators](http://people.csail.mit.edu/agf/Files/13FTML-RLTutorial.pdf)
+* [optimistic principle](https://hal.archives-ouvertes.fr/hal-00747575v5/document)
+* [ADP](http://web.mit.edu/dimitrib/www/dpchapter.pdf)
+* [Approximate DP](http://site.ebrary.com/lib/princeton/reader.action?docID=10501323)
+* [Algorithms for RL](http://www.morganclaypool.com/doi/abs/10.2200/S00268ED1V01Y201005AIM009)
+
+*
 
 # Misc
 
 Do as well as best Bayes net? Actions in some class. Finite set of actions, vs. exponential/continuous set of actions. In latter case, will depend on optimizability of that set...
 
-<!--Definitely need something stronger than: there exist something that works! if can encode crypto -->
+Ex. class is a SVM.
+
+"Do as well as best estimator of $q$ function in a certain class (assume convexity or something?)" (cf. contextual bandits first)
+
+<!--Definitely need something stronger than: there exist something that works! if can encode crypto 
+
+Upper confidence bounds
+-->
