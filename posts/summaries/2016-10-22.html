@@ -89,6 +89,7 @@
  <li><a href="#threads">Threads</a></li>
  <li><a href="#other-papers">Other papers</a></li>
  <li><a href="#talk-with-arora-1019-wed">Talk with Arora 10/19 (Wed)</a></li>
+ <li><a href="#wonderings">Wonderings</a></li>
  </ul> </div>
 
   <div class="blog-main">
@@ -117,6 +118,46 @@
 <li>TODO Read this paper: [CFP16] Assessing significance in a Markov chain without mixing</li>
 </ul>
 <h2 id="talk-with-arora-1019-wed">Talk with Arora 10/19 (Wed)</h2>
+<p>Dynamical systems + MDP!</p>
+<h2 id="wonderings">Wonderings</h2>
+<ul>
+<li>Can we generalize the random walk of the context vectors? There’s no reason to think that context vectors just drift on the sphere. (p. 139)
+<ul>
+<li>Make it a RBM. Say with bounded degree. (There are ways to learn - see the factored MDP paper. We don’t care about MDP here, so it’s easier.)</li>
+<li>For example, one node (dimension) could simply control output of common words.</li>
+<li>Given the observations, whose probs are <span class="math inline">\(\propto e^{w^TAc}\)</span>, learn the RBM. (Note we can replace <span class="math inline">\(w\)</span> by <span class="math inline">\(A^Tw\)</span>… but if <span class="math inline">\(c\)</span> is in larger space, then it’s not obvious how to learn the <span class="math inline">\(A\)</span>! Can we modify the word embeddings to deal with this? Beware of difficulties… HMMs usually assume full column-rank observations, violated here. Look at the proper hard instance for HMM. - the version I saw with noisy parity wasn’t quite a HMM)</li>
+<li>Prereq: given <span class="math inline">\((x,h)\)</span> how to learn RBM or Bayes net? (When <span class="math inline">\(W\)</span>’s entries are small enough, can do via MCMC estimation of partition function and optimization of log-likelihood. Otherwise, is hard worst-case.)
+<ul>
+<li>I’m confused! There seems to be a line of work on factorial MDP’s. However, where are the basic results about learnability of Bayes nets? Learning the model for FMDP’s is strictly harder—why so much work on this (with too much assumptions, or weak results) without results on learning Bayes nets?</li>
+<li>Bresler.</li>
+</ul></li>
+<li>cf. work on continuous HMM’s. Work on factored HMMs? Any bounds when hidden state has larger dimension? Also, adapt HMM learning to vector observations. (Is the natural generalization a factored prob model rather than a dynamical system? Note probabilistic linear dynamical system IS straightforward generalization of HMM, but the factored prob model is not. Weird generalization though, because only having states <span class="math inline">\(\{e_1,\ldots, e_n\}\)</span> seems decoupled - can couple together any way you want.) <span class="citation" data-cites="Andrej">@Andrej</span> on this.
+<ul>
+<li>When state has larger dimension, need overcomplete tensor factorization.</li>
+</ul></li>
+</ul></li>
+<li>Dictionary learning experiment
+<ul>
+<li>The kernel DL I want is different from in the literature. There they want <span class="math inline">\(\Phi(Y) \approx \Phi(A)X\)</span>, here we want <span class="math inline">\(\Phi(Y) \approx \Phi(AX)\)</span>. I.e. we want to maximize <span class="math inline">\(K(Y,AX)\)</span> where <span class="math inline">\(X\)</span> is restricted to be sparse. Usual algorithms break down here, but can still consider <span class="math inline">\(K(Y,AX) + \ve{X}_1\)</span>. (137)</li>
+<li>Use kernel in <a href="../../posts/tcs/machine_learning/neural_nets/PMDH16.html">PMDH16</a>.</li>
+</ul></li>
+<li>RL questions (135)
+<ul>
+<li>Given a (continuous) space of policies, converge to a local min in the space of policies.</li>
+<li>Find some measure of complexity of a class of policies. Branching is important. (Getting limited info from other policies…) Get a bound independent of number of states, involving this complexity.
+<ul>
+<li>Example to keep in mind: <span class="math inline">\(2^n\)</span> strategies all branching off into different rewards at end of their paths.</li>
+</ul></li>
+<li>What is the VC dimension bound for contextual (expert) bandits? Also look at the contextual MDP paper, cf. EXP4.</li>
+<li>[ALA16] open question</li>
+<li>Scraps
+<ul>
+<li>Right <span class="math inline">\(\la\)</span>, how do well without learning model?</li>
+<li>SoS, minimax, etc.</li>
+<li>EXP3:Scrible:EXP4::UCB1:?:? (LinUCB? RUCB?)</li>
+</ul></li>
+</ul></li>
+</ul>
 
   </div>
 

@@ -8,8 +8,183 @@
         <name>Holden Lee</name>
         <email>oldheneel@gmail.com</email>
     </author>
-    <updated>2016-10-19T00:00:00Z</updated>
+    <updated>2016-10-21T00:00:00Z</updated>
     <entry>
+    <title>Learning structured, robust, and multimodal deep models</title>
+    <link href="http://holdenlee.github.io/notebook/posts/tcs/machine_learning/neural_nets/salakhutdinov.html" />
+    <id>http://holdenlee.github.io/notebook/posts/tcs/machine_learning/neural_nets/salakhutdinov.html</id>
+    <published>2016-10-21T00:00:00Z</published>
+    <updated>2016-10-21T00:00:00Z</updated>
+    <summary type="html"><![CDATA[
+<div class="container">
+  <div id="content">
+    <div class="page header">
+      <h1>Learning structured, robust, and multimodal deep models</h1>
+    </div>
+    <div class="info">
+      
+       
+        <p>Posted: 2016-10-21 
+          , Modified: 2016-10-21 
+	</p>
+      
+       <p>Tags: <a href="/tags/neural%20networks.html">neural networks</a>, <a href="/tags/deep%20learning.html">deep learning</a>, <a href="/tags/multimodal.html">multimodal</a></p> 
+    </div>
+    
+  </div>
+  <!--/div-->
+
+  <div class="toc"> <ul>
+ <li><a href="#abstract">Abstract</a></li>
+ <li><a href="#learning-deep-generative-models">Learning deep generative models</a></li>
+ <li><a href="#multi-modal-learning">Multi-modal learning</a></li>
+ <li><a href="#open-problems">Open problems</a></li>
+ <li><a href="#questions">Questions</a></li>
+ </ul> </div>
+
+  <div class="blog-main">
+    <h2 id="abstract">Abstract</h2>
+<p>Building intelligent systems that are capable of extracting meaningful representations from high-dimensional data lies at the core of solving many Artificial Intelligence tasks, including visual object recognition, information retrieval, speech perception, and language understanding. In this talk I will first introduce a broad class of deep learning models and show that they can learn useful hierarchical representations from large volumes of high-dimensional data with applications in information retrieval, object recognition, and speech perception. I will next introduce deep models that are capable of extracting a unified representation that fuses together multiple data modalities as well as present the Reverse Annealed Importance Sampling Estimator (RAISE) for evaluating these deep generative models. Finally, I will discuss models that can generate natural language descriptions (captions) of images, as well as generate images from captions using attention mechanism. I will show that on several tasks, including modelling images and text, these models significantly improve upon many of the existing techniques.</p>
+<ul>
+<li>Develop statistical models to mine for structure: Deep learning models support inferences and discover structure at multiple levels. <!-- drug rec-->
+<ul>
+<li>Ex. understanding images (Nearest neighbor sentence: people taking pictures of a crazy person)</li>
+</ul></li>
+</ul>
+<h2 id="learning-deep-generative-models">Learning deep generative models</h2>
+<ul>
+<li>RBM: visible <span class="math inline">\(v\in B^D\)</span>, hidden <span class="math inline">\(h\in B^F\)</span>, bipartite connections. <span class="math inline">\(\Pj(v,h) \propto \exp(v^TWh + a^Th + b^Tv)\)</span>.
+<ul>
+<li>Ex. alphabets</li>
+<li>Derivative of LL. Partition function difficult to compute!</li>
+<li>Can change to Gaussians (real-valued variables), etc.</li>
+<li>Word counts (undirected version of topic models) (bag of words)</li>
+<li>Easy to infer states of hidden variables <span class="math inline">\(\Pj(h|v)\)</span>.</li>
+<li>“Product of experts”: after marginalizing over hidden variables (Government, corruption, and oil give high probability of Putin). Better for info retrieval than traditional topic models.</li>
+</ul></li>
+<li>DBM
+<ul>
+<li>Compose representations.</li>
+<li>MRF with hidden variables and specific structure</li>
+<li>Hidden variables dependent even conditioned on input.</li>
+<li>Both <span class="math inline">\(\E\)</span> now intractable</li>
+<li>Use variational inference for <span class="math inline">\(\E_{P_{data}}[vh^{1T}]\)</span> and stochastic approximation (MCMC) for <span class="math inline">\(\E_{P_\te}[vh^{1T}]\)</span>.</li>
+<li>Handwritten data: real data more diverse, crisp.</li>
+<li>Pattern completion (3-D object recognition) <!-- true bayesian hedges bets--></li>
+<li>Model A vs. B: Take training example at random and show, vs. RBM. Compute <span class="math inline">\(P\)</span> on validation set. Need estimate of <span class="math inline">\(Z\)</span>. RBM better than mixture of Bernoullis by 50 nats.</li>
+<li>Simple importance sampling. Given easy-to-sample-from and intractable target distribution, reweight and use MC approximation. Can’t just draw from uniform distribution!</li>
+<li>Annealed importance sampling, <span class="math inline">\(p_0,\ldots, p_K\)</span>. Geometric average <span class="math inline">\(p_\be(x) = f_\be/Z_\be = f_0^{1-\be}/f_{target}(x)^\be/Z_\be\)</span>. If initial is uniform, <span class="math inline">\(p_\be = f_t^\be/Z_\be\)</span>, <span class="math inline">\(\be\)</span> inverse temperature. (Annealing by averaging moments)
+<ul>
+<li>AIS gives unbiased estimator of <span class="math inline">\(Z_t\)</span>.</li>
+<li>We are interested in estimating <span class="math inline">\(\ln Z_t\)</span>. Jensen: <span class="math inline">\(\E \ln Z_t\le \ln Z_t\)</span>. Underestimate! We get a stochastic lower bound.</li>
+<li>Log-probability on test set, overestimate <span class="math inline">\(\ln p = \ln f - \ln Z_t\)</span>. <!--If sloppy, model looks nice!--></li>
+</ul></li>
+<li>Gibbs sampling. Pretend it’s equilibrium after 1000 steps.
+<ul>
+<li>Unrolled RBM as deep generative model. As approximation to RBM.</li>
+<li><span class="math inline">\(p_{fwd}(x_{0:K}) = p_0(x_0)\prodo kK T_k(x_k|x_{k-1})\)</span>.</li>
+<li>Reverse AIS estimator (RAISE). Start at data and melt distribution. Tends to underestimate log-probs.</li>
+</ul></li>
+<li>Learning hierarchical representations.</li>
+</ul></li>
+<li>Model evaluation: Good way of evaluating!</li>
+</ul>
+<p>Learn feature representations! <!--textons, audio features--></p>
+<h2 id="multi-modal-learning">Multi-modal learning</h2>
+<ul>
+<li>Image, text, audio. Joint representations?</li>
+<li>Product recommendations</li>
+<li><p>Robotic</p></li>
+<li>Challenges
+<ul>
+<li>Images are real-valued, text is sparse.</li>
+<li>Noisy and missing data</li>
+</ul></li>
+<li>Multimodal DBM, go up and then down the other way. Define joint distribution over images and text.</li>
+<li>Given text, sample from images
+<ul>
+<li>MIR-Flickr dataset</li>
+</ul></li>
+<li>Solve supervised learning tasks. Can do better if use unlabeled data. Learn better features and representations.</li>
+<li>Can pre-train image pathway and text pathways. <!-- Q: how much can you decouple? --></li>
+<li>Complete descriptions of images.
+<ul>
+<li>Encoder: CNN to semantic feature space.</li>
+<li>Decoder: neural language model.</li>
+<li>Learn joint embedding space of images and text. Natural definition of scoring function.</li>
+<li>Ex. Fluffy.</li>
+<li>Multimodal linguistic regularities: Addition and subtraction. (Cat - bowl + box)
+<ul>
+<li>Bird and reflection: Two birds are trying to be seen in the water.</li>
+<li>Giraffe is standing next to a fence in a field.</li>
+<li>Handlebars are trying to ride a bike rack.</li>
+</ul></li>
+<li>Caption generation with visual attention.</li>
+<li>Generate images from captions. (school bus flying in blue skies)</li>
+<li>Helmholtz machines/variational autoencoders. Directed counterparts. Generative process goes down. Approximate inference going up. Hinton95 (Science). Now it works, Kingma2014 (NIPS)
+<ul>
+<li>A toilet seat sits open in the bathroom, grass field</li>
+<li>Ask google. <!--worked on toilet project--></li>
+</ul></li>
+</ul></li>
+</ul>
+<h2 id="open-problems">Open problems</h2>
+<ul>
+<li>Unsupevised learning/transfer learning/one-shot learning</li>
+<li>Reasoning, attention, memory</li>
+<li>Natural language understanding
+<ul>
+<li>Sequence-to-sequence learning</li>
+<li>Skip-thought model
+<ul>
+<li>Generate previous and forward sentence</li>
+<li>Objective: sum of log-probabilities for previous/next sentence conditioned on current.</li>
+<li>How similar are 2 sentence are on the scale 1 to 5. (A person is performing a trick on a motorcycle? A person is tricking a man on a motorcycle.)</li>
+<li>We use no semantic features. <!-- AdaSent --></li>
+</ul></li>
+</ul></li>
+<li>Deep reinforcement learning</li>
+</ul>
+<p>Neural storytelling. Take corpus of books (romantic), generate captions about the image.</p>
+<p>Kiros2015 NIPS</p>
+<p>One-shot learning: humans vs. machines. How can we learn novel concept from few examples (Lake, S, Tenenbaum 2015, Science)</p>
+<h2 id="questions">Questions</h2>
+<p>CNN better for supervised. We’re trying to build convolutional DBM.</p>
+<p>vs. variational autoencoder. Reparametrization trick, backprop through whole model. Optimization better for VA. Both useful.</p>
+<p>Learning representation, not with language?</p>
+<!-- evaluation
+neural image on google $10^5$
+-->
+<p>Microsoft dataset: 80000 images, 5 captions each. Not big enough, but captions clean!</p>
+<p>Topics vs. coherent model of sentences. What do we need? New architectures, training sets? <!--need rep to corresp with reality. have memory, check for consistency with memory --></p>
+<!--AlphaGo is more technological. Fast, evaluating -->
+<p>Actor-Mimic model.</p>
+<p>Transfer learning: learn new games faster by leveraging knowledge about previous games. Ex. star gunner</p>
+<p>Continuous state.</p>
+
+  </div>
+
+    
+
+    <!-- Extension : Sharing buttons @ www.sharethis.com -->
+    <span class='st_facebook_large' displayText='Facebook'></span>
+    <span class='st_twitter_large' displayText='Tweet'></span>
+    <span class='st_googleplus_large' displayText='Google +'></span>
+    <span class='st_reddit_large' displayText='Reddit'></span>
+    <span class='st__large' displayText=''></span>
+
+    <div id="disqus_thread"></div>
+    
+
+
+  
+    <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+  </div>
+  
+</div>
+]]></summary>
+</entry>
+<entry>
     <title>Weekly summary 2016-10-22</title>
     <link href="http://holdenlee.github.io/notebook/posts/summaries/2016-10-22.html" />
     <id>http://holdenlee.github.io/notebook/posts/summaries/2016-10-22.html</id>
@@ -38,6 +213,7 @@
  <li><a href="#threads">Threads</a></li>
  <li><a href="#other-papers">Other papers</a></li>
  <li><a href="#talk-with-arora-1019-wed">Talk with Arora 10/19 (Wed)</a></li>
+ <li><a href="#wonderings">Wonderings</a></li>
  </ul> </div>
 
   <div class="blog-main">
@@ -66,6 +242,46 @@
 <li>TODO Read this paper: [CFP16] Assessing significance in a Markov chain without mixing</li>
 </ul>
 <h2 id="talk-with-arora-1019-wed">Talk with Arora 10/19 (Wed)</h2>
+<p>Dynamical systems + MDP!</p>
+<h2 id="wonderings">Wonderings</h2>
+<ul>
+<li>Can we generalize the random walk of the context vectors? There’s no reason to think that context vectors just drift on the sphere. (p. 139)
+<ul>
+<li>Make it a RBM. Say with bounded degree. (There are ways to learn - see the factored MDP paper. We don’t care about MDP here, so it’s easier.)</li>
+<li>For example, one node (dimension) could simply control output of common words.</li>
+<li>Given the observations, whose probs are <span class="math inline">\(\propto e^{w^TAc}\)</span>, learn the RBM. (Note we can replace <span class="math inline">\(w\)</span> by <span class="math inline">\(A^Tw\)</span>… but if <span class="math inline">\(c\)</span> is in larger space, then it’s not obvious how to learn the <span class="math inline">\(A\)</span>! Can we modify the word embeddings to deal with this? Beware of difficulties… HMMs usually assume full column-rank observations, violated here. Look at the proper hard instance for HMM. - the version I saw with noisy parity wasn’t quite a HMM)</li>
+<li>Prereq: given <span class="math inline">\((x,h)\)</span> how to learn RBM or Bayes net? (When <span class="math inline">\(W\)</span>’s entries are small enough, can do via MCMC estimation of partition function and optimization of log-likelihood. Otherwise, is hard worst-case.)
+<ul>
+<li>I’m confused! There seems to be a line of work on factorial MDP’s. However, where are the basic results about learnability of Bayes nets? Learning the model for FMDP’s is strictly harder—why so much work on this (with too much assumptions, or weak results) without results on learning Bayes nets?</li>
+<li>Bresler.</li>
+</ul></li>
+<li>cf. work on continuous HMM’s. Work on factored HMMs? Any bounds when hidden state has larger dimension? Also, adapt HMM learning to vector observations. (Is the natural generalization a factored prob model rather than a dynamical system? Note probabilistic linear dynamical system IS straightforward generalization of HMM, but the factored prob model is not. Weird generalization though, because only having states <span class="math inline">\(\{e_1,\ldots, e_n\}\)</span> seems decoupled - can couple together any way you want.) <span class="citation" data-cites="Andrej">@Andrej</span> on this.
+<ul>
+<li>When state has larger dimension, need overcomplete tensor factorization.</li>
+</ul></li>
+</ul></li>
+<li>Dictionary learning experiment
+<ul>
+<li>The kernel DL I want is different from in the literature. There they want <span class="math inline">\(\Phi(Y) \approx \Phi(A)X\)</span>, here we want <span class="math inline">\(\Phi(Y) \approx \Phi(AX)\)</span>. I.e. we want to maximize <span class="math inline">\(K(Y,AX)\)</span> where <span class="math inline">\(X\)</span> is restricted to be sparse. Usual algorithms break down here, but can still consider <span class="math inline">\(K(Y,AX) + \ve{X}_1\)</span>. (137)</li>
+<li>Use kernel in <a href="/posts/tcs/machine_learning/neural_nets/PMDH16.html">PMDH16</a>.</li>
+</ul></li>
+<li>RL questions (135)
+<ul>
+<li>Given a (continuous) space of policies, converge to a local min in the space of policies.</li>
+<li>Find some measure of complexity of a class of policies. Branching is important. (Getting limited info from other policies…) Get a bound independent of number of states, involving this complexity.
+<ul>
+<li>Example to keep in mind: <span class="math inline">\(2^n\)</span> strategies all branching off into different rewards at end of their paths.</li>
+</ul></li>
+<li>What is the VC dimension bound for contextual (expert) bandits? Also look at the contextual MDP paper, cf. EXP4.</li>
+<li>[ALA16] open question</li>
+<li>Scraps
+<ul>
+<li>Right <span class="math inline">\(\la\)</span>, how do well without learning model?</li>
+<li>SoS, minimax, etc.</li>
+<li>EXP3:Scrible:EXP4::UCB1:?:? (LinUCB? RUCB?)</li>
+</ul></li>
+</ul></li>
+</ul>
 
   </div>
 
@@ -120,6 +336,7 @@
  <li><a href="#first-observations">First observations</a></li>
  </ul></li>
  <li><a href="#evaluation">Evaluation</a></li>
+ <li><a href="#code">Code</a></li>
  </ul> </div>
 
   <div class="blog-main">
@@ -179,6 +396,15 @@ I've done a lot of the calculations for neural nets learning dictionaries, and a
 </ul></li>
 <li>Put in random SVM on top. Can it learn the SVM well?</li>
 <li>Check framework in [HM16].</li>
+</ul>
+<h2 id="code">Code</h2>
+<ul>
+<li>Displaying images
+<ul>
+<li><a href="http://stackoverflow.com/questions/902761/saving-a-numpy-array-as-an-image">No PIL</a></li>
+<li><a href="http://stackoverflow.com/questions/2659312/how-do-i-convert-a-numpy-array-to-and-display-an-image">PIL</a></li>
+<li><a href="https://pillow.readthedocs.io/en/3.4.x/reference/index.html">Pillow</a></li>
+</ul></li>
 </ul>
 
   </div>
@@ -299,45 +525,30 @@ I've done a lot of the calculations for neural nets learning dictionaries, and a
 <li><a href="https://github.com/andrewliao11/Deep-Reinforcement-Learning-Survey/blob/master/Reinforcement-Learning-Papers.md">Deep RL</a></li>
 </ul>
 <h3 id="books">Books</h3>
+<p><a href="https://www.quora.com/What-are-the-best-books-about-reinforcement-learning">Recommendations</a></p>
 <ul>
 <li><a href="https://books.google.com/books?id=VvBjBAAAQBAJ&amp;printsec=frontcover&amp;dq=continuous+markov+decision+processes&amp;hl=en&amp;sa=X&amp;ved=0ahUKEwjo3OLywOnPAhVHWD4KHXzgDWUQ6AEIKTAC#v=onepage&amp;q=continuous%20markov%20decision%20processes&amp;f=false">Puterman14</a></li>
-<li><a href="https://books.google.com/books?id=-6RiQgAACAAJ&amp;dq=Dynamic+Programming:+Deterministic+and+Stochastic+Models&amp;hl=en&amp;sa=X&amp;ved=0ahUKEwjc0pfAyefPAhUGFz4KHaVIDecQ6AEIHjAA">Bertsekas87</a></li>
+<li><p><a href="https://books.google.com/books?id=-6RiQgAACAAJ&amp;dq=Dynamic+Programming:+Deterministic+and+Stochastic+Models&amp;hl=en&amp;sa=X&amp;ved=0ahUKEwjc0pfAyefPAhUGFz4KHaVIDecQ6AEIHjAA">Bertsekas87</a></p></li>
+<li><a href="http://site.ebrary.com/lib/princeton/detail.action?docID=10560566">Optimal learning</a></li>
+<li><p><a href="http://www.crcnetbase.com/isbn/9781439821091">Function approximators</a></p></li>
 </ul>
 <h3 id="papers">Papers</h3>
 <ul>
-<li>[AAKMR02] A Note on the Representational Incompatibility of Function Approximation and Factored Dynamics.pdf
-<ul>
-<li>Barrier to solving factored MDP’s is not just computational, it is representational (there is no succinct policy)</li>
-<li>DBN-MDP (factored MDP): transition law <span class="math inline">\(\de\)</span> is dynamic Bayes net. The first layer are the variables (and action) at time <span class="math inline">\(t\)</span>, the second layer are the variables at time <span class="math inline">\(t+1\)</span>, the graph is directed, the indegree of each second-layer node is at most constant.</li>
-<li>Rewards are linear.</li>
-<li>Connection with AM-games: V’s state corresponds to state, P implements policy.</li>
-<li>If PSPACE is not contained in P/POLY, then there is a family of DBN-MDPs, such that for any two polynomials <span class="math inline">\(s,a\)</span>, there exist infinitely many <span class="math inline">\(n\)</span> such that no circuit <span class="math inline">\(C\)</span> of size <span class="math inline">\(s(n)\)</span> can compute a policy having expected reward greater than <span class="math inline">\(\rc{a(n)}\)</span> times the optimum.</li>
-<li>(This is the policy optimization part. Can you learn Bayes nets? <span class="citation" data-cites="Andrej">@Andrej</span>)</li>
-<li>(Note that the “drifting context vector (RANDWALK)” model can be represented by a model with <span class="math inline">\(1\to 1', 2\to 2',\ldots\)</span>.)</li>
-<li>What if you only compared to the best policy in a class of policies? (cf. EXP4)</li>
-</ul></li>
-<li>(*) [ALA16] Reinforcement Learning of POMDPs using Spectral Methods.pdf</li>
-<li>[G] Reinforcement learning - a Tutorial Survey and Recent Advances.pdf</li>
-<li>[HSMM15] Off-policy Model-based Learning under Unknown Factored Dynamics.pdf
-<ul>
-<li>Under 3 assumptions, using a greedy approach to finding parents, estimate the transition function (parameters to Bayes net) (compre with prob models literature?)</li>
-<li>This is for off-policy evaluation; it doesn’t tell us how to find the optimal policy.</li>
-<li>(Is the model learning and policy evaluation coupled or not?)</li>
-<li>(It seems to be learning the Bayes net rather than evaluating <span class="math inline">\(\pi\)</span>. Ah, once you learn the Bayes net then you can evaluate just by sampling.)</li>
-<li>The difference from simpling learning a Bayes net is that the samples aren’t independent—they were from following a certain policy. Assumptions will ensure that you can still learn the model even if you only have samples from that policy.</li>
-</ul></li>
-<li>[KAL16] Contextual-MDPs for PAC-Reinforcement Learning with Rich Observations.pdf</li>
-<li>[KLM96] Reinforcement Learning - A Survey.pdf</li>
-<li>(*) [P14] Clearing the Jungle of Stochastic Optimization.pdf</li>
-<li>[P14] Energy and Uncertainty - models and algorithms for complex energy systems.pdf</li>
-<li>(*) [P16] A Unified Framework for Optimization under Uncertainty.pdf</li>
-<li>[PB79] On the convergence of policy iteration in stationary dynamic programming.pdf</li>
-<li>(*) [SR04] Convergence properties of policy iteration.pdf</li>
-<li>(*) [WD92] Q-learning.pdf</li>
+<li><a href="http://people.csail.mit.edu/agf/Files/13FTML-RLTutorial.pdf">lin function approximators</a></li>
+<li><a href="https://hal.archives-ouvertes.fr/hal-00747575v5/document">optimistic principle</a></li>
+<li><a href="http://web.mit.edu/dimitrib/www/dpchapter.pdf">ADP</a></li>
+<li><a href="http://site.ebrary.com/lib/princeton/reader.action?docID=10501323">Approximate DP</a></li>
+<li><p><a href="http://www.morganclaypool.com/doi/abs/10.2200/S00268ED1V01Y201005AIM009">Algorithms for RL</a></p></li>
+<li></li>
 </ul>
 <h2 id="misc">Misc</h2>
 <p>Do as well as best Bayes net? Actions in some class. Finite set of actions, vs. exponential/continuous set of actions. In latter case, will depend on optimizability of that set…</p>
-<!--Definitely need something stronger than: there exist something that works! if can encode crypto -->
+<p>Ex. class is a SVM.</p>
+<p>“Do as well as best estimator of <span class="math inline">\(q\)</span> function in a certain class (assume convexity or something?)” (cf. contextual bandits first)</p>
+<!--Definitely need something stronger than: there exist something that works! if can encode crypto 
+
+Upper confidence bounds
+-->
 
   </div>
 
@@ -955,77 +1166,6 @@ which happen with probabilities <span class="math inline">\(t^{-4}\)</span>.</li
 </ul>
 <p>Concrete Q: In the MAB setting, what if you compare to the best policy in a given set? I’m confused: can the policies have memory (depending on past results)? In this case, you can’t start following a policy midway. Let’s say they don’t. Now some policies may recommend the same action and some actions may not be recommended so scale accordingly.</p>
 <p>A: Yes. See [ACFS02]; they get regret <span class="math inline">\(O((\ln N)^{\rc 2}\sqrt{T})\)</span> where <span class="math inline">\(N\)</span> is the number of strategies.</p>
-
-  </div>
-
-    
-
-    <!-- Extension : Sharing buttons @ www.sharethis.com -->
-    <span class='st_facebook_large' displayText='Facebook'></span>
-    <span class='st_twitter_large' displayText='Tweet'></span>
-    <span class='st_googleplus_large' displayText='Google +'></span>
-    <span class='st_reddit_large' displayText='Reddit'></span>
-    <span class='st__large' displayText=''></span>
-
-    <div id="disqus_thread"></div>
-    
-
-
-  
-    <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
-  </div>
-  
-</div>
-]]></summary>
-</entry>
-<entry>
-    <title>Generalization of neural nets</title>
-    <link href="http://holdenlee.github.io/notebook/posts/tcs/machine_learning/optimization/generalization.html" />
-    <id>http://holdenlee.github.io/notebook/posts/tcs/machine_learning/optimization/generalization.html</id>
-    <published>2016-10-10T00:00:00Z</published>
-    <updated>2016-10-10T00:00:00Z</updated>
-    <summary type="html"><![CDATA[
-<div class="container">
-  <div id="content">
-    <div class="page header">
-      <h1>Generalization of neural nets</h1>
-    </div>
-    <div class="info">
-      
-       
-        <p>Posted: 2016-10-10 
-          , Modified: 2016-10-10 
-	</p>
-      
-       <p>Tags: <a href="/tags/neural%20nets.html">neural nets</a></p> 
-    </div>
-    
-  </div>
-  <!--/div-->
-
-  <div class="toc"> <ul>
- <li><a href="#rademacher-complexity">Rademacher complexity</a></li>
- <li><a href="#local-minima-generalization">Local minima generalization</a></li>
- <li><a href="#email">Email</a></li>
- </ul> </div>
-
-  <div class="blog-main">
-    <p>How can we show generalization error of neural networks is small?</p>
-<h2 id="rademacher-complexity">Rademacher complexity</h2>
-<p>The natural way to proceed is to calculate the Rademacher complexity of the neural net.</p>
-<p><a href="http://www.jmlr.org/papers/volume3/bartlett02a/bartlett02a.pdf">BM02</a> give generalization bounds for 2-layer NN and say that it generalizes to more layers, but I’m not sure how. (There’s a “trivial” way of doing it with Lipschitzness which seems to grow exponentially with depth; I feel there may be a more natural way to do it with “composition”.)</p>
-<p>Given the dimension of each layer, a Lipschitz sigmoid/threshold function, and a bound on the size of the coefficients, what are the bounds we get from Rademacher complexity? How are they unsatisfactory? (Ex. in practical cases, is the sample size too small? Is it, e.g., a difference between a sample of polynomial size and linear size, or something larger?)</p>
-<h2 id="local-minima-generalization">Local minima generalization</h2>
-<p>I thought a bit about whether local optima would generalize. Do you have any intuitions regarding why? This is meaningful if it generalizes with fewer samples than one would calculate from e.g. Rademacher complexity. (My first thought is that having derivative 0 in all directions (and also nonnegative Hessian) is much less likely to happen by chance than the value being small.)</p>
-<p>Also, is the right statement “under xx conditions whp all local optima generalize”? Given that there may be many local optima it seems there’s likely to be some (most) local optima that generalize well and some that don’t; perhaps it takes much fewer samples to have “most” local minima generalize. However, this seems a much more difficult statement to work with (ex. of the type people have been trying to get intuition from statistical physics). Perhaps we also need to tie it to the SGD algorithm in some way.</p>
-<h2 id="email">Email</h2>
-<p>I thought a bit about your suggestion that local optima would generalize. Do you have any intuitions regarding why or what a statement of this would be like?</p>
-<p>Here are some preliminary thoughts/questions I had.</p>
-<ul>
-<li>Focusing on neural networks: Rademacher complexity would give a baseline for generalization. Given the dimension of each layer, a Lipschitz sigmoid/threshold function, and a bound on the size of the coefficients, what are the bounds we get from Rademacher complexity? How are they unsatisfactory? (Ex. in practical cases, is the sample size too small? Is it, e.g., a difference between a sample of polynomial size and linear size, or something larger?) <a href="http://www.jmlr.org/papers/volume3/bartlett02a/bartlett02a.pdf">BM02</a></li>
-<li>Saying that local min generalizes is significant if it generalizes with fewer samples than one would calculate from e.g. Rademacher complexity.</li>
-<li>Is the right statement “under xx conditions whp all local optima generalize”? Given that there may be many local optima it seems there’s likely to be some (most) local optima that generalize well and some that don’t; perhaps it takes much fewer samples to have “most” local minima generalize. However, this seems a much more difficult statement to work with (ex. of the type people have been trying to get intuition from statistical physics). Perhaps we need to tie it to the SGD algorithm in some way.</li>
-</ul>
 
   </div>
 

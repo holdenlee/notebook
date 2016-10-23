@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+
+  <meta name="description" content="Holden Lee's Research Notebook">
+  <meta name="author" content="Holden Lee">
+    
+  <title>Learning structured, robust, and multimodal deep models</title>
+
+  <!-- Bootstrap core CSS -->
+  <link href="../../../../bootstrap/css/bootstrap.min.css" rel="stylesheet">
+
+  <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+  <!-- <link href="../../assets/css/ie10-viewport-bug-workaround.css" rel="stylesheet"> -->
+
+  <!-- Custom styles for this template -->
+  <link href="../../../../css/blog.css" rel="stylesheet">
+  <link href="../../../../css/default.css" rel="stylesheet">
+
+  <!-- Extension : Footnotes -->
+  <link href="../../../../footnotes/css/footnotes.css" rel="stylesheet">
+
+  <!-- Extension : InlineDisqussions @ https://github.com/tsi/inlineDisqussions -->
+  
+
+  <!-- Extension : Collapsible lists @ http://code.stephenmorley.org/javascript/collapsible-lists/-->
+  <link href="../../../../collapsible_lists/css/collapsible.css" rel="stylesheet">
+  <script type="text/javascript" src="../../../../collapsible_lists/js/CollapsibleLists.js"></script>
+
+</head>
+
+<body>
+
+<!-- Navigation bar. navbar-inverse is black, navbar-default is white.-->
+<!-- To make a button active (pressed), use <li class="active"> -->
+<div id="header">
+  <nav class="navbar navbar-inverse navbar-fixed-top">
+    <div class="container">
+      <div class="navbar-header">
+        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+          <span class="sr-only">Toggle navigation</span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="../../../../">Notebook</a>
+      </div>
+      <div id="navbar" class="collapse navbar-collapse">
+        <ul class="nav navbar-nav">
+          <li><a href="../../../../">Home</a></li>
+          <li><a href="../../../../sitemap.html">Sitemap</a></li>
+<!-- TODO: Distinguish between PAPERS, RESEARCH QUESTIONS, BOOKS -->
+<!-- TODO: make this part a for loop over main pages -->
+        </ul>
+      </div><!--/.nav-collapse -->
+    </div>
+  </nav>
+</div>
+<!-- Content -->
+<!--div id="content">
+  <h1>Mental Wilderness</h1>-->
+
+
+
+<div class="container">
+  <div id="content">
+    <div class="page header">
+      <h1>Learning structured, robust, and multimodal deep models</h1>
+    </div>
+    <div class="info">
+      
+       
+        <p>Posted: 2016-10-21 
+          , Modified: 2016-10-21 
+	</p>
+      
+       <p>Tags: <a href="../../../../tags/neural%20networks.html">neural networks</a>, <a href="../../../../tags/deep%20learning.html">deep learning</a>, <a href="../../../../tags/multimodal.html">multimodal</a></p> 
+    </div>
+    
+  </div>
+  <!--/div-->
+
+  <div class="toc"> <ul>
+ <li><a href="#abstract">Abstract</a></li>
+ <li><a href="#learning-deep-generative-models">Learning deep generative models</a></li>
+ <li><a href="#multi-modal-learning">Multi-modal learning</a></li>
+ <li><a href="#open-problems">Open problems</a></li>
+ <li><a href="#questions">Questions</a></li>
+ </ul> </div>
+
+  <div class="blog-main">
+    <h2 id="abstract">Abstract</h2>
+<p>Building intelligent systems that are capable of extracting meaningful representations from high-dimensional data lies at the core of solving many Artificial Intelligence tasks, including visual object recognition, information retrieval, speech perception, and language understanding. In this talk I will first introduce a broad class of deep learning models and show that they can learn useful hierarchical representations from large volumes of high-dimensional data with applications in information retrieval, object recognition, and speech perception. I will next introduce deep models that are capable of extracting a unified representation that fuses together multiple data modalities as well as present the Reverse Annealed Importance Sampling Estimator (RAISE) for evaluating these deep generative models. Finally, I will discuss models that can generate natural language descriptions (captions) of images, as well as generate images from captions using attention mechanism. I will show that on several tasks, including modelling images and text, these models significantly improve upon many of the existing techniques.</p>
+<ul>
+<li>Develop statistical models to mine for structure: Deep learning models support inferences and discover structure at multiple levels. <!-- drug rec-->
+<ul>
+<li>Ex. understanding images (Nearest neighbor sentence: people taking pictures of a crazy person)</li>
+</ul></li>
+</ul>
+<h2 id="learning-deep-generative-models">Learning deep generative models</h2>
+<ul>
+<li>RBM: visible <span class="math inline">\(v\in B^D\)</span>, hidden <span class="math inline">\(h\in B^F\)</span>, bipartite connections. <span class="math inline">\(\Pj(v,h) \propto \exp(v^TWh + a^Th + b^Tv)\)</span>.
+<ul>
+<li>Ex. alphabets</li>
+<li>Derivative of LL. Partition function difficult to compute!</li>
+<li>Can change to Gaussians (real-valued variables), etc.</li>
+<li>Word counts (undirected version of topic models) (bag of words)</li>
+<li>Easy to infer states of hidden variables <span class="math inline">\(\Pj(h|v)\)</span>.</li>
+<li>“Product of experts”: after marginalizing over hidden variables (Government, corruption, and oil give high probability of Putin). Better for info retrieval than traditional topic models.</li>
+</ul></li>
+<li>DBM
+<ul>
+<li>Compose representations.</li>
+<li>MRF with hidden variables and specific structure</li>
+<li>Hidden variables dependent even conditioned on input.</li>
+<li>Both <span class="math inline">\(\E\)</span> now intractable</li>
+<li>Use variational inference for <span class="math inline">\(\E_{P_{data}}[vh^{1T}]\)</span> and stochastic approximation (MCMC) for <span class="math inline">\(\E_{P_\te}[vh^{1T}]\)</span>.</li>
+<li>Handwritten data: real data more diverse, crisp.</li>
+<li>Pattern completion (3-D object recognition) <!-- true bayesian hedges bets--></li>
+<li>Model A vs. B: Take training example at random and show, vs. RBM. Compute <span class="math inline">\(P\)</span> on validation set. Need estimate of <span class="math inline">\(Z\)</span>. RBM better than mixture of Bernoullis by 50 nats.</li>
+<li>Simple importance sampling. Given easy-to-sample-from and intractable target distribution, reweight and use MC approximation. Can’t just draw from uniform distribution!</li>
+<li>Annealed importance sampling, <span class="math inline">\(p_0,\ldots, p_K\)</span>. Geometric average <span class="math inline">\(p_\be(x) = f_\be/Z_\be = f_0^{1-\be}/f_{target}(x)^\be/Z_\be\)</span>. If initial is uniform, <span class="math inline">\(p_\be = f_t^\be/Z_\be\)</span>, <span class="math inline">\(\be\)</span> inverse temperature. (Annealing by averaging moments)
+<ul>
+<li>AIS gives unbiased estimator of <span class="math inline">\(Z_t\)</span>.</li>
+<li>We are interested in estimating <span class="math inline">\(\ln Z_t\)</span>. Jensen: <span class="math inline">\(\E \ln Z_t\le \ln Z_t\)</span>. Underestimate! We get a stochastic lower bound.</li>
+<li>Log-probability on test set, overestimate <span class="math inline">\(\ln p = \ln f - \ln Z_t\)</span>. <!--If sloppy, model looks nice!--></li>
+</ul></li>
+<li>Gibbs sampling. Pretend it’s equilibrium after 1000 steps.
+<ul>
+<li>Unrolled RBM as deep generative model. As approximation to RBM.</li>
+<li><span class="math inline">\(p_{fwd}(x_{0:K}) = p_0(x_0)\prodo kK T_k(x_k|x_{k-1})\)</span>.</li>
+<li>Reverse AIS estimator (RAISE). Start at data and melt distribution. Tends to underestimate log-probs.</li>
+</ul></li>
+<li>Learning hierarchical representations.</li>
+</ul></li>
+<li>Model evaluation: Good way of evaluating!</li>
+</ul>
+<p>Learn feature representations! <!--textons, audio features--></p>
+<h2 id="multi-modal-learning">Multi-modal learning</h2>
+<ul>
+<li>Image, text, audio. Joint representations?</li>
+<li>Product recommendations</li>
+<li><p>Robotic</p></li>
+<li>Challenges
+<ul>
+<li>Images are real-valued, text is sparse.</li>
+<li>Noisy and missing data</li>
+</ul></li>
+<li>Multimodal DBM, go up and then down the other way. Define joint distribution over images and text.</li>
+<li>Given text, sample from images
+<ul>
+<li>MIR-Flickr dataset</li>
+</ul></li>
+<li>Solve supervised learning tasks. Can do better if use unlabeled data. Learn better features and representations.</li>
+<li>Can pre-train image pathway and text pathways. <!-- Q: how much can you decouple? --></li>
+<li>Complete descriptions of images.
+<ul>
+<li>Encoder: CNN to semantic feature space.</li>
+<li>Decoder: neural language model.</li>
+<li>Learn joint embedding space of images and text. Natural definition of scoring function.</li>
+<li>Ex. Fluffy.</li>
+<li>Multimodal linguistic regularities: Addition and subtraction. (Cat - bowl + box)
+<ul>
+<li>Bird and reflection: Two birds are trying to be seen in the water.</li>
+<li>Giraffe is standing next to a fence in a field.</li>
+<li>Handlebars are trying to ride a bike rack.</li>
+</ul></li>
+<li>Caption generation with visual attention.</li>
+<li>Generate images from captions. (school bus flying in blue skies)</li>
+<li>Helmholtz machines/variational autoencoders. Directed counterparts. Generative process goes down. Approximate inference going up. Hinton95 (Science). Now it works, Kingma2014 (NIPS)
+<ul>
+<li>A toilet seat sits open in the bathroom, grass field</li>
+<li>Ask google. <!--worked on toilet project--></li>
+</ul></li>
+</ul></li>
+</ul>
+<h2 id="open-problems">Open problems</h2>
+<ul>
+<li>Unsupevised learning/transfer learning/one-shot learning</li>
+<li>Reasoning, attention, memory</li>
+<li>Natural language understanding
+<ul>
+<li>Sequence-to-sequence learning</li>
+<li>Skip-thought model
+<ul>
+<li>Generate previous and forward sentence</li>
+<li>Objective: sum of log-probabilities for previous/next sentence conditioned on current.</li>
+<li>How similar are 2 sentence are on the scale 1 to 5. (A person is performing a trick on a motorcycle? A person is tricking a man on a motorcycle.)</li>
+<li>We use no semantic features. <!-- AdaSent --></li>
+</ul></li>
+</ul></li>
+<li>Deep reinforcement learning</li>
+</ul>
+<p>Neural storytelling. Take corpus of books (romantic), generate captions about the image.</p>
+<p>Kiros2015 NIPS</p>
+<p>One-shot learning: humans vs. machines. How can we learn novel concept from few examples (Lake, S, Tenenbaum 2015, Science)</p>
+<h2 id="questions">Questions</h2>
+<p>CNN better for supervised. We’re trying to build convolutional DBM.</p>
+<p>vs. variational autoencoder. Reparametrization trick, backprop through whole model. Optimization better for VA. Both useful.</p>
+<p>Learning representation, not with language?</p>
+<!-- evaluation
+neural image on google $10^5$
+-->
+<p>Microsoft dataset: 80000 images, 5 captions each. Not big enough, but captions clean!</p>
+<p>Topics vs. coherent model of sentences. What do we need? New architectures, training sets? <!--need rep to corresp with reality. have memory, check for consistency with memory --></p>
+<!--AlphaGo is more technological. Fast, evaluating -->
+<p>Actor-Mimic model.</p>
+<p>Transfer learning: learn new games faster by leveraging knowledge about previous games. Ex. star gunner</p>
+<p>Continuous state.</p>
+
+  </div>
+
+    
+
+    <!-- Extension : Sharing buttons @ www.sharethis.com -->
+    <span class="st_facebook_large" displayText="Facebook"></span>
+    <span class="st_twitter_large" displayText="Tweet"></span>
+    <span class="st_googleplus_large" displayText="Google +"></span>
+    <span class="st_reddit_large" displayText="Reddit"></span>
+    <span class="st__large" displayText></span>
+
+    <div id="disqus_thread"></div>
+    
+
+
+  
+    <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+  </div>
+  
+</div>
+
+
+<!-- Footer -->
+<div id="footer">
+  <div class="container">
+    Built with
+    <a href="http://jaspervdj.be/hakyll">Hakyll</a> 
+    using 
+    <a href="http://www.getbootstrap.com">Bootstrap</a>, 
+    <a href="http://www.disqus.com">Disqus</a>,
+    <a href="http://ignorethecode.net/blog/2010/04/20/footnotes/">Footnotes.js</a>,
+    <a href="http://highlightjs.org/">Highlight.js</a>, 
+    <a href="http://www.mathjax.org">MathJax</a>, 
+    and <a href="http://www.sharethis.com">ShareThis</a>.
+  </div>
+</div>
+</body>
+
+</html>
+
+<!-- SCRIPTS -->
+<!-- jQuery-->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+<script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
+
+<script src="../../../../bootstrap/js/bootstrap.min.js"></script>
+
+<!-- Extension : Highlight.js @ https://highlightjs.org/ -->
+<!-- Syntax highlighting tomorrow-night-bright, agate-->
+<link rel="stylesheet" href="../../../../highlight/css/tomorrow-night-bright.css">
+<script src="../../../../highlight/js/highlight.pack.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+
+<!-- Extension : MathJax @ https://docs.mathjax.org/en/v2.5-latest/tex.html -->
+<!-- MathJax/config/local/local.js contains macros. Need to provide entire URL-->
+<script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML,http://holdenlee.github.io/notebook/MathJax/config/local/local"></script>
+
+<!-- Extension : Footnotes @ http://ignorethecode.net/blog/2010/04/20/footnotes/ -->
+<script src="../../../../footnotes/js/footnotes.js"></script>
+
+<!-- Extension : Disqus @ http://disqus.com -->
+<!-- Extension : InlineDisqussions @ https://github.com/tsi/inlineDisqussions -->
+
+<script src="../../../../disqus/js/disqus.js"></script>
+
+
+
+<!-- Extension : Google Analytics -->
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-73261814-1', 'auto');
+  ga('send', 'pageview');
+
+</script>
+
