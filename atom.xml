@@ -8,8 +8,100 @@
         <name>Holden Lee</name>
         <email>oldheneel@gmail.com</email>
     </author>
-    <updated>2016-10-21T00:00:00Z</updated>
+    <updated>2016-10-24T00:00:00Z</updated>
     <entry>
+    <title>Weekly summary 2016-10-29</title>
+    <link href="http://holdenlee.github.io/notebook/posts/summaries/2016-10-29.html" />
+    <id>http://holdenlee.github.io/notebook/posts/summaries/2016-10-29.html</id>
+    <published>2016-10-24T00:00:00Z</published>
+    <updated>2016-10-24T00:00:00Z</updated>
+    <summary type="html"><![CDATA[
+<div class="container">
+  <div id="content">
+    <div class="page header">
+      <h1>Weekly summary 2016-10-29</h1>
+    </div>
+    <div class="info">
+      
+       
+        <p>Posted: 2016-10-24 
+          , Modified: 2016-10-24 
+	</p>
+      
+       <p>Tags: <a href="/tags/none.html">none</a></p> 
+    </div>
+    
+  </div>
+  <!--/div-->
+
+  <div class="toc"> <ul>
+ <li><a href="#threads">Threads</a><ul>
+ <li><a href="#priority">Priority</a></li>
+ <li><a href="#other">Other</a></li>
+ </ul></li>
+ <li><a href="#other-papers">Other papers</a></li>
+ </ul> </div>
+
+  <div class="blog-main">
+    <p><a href="2016-10-22.html">Last week</a>. (See wonderings there.)</p>
+<h2 id="threads">Threads</h2>
+<h3 id="priority">Priority</h3>
+<ul>
+<li>Come up with a class of MDPs on exponential space that is interesting and tractable. <a href="/posts/tcs/machine_learning/reinforcement_learning/exponential.html">Thoughts</a>
+<ul>
+<li>Understand provable guarantees on MDP’s first</li>
+</ul></li>
+<li>Alexa <a href="https://docs.google.com/document/d/1OtvefjviKSSWH2gzOtYo8T_DVEwPEsI2n0kdrC8WlZI/edit">references</a></li>
+</ul>
+<h3 id="other">Other</h3>
+<ul>
+<li>PMI - get some results!
+<ul>
+<li>Mon. - train CIFAR.</li>
+<li>Check MNIST model.</li>
+</ul></li>
+<li>SoS - chapters 2 and 3</li>
+<li>DL experiments <a href="/posts/tcs/machine_learning/matrices/DL_generalization.html">DL generalization</a></li>
+<li>Papers</li>
+<li>On hold
+<ul>
+<li>(*) NN learns DL. Can write up weak result, worth doing?</li>
+</ul></li>
+<li>Papers
+<ul>
+<li>[HM16] on unsupervised learning (finish)</li>
+<li>[HMR16] on dynamical system learning</li>
+</ul></li>
+</ul>
+<p>Analyze Arora and Ge’s NMF algorithm in the presence of noise. Exactly how much noise can it tolerate?</p>
+<h2 id="other-papers">Other papers</h2>
+<ul>
+<li>TODO Read this paper: [CFP16] Assessing significance in a Markov chain without mixing</li>
+</ul>
+
+  </div>
+
+    
+
+    <!-- Extension : Sharing buttons @ www.sharethis.com -->
+    <span class='st_facebook_large' displayText='Facebook'></span>
+    <span class='st_twitter_large' displayText='Tweet'></span>
+    <span class='st_googleplus_large' displayText='Google +'></span>
+    <span class='st_reddit_large' displayText='Reddit'></span>
+    <span class='st__large' displayText=''></span>
+
+    <div id="disqus_thread"></div>
+    
+
+
+  
+    <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+  </div>
+  
+</div>
+]]></summary>
+</entry>
+<entry>
     <title>Learning structured, robust, and multimodal deep models</title>
     <link href="http://holdenlee.github.io/notebook/posts/tcs/machine_learning/neural_nets/salakhutdinov.html" />
     <id>http://holdenlee.github.io/notebook/posts/tcs/machine_learning/neural_nets/salakhutdinov.html</id>
@@ -259,6 +351,7 @@ neural image on google $10^5$
 <ul>
 <li>When state has larger dimension, need overcomplete tensor factorization.</li>
 </ul></li>
+<li>Start with: given an HMM with both transitions and observations being RBMs (say of degree at most 2), observations don’t “lose info” (analogue of full column rank), infer RBM. (Z is over words that exist). Breaks symmetries - the various dimensions are important now? <!-- sparse vectors are meaningful --></li>
 </ul></li>
 <li>Dictionary learning experiment
 <ul>
@@ -271,6 +364,7 @@ neural image on google $10^5$
 <li>Find some measure of complexity of a class of policies. Branching is important. (Getting limited info from other policies…) Get a bound independent of number of states, involving this complexity.
 <ul>
 <li>Example to keep in mind: <span class="math inline">\(2^n\)</span> strategies all branching off into different rewards at end of their paths.</li>
+<li>Alternatively, complexity of class of models of environment.</li>
 </ul></li>
 <li>What is the VC dimension bound for contextual (expert) bandits? Also look at the contextual MDP paper, cf. EXP4.</li>
 <li>[ALA16] open question</li>
@@ -280,6 +374,7 @@ neural image on google $10^5$
 <li>SoS, minimax, etc.</li>
 <li>EXP3:Scrible:EXP4::UCB1:?:? (LinUCB? RUCB?)</li>
 </ul></li>
+<li>Increasing <span class="math inline">\(\ga\)</span> towards 1 (simulated annealing, temperature schedule…)</li>
 </ul></li>
 </ul>
 
@@ -991,181 +1086,6 @@ A(h) = \set{x\in [n]}{o(x|h)&gt;0\wedge o(x|h')=0\forall h'\ne h}.
 <h2 id="misc">Misc</h2>
 <p>The unsupervised log-linear model described in Berg-Kirkpatrick et al. (2010).</p>
 <p>Agnostic HMM? Can spectral methods work?</p>
-
-  </div>
-
-    
-
-    <!-- Extension : Sharing buttons @ www.sharethis.com -->
-    <span class='st_facebook_large' displayText='Facebook'></span>
-    <span class='st_twitter_large' displayText='Tweet'></span>
-    <span class='st_googleplus_large' displayText='Google +'></span>
-    <span class='st_reddit_large' displayText='Reddit'></span>
-    <span class='st__large' displayText=''></span>
-
-    <div id="disqus_thread"></div>
-    
-
-
-  
-    <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
-  </div>
-  
-</div>
-]]></summary>
-</entry>
-<entry>
-    <title>Bandit convex optimization</title>
-    <link href="http://holdenlee.github.io/notebook/posts/tcs/machine_learning/optimization/bco.html" />
-    <id>http://holdenlee.github.io/notebook/posts/tcs/machine_learning/optimization/bco.html</id>
-    <published>2016-10-11T00:00:00Z</published>
-    <updated>2016-10-11T00:00:00Z</updated>
-    <summary type="html"><![CDATA[
-<div class="container">
-  <div id="content">
-    <div class="page header">
-      <h1>Bandit convex optimization</h1>
-    </div>
-    <div class="info">
-      
-       
-        <p>Posted: 2016-10-11 
-          , Modified: 2016-10-11 
-	</p>
-      
-       <p>Tags: <a href="/tags/convex%20optimization.html">convex optimization</a></p> 
-    </div>
-    
-  </div>
-  <!--/div-->
-
-  <div class="toc"> <ul>
- <li><a href="#multi-armed-bandit">Multi-armed bandit</a><ul>
- <li><a href="#de-greedy-algorithm"><span class="math inline">$\de$</span>-greedy algorithm</a></li>
- <li><a href="#exp3">EXP3</a></li>
- <li><a href="#ucb1">UCB1</a></li>
- </ul></li>
- <li><a href="#blo">BLO</a><ul>
- <li><a href="#scrible">SCRIBLE</a></li>
- </ul></li>
- <li><a href="#bco">BCO</a><ul>
- <li><a href="#fkm">FKM</a></li>
- </ul></li>
- <li><a href="#contextual-bandits">Contextual bandits</a></li>
- </ul> </div>
-
-  <div class="blog-main">
-    <p>Settings of increasing complexity:</p>
-<ul>
-<li>Multi-armed bandit</li>
-<li>Bandit linear optimization</li>
-<li>Bandit convex optimization</li>
-</ul>
-<h2 id="multi-armed-bandit">Multi-armed bandit</h2>
-<ul>
-<li><span class="math inline">\(\de\)</span>-greedy algorithm: Balancing exploitation which gives <span class="math inline">\(O(\sqrt T)\)</span> regret and exploration which gives <span class="math inline">\(O(T^{\fc 34} \sqrt n)\)</span> regret.</li>
-</ul>
-<h3 id="de-greedy-algorithm"><span class="math inline">\(\de\)</span>-greedy algorithm</h3>
-<ul>
-<li>With probability <span class="math inline">\(\de\)</span>, explore.
-<ul>
-<li>Play <span class="math inline">\(i_t\sim U_n\)</span>.</li>
-<li><span class="math inline">\(\wh f_t(x) = \wh \ell_t^T x\)</span>.</li>
-<li><span class="math inline">\(\wh \ell_t = \fc{n}{\de}\ell_t(i_t)e_{i_t}\)</span>.</li>
-</ul></li>
-<li>With probability <span class="math inline">\(1-\de\)</span>, exploit.
-<ul>
-<li>Play <span class="math inline">\(i_t\sim x_t\)</span>.</li>
-<li><span class="math inline">\(\wh f_t(x) = 0\)</span>. (We can’t use information here because it wasn’t uniformly generated.)</li>
-</ul></li>
-<li>Update using a bandit algorithm <span class="math inline">\(x_{t+1} = A(\wh f_1,\ldots, \wh f_t)\)</span>.</li>
-</ul>
-<p>The <span class="math inline">\(\wh \ell_t\)</span> were chosen so <span class="math display">\[ \E \wh \ell_t(i) = \ell_t(i).\]</span> We have <span class="math display">\[\E R_T \le 3 GD\sqrt T + \de T,\]</span> where <span class="math inline">\(G\le \fc n\de\)</span>.</p>
-<h3 id="exp3">EXP3</h3>
-<p>Exponential weights for exploration and exploitation</p>
-<p>Adversarial setting.</p>
-<p><a href="https://jeremykun.com/2013/11/08/adversarial-bandits-and-the-exp3-algorithm/">Blog post</a>.</p>
-<p>We can explore and exploit at the same time if we (a) keep track of a probability distribution and update it, and (b) if we reweight the loss functions to make the expected value correct.</p>
-<p>Idea: Use the MWU (hedge) algorithm.</p>
-Updates
-\begin{align}
-y_{t+1}(i) &amp; = x_t(i) e^{\ep \wh\ell_t(i)}\\
-x_{t+1}&amp;= \pa{1-\rc{\sqrt T}} \fc{y_{t+1}}{\ve{y_{t+1}}_1} + \rc{n \sqrt T}\one.
-\end{align}
-<p><strong>Question</strong>: wht’s the purpose of the <span class="math inline">\(x_t\)</span> update? To make sure every arm is played at least with some probability? (E.g. will be played infinitely many times.)</p>
-<p>Get <span class="math inline">\(R_T\le O(\sqrt{Tn \ln n})\)</span>.</p>
-<h3 id="ucb1">UCB1</h3>
-<p>Stochastic setting.</p>
-<p>“Optimism in the face of uncertainty.”</p>
-<p><a href="https://jeremykun.com/2013/10/28/optimism-in-the-face-of-uncertainty-the-ucb1-algorithm/">Blog post</a>.</p>
-<p>Algorithm: first play each once; then at each step play the action with highest upper confidence bound <span class="math display">\[j = \amax_j \ol x_j + \ub{\sfc{2\ln T}{n_j}}{a(n_j, T)}.
-\]</span></p>
-<p>UCB on MAB with <span class="math inline">\(K\)</span> actions where <span class="math inline">\(X_{i,t}\in [0,1], X_{i,t}\sim D_i\)</span> are independent, has expected cumulative regret, <span class="math inline">\(\ol x_{i,s}\)</span> the empirical mean after playing <span class="math inline">\(i\)</span> <span class="math inline">\(s\)</span> times, <span class="math display">\[ \E R(T) = O(\sqrt{KT \ln T}). \]</span></p>
-<p><em>Proof.</em></p>
-<ol type="1">
-<li>Let <span class="math inline">\(\De_i = \mu^*-\mu_i\)</span>, <span class="math inline">\(P_i(T)\)</span> be the number of times <span class="math inline">\(i\)</span> is picked by time <span class="math inline">\(T\)</span>, <span class="math inline">\(I_t\)</span> be the <span class="math inline">\(t\)</span>th choice, <span class="math inline">\(a(s,t)\)</span> be the width of the CI at time <span class="math inline">\(t\)</span> after <span class="math inline">\(s\)</span> observations. Then
-\begin{align}
-\E G_A(T) &amp;= \sum_i \mu_i \E P_i(T)\\
-\E P_i(T) &amp;= 1+\sum_{t=K}^T (I_t=i)\\
-&amp;\le m + \sum_{t=K}^T (I_t=i\wedge P_i(t-1)\ge m)\\
-&amp;\le m + \sum_{t=K}^T (U_i(t-1) \ge U^*(t-1), P_i(t-1)\ge m)\\
-&amp;\le m + \sumo t{\iy} \sum_{s=m}^{t-1}\sum_{s'=1}^{t-1} (\ol x_{i,s} + a(s,t-1) \ge \ol x_{s'}^* + a(s',t-1))\\
-&amp;\le \ff{8\ln T}{\De_i^2} + \sumo t{\iy} \sum_{s=m}^t \sum_{s'=1}^t 2t^{-4} = \fc{8\ln T}{\De_i^2} + 1 + \fc{\pi^2}{3}.
-\end{align}
-We chose <span class="math inline">\(m\)</span> so that <span class="math inline">\(\mu^* \ge \mu_i +2a(m,t)\)</span>. This implies either
-\begin{align}
-\ol x_{s'}^* &amp;\le \mu^* - a(s',t)\\
-\ol x_{i,s} &amp; \ge \mu_i + a(s,t)
-\end{align}
-which happen with probabilities <span class="math inline">\(t^{-4}\)</span>.</li>
-<li>This gives regret <span class="math display">\[\E R(T) \le \min(8 \sum_{i:\mu_i &lt;\mu^*} \fc{\ln T}{\De_i} + \pa{1+\fc{\pi^2}3}\pa{\sumo jK\De_j}, \max \De_i T).\]</span></li>
-<li>Optimizing gives <span class="math inline">\(\De_i = O(\sqrt{\ln T})\)</span>.</li>
-</ol>
-<p>The idea is to upper bound by events that cover and we can better estimate. This involves summing over all <span class="math inline">\((s,s')\)</span>. The <span class="math inline">\(m\)</span> is introduced so that at that time <span class="math inline">\(\mu^*\)</span> and <span class="math inline">\(\mu_i\)</span> will be far enough apart.</p>
-<h2 id="blo">BLO</h2>
-<h3 id="scrible">SCRIBLE</h3>
-<p>Attains <span class="math inline">\(O(\sqrt T\ln T)\)</span> regret.</p>
-<h2 id="bco">BCO</h2>
-<ul>
-<li>[BE16] [paper](https://arxiv.org/pdf/1507.06580v1.pdf) <a href="http://www.jmlr.org/proceedings/papers/v49/bubeck16.pdf">JMLR version</a> - inefficient, <span class="math inline">\(\wt O(\poly(n)\sqrt T)\)</span>-regret algorithm.</li>
-<li>[BEL16] [paper](https://arxiv.org/pdf/1607.03084.pdf) - <span class="math inline">\(\wt O(\poly(n)\sqrt T)\)</span>-regret and <span class="math inline">\(\poly(T)\)</span>-time algorithm.</li>
-</ul>
-<h3 id="fkm">FKM</h3>
-<p>Generic reduction from BCO to (first-order) OCO by using gradient estimators. FKM is an instantiation of the algorithm with regret <span class="math inline">\(O(T^{\fc 34})\)</span>.</p>
-<h2 id="contextual-bandits">Contextual bandits</h2>
-<ul>
-<li>EXP4 (adversarial) - Exponential weights for exploration and exploitation with expert advice. Do MWU with the experts. (Where does it use the context?)</li>
-<li>[LCLS10] A Contextual-Bandit Approach to Personalized News Article Recommendation
-<ul>
-<li>Model: stochastic setting, at time <span class="math inline">\(t\)</span>, expected payoff of <span class="math inline">\(a\)</span> is linear in feature <span class="math inline">\(x_{t,a}\)</span> (given for all <span class="math inline">\(a\)</span>, in the simplest case they are equal over all <span class="math inline">\(a\)</span>), (<span class="math inline">\(\te_a^*\)</span> is the unknown coefficient vector) <span class="math display">\[ \E[r_{t,a}|x_{t,a}] = x_{t,a}^T\te_a^*.\]</span></li>
-<li>Assume iid context and reward vectors. <!--(Did LCLS10 assume iid context?)--></li>
-<li>Algorithm: LinUCB attains regret <span class="math inline">\(\wt O(\sqrt{KdT})\)</span>. Combine UCB with linear regression. (Think of linear functions as the “policy space”.)</li>
-<li>Requires time at least linear in the number of arms.</li>
-</ul></li>
-<li>[DHKK] Efficient Optimal Learning for Contextual Bandits
-<ul>
-<li>Compare not to the best fixed policy (choosing the same arm), but best policy in some space <span class="math inline">\(\Pi\)</span>. (<strong>Question</strong>: what about comparing to best policy for other bandit problems? Ex. what’s the algorithm for vanilla MAB?)</li>
-<li>Solves the contextual bandit problem for large policy spaces (in tie <span class="math inline">\(\poly\log(N)\)</span>, <span class="math inline">\(K\)</span> the number of arms, and achieves regret <span class="math inline">\(O(\sqrt{TK\ln N})\)</span>). (Complexity analysis assumes existence of argmax oracle (AMO) which gives <span class="math inline">\(\amax_{\pi\in \Pi} \sumo{t'}t r_{t'}(\pi(x_{t'}))\)</span>.</li>
-<li>Idea:
-<ul>
-<li>Policy elimination (intractable)
-<ul>
-<li>Choose a distribution over the remaining experts that minimizes some kind of maximum variance.</li>
-<li>Eliminate bad experts: all policies that are suboptimal by more than <span class="math inline">\(2b_t\)</span>. (NTS: whp the best policy remains, <span class="math inline">\(\pi_{\max}\in \Pi_t\)</span>, and remaing policies are good, <span class="math inline">\(\eta_D(\pi_{\max}) - \eta_D(\pi) \le 4b_t\)</span>.</li>
-<li>Unbiased estimator of policy values <span class="math inline">\(\eta_t(\pi) = \rc{t} \sum \fc{r \one(\pi(x) = a)}{p}\)</span>.</li>
-</ul></li>
-<li>Randomized UCB (tractable given AMO; frequency of choosing, confidence bound determined by estimated regret)
-<ul>
-<li>Approximately minimize a certain variance. (Do this optimization problem with the argmax oracle. How?)</li>
-<li>Smooth out distribution and play according to it.</li>
-<li>No elimination here.</li>
-</ul></li>
-</ul></li>
-<li><strong>Question</strong>: how about nonfinite sets - ex. VC dimension, Rademacher complexity?</li>
-</ul></li>
-</ul>
-<p>Concrete Q: In the MAB setting, what if you compare to the best policy in a given set? I’m confused: can the policies have memory (depending on past results)? In this case, you can’t start following a policy midway. Let’s say they don’t. Now some policies may recommend the same action and some actions may not be recommended so scale accordingly.</p>
-<p>A: Yes. See [ACFS02]; they get regret <span class="math inline">\(O((\ln N)^{\rc 2}\sqrt{T})\)</span> where <span class="math inline">\(N\)</span> is the number of strategies.</p>
 
   </div>
 
