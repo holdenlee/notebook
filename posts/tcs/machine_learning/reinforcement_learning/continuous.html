@@ -88,7 +88,10 @@
   <div class="toc"> <ul>
  <li><a href="#finding-optimal-policy-given-dynamics">Finding optimal policy (given dynamics)</a><ul>
  <li><a href="#simplest-problem">Simplest problem</a></li>
- <li><a href="#different-linear-transformations">Different linear transformations</a></li>
+ <li><a href="#different-linear-transformations">Different linear transformations</a><ul>
+ <li><a href="#finite-actions">Finite actions</a></li>
+ <li><a href="#continuous-actions">Continuous actions</a></li>
+ </ul></li>
  </ul></li>
  </ul> </div>
 
@@ -108,9 +111,10 @@
 <li>action set is <span class="math inline">\(A\)</span> (finite or convex),</li>
 <li>update is <span class="math inline">\(s_{t+1} = Us_t + a_t\)</span>, <span class="math inline">\(a_t\in A\)</span>.</li>
 </ul>
-<p>Then we can solve this in closed form. The best action is the same at each time step, <span class="math display">\[\max_{a\in A} \an{r, (I-\ga U)^{T\,-1}r, a}.\]</span></p>
+<p>Then we can solve this in closed form (geometric series). The best action is the same at each time step, <span class="math display">\[\max_{a\in A} \an{(I-\ga U)^{T\,-1}r, a}.\]</span></p>
 <p>For infinite-horizon, we look at instead the average of rewards over next <span class="math inline">\(T\)</span> time steps as <span class="math inline">\(T\to \iy\)</span>; interesting case is when <span class="math inline">\(U\)</span> has eigenvalues equal to 1. Straightforward.</p>
 <h3 id="different-linear-transformations">Different linear transformations</h3>
+<h4 id="finite-actions">Finite actions</h4>
 <p>Now consider a more general case. (We don’t put in probability yet.)</p>
 <ul>
 <li>The reward is still <span class="math inline">\(\an{r,s}\)</span></li>
@@ -118,14 +122,24 @@
 <li>Finite set <span class="math inline">\(A\)</span>. (Think about <span class="math inline">\(|A|=n\)</span>.)</li>
 <li>Given action <span class="math inline">\(a\)</span>, the update is <span class="math inline">\(s_{t+1} = U_a s_t + v_a\)</span>, <span class="math inline">\(a\in A\)</span>.</li>
 </ul>
-<p>The typical way to solve this is to use policy iteration. However, the policy is a function in <span class="math inline">\(n\)</span> dimensions, and it’s not even clear that we can represent it succinctly! If we discretize with a mesh, this takes exponential time/space.</p>
-<p>Given fixed discount factor <span class="math inline">\(\ga\)</span>, desired approximation <span class="math inline">\(\ep\)</span>, can we find something that does at most <span class="math inline">\(\ep\)</span> worse in <span class="math inline">\(\poly\prc{\ep}\)</span> time? We can achieve <span class="math inline">\(|A|^{\log_\ga\prc{\ep}} = \prc{\ep}^{O(\ln |A|)}\)</span> time by searching over a tree.</p>
+<p>Given fixed discount factor <span class="math inline">\(\ga\)</span>, desired approximation <span class="math inline">\(\ep\)</span>, can we find something that does at most <span class="math inline">\(\ep\)</span> worse in <span class="math inline">\(\poly\prc{\ep}\)</span> time?</p>
+<ul>
+<li>Dynamic programming: We can achieve <span class="math inline">\(|A|^{\log_\ga\prc{\ep}} = \prc{\ep}^{O(\ln |A|)}\)</span> time by searching over a tree.</li>
+<li>Policy iteration: The policy is a function in <span class="math inline">\(n\)</span> dimensions, and it’s not even clear that we can represent it succinctly! If we discretize with a mesh, this takes exponential time/space.</li>
+</ul>
+<p>Questions</p>
 <ol type="1">
 <li>Can we find a nice class of functions (SVM, etc.), and find the best <span class="math inline">\(v\)</span> within that class?</li>
 <li>Is there a class that can approximate all possible <span class="math inline">\(v\)</span>’s within <span class="math inline">\(\ep\)</span> or constant factor?</li>
 <li>Can <span class="math inline">\(v\)</span>’s be complicated? (Ex. break the space into exponentially many regions.)</li>
 </ol>
 <p>Careful: finding the best approximation to a unitary transformation (take <span class="math inline">\(U_a\)</span> unitary and <span class="math inline">\(v_a=0\)</span>) with a certain set of unitaries is a well-studied problem that can involve number theory—we want to exclude this. Ex. make sure we’re not in this regime - have the discount factor, or add noise.</p>
+<h4 id="continuous-actions">Continuous actions</h4>
+<p>Can also make <span class="math inline">\(A\)</span> continuous.</p>
+<ul>
+<li><span class="math inline">\(A\sub \R^m\)</span> convex</li>
+<li>Given action <span class="math inline">\(a\)</span>, the update is <span class="math inline">\(U[s_t;a] + Va\)</span> where <span class="math inline">\(U_a\in \R^{n\times (m+n)}\)</span>, <span class="math inline">\(V\in \R^{n\times m}\)</span>.</li>
+</ul>
 
   </div>
 
