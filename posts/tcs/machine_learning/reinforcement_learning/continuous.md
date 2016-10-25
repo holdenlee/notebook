@@ -7,93 +7,44 @@ type: summary
 showTOC: True
 ---
 
-[Kalman filter](https://en.wikipedia.org/wiki/Kalman_filter)
+Other pages
 
- Come up with a class of MDPs on exponentially large/continuous space that is interesting and tractable. Think of generalizing from contextual bandits
-	* Basically we want a reasonable model of a MDP with a very large (exponential or continuous) state space and be able to do something with it. Wanted to include some dynamics like in Kalman filters but we weren't sure whether Kalman filters are tractable
-	* Todo: learn about Kalman filters
-	
-# Starting points
+* [scratch](continuous_scratch.html)
+* [papers](rl_refs.html)
 
-1.  HMM's have discrete state space. What happens with continuous state space? Suppose there are some dynamics as in Kalman filters. Infer the hidden state. References
-	* Continuous HMM paper (RKHS)
-	* Kalman filters (see examples)
-	* Grad descent learning dynamical systems.
-2.  Contextual bandits + MDP's. Don't assume there's a hidden state here, just that next state depends, say, linearly on action and noise. 
-3.  Context vector/random walk model for documents: transition probabilities $\propto \exp(-\an{c_1,c_2})$ and observation probabilities $\propto \exp(-\an{c_1,x})$.
+# Finding optimal policy (given dynamics)
 
-# Model 
+## Simplest problem
 
-## First try
+State is $s\in \R^n$.
 
-* Stochastic setting.
-* $c_t$ is context at time $t$.
-* Set of actions $A$. (For example, $A=\{e_1,\ldots, e_n\}$.)
-* Next context $c_{t+1}=$ (Here $w_t$ is noise.)
-	* $F_a c_t + w_t$. (Transformation depends on action.)
-	* $F c_t + B a + w_t$. (Action is a forcing term. This matches Kalman formulation. More reasonable?) (\*)
-* Payoff depends on context and actions in some way.
-	* Model 1: depends only on context $\te^T c_t$. (\*)
-	* Model 2: depends on context and action $\te^T[c_t;a]$.
-	* ? Some probability?
+Suppose 
 
-This setting looks like reinforcement learning + control theory. Prior work? How is RL used in continuous systems right now? Basic control theory background?
+* reward is given by $\an{r,s}$
+* discount factor for future reward is $\ga$, 
+* action set is $A$ (finite or convex),
+* update is $s_{t+1} = Us_t + a_t$, $a_t\in A$. 
 
-Need the model to be a generalization of regular MDP.
+Then we can solve this in closed form. The best action is the same at each time step,
+$$\max_{a\in A} \an{r, (I-\ga U)^{T\,-1}r, a}.$$
 
-(\*) may be interesting from control theory perspective, but doesn't generalize discrete MDP. (Seems like best to learn the dynamics, and then do optimal thing from there...)
+For infinite-horizon, we look at instead the average of rewards over next $T$ time steps as $T\to \iy$; interesting case is when $U$ has eigenvalues equal to 1. Straightforward.
 
-## Second try
+## Different linear transformations
 
-* Finite number of actions
-* $c_{t+1} = F_a c_t + w_t$. (Only probability is noise.)
-* Payout $\te_^T c_t$.
+Now consider a more general case. (We don't put in probability yet.) 
 
-Captures deterministic MDP, but not probabilistic, by letting $A=\{e_i\}$.
+* The reward is still $\an{r,s}$
+* discount factor $\ga$
+* Finite set $A$. (Think about $|A|=n$.)
+* Given action $a$, the update is $s_{t+1} = U_a s_t + v_a$, $a\in A$. 
 
-# References
+The typical way to solve this is to use policy iteration. However, the policy is a function in $n$ dimensions, and it's not even clear that we can represent it succinctly! If we discretize with a mesh, this takes exponential time/space.
 
-## Online
+Given fixed discount factor $\ga$, desired approximation $\ep$, can we find something that does at most $\ep$ worse in $\poly\prc{\ep}$ time? We can achieve $|A|^{\log_\ga\prc{\ep}} = \prc{\ep}^{O(\ln |A|)}$ time by searching over a tree.
 
-* [CASTLE Labs](http://castlelab.princeton.edu/)
-    * [Optimal learning](http://optimallearning.princeton.edu/)
-	* [Approximate dynamic programming](http://adp.princeton.edu/)
-		* [Intros](http://adp.princeton.edu/adpIntros.htm)
-	* [Unified framework](http://castlelab.princeton.edu/jungle.htm#unifiedframework)
-* [Deep RL](https://github.com/andrewliao11/Deep-Reinforcement-Learning-Survey/blob/master/Reinforcement-Learning-Papers.md)
+1. Can we find a nice class of functions (SVM, etc.), and find the best $v$ within that class?
+2. Is there a class that can approximate all possible $v$'s within $\ep$ or constant factor?
+3. Can $v$'s be complicated? (Ex. break the space into exponentially many regions.)
 
-
-
-## Books
-
-[Recommendations](https://www.quora.com/What-are-the-best-books-about-reinforcement-learning)
-
-* [Puterman14](https://books.google.com/books?id=VvBjBAAAQBAJ&printsec=frontcover&dq=continuous+markov+decision+processes&hl=en&sa=X&ved=0ahUKEwjo3OLywOnPAhVHWD4KHXzgDWUQ6AEIKTAC#v=onepage&q=continuous%20markov%20decision%20processes&f=false)
-* [Bertsekas87](https://books.google.com/books?id=-6RiQgAACAAJ&dq=Dynamic+Programming:+Deterministic+and+Stochastic+Models&hl=en&sa=X&ved=0ahUKEwjc0pfAyefPAhUGFz4KHaVIDecQ6AEIHjAA)
-
-* [Optimal learning](http://site.ebrary.com/lib/princeton/detail.action?docID=10560566)
-* [Function approximators](http://www.crcnetbase.com/isbn/9781439821091)
-
-
-## Papers
-
-* [lin function approximators](http://people.csail.mit.edu/agf/Files/13FTML-RLTutorial.pdf)
-* [optimistic principle](https://hal.archives-ouvertes.fr/hal-00747575v5/document)
-* [ADP](http://web.mit.edu/dimitrib/www/dpchapter.pdf)
-* [Approximate DP](http://site.ebrary.com/lib/princeton/reader.action?docID=10501323)
-* [Algorithms for RL](http://www.morganclaypool.com/doi/abs/10.2200/S00268ED1V01Y201005AIM009)
-
-*
-
-# Misc
-
-Do as well as best Bayes net? Actions in some class. Finite set of actions, vs. exponential/continuous set of actions. In latter case, will depend on optimizability of that set...
-
-Ex. class is a SVM.
-
-"Do as well as best estimator of $q$ function in a certain class (assume convexity or something?)" (cf. contextual bandits first)
-
-<!--Definitely need something stronger than: there exist something that works! if can encode crypto 
-
-Upper confidence bounds
--->
+Careful: finding the best approximation to a unitary transformation (take $U_a$ unitary and $v_a=0$) with a certain set of unitaries is a well-studied problem that can involve number theory---we want to exclude this. Ex. make sure we're not in this regime - have the discount factor, or add noise.

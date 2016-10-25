@@ -10,7 +10,7 @@
   <meta name="description" content="Holden Lee's Research Notebook">
   <meta name="author" content="Holden Lee">
     
-  <title>MDP's with continuous state space</title>
+  <title>Reinforcement learning convergence</title>
 
   <!-- Bootstrap core CSS -->
   <link href="../../../../bootstrap/css/bootstrap.min.css" rel="stylesheet">
@@ -70,62 +70,91 @@
 <div class="container">
   <div id="content">
     <div class="page header">
-      <h1>MDP's with continuous state space</h1>
+      <h1>Reinforcement learning convergence</h1>
     </div>
     <div class="info">
       
        
-        <p>Posted: 2016-10-14 
-          , Modified: 2016-10-14 
+        <p>Posted: 2016-10-24 
+          , Modified: 2016-10-24 
 	</p>
       
-       <p>Tags: <a href="../../../../tags/none.html">none</a></p> 
+       <p>Tags: <a href="../../../../tags/reinforcement%20learning.html">reinforcement learning</a></p> 
     </div>
     
   </div>
   <!--/div-->
 
   <div class="toc"> <ul>
- <li><a href="#finding-optimal-policy-given-dynamics">Finding optimal policy (given dynamics)</a><ul>
- <li><a href="#simplest-problem">Simplest problem</a></li>
- <li><a href="#different-linear-transformations">Different linear transformations</a></li>
+ <li><a href="#policy-estimation">Policy estimation</a></li>
+ <li><a href="#policyvalue-iteration">Policy/value iteration</a><ul>
+ <li><a href="#changing-ga">Changing <span class="math inline">$\ga$</span></a></li>
+ <li><a href="#alternating-policy-improvementevaluation">Alternating policy improvement/evaluation</a></li>
  </ul></li>
  </ul> </div>
 
   <div class="blog-main">
-    <p>Other pages</p>
+    <p>Here we’re interested in convergence guarantees for algorithms/methods used in practice. (Rather than, e.g., coming up with provable polytime theoretical algorithms that work but are too slow to be used in practice.)</p>
+<p>Recall: Mixing time <span class="math inline">\(\tau_\ep = \min\set{t}{\max_{P_0} \ve{P_t - P_{\text{eq}}}\le \ep} \le \fc{\ln \pf{N}{\ep}}{\de}\)</span>, <span class="math inline">\(\de=1-\max_{k\ge 2}|\la_k|\)</span>.</p>
+<h2 id="policy-estimation">Policy estimation</h2>
+Policy satisfies
+\begin{align}
+v_\pi  &amp;= d(P_\pi^T R_\pi) + \ga P_\pi v\\
+\iff 
+v_\pi &amp;= (I-\ga P_\pi)^{-1} d(P_\pi^T R_\pi).
+\end{align}
+Then
+\begin{align}
+v_{k+1} &amp;= d(P_\pi^T R_\pi) + \ga P_\pi v_k\\
+v_{k+1} - v_\pi &amp;= \ga P_\pi (v_k-v_\pi).
+\end{align}
+<p>So convergence happens at rate of <span class="math inline">\(\ga \ve{P_\pi}_2\)</span> to <span class="math inline">\(v_\pi\)</span>.</p>
+<p>For nondiscounted case, we get <span class="math display">\[
+v_t = \rc t[d + P_\pi d+ \cdots + P_\pi^{t-1} d].
+\]</span> We find (are stochastic matrices diagonalizable?) <span class="math inline">\(v\)</span> is the projection of <span class="math inline">\(d\)</span> onto space of 1-eigenvectors.</p>
+<p>(Notation is easier if the reward only depends on <span class="math inline">\(s,a\)</span>; then we just get <span class="math inline">\(v_\pi = r_\pi + \ga P_\pi v_\pi\)</span>.)</p>
+<h2 id="policyvalue-iteration">Policy/value iteration</h2>
+<p>Why does it improve? Let</p>
 <ul>
-<li><a href="continuous_scratch.html">scratch</a></li>
-<li><a href="rl_refs.html">papers</a></li>
+<li><span class="math inline">\(P_{\pi, s',s} = \Pj(s'|s,\pi(s))\)</span></li>
+<li><span class="math inline">\(R_{\pi, s',s} = r(s,\pi(s),s')\)</span></li>
+<li><span class="math inline">\(q_{\pi,\pi'} = q_\pi(s,\pi'(s))\)</span>.</li>
 </ul>
-<h2 id="finding-optimal-policy-given-dynamics">Finding optimal policy (given dynamics)</h2>
-<h3 id="simplest-problem">Simplest problem</h3>
-<p>State is <span class="math inline">\(s\in \R^n\)</span>.</p>
-<p>Suppose</p>
-<ul>
-<li>reward is given by <span class="math inline">\(\an{r,s}\)</span></li>
-<li>discount factor for future reward is <span class="math inline">\(\ga\)</span>,</li>
-<li>action set is <span class="math inline">\(A\)</span> (finite or convex),</li>
-<li>update is <span class="math inline">\(s_{t+1} = Us_t + a_t\)</span>, <span class="math inline">\(a_t\in A\)</span>.</li>
-</ul>
-<p>Then we can solve this in closed form. The best action is the same at each time step, <span class="math display">\[\max_{a\in A} \an{r, (I-\ga U)^{T\,-1}r, a}.\]</span></p>
-<p>For infinite-horizon, we look at instead the average of rewards over next <span class="math inline">\(T\)</span> time steps as <span class="math inline">\(T\to \iy\)</span>; interesting case is when <span class="math inline">\(U\)</span> has eigenvalues equal to 1. Straightforward.</p>
-<h3 id="different-linear-transformations">Different linear transformations</h3>
-<p>Now consider a more general case. (We don’t put in probability yet.)</p>
-<ul>
-<li>The reward is still <span class="math inline">\(\an{r,s}\)</span></li>
-<li>discount factor <span class="math inline">\(\ga\)</span></li>
-<li>Finite set <span class="math inline">\(A\)</span>. (Think about <span class="math inline">\(|A|=n\)</span>.)</li>
-<li>Given action <span class="math inline">\(a\)</span>, the update is <span class="math inline">\(s_{t+1} = U_a s_t + v_a\)</span>, <span class="math inline">\(a\in A\)</span>.</li>
-</ul>
-<p>The typical way to solve this is to use policy iteration. However, the policy is a function in <span class="math inline">\(n\)</span> dimensions, and it’s not even clear that we can represent it succinctly! If we discretize with a mesh, this takes exponential time/space.</p>
-<p>Given fixed discount factor <span class="math inline">\(\ga\)</span>, desired approximation <span class="math inline">\(\ep\)</span>, can we find something that does at most <span class="math inline">\(\ep\)</span> worse in <span class="math inline">\(\poly\prc{\ep}\)</span> time? We can achieve <span class="math inline">\(|A|^{\log_\ga\prc{\ep}} = \prc{\ep}^{O(\ln |A|)}\)</span> time by searching over a tree.</p>
+Write the Bellman equation as (<span class="math inline">\(d(A)\)</span> is the diagonal of <span class="math inline">\(A\)</span>)
+\begin{align}
+v_\pi &amp;= d(P_\pi^TR) + \ga P_\pi^T v_\pi\\
+q_{\pi,\pi'} &amp;= d(P_{\pi'}^TR_{\pi'}) + \ga P_{\pi'}^T v_\pi\\
+v_\pi &amp;=(I-\ga P_\pi^T)^{-1} d(P_{\pi'}^T, R_{\pi'})\\
+q_{\pi,\pi'} &amp;= (1-\ga P_{\pi'}^T)^{-1} d(P_{\pi'}^TR_{\pi'})
+\end{align}
+We have
+\begin{align}
+q_{\pi,\pi'} &amp; \ge q_{\pi,\pi} = v_\pi\\
+\iff 
+d(P_{\pi'}^TR_{\pi'}) + \ga P_{\pi'}^T v_\pi &amp; \ge v_\pi \\
+\iff
+v_{\pi'} = (I-\ga P_{\pi'}^T)^{-1} d(P_{\pi'}^TR) &amp; \ge (I-\ga P_{\pi'}^T)^{-1} (I-\ga P_{\pi'}^T) v_\pi = v_\pi.
+\end{align}
+<!--\ge d(P_\pi^T R_\pi) + P_\pi^T v_\pi-->
+<p>(Note <span class="math inline">\(I-\ga P_{\pi'}^T\)</span> is a geometric series so has positive entries.)</p>
+<!-- analysis for $q$-values. How improve when $\ga$ increases to 1?-->
+<!--$q$-iteration weirder? $q_a^{t+1} = R_a + \ga P_a^t q_b$. No, don't work with q-->
 <ol type="1">
-<li>Can we find a nice class of functions (SVM, etc.), and find the best <span class="math inline">\(v\)</span> within that class?</li>
-<li>Is there a class that can approximate all possible <span class="math inline">\(v\)</span>’s within <span class="math inline">\(\ep\)</span> or constant factor?</li>
-<li>Can <span class="math inline">\(v\)</span>’s be complicated? (Ex. break the space into exponentially many regions.)</li>
+<li><p>Value iteration: <span class="math inline">\(\ve{v^{n+1}-v^n}\le \fc{\ep(1-\la)}{2\la}\implies \ve{v^{n+1}-v_\la^*}&lt;\eph\)</span>. (161)</p>
+Proof: Let <span class="math inline">\(v^{n+1}\)</span> be the vale if you follow <span class="math inline">\(\pi^n\)</span> after choosing the best <span class="math inline">\(a\)</span> and <span class="math inline">\(v^{*n+1}\)</span> be the value if you follow <span class="math inline">\(\pi^{n+1}\)</span>. Then
+\begin{align}
+\ve{v^{*n+1} - v^{n+1}} &amp;\le \ve{Lv^{*n+1} - Lv^{n+1}} + \ve{Lv^{n+1} - v^{n+1}}\\
+\implies \ve{v^{*n+1} - v^{n+1}} &amp;\le \fc{\la }{1-\la} \ve{v^{n+1}-v^n}
+\end{align}
+Geometric series gives <span class="math display">\[\ve{v^{n+1} - v_\la^*} \le \fc{\la}{1-\la} \ve{v^{n+1} - v^n}.\]</span></li>
+<li><p>Policy iteration (180)</p></li>
 </ol>
-<p>Careful: finding the best approximation to a unitary transformation (take <span class="math inline">\(U_a\)</span> unitary and <span class="math inline">\(v_a=0\)</span>) with a certain set of unitaries is a well-studied problem that can involve number theory—we want to exclude this. Ex. make sure we’re not in this regime - have the discount factor, or add noise.</p>
+<h3 id="changing-ga">Changing <span class="math inline">\(\ga\)</span></h3>
+<p>Do a triangle inequality between <span class="math display">\[
+v_{*'}^{\ga'} = (I-\ga'P_*')^{-1}r_*, v_{*'}^{\ga}, v_\pi^\ga, v_\pi^{\ga'}.
+\]</span> More involved with averaging <span class="math inline">\(\lim_{T\to \iy}\rc T\cdots\)</span>. Choose <span class="math inline">\(\ga\)</span> small enough so that can be approximated with rectangles, etc.</p>
+<h3 id="alternating-policy-improvementevaluation">Alternating policy improvement/evaluation</h3>
+<p><span class="math display">\[\pi'(s) = \amax_a \sum_{s'} p(s'|s,a) [r(s,a,s') + \ga v_\pi(s')].\]</span></p>
 
   </div>
 

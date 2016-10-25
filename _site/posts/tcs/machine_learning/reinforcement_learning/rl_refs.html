@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+
+  <meta name="description" content="Holden Lee's Research Notebook">
+  <meta name="author" content="Holden Lee">
+    
+  <title>RL references</title>
+
+  <!-- Bootstrap core CSS -->
+  <link href="../../../../bootstrap/css/bootstrap.min.css" rel="stylesheet">
+
+  <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+  <!-- <link href="../../assets/css/ie10-viewport-bug-workaround.css" rel="stylesheet"> -->
+
+  <!-- Custom styles for this template -->
+  <link href="../../../../css/blog.css" rel="stylesheet">
+  <link href="../../../../css/default.css" rel="stylesheet">
+
+  <!-- Extension : Footnotes -->
+  <link href="../../../../footnotes/css/footnotes.css" rel="stylesheet">
+
+  <!-- Extension : InlineDisqussions @ https://github.com/tsi/inlineDisqussions -->
+  
+
+  <!-- Extension : Collapsible lists @ http://code.stephenmorley.org/javascript/collapsible-lists/-->
+  <link href="../../../../collapsible_lists/css/collapsible.css" rel="stylesheet">
+  <script type="text/javascript" src="../../../../collapsible_lists/js/CollapsibleLists.js"></script>
+
+</head>
+
+<body>
+
+<!-- Navigation bar. navbar-inverse is black, navbar-default is white.-->
+<!-- To make a button active (pressed), use <li class="active"> -->
+<div id="header">
+  <nav class="navbar navbar-inverse navbar-fixed-top">
+    <div class="container">
+      <div class="navbar-header">
+        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+          <span class="sr-only">Toggle navigation</span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="../../../../">Notebook</a>
+      </div>
+      <div id="navbar" class="collapse navbar-collapse">
+        <ul class="nav navbar-nav">
+          <li><a href="../../../../">Home</a></li>
+          <li><a href="../../../../sitemap.html">Sitemap</a></li>
+<!-- TODO: Distinguish between PAPERS, RESEARCH QUESTIONS, BOOKS -->
+<!-- TODO: make this part a for loop over main pages -->
+        </ul>
+      </div><!--/.nav-collapse -->
+    </div>
+  </nav>
+</div>
+<!-- Content -->
+<!--div id="content">
+  <h1>Mental Wilderness</h1>-->
+
+
+
+<div class="container">
+  <div id="content">
+    <div class="page header">
+      <h1>RL references</h1>
+    </div>
+    <div class="info">
+      
+       
+        <p>Posted: 2016-10-25 
+          , Modified: 2016-10-25 
+	</p>
+      
+       <p>Tags: <a href="../../../../tags/reinforcement%20learning.html">reinforcement learning</a></p> 
+    </div>
+    
+  </div>
+  <!--/div-->
+
+  <div class="toc"> <ul>
+ <li><a href="#online">Online</a></li>
+ <li><a href="#books">Books</a></li>
+ <li><a href="#papers">Papers</a><ul>
+ <li><a href="#theoretical-frameworks-and-results">Theoretical frameworks and results</a></li>
+ <li><a href="#mdps">MDPs</a><ul>
+ <li><a href="#convergence-of-classic-algorithms">Convergence of classic algorithms</a></li>
+ <li><a href="#theory-algorithms">Theory algorithms</a></li>
+ </ul></li>
+ <li><a href="#factored-mdps-mdps-with-exponential-state-space">Factored MDPs, MDPs with exponential state space</a></li>
+ <li><a href="#pomdps">POMDPs</a></li>
+ <li><a href="#open-questions">Open questions</a></li>
+ <li><a href="#surveys">Surveys</a></li>
+ </ul></li>
+ </ul> </div>
+
+  <div class="blog-main">
+    <h2 id="online">Online</h2>
+<ul>
+<li><a href="https://github.com/andrewliao11/Deep-Reinforcement-Learning-Survey/blob/master/Reinforcement-Learning-Papers.md">Deep RL</a></li>
+<li>ICML presentation (David Silver)</li>
+<li><a href="http://castlelab.princeton.edu/">CASTLE Labs</a>
+<ul>
+<li><a href="http://optimallearning.princeton.edu/">Optimal learning</a></li>
+<li><a href="http://adp.princeton.edu/">Approximate dynamic programming</a>
+<ul>
+<li><a href="http://adp.princeton.edu/adpIntros.htm">Intros</a></li>
+</ul></li>
+<li><a href="http://castlelab.princeton.edu/jungle.htm#unifiedframework">Unified framework</a></li>
+</ul></li>
+</ul>
+<h2 id="books">Books</h2>
+<p><a href="https://www.quora.com/What-are-the-best-books-about-reinforcement-learning">Quora recommendations</a></p>
+<ul>
+<li>(*) Sutto Barton. <a href="rl.html"><strong>Notes</strong></a></li>
+<li><a href="https://books.google.com/books?id=VvBjBAAAQBAJ&amp;printsec=frontcover&amp;dq=continuous+markov+decision+processes&amp;hl=en&amp;sa=X&amp;ved=0ahUKEwjo3OLywOnPAhVHWD4KHXzgDWUQ6AEIKTAC#v=onepage&amp;q=continuous%20markov%20decision%20processes&amp;f=false">Puterman14</a></li>
+<li><a href="http://site.ebrary.com/lib/princeton/reader.action?docID=10501323">Approximate DP, Powell</a></li>
+<li><a href="http://site.ebrary.com/lib/princeton/detail.action?docID=10560566">Optimal learning, Powell</a></li>
+<li><a href="http://www.crcnetbase.com/isbn/9781439821091">Function approximators, Lucian Busoniu, Robert Babuska, Bart De Schutter, and Damien Ernst</a></li>
+<li><a href="http://web.mit.edu/dimitrib/www/dpchapter.pdf">ADP chapter, Bertsekas</a></li>
+<li><a href="https://books.google.com/books?id=-6RiQgAACAAJ&amp;dq=Dynamic+Programming:+Deterministic+and+Stochastic+Models&amp;hl=en&amp;sa=X&amp;ved=0ahUKEwjc0pfAyefPAhUGFz4KHaVIDecQ6AEIHjAA">Bertsekas87</a></li>
+</ul>
+<h2 id="papers">Papers</h2>
+<h3 id="theoretical-frameworks-and-results">Theoretical frameworks and results</h3>
+<ul>
+<li>(*) [KMN02] A Sparse Sampling Algorithm for Near-Optimal Planning in Large Markov Decision Processes <a href="http://download.springer.com/static/pdf/530/art%253A10.1023%252FA%253A1017932429737.pdf?originUrl=http%3A%2F%2Flink.springer.com%2Farticle%2F10.1023%2FA%3A1017932429737&amp;token2=exp=1477079019~acl=%2Fstatic%2Fpdf%2F530%2Fart%25253A10.1023%25252FA%25253A1017932429737.pdf%3ForiginUrl%3Dhttp%253A%252F%252Flink.springer.com%252Farticle%252F10.1023%252FA%253A1017932429737*~hmac=6c901205464aff209a8d3ca5ba481b36b72959a0d61fc762dfc512f12c01a38c">paper</a>
+<ul>
+<li>PAC formulation</li>
+</ul></li>
+<li>[AAKMR02] A Note on the Representational Incompatibility of Function Approximation and Factored Dynamics.pdf
+<ul>
+<li>Barrier to solving factored MDP’s is not just computational ([PT87]), it is representational (there is no succinct policy)</li>
+<li>DBN-MDP (factored MDP): transition law <span class="math inline">\(\de\)</span> is dynamic Bayes net. The first layer are the variables (and action) at time <span class="math inline">\(t\)</span>, the second layer are the variables at time <span class="math inline">\(t+1\)</span>, the graph is directed, the indegree of each second-layer node is at most constant.</li>
+<li>Rewards are linear.</li>
+<li>Connection with AM-games: V’s state corresponds to state, P implements policy.</li>
+<li>If PSPACE is not contained in P/POLY, then there is a family of DBN-MDPs, such that for any two polynomials <span class="math inline">\(s,a\)</span>, there exist infinitely many <span class="math inline">\(n\)</span> such that no circuit <span class="math inline">\(C\)</span> of size <span class="math inline">\(s(n)\)</span> can compute a policy having expected reward greater than <span class="math inline">\(\rc{a(n)}\)</span> times the optimum.</li>
+<li>(This is the policy optimization part. Can you learn Bayes nets? <span class="citation" data-cites="Andrej">@Andrej</span>)</li>
+<li>(Note that the “drifting context vector (RANDWALK)” model can be represented by a model with <span class="math inline">\(1\to 1', 2\to 2',\ldots\)</span>.)</li>
+<li>What if you only compared to the best policy in a class of policies? (cf. EXP4)</li>
+</ul></li>
+</ul>
+<h3 id="mdps">MDPs</h3>
+<h4 id="convergence-of-classic-algorithms">Convergence of classic algorithms</h4>
+<ul>
+<li>[PB79] On the convergence of policy iteration in stationary dynamic programming.pdf
+<ul>
+<li>Equivalent to Newton-Kantorovich iteration procedure applied to functional equation of dynamic programming.</li>
+<li>Sufficient conditions for superlinear or quadratic convergence. See [Howard].</li>
+<li>Note: Does NOT apply to finite state MDPs! (Problem being that “best action” is not continuous in parameters?)</li>
+</ul></li>
+<li>[SR04] Convergence properties of policy iteration.pdf
+<ul>
+<li>Compare to method of successive approximations. SA is bad when <span class="math inline">\(\ga\approx 1\)</span>.</li>
+</ul></li>
+<li>[TVR96] An Analysis of Temporal-Difference Learning with Function Approximation <a href="http://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.92.92&amp;rep=rep1&amp;type=pdf">paper</a>
+<ul>
+<li><span class="math inline">\(TD(\la)\)</span> convergence</li>
+<li>What is rate??</li>
+</ul></li>
+<li>[B95] Residual Algorithms: Reinforcement learning with function approximation <a href="https://books.google.com/books?hl=en&amp;lr=&amp;id=akijBQAAQBAJ&amp;oi=fnd&amp;pg=PA30&amp;dq=baird+residual+algorithms+function+approximation&amp;ots=MJ_Hs5vMBs&amp;sig=RTG7KgQgM4GWWIwSvg1wOYRmJDc#v=onepage&amp;q=baird%20residual%20algorithms%20function%20approximation&amp;f=false">paper</a>
+<ul>
+<li>Q-learning instability</li>
+</ul></li>
+<li>[WD92] Q-learning
+<ul>
+<li>Given bounded rewards, learning rates <span class="math inline">\(0\le \al_n&lt;1\)</span>, and <span class="math inline">\(\sumo i{\iy} \al_{n^i(x,a)}=\iy\)</span> (<span class="math inline">\(n^i(x,a)\)</span> is the <span class="math inline">\(i\)</span>th time <span class="math inline">\(a\)</span> is tried in state <span class="math inline">\(x\)</span>) then <span class="math inline">\(Q_n\to Q^*\)</span> wp 1.</li>
+<li>Doesn’t address: under what <span class="math inline">\(Q\)</span>? What if updating policy at same time? What’s regret?</li>
+</ul></li>
+</ul>
+<h4 id="theory-algorithms">Theory algorithms</h4>
+<ul>
+<li>(*) [AO06] UCRL
+<ul>
+<li>Maintain confidence bounds on rewards and transition probabilities.</li>
+<li>Only apply to unichain MDP’s (where fixing an action, any other state is reachable - I think this is unrealistic. This is unreasonable - NO, WRONG DEFINITION).</li>
+<li>Right definition in KS02: the stationary distribution of any policy does not depend on the start state (this is to make things easier, can do without)</li>
+<li>Other work: adversarial reward, index policies (choose action with max return in confidence region)</li>
+</ul></li>
+<li>[LH12] PAC bounds for discounted MDPs <a href="https://arxiv.org/pdf/1202.3890.pdf">paper</a>
+<ul>
+<li>UCRL, under assumption of 2 possible next-states for each state/action pair, PAC bound of <span class="math inline">\(\wt O \pa{\fc{|S\times A|}{\ep^2(1-\ga)^3}\ln \prc{\de}}\)</span>.</li>
+</ul></li>
+<li>[KS02] Near-optimal reinforcement learning in polynomial time</li>
+<li>(*) [JOA10] Near-optimal regret bounds for reinforcement learning <a href="http://www.jmlr.org/papers/volume11/jaksch10a/jaksch10a.pdf">paper</a>
+<ul>
+<li>Improved UCRL (UCRL2)</li>
+</ul></li>
+<li>[KN09] Near-Bayesian Exploration in Polynomial Time <a href="http://www.zicokolter.com/wp-content/uploads/2015/10/kolter-icml09a-full.pdf">paper</a></li>
+<li>(*) [KAL16] Contextual-MDP, which is contextual bandits + RL.
+<ul>
+<li>Regret wrt policy class.</li>
+<li>Poly in parameters, log in number of policies, independent of size of observation space. <!--what does no dependence on numspace can represent exact-best solution, state transition dynamics are deterministic.--></li>
+<li>Unlike POMDP, optimal policy is memoryless.</li>
+<li>Warning: inefficient b/c requires enumeration of policy class. (? does this contradict the poly/log time above)</li>
+</ul></li>
+<li>[DPWR15] Bayesian Nonparametric Methods for Partially-Observable Reinforcement Learning <a href="http://dspace.mit.edu/handle/1721.1/97034">paper</a>
+<ul>
+<li>Bayes!</li>
+</ul></li>
+</ul>
+<h3 id="factored-mdps-mdps-with-exponential-state-space">Factored MDPs, MDPs with exponential state space</h3>
+<ul>
+<li>[HSMM15] Off-policy Model-based Learning under Unknown Factored Dynamics.pdf
+<ul>
+<li>Under 3 assumptions, using a greedy approach to finding parents, estimate the transition function (parameters to Bayes net) (compre with prob models literature?)</li>
+<li>This is for off-policy evaluation; it doesn’t tell us how to find the optimal policy.</li>
+<li>(Is the model learning and policy evaluation coupled or not?)</li>
+<li>(It seems to be learning the Bayes net rather than evaluating <span class="math inline">\(\pi\)</span>. Ah, once you learn the Bayes net then you can evaluate just by sampling.)</li>
+<li>The difference from simpling learning a Bayes net is that the samples aren’t independent—they were from following a certain policy. Assumptions will ensure that you can still learn the model even if you only have samples from that policy.</li>
+</ul></li>
+</ul>
+<h3 id="pomdps">POMDPs</h3>
+<ul>
+<li>(*) [ALA16] Reinforcement Learning of POMDPs using Spectral Methods
+<ul>
+<li>Spectral parameter estimation for POMDP’s</li>
+<li>Combine with UCRL (exploration-exploitation framework) to get regret bounds (compared to memoryless policies) optimal in dependence on <span class="math inline">\(N\)</span> (<span class="math inline">\(O(\sqrt N)\)</span>)</li>
+<li>Challenges
+<ul>
+<li>Unlike HMM, consecutive observations not conditionally independent</li>
+<li>Technical: Concentration inequalities for dependent rv’s. Extend to marix value functions.</li>
+</ul></li>
+<li>Previous/other work
+<ul>
+<li>UCRL</li>
+<li>model-free algorithms (<span class="math inline">\(Q\)</span>-learning)</li>
+<li>policy search methods</li>
+<li>separate exploration and exploitation collect examples, then estimate parameters [Guo16]. PAC in RL POMDP?</li>
+</ul></li>
+<li>Open: analyze UCRL for finite horizon.</li>
+<li>Stochastic policies are near-optimal in many domains (?). NP-hard to optimize but under some conditions can approximate</li>
+</ul></li>
+<li>[ALA16] Open Problem - Approximate Planning of POMDPs in the class of Memoryless Policies (COLT2016)
+<ul>
+<li>Find exact or approximate optimal stochastic memoryless policy for POMDP.</li>
+<li>What [ALA16] don’t address in other paper: planning. (Complexity considerations? i.e. is this tractable? Kaelbling98)</li>
+<li>In their paper they assume access to an optimization oracle that gives best memoryless planning policy at end of each episode. - No algorithm for this right now! <!--SoS? First check if you can reduce from Nash equilibrium, etc.--></li>
+</ul></li>
+<li>[GDB16] A PAC RL algorithm for episodic POMDPs <a href="http://www.jmlr.org/proceedings/papers/v51/guo16b.pdf">paper</a>
+<ul>
+<li>PAC: whp, selects near-optial action on all but a number of steps poly in problem paramters (what is the definition?)</li>
+<li>PAC learns in time <span class="math inline">\(T(\ep)\)</span> means: achieves an expected episodic reward of <span class="math inline">\(V\ge V^*-\ep\)</span> on all but <span class="math inline">\(T(\ep)\)</span> episodes.</li>
+<li>First PAC POMDP RL algorithm for episodic domains</li>
+<li>EEPORL
+<ul>
+<li>Algorithm 1:
+<ul>
+<li>In each episode, take first four steps randomly (in correlated fashion) to explore. Need to assume that have probability of being anywhere in 2 steps.</li>
+<li>Take chosen policy for the rest of the steps.</li>
+</ul></li>
+<li>Algorithm 2: Update estimates for POMDP parameters.</li>
+<li>Algorithm 3: Find best policy for current estimates of parameters.</li>
+</ul></li>
+</ul></li>
+</ul>
+<h3 id="open-questions">Open questions</h3>
+<ul>
+<li>[S99] Open Theoretical Questions in Reinforcement Learning (not sure how open these are anymore!)
+<ul>
+<li>Control with function approximation
+<ul>
+<li>TD(<span class="math inline">\(\la\)</span>) understood [TsVR97]</li>
+<li>Q-learning unstable [Baird95]</li>
+<li>Sarsa ??? (tends to oscillate close to best)</li>
+</ul></li>
+<li>MC ES convergence (see update in BS?)</li>
+<li>Bootstrapping more efficient than MC?</li>
+<li>VC dimension over RL
+<ul>
+<li>Difficulty: different actions lead to different parts of space, so we don’t have a natural “test set” that can be reused to evaluate different policies (Test set seems like it would be drawn from different policies?)</li>
+<li>Proposal: trajectory trees: tree of all sample transitions</li>
+<li>Extend PAC to this setting.</li>
+</ul></li>
+</ul></li>
+</ul>
+<h3 id="surveys">Surveys</h3>
+<ul>
+<li>[G] Reinforcement learning - a Tutorial Survey and Recent Advances.pdf</li>
+<li>[KLM96] Reinforcement Learning - A Survey.pdf</li>
+<li>(*) [P14] Clearing the Jungle of Stochastic Optimization
+<ul>
+<li>4 classes of policies</li>
+<li>Dynamic vs. stochastic programs</li>
+</ul></li>
+<li>[P14] Energy and Uncertainty - models and algorithms for complex energy systems.pdf</li>
+<li>(*) [P16] A Unified Framework for Optimization under Uncertainty.pdf</li>
+<li><a href="http://people.csail.mit.edu/agf/Files/13FTML-RLTutorial.pdf">lin function approximators</a></li>
+<li><a href="https://hal.archives-ouvertes.fr/hal-00747575v5/document">optimistic principle</a></li>
+<li><a href="http://www.morganclaypool.com/doi/abs/10.2200/S00268ED1V01Y201005AIM009">Algorithms for RL</a></li>
+</ul>
+
+  </div>
+
+    
+
+    <!-- Extension : Sharing buttons @ www.sharethis.com -->
+    <span class="st_facebook_large" displayText="Facebook"></span>
+    <span class="st_twitter_large" displayText="Tweet"></span>
+    <span class="st_googleplus_large" displayText="Google +"></span>
+    <span class="st_reddit_large" displayText="Reddit"></span>
+    <span class="st__large" displayText></span>
+
+    <div id="disqus_thread"></div>
+    
+
+
+  
+    <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+  </div>
+  
+</div>
+
+
+<!-- Footer -->
+<div id="footer">
+  <div class="container">
+    Built with
+    <a href="http://jaspervdj.be/hakyll">Hakyll</a> 
+    using 
+    <a href="http://www.getbootstrap.com">Bootstrap</a>, 
+    <a href="http://www.disqus.com">Disqus</a>,
+    <a href="http://ignorethecode.net/blog/2010/04/20/footnotes/">Footnotes.js</a>,
+    <a href="http://highlightjs.org/">Highlight.js</a>, 
+    <a href="http://www.mathjax.org">MathJax</a>, 
+    and <a href="http://www.sharethis.com">ShareThis</a>.
+  </div>
+</div>
+</body>
+
+</html>
+
+<!-- SCRIPTS -->
+<!-- jQuery-->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+<script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
+
+<script src="../../../../bootstrap/js/bootstrap.min.js"></script>
+
+<!-- Extension : Highlight.js @ https://highlightjs.org/ -->
+<!-- Syntax highlighting tomorrow-night-bright, agate-->
+<link rel="stylesheet" href="../../../../highlight/css/tomorrow-night-bright.css">
+<script src="../../../../highlight/js/highlight.pack.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+
+<!-- Extension : MathJax @ https://docs.mathjax.org/en/v2.5-latest/tex.html -->
+<!-- MathJax/config/local/local.js contains macros. Need to provide entire URL-->
+<script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML,http://holdenlee.github.io/notebook/MathJax/config/local/local"></script>
+
+<!-- Extension : Footnotes @ http://ignorethecode.net/blog/2010/04/20/footnotes/ -->
+<script src="../../../../footnotes/js/footnotes.js"></script>
+
+<!-- Extension : Disqus @ http://disqus.com -->
+<!-- Extension : InlineDisqussions @ https://github.com/tsi/inlineDisqussions -->
+
+<script src="../../../../disqus/js/disqus.js"></script>
+
+
+
+<!-- Extension : Google Analytics -->
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-73261814-1', 'auto');
+  ga('send', 'pageview');
+
+</script>
+

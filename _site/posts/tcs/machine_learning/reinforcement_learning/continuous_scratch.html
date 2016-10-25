@@ -10,7 +10,7 @@
   <meta name="description" content="Holden Lee's Research Notebook">
   <meta name="author" content="Holden Lee">
     
-  <title>MDP's with continuous state space</title>
+  <title>MDP's with continuous state space (scratch)</title>
 
   <!-- Bootstrap core CSS -->
   <link href="../../../../bootstrap/css/bootstrap.min.css" rel="stylesheet">
@@ -70,13 +70,13 @@
 <div class="container">
   <div id="content">
     <div class="page header">
-      <h1>MDP's with continuous state space</h1>
+      <h1>MDP's with continuous state space (scratch)</h1>
     </div>
     <div class="info">
       
        
         <p>Posted: 2016-10-14 
-          , Modified: 2016-10-14 
+          , Modified: 2016-10-25 
 	</p>
       
        <p>Tags: <a href="../../../../tags/none.html">none</a></p> 
@@ -86,46 +86,65 @@
   <!--/div-->
 
   <div class="toc"> <ul>
- <li><a href="#finding-optimal-policy-given-dynamics">Finding optimal policy (given dynamics)</a><ul>
- <li><a href="#simplest-problem">Simplest problem</a></li>
- <li><a href="#different-linear-transformations">Different linear transformations</a></li>
+ <li><a href="#starting-points">Starting points</a></li>
+ <li><a href="#model">Model</a><ul>
+ <li><a href="#first-try">First try</a></li>
+ <li><a href="#second-try">Second try</a></li>
  </ul></li>
+ <li><a href="#misc">Misc</a></li>
  </ul> </div>
 
   <div class="blog-main">
-    <p>Other pages</p>
-<ul>
-<li><a href="continuous_scratch.html">scratch</a></li>
-<li><a href="rl_refs.html">papers</a></li>
-</ul>
-<h2 id="finding-optimal-policy-given-dynamics">Finding optimal policy (given dynamics)</h2>
-<h3 id="simplest-problem">Simplest problem</h3>
-<p>State is <span class="math inline">\(s\in \R^n\)</span>.</p>
-<p>Suppose</p>
-<ul>
-<li>reward is given by <span class="math inline">\(\an{r,s}\)</span></li>
-<li>discount factor for future reward is <span class="math inline">\(\ga\)</span>,</li>
-<li>action set is <span class="math inline">\(A\)</span> (finite or convex),</li>
-<li>update is <span class="math inline">\(s_{t+1} = Us_t + a_t\)</span>, <span class="math inline">\(a_t\in A\)</span>.</li>
-</ul>
-<p>Then we can solve this in closed form. The best action is the same at each time step, <span class="math display">\[\max_{a\in A} \an{r, (I-\ga U)^{T\,-1}r, a}.\]</span></p>
-<p>For infinite-horizon, we look at instead the average of rewards over next <span class="math inline">\(T\)</span> time steps as <span class="math inline">\(T\to \iy\)</span>; interesting case is when <span class="math inline">\(U\)</span> has eigenvalues equal to 1. Straightforward.</p>
-<h3 id="different-linear-transformations">Different linear transformations</h3>
-<p>Now consider a more general case. (We don’t put in probability yet.)</p>
-<ul>
-<li>The reward is still <span class="math inline">\(\an{r,s}\)</span></li>
-<li>discount factor <span class="math inline">\(\ga\)</span></li>
-<li>Finite set <span class="math inline">\(A\)</span>. (Think about <span class="math inline">\(|A|=n\)</span>.)</li>
-<li>Given action <span class="math inline">\(a\)</span>, the update is <span class="math inline">\(s_{t+1} = U_a s_t + v_a\)</span>, <span class="math inline">\(a\in A\)</span>.</li>
-</ul>
-<p>The typical way to solve this is to use policy iteration. However, the policy is a function in <span class="math inline">\(n\)</span> dimensions, and it’s not even clear that we can represent it succinctly! If we discretize with a mesh, this takes exponential time/space.</p>
-<p>Given fixed discount factor <span class="math inline">\(\ga\)</span>, desired approximation <span class="math inline">\(\ep\)</span>, can we find something that does at most <span class="math inline">\(\ep\)</span> worse in <span class="math inline">\(\poly\prc{\ep}\)</span> time? We can achieve <span class="math inline">\(|A|^{\log_\ga\prc{\ep}} = \prc{\ep}^{O(\ln |A|)}\)</span> time by searching over a tree.</p>
+    <p><a href="continuous.html">written-up things</a></p>
+<p><a href="https://en.wikipedia.org/wiki/Kalman_filter">Kalman filter</a></p>
+<p>Come up with a class of MDPs on exponentially large/continuous space that is interesting and tractable. Think of generalizing from contextual bandits * Basically we want a reasonable model of a MDP with a very large (exponential or continuous) state space and be able to do something with it. Wanted to include some dynamics like in Kalman filters but we weren’t sure whether Kalman filters are tractable * Todo: learn about Kalman filters</p>
+<h2 id="starting-points">Starting points</h2>
 <ol type="1">
-<li>Can we find a nice class of functions (SVM, etc.), and find the best <span class="math inline">\(v\)</span> within that class?</li>
-<li>Is there a class that can approximate all possible <span class="math inline">\(v\)</span>’s within <span class="math inline">\(\ep\)</span> or constant factor?</li>
-<li>Can <span class="math inline">\(v\)</span>’s be complicated? (Ex. break the space into exponentially many regions.)</li>
+<li>HMM’s have discrete state space. What happens with continuous state space? Suppose there are some dynamics as in Kalman filters. Infer the hidden state. References
+<ul>
+<li>Continuous HMM paper (RKHS)</li>
+<li>Kalman filters (see examples)</li>
+<li>Grad descent learning dynamical systems.</li>
+</ul></li>
+<li>Contextual bandits + MDP’s. Don’t assume there’s a hidden state here, just that next state depends, say, linearly on action and noise.</li>
+<li>Context vector/random walk model for documents: transition probabilities <span class="math inline">\(\propto \exp(-\an{c_1,c_2})\)</span> and observation probabilities <span class="math inline">\(\propto \exp(-\an{c_1,x})\)</span>.</li>
 </ol>
-<p>Careful: finding the best approximation to a unitary transformation (take <span class="math inline">\(U_a\)</span> unitary and <span class="math inline">\(v_a=0\)</span>) with a certain set of unitaries is a well-studied problem that can involve number theory—we want to exclude this. Ex. make sure we’re not in this regime - have the discount factor, or add noise.</p>
+<h2 id="model">Model</h2>
+<h3 id="first-try">First try</h3>
+<ul>
+<li>Stochastic setting.</li>
+<li><span class="math inline">\(c_t\)</span> is context at time <span class="math inline">\(t\)</span>.</li>
+<li>Set of actions <span class="math inline">\(A\)</span>. (For example, <span class="math inline">\(A=\{e_1,\ldots, e_n\}\)</span>.)</li>
+<li>Next context <span class="math inline">\(c_{t+1}=\)</span> (Here <span class="math inline">\(w_t\)</span> is noise.)
+<ul>
+<li><span class="math inline">\(F_a c_t + w_t\)</span>. (Transformation depends on action.)</li>
+<li><span class="math inline">\(F c_t + B a + w_t\)</span>. (Action is a forcing term. This matches Kalman formulation. More reasonable?) (*)</li>
+</ul></li>
+<li>Payoff depends on context and actions in some way.
+<ul>
+<li>Model 1: depends only on context <span class="math inline">\(\te^T c_t\)</span>. (*)</li>
+<li>Model 2: depends on context and action <span class="math inline">\(\te^T[c_t;a]\)</span>.</li>
+<li>? Some probability?</li>
+</ul></li>
+</ul>
+<p>This setting looks like reinforcement learning + control theory. Prior work? How is RL used in continuous systems right now? Basic control theory background?</p>
+<p>Need the model to be a generalization of regular MDP.</p>
+<p>(*) may be interesting from control theory perspective, but doesn’t generalize discrete MDP. (Seems like best to learn the dynamics, and then do optimal thing from there…)</p>
+<h3 id="second-try">Second try</h3>
+<ul>
+<li>Finite number of actions</li>
+<li><span class="math inline">\(c_{t+1} = F_a c_t + w_t\)</span>. (Only probability is noise.)</li>
+<li>Payout <span class="math inline">\(\te_^T c_t\)</span>.</li>
+</ul>
+<p>Captures deterministic MDP, but not probabilistic, by letting <span class="math inline">\(A=\{e_i\}\)</span>.</p>
+<h2 id="misc">Misc</h2>
+<p>Do as well as best Bayes net? Actions in some class. Finite set of actions, vs. exponential/continuous set of actions. In latter case, will depend on optimizability of that set…</p>
+<p>Ex. class is a SVM.</p>
+<p>“Do as well as best estimator of <span class="math inline">\(q\)</span> function in a certain class (assume convexity or something?)” (cf. contextual bandits first)</p>
+<!--Definitely need something stronger than: there exist something that works! if can encode crypto 
+
+Upper confidence bounds
+-->
 
   </div>
 
