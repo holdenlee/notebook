@@ -8,8 +8,282 @@
         <name>Holden Lee</name>
         <email>oldheneel@gmail.com</email>
     </author>
-    <updated>2016-10-25T00:00:00Z</updated>
+    <updated>2016-11-01T00:00:00Z</updated>
     <entry>
+    <title>Function approximation</title>
+    <link href="http://holdenlee.github.io/notebook/posts/tcs/machine_learning/reinforcement_learning/function_approximation.html" />
+    <id>http://holdenlee.github.io/notebook/posts/tcs/machine_learning/reinforcement_learning/function_approximation.html</id>
+    <published>2016-11-01T00:00:00Z</published>
+    <updated>2016-11-01T00:00:00Z</updated>
+    <summary type="html"><![CDATA[
+<div class="container">
+  <div id="content">
+    <div class="page header">
+      <h1>Function approximation</h1>
+    </div>
+    <div class="info">
+      
+       
+        <p>Posted: 2016-11-01 
+          , Modified: 2016-11-01 
+	</p>
+      
+       <p>Tags: <a href="/tags/reinforcement%20learning.html">reinforcement learning</a></p> 
+    </div>
+    
+  </div>
+  <!--/div-->
+
+  <div class="toc"> <ul>
+ <li><a href="#dp-and-rl-in-large-and-continuous-spaces">3 DP and RL in large and continuous spaces</a><ul>
+ <li><a href="#nonparametric-appoximation">3.3.2 Nonparametric appoximation</a></li>
+ <li><a href="#section">3.3.3</a></li>
+ <li><a href="#approximate-value-iteration">3.4 Approximate value iteration</a><ul>
+ <li><a href="#convergence">3.4.4 Convergence</a></li>
+ <li><a href="#example-approximate-q-iteration-for-a-dc-motor">3.4.5 Example: Approximate Q-iteration for a DC motor</a></li>
+ </ul></li>
+ <li><a href="#approximate-policy-iteration">3.5 Approximate policy iteration</a></li>
+ </ul></li>
+ </ul> </div>
+
+  <div class="blog-main">
+    <p>See also “Factored MDPs, MDPs with exponential/continuous state space” in <a href="rl_refs.html">refs</a>.</p>
+<ul>
+<li>[GWTC13]</li>
+<li>Reinforcement learning and DP using FA</li>
+<li>Bertsekas Ch. 6, ADP</li>
+<li><a href="http://site.ebrary.com/lib/princeton/reader.action?docID=10501323">Powell, ADP</a></li>
+<li>Sutton, Ch. 8 (v1)</li>
+</ul>
+<h2 id="dp-and-rl-in-large-and-continuous-spaces">3 DP and RL in large and continuous spaces</h2>
+<p><span class="math inline">\(F(\te)(x,u_j) = \phi^T(x,u_j)\te\)</span>, <span class="math inline">\(\phi\)</span> normalized so entries sum to 1.</p>
+<h4 id="nonparametric-appoximation">3.3.2 Nonparametric appoximation</h4>
+<p>Kernel-based approximator of <span class="math inline">\(Q\)</span> function <span class="math inline">\(\ka: (X\times U)^2\to \R\)</span>.</p>
+<p>Form and number of BF’s not defined in advance <span class="math display">\[
+\wh Q(x,u) = \sumo{l_s}{n_s} \ka((x,u), (x_{l_s}, u_{l_s}))\te_{l_s}.
+\]</span></p>
+<p>(I haven’t been exposed to nonparametric methods - what guarantees do nonparametric methods have?) <!-- relies on kernel function that makes sense for the space --></p>
+<h4 id="section">3.3.3</h4>
+<p>In between: derive small number of good BF’s from data.</p>
+<h3 id="approximate-value-iteration">3.4 Approximate value iteration</h3>
+<ul>
+<li>LSQI: take a bunch of samples, take <span class="math inline">\(Q\)</span> minimizing least squares.</li>
+<li>Online: use gradient descent on parameters <span class="math inline">\(\te\)</span>.</li>
+</ul>
+<p>Approximate Q-learnig requires exploration.</p>
+<h4 id="convergence">3.4.4 Convergence</h4>
+<p>Proofs for approximate value iteration rely on contraction mapping arguments. Ex. require <span class="math inline">\(F\)</span> and projection <span class="math inline">\(P\)</span> to be nonexpansions.</p>
+<p>Suboptimality for convergence point <span class="math inline">\(\te^*\)</span> bounded in terms of min distance between <span class="math inline">\(Q^*\)</span> and fixed point of <span class="math inline">\(F\circ P\)</span>, <span class="math inline">\(\ze_{QI}^*\)</span>.</p>
+<p>(Ditto for nonparametric (kernel-based) approximators.)</p>
+<h4 id="example-approximate-q-iteration-for-a-dc-motor">3.4.5 Example: Approximate Q-iteration for a DC motor</h4>
+<p>Fitted <span class="math inline">\(Q\)</span>-iteration using ensembles of extremely randomized trees.</p>
+<h3 id="approximate-policy-iteration">3.5 Approximate policy iteration</h3>
+
+  </div>
+
+    
+
+    <!-- Extension : Sharing buttons @ www.sharethis.com -->
+    <span class='st_facebook_large' displayText='Facebook'></span>
+    <span class='st_twitter_large' displayText='Tweet'></span>
+    <span class='st_googleplus_large' displayText='Google +'></span>
+    <span class='st_reddit_large' displayText='Reddit'></span>
+    <span class='st__large' displayText=''></span>
+
+    <div id="disqus_thread"></div>
+    
+
+
+  
+    <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+  </div>
+  
+</div>
+]]></summary>
+</entry>
+<entry>
+    <title>Weekly summary 2016-11-05</title>
+    <link href="http://holdenlee.github.io/notebook/posts/summaries/2016-11-05.html" />
+    <id>http://holdenlee.github.io/notebook/posts/summaries/2016-11-05.html</id>
+    <published>2016-10-31T00:00:00Z</published>
+    <updated>2016-10-31T00:00:00Z</updated>
+    <summary type="html"><![CDATA[
+<div class="container">
+  <div id="content">
+    <div class="page header">
+      <h1>Weekly summary 2016-11-05</h1>
+    </div>
+    <div class="info">
+      
+       
+        <p>Posted: 2016-10-31 
+          , Modified: 2016-10-31 
+	</p>
+      
+       <p>Tags: <a href="/tags/none.html">none</a></p> 
+    </div>
+    
+  </div>
+  <!--/div-->
+
+  <div class="toc"> <ul>
+ <li><a href="#threads">Threads</a><ul>
+ <li><a href="#priority">Priority</a></li>
+ <li><a href="#other">Other</a></li>
+ </ul></li>
+ <li><a href="#other-papers">Other papers</a></li>
+ <li><a href="#people-to-talk-to">People to talk to</a></li>
+ </ul> </div>
+
+  <div class="blog-main">
+    <p><a href="2016-10-29.html">Last week</a>. (See also <a href="2016-10-22.html">wonderings</a>.)</p>
+<h2 id="threads">Threads</h2>
+<h3 id="priority">Priority</h3>
+<ul>
+<li>Come up with a class of MDPs on exponential space that is interesting and tractable. <a href="/posts/tcs/machine_learning/reinforcement_learning/continuous.html">Thoughts</a>
+<ul>
+<li>Understand provable guarantees on MDP’s first</li>
+</ul></li>
+<li>PMI - get some results!
+<ul>
+<li>Mon. - train CIFAR.</li>
+<li>Todos
+<ul>
+<li>Check MNIST model 1. What are sizes of coefficients?</li>
+<li>Run experiments on CIFAR.</li>
+</ul></li>
+</ul></li>
+</ul>
+<h3 id="other">Other</h3>
+<ul>
+<li>SoS <a href="/posts/tcs/complexity/sos.html">summary</a> (Monday: wrote up notes.)</li>
+<li>DL experiments <a href="/posts/tcs/machine_learning/matrices/DL_generalization.html">DL generalization</a></li>
+<li>On hold
+<ul>
+<li>(*) NN learns DL. Can write up weak result, worth doing?</li>
+</ul></li>
+<li>Papers
+<ul>
+<li>[HM16] on unsupervised learning (finish)</li>
+<li>[HMR16] on dynamical system learning</li>
+</ul></li>
+</ul>
+<p>Analyze Arora and Ge’s NMF algorithm in the presence of noise. Exactly how much noise can it tolerate?</p>
+<h2 id="other-papers">Other papers</h2>
+<ul>
+<li>TODO Read this paper: [CFP16] Assessing significance in a Markov chain without mixing</li>
+</ul>
+<h2 id="people-to-talk-to">People to talk to</h2>
+<ul>
+<li>Yingyu, on PMI</li>
+</ul>
+
+  </div>
+
+    
+
+    <!-- Extension : Sharing buttons @ www.sharethis.com -->
+    <span class='st_facebook_large' displayText='Facebook'></span>
+    <span class='st_twitter_large' displayText='Tweet'></span>
+    <span class='st_googleplus_large' displayText='Google +'></span>
+    <span class='st_reddit_large' displayText='Reddit'></span>
+    <span class='st__large' displayText=''></span>
+
+    <div id="disqus_thread"></div>
+    
+
+
+  
+    <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+  </div>
+  
+</div>
+]]></summary>
+</entry>
+<entry>
+    <title>[MVB16] Geometry of Polysemy</title>
+    <link href="http://holdenlee.github.io/notebook/posts/tcs/machine_learning/nlp/MVB16.html" />
+    <id>http://holdenlee.github.io/notebook/posts/tcs/machine_learning/nlp/MVB16.html</id>
+    <published>2016-10-28T00:00:00Z</published>
+    <updated>2016-10-28T00:00:00Z</updated>
+    <summary type="html"><![CDATA[
+<div class="container">
+  <div id="content">
+    <div class="page header">
+      <h1>[MVB16] Geometry of Polysemy</h1>
+    </div>
+    <div class="info">
+      
+       
+        <p>Posted: 2016-10-28 
+          , Modified: 2016-10-28 
+	</p>
+      
+       <p>Tags: <a href="/tags/nlp.html">nlp</a>, <a href="/tags/word%20vectors.html">word vectors</a>, <a href="/tags/polysemy.html">polysemy</a></p> 
+    </div>
+    
+  </div>
+  <!--/div-->
+
+  <div class="toc"> <ul>
+ <li><a href="#abstract">Abstract</a></li>
+ <li><a href="#comments">Comments</a></li>
+ <li><a href="#summary">Summary</a><ul>
+ <li><a href="#algorithm">1 Algorithm</a></li>
+ <li><a href="#experiments">2 Experiments</a></li>
+ <li><a href="#further-thoughts">Further thoughts</a></li>
+ </ul></li>
+ </ul> </div>
+
+  <div class="blog-main">
+    <h2 id="abstract">Abstract</h2>
+<p>Title: Geometry of Polysemy</p>
+<p><a href="https://arxiv.org/pdf/1610.07569v1.pdf">Link</a></p>
+<p>Abstract: Vector representations of words have heralded a transformational approach to classical problems in NLP; the most popular example is word2vec. However, a single vector does not suffice to model the polysemous nature of many (frequent) words, i.e., words with multiple meanings. In this paper, we propose a three-fold approach for unsupervised polysemy modeling: (a) context representations, (b) sense induction and disambiguation and (c) lexeme (as a word and sense pair) representations. A key feature of our work is the finding that a sentence containing a target word is well represented by a low rank subspace, instead of a point in a vector space. We then show that the subspaces associated with a particular sense of the target word tend to intersect over a line (one-dimensional subspace), which we use to disambiguate senses using a clustering algorithm that harnesses the Grassmannian geometry of the representations. The disambiguation algorithm, which we call <span class="math inline">\(K\)</span>-Grassmeans leads to a procedure to label the different senses of the target word in the corpus – yielding lexeme vector representations, all in an unsupervised manner starting from a large (Wikipedia) corpus in English. Apart from several prototypical target (word,sense) examples and a host of empirical studies to intuit and justify the various geometric representations, we validate our algorithms on standard sense induction and disambiguation datasets and present new state-of-the-art results.</p>
+<h2 id="comments">Comments</h2>
+<p>Authors say: Our algorithm (<span class="math inline">\(K\)</span>-Grassmeans) does slightly, but uniformly, better than the precision-recall that you report. But the surprising thing is that a simple baseline we setup using standard word2vec individual vectors also gets very close to the performance of your algorithm! We hypothesize why this could be so in Section 5 where we see that the all the algorithm outputs are highly correlated. They get the easy instance all correct and the ones that they make errors on are actually hard/subtle (or rare in the context of the corpus we use (which is Wikipedia)).</p>
+<h2 id="summary">Summary</h2>
+<p>(by Yingyu)</p>
+<h3 id="algorithm">1 Algorithm</h3>
+<p>Their algorithm is quite interesting, building on two key ideas: 1) the context of a word can be represented by a subspace 2) the context subspace of the same sense of a word will intersect.</p>
+<p>The algorithm is:</p>
+<ol type="1">
+<li>for each occurrence of a target word, take say a context window of size 10 around the occurrence. The subspace of the word vectors in the window is the subspace for this context. They take rank-3 PCA. I think this is related to what we did in the linear structure paper.</li>
+<li>take all the context subspaces of a target polysemous word, cluster them into K groups. The clustering objective is called K-Grassman. It is similar to k-means, except that the center is a direction and the distance is the distance between a direction and a subspace. (This is word sense induction)</li>
+<li>given a new context of the target word, one can build the context subspace, find the closest center obtained in the K-Grassman. (This is word sense disambiguation)</li>
+</ol>
+<p>Finally, they also talked about lexeme representation. I understand this as given a polysemous word, how to represent its meanings. It’s tempting to represent it as the K cluster centers obtained in the K-Grassman. However, they found that these directions tend to be close; the inner product tends to be as large as 0.9. They leave how to explain this as an open problem, then provide another way to do the lexeme representation: first use the above word sense disambiguation algo to label the words in the corpus, and then train a vector for each sense of each word.</p>
+<p><strong>My thoughts</strong>: I think the inner products between these cluster centers are large because of a simple reason: frequent words like “the” pop up in all context, so all context subspace has these components. This problem has been observed in multiple scenarios. For obtaining vectors for sentences, we can avoid this by doing a weighted average of the word vectors. So one way to handle this problem for subspace is: when computing the subspace for a sentence/context, find a subspace minimizing the weighted sum of the distances from the word vectors to the subspace. This should be better than PCA, which is minimizing the unweighted sum.</p>
+<p>Their idea also implies a way to do sentence embedding: instead of using vectors, use subspace.</p>
+<h3 id="experiments">2 Experiments</h3>
+<p>They tested on word similarity task dataset and our police lineup dataset.</p>
+<p>On the police lineup, their result is better than ours. But theirs, ours, and simply using word2vec vectors, all lead to quite similar performance. (I observed this for our vectors before.) They mentioned that all methods are OK on easy ones but fail on hard ones in the testset. This is probably because some senses are rare on wiki data.</p>
+<h3 id="further-thoughts">Further thoughts</h3>
+<p>Since we view a sentence as a subspace, then it makes sense to generalize our random walk model so that the discourse is now a subspace.</p>
+
+  </div>
+
+    
+
+    <!-- Extension : Sharing buttons @ www.sharethis.com -->
+    <span class='st_facebook_large' displayText='Facebook'></span>
+    <span class='st_twitter_large' displayText='Tweet'></span>
+    <span class='st_googleplus_large' displayText='Google +'></span>
+    <span class='st_reddit_large' displayText='Reddit'></span>
+    <span class='st__large' displayText=''></span>
+
+    <div id="disqus_thread"></div>
+    
+
+
+  
+    <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+  </div>
+  
+</div>
+]]></summary>
+</entry>
+<entry>
     <title>RL references</title>
     <link href="http://holdenlee.github.io/notebook/posts/tcs/machine_learning/reinforcement_learning/rl_refs.html" />
     <id>http://holdenlee.github.io/notebook/posts/tcs/machine_learning/reinforcement_learning/rl_refs.html</id>
@@ -25,7 +299,7 @@
       
        
         <p>Posted: 2016-10-25 
-          , Modified: 2016-10-25 
+          , Modified: 2016-11-01 
 	</p>
       
        <p>Tags: <a href="/tags/reinforcement%20learning.html">reinforcement learning</a></p> 
@@ -43,7 +317,7 @@
  <li><a href="#convergence-of-classic-algorithms">Convergence of classic algorithms</a></li>
  <li><a href="#theory-algorithms">Theory algorithms</a></li>
  </ul></li>
- <li><a href="#factored-mdps-mdps-with-exponential-state-space">Factored MDPs, MDPs with exponential state space</a></li>
+ <li><a href="#factored-mdps-mdps-with-exponentialcontinuous-state-space">Factored MDPs, MDPs with exponential/continuous state space</a></li>
  <li><a href="#pomdps">POMDPs</a></li>
  <li><a href="#open-questions">Open questions</a></li>
  <li><a href="#surveys">Surveys</a></li>
@@ -145,16 +419,43 @@
 <li>(*) [KAL16] Contextual-MDP, which is contextual bandits + RL.
 <ul>
 <li>Regret wrt policy class.</li>
-<li>Poly in parameters, log in number of policies, independent of size of observation space. <!--what does no dependence on numspace can represent exact-best solution, state transition dynamics are deterministic.--></li>
-<li>Unlike POMDP, optimal policy is memoryless.</li>
+<li>Poly in parameters, log in number of policies, independent of size of observation space. <span class="math inline">\(\poly(M, K, H, \ep, \ln N, \ln \prc\de)\)</span> <!--what does no dependence on numspace can represent exact-best solution, state transition dynamics are deterministic.--></li>
+<li>Unlike POMDP, optimal policy is memoryless. (Definition is just this. For simplicity, consider layered POMDP’s.)
+<ul>
+<li>Ex. Disjoint contexts. Don’t know which observations correspond to which contexts! (Q: for HMM with “too many” observations what can we do?)</li>
+</ul></li>
 <li>Warning: inefficient b/c requires enumeration of policy class. (? does this contradict the poly/log time above)</li>
+<li>Assumptions
+<ul>
+<li><span class="math inline">\(Q\)</span> is realizable within the function class. (WHY doesn’t this work in the agnostic case?)</li>
+<li>Deterministic transitions</li>
+</ul></li>
+<li>Algorithm (cMDP-learn)
+<ul>
+<li>DFS-learn
+<ul>
+<li>TD-elim: eliminate functions that do not approximate <span class="math inline">\(Q^*\)</span> well (that do significantly worse than the best approximator so far)</li>
+<li>Consensus: Compute MC estimates for the observable in the current state (run a lot of episodes, using the same actions up to the current point; because the system is deterministic the state is the same). If they are all close in value, return true, else return false.</li>
+</ul></li>
+<li>Explore-on-demand
+<ul>
+<li>Select a surviving policy, estimate <span class="math inline">\(V\)</span> at root; if highly suboptimal value, invoke DFS-learn on paths visited by <span class="math inline">\(\pi_f\)</span>.</li>
+</ul></li>
+</ul></li>
+<li>Idea: if a surviving policy <span class="math inline">\(\pi_f\)</span> visits only states for which TD-Elim has been invoked, it must have near-optimal reward.</li>
+<li>Undesirables
+<ul>
+<li>Deterministic transition</li>
+<li>Enumerate class of regression functions</li>
+<li>Realizability assumptions</li>
+</ul></li>
 </ul></li>
 <li>[DPWR15] Bayesian Nonparametric Methods for Partially-Observable Reinforcement Learning <a href="http://dspace.mit.edu/handle/1721.1/97034">paper</a>
 <ul>
 <li>Bayes!</li>
 </ul></li>
 </ul>
-<h3 id="factored-mdps-mdps-with-exponential-state-space">Factored MDPs, MDPs with exponential state space</h3>
+<h3 id="factored-mdps-mdps-with-exponentialcontinuous-state-space">Factored MDPs, MDPs with exponential/continuous state space</h3>
 <ul>
 <li>[HSMM15] Off-policy Model-based Learning under Unknown Factored Dynamics.pdf
 <ul>
@@ -164,6 +465,55 @@
 <li>(It seems to be learning the Bayes net rather than evaluating <span class="math inline">\(\pi\)</span>. Ah, once you learn the Bayes net then you can evaluate just by sampling.)</li>
 <li>The difference from simpling learning a Bayes net is that the samples aren’t independent—they were from following a certain policy. Assumptions will ensure that you can still learn the model even if you only have samples from that policy.</li>
 </ul></li>
+<li>[EGW05] Tree-Based Batch Mode Reinforcement Learning
+<ul>
+<li>Introduced fitted Q-iteration (see below).</li>
+</ul></li>
+<li>(*) [AMS08] Fitted Q-iteration in continuous action-space MDPs
+<ul>
+<li>Fitted Q-iteration: Given a simulator, sample next actions <span class="math inline">\(s'\)</span> given <span class="math inline">\(s,a\)</span>. Given <span class="math inline">\(Q^{n}\)</span>, approximate <span class="math inline">\(Q^{n+1}\)</span> with these samples, then approximate <span class="math inline">\(Q^{n+1}\)</span> as <span class="math inline">\(Q(s,a)=\te^T\phi(s,a)\)</span>. Use least squares: LSFQI. Then pick best <span class="math inline">\(\wh \pi_{n+1}\)</span> using the approximation of <span class="math inline">\(Q^{n+1}\)</span>.</li>
+<li>Space of functions can be neural networks, linear combination of selected basis functions, restriction of RKHS (cf. LS-SVM).</li>
+<li>Warning: it’s not just the pseudo-dimension (related to VC dimension) of the function class <span class="math inline">\(\mathcal F\)</span> that matters, but that of <span class="math inline">\(\mathcal F_{\max}^{\wedge} = \set{\max_{a\in A} Q(x,a)}{Q\in \mathcal F}\)</span>. (Actually, use the notion of <a href="http://ttic.uchicago.edu/~tewari/lectures/lecture16.pdf">fat shattering functions</a>.)</li>
+<li>Also called “fitted actor-critic algorithm”.</li>
+<li>Under many assumptions, the error in <span class="math inline">\(V\)</span> can be bounded in terms of the pseudo-dimension of the function class <span class="math inline">\(\mathcal F\)</span>.</li>
+</ul></li>
+<li>[FDMW04] Dynamic Programming for Structured Continuous Markov Decision Problems <a href="https://arxiv.org/ftp/arxiv/papers/1207/1207.4115.pdf">paper</a>
+<ul>
+<li>Group together states belonging to the same “plateau” where expected reward is nearly constant.</li>
+<li>Use kd-trees to store the rectangular partitions.</li>
+</ul></li>
+<li>[HK03] Linear Program Approximations for Factored Continuous-State Markov Decision Processes <a href="http://machinelearning.wustl.edu/mlpapers/paper_files/NIPS2003_CN19.pdf">paper</a>
+<ul>
+<li>2 settings
+<ul>
+<li>Factored MDP’s: approximate <span class="math inline">\(V\)</span> within a class of functions <span class="math inline">\(\spn(\{f_i\})\)</span>. (Ex. each <span class="math inline">\(f_i\)</span> depends on a small subset of variables.) Here, minimize <span class="math inline">\(\sum w_i \sum_x f_i(x)\)</span> over all <span class="math inline">\(f\)</span>’s that overestimate the reward: <span class="math inline">\(\sum_i w_i(f_i - \ga \sum_{x_i'} \Pj(x_i'|x_i, a)f_i(x_i'))-R(x,a)\ge 0\)</span> forall <span class="math inline">\(x,a\)</span>.
+<ul>
+<li>Problem: infinite number of constraints. Insight: only a finite subset are active at any time.</li>
+</ul></li>
+<li>Continuous MDP’s. Consider conjugate classes of transition models and basis functions that give closed-form expressions.</li>
+</ul></li>
+</ul></li>
+<li>[LL05] Lazy Approximation for Solving Continuous Finite-Horizon MDPs <a href="http://www.aaai.org/Papers/AAAI/2005/AAAI05-186.pdf">paper</a>
+<ul>
+<li>In value iteration <span class="math display">\[V^{n+1}(x) = \max_{a\in A} \ba{R(x,a) + \int_X T(x'|x,a)V^n(x')\dx'}\]</span> replace <span class="math inline">\(V^n\)</span> with a piecewise constant approximation. (Otherwise it becomes a piecewise higher order polynomial.)</li>
+</ul></li>
+<li>[MTT] A Fast Analytical Algorithm for MDPs with Continuous State Spaces <a href="http://www.sci.brooklyn.cuny.edu/~parsons/events/gtdt/gtdt06/marecki.pdf">paper</a>
+<ul>
+<li>Focuses on MDP’s where the transition time (after an action) is governed by a exponential pdf <span class="math inline">\(\la e^{-\la t'}\)</span>.</li>
+</ul></li>
+<li>[TS06] Probabilistic Inference for Solving Discrete and Continuous State Markov Decision Processes <a href="http://machinelearning.wustl.edu/mlpapers/paper_files/icml2006_ToussaintS06.pdf">paper</a>
+<ul>
+<li>The problem of solving a MDP (with decay <span class="math inline">\(\ga\)</span>) can be reduced to max likelihood estimation. (It is over a mixture of finite-time MDP’s, weighted geometrically in <span class="math inline">\(\ga\)</span> in the length.)</li>
+<li>Now use EM to maximize the likelihood.</li>
+</ul></li>
+<li><a href="https://www.cs.utah.edu/~piyush/teaching/continuous-mdp.pdf">Lecture notes</a>
+<ul>
+<li>Discretization</li>
+<li>Fitted value iteration: Given a simulator, sample next actions <span class="math inline">\(s'\)</span> given <span class="math inline">\(s,a\)</span>. Given <span class="math inline">\(V^{n}\)</span>, approximate <span class="math inline">\(V^{n+1}\)</span> with these samples, then approximate <span class="math inline">\(V^{n+1}\)</span> as <span class="math inline">\(V(s)=\te^T\phi(s)\)</span> (ex. using least squares).</li>
+<li>Can be extended to least-squares policy iteration.</li>
+</ul></li>
+<li><a href="http://burlap.cs.brown.edu/tutorials/scd/p1.html">tutorial</a></li>
+<li><a href="https://scholar.google.com/scholar?hl=en&amp;q=mdp+with+continuous+state+space">google scholar search</a></li>
 </ul>
 <h3 id="pomdps">POMDPs</h3>
 <ul>
@@ -182,6 +532,19 @@
 <li>model-free algorithms (<span class="math inline">\(Q\)</span>-learning)</li>
 <li>policy search methods</li>
 <li>separate exploration and exploitation collect examples, then estimate parameters [Guo16]. PAC in RL POMDP?</li>
+</ul></li>
+<li>Regret bounds optimal in <span class="math inline">\(N\)</span> (<span class="math inline">\(\wt O(\sqrt N)\)</span>). Depends on a natural notion of “diameter” for POMDP’s (different from definition for MDP’s. max mean passage time using best <span class="math inline">\(\pi\)</span>).</li>
+<li>Idea: by restricting to memoryless policies, generate conditionally independent views.</li>
+<li><span class="math inline">\(\mathcal P\)</span> set of all stochastic memoryless policies that have a non-zero probability to explore all actions. Assume <span class="math inline">\(\pi\in \mathcal P\)</span>.</li>
+<li>Method
+<ul>
+<li>Can’t use spectral method for HMM’s.</li>
+<li>But same idea: find 3 conditionally independent views (given <span class="math inline">\(x_t, a_t\)</span>), use a “symmetrization” technique, and find spectral decomposition.</li>
+</ul></li>
+<li>UCRL integration
+<ul>
+<li>distribution of the views <span class="math inline">\(v_1, v_2, v_3\)</span> depends on the policy used to generate the samples. As a result, whenever the policy changes, the spectral method should be re-run using only the samples collected by that specific policy.</li>
+<li>Construct set of admissible POMDP’s whose T, O, R models are in confidence interval</li>
 </ul></li>
 <li>Open: analyze UCRL for finite horizon.</li>
 <li>Stochastic policies are near-optimal in many domains (?). NP-hard to optimize but under some conditions can approximate</li>
@@ -423,22 +786,25 @@ v_{*'}^{\ga'} = (I-\ga'P_*')^{-1}r_*, v_{*'}^{\ga}, v_\pi^\ga, v_\pi^{\ga'}.
 <h2 id="threads">Threads</h2>
 <h3 id="priority">Priority</h3>
 <ul>
-<li>Come up with a class of MDPs on exponential space that is interesting and tractable. <a href="/posts/tcs/machine_learning/reinforcement_learning/exponential.html">Thoughts</a>
+<li>Come up with a class of MDPs on exponential space that is interesting and tractable. <a href="/posts/tcs/machine_learning/reinforcement_learning/continuous.html">Thoughts</a>
 <ul>
 <li>Understand provable guarantees on MDP’s first</li>
 </ul></li>
-<li>Alexa <a href="https://docs.google.com/document/d/1OtvefjviKSSWH2gzOtYo8T_DVEwPEsI2n0kdrC8WlZI/edit">references</a></li>
+<li>Alexa <a href="https://docs.google.com/document/d/1OtvefjviKSSWH2gzOtYo8T_DVEwPEsI2n0kdrC8WlZI/edit">references</a> (Wed-Fri)</li>
 </ul>
 <h3 id="other">Other</h3>
 <ul>
 <li>PMI - get some results!
 <ul>
 <li>Mon. - train CIFAR.</li>
-<li>Check MNIST model.</li>
+<li>Todos
+<ul>
+<li>Check MNIST model 1. What are sizes of coefficients?</li>
+<li>Run experiments on CIFAR.</li>
 </ul></li>
-<li>SoS - chapters 2 and 3</li>
+</ul></li>
+<li>SoS - chapters 2–5</li>
 <li>DL experiments <a href="/posts/tcs/machine_learning/matrices/DL_generalization.html">DL generalization</a></li>
-<li>Papers</li>
 <li>On hold
 <ul>
 <li>(*) NN learns DL. Can write up weak result, worth doing?</li>
@@ -964,328 +1330,6 @@ I've done a lot of the calculations for neural nets learning dictionaries, and a
 <li><a href="https://pillow.readthedocs.io/en/3.4.x/reference/index.html">Pillow</a></li>
 </ul></li>
 </ul>
-
-  </div>
-
-    
-
-    <!-- Extension : Sharing buttons @ www.sharethis.com -->
-    <span class='st_facebook_large' displayText='Facebook'></span>
-    <span class='st_twitter_large' displayText='Tweet'></span>
-    <span class='st_googleplus_large' displayText='Google +'></span>
-    <span class='st_reddit_large' displayText='Reddit'></span>
-    <span class='st__large' displayText=''></span>
-
-    <div id="disqus_thread"></div>
-    
-
-
-  
-    <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
-  </div>
-  
-</div>
-]]></summary>
-</entry>
-<entry>
-    <title>MDP's with continuous state space (scratch)</title>
-    <link href="http://holdenlee.github.io/notebook/posts/tcs/machine_learning/reinforcement_learning/continuous_scratch.html" />
-    <id>http://holdenlee.github.io/notebook/posts/tcs/machine_learning/reinforcement_learning/continuous_scratch.html</id>
-    <published>2016-10-14T00:00:00Z</published>
-    <updated>2016-10-14T00:00:00Z</updated>
-    <summary type="html"><![CDATA[
-<div class="container">
-  <div id="content">
-    <div class="page header">
-      <h1>MDP's with continuous state space (scratch)</h1>
-    </div>
-    <div class="info">
-      
-       
-        <p>Posted: 2016-10-14 
-          , Modified: 2016-10-25 
-	</p>
-      
-       <p>Tags: <a href="/tags/none.html">none</a></p> 
-    </div>
-    
-  </div>
-  <!--/div-->
-
-  <div class="toc"> <ul>
- <li><a href="#starting-points">Starting points</a></li>
- <li><a href="#model">Model</a><ul>
- <li><a href="#first-try">First try</a></li>
- <li><a href="#second-try">Second try</a></li>
- </ul></li>
- <li><a href="#misc">Misc</a></li>
- </ul> </div>
-
-  <div class="blog-main">
-    <p><a href="continuous.html">written-up things</a></p>
-<p><a href="https://en.wikipedia.org/wiki/Kalman_filter">Kalman filter</a></p>
-<p>Come up with a class of MDPs on exponentially large/continuous space that is interesting and tractable. Think of generalizing from contextual bandits * Basically we want a reasonable model of a MDP with a very large (exponential or continuous) state space and be able to do something with it. Wanted to include some dynamics like in Kalman filters but we weren’t sure whether Kalman filters are tractable * Todo: learn about Kalman filters</p>
-<h2 id="starting-points">Starting points</h2>
-<ol type="1">
-<li>HMM’s have discrete state space. What happens with continuous state space? Suppose there are some dynamics as in Kalman filters. Infer the hidden state. References
-<ul>
-<li>Continuous HMM paper (RKHS)</li>
-<li>Kalman filters (see examples)</li>
-<li>Grad descent learning dynamical systems.</li>
-</ul></li>
-<li>Contextual bandits + MDP’s. Don’t assume there’s a hidden state here, just that next state depends, say, linearly on action and noise.</li>
-<li>Context vector/random walk model for documents: transition probabilities <span class="math inline">\(\propto \exp(-\an{c_1,c_2})\)</span> and observation probabilities <span class="math inline">\(\propto \exp(-\an{c_1,x})\)</span>.</li>
-</ol>
-<h2 id="model">Model</h2>
-<h3 id="first-try">First try</h3>
-<ul>
-<li>Stochastic setting.</li>
-<li><span class="math inline">\(c_t\)</span> is context at time <span class="math inline">\(t\)</span>.</li>
-<li>Set of actions <span class="math inline">\(A\)</span>. (For example, <span class="math inline">\(A=\{e_1,\ldots, e_n\}\)</span>.)</li>
-<li>Next context <span class="math inline">\(c_{t+1}=\)</span> (Here <span class="math inline">\(w_t\)</span> is noise.)
-<ul>
-<li><span class="math inline">\(F_a c_t + w_t\)</span>. (Transformation depends on action.)</li>
-<li><span class="math inline">\(F c_t + B a + w_t\)</span>. (Action is a forcing term. This matches Kalman formulation. More reasonable?) (*)</li>
-</ul></li>
-<li>Payoff depends on context and actions in some way.
-<ul>
-<li>Model 1: depends only on context <span class="math inline">\(\te^T c_t\)</span>. (*)</li>
-<li>Model 2: depends on context and action <span class="math inline">\(\te^T[c_t;a]\)</span>.</li>
-<li>? Some probability?</li>
-</ul></li>
-</ul>
-<p>This setting looks like reinforcement learning + control theory. Prior work? How is RL used in continuous systems right now? Basic control theory background?</p>
-<p>Need the model to be a generalization of regular MDP.</p>
-<p>(*) may be interesting from control theory perspective, but doesn’t generalize discrete MDP. (Seems like best to learn the dynamics, and then do optimal thing from there…)</p>
-<h3 id="second-try">Second try</h3>
-<ul>
-<li>Finite number of actions</li>
-<li><span class="math inline">\(c_{t+1} = F_a c_t + w_t\)</span>. (Only probability is noise.)</li>
-<li>Payout <span class="math inline">\(\te_^T c_t\)</span>.</li>
-</ul>
-<p>Captures deterministic MDP, but not probabilistic, by letting <span class="math inline">\(A=\{e_i\}\)</span>.</p>
-<h2 id="misc">Misc</h2>
-<p>Do as well as best Bayes net? Actions in some class. Finite set of actions, vs. exponential/continuous set of actions. In latter case, will depend on optimizability of that set…</p>
-<p>Ex. class is a SVM.</p>
-<p>“Do as well as best estimator of <span class="math inline">\(q\)</span> function in a certain class (assume convexity or something?)” (cf. contextual bandits first)</p>
-<!--Definitely need something stronger than: there exist something that works! if can encode crypto 
-
-Upper confidence bounds
--->
-
-  </div>
-
-    
-
-    <!-- Extension : Sharing buttons @ www.sharethis.com -->
-    <span class='st_facebook_large' displayText='Facebook'></span>
-    <span class='st_twitter_large' displayText='Tweet'></span>
-    <span class='st_googleplus_large' displayText='Google +'></span>
-    <span class='st_reddit_large' displayText='Reddit'></span>
-    <span class='st__large' displayText=''></span>
-
-    <div id="disqus_thread"></div>
-    
-
-
-  
-    <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
-  </div>
-  
-</div>
-]]></summary>
-</entry>
-<entry>
-    <title>MDP's with continuous state space</title>
-    <link href="http://holdenlee.github.io/notebook/posts/tcs/machine_learning/reinforcement_learning/continuous.html" />
-    <id>http://holdenlee.github.io/notebook/posts/tcs/machine_learning/reinforcement_learning/continuous.html</id>
-    <published>2016-10-14T00:00:00Z</published>
-    <updated>2016-10-14T00:00:00Z</updated>
-    <summary type="html"><![CDATA[
-<div class="container">
-  <div id="content">
-    <div class="page header">
-      <h1>MDP's with continuous state space</h1>
-    </div>
-    <div class="info">
-      
-       
-        <p>Posted: 2016-10-14 
-          , Modified: 2016-10-14 
-	</p>
-      
-       <p>Tags: <a href="/tags/none.html">none</a></p> 
-    </div>
-    
-  </div>
-  <!--/div-->
-
-  <div class="toc"> <ul>
- <li><a href="#finding-optimal-policy-given-dynamics">Finding optimal policy (given dynamics)</a><ul>
- <li><a href="#simplest-problem">Simplest problem</a></li>
- <li><a href="#different-linear-transformations">Different linear transformations</a><ul>
- <li><a href="#finite-actions">Finite actions</a></li>
- <li><a href="#continuous-actions">Continuous actions</a></li>
- </ul></li>
- </ul></li>
- </ul> </div>
-
-  <div class="blog-main">
-    <p>Other pages</p>
-<ul>
-<li><a href="continuous_scratch.html">scratch</a></li>
-<li><a href="rl_refs.html">papers</a></li>
-</ul>
-<h2 id="finding-optimal-policy-given-dynamics">Finding optimal policy (given dynamics)</h2>
-<h3 id="simplest-problem">Simplest problem</h3>
-<p>State is <span class="math inline">\(s\in \R^n\)</span>.</p>
-<p>Suppose</p>
-<ul>
-<li>reward is given by <span class="math inline">\(\an{r,s}\)</span></li>
-<li>discount factor for future reward is <span class="math inline">\(\ga\)</span>,</li>
-<li>action set is <span class="math inline">\(A\)</span> (finite or convex),</li>
-<li>update is <span class="math inline">\(s_{t+1} = Us_t + a_t\)</span>, <span class="math inline">\(a_t\in A\)</span>.</li>
-</ul>
-<p>Then we can solve this in closed form (geometric series). The best action is the same at each time step, <span class="math display">\[\max_{a\in A} \an{(I-\ga U)^{T\,-1}r, a}.\]</span></p>
-<p>For infinite-horizon, we look at instead the average of rewards over next <span class="math inline">\(T\)</span> time steps as <span class="math inline">\(T\to \iy\)</span>; interesting case is when <span class="math inline">\(U\)</span> has eigenvalues equal to 1. Straightforward.</p>
-<h3 id="different-linear-transformations">Different linear transformations</h3>
-<h4 id="finite-actions">Finite actions</h4>
-<p>Now consider a more general case. (We don’t put in probability yet.)</p>
-<ul>
-<li>The reward is still <span class="math inline">\(\an{r,s}\)</span></li>
-<li>discount factor <span class="math inline">\(\ga\)</span></li>
-<li>Finite set <span class="math inline">\(A\)</span>. (Think about <span class="math inline">\(|A|=n\)</span>.)</li>
-<li>Given action <span class="math inline">\(a\)</span>, the update is <span class="math inline">\(s_{t+1} = U_a s_t + v_a\)</span>, <span class="math inline">\(a\in A\)</span>.</li>
-</ul>
-<p>Given fixed discount factor <span class="math inline">\(\ga\)</span>, desired approximation <span class="math inline">\(\ep\)</span>, can we find something that does at most <span class="math inline">\(\ep\)</span> worse in <span class="math inline">\(\poly\prc{\ep}\)</span> time?</p>
-<ul>
-<li>Dynamic programming: We can achieve <span class="math inline">\(|A|^{\log_\ga\prc{\ep}} = \prc{\ep}^{O(\ln |A|)}\)</span> time by searching over a tree.</li>
-<li>Policy iteration: The policy is a function in <span class="math inline">\(n\)</span> dimensions, and it’s not even clear that we can represent it succinctly! If we discretize with a mesh, this takes exponential time/space.</li>
-</ul>
-<p>Questions</p>
-<ol type="1">
-<li>Can we find a nice class of functions (SVM, etc.), and find the best <span class="math inline">\(v\)</span> within that class?</li>
-<li>Is there a class that can approximate all possible <span class="math inline">\(v\)</span>’s within <span class="math inline">\(\ep\)</span> or constant factor?</li>
-<li>Can <span class="math inline">\(v\)</span>’s be complicated? (Ex. break the space into exponentially many regions.)</li>
-</ol>
-<p>Careful: finding the best approximation to a unitary transformation (take <span class="math inline">\(U_a\)</span> unitary and <span class="math inline">\(v_a=0\)</span>) with a certain set of unitaries is a well-studied problem that can involve number theory—we want to exclude this. Ex. make sure we’re not in this regime - have the discount factor, or add noise.</p>
-<h4 id="continuous-actions">Continuous actions</h4>
-<p>Can also make <span class="math inline">\(A\)</span> continuous.</p>
-<ul>
-<li><span class="math inline">\(A\sub \R^m\)</span> convex</li>
-<li>Given action <span class="math inline">\(a\)</span>, the update is <span class="math inline">\(U[s_t;a] + Va\)</span> where <span class="math inline">\(U_a\in \R^{n\times (m+n)}\)</span>, <span class="math inline">\(V\in \R^{n\times m}\)</span>.</li>
-</ul>
-
-  </div>
-
-    
-
-    <!-- Extension : Sharing buttons @ www.sharethis.com -->
-    <span class='st_facebook_large' displayText='Facebook'></span>
-    <span class='st_twitter_large' displayText='Tweet'></span>
-    <span class='st_googleplus_large' displayText='Google +'></span>
-    <span class='st_reddit_large' displayText='Reddit'></span>
-    <span class='st__large' displayText=''></span>
-
-    <div id="disqus_thread"></div>
-    
-
-
-  
-    <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
-  </div>
-  
-</div>
-]]></summary>
-</entry>
-<entry>
-    <title>Finite model theory</title>
-    <link href="http://holdenlee.github.io/notebook/posts/math/logic/finite_model_theory.html" />
-    <id>http://holdenlee.github.io/notebook/posts/math/logic/finite_model_theory.html</id>
-    <published>2016-10-14T00:00:00Z</published>
-    <updated>2016-10-14T00:00:00Z</updated>
-    <summary type="html"><![CDATA[
-<div class="container">
-  <div id="content">
-    <div class="page header">
-      <h1>Finite model theory</h1>
-    </div>
-    <div class="info">
-      
-       
-        <p>Posted: 2016-10-14 
-          , Modified: 2016-10-14 
-	</p>
-      
-       <p>Tags: <a href="/tags/model%20theory.html">model theory</a></p> 
-    </div>
-    
-  </div>
-  <!--/div-->
-
-  <div class="toc"> <ul>
- <li><a href="#definability-and-undefinability">1 Definability and undefinability</a><ul>
- <li><a href="#expressive-power">Expressive power</a></li>
- </ul></li>
- </ul> </div>
-
-  <div class="blog-main">
-    <p><a href="https://simons.berkeley.edu/talks/finite-and-algorithmic-model-theory">Link</a></p>
-<h2 id="definability-and-undefinability">1 Definability and undefinability</h2>
-<ul>
-<li>Expressive power of logics on class of finite structures.</li>
-<li>Problems in computer science (complexity theory, database theory) are naturally questions about expressive power of logics.</li>
-</ul>
-<p><span class="math display">\[Mod(\ph) = \set{\mathbb A}{ \mathbb A \vDash \ph}.\]</span> Here <span class="math inline">\(\mathbb A\)</span> ranges over finite relational structures.</p>
-<p>What classes of structures are definable? (Set of possible <span class="math inline">\(Mod(\ph)\)</span>’s for <span class="math inline">\(\ph\)</span> in logic <span class="math inline">\(\mathcal L\)</span>.)</p>
-<ul>
-<li>Syntactic restrictions on <span class="math inline">\(\ph\)</span> vs. semantic restrictions on <span class="math inline">\(Mod(\ph)\)</span>.</li>
-<li>Computational complexity of <span class="math inline">\(Mod(\ph)\)</span> vs. syntactic complexity of <span class="math inline">\(\ph\)</span>.</li>
-</ul>
-<h3 id="expressive-power">Expressive power</h3>
-<p>Relational vocabulary: finite set <span class="math inline">\(A\)</span> with relations <span class="math inline">\(R_1,\ldots, R_m\)</span> and constants <span class="math inline">\(c_1,\ldots, c_n\)</span>.</p>
-<p>A property of finite structures is any isomorphism-closed class of structures. (Morphisms are permutations. Ex. graph ismomorphisms.) Given logic, for which properties <span class="math inline">\(P\)</span> is there a sentence <span class="math inline">\(\ph\)</span> such that <span class="math inline">\(\mathbb A\in P\iff A\vDash \ph\)</span>.</p>
-<p>Ex. colored graphs: one binary relation <span class="math inline">\(E^2\)</span> and some unary relations <span class="math inline">\(C_i^1\)</span>. First-order logic formulas involve these relations and <span class="math inline">\(\wedge, \vee, \neg, \exists, \forall\)</span>.</p>
-<ul>
-<li>Vertex cover of size at most <span class="math inline">\(k\)</span>. (<span class="math inline">\(k\)</span> fixed)</li>
-<li>3-colorability when allow quantification over sets of vertices.</li>
-</ul>
-<p>Compactness, completeness, preservation fail. (What are these exactly?)</p>
-<p>Methods:</p>
-<ul>
-<li>Ehrenfeucht-Fraisse Games and related model-comparison games</li>
-<li>Locality Theorems</li>
-<li>Automata-based methods</li>
-<li>Complexity</li>
-<li>Asymptotic Combinatorics</li>
-</ul>
-<p>Equivalence means satisfying the same statements in the logic. On finite structures, two structures are equivalent iff they are isomorphic.</p>
-<p>Quantifier rank:</p>
-<ol type="1">
-<li>For atoms, <span class="math inline">\(qr(\ph)=0\)</span>.</li>
-<li><span class="math inline">\(qr(\neg \psi) = qr(\psi)\)</span>.</li>
-<li><span class="math inline">\(qr(\psi_1\wedge/\vee \psi_2) = \max_i(qr(\psi_i))\)</span>.</li>
-<li><span class="math inline">\(qr(\exists/\forall x \psi) = qr(\psi)+1\)</span>.</li>
-</ol>
-<p><span class="math inline">\(\mathbb A\equiv_p \mathbb B\)</span> iff for all <span class="math inline">\(qr(\ph)\le p\)</span>, <span class="math inline">\(A\vDash \ph\iff B\vDash \ph\)</span>.</p>
-<p><span class="math inline">\(S\)</span> is definable by first order sentence iff <span class="math inline">\(S\)</span> is closed under <span class="math inline">\(\equiv_p\)</span> for some <span class="math inline">\(p\)</span>. (13) ?? (Is <span class="math inline">\(S\)</span> on finite set? What does “finite relational vocab” mean?) (Is this trivial by taking <span class="math inline">\(p=|A|\)</span>?) (NO: <span class="math inline">\(A\)</span> is of arbitrary finite size!)</p>
-<p>Ex. I think connectedness is not first-order!</p>
-<p>Define <strong>partial isomorphism</strong>.</p>
-<p>Ehrenfeucht-Fraisse game:</p>
-<p>For <span class="math inline">\(p\)</span> rounds:</p>
-<ul>
-<li>Spoiler choose one structure and an element of that structure.</li>
-<li>Duplicator responds with element of other structure <span class="math inline">\(a_i\)</span>.</li>
-</ul>
-<p>After <span class="math inline">\(p\)</span> rounds, Duplicator wins if <span class="math inline">\(a_i\mapsto b_i\)</span> is partial iso. Duplicator has winning strategy iff <span class="math inline">\(\mathbb A\equiv_p \mathbb B\)</span>.</p>
-<p>Proof: choose the witnesses of existence, going to the other structure for a <span class="math inline">\(\forall\)</span> because negated <span class="math inline">\(\forall\)</span> gives <span class="math inline">\(\exists\)</span>.</p>
-<p>So to show not definable, for every <span class="math inline">\(p\)</span> produce <span class="math inline">\(\mathbb A_p\)</span>, <span class="math inline">\(\mathbb B_p\)</span> such that one is in <span class="math inline">\(S\)</span>, and duplicator wins.</p>
-<p>Ex. Not definable: 2-colorability, even cardinality, connectivity.</p>
-<p>(Duplicator’s strategy is to ensure that after r moves, the distance between corresponding pairs of pebbles is either equal or <span class="math inline">\(2p^r\)</span>.)</p>
-<p>Alternative: stratify by number of free variables (in any sub-formula), <span class="math inline">\(\equiv^k\)</span>. <span class="math inline">\(\equiv^k\implies \equiv_k\)</span>.</p>
-<p>Connectivity and 2-colorability are axiomatizable in <span class="math inline">\(L^k\)</span> (define <span class="math inline">\(path_{\le l}\)</span>, <span class="math inline">\(disconnect_l\)</span>); even cardinality is not. (I’m confused… why can we reuse variables?? 21)</p>
-<p><span class="math inline">\(\equiv_p, \equiv^k\)</span> have finitely/infinitely many equivalence classes.</p>
-<p>How is the pebble game different?? 23</p>
 
   </div>
 

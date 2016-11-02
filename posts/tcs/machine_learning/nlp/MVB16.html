@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+
+  <meta name="description" content="Holden Lee's Research Notebook">
+  <meta name="author" content="Holden Lee">
+    
+  <title>[MVB16] Geometry of Polysemy</title>
+
+  <!-- Bootstrap core CSS -->
+  <link href="../../../../bootstrap/css/bootstrap.min.css" rel="stylesheet">
+
+  <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+  <!-- <link href="../../assets/css/ie10-viewport-bug-workaround.css" rel="stylesheet"> -->
+
+  <!-- Custom styles for this template -->
+  <link href="../../../../css/blog.css" rel="stylesheet">
+  <link href="../../../../css/default.css" rel="stylesheet">
+
+  <!-- Extension : Footnotes -->
+  <link href="../../../../footnotes/css/footnotes.css" rel="stylesheet">
+
+  <!-- Extension : InlineDisqussions @ https://github.com/tsi/inlineDisqussions -->
+  
+
+  <!-- Extension : Collapsible lists @ http://code.stephenmorley.org/javascript/collapsible-lists/-->
+  <link href="../../../../collapsible_lists/css/collapsible.css" rel="stylesheet">
+  <script type="text/javascript" src="../../../../collapsible_lists/js/CollapsibleLists.js"></script>
+
+</head>
+
+<body>
+
+<!-- Navigation bar. navbar-inverse is black, navbar-default is white.-->
+<!-- To make a button active (pressed), use <li class="active"> -->
+<div id="header">
+  <nav class="navbar navbar-inverse navbar-fixed-top">
+    <div class="container">
+      <div class="navbar-header">
+        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+          <span class="sr-only">Toggle navigation</span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="../../../../">Notebook</a>
+      </div>
+      <div id="navbar" class="collapse navbar-collapse">
+        <ul class="nav navbar-nav">
+          <li><a href="../../../../">Home</a></li>
+          <li><a href="../../../../sitemap.html">Sitemap</a></li>
+<!-- TODO: Distinguish between PAPERS, RESEARCH QUESTIONS, BOOKS -->
+<!-- TODO: make this part a for loop over main pages -->
+        </ul>
+      </div><!--/.nav-collapse -->
+    </div>
+  </nav>
+</div>
+<!-- Content -->
+<!--div id="content">
+  <h1>Mental Wilderness</h1>-->
+
+
+
+<div class="container">
+  <div id="content">
+    <div class="page header">
+      <h1>[MVB16] Geometry of Polysemy</h1>
+    </div>
+    <div class="info">
+      
+       
+        <p>Posted: 2016-10-28 
+          , Modified: 2016-10-28 
+	</p>
+      
+       <p>Tags: <a href="../../../../tags/nlp.html">nlp</a>, <a href="../../../../tags/word%20vectors.html">word vectors</a>, <a href="../../../../tags/polysemy.html">polysemy</a></p> 
+    </div>
+    
+  </div>
+  <!--/div-->
+
+  <div class="toc"> <ul>
+ <li><a href="#abstract">Abstract</a></li>
+ <li><a href="#comments">Comments</a></li>
+ <li><a href="#summary">Summary</a><ul>
+ <li><a href="#algorithm">1 Algorithm</a></li>
+ <li><a href="#experiments">2 Experiments</a></li>
+ <li><a href="#further-thoughts">Further thoughts</a></li>
+ </ul></li>
+ </ul> </div>
+
+  <div class="blog-main">
+    <h2 id="abstract">Abstract</h2>
+<p>Title: Geometry of Polysemy</p>
+<p><a href="https://arxiv.org/pdf/1610.07569v1.pdf">Link</a></p>
+<p>Abstract: Vector representations of words have heralded a transformational approach to classical problems in NLP; the most popular example is word2vec. However, a single vector does not suffice to model the polysemous nature of many (frequent) words, i.e., words with multiple meanings. In this paper, we propose a three-fold approach for unsupervised polysemy modeling: (a) context representations, (b) sense induction and disambiguation and (c) lexeme (as a word and sense pair) representations. A key feature of our work is the finding that a sentence containing a target word is well represented by a low rank subspace, instead of a point in a vector space. We then show that the subspaces associated with a particular sense of the target word tend to intersect over a line (one-dimensional subspace), which we use to disambiguate senses using a clustering algorithm that harnesses the Grassmannian geometry of the representations. The disambiguation algorithm, which we call <span class="math inline">\(K\)</span>-Grassmeans leads to a procedure to label the different senses of the target word in the corpus – yielding lexeme vector representations, all in an unsupervised manner starting from a large (Wikipedia) corpus in English. Apart from several prototypical target (word,sense) examples and a host of empirical studies to intuit and justify the various geometric representations, we validate our algorithms on standard sense induction and disambiguation datasets and present new state-of-the-art results.</p>
+<h2 id="comments">Comments</h2>
+<p>Authors say: Our algorithm (<span class="math inline">\(K\)</span>-Grassmeans) does slightly, but uniformly, better than the precision-recall that you report. But the surprising thing is that a simple baseline we setup using standard word2vec individual vectors also gets very close to the performance of your algorithm! We hypothesize why this could be so in Section 5 where we see that the all the algorithm outputs are highly correlated. They get the easy instance all correct and the ones that they make errors on are actually hard/subtle (or rare in the context of the corpus we use (which is Wikipedia)).</p>
+<h2 id="summary">Summary</h2>
+<p>(by Yingyu)</p>
+<h3 id="algorithm">1 Algorithm</h3>
+<p>Their algorithm is quite interesting, building on two key ideas: 1) the context of a word can be represented by a subspace 2) the context subspace of the same sense of a word will intersect.</p>
+<p>The algorithm is:</p>
+<ol type="1">
+<li>for each occurrence of a target word, take say a context window of size 10 around the occurrence. The subspace of the word vectors in the window is the subspace for this context. They take rank-3 PCA. I think this is related to what we did in the linear structure paper.</li>
+<li>take all the context subspaces of a target polysemous word, cluster them into K groups. The clustering objective is called K-Grassman. It is similar to k-means, except that the center is a direction and the distance is the distance between a direction and a subspace. (This is word sense induction)</li>
+<li>given a new context of the target word, one can build the context subspace, find the closest center obtained in the K-Grassman. (This is word sense disambiguation)</li>
+</ol>
+<p>Finally, they also talked about lexeme representation. I understand this as given a polysemous word, how to represent its meanings. It’s tempting to represent it as the K cluster centers obtained in the K-Grassman. However, they found that these directions tend to be close; the inner product tends to be as large as 0.9. They leave how to explain this as an open problem, then provide another way to do the lexeme representation: first use the above word sense disambiguation algo to label the words in the corpus, and then train a vector for each sense of each word.</p>
+<p><strong>My thoughts</strong>: I think the inner products between these cluster centers are large because of a simple reason: frequent words like “the” pop up in all context, so all context subspace has these components. This problem has been observed in multiple scenarios. For obtaining vectors for sentences, we can avoid this by doing a weighted average of the word vectors. So one way to handle this problem for subspace is: when computing the subspace for a sentence/context, find a subspace minimizing the weighted sum of the distances from the word vectors to the subspace. This should be better than PCA, which is minimizing the unweighted sum.</p>
+<p>Their idea also implies a way to do sentence embedding: instead of using vectors, use subspace.</p>
+<h3 id="experiments">2 Experiments</h3>
+<p>They tested on word similarity task dataset and our police lineup dataset.</p>
+<p>On the police lineup, their result is better than ours. But theirs, ours, and simply using word2vec vectors, all lead to quite similar performance. (I observed this for our vectors before.) They mentioned that all methods are OK on easy ones but fail on hard ones in the testset. This is probably because some senses are rare on wiki data.</p>
+<h3 id="further-thoughts">Further thoughts</h3>
+<p>Since we view a sentence as a subspace, then it makes sense to generalize our random walk model so that the discourse is now a subspace.</p>
+
+  </div>
+
+    
+
+    <!-- Extension : Sharing buttons @ www.sharethis.com -->
+    <span class="st_facebook_large" displayText="Facebook"></span>
+    <span class="st_twitter_large" displayText="Tweet"></span>
+    <span class="st_googleplus_large" displayText="Google +"></span>
+    <span class="st_reddit_large" displayText="Reddit"></span>
+    <span class="st__large" displayText></span>
+
+    <div id="disqus_thread"></div>
+    
+
+
+  
+    <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+  </div>
+  
+</div>
+
+
+<!-- Footer -->
+<div id="footer">
+  <div class="container">
+    Built with
+    <a href="http://jaspervdj.be/hakyll">Hakyll</a> 
+    using 
+    <a href="http://www.getbootstrap.com">Bootstrap</a>, 
+    <a href="http://www.disqus.com">Disqus</a>,
+    <a href="http://ignorethecode.net/blog/2010/04/20/footnotes/">Footnotes.js</a>,
+    <a href="http://highlightjs.org/">Highlight.js</a>, 
+    <a href="http://www.mathjax.org">MathJax</a>, 
+    and <a href="http://www.sharethis.com">ShareThis</a>.
+  </div>
+</div>
+</body>
+
+</html>
+
+<!-- SCRIPTS -->
+<!-- jQuery-->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+<script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
+
+<script src="../../../../bootstrap/js/bootstrap.min.js"></script>
+
+<!-- Extension : Highlight.js @ https://highlightjs.org/ -->
+<!-- Syntax highlighting tomorrow-night-bright, agate-->
+<link rel="stylesheet" href="../../../../highlight/css/tomorrow-night-bright.css">
+<script src="../../../../highlight/js/highlight.pack.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+
+<!-- Extension : MathJax @ https://docs.mathjax.org/en/v2.5-latest/tex.html -->
+<!-- MathJax/config/local/local.js contains macros. Need to provide entire URL-->
+<script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML,http://holdenlee.github.io/notebook/MathJax/config/local/local"></script>
+
+<!-- Extension : Footnotes @ http://ignorethecode.net/blog/2010/04/20/footnotes/ -->
+<script src="../../../../footnotes/js/footnotes.js"></script>
+
+<!-- Extension : Disqus @ http://disqus.com -->
+<!-- Extension : InlineDisqussions @ https://github.com/tsi/inlineDisqussions -->
+
+<script src="../../../../disqus/js/disqus.js"></script>
+
+
+
+<!-- Extension : Google Analytics -->
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-73261814-1', 'auto');
+  ga('send', 'pageview');
+
+</script>
+

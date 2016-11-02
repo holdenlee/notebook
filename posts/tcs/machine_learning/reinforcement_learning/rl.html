@@ -125,6 +125,19 @@
  <li><a href="#trajectory-sampling">8.6 Trajectory sampling</a></li>
  <li><a href="#heuristic-search">8.7 Heuristic search</a></li>
  </ul></li>
+ <li><a href="#generalization-and-function-approximation-v1">8 Generalization and function approximation (v1)</a><ul>
+ <li><a href="#value-prediction-with-function-approximation">8.1 Value Prediction with Function Approximation</a></li>
+ <li><a href="#gradient-descent-methods-in-value-prediction">8.2 Gradient-descent methods (in value prediction)</a></li>
+ <li><a href="#linear-methods">8.3 Linear methods</a><ul>
+ <li><a href="#coarse-coding">8.3.1 Coarse coding</a></li>
+ <li><a href="#tile-coding">8.3.2 Tile coding</a></li>
+ <li><a href="#radial-basis-functions">8.3.3 Radial basis functions</a></li>
+ <li><a href="#kanerva-coding">8.3.4 Kanerva coding</a></li>
+ </ul></li>
+ <li><a href="#control-with-function-approximation">8.4 Control with function approximation</a></li>
+ <li><a href="#off-policy-bootstrapping">8.5 Off-policy bootstrapping</a></li>
+ <li><a href="#should-we-bootstrap">8.7 Should we bootstrap?</a></li>
+ </ul></li>
  <li><a href="#deep-rl">Deep RL</a></li>
  <li><a href="#search">Search</a></li>
  </ul> </div>
@@ -473,6 +486,59 @@ Z_t(s,a) &amp;= \begin{cases}
 <p>When we have a perfect model and imperfect <span class="math inline">\(Q\)</span>, deeper search usually yields better policies.</p>
 <p>Grow the search tree selectively. How to use this idea for backups?</p>
 <p>Focus on the states and actions that might immediately follow the current state.</p>
+<h2 id="generalization-and-function-approximation-v1">8 Generalization and function approximation (v1)</h2>
+<h3 id="value-prediction-with-function-approximation">8.1 Value Prediction with Function Approximation</h3>
+<p><span class="math display">\[
+MSE(\te_t) = \sum_{s\in S} P(s) [V^{\pi}-V_t(s)]^2.
+\]</span></p>
+<p>If we wish to minimize error over a certain distribution of states, then it makes sense to train the function approximator with examples from that same distribution. let us assume that the distribution of states at which backups are done and the distribution that weights errors, <span class="math inline">\(P\)</span>, are the same.</p>
+<p>Complex function approximators may seek to converge instead to a local optimum.</p>
+<h3 id="gradient-descent-methods-in-value-prediction">8.2 Gradient-descent methods (in value prediction)</h3>
+\begin{align}
+\te_{t+1} &amp;= \te_t - \rc 2 \al \nb_{\te_t} (V^\pi(s_t) - V_t(s_t))^2\\
+&amp;=\te_t + \al\ba{V^\pi(s_t) - V_t(s_t)} \nb_{\te_t} V_t(s_t).
+\end{align}
+<p>In actuality we get an estimate <span class="math inline">\(v_t\)</span> of <span class="math inline">\(V^\pi(s_t)\)</span>. Ex. <span class="math inline">\(v_t=R_t^\la\)</span> is the <span class="math inline">\(n\)</span>-step TD return (bootstrapping). (Note this is a biased estimator.)</p>
+Backward view (check this):
+\begin{align}
+\te_{t+1} &amp;=\te_t + \al \de_t e_t\\
+\de_t &amp;= r_{t+1} + \ga V_t(s_{t+1}) - V_t(s_t)\\
+e_t &amp;= \ga \la e_{t-1} + \nb_{\te_t} V_t(s_t).
+\end{align}
+<h3 id="linear-methods">8.3 Linear methods</h3>
+<p><span class="math display">\[V_t(s) = \te_t^T\phi_s.\]</span></p>
+<p>Here <span class="math inline">\(\nb_{\te_t} V_t(s) = \phi_s\)</span>. The local optimum is the global optimum.</p>
+<p>Gradient descent TD(<span class="math inline">\(\la\)</span>) converges in the linear case if step-size is reduced over time, to <span class="math inline">\(\te^*\)</span> close to <span class="math inline">\(\te\)</span>, <span class="math inline">\(MSE(\te_\iy) \le \fc{1-\ga \la}{1-\ga} MSE(\te^*)\)</span>. (What does this mean?)</p>
+<p>But we may also need features for combinations of natural qualities!</p>
+<h4 id="coarse-coding">8.3.1 Coarse coding</h4>
+<p>Features correspond to circles (balls) (receptive fields). A point being in a circle means having that feature. Each circle has a parameter <span class="math inline">\(\te_t\)</span>.</p>
+<h4 id="tile-coding">8.3.2 Tile coding</h4>
+<p>The receptive fields of the features are grouped into exhaustive partitions of the input space. Can combine multiple tilings. <!--(cf. convnets?)--> (Ex. grid discretization, hashing.)</p>
+<h4 id="radial-basis-functions">8.3.3 Radial basis functions</h4>
+<p>Generalization of coarse-coding to continuous-valued features. <span class="math inline">\(\phi_s(i) = \exp\pa{-\fc{\ve{s-c_i}^2}{2\si_i^2}}\)</span>.</p>
+<h4 id="kanerva-coding">8.3.4 Kanerva coding</h4>
+<p>Focus on the complexity of the target function as separate and distinct from the size and dimensionality of the state space. Given a certain level of complexity, we then seek to be able to accurately approximate any target function of that complexity or less. Choose binary features that correspond to particular prototype states.</p>
+<h3 id="control-with-function-approximation">8.4 Control with function approximation</h3>
+\begin{align}
+\te_{t+1} &amp;= \te_t + \al\ba{v_t - Q_t(s_t,a_t)} \nb_{\te_t}(s_t,a_t)\\
+\te_{t+1} &amp;=\te_t + \al \de_t e_t\\
+\de_t &amp;= r_{t+1} + \ga Q_t(s_{t+1},a_{t+1}) - Q_t(s_t,a_t)\\
+e_t &amp;= \ga \la e_{t-1} + \nb_{\te_t} Q_t(s_t,a_t).
+\end{align}
+<p>Use accumulating eligibility traces.</p>
+<p>Ex. SARSA on mountain car.</p>
+<h3 id="off-policy-bootstrapping">8.5 Off-policy bootstrapping</h3>
+<p>By bootstrapping we mean the updating of a value estimate on the basis of other value estimates. (TD(<span class="math inline">\(\la\)</span>), <span class="math inline">\(\la&lt;1\)</span> is bootstrapping, MC is not.)</p>
+<p>Ex. linear, gradient-descent function approximation: Bootstrapping only finds near-minimal MSE.</p>
+<p>The restriction of the convergence results for bootstrapping methods to the on-policy distribution is of greatest concern.</p>
+<p>Baird’s counterexample: on a episodic Markov process with 0 reward, <span class="math inline">\(\te\)</span> can undergo resonance. Distribution of DP backups is uniform, off-policy. There are also counterexamples similar to Baird’s showing divergence for Q-learning. This is cause for concern because otherwise Q-learning has the best convergence guarantees of all control methods.</p>
+<p>It may be possible to guarantee convergence of Q-learning as long as the behavior policy (the policy used to select actions) is sufficiently close to the estimation policy (the policy used in GPI), for example, when it is the <span class="math inline">\(\varepsilon\)</span>-greedy policy. (open?)</p>
+<p>Stability is guaranteed for function approximation methods that do not extrapolate from the observed targets. These methods, called averagers, include nearest neighbor methods and local weighted regression, but not popular methods such as tile coding and backpropagation.</p>
+<h3 id="should-we-bootstrap">8.7 Should we bootstrap?</h3>
+<p>Nonbootstrapping methods can be used with function approximation more reliably and over a broader range of conditions than bootstrapping methods. We can use eligibility traces with <span class="math inline">\(\la=1\)</span>. But bootstrapping is still method of choice.</p>
+<blockquote>
+<p>At this time it is unclear why methods that involve some bootstrapping perform so much better than pure nonbootstrapping methods. It could be that bootstrapping methods learn faster, or it could be that they actually learn something better than nonbootstrapping methods. The available results indicate that nonbootstrapping methods are better than bootstrapping methods at reducing MSE from the true value function, but reducing MSE is not necessarily the most important goal.</p>
+</blockquote>
 <h2 id="deep-rl">Deep RL</h2>
 <p>“AI = RL + DL”: RL defines objective, DL gives mechanism.</p>
 <!-- value, policy, model-based -->
