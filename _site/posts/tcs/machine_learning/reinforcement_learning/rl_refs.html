@@ -76,7 +76,7 @@
       
        
         <p>Posted: 2016-10-25 
-          , Modified: 2016-10-25 
+          , Modified: 2016-11-01 
 	</p>
       
        <p>Tags: <a href="../../../../tags/reinforcement%20learning.html">reinforcement learning</a></p> 
@@ -94,7 +94,7 @@
  <li><a href="#convergence-of-classic-algorithms">Convergence of classic algorithms</a></li>
  <li><a href="#theory-algorithms">Theory algorithms</a></li>
  </ul></li>
- <li><a href="#factored-mdps-mdps-with-exponential-state-space">Factored MDPs, MDPs with exponential state space</a></li>
+ <li><a href="#factored-mdps-mdps-with-exponentialcontinuous-state-space">Factored MDPs, MDPs with exponential/continuous state space</a></li>
  <li><a href="#pomdps">POMDPs</a></li>
  <li><a href="#open-questions">Open questions</a></li>
  <li><a href="#surveys">Surveys</a></li>
@@ -196,16 +196,43 @@
 <li>(*) [KAL16] Contextual-MDP, which is contextual bandits + RL.
 <ul>
 <li>Regret wrt policy class.</li>
-<li>Poly in parameters, log in number of policies, independent of size of observation space. <!--what does no dependence on numspace can represent exact-best solution, state transition dynamics are deterministic.--></li>
-<li>Unlike POMDP, optimal policy is memoryless.</li>
+<li>Poly in parameters, log in number of policies, independent of size of observation space. <span class="math inline">\(\poly(M, K, H, \ep, \ln N, \ln \prc\de)\)</span> <!--what does no dependence on numspace can represent exact-best solution, state transition dynamics are deterministic.--></li>
+<li>Unlike POMDP, optimal policy is memoryless. (Definition is just this. For simplicity, consider layered POMDP’s.)
+<ul>
+<li>Ex. Disjoint contexts. Don’t know which observations correspond to which contexts! (Q: for HMM with “too many” observations what can we do?)</li>
+</ul></li>
 <li>Warning: inefficient b/c requires enumeration of policy class. (? does this contradict the poly/log time above)</li>
+<li>Assumptions
+<ul>
+<li><span class="math inline">\(Q\)</span> is realizable within the function class. (WHY doesn’t this work in the agnostic case?)</li>
+<li>Deterministic transitions</li>
+</ul></li>
+<li>Algorithm (cMDP-learn)
+<ul>
+<li>DFS-learn
+<ul>
+<li>TD-elim: eliminate functions that do not approximate <span class="math inline">\(Q^*\)</span> well (that do significantly worse than the best approximator so far)</li>
+<li>Consensus: Compute MC estimates for the observable in the current state (run a lot of episodes, using the same actions up to the current point; because the system is deterministic the state is the same). If they are all close in value, return true, else return false.</li>
+</ul></li>
+<li>Explore-on-demand
+<ul>
+<li>Select a surviving policy, estimate <span class="math inline">\(V\)</span> at root; if highly suboptimal value, invoke DFS-learn on paths visited by <span class="math inline">\(\pi_f\)</span>.</li>
+</ul></li>
+</ul></li>
+<li>Idea: if a surviving policy <span class="math inline">\(\pi_f\)</span> visits only states for which TD-Elim has been invoked, it must have near-optimal reward.</li>
+<li>Undesirables
+<ul>
+<li>Deterministic transition</li>
+<li>Enumerate class of regression functions</li>
+<li>Realizability assumptions</li>
+</ul></li>
 </ul></li>
 <li>[DPWR15] Bayesian Nonparametric Methods for Partially-Observable Reinforcement Learning <a href="http://dspace.mit.edu/handle/1721.1/97034">paper</a>
 <ul>
 <li>Bayes!</li>
 </ul></li>
 </ul>
-<h3 id="factored-mdps-mdps-with-exponential-state-space">Factored MDPs, MDPs with exponential state space</h3>
+<h3 id="factored-mdps-mdps-with-exponentialcontinuous-state-space">Factored MDPs, MDPs with exponential/continuous state space</h3>
 <ul>
 <li>[HSMM15] Off-policy Model-based Learning under Unknown Factored Dynamics.pdf
 <ul>
@@ -215,6 +242,55 @@
 <li>(It seems to be learning the Bayes net rather than evaluating <span class="math inline">\(\pi\)</span>. Ah, once you learn the Bayes net then you can evaluate just by sampling.)</li>
 <li>The difference from simpling learning a Bayes net is that the samples aren’t independent—they were from following a certain policy. Assumptions will ensure that you can still learn the model even if you only have samples from that policy.</li>
 </ul></li>
+<li>[EGW05] Tree-Based Batch Mode Reinforcement Learning
+<ul>
+<li>Introduced fitted Q-iteration (see below).</li>
+</ul></li>
+<li>(*) [AMS08] Fitted Q-iteration in continuous action-space MDPs
+<ul>
+<li>Fitted Q-iteration: Given a simulator, sample next actions <span class="math inline">\(s'\)</span> given <span class="math inline">\(s,a\)</span>. Given <span class="math inline">\(Q^{n}\)</span>, approximate <span class="math inline">\(Q^{n+1}\)</span> with these samples, then approximate <span class="math inline">\(Q^{n+1}\)</span> as <span class="math inline">\(Q(s,a)=\te^T\phi(s,a)\)</span>. Use least squares: LSFQI. Then pick best <span class="math inline">\(\wh \pi_{n+1}\)</span> using the approximation of <span class="math inline">\(Q^{n+1}\)</span>.</li>
+<li>Space of functions can be neural networks, linear combination of selected basis functions, restriction of RKHS (cf. LS-SVM).</li>
+<li>Warning: it’s not just the pseudo-dimension (related to VC dimension) of the function class <span class="math inline">\(\mathcal F\)</span> that matters, but that of <span class="math inline">\(\mathcal F_{\max}^{\wedge} = \set{\max_{a\in A} Q(x,a)}{Q\in \mathcal F}\)</span>. (Actually, use the notion of <a href="http://ttic.uchicago.edu/~tewari/lectures/lecture16.pdf">fat shattering functions</a>.)</li>
+<li>Also called “fitted actor-critic algorithm”.</li>
+<li>Under many assumptions, the error in <span class="math inline">\(V\)</span> can be bounded in terms of the pseudo-dimension of the function class <span class="math inline">\(\mathcal F\)</span>.</li>
+</ul></li>
+<li>[FDMW04] Dynamic Programming for Structured Continuous Markov Decision Problems <a href="https://arxiv.org/ftp/arxiv/papers/1207/1207.4115.pdf">paper</a>
+<ul>
+<li>Group together states belonging to the same “plateau” where expected reward is nearly constant.</li>
+<li>Use kd-trees to store the rectangular partitions.</li>
+</ul></li>
+<li>[HK03] Linear Program Approximations for Factored Continuous-State Markov Decision Processes <a href="http://machinelearning.wustl.edu/mlpapers/paper_files/NIPS2003_CN19.pdf">paper</a>
+<ul>
+<li>2 settings
+<ul>
+<li>Factored MDP’s: approximate <span class="math inline">\(V\)</span> within a class of functions <span class="math inline">\(\spn(\{f_i\})\)</span>. (Ex. each <span class="math inline">\(f_i\)</span> depends on a small subset of variables.) Here, minimize <span class="math inline">\(\sum w_i \sum_x f_i(x)\)</span> over all <span class="math inline">\(f\)</span>’s that overestimate the reward: <span class="math inline">\(\sum_i w_i(f_i - \ga \sum_{x_i'} \Pj(x_i'|x_i, a)f_i(x_i'))-R(x,a)\ge 0\)</span> forall <span class="math inline">\(x,a\)</span>.
+<ul>
+<li>Problem: infinite number of constraints. Insight: only a finite subset are active at any time.</li>
+</ul></li>
+<li>Continuous MDP’s. Consider conjugate classes of transition models and basis functions that give closed-form expressions.</li>
+</ul></li>
+</ul></li>
+<li>[LL05] Lazy Approximation for Solving Continuous Finite-Horizon MDPs <a href="http://www.aaai.org/Papers/AAAI/2005/AAAI05-186.pdf">paper</a>
+<ul>
+<li>In value iteration <span class="math display">\[V^{n+1}(x) = \max_{a\in A} \ba{R(x,a) + \int_X T(x'|x,a)V^n(x')\dx'}\]</span> replace <span class="math inline">\(V^n\)</span> with a piecewise constant approximation. (Otherwise it becomes a piecewise higher order polynomial.)</li>
+</ul></li>
+<li>[MTT] A Fast Analytical Algorithm for MDPs with Continuous State Spaces <a href="http://www.sci.brooklyn.cuny.edu/~parsons/events/gtdt/gtdt06/marecki.pdf">paper</a>
+<ul>
+<li>Focuses on MDP’s where the transition time (after an action) is governed by a exponential pdf <span class="math inline">\(\la e^{-\la t'}\)</span>.</li>
+</ul></li>
+<li>[TS06] Probabilistic Inference for Solving Discrete and Continuous State Markov Decision Processes <a href="http://machinelearning.wustl.edu/mlpapers/paper_files/icml2006_ToussaintS06.pdf">paper</a>
+<ul>
+<li>The problem of solving a MDP (with decay <span class="math inline">\(\ga\)</span>) can be reduced to max likelihood estimation. (It is over a mixture of finite-time MDP’s, weighted geometrically in <span class="math inline">\(\ga\)</span> in the length.)</li>
+<li>Now use EM to maximize the likelihood.</li>
+</ul></li>
+<li><a href="https://www.cs.utah.edu/~piyush/teaching/continuous-mdp.pdf">Lecture notes</a>
+<ul>
+<li>Discretization</li>
+<li>Fitted value iteration: Given a simulator, sample next actions <span class="math inline">\(s'\)</span> given <span class="math inline">\(s,a\)</span>. Given <span class="math inline">\(V^{n}\)</span>, approximate <span class="math inline">\(V^{n+1}\)</span> with these samples, then approximate <span class="math inline">\(V^{n+1}\)</span> as <span class="math inline">\(V(s)=\te^T\phi(s)\)</span> (ex. using least squares).</li>
+<li>Can be extended to least-squares policy iteration.</li>
+</ul></li>
+<li><a href="http://burlap.cs.brown.edu/tutorials/scd/p1.html">tutorial</a></li>
+<li><a href="https://scholar.google.com/scholar?hl=en&amp;q=mdp+with+continuous+state+space">google scholar search</a></li>
 </ul>
 <h3 id="pomdps">POMDPs</h3>
 <ul>
@@ -233,6 +309,19 @@
 <li>model-free algorithms (<span class="math inline">\(Q\)</span>-learning)</li>
 <li>policy search methods</li>
 <li>separate exploration and exploitation collect examples, then estimate parameters [Guo16]. PAC in RL POMDP?</li>
+</ul></li>
+<li>Regret bounds optimal in <span class="math inline">\(N\)</span> (<span class="math inline">\(\wt O(\sqrt N)\)</span>). Depends on a natural notion of “diameter” for POMDP’s (different from definition for MDP’s. max mean passage time using best <span class="math inline">\(\pi\)</span>).</li>
+<li>Idea: by restricting to memoryless policies, generate conditionally independent views.</li>
+<li><span class="math inline">\(\mathcal P\)</span> set of all stochastic memoryless policies that have a non-zero probability to explore all actions. Assume <span class="math inline">\(\pi\in \mathcal P\)</span>.</li>
+<li>Method
+<ul>
+<li>Can’t use spectral method for HMM’s.</li>
+<li>But same idea: find 3 conditionally independent views (given <span class="math inline">\(x_t, a_t\)</span>), use a “symmetrization” technique, and find spectral decomposition.</li>
+</ul></li>
+<li>UCRL integration
+<ul>
+<li>distribution of the views <span class="math inline">\(v_1, v_2, v_3\)</span> depends on the policy used to generate the samples. As a result, whenever the policy changes, the spectral method should be re-run using only the samples collected by that specific policy.</li>
+<li>Construct set of admissible POMDP’s whose T, O, R models are in confidence interval</li>
 </ul></li>
 <li>Open: analyze UCRL for finite horizon.</li>
 <li>Stochastic policies are near-optimal in many domains (?). NP-hard to optimize but under some conditions can approximate</li>

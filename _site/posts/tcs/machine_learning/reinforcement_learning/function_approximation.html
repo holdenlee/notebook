@@ -10,7 +10,7 @@
   <meta name="description" content="Holden Lee's Research Notebook">
   <meta name="author" content="Holden Lee">
     
-  <title>Posts in category "tcs/machine_learning/nlp"</title>
+  <title>Function approximation</title>
 
   <!-- Bootstrap core CSS -->
   <link href="../../../../bootstrap/css/bootstrap.min.css" rel="stylesheet">
@@ -70,71 +70,84 @@
 <div class="container">
   <div id="content">
     <div class="page header">
-      <h1>Posts in category "tcs/machine_learning/nlp"</h1>
+      <h1>Function approximation</h1>
     </div>
     <div class="info">
       
+       
+        <p>Posted: 2016-11-01 
+          , Modified: 2016-11-01 
+	</p>
       
-      
+       <p>Tags: <a href="../../../../tags/reinforcement%20learning.html">reinforcement learning</a></p> 
     </div>
     
   </div>
   <!--/div-->
 
-  
+  <div class="toc"> <ul>
+ <li><a href="#dp-and-rl-in-large-and-continuous-spaces">3 DP and RL in large and continuous spaces</a><ul>
+ <li><a href="#nonparametric-appoximation">3.3.2 Nonparametric appoximation</a></li>
+ <li><a href="#section">3.3.3</a></li>
+ <li><a href="#approximate-value-iteration">3.4 Approximate value iteration</a><ul>
+ <li><a href="#convergence">3.4.4 Convergence</a></li>
+ <li><a href="#example-approximate-q-iteration-for-a-dc-motor">3.4.5 Example: Approximate Q-iteration for a DC motor</a></li>
+ </ul></li>
+ <li><a href="#approximate-policy-iteration">3.5 Approximate policy iteration</a></li>
+ </ul></li>
+ </ul> </div>
 
   <div class="blog-main">
-    <ul>
-    
-        <li>
-            <a href="../../../../posts/tcs/machine_learning/nlp/MVB16.html">[MVB16] Geometry of Polysemy</a> (2016-10-28)
-        </li>
-    
-        <li>
-            <a href="../../../../posts/tcs/machine_learning/nlp/language_games.html">Language games</a> (2016-10-13)
-        </li>
-    
-        <li>
-            <a href="../../../../posts/tcs/machine_learning/nlp/alexa.html">Alexa</a> (2016-10-13)
-        </li>
-    
-        <li>
-            <a href="../../../../posts/tcs/machine_learning/nlp/HA16.html">[HA16] Unsupervised Learning of Word-Sequence Representations from Scratch via Convolutional Tensor Decomposition</a> (2016-08-02)
-        </li>
-    
-        <li>
-            <a href="../../../../posts/tcs/machine_learning/nlp/pmi.html">PMI and feature vectors</a> (2016-07-29)
-        </li>
-    
-        <li>
-            <a href="../../../../posts/tcs/machine_learning/nlp/2016-senior-presentations.html">NLP</a> (2016-05-14)
-        </li>
-    
-        <li>
-            <a href="../../../../posts/tcs/machine_learning/nlp/percy_liang.html">Percy Liang's papers</a> (2016-05-04)
-        </li>
-    
-        <li>
-            <a href="../../../../posts/tcs/machine_learning/nlp/nlp.html">NLP</a> (2016-05-04)
-        </li>
-    
-        <li>
-            <a href="../../../../posts/tcs/machine_learning/nlp/randwalk.html">[ALLMR16] RAND-WALK: A latent variable model approach to word embeddings</a> (2016-03-15)
-        </li>
-    
-        <li>
-            <a href="../../../../posts/tcs/machine_learning/nlp/polysemy.html">[ALLMR16] Linear Algebraic Structure of Word Senses, with Applications to Polysemy</a> (2016-03-15)
-        </li>
-    
+    <p>See also “Factored MDPs, MDPs with exponential/continuous state space” in <a href="rl_refs.html">refs</a>.</p>
+<ul>
+<li>[GWTC13]</li>
+<li>Reinforcement learning and DP using FA</li>
+<li>Bertsekas Ch. 6, ADP</li>
+<li><a href="http://site.ebrary.com/lib/princeton/reader.action?docID=10501323">Powell, ADP</a></li>
+<li>Sutton, Ch. 8 (v1)</li>
 </ul>
-
-
+<h2 id="dp-and-rl-in-large-and-continuous-spaces">3 DP and RL in large and continuous spaces</h2>
+<p><span class="math inline">\(F(\te)(x,u_j) = \phi^T(x,u_j)\te\)</span>, <span class="math inline">\(\phi\)</span> normalized so entries sum to 1.</p>
+<h4 id="nonparametric-appoximation">3.3.2 Nonparametric appoximation</h4>
+<p>Kernel-based approximator of <span class="math inline">\(Q\)</span> function <span class="math inline">\(\ka: (X\times U)^2\to \R\)</span>.</p>
+<p>Form and number of BF’s not defined in advance <span class="math display">\[
+\wh Q(x,u) = \sumo{l_s}{n_s} \ka((x,u), (x_{l_s}, u_{l_s}))\te_{l_s}.
+\]</span></p>
+<p>(I haven’t been exposed to nonparametric methods - what guarantees do nonparametric methods have?) <!-- relies on kernel function that makes sense for the space --></p>
+<h4 id="section">3.3.3</h4>
+<p>In between: derive small number of good BF’s from data.</p>
+<h3 id="approximate-value-iteration">3.4 Approximate value iteration</h3>
+<ul>
+<li>LSQI: take a bunch of samples, take <span class="math inline">\(Q\)</span> minimizing least squares.</li>
+<li>Online: use gradient descent on parameters <span class="math inline">\(\te\)</span>.</li>
+</ul>
+<p>Approximate Q-learnig requires exploration.</p>
+<h4 id="convergence">3.4.4 Convergence</h4>
+<p>Proofs for approximate value iteration rely on contraction mapping arguments. Ex. require <span class="math inline">\(F\)</span> and projection <span class="math inline">\(P\)</span> to be nonexpansions.</p>
+<p>Suboptimality for convergence point <span class="math inline">\(\te^*\)</span> bounded in terms of min distance between <span class="math inline">\(Q^*\)</span> and fixed point of <span class="math inline">\(F\circ P\)</span>, <span class="math inline">\(\ze_{QI}^*\)</span>.</p>
+<p>(Ditto for nonparametric (kernel-based) approximators.)</p>
+<h4 id="example-approximate-q-iteration-for-a-dc-motor">3.4.5 Example: Approximate Q-iteration for a DC motor</h4>
+<p>Fitted <span class="math inline">\(Q\)</span>-iteration using ensembles of extremely randomized trees.</p>
+<h3 id="approximate-policy-iteration">3.5 Approximate policy iteration</h3>
 
   </div>
 
     
 
+    <!-- Extension : Sharing buttons @ www.sharethis.com -->
+    <span class="st_facebook_large" displayText="Facebook"></span>
+    <span class="st_twitter_large" displayText="Tweet"></span>
+    <span class="st_googleplus_large" displayText="Google +"></span>
+    <span class="st_reddit_large" displayText="Reddit"></span>
+    <span class="st__large" displayText></span>
 
+    <div id="disqus_thread"></div>
+    
+
+
+  
+    <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+  </div>
   
 </div>
 
@@ -179,6 +192,9 @@
 
 <!-- Extension : Disqus @ http://disqus.com -->
 <!-- Extension : InlineDisqussions @ https://github.com/tsi/inlineDisqussions -->
+
+<script src="../../../../disqus/js/disqus.js"></script>
+
 
 
 <!-- Extension : Google Analytics -->

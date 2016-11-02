@@ -7,7 +7,7 @@ type: paper
 showTOC: True
 ---
 
-#[L16] Learning Executable Semantic Parsers for Natural Language Understanding
+# [L16] Learning Executable Semantic Parsers for Natural Language Understanding
 
 Goal: Map natural language into logical forms (which can be executed).
 
@@ -27,7 +27,7 @@ Recent developments:
 
 There are linguistic, statistical (generalization), and computational challenges.
 
-##Framework
+## Framework
 
 Example: What is the largest prime less than 10? becomes $\max(\text{primes}\cap (-\iy,10))$.
 
@@ -41,11 +41,20 @@ Example: What is the largest prime less than 10? becomes $\max(\text{primes}\cap
 
 Note the grammar can be coarse, and application-specific.
 
-##Qs
+## Qs
 
 Chart parsing? Builds derivations in fixed order, causing parser to waste resources.
 
 
-#Scraps
+# [BL15] Imitation learning of agenda-based semantic parsers
+
+# [WBL15] Building a Semantic Parser Overnight
+
+Use a simple grammar to generate logical forms paired with canonical utterances. Then use crowdsourcing to paraphrase them into natural utterances, and train (natural utterances, logical forms). 
+
+(This means we don't have to start with data to train on!)
+
+
+# Scraps
 
 Look at CCG, it's interesting! Number less than...

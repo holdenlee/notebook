@@ -513,6 +513,93 @@ Grow the search tree selectively. How to use this idea for backups?
 
 Focus on the states and actions that might immediately follow the current state.
 
+# 8 Generalization and function approximation (v1)
+
+## 8.1 Value Prediction with Function Approximation
+
+$$
+MSE(\te_t) = \sum_{s\in S} P(s) [V^{\pi}-V_t(s)]^2.
+$$
+
+If we wish to minimize error over a certain distribution of states, then it makes sense to train the function approximator with examples from that same distribution.  let us assume that the distribution of states at which backups are done and the distribution that weights errors, $P$, are the same.
+
+Complex function approximators may seek to converge instead to a local optimum.
+
+## 8.2 Gradient-descent methods (in value prediction)
+
+\begin{align}
+\te_{t+1} &= \te_t - \rc 2 \al \nb_{\te_t} (V^\pi(s_t) - V_t(s_t))^2\\
+&=\te_t + \al\ba{V^\pi(s_t) - V_t(s_t)} \nb_{\te_t} V_t(s_t).
+\end{align}
+In actuality we get an estimate $v_t$ of $V^\pi(s_t)$. Ex. $v_t=R_t^\la$ is the $n$-step TD return (bootstrapping). (Note this is a biased estimator.)
+
+Backward view (check this):
+\begin{align}
+\te_{t+1} &=\te_t + \al \de_t e_t\\
+\de_t &= r_{t+1} + \ga V_t(s_{t+1}) - V_t(s_t)\\
+e_t &= \ga \la e_{t-1} + \nb_{\te_t} V_t(s_t).
+\end{align}
+
+## 8.3 Linear methods
+
+$$V_t(s) = \te_t^T\phi_s.$$
+
+Here $\nb_{\te_t} V_t(s) = \phi_s$. The local optimum is the global optimum.
+
+Gradient descent TD($\la$) converges in the linear case if step-size is reduced over time, to $\te^*$ close to $\te$, $MSE(\te_\iy) \le \fc{1-\ga \la}{1-\ga} MSE(\te^*)$. (What does this mean?)
+
+But we may also need features for combinations of natural qualities!
+
+### 8.3.1 Coarse coding
+
+Features correspond to circles (balls) (receptive fields). A point being in a circle means having that feature. Each circle has a parameter $\te_t$.
+
+### 8.3.2 Tile coding
+
+The receptive fields of the features are grouped into exhaustive partitions of the input space. Can combine multiple tilings. <!--(cf. convnets?)-->
+(Ex. grid discretization, hashing.)
+
+### 8.3.3 Radial basis functions
+
+Generalization of coarse-coding to continuous-valued features. $\phi_s(i) = \exp\pa{-\fc{\ve{s-c_i}^2}{2\si_i^2}}$.
+
+### 8.3.4 Kanerva coding
+
+Focus on the complexity of the target function as separate and distinct from the size and dimensionality of the state space. Given a certain level of complexity, we then seek to be able to accurately approximate any target function of that complexity or less. Choose binary features that correspond to particular prototype states. 
+
+## 8.4 Control with function approximation
+
+\begin{align}
+\te_{t+1} &= \te_t + \al\ba{v_t - Q_t(s_t,a_t)} \nb_{\te_t}(s_t,a_t)\\
+\te_{t+1} &=\te_t + \al \de_t e_t\\
+\de_t &= r_{t+1} + \ga Q_t(s_{t+1},a_{t+1}) - Q_t(s_t,a_t)\\
+e_t &= \ga \la e_{t-1} + \nb_{\te_t} Q_t(s_t,a_t).
+\end{align}
+
+Use accumulating eligibility traces.
+
+Ex. SARSA on mountain car.
+
+## 8.5 Off-policy bootstrapping
+
+By bootstrapping we mean the updating of a value estimate on the basis of other value estimates. (TD($\la$), $\la<1$ is bootstrapping, MC is not.) 
+
+Ex. linear, gradient-descent function approximation: Bootstrapping only finds near-minimal MSE.
+
+The restriction of the convergence results for bootstrapping methods to the on-policy distribution is of greatest concern.
+
+Baird's counterexample: on a episodic Markov process with 0 reward, $\te$ can undergo resonance. Distribution of DP backups is uniform, off-policy. There are also counterexamples similar to Baird's showing divergence for Q-learning. This is cause for concern because otherwise Q-learning has the best convergence guarantees of all control methods. 
+
+It may be possible to guarantee convergence of Q-learning as long as the behavior policy (the policy used to select actions) is sufficiently close to the estimation policy (the policy used in GPI), for example, when it is the $\varepsilon$-greedy policy. (open?)
+
+Stability is guaranteed for function approximation methods that do not extrapolate from the observed targets. These methods, called averagers, include nearest neighbor methods and local weighted regression, but not popular methods such as tile coding and backpropagation.
+
+## 8.7 Should we bootstrap?
+
+ Nonbootstrapping methods can be used with function approximation more reliably and over a broader range of conditions than bootstrapping methods. We can use eligibility traces with $\la=1$. But bootstrapping is still method of choice.
+
+> At this time it is unclear why methods that involve some bootstrapping perform so much better than pure nonbootstrapping methods. It could be that bootstrapping methods learn faster, or it could be that they actually learn something better than nonbootstrapping methods. The available results indicate that nonbootstrapping methods are better than bootstrapping methods at reducing MSE from the true value function, but reducing MSE is not necessarily the most important goal. 
+
 # Deep RL
 
 "AI = RL + DL": RL defines objective, DL gives mechanism.

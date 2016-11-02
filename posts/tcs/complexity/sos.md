@@ -1,7 +1,7 @@
 ---
 title: Sum of squares
 published: 2016-03-24
-modified: 2016-03-24
+modified: 2016-10-31
 tags: SoS, SDP, maxcut
 type: notes
 showTOC: True
@@ -266,6 +266,274 @@ $$
 Look at $F+W\cap$cone.
 
 We just need an efficient separation oracle.
+
+## 3 Lower bounds
+
+### 3.1 Maxcut
+
+Cheeger: Let $G$ be a $d$-regular graph and $L_G=I-\rc dA$ be its Laplacian, and $\la$ be the second smallest eigenvalue. Then 
+$$\la \ge \Om(\ph(G)^2).$$
+
+The second smallest eigenvalue of $L_{C_n}$ is $O\prc{n^2}$. (Proof: compute.) This shows Cheeger is tight, as we have
+$$ \la = \Te\prc{n^2}, \quad \ph(G) = \Te\prc{n}. $$
+
+Maxcut: We showed that 
+$$maxcut (G)\le 1-\ep \implies (\forall \deg \mu=2, \wt{\EE_{\mu}} f_G(x) \le 1-\Om(\ep^2)).$$
+
+To show tightness up to constant, show that for $G=C_n$ there is $\mu$:
+\begin{align}
+maxcut(C_n) &\le 1-\rc n =:1- \ep\\
+\wt{\EE_\mu} f_G(x) &= 1-\Te\prc{n^2}. 
+\end{align}
+
+*Proof*. Let $n=2k+1$. Define $u, v, w, X, \mu$ as follows. 
+\begin{align}
+u=(\om^{jk})_{j=0}^{n-1} &= u+iw\\
+X&=vv^T+ww^T\\
+\wt{\EE_\mu} x &= \rc2 \one\\
+\wt{\EE_{\mu}} xx^T &= \rc 4 \one \one^T + \rc 4 X
+\end{align}
+(We can find a degree-2 pseudodistibution whenever $\wt{\EE_\mu} xx^T - (\wt{\EE_\mu} x)(\wt{\EE_{\mu}}x)^T$ is psd and the diagonal of $\wt{\EE_\mu} xx^T$ equals $\wt{\EE_\mu}x$. (Do we want it to be in $[0,1]$?))
+Calculation:
+$$
+\wt{\EE_{\mu}} f_G(x) = \rc 4 \sum |u_i-u_j|^2 = n\pa{1-\Te\prc{n^2}}.
+$$
+(Working backwards, setting $X=vv^T+ww^T$ and then finding what the values of $v,w$ should be, we want $\sum_{(i,j)\in E}|u_i-u_j|^2$ to be large. This motivates hops of $\om^k$. Calculations: $\E(x_i-x_j)^2 = \E[1-\fc{2v_iv_j+2w_iw_j}4]$.)
+<!-- $\EE_{x\sim N(\rc 2\one, \rc 4 X)} x^T(vv^T+ww^T)x = \Tr((\rc 4\one \one^T+\rc4 X)X)$-->
+
+\begin{align}
+\al_{GW} &= \min_{0\le x\le 1} \fc{\cos^{-1}(1-2x)}{\pi x}\\
+&=\min_{-1\le \rh\le 1} \fc{2\cos^{-1}\rh}{(1-\rh)\pi}\\
+\rh_{GW} &= \amin_{-1\le \rh\le 1} \fc{2\cos^{-1}\rh}{(1-\rh)\pi}
+\end{align}
+
+
+**Theorem** (Tightness of GW): For every $\ep>0$ there is $G$ and $\mu$ such that
+\begin{align}
+maxcut(G) &\le \al_{GW} x_{GW} + \ep\\
+\wt{\EE_{\mu}} f_G(x) &\ge x_{GW}.
+\end{align}
+*Proof*. Feige-Schechtman graph: Connect up points on the sphere if $\an{v,w}\le \rh_{GW}+\ep$. (Later reduce to a discrete graph by sampling.) 
+We have variables $\{X_v\}_{v\in \R^d}$, $X_v = \rc 2 + \fc{\an{v,g}}2$, $\Cov(X_u,X_v) = \E \an{u,g}\an{v,g} = \an{u,v} \le -\rh_{GW} + \ep$ if $\an{u,v}\le \rh$.
+
+### 3.2 CSP
+
+**Theorem**. It is NP-hard to solve $\text{Max-3XOR}_{\rc 2+\de, 1-\ep}$.
+
+There are reductions $3\SAT\stackrel{\wt O(n)}{\le}\text{LabelCover} \stackrel{O(n)}\le \text{3XOR}$.
+
+The fraction of constraints satisfied by 3XOR problem $x_i+x_j+x_k = a_{ijk}$ is
+$$
+f_\psi = \rc 2 + \rc{2|\psi|}\sum_{\{i,j,k\}\in \psi} (1-a_{ijk})(1-2x_i)(1-2x_j)(1-2x_k).
+$$
+
+**Theorem** (Grigoriev). For every $\ep>0$, for large enough $n$, there is an instance $\psi$ of Max-3XOR such that
+
+* every assignment satisfies $\le \rc2+\ep$ fraction of equations in $\psi$.
+* there exists a pseudodistribution of degree $\Om(n)$ consistent with $x_i^2-x_i=0$ and $(1-2x_i)(1-2x_j)(1-2x_k) = 1-2a_{ijk}$.
+
+Intuition: Unlike Gaussian elimintion, the sos algorithm cannot distinguish between a perfectly and $1-o(1)$ satisfiable system.
+
+*Proof*. Take a random $(m,n)$ bipartite graph with left-degree 3. Left is constraints, right is variables.
+
+1.  Soundness: Chernoff gives for $m>\fc{9n}{\ep^2}$, 
+    $$\Pj(\forall x\in \{0,1\}^n, \val_\psi(x) \le \rc 2+\ep)\ge 1-2^{-n}.$$
+	Union bound.
+2.  Completeness:  (cf. expander codes.) Let $\chi_S = \prod_{i\in S}(1-2x_i)$. Idea: make pseudistribution "uniform" subject to constraints.
+
+	We define $\wt{\EE_{\mu}}\chi_S$ for $|S|\le \ep n$. If $\wt \E \chi_S$, $\wt \E \chi_T$ have been defined and $|S\triangle T|\le d=\ep n$, set $\wt \E \chi_{S\triangle T} = (\wt \E \chi_S)(\wt \E \chi_T)$. Set remaining $\wt \E \chi_S=0$.
+	
+	A degree $d$ derivation is a set that is reached after some number of steps, each set on the way being $\le d$.
+	
+	WHP the graph is an expander. If we have degree $d$ derivations for $\sum_{i\in S} x_i\equiv 0$ and $\sum_{i\in S} x_i\equiv 1$, then we get a degree $2d$ derivtion of $\sum_{i\in \phi} x_i=1$. Impossible---similar to proof of expander codes: In order for $T_t$ to be $\bigopl_{l\in T_t}\Ga(l) = \phi$, $T_t$ is large; take the first large $T_i$ in the derivation, it will have large neighbor set.
+	
+	Show $\deg p\le \fc d2\implies \wt \E p^2\ge 0$ by Fourier expansion. Break $|S|\le \fc d2$ into equivalence classes based on $\E[\chi_{S\triangle T}]\ne 0$. For $p_i=\sum_{S\in C_i} p_S\chi_S$, 
+	$$ \wt \E p_i^2 = \sum_i (\sum_S p_S\wt{\E} x_{S\triangle S_i})^2\ge 0.$$
+	
+**Exercise 11**. DO this!
+
+To reduce from Max 3SAT $(\fc 78+\ep, 1)$, convert $a_{\ell_i}x_i \vee a_{\ell_j}x_j \vee a_{\ell_k}x_k=1$ to $x_i+x_j+x_k \equiv a_{\ell_i}+a_{\ell_j} + a_{\ell_k}$. 
+
+A nice $V\in \F_2^L$ is one such that every $u\in V^{\perp}\bs \{0\}$ has $\ve{u}_0\ge 3$. A **nice subspace predicate** is one such that there exists nice $V$, $P(x)=1\iff x\in V$. 
+
+**Theorem** (SoS hardness for nice-subspace CSP, SoS PCP). Let $k,\ep>0$ be given. There exist $\be = 2^k\prc{\ep^2}$, $c=\poly\prc{\be}$ such that there is an instance $\psi$ of Max-P for [$k$-variate predicate $P$ with $\le 2k$ satisfying assignments] on $n\gg \rc c$ variables and $m=\be n$ constraints such that
+
+* Every assignment satisfies $\le \fc{2k}{2^k} + \ep$ fraction of constraints.
+* There exists degree $cn$ pseudodistribution that satisfies all constraints.
+
+**Read the rest (15-21)**
+
+### 3.3 From integrality gaps to hardness
+
+## 4 Arora-Rao-Vazirani approximation for expansion
+
+**Theorem**. Let $G$ be a $d$-regular graph with vertex set $[n]$ and $\mu:B^n\to \R$ be a degree-4 pseudo-distribution. Then
+$$
+\ph(G) = \min_{x\in B^n} \fc{f_G}{\fc dn |x|(n-|x|)} \le O(\sqrt{\ln n}) \ph_\mu(G).
+$$
+There is a polynomial time algorithm that given $G$ and $\mu$, finds $x$ such that $\ph(G)\le O(\sqrt{\ln n})\ph_\mu(G,x)$.
+
+*Proof*.
+
+Let $d(i,j)=\wt{\EE_{\mu}} (x_i-x_j)^2$. For degree 4, we have $d(i,j) + d(j,k) \ge d(i,k)$.
+
+1.  Structure Theorem.
+    * Suppose that $\sum_{i,j} d(i,j)\ge 0.1 n^2$. We want to show that there exist $|A|,|B|\ge \Om(n)$ such that $d(i,j)\ge \De$ for all $i\in A, j\in B$.
+	* Let $\mu$ be a distribution (obtained by quadratic sampling from the pd) satisfying $\E x_i^2\le 1$, $\sum_{i,j} d(i,j)\ge 0.1 n^2$ and $d(i,k) \ge d(i,j) + d(j,k)$. Then we can find $|A|,|B|\ge \Om(n)$, $d(A,B)\ge \Om\prc{\sqrt{\ln n}}$.
+	* Algorithm: Pick $X$ randomly. Take $A^0=\set{i}{X_i\le -1}$ and $B^0=\set{i}{X_i \ge 1}$. Remove the largest matching between them where the graph $H$ has $(i,j)$ with $d(i,j)\le \De$. (Go through vertices in fixed order.)
+	* $\E |A||B| \ge 0.1 cn^2 - n\E |M|$.
+	* The problematic case is $\E|M|\ge 0.05cn$.
+	*   Estimate $\E |M|$ by relating it to the max of a Gaussian process. 
+	    $$ \fc{\Om(1)}{\De} \pf{\E |M|}{n}^3 \le \E \max_{i,j\in [n]} X_j-X_i \le \sqrt{2\ln n}.$$
+		*   Let $H^k(i) =B_k(i)$ be vertices reached from $i$ in at most $k$ steps in $H$. Let 
+			\begin{align}
+			Y_i^{(k)} &= \max_{j\in H^k(i)} X_j-X_i\\
+			\Phi(k) &=\sumo in \E Y_i^{(k)}
+			\end{align}
+			This gives a lower bound on $\E \max_{i,j\in [n]} X_j-X_i\ge \fc{\Phi(k)}n$.
+			
+			Lemma (chaining). 
+			$$\Phi(k+1) \ge \Phi(k) + \E |M| - O(n) \max_{i\in [n], j\in H^{k+1}(i)} \pa{\E(X_i-X_j)^2}^{\rc 2}.$$
+			*   Variance of maxima of Gaussian processes: Let $Z$ be centered Gaussian. Then
+				$$\Var(\max(Z_1,\ldots, z-t))\le O(1) \max(\Var(Z_1),\ldots, \Var(Z_t)).$$
+			*   For $(i,j)\in E(H)$, because $H^k(j)\subeq H^{k+1}(i)$, for $N$ an arbitrary matching of vertices not in $M$, 
+				\begin{align}
+				\forall (i,j)\in M, Y_i^{(k+1)}&\ge Y_j^{(k)}+2\\
+				\forall (i,j)\in N, \rc2 Y_i^{k+1}+\rc2 Y_j^{(k+1)} &\ge \rc 2 Y_i^{(k)} + \rc2 Y_j^{(k)}
+				\end{align}
+				Sum up inequalities and take expectation. Use $|\E XY - \E X \E Y|\le \sqrt{\Var(X)\Var(Y)}$.
+				\begin{align}
+				\sum \E Y_i^{(k+1)} - \sum \E Y_j^{(k)}
+				& = 2 \pa{\sum \E Y_i^{(k+1)} \E L_i - \sum \E Y_j^{(k)} \E R_i}\\
+				& \le 2\ub{\pa{\sum \E Y_i^{(k+1)}L_i+\cdots}}{4|M|} - n O(1) (\max_{j\in H^{k+1}(i)} + \max_{i\in H^k(j)})[(\E (X_i-X_j)^2)^{\rc 2}].
+				\end{align}
+	* Reduce to case $\sum d(i,j) \ge 0.1n^2$. Let $\de = \rc{n^2} \sum_{i,j} d(i,j)$. 
+		* Heavy cluster: (If there is a cluster that has a constant fraction of vertices, we get a good $A$.) If $A=B_{\de/4}(i), |A|\ge \Om(n)$, then $|A|\sum d(j,A) \ge \Om(1) \sum d(i,j)$.
+			* $\de \le \rc{n^2} \sum (d(i,A)+d(A,j) + \diam(A))\le \fc\de2 + \rc n \sum 2d(i,A)$.
+		*   Heavy cluster or well-spread: Either
+			1. There exists $i\in [n]$, heavy cluster around $i$, or
+			2. There exists $U\subeq [n]$, $|U|=\Om(n)$, Gaussian $Y$, $\E Y_i^2\le 1$, $\sum \E (Y_i-Y_j)^2\ge 0.05$, $\al=\Om(\de)$, $\forall i,j\in U, d(i,j) =\al \E(Y_i-Y_j)^2$.
+			*  If not (1), then by averaging principle there is $k\in [n]$ such that $\sumo in d(i,k)\le \de n$. (Q: **WHY? This seems opposite**.) Lower bound $\sum_{i,j\in U=B_{2\de}(k)} d(i,j)$ by $(i, j\in B_{2\de}(k) \be B_{\de/4}(i))$. Define $X$ as having the same first 2 moments as $\mu$, and let $Y_i = \fc{X_i-X_k}{\sqrt{2\de}}$.
+2.  Region growing. Suppose there exists $A\subeq [n]$ such that $|A|\sumo in d(i,A) \ge \De \sumo{i,j}n d(i,j)$. Then 
+	$$\ph(G) \le \rc{\De} \ph_{\mu}(G).$$
+	In fact, $\De \ph(G)\le \ph_{\mu}(G, B_t(A))$ for some $t$.
+	* Define $\mu'$ by: Choose $t\sim U_{[0,1]}$ and let $x_i'=1\iff d(i,A)\le t$. 
+	* Numerator: Then $d(i,A)\le d(j,A) \implies \E_{\mu'} f_G \le \wt{\EE_{\mu}} f_G$.
+	* Denominator: $\EE_{\mu'} |x'|(x-|x'|) \ge |A| \sum (1-x_i') \ge \De \sum d(i,j) = \De \wt{\EE_{\mu}} |x|(n-|x|)$.
+	* Combine.
+
+## 5 Bayesian view
+
+### 5.1 Bayesian view
+
+We want $\min_{x\in B^n}f$; degree $d$ SoS finds $\min_{\deg \mu = d} \wt{\EE_{\mu}} f$.
+
+Often the global minimum is at a single point, but pseudodistribution pretends to be high entropy over nonexistent elements, "supported on unicorns".
+
+### 5.2 General domains
+
+Replace $B^n$ with $\Om\subeq \R^n$ defined by polynomial inequalities $A=\{f_1\ge 0,\ldots, f_m\ge 0\}$. Questions:
+
+* Are these inequalities feasible, $A\ne \phi$?
+* Is $g\ge 0$ on $A$?
+
+A degree $l$ SoS proof is $g=\sum_{S\subeq [n]} p_S \prod_{i\in S} f_i$, where $p_S$ is SoS, each $\deg(p_S \prod_{i\in S} f_i)\le l$. Write $A\vdash_l \{g\ge 0\}$. (There is a SoS proof of degree $d$ of $g\ge 0$ from $A$.)
+
+**Theorem** (Positivstellensatz). Every $A$ is either feasible, or $A\vdash_l\{-1\ge 0\}$ for some $l\in \N$.
+
+SoS has inference rules for addition, multiplication (add degrees), transitivity (multiply degrees), and substitution (multiply with degree of substituted $H$).
+
+**Lemma**. Let $\mu$ have finite support, $\wt{\EE_{\mu}} 1=1$. $\mu$ is degree $d$ pd iff $\wt{\EE_{\mu}} ((1,x)^{\ot d/2})((1,x)^{\ot d/2})^T$ is psd.
+
+*Proof*. Writing $p = \an{v,(1,x)^{\ot d/2}}$, $\wt{\EE_{\mu}} p^2 = \wt{\EE_{\mu}} \an{v,(1,x)^{\ot d/2}}^2$.
+
+Write $\mu\vDash_l A$ (satisfy $A=\{f_i\}$ at degree $l$) if for all $S\subeq [m]$, every SoS with $\deg h + \sum_{i\in S} \max(\deg f_i,l)\le d$ satisfies $\wt \E_\mu h \prod_{i\in S}f_i\ge 0$ for all SoS's $h$. (Ex. for $A=\{f\ge 0\}$, take $S=\{f\}$.)
+
+**Question: how does this mesh with $B^n$ definition?**
+
+**Theorem** (Duality). Suppose $\ve{x}^2\le M$ is in $A$. For all $d\in \N$, $f\in \R[x]_{\le d}$, either
+
+* for all $\ep>0$, there exists degree $d$, $A\vdash_d \{f\ge -\ep\}$.
+* $\exists \deg \mu=d$, $\mu \vDash A$, $\wt{\EE_{\mu}} f\le 0$. (I.e., $\exists \mu, \mu\vDash A$, $\wt{\EE_{\mu}} f\le 0$.)
+	* If $A$ is a variety, then we can replace with $f \ge 0$ and $f<0$.
+
+*Proof*. Consider 2 cases.
+
+* $f\in \ol C$, $C$ the cone of the $g$ such that $A\vdash_d \{g\ge 0\}$. Then $(1-\ep) f+ \ep g\in C$. $f\ge -\ep(g-f) \ge \ep M'$.
+<!--Moving $f$ in the positive direction will eventually -->
+* Else there is separating linear functional. $\phi(1)>0$ because moving $f$ in direction of 1 eventually makes it in $C$. Rescale so $\phi(1)=1$.
+
+Think of $\vdash$ as a proof, and $\mu \vDash$ as saying $\mu$ is a model.
+<!--as saying, under a certain $\mu$, the conditions are in fact satisfied.-->
+
+**Lemma**
+
+1. (Soundness) $\mu \vDash_l A, A\vdash_{l'} B\implies \mu \vDash_{ll'}B$.
+2. (Completness) If $\forall \deg \mu=d, (\mu\vDash_l A \implies \mu\vDash_{l'} B)$, then $\forall \ep>0, A\vdash_d B_{\ep'}$ (weaken each constraint by $\ep$).
+
+**Theorem** (SoS algorithm). 
+
+* Given satisfiable $A$, output in time $n^{O(d)}$ a degree $d$ pseudo-distribution satisfies $\mu\vDash A$ up to error $2^{-n}$.
+* (For varieties) Given a basis for $\R[x]_{\le d} \cap I(\Om)$, can find a degree-$d$ Sos proof, or $\mu$ with $\wt{\EE_{\mu}}\le 2^{-n}$.
+
+#### Exercises
+
+1. NA
+2. NA
+3. Let $r$ be argmin. Write $f(r) + (x-r)^2q(x)$. Repeat.
+4. $\{\ve{x}^2\le 1\} \vdash_d \{-1\le x_i\le 1\}$. Use these.
+
+### 5.3 Planted clique hardness
+
+Planted clique: Take $G(n,\rc 2)$, add a random $\om$-clique.
+
+Whp the max clique of $G(n,\rc 2)$ is of size $c\ln(n)$, so for $\Om(\ln n)$ size cliques there is quasipoly algorithm.
+
+**Theorem** (SoS hardness). Let $d(n)$ be a function. There is $c$ such that for $\om = n^{\rc 2 - c\pf{d}{\ln n}^{\rc 2}}$ and large enough $n$, wp $1-\rc n$ over $G\sim G(n,\rc 2)$, there is a degree $d$ pseudodistribution $\mu$ over $B^n$ that is consistent with $x_ix_j=0$ for every $i\nsim j$ in $G$ and such that $\wt{\EE_{\mu}} \sumo in x_i\ge \om$.
+
+In contrast with Max-3XOR, in planted clique, each variable has a weak but GLOBAL effect on all other variables.
+
+**Definition**. A degree $d$ pseudoexpectation map is $G\mapsto \mu_G, \deg (\mu_G)=d$. It is *pseudocalibrated with respect to $f$* if
+$$\sum_{G\sim G(n,\rc 2)} \wt{\EE_{G}} f_G = \EE_{(G,x)\sim G(n,\rc 2,\om)}f_G(x).$$
+($x$ is the characteristic vector of the planted clique.)
+
+(Q: **Why is the LHS $G(n,\rc2)$ rather than $G(n,\rc 2,\om)$?**)
+
+Example: If $f_G(x)=x_{17}$, then a first estimate could be $\wt E x_{17}=\fc{\om}n$. But if we want to get higher degree functions, ex. covariance with degree, right, then we should not each $\wt E x_i$ to $\fc{\om}n$.
+
+*Proof* (Sketch). Let $\mu(G,x) = \mu_{planted}(G,x)_{\deg_x\le d, \deg_G\le \tau}$. Show it still satisfies normalization, etc. Hrd part is psd-ness.
+
+**Finish**
+
+#### Exercises
+
+1. 
+2. 
+3. 
+4. 
+5. 
+6. $\EE_{G\sim G(n,\rc2)}\wt{\EE_G} p_G^2 = \EE_{(G,x)\sim G(n, \rc 2,\om)} p_G^2(x)$. So all $=0$. Now $a\wt{\EE_G} p_G \le a^2 \wt{\EE_G} p_G^2 + 1$, take $a\to \iy$.
+7. 
+
+## 6 Sphere
+
+*   Tensor PCA: given $\E X^{\ot d}$, find $\max \E\an{X,x}^d$.
+*   Sparsest vector in subspace.
+	* Sparseness is approximated by $\fc{\ve{v}_q}{\ve{v}_p}$, $q>p$.
+		* $q=\iy, p=1$ onlygives $\wt O(\sqrt n)$ approximation
+		* $q=2,p=1$ is good by inefficient to compute.
+		* $q=4,p=2$ is amenable to SoS
+* Quantum
+	* Separable $v=ww^T$, $v\in \R^{N=M^2}$.
+	* Quantum measurement: $N\times N$ matrix $M$, $M\preceq I$, $\Pj(M\text{ accepts }\rh) = \Tr(M\rh)$.
+	* $\ep$-separable: $|\Tr(M\rh)-\Tr(M\rh')|\le \ep$ for all $M$.
+	* Quantum separability problem: separable vs. not $\ep$-separable.
+		* Under ETH, needs $N^{\Om_\ep(\ln N)}$ timme.
+	* Best separable state: given $1>c>s>0$, decide: there exists $\rh: \Tr(M\rh)\ge c$, $\rh$ separable, or for all separable, $\Tr(M\rh)\le s)$. 
+		* For $(1,1-\ep)$ this is QAM(2). $M$ is the verifier receiving quantum states from provers guaranteed to be non-entangled.
+		* Known: $QMA(2)\in EE$. Quasipoly algorithms places in EXP.
+		* There always exists a pure state maximizing acceptance probability, so want $\max_{\ve{x}=1} \Tr(M(xx^T)^{\ot 2})$.
+
 
 ## Reading
 

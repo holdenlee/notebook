@@ -76,7 +76,7 @@
       
        
         <p>Posted: 2016-03-24 
-          , Modified: 2016-03-24 
+          , Modified: 2016-10-31 
 	</p>
       
        <p>Tags: <a href="../../../tags/SoS.html">SoS</a>, <a href="../../../tags/SDP.html">SDP</a>, <a href="../../../tags/maxcut.html">maxcut</a></p> 
@@ -103,6 +103,18 @@
  </ul></li>
  <li><a href="#misc.">Misc.</a></li>
  <li><a href="#proofs-beliefs-and-algorithms-through-the-lens-of-sum-of-squares">Proofs, Beliefs, and Algorithms through the lens of Sum-of-Squares</a><ul>
+ <li><a href="#lower-bounds">3 Lower bounds</a><ul>
+ <li><a href="#maxcut">3.1 Maxcut</a></li>
+ <li><a href="#csp">3.2 CSP</a></li>
+ <li><a href="#from-integrality-gaps-to-hardness">3.3 From integrality gaps to hardness</a></li>
+ </ul></li>
+ <li><a href="#arora-rao-vazirani-approximation-for-expansion">4 Arora-Rao-Vazirani approximation for expansion</a></li>
+ <li><a href="#bayesian-view">5 Bayesian view</a><ul>
+ <li><a href="#bayesian-view-1">5.1 Bayesian view</a></li>
+ <li><a href="#general-domains">5.2 General domains</a></li>
+ <li><a href="#planted-clique-hardness">5.3 Planted clique hardness</a></li>
+ </ul></li>
+ <li><a href="#sphere">6 Sphere</a></li>
  <li><a href="#reading">Reading</a></li>
  </ul></li>
  </ul> </div>
@@ -278,6 +290,227 @@ This is the <strong>max-cut</strong> problem.</li>
 A-T\in W = \set{Q}{\an{(1,x)^{\ot d/2}, Q(1,x)^{\ot d/2}}\equiv 0\text{ over }\{0,1\}^n}.
 \]</span> Look at <span class="math inline">\(F+W\cap\)</span>cone.</p>
 <p>We just need an efficient separation oracle.</p>
+<h3 id="lower-bounds">3 Lower bounds</h3>
+<h4 id="maxcut">3.1 Maxcut</h4>
+<p>Cheeger: Let <span class="math inline">\(G\)</span> be a <span class="math inline">\(d\)</span>-regular graph and <span class="math inline">\(L_G=I-\rc dA\)</span> be its Laplacian, and <span class="math inline">\(\la\)</span> be the second smallest eigenvalue. Then <span class="math display">\[\la \ge \Om(\ph(G)^2).\]</span></p>
+<p>The second smallest eigenvalue of <span class="math inline">\(L_{C_n}\)</span> is <span class="math inline">\(O\prc{n^2}\)</span>. (Proof: compute.) This shows Cheeger is tight, as we have <span class="math display">\[ \la = \Te\prc{n^2}, \quad \ph(G) = \Te\prc{n}. \]</span></p>
+<p>Maxcut: We showed that <span class="math display">\[maxcut (G)\le 1-\ep \implies (\forall \deg \mu=2, \wt{\EE_{\mu}} f_G(x) \le 1-\Om(\ep^2)).\]</span></p>
+To show tightness up to constant, show that for <span class="math inline">\(G=C_n\)</span> there is <span class="math inline">\(\mu\)</span>:
+\begin{align}
+maxcut(C_n) &amp;\le 1-\rc n =:1- \ep\\
+\wt{\EE_\mu} f_G(x) &amp;= 1-\Te\prc{n^2}. 
+\end{align}
+<em>Proof</em>. Let <span class="math inline">\(n=2k+1\)</span>. Define <span class="math inline">\(u, v, w, X, \mu\)</span> as follows.
+\begin{align}
+u=(\om^{jk})_{j=0}^{n-1} &amp;= u+iw\\
+X&amp;=vv^T+ww^T\\
+\wt{\EE_\mu} x &amp;= \rc2 \one\\
+\wt{\EE_{\mu}} xx^T &amp;= \rc 4 \one \one^T + \rc 4 X
+\end{align}
+<p>(We can find a degree-2 pseudodistibution whenever <span class="math inline">\(\wt{\EE_\mu} xx^T - (\wt{\EE_\mu} x)(\wt{\EE_{\mu}}x)^T\)</span> is psd and the diagonal of <span class="math inline">\(\wt{\EE_\mu} xx^T\)</span> equals <span class="math inline">\(\wt{\EE_\mu}x\)</span>. (Do we want it to be in <span class="math inline">\([0,1]\)</span>?)) Calculation: <span class="math display">\[
+\wt{\EE_{\mu}} f_G(x) = \rc 4 \sum |u_i-u_j|^2 = n\pa{1-\Te\prc{n^2}}.
+\]</span> (Working backwards, setting <span class="math inline">\(X=vv^T+ww^T\)</span> and then finding what the values of <span class="math inline">\(v,w\)</span> should be, we want <span class="math inline">\(\sum_{(i,j)\in E}|u_i-u_j|^2\)</span> to be large. This motivates hops of <span class="math inline">\(\om^k\)</span>. Calculations: <span class="math inline">\(\E(x_i-x_j)^2 = \E[1-\fc{2v_iv_j+2w_iw_j}4]\)</span>.) <!-- $\EE_{x\sim N(\rc 2\one, \rc 4 X)} x^T(vv^T+ww^T)x = \Tr((\rc 4\one \one^T+\rc4 X)X)$--></p>
+\begin{align}
+\al_{GW} &amp;= \min_{0\le x\le 1} \fc{\cos^{-1}(1-2x)}{\pi x}\\
+&amp;=\min_{-1\le \rh\le 1} \fc{2\cos^{-1}\rh}{(1-\rh)\pi}\\
+\rh_{GW} &amp;= \amin_{-1\le \rh\le 1} \fc{2\cos^{-1}\rh}{(1-\rh)\pi}
+\end{align}
+<strong>Theorem</strong> (Tightness of GW): For every <span class="math inline">\(\ep&gt;0\)</span> there is <span class="math inline">\(G\)</span> and <span class="math inline">\(\mu\)</span> such that
+\begin{align}
+maxcut(G) &amp;\le \al_{GW} x_{GW} + \ep\\
+\wt{\EE_{\mu}} f_G(x) &amp;\ge x_{GW}.
+\end{align}
+<p><em>Proof</em>. Feige-Schechtman graph: Connect up points on the sphere if <span class="math inline">\(\an{v,w}\le \rh_{GW}+\ep\)</span>. (Later reduce to a discrete graph by sampling.) We have variables <span class="math inline">\(\{X_v\}_{v\in \R^d}\)</span>, <span class="math inline">\(X_v = \rc 2 + \fc{\an{v,g}}2\)</span>, <span class="math inline">\(\Cov(X_u,X_v) = \E \an{u,g}\an{v,g} = \an{u,v} \le -\rh_{GW} + \ep\)</span> if <span class="math inline">\(\an{u,v}\le \rh\)</span>.</p>
+<h4 id="csp">3.2 CSP</h4>
+<p><strong>Theorem</strong>. It is NP-hard to solve <span class="math inline">\(\text{Max-3XOR}_{\rc 2+\de, 1-\ep}\)</span>.</p>
+<p>There are reductions <span class="math inline">\(3\SAT\stackrel{\wt O(n)}{\le}\text{LabelCover} \stackrel{O(n)}\le \text{3XOR}\)</span>.</p>
+<p>The fraction of constraints satisfied by 3XOR problem <span class="math inline">\(x_i+x_j+x_k = a_{ijk}\)</span> is <span class="math display">\[
+f_\psi = \rc 2 + \rc{2|\psi|}\sum_{\{i,j,k\}\in \psi} (1-a_{ijk})(1-2x_i)(1-2x_j)(1-2x_k).
+\]</span></p>
+<p><strong>Theorem</strong> (Grigoriev). For every <span class="math inline">\(\ep&gt;0\)</span>, for large enough <span class="math inline">\(n\)</span>, there is an instance <span class="math inline">\(\psi\)</span> of Max-3XOR such that</p>
+<ul>
+<li>every assignment satisfies <span class="math inline">\(\le \rc2+\ep\)</span> fraction of equations in <span class="math inline">\(\psi\)</span>.</li>
+<li>there exists a pseudodistribution of degree <span class="math inline">\(\Om(n)\)</span> consistent with <span class="math inline">\(x_i^2-x_i=0\)</span> and <span class="math inline">\((1-2x_i)(1-2x_j)(1-2x_k) = 1-2a_{ijk}\)</span>.</li>
+</ul>
+<p>Intuition: Unlike Gaussian elimintion, the sos algorithm cannot distinguish between a perfectly and <span class="math inline">\(1-o(1)\)</span> satisfiable system.</p>
+<p><em>Proof</em>. Take a random <span class="math inline">\((m,n)\)</span> bipartite graph with left-degree 3. Left is constraints, right is variables.</p>
+<ol type="1">
+<li>Soundness: Chernoff gives for <span class="math inline">\(m&gt;\fc{9n}{\ep^2}\)</span>, <span class="math display">\[\Pj(\forall x\in \{0,1\}^n, \val_\psi(x) \le \rc 2+\ep)\ge 1-2^{-n}.\]</span> Union bound.</li>
+<li><p>Completeness: (cf. expander codes.) Let <span class="math inline">\(\chi_S = \prod_{i\in S}(1-2x_i)\)</span>. Idea: make pseudistribution “uniform” subject to constraints.</p>
+<p>We define <span class="math inline">\(\wt{\EE_{\mu}}\chi_S\)</span> for <span class="math inline">\(|S|\le \ep n\)</span>. If <span class="math inline">\(\wt \E \chi_S\)</span>, <span class="math inline">\(\wt \E \chi_T\)</span> have been defined and <span class="math inline">\(|S\triangle T|\le d=\ep n\)</span>, set <span class="math inline">\(\wt \E \chi_{S\triangle T} = (\wt \E \chi_S)(\wt \E \chi_T)\)</span>. Set remaining <span class="math inline">\(\wt \E \chi_S=0\)</span>.</p>
+<p>A degree <span class="math inline">\(d\)</span> derivation is a set that is reached after some number of steps, each set on the way being <span class="math inline">\(\le d\)</span>.</p>
+<p>WHP the graph is an expander. If we have degree <span class="math inline">\(d\)</span> derivations for <span class="math inline">\(\sum_{i\in S} x_i\equiv 0\)</span> and <span class="math inline">\(\sum_{i\in S} x_i\equiv 1\)</span>, then we get a degree <span class="math inline">\(2d\)</span> derivtion of <span class="math inline">\(\sum_{i\in \phi} x_i=1\)</span>. Impossible—similar to proof of expander codes: In order for <span class="math inline">\(T_t\)</span> to be <span class="math inline">\(\bigopl_{l\in T_t}\Ga(l) = \phi\)</span>, <span class="math inline">\(T_t\)</span> is large; take the first large <span class="math inline">\(T_i\)</span> in the derivation, it will have large neighbor set.</p>
+<p>Show <span class="math inline">\(\deg p\le \fc d2\implies \wt \E p^2\ge 0\)</span> by Fourier expansion. Break <span class="math inline">\(|S|\le \fc d2\)</span> into equivalence classes based on <span class="math inline">\(\E[\chi_{S\triangle T}]\ne 0\)</span>. For <span class="math inline">\(p_i=\sum_{S\in C_i} p_S\chi_S\)</span>, <span class="math display">\[ \wt \E p_i^2 = \sum_i (\sum_S p_S\wt{\E} x_{S\triangle S_i})^2\ge 0.\]</span></p></li>
+</ol>
+<p><strong>Exercise 11</strong>. DO this!</p>
+<p>To reduce from Max 3SAT <span class="math inline">\((\fc 78+\ep, 1)\)</span>, convert <span class="math inline">\(a_{\ell_i}x_i \vee a_{\ell_j}x_j \vee a_{\ell_k}x_k=1\)</span> to <span class="math inline">\(x_i+x_j+x_k \equiv a_{\ell_i}+a_{\ell_j} + a_{\ell_k}\)</span>.</p>
+<p>A nice <span class="math inline">\(V\in \F_2^L\)</span> is one such that every <span class="math inline">\(u\in V^{\perp}\bs \{0\}\)</span> has <span class="math inline">\(\ve{u}_0\ge 3\)</span>. A <strong>nice subspace predicate</strong> is one such that there exists nice <span class="math inline">\(V\)</span>, <span class="math inline">\(P(x)=1\iff x\in V\)</span>.</p>
+<p><strong>Theorem</strong> (SoS hardness for nice-subspace CSP, SoS PCP). Let <span class="math inline">\(k,\ep&gt;0\)</span> be given. There exist <span class="math inline">\(\be = 2^k\prc{\ep^2}\)</span>, <span class="math inline">\(c=\poly\prc{\be}\)</span> such that there is an instance <span class="math inline">\(\psi\)</span> of Max-P for [<span class="math inline">\(k\)</span>-variate predicate <span class="math inline">\(P\)</span> with <span class="math inline">\(\le 2k\)</span> satisfying assignments] on <span class="math inline">\(n\gg \rc c\)</span> variables and <span class="math inline">\(m=\be n\)</span> constraints such that</p>
+<ul>
+<li>Every assignment satisfies <span class="math inline">\(\le \fc{2k}{2^k} + \ep\)</span> fraction of constraints.</li>
+<li>There exists degree <span class="math inline">\(cn\)</span> pseudodistribution that satisfies all constraints.</li>
+</ul>
+<p><strong>Read the rest (15-21)</strong></p>
+<h4 id="from-integrality-gaps-to-hardness">3.3 From integrality gaps to hardness</h4>
+<h3 id="arora-rao-vazirani-approximation-for-expansion">4 Arora-Rao-Vazirani approximation for expansion</h3>
+<p><strong>Theorem</strong>. Let <span class="math inline">\(G\)</span> be a <span class="math inline">\(d\)</span>-regular graph with vertex set <span class="math inline">\([n]\)</span> and <span class="math inline">\(\mu:B^n\to \R\)</span> be a degree-4 pseudo-distribution. Then <span class="math display">\[
+\ph(G) = \min_{x\in B^n} \fc{f_G}{\fc dn |x|(n-|x|)} \le O(\sqrt{\ln n}) \ph_\mu(G).
+\]</span> There is a polynomial time algorithm that given <span class="math inline">\(G\)</span> and <span class="math inline">\(\mu\)</span>, finds <span class="math inline">\(x\)</span> such that <span class="math inline">\(\ph(G)\le O(\sqrt{\ln n})\ph_\mu(G,x)\)</span>.</p>
+<p><em>Proof</em>.</p>
+<p>Let <span class="math inline">\(d(i,j)=\wt{\EE_{\mu}} (x_i-x_j)^2\)</span>. For degree 4, we have <span class="math inline">\(d(i,j) + d(j,k) \ge d(i,k)\)</span>.</p>
+<ol type="1">
+<li>Structure Theorem.
+<ul>
+<li>Suppose that <span class="math inline">\(\sum_{i,j} d(i,j)\ge 0.1 n^2\)</span>. We want to show that there exist <span class="math inline">\(|A|,|B|\ge \Om(n)\)</span> such that <span class="math inline">\(d(i,j)\ge \De\)</span> for all <span class="math inline">\(i\in A, j\in B\)</span>.</li>
+<li>Let <span class="math inline">\(\mu\)</span> be a distribution (obtained by quadratic sampling from the pd) satisfying <span class="math inline">\(\E x_i^2\le 1\)</span>, <span class="math inline">\(\sum_{i,j} d(i,j)\ge 0.1 n^2\)</span> and <span class="math inline">\(d(i,k) \ge d(i,j) + d(j,k)\)</span>. Then we can find <span class="math inline">\(|A|,|B|\ge \Om(n)\)</span>, <span class="math inline">\(d(A,B)\ge \Om\prc{\sqrt{\ln n}}\)</span>.</li>
+<li>Algorithm: Pick <span class="math inline">\(X\)</span> randomly. Take <span class="math inline">\(A^0=\set{i}{X_i\le -1}\)</span> and <span class="math inline">\(B^0=\set{i}{X_i \ge 1}\)</span>. Remove the largest matching between them where the graph <span class="math inline">\(H\)</span> has <span class="math inline">\((i,j)\)</span> with <span class="math inline">\(d(i,j)\le \De\)</span>. (Go through vertices in fixed order.)</li>
+<li><span class="math inline">\(\E |A||B| \ge 0.1 cn^2 - n\E |M|\)</span>.</li>
+<li>The problematic case is <span class="math inline">\(\E|M|\ge 0.05cn\)</span>.</li>
+<li>Estimate <span class="math inline">\(\E |M|\)</span> by relating it to the max of a Gaussian process. <span class="math display">\[ \fc{\Om(1)}{\De} \pf{\E |M|}{n}^3 \le \E \max_{i,j\in [n]} X_j-X_i \le \sqrt{2\ln n}.\]</span>
+<ul>
+<li>Let <span class="math inline">\(H^k(i) =B_k(i)\)</span> be vertices reached from <span class="math inline">\(i\)</span> in at most <span class="math inline">\(k\)</span> steps in <span class="math inline">\(H\)</span>. Let
+\begin{align}
+Y_i^{(k)} &amp;= \max_{j\in H^k(i)} X_j-X_i\\
+\Phi(k) &amp;=\sumo in \E Y_i^{(k)}
+\end{align}
+<p>This gives a lower bound on <span class="math inline">\(\E \max_{i,j\in [n]} X_j-X_i\ge \fc{\Phi(k)}n\)</span>.</p>
+Lemma (chaining). <span class="math display">\[\Phi(k+1) \ge \Phi(k) + \E |M| - O(n) \max_{i\in [n], j\in H^{k+1}(i)} \pa{\E(X_i-X_j)^2}^{\rc 2}.\]</span>
+<ul>
+<li>Variance of maxima of Gaussian processes: Let <span class="math inline">\(Z\)</span> be centered Gaussian. Then <span class="math display">\[\Var(\max(Z_1,\ldots, z-t))\le O(1) \max(\Var(Z_1),\ldots, \Var(Z_t)).\]</span></li>
+<li>For <span class="math inline">\((i,j)\in E(H)\)</span>, because <span class="math inline">\(H^k(j)\subeq H^{k+1}(i)\)</span>, for <span class="math inline">\(N\)</span> an arbitrary matching of vertices not in <span class="math inline">\(M\)</span>,
+\begin{align}
+\forall (i,j)\in M, Y_i^{(k+1)}&amp;\ge Y_j^{(k)}+2\\
+\forall (i,j)\in N, \rc2 Y_i^{k+1}+\rc2 Y_j^{(k+1)} &amp;\ge \rc 2 Y_i^{(k)} + \rc2 Y_j^{(k)}
+\end{align}
+Sum up inequalities and take expectation. Use <span class="math inline">\(|\E XY - \E X \E Y|\le \sqrt{\Var(X)\Var(Y)}\)</span>.
+\begin{align}
+\sum \E Y_i^{(k+1)} - \sum \E Y_j^{(k)}
+&amp; = 2 \pa{\sum \E Y_i^{(k+1)} \E L_i - \sum \E Y_j^{(k)} \E R_i}\\
+&amp; \le 2\ub{\pa{\sum \E Y_i^{(k+1)}L_i+\cdots}}{4|M|} - n O(1) (\max_{j\in H^{k+1}(i)} + \max_{i\in H^k(j)})[(\E (X_i-X_j)^2)^{\rc 2}].
+\end{align}</li>
+</ul></li>
+</ul></li>
+<li>Reduce to case <span class="math inline">\(\sum d(i,j) \ge 0.1n^2\)</span>. Let <span class="math inline">\(\de = \rc{n^2} \sum_{i,j} d(i,j)\)</span>.
+<ul>
+<li>Heavy cluster: (If there is a cluster that has a constant fraction of vertices, we get a good <span class="math inline">\(A\)</span>.) If <span class="math inline">\(A=B_{\de/4}(i), |A|\ge \Om(n)\)</span>, then <span class="math inline">\(|A|\sum d(j,A) \ge \Om(1) \sum d(i,j)\)</span>.
+<ul>
+<li><span class="math inline">\(\de \le \rc{n^2} \sum (d(i,A)+d(A,j) + \diam(A))\le \fc\de2 + \rc n \sum 2d(i,A)\)</span>.</li>
+</ul></li>
+<li>Heavy cluster or well-spread: Either
+<ol type="1">
+<li>There exists <span class="math inline">\(i\in [n]\)</span>, heavy cluster around <span class="math inline">\(i\)</span>, or</li>
+<li>There exists <span class="math inline">\(U\subeq [n]\)</span>, <span class="math inline">\(|U|=\Om(n)\)</span>, Gaussian <span class="math inline">\(Y\)</span>, <span class="math inline">\(\E Y_i^2\le 1\)</span>, <span class="math inline">\(\sum \E (Y_i-Y_j)^2\ge 0.05\)</span>, <span class="math inline">\(\al=\Om(\de)\)</span>, <span class="math inline">\(\forall i,j\in U, d(i,j) =\al \E(Y_i-Y_j)^2\)</span>.</li>
+</ol>
+<ul>
+<li>If not (1), then by averaging principle there is <span class="math inline">\(k\in [n]\)</span> such that <span class="math inline">\(\sumo in d(i,k)\le \de n\)</span>. (Q: <strong>WHY? This seems opposite</strong>.) Lower bound <span class="math inline">\(\sum_{i,j\in U=B_{2\de}(k)} d(i,j)\)</span> by <span class="math inline">\((i, j\in B_{2\de}(k) \be B_{\de/4}(i))\)</span>. Define <span class="math inline">\(X\)</span> as having the same first 2 moments as <span class="math inline">\(\mu\)</span>, and let <span class="math inline">\(Y_i = \fc{X_i-X_k}{\sqrt{2\de}}\)</span>.</li>
+</ul></li>
+</ul></li>
+</ul></li>
+<li>Region growing. Suppose there exists <span class="math inline">\(A\subeq [n]\)</span> such that <span class="math inline">\(|A|\sumo in d(i,A) \ge \De \sumo{i,j}n d(i,j)\)</span>. Then <span class="math display">\[\ph(G) \le \rc{\De} \ph_{\mu}(G).\]</span> In fact, <span class="math inline">\(\De \ph(G)\le \ph_{\mu}(G, B_t(A))\)</span> for some <span class="math inline">\(t\)</span>.
+<ul>
+<li>Define <span class="math inline">\(\mu'\)</span> by: Choose <span class="math inline">\(t\sim U_{[0,1]}\)</span> and let <span class="math inline">\(x_i'=1\iff d(i,A)\le t\)</span>.</li>
+<li>Numerator: Then <span class="math inline">\(d(i,A)\le d(j,A) \implies \E_{\mu'} f_G \le \wt{\EE_{\mu}} f_G\)</span>.</li>
+<li>Denominator: <span class="math inline">\(\EE_{\mu'} |x'|(x-|x'|) \ge |A| \sum (1-x_i') \ge \De \sum d(i,j) = \De \wt{\EE_{\mu}} |x|(n-|x|)\)</span>.</li>
+<li>Combine.</li>
+</ul></li>
+</ol>
+<h3 id="bayesian-view">5 Bayesian view</h3>
+<h4 id="bayesian-view-1">5.1 Bayesian view</h4>
+<p>We want <span class="math inline">\(\min_{x\in B^n}f\)</span>; degree <span class="math inline">\(d\)</span> SoS finds <span class="math inline">\(\min_{\deg \mu = d} \wt{\EE_{\mu}} f\)</span>.</p>
+<p>Often the global minimum is at a single point, but pseudodistribution pretends to be high entropy over nonexistent elements, “supported on unicorns”.</p>
+<h4 id="general-domains">5.2 General domains</h4>
+<p>Replace <span class="math inline">\(B^n\)</span> with <span class="math inline">\(\Om\subeq \R^n\)</span> defined by polynomial inequalities <span class="math inline">\(A=\{f_1\ge 0,\ldots, f_m\ge 0\}\)</span>. Questions:</p>
+<ul>
+<li>Are these inequalities feasible, <span class="math inline">\(A\ne \phi\)</span>?</li>
+<li>Is <span class="math inline">\(g\ge 0\)</span> on <span class="math inline">\(A\)</span>?</li>
+</ul>
+<p>A degree <span class="math inline">\(l\)</span> SoS proof is <span class="math inline">\(g=\sum_{S\subeq [n]} p_S \prod_{i\in S} f_i\)</span>, where <span class="math inline">\(p_S\)</span> is SoS, each <span class="math inline">\(\deg(p_S \prod_{i\in S} f_i)\le l\)</span>. Write <span class="math inline">\(A\vdash_l \{g\ge 0\}\)</span>. (There is a SoS proof of degree <span class="math inline">\(d\)</span> of <span class="math inline">\(g\ge 0\)</span> from <span class="math inline">\(A\)</span>.)</p>
+<p><strong>Theorem</strong> (Positivstellensatz). Every <span class="math inline">\(A\)</span> is either feasible, or <span class="math inline">\(A\vdash_l\{-1\ge 0\}\)</span> for some <span class="math inline">\(l\in \N\)</span>.</p>
+<p>SoS has inference rules for addition, multiplication (add degrees), transitivity (multiply degrees), and substitution (multiply with degree of substituted <span class="math inline">\(H\)</span>).</p>
+<p><strong>Lemma</strong>. Let <span class="math inline">\(\mu\)</span> have finite support, <span class="math inline">\(\wt{\EE_{\mu}} 1=1\)</span>. <span class="math inline">\(\mu\)</span> is degree <span class="math inline">\(d\)</span> pd iff <span class="math inline">\(\wt{\EE_{\mu}} ((1,x)^{\ot d/2})((1,x)^{\ot d/2})^T\)</span> is psd.</p>
+<p><em>Proof</em>. Writing <span class="math inline">\(p = \an{v,(1,x)^{\ot d/2}}\)</span>, <span class="math inline">\(\wt{\EE_{\mu}} p^2 = \wt{\EE_{\mu}} \an{v,(1,x)^{\ot d/2}}^2\)</span>.</p>
+<p>Write <span class="math inline">\(\mu\vDash_l A\)</span> (satisfy <span class="math inline">\(A=\{f_i\}\)</span> at degree <span class="math inline">\(l\)</span>) if for all <span class="math inline">\(S\subeq [m]\)</span>, every SoS with <span class="math inline">\(\deg h + \sum_{i\in S} \max(\deg f_i,l)\le d\)</span> satisfies <span class="math inline">\(\wt \E_\mu h \prod_{i\in S}f_i\ge 0\)</span> for all SoS’s <span class="math inline">\(h\)</span>. (Ex. for <span class="math inline">\(A=\{f\ge 0\}\)</span>, take <span class="math inline">\(S=\{f\}\)</span>.)</p>
+<p><strong>Question: how does this mesh with <span class="math inline">\(B^n\)</span> definition?</strong></p>
+<p><strong>Theorem</strong> (Duality). Suppose <span class="math inline">\(\ve{x}^2\le M\)</span> is in <span class="math inline">\(A\)</span>. For all <span class="math inline">\(d\in \N\)</span>, <span class="math inline">\(f\in \R[x]_{\le d}\)</span>, either</p>
+<ul>
+<li>for all <span class="math inline">\(\ep&gt;0\)</span>, there exists degree <span class="math inline">\(d\)</span>, <span class="math inline">\(A\vdash_d \{f\ge -\ep\}\)</span>.</li>
+<li><span class="math inline">\(\exists \deg \mu=d\)</span>, <span class="math inline">\(\mu \vDash A\)</span>, <span class="math inline">\(\wt{\EE_{\mu}} f\le 0\)</span>. (I.e., <span class="math inline">\(\exists \mu, \mu\vDash A\)</span>, <span class="math inline">\(\wt{\EE_{\mu}} f\le 0\)</span>.)
+<ul>
+<li>If <span class="math inline">\(A\)</span> is a variety, then we can replace with <span class="math inline">\(f \ge 0\)</span> and <span class="math inline">\(f&lt;0\)</span>.</li>
+</ul></li>
+</ul>
+<p><em>Proof</em>. Consider 2 cases.</p>
+<ul>
+<li><span class="math inline">\(f\in \ol C\)</span>, <span class="math inline">\(C\)</span> the cone of the <span class="math inline">\(g\)</span> such that <span class="math inline">\(A\vdash_d \{g\ge 0\}\)</span>. Then <span class="math inline">\((1-\ep) f+ \ep g\in C\)</span>. <span class="math inline">\(f\ge -\ep(g-f) \ge \ep M'\)</span>. <!--Moving $f$ in the positive direction will eventually --></li>
+<li>Else there is separating linear functional. <span class="math inline">\(\phi(1)&gt;0\)</span> because moving <span class="math inline">\(f\)</span> in direction of 1 eventually makes it in <span class="math inline">\(C\)</span>. Rescale so <span class="math inline">\(\phi(1)=1\)</span>.</li>
+</ul>
+<p>Think of <span class="math inline">\(\vdash\)</span> as a proof, and <span class="math inline">\(\mu \vDash\)</span> as saying <span class="math inline">\(\mu\)</span> is a model. <!--as saying, under a certain $\mu$, the conditions are in fact satisfied.--></p>
+<p><strong>Lemma</strong></p>
+<ol type="1">
+<li>(Soundness) <span class="math inline">\(\mu \vDash_l A, A\vdash_{l'} B\implies \mu \vDash_{ll'}B\)</span>.</li>
+<li>(Completness) If <span class="math inline">\(\forall \deg \mu=d, (\mu\vDash_l A \implies \mu\vDash_{l'} B)\)</span>, then <span class="math inline">\(\forall \ep&gt;0, A\vdash_d B_{\ep'}\)</span> (weaken each constraint by <span class="math inline">\(\ep\)</span>).</li>
+</ol>
+<p><strong>Theorem</strong> (SoS algorithm).</p>
+<ul>
+<li>Given satisfiable <span class="math inline">\(A\)</span>, output in time <span class="math inline">\(n^{O(d)}\)</span> a degree <span class="math inline">\(d\)</span> pseudo-distribution satisfies <span class="math inline">\(\mu\vDash A\)</span> up to error <span class="math inline">\(2^{-n}\)</span>.</li>
+<li>(For varieties) Given a basis for <span class="math inline">\(\R[x]_{\le d} \cap I(\Om)\)</span>, can find a degree-<span class="math inline">\(d\)</span> Sos proof, or <span class="math inline">\(\mu\)</span> with <span class="math inline">\(\wt{\EE_{\mu}}\le 2^{-n}\)</span>.</li>
+</ul>
+<h5 id="exercises-1">Exercises</h5>
+<ol type="1">
+<li>NA</li>
+<li>NA</li>
+<li>Let <span class="math inline">\(r\)</span> be argmin. Write <span class="math inline">\(f(r) + (x-r)^2q(x)\)</span>. Repeat.</li>
+<li><span class="math inline">\(\{\ve{x}^2\le 1\} \vdash_d \{-1\le x_i\le 1\}\)</span>. Use these.</li>
+</ol>
+<h4 id="planted-clique-hardness">5.3 Planted clique hardness</h4>
+<p>Planted clique: Take <span class="math inline">\(G(n,\rc 2)\)</span>, add a random <span class="math inline">\(\om\)</span>-clique.</p>
+<p>Whp the max clique of <span class="math inline">\(G(n,\rc 2)\)</span> is of size <span class="math inline">\(c\ln(n)\)</span>, so for <span class="math inline">\(\Om(\ln n)\)</span> size cliques there is quasipoly algorithm.</p>
+<p><strong>Theorem</strong> (SoS hardness). Let <span class="math inline">\(d(n)\)</span> be a function. There is <span class="math inline">\(c\)</span> such that for <span class="math inline">\(\om = n^{\rc 2 - c\pf{d}{\ln n}^{\rc 2}}\)</span> and large enough <span class="math inline">\(n\)</span>, wp <span class="math inline">\(1-\rc n\)</span> over <span class="math inline">\(G\sim G(n,\rc 2)\)</span>, there is a degree <span class="math inline">\(d\)</span> pseudodistribution <span class="math inline">\(\mu\)</span> over <span class="math inline">\(B^n\)</span> that is consistent with <span class="math inline">\(x_ix_j=0\)</span> for every <span class="math inline">\(i\nsim j\)</span> in <span class="math inline">\(G\)</span> and such that <span class="math inline">\(\wt{\EE_{\mu}} \sumo in x_i\ge \om\)</span>.</p>
+<p>In contrast with Max-3XOR, in planted clique, each variable has a weak but GLOBAL effect on all other variables.</p>
+<p><strong>Definition</strong>. A degree <span class="math inline">\(d\)</span> pseudoexpectation map is <span class="math inline">\(G\mapsto \mu_G, \deg (\mu_G)=d\)</span>. It is <em>pseudocalibrated with respect to <span class="math inline">\(f\)</span></em> if <span class="math display">\[\sum_{G\sim G(n,\rc 2)} \wt{\EE_{G}} f_G = \EE_{(G,x)\sim G(n,\rc 2,\om)}f_G(x).\]</span> (<span class="math inline">\(x\)</span> is the characteristic vector of the planted clique.)</p>
+<p>(Q: <strong>Why is the LHS <span class="math inline">\(G(n,\rc2)\)</span> rather than <span class="math inline">\(G(n,\rc 2,\om)\)</span>?</strong>)</p>
+<p>Example: If <span class="math inline">\(f_G(x)=x_{17}\)</span>, then a first estimate could be <span class="math inline">\(\wt E x_{17}=\fc{\om}n\)</span>. But if we want to get higher degree functions, ex. covariance with degree, right, then we should not each <span class="math inline">\(\wt E x_i\)</span> to <span class="math inline">\(\fc{\om}n\)</span>.</p>
+<p><em>Proof</em> (Sketch). Let <span class="math inline">\(\mu(G,x) = \mu_{planted}(G,x)_{\deg_x\le d, \deg_G\le \tau}\)</span>. Show it still satisfies normalization, etc. Hrd part is psd-ness.</p>
+<p><strong>Finish</strong></p>
+<h5 id="exercises-2">Exercises</h5>
+<ol type="1">
+<li></li>
+<li></li>
+<li></li>
+<li></li>
+<li></li>
+<li><span class="math inline">\(\EE_{G\sim G(n,\rc2)}\wt{\EE_G} p_G^2 = \EE_{(G,x)\sim G(n, \rc 2,\om)} p_G^2(x)\)</span>. So all <span class="math inline">\(=0\)</span>. Now <span class="math inline">\(a\wt{\EE_G} p_G \le a^2 \wt{\EE_G} p_G^2 + 1\)</span>, take <span class="math inline">\(a\to \iy\)</span>.</li>
+<li></li>
+</ol>
+<h3 id="sphere">6 Sphere</h3>
+<ul>
+<li>Tensor PCA: given <span class="math inline">\(\E X^{\ot d}\)</span>, find <span class="math inline">\(\max \E\an{X,x}^d\)</span>.</li>
+<li>Sparsest vector in subspace.
+<ul>
+<li>Sparseness is approximated by <span class="math inline">\(\fc{\ve{v}_q}{\ve{v}_p}\)</span>, <span class="math inline">\(q&gt;p\)</span>.
+<ul>
+<li><span class="math inline">\(q=\iy, p=1\)</span> onlygives <span class="math inline">\(\wt O(\sqrt n)\)</span> approximation</li>
+<li><span class="math inline">\(q=2,p=1\)</span> is good by inefficient to compute.</li>
+<li><span class="math inline">\(q=4,p=2\)</span> is amenable to SoS</li>
+</ul></li>
+</ul></li>
+<li>Quantum
+<ul>
+<li>Separable <span class="math inline">\(v=ww^T\)</span>, <span class="math inline">\(v\in \R^{N=M^2}\)</span>.</li>
+<li>Quantum measurement: <span class="math inline">\(N\times N\)</span> matrix <span class="math inline">\(M\)</span>, <span class="math inline">\(M\preceq I\)</span>, <span class="math inline">\(\Pj(M\text{ accepts }\rh) = \Tr(M\rh)\)</span>.</li>
+<li><span class="math inline">\(\ep\)</span>-separable: <span class="math inline">\(|\Tr(M\rh)-\Tr(M\rh')|\le \ep\)</span> for all <span class="math inline">\(M\)</span>.</li>
+<li>Quantum separability problem: separable vs. not <span class="math inline">\(\ep\)</span>-separable.
+<ul>
+<li>Under ETH, needs <span class="math inline">\(N^{\Om_\ep(\ln N)}\)</span> timme.</li>
+</ul></li>
+<li>Best separable state: given <span class="math inline">\(1&gt;c&gt;s&gt;0\)</span>, decide: there exists <span class="math inline">\(\rh: \Tr(M\rh)\ge c\)</span>, <span class="math inline">\(\rh\)</span> separable, or for all separable, <span class="math inline">\(\Tr(M\rh)\le s)\)</span>.
+<ul>
+<li>For <span class="math inline">\((1,1-\ep)\)</span> this is QAM(2). <span class="math inline">\(M\)</span> is the verifier receiving quantum states from provers guaranteed to be non-entangled.</li>
+<li>Known: <span class="math inline">\(QMA(2)\in EE\)</span>. Quasipoly algorithms places in EXP.</li>
+<li>There always exists a pure state maximizing acceptance probability, so want <span class="math inline">\(\max_{\ve{x}=1} \Tr(M(xx^T)^{\ot 2})\)</span>.</li>
+</ul></li>
+</ul></li>
+</ul>
 <h3 id="reading">Reading</h3>
 <ul>
 <li><a href="https://windowsontheory.org/2016/08/27/proofs-beliefs-and-algorithms-through-the-lens-of-sum-of-squares/">Windows on theory</a>, <a href="http://scrible.com/s/2KMCS">h</a></li>
