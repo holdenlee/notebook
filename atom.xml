@@ -342,11 +342,11 @@
 <h2 id="books">Books</h2>
 <p><a href="https://www.quora.com/What-are-the-best-books-about-reinforcement-learning">Quora recommendations</a></p>
 <ul>
-<li>(*) Sutto Barton. <a href="rl.html"><strong>Notes</strong></a></li>
+<li>(*) <a href="https://webdocs.cs.ualberta.ca/~sutton/book/the-book-1st.html">Sutton Barto</a> <a href="rl.html"><strong>Notes</strong></a></li>
 <li><a href="https://books.google.com/books?id=VvBjBAAAQBAJ&amp;printsec=frontcover&amp;dq=continuous+markov+decision+processes&amp;hl=en&amp;sa=X&amp;ved=0ahUKEwjo3OLywOnPAhVHWD4KHXzgDWUQ6AEIKTAC#v=onepage&amp;q=continuous%20markov%20decision%20processes&amp;f=false">Puterman14</a></li>
 <li><a href="http://site.ebrary.com/lib/princeton/reader.action?docID=10501323">Approximate DP, Powell</a></li>
 <li><a href="http://site.ebrary.com/lib/princeton/detail.action?docID=10560566">Optimal learning, Powell</a></li>
-<li><a href="http://www.crcnetbase.com/isbn/9781439821091">Function approximators, Lucian Busoniu, Robert Babuska, Bart De Schutter, and Damien Ernst</a></li>
+<li>(*) <a href="http://www.crcnetbase.com/isbn/9781439821091">Function approximators, Lucian Busoniu, Robert Babuska, Bart De Schutter, and Damien Ernst</a></li>
 <li><a href="http://web.mit.edu/dimitrib/www/dpchapter.pdf">ADP chapter, Bertsekas</a></li>
 <li><a href="https://books.google.com/books?id=-6RiQgAACAAJ&amp;dq=Dynamic+Programming:+Deterministic+and+Stochastic+Models&amp;hl=en&amp;sa=X&amp;ved=0ahUKEwjc0pfAyefPAhUGFz4KHaVIDecQ6AEIHjAA">Bertsekas87</a></li>
 </ul>
@@ -399,11 +399,11 @@
 </ul>
 <h4 id="theory-algorithms">Theory algorithms</h4>
 <ul>
-<li>(*) [AO06] UCRL
+<li>(*) [AO06] Logarithmic online regret bounds for undiscounted reinforcement learning
 <ul>
+<li>UCRL</li>
 <li>Maintain confidence bounds on rewards and transition probabilities.</li>
-<li>Only apply to unichain MDP’s (where fixing an action, any other state is reachable - I think this is unrealistic. This is unreasonable - NO, WRONG DEFINITION).</li>
-<li>Right definition in KS02: the stationary distribution of any policy does not depend on the start state (this is to make things easier, can do without)</li>
+<li>Only apply to unichain MDP’s: the stationary distribution of any policy does not depend on the start state (this is to make things easier, can do without)</li>
 <li>Other work: adversarial reward, index policies (choose action with max return in confidence region)</li>
 </ul></li>
 <li>[LH12] PAC bounds for discounted MDPs <a href="https://arxiv.org/pdf/1202.3890.pdf">paper</a>
@@ -416,7 +416,7 @@
 <li>Improved UCRL (UCRL2)</li>
 </ul></li>
 <li>[KN09] Near-Bayesian Exploration in Polynomial Time <a href="http://www.zicokolter.com/wp-content/uploads/2015/10/kolter-icml09a-full.pdf">paper</a></li>
-<li>(*) [KAL16] Contextual-MDP, which is contextual bandits + RL.
+<li>[KAL16] Contextual-MDP, which is contextual bandits + RL.
 <ul>
 <li>Regret wrt policy class.</li>
 <li>Poly in parameters, log in number of policies, independent of size of observation space. <span class="math inline">\(\poly(M, K, H, \ep, \ln N, \ln \prc\de)\)</span> <!--what does no dependence on numspace can represent exact-best solution, state transition dynamics are deterministic.--></li>
@@ -517,7 +517,7 @@
 </ul>
 <h3 id="pomdps">POMDPs</h3>
 <ul>
-<li>(*) [ALA16] Reinforcement Learning of POMDPs using Spectral Methods
+<li>(*) [ALA16] Reinforcement Learning of POMDPs using Spectral Methods <a href="http://www.jmlr.org/proceedings/papers/v49/azizzadenesheli16a.pdf">paper</a>
 <ul>
 <li>Spectral parameter estimation for POMDP’s</li>
 <li>Combine with UCRL (exploration-exploitation framework) to get regret bounds (compared to memoryless policies) optimal in dependence on <span class="math inline">\(N\)</span> (<span class="math inline">\(O(\sqrt N)\)</span>)</li>
@@ -549,7 +549,7 @@
 <li>Open: analyze UCRL for finite horizon.</li>
 <li>Stochastic policies are near-optimal in many domains (?). NP-hard to optimize but under some conditions can approximate</li>
 </ul></li>
-<li>[ALA16] Open Problem - Approximate Planning of POMDPs in the class of Memoryless Policies (COLT2016)
+<li>[ALA16] Open Problem - Approximate Planning of POMDPs in the class of Memoryless Policies (COLT2016) <a href="http://www.jmlr.org/proceedings/papers/v49/azizzadenesheli16b.pdf">paper</a>
 <ul>
 <li>Find exact or approximate optimal stochastic memoryless policy for POMDP.</li>
 <li>What [ALA16] don’t address in other paper: planning. (Complexity considerations? i.e. is this tractable? Kaelbling98)</li>
@@ -596,13 +596,13 @@
 <ul>
 <li>[G] Reinforcement learning - a Tutorial Survey and Recent Advances.pdf</li>
 <li>[KLM96] Reinforcement Learning - A Survey.pdf</li>
-<li>(*) [P14] Clearing the Jungle of Stochastic Optimization
+<li>[P14] Clearing the Jungle of Stochastic Optimization
 <ul>
 <li>4 classes of policies</li>
 <li>Dynamic vs. stochastic programs</li>
 </ul></li>
 <li>[P14] Energy and Uncertainty - models and algorithms for complex energy systems.pdf</li>
-<li>(*) [P16] A Unified Framework for Optimization under Uncertainty.pdf</li>
+<li>(*) [P16] A Unified Framework for Optimization under Uncertainty</li>
 <li><a href="http://people.csail.mit.edu/agf/Files/13FTML-RLTutorial.pdf">lin function approximators</a></li>
 <li><a href="https://hal.archives-ouvertes.fr/hal-00747575v5/document">optimistic principle</a></li>
 <li><a href="http://www.morganclaypool.com/doi/abs/10.2200/S00268ED1V01Y201005AIM009">Algorithms for RL</a></li>
