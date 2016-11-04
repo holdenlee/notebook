@@ -21,11 +21,11 @@ showTOC: True
 
 [Quora recommendations](https://www.quora.com/What-are-the-best-books-about-reinforcement-learning)
 
-* (\*) Sutto Barton. [**Notes**](rl.html)
+* (\*) [Sutton Barto](https://webdocs.cs.ualberta.ca/~sutton/book/the-book-1st.html) [**Notes**](rl.html)
 * [Puterman14](https://books.google.com/books?id=VvBjBAAAQBAJ&printsec=frontcover&dq=continuous+markov+decision+processes&hl=en&sa=X&ved=0ahUKEwjo3OLywOnPAhVHWD4KHXzgDWUQ6AEIKTAC#v=onepage&q=continuous%20markov%20decision%20processes&f=false)
 * [Approximate DP, Powell](http://site.ebrary.com/lib/princeton/reader.action?docID=10501323)
 * [Optimal learning, Powell](http://site.ebrary.com/lib/princeton/detail.action?docID=10560566)
-* [Function approximators, Lucian Busoniu, Robert Babuska, Bart De Schutter, and Damien Ernst](http://www.crcnetbase.com/isbn/9781439821091)
+* (\*) [Function approximators, Lucian Busoniu, Robert Babuska, Bart De Schutter, and Damien Ernst](http://www.crcnetbase.com/isbn/9781439821091)
 * [ADP chapter, Bertsekas](http://web.mit.edu/dimitrib/www/dpchapter.pdf)
 * [Bertsekas87](https://books.google.com/books?id=-6RiQgAACAAJ&dq=Dynamic+Programming:+Deterministic+and+Stochastic+Models&hl=en&sa=X&ved=0ahUKEwjc0pfAyefPAhUGFz4KHaVIDecQ6AEIHjAA)
 
@@ -66,10 +66,10 @@ showTOC: True
 
 ### Theory algorithms
 
-* (\*) [AO06] UCRL
+* (\*) [AO06] Logarithmic online regret bounds for undiscounted reinforcement learning 
+	* UCRL
 	* Maintain confidence bounds on rewards and transition probabilities.
-	* Only apply to unichain MDP's (where fixing an action, any other state is reachable - I think this is unrealistic. This is unreasonable - NO, WRONG DEFINITION).
-	* Right definition in KS02: the stationary distribution of any policy does not depend on the start state (this is to make things easier, can do without)
+	* Only apply to unichain MDP's: the stationary distribution of any policy does not depend on the start state (this is to make things easier, can do without)
 	* Other work: adversarial reward, index policies (choose action with max return in confidence region)
 * [LH12] PAC bounds for discounted MDPs [paper](https://arxiv.org/pdf/1202.3890.pdf)
 	* UCRL, under assumption of 2 possible next-states for each state/action pair, PAC bound of $\wt O \pa{\fc{|S\times A|}{\ep^2(1-\ga)^3}\ln \prc{\de}}$.
@@ -77,7 +77,7 @@ showTOC: True
 * (\*) [JOA10] Near-optimal regret bounds for reinforcement learning [paper](http://www.jmlr.org/papers/volume11/jaksch10a/jaksch10a.pdf)
 	* Improved UCRL (UCRL2)
 * [KN09] Near-Bayesian Exploration in Polynomial Time [paper](http://www.zicokolter.com/wp-content/uploads/2015/10/kolter-icml09a-full.pdf)
-* (\*) [KAL16] Contextual-MDP, which is contextual bandits + RL.
+* [KAL16] Contextual-MDP, which is contextual bandits + RL.
 	* Regret wrt policy class. 
 	* Poly in parameters, log in number of policies, independent of size of observation space. $\poly(M, K, H, \ep, \ln N, \ln \prc\de)$ <!--what does no dependence on numspace can represent exact-best solution, state transition dynamics are deterministic.-->
 	* Unlike POMDP, optimal policy is memoryless. (Definition is just this. For simplicity, consider layered POMDP's.)
@@ -97,8 +97,7 @@ showTOC: True
 		* Deterministic transition
 		* Enumerate class of regression functions
 		* Realizability assumptions
-* [DPWR15] Bayesian Nonparametric Methods for Partially-Observable
-Reinforcement Learning [paper](http://dspace.mit.edu/handle/1721.1/97034)
+* [DPWR15] Bayesian Nonparametric Methods for Partially-Observable Reinforcement Learning [paper](http://dspace.mit.edu/handle/1721.1/97034)
 	* Bayes!
 
 ## Factored MDPs, MDPs with exponential/continuous state space
@@ -143,7 +142,7 @@ Reinforcement Learning [paper](http://dspace.mit.edu/handle/1721.1/97034)
 
 ## POMDPs
 
-* (\*) [ALA16] Reinforcement Learning of POMDPs using Spectral Methods
+* (\*) [ALA16] Reinforcement Learning of POMDPs using Spectral Methods [paper](http://www.jmlr.org/proceedings/papers/v49/azizzadenesheli16a.pdf)
 	* Spectral parameter estimation for POMDP's
 	* Combine with UCRL (exploration-exploitation framework) to get regret bounds (compared to memoryless policies) optimal in dependence on $N$ ($O(\sqrt N)$)
 	* Challenges
@@ -165,7 +164,7 @@ Reinforcement Learning [paper](http://dspace.mit.edu/handle/1721.1/97034)
 		* Construct set of admissible POMDP's whose T, O, R models are in confidence interval
 	* Open: analyze UCRL for finite horizon.
 	* Stochastic policies are near-optimal in many domains (?). NP-hard to optimize but under some conditions can approximate
-* [ALA16] Open Problem - Approximate Planning of POMDPs in the class of Memoryless Policies (COLT2016)
+* [ALA16] Open Problem - Approximate Planning of POMDPs in the class of Memoryless Policies (COLT2016) [paper](http://www.jmlr.org/proceedings/papers/v49/azizzadenesheli16b.pdf)
 	* Find exact or approximate optimal stochastic memoryless policy for POMDP.
 	* What [ALA16] don't address in other paper: planning. (Complexity considerations? i.e. is this tractable? Kaelbling98)
 	* In their paper they assume access to an optimization oracle that gives best memoryless planning policy at end of each episode. - No algorithm for this right now! <!--SoS? First check if you can reduce from Nash equilibrium, etc.-->
@@ -198,11 +197,11 @@ Reinforcement Learning [paper](http://dspace.mit.edu/handle/1721.1/97034)
 
 * [G] Reinforcement learning - a Tutorial Survey and Recent Advances.pdf
 * [KLM96] Reinforcement Learning - A Survey.pdf
-* (\*) [P14] Clearing the Jungle of Stochastic Optimization
+* [P14] Clearing the Jungle of Stochastic Optimization
 	* 4 classes of policies
 	* Dynamic vs. stochastic programs
 * [P14] Energy and Uncertainty - models and algorithms for complex energy systems.pdf
-* (\*) [P16] A Unified Framework for Optimization under Uncertainty.pdf
+* (\*) [P16] A Unified Framework for Optimization under Uncertainty
 * [lin function approximators](http://people.csail.mit.edu/agf/Files/13FTML-RLTutorial.pdf)
 * [optimistic principle](https://hal.archives-ouvertes.fr/hal-00747575v5/document)
 * [Algorithms for RL](http://www.morganclaypool.com/doi/abs/10.2200/S00268ED1V01Y201005AIM009)
