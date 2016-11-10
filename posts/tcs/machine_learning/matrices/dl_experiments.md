@@ -71,3 +71,7 @@ How to evaluate?
 	* [No PIL](http://stackoverflow.com/questions/902761/saving-a-numpy-array-as-an-image)
 	* [PIL](http://stackoverflow.com/questions/2659312/how-do-i-convert-a-numpy-array-to-and-display-an-image)
 	* [Pillow](https://pillow.readthedocs.io/en/3.4.x/reference/index.html)
+
+# Data
+
+In `am_dls_data.pickle`, data is stored as list `(m,n,s, st, loss, mins1, mins2, mins3, A, B, AB)`.

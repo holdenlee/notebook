@@ -8,8 +8,140 @@
         <name>Holden Lee</name>
         <email>oldheneel@gmail.com</email>
     </author>
-    <updated>2016-11-01T00:00:00Z</updated>
+    <updated>2016-11-07T00:00:00Z</updated>
     <entry>
+    <title>Probabilistic models - Ideas</title>
+    <link href="http://holdenlee.github.io/notebook/posts/tcs/machine_learning/probabilistic/ideas.html" />
+    <id>http://holdenlee.github.io/notebook/posts/tcs/machine_learning/probabilistic/ideas.html</id>
+    <published>2016-11-07T00:00:00Z</published>
+    <updated>2016-11-07T00:00:00Z</updated>
+    <summary type="html"><![CDATA[
+<div class="container">
+  <div id="content">
+    <div class="page header">
+      <h1>Probabilistic models - Ideas</h1>
+    </div>
+    <div class="info">
+      
+       
+        <p>Posted: 2016-11-07 
+          , Modified: 2016-11-07 
+	</p>
+      
+       <p>Tags: <a href="/tags/none.html">none</a></p> 
+    </div>
+    
+  </div>
+  <!--/div-->
+
+  <div class="toc"> <ul>
+ <li><a href="#non-generative-framework-for-learning-probabilistic-models">Non-generative framework for learning probabilistic models</a><ul>
+ <li><a href="#hmms">HMM’s</a></li>
+ <li><a href="#kernel-hmm">Kernel HMM</a></li>
+ </ul></li>
+ <li><a href="#markov-models-with-exponential-state-space">Markov models with exponential state space</a></li>
+ <li><a href="#context-vectors">Context vectors</a></li>
+ </ul> </div>
+
+  <div class="blog-main">
+    <h2 id="non-generative-framework-for-learning-probabilistic-models">Non-generative framework for learning probabilistic models</h2>
+<p>We can adapt Hazan and Ma’s framework [HM16] to learning probabilistic models. Note that given a model, in the limit the number of bits needed to encode a sequence of samples (up to some level of accuracy) is the entropy of that sequence under the model. Thus the natural loss to look at here is the entropy.</p>
+<p>We say a distribution <span class="math inline">\(D\)</span> is <span class="math inline">\(\ga\)</span> C-learnable by a hypothesis class <span class="math inline">\(\mathcal H\)</span> of probabilistic models if there is an algorithm, that given <span class="math inline">\(\ep\)</span>, with probability <span class="math inline">\(1-\de\)</span>, outputs a model <span class="math inline">\(m\)</span> such that <span class="math display">\[
+\rc{l(\vec x)} \EE_{D} \ln \Pj(\vec x|m) le \rc{l(\vec x)} \min_{m\in \mathcal H} \EE_{D}\ln \Pj(\vec x|m) + \ep + \ga
+\]</span> in time polynomial in the parameters, <span class="math inline">\(\poly\pa{\rc\ep, \ln\prc{\de}, d}\)</span>. Equivalently, the <span class="math inline">\(m\)</span> that is output satisfies <span class="math display">\[
+KL(D || m)\le KL(D || \mu) \ep + \ga.
+\]</span> where <span class="math inline">\(\mu\)</span> is the distribution minimizing <span class="math inline">\(KL(D||\mu)\)</span>.</p>
+<p>We say the hypothesis class <span class="math inline">\(\mathcal H\)</span> is C-learnable if any distribution <span class="math inline">\(D\)</span> is C-learnable by <span class="math inline">\(\mathcal H\)</span>.</p>
+<h3 id="hmms">HMM’s</h3>
+<p><strong>Question</strong>: Is the class of HMM’s C-learnable?</p>
+<p>The tensor algorithm for HMM’s reduces from the problem of learning from 3 independent views to learning a HMM. Learning from 3 independent views relies on 3-tensor decomposition.</p>
+<p>The problem boils down to: <strong>Can we find the closest rank <span class="math inline">\(k\)</span> tensor to a given 3-tensor?</strong> (Consider the regime <span class="math inline">\(k\le n\)</span>, <span class="math inline">\(n\)</span> the dimension.) (If there are <span class="math inline">\(k\)</span> hidden states, the the tensor of probabilities is <span class="math display">\[\pa{\sum_h \Pj(h)\Pj(x_1|h)\Pj(x_2|h) \Pj(x_3|h)}_{x_1x_2x_3} = \sum \Pj(h) (p_1)_h\ot (p_2)_h\ot (p_3)_h.\]</span></p>
+<p>Actually, it’s a little harder: the distance here is not the <span class="math inline">\(L^2\)</span> distance but the KL divergence. (We can also consider the <span class="math inline">\(L^2\)</span> distance.) For 2 independent views, this problem becomes: given a matrix <span class="math inline">\(A\)</span> with nonnegative entries summing to 1, find a matrix <span class="math inline">\(B\)</span> with nonnegative entries summing to 1, of rank <span class="math inline">\(k\)</span>, and such that <span class="math inline">\(KL(p_B||p_A)\)</span> is as small as possible.</p>
+<h3 id="kernel-hmm">Kernel HMM</h3>
+<p>Apply the kernel methods of [SBSG10] Hilbert Space Embeddings of Hidden Markov Models not to the spectral algorithm in [HKZ12] but to the tensor algorithm.</p>
+<!--A spectral algorithm for learning Hidden Markov Models, we get a kernel algorithm in an esy -->
+<p>This requires some calculation but is straightforward.</p>
+<h2 id="markov-models-with-exponential-state-space">Markov models with exponential state space</h2>
+<p>Can we learn (hidden) Markov models with exponential state space?</p>
+<p>One model is that of a dynamic Bayes net (DBN). Even given pairs <span class="math inline">\((x,y)\)</span> it may be difficult to learn in general (check this…)—if the graph is bounded degree <span class="math inline">\(d\)</span> with bounded edge weights then it could be fixed parameter tractable in <span class="math inline">\(d\)</span>. (To be actually tractable probably the weights have to be <span class="math inline">\(1/d\)</span>.)</p>
+<h2 id="context-vectors">Context vectors</h2>
+<p>Currently we model documents with the context vector undergoing a random walk (<a href="../nlp/randwalk.html">ALLMR16</a>). I don’t think the different coordinates are so interpretable. (?) A random walk is like a DBM where the connections are <span class="math inline">\(1\to 1', 2\to 2'\)</span>, etc. Can we model the evolution of the context vector as something more complicated but still tractable?</p>
+
+  </div>
+
+    
+
+    <!-- Extension : Sharing buttons @ www.sharethis.com -->
+    <span class='st_facebook_large' displayText='Facebook'></span>
+    <span class='st_twitter_large' displayText='Tweet'></span>
+    <span class='st_googleplus_large' displayText='Google +'></span>
+    <span class='st_reddit_large' displayText='Reddit'></span>
+    <span class='st__large' displayText=''></span>
+
+    <div id="disqus_thread"></div>
+    
+
+
+  
+    <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+  </div>
+  
+</div>
+]]></summary>
+</entry>
+<entry>
+    <title>Weekly summary 2016-11-12</title>
+    <link href="http://holdenlee.github.io/notebook/posts/summaries/2016-11-12.html" />
+    <id>http://holdenlee.github.io/notebook/posts/summaries/2016-11-12.html</id>
+    <published>2016-11-07T00:00:00Z</published>
+    <updated>2016-11-07T00:00:00Z</updated>
+    <summary type="html"><![CDATA[
+<div class="container">
+  <div id="content">
+    <div class="page header">
+      <h1>Weekly summary 2016-11-12</h1>
+    </div>
+    <div class="info">
+      
+       
+        <p>Posted: 2016-11-07 
+          , Modified: 2016-11-07 
+	</p>
+      
+       <p>Tags: <a href="/tags/none.html">none</a></p> 
+    </div>
+    
+  </div>
+  <!--/div-->
+
+  <div class="toc"></div>
+
+  <div class="blog-main">
+    
+
+  </div>
+
+    
+
+    <!-- Extension : Sharing buttons @ www.sharethis.com -->
+    <span class='st_facebook_large' displayText='Facebook'></span>
+    <span class='st_twitter_large' displayText='Tweet'></span>
+    <span class='st_googleplus_large' displayText='Google +'></span>
+    <span class='st_reddit_large' displayText='Reddit'></span>
+    <span class='st__large' displayText=''></span>
+
+    <div id="disqus_thread"></div>
+    
+
+
+  
+    <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+  </div>
+  
+</div>
+]]></summary>
+</entry>
+<entry>
     <title>Function approximation</title>
     <link href="http://holdenlee.github.io/notebook/posts/tcs/machine_learning/reinforcement_learning/function_approximation.html" />
     <id>http://holdenlee.github.io/notebook/posts/tcs/machine_learning/reinforcement_learning/function_approximation.html</id>
@@ -140,7 +272,7 @@
 <h2 id="threads">Threads</h2>
 <h3 id="priority">Priority</h3>
 <ul>
-<li>Come up with a class of MDPs on exponential space that is interesting and tractable. <a href="/posts/tcs/machine_learning/reinforcement_learning/continuous.html">Thoughts</a>
+<li>Come up with a class of MDPs on exponential space that is interesting and tractable. <a href="/posts/tcs/machine_learning/reinforcement_learning/continuous.html">Thoughts</a> (Tuesday)
 <ul>
 <li>Understand provable guarantees on MDP’s first</li>
 </ul></li>
@@ -162,11 +294,14 @@
 <ul>
 <li>(*) NN learns DL. Can write up weak result, worth doing?</li>
 </ul></li>
-<li>Papers
+<li>Papers (Wednesday: read through)
 <ul>
 <li>[HM16] on unsupervised learning (finish)</li>
 <li>[HMR16] on dynamical system learning</li>
+<li>[R16] on convex relaxations for partition function calculation</li>
 </ul></li>
+<li>Ch. 3-4 of Graphical models book. (Friday) <a href="/posts/tcs/machine_learning/probabilistic/graphical_models.html">Notes</a></li>
+<li><a href="/posts/tcs/machine_learning/probabilistic/ideas.html">Thoughts on HMMs, etc.</a> (Friday)</li>
 </ul>
 <p>Analyze Arora and Ge’s NMF algorithm in the presence of noise. Exactly how much noise can it tolerate?</p>
 <h2 id="other-papers">Other papers</h2>
@@ -1082,254 +1217,6 @@ neural image on google $10^5$
 <p>Actor-Mimic model.</p>
 <p>Transfer learning: learn new games faster by leveraging knowledge about previous games. Ex. star gunner</p>
 <p>Continuous state.</p>
-
-  </div>
-
-    
-
-    <!-- Extension : Sharing buttons @ www.sharethis.com -->
-    <span class='st_facebook_large' displayText='Facebook'></span>
-    <span class='st_twitter_large' displayText='Tweet'></span>
-    <span class='st_googleplus_large' displayText='Google +'></span>
-    <span class='st_reddit_large' displayText='Reddit'></span>
-    <span class='st__large' displayText=''></span>
-
-    <div id="disqus_thread"></div>
-    
-
-
-  
-    <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
-  </div>
-  
-</div>
-]]></summary>
-</entry>
-<entry>
-    <title>Weekly summary 2016-10-22</title>
-    <link href="http://holdenlee.github.io/notebook/posts/summaries/2016-10-22.html" />
-    <id>http://holdenlee.github.io/notebook/posts/summaries/2016-10-22.html</id>
-    <published>2016-10-19T00:00:00Z</published>
-    <updated>2016-10-19T00:00:00Z</updated>
-    <summary type="html"><![CDATA[
-<div class="container">
-  <div id="content">
-    <div class="page header">
-      <h1>Weekly summary 2016-10-22</h1>
-    </div>
-    <div class="info">
-      
-       
-        <p>Posted: 2016-10-19 
-          , Modified: 2016-10-19 
-	</p>
-      
-       <p>Tags: <a href="/tags/none.html">none</a></p> 
-    </div>
-    
-  </div>
-  <!--/div-->
-
-  <div class="toc"> <ul>
- <li><a href="#threads">Threads</a></li>
- <li><a href="#other-papers">Other papers</a></li>
- <li><a href="#talk-with-arora-1019-wed">Talk with Arora 10/19 (Wed)</a></li>
- <li><a href="#wonderings">Wonderings</a></li>
- </ul> </div>
-
-  <div class="blog-main">
-    <h2 id="threads">Threads</h2>
-<ul>
-<li>PMI - get some results!</li>
-<li>SoS - chapters 2 and 3</li>
-<li>DL: do experiments suggested in <a href="/posts/tcs/machine_learning/matrices/DL_generalization.html">DL generalization</a> (Mon, Tue)
-<ul>
-<li>(*) NN learns DL. (Mon, Tue) - Wrote up progress so far, where I am stuck.</li>
-</ul></li>
-<li>Papers
-<ul>
-<li>[HM16] on unsupervised learning (went through 1st half, Tue)</li>
-<li>[HMR16] on dynamical system learning (read <a href="http://www.offconvex.org/2016/10/13/gradient-descent-learns-dynamical-systems/">blog post</a> Tue)</li>
-</ul></li>
-<li>Come up with a class of MDPs on exponential space that is interesting and tractable. <a href="/posts/tcs/machine_learning/reinforcement_learning/exponential.html">Thoughts</a>
-<ul>
-<li>Understand provable guarantees on MDP’s first</li>
-</ul></li>
-<li>Alexa <a href="https://docs.google.com/document/d/1OtvefjviKSSWH2gzOtYo8T_DVEwPEsI2n0kdrC8WlZI/edit">references</a></li>
-</ul>
-<p>Analyze Arora and Ge’s NMF algorithm in the presence of noise. Exactly how much noise can it tolerate?</p>
-<h2 id="other-papers">Other papers</h2>
-<ul>
-<li>TODO Read this paper: [CFP16] Assessing significance in a Markov chain without mixing</li>
-</ul>
-<h2 id="talk-with-arora-1019-wed">Talk with Arora 10/19 (Wed)</h2>
-<p>Dynamical systems + MDP!</p>
-<h2 id="wonderings">Wonderings</h2>
-<ul>
-<li>Can we generalize the random walk of the context vectors? There’s no reason to think that context vectors just drift on the sphere. (p. 139)
-<ul>
-<li>Make it a RBM. Say with bounded degree. (There are ways to learn - see the factored MDP paper. We don’t care about MDP here, so it’s easier.)</li>
-<li>For example, one node (dimension) could simply control output of common words.</li>
-<li>Given the observations, whose probs are <span class="math inline">\(\propto e^{w^TAc}\)</span>, learn the RBM. (Note we can replace <span class="math inline">\(w\)</span> by <span class="math inline">\(A^Tw\)</span>… but if <span class="math inline">\(c\)</span> is in larger space, then it’s not obvious how to learn the <span class="math inline">\(A\)</span>! Can we modify the word embeddings to deal with this? Beware of difficulties… HMMs usually assume full column-rank observations, violated here. Look at the proper hard instance for HMM. - the version I saw with noisy parity wasn’t quite a HMM)</li>
-<li>Prereq: given <span class="math inline">\((x,h)\)</span> how to learn RBM or Bayes net? (When <span class="math inline">\(W\)</span>’s entries are small enough, can do via MCMC estimation of partition function and optimization of log-likelihood. Otherwise, is hard worst-case.)
-<ul>
-<li>I’m confused! There seems to be a line of work on factorial MDP’s. However, where are the basic results about learnability of Bayes nets? Learning the model for FMDP’s is strictly harder—why so much work on this (with too much assumptions, or weak results) without results on learning Bayes nets?</li>
-<li>Bresler.</li>
-</ul></li>
-<li>cf. work on continuous HMM’s. Work on factored HMMs? Any bounds when hidden state has larger dimension? Also, adapt HMM learning to vector observations. (Is the natural generalization a factored prob model rather than a dynamical system? Note probabilistic linear dynamical system IS straightforward generalization of HMM, but the factored prob model is not. Weird generalization though, because only having states <span class="math inline">\(\{e_1,\ldots, e_n\}\)</span> seems decoupled - can couple together any way you want.) <span class="citation" data-cites="Andrej">@Andrej</span> on this.
-<ul>
-<li>When state has larger dimension, need overcomplete tensor factorization.</li>
-</ul></li>
-<li>Start with: given an HMM with both transitions and observations being RBMs (say of degree at most 2), observations don’t “lose info” (analogue of full column rank), infer RBM. (Z is over words that exist). Breaks symmetries - the various dimensions are important now? <!-- sparse vectors are meaningful --></li>
-</ul></li>
-<li>Dictionary learning experiment
-<ul>
-<li>The kernel DL I want is different from in the literature. There they want <span class="math inline">\(\Phi(Y) \approx \Phi(A)X\)</span>, here we want <span class="math inline">\(\Phi(Y) \approx \Phi(AX)\)</span>. I.e. we want to maximize <span class="math inline">\(K(Y,AX)\)</span> where <span class="math inline">\(X\)</span> is restricted to be sparse. Usual algorithms break down here, but can still consider <span class="math inline">\(K(Y,AX) + \ve{X}_1\)</span>. (137)</li>
-<li>Use kernel in <a href="/posts/tcs/machine_learning/neural_nets/PMDH16.html">PMDH16</a>.</li>
-</ul></li>
-<li>RL questions (135)
-<ul>
-<li>Given a (continuous) space of policies, converge to a local min in the space of policies.</li>
-<li>Find some measure of complexity of a class of policies. Branching is important. (Getting limited info from other policies…) Get a bound independent of number of states, involving this complexity.
-<ul>
-<li>Example to keep in mind: <span class="math inline">\(2^n\)</span> strategies all branching off into different rewards at end of their paths.</li>
-<li>Alternatively, complexity of class of models of environment.</li>
-</ul></li>
-<li>What is the VC dimension bound for contextual (expert) bandits? Also look at the contextual MDP paper, cf. EXP4.</li>
-<li>[ALA16] open question</li>
-<li>Scraps
-<ul>
-<li>Right <span class="math inline">\(\la\)</span>, how do well without learning model?</li>
-<li>SoS, minimax, etc.</li>
-<li>EXP3:Scrible:EXP4::UCB1:?:? (LinUCB? RUCB?)</li>
-</ul></li>
-<li>Increasing <span class="math inline">\(\ga\)</span> towards 1 (simulated annealing, temperature schedule…)</li>
-</ul></li>
-</ul>
-
-  </div>
-
-    
-
-    <!-- Extension : Sharing buttons @ www.sharethis.com -->
-    <span class='st_facebook_large' displayText='Facebook'></span>
-    <span class='st_twitter_large' displayText='Tweet'></span>
-    <span class='st_googleplus_large' displayText='Google +'></span>
-    <span class='st_reddit_large' displayText='Reddit'></span>
-    <span class='st__large' displayText=''></span>
-
-    <div id="disqus_thread"></div>
-    
-
-
-  
-    <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
-  </div>
-  
-</div>
-]]></summary>
-</entry>
-<entry>
-    <title>DL experiments</title>
-    <link href="http://holdenlee.github.io/notebook/posts/tcs/machine_learning/matrices/dl_experiments.html" />
-    <id>http://holdenlee.github.io/notebook/posts/tcs/machine_learning/matrices/dl_experiments.html</id>
-    <published>2016-10-17T00:00:00Z</published>
-    <updated>2016-10-17T00:00:00Z</updated>
-    <summary type="html"><![CDATA[
-<div class="container">
-  <div id="content">
-    <div class="page header">
-      <h1>DL experiments</h1>
-    </div>
-    <div class="info">
-      
-       
-        <p>Posted: 2016-10-17 
-          , Modified: 2016-10-17 
-	</p>
-      
-       <p>Tags: <a href="/tags/dictionary%20learning.html">dictionary learning</a></p> 
-    </div>
-    
-  </div>
-  <!--/div-->
-
-  <div class="toc"> <ul>
- <li><a href="#experiments">Experiments</a></li>
- <li><a href="#results">Results</a><ul>
- <li><a href="#first-observations">First observations</a></li>
- </ul></li>
- <li><a href="#evaluation">Evaluation</a></li>
- <li><a href="#code">Code</a></li>
- </ul> </div>
-
-  <div class="blog-main">
-    <p>What are convergence guarantees for dictionary learning? Consider the settings</p>
-<ul>
-<li>AGMM15 (Alternating minimization)</li>
-<li>2-layer NN
-<ul>
-<li>With <span class="math inline">\(b^Ty\)</span></li>
-<li>With <span class="math inline">\(\sgn(b^Ty)\)</span></li>
-</ul></li>
-</ul>
-<!--
-Sanjeev told me you did some experiments, so I wanted to check with you.
-
-Experimentally, does dictionary learning converge to the right dictionary under random initialization? What if we randomly initialize with samples drawn from $x=Ah$? What about for the neural net (backprop) model you showed me last time - does random initialization (with samples) converge to the dictionary? If you have code for experiments, please send it to me.
-
-I've done a lot of the calculations for neural nets learning dictionaries, and am getting stuck on the following: it appears that the gradient of the entire matrix is correlated with the right direction, but individual rows may not be (so a row may get far away until it no longer decodes correctly). Did you encounter something like this? If you have the bandwidth I'd be interested in working with you on this.
-
--->
-<h2 id="experiments">Experiments</h2>
-<p>Code is in <code>dl_convergence.py</code>. Run on ionic.</p>
-<h2 id="results">Results</h2>
-<!--1218589: -->
-<ul>
-<li>s = 3</li>
-<li>m = 50 # hidden vector</li>
-<li>n = 25 # observed vector</li>
-<li>q = s/m</li>
-<li>alpha = .01</li>
-<li>batchsize = 1024</li>
-<li>vary sigma (how close initialization is) <!-- * Approximate convergence for sigma = .05, .1; not 0.5--></li>
-</ul>
-<p>Next,</p>
-<ul>
-<li>add random initialization - check</li>
-<li>vary (s,m,n)</li>
-<li>check sparsity of learned vectors (do thresholding too) - check</li>
-<li>add initialization from samples - check
-<ul>
-<li>try overcomplete initialization from samples - check</li>
-</ul></li>
-</ul>
-<h3 id="first-observations">First observations</h3>
-<p>See <code>am_dl_3_50_25.txt</code> and <code>slurm-1218768.out</code></p>
-<ul>
-<li>Converges when close enough (as in AGMM15). For this, even 0.5 is close enough. Note it doesn’t converge to <span class="math inline">\(A\)</span> - it converges to something that has columns <span class="math inline">\(\approx 0.1\)</span> away from <span class="math inline">\(A\)</span>, consistant bias. (This makes sense.)</li>
-<li>Random initialization does not converge to global optimum. Initialization with samples seems to do slightly better.</li>
-</ul>
-<h2 id="evaluation">Evaluation</h2>
-<p>How to evaluate?</p>
-<ul>
-<li>Closeness of columns.</li>
-<li>Loss: how much sparsity, and how far away. (Reconstruction error)
-<ul>
-<li>How does reconstruction error compare to SVD? (Make dimensions comparable.)</li>
-</ul></li>
-<li>Put in random SVM on top. Can it learn the SVM well?</li>
-<li>Check framework in [HM16].</li>
-</ul>
-<h2 id="code">Code</h2>
-<ul>
-<li>Displaying images
-<ul>
-<li><a href="http://stackoverflow.com/questions/902761/saving-a-numpy-array-as-an-image">No PIL</a></li>
-<li><a href="http://stackoverflow.com/questions/2659312/how-do-i-convert-a-numpy-array-to-and-display-an-image">PIL</a></li>
-<li><a href="https://pillow.readthedocs.io/en/3.4.x/reference/index.html">Pillow</a></li>
-</ul></li>
-</ul>
 
   </div>
 
