@@ -10,7 +10,7 @@
   <meta name="description" content="Holden Lee's Research Notebook">
   <meta name="author" content="Holden Lee">
     
-  <title>DL experiments</title>
+  <title>Probabilistic models - Ideas</title>
 
   <!-- Bootstrap core CSS -->
   <link href="../../../../bootstrap/css/bootstrap.min.css" rel="stylesheet">
@@ -70,100 +70,53 @@
 <div class="container">
   <div id="content">
     <div class="page header">
-      <h1>DL experiments</h1>
+      <h1>Probabilistic models - Ideas</h1>
     </div>
     <div class="info">
       
        
-        <p>Posted: 2016-10-17 
-          , Modified: 2016-10-17 
+        <p>Posted: 2016-11-07 
+          , Modified: 2016-11-07 
 	</p>
       
-       <p>Tags: <a href="../../../../tags/dictionary%20learning.html">dictionary learning</a></p> 
+       <p>Tags: <a href="../../../../tags/none.html">none</a></p> 
     </div>
     
   </div>
   <!--/div-->
 
   <div class="toc"> <ul>
- <li><a href="#experiments">Experiments</a></li>
- <li><a href="#results">Results</a><ul>
- <li><a href="#first-observations">First observations</a></li>
+ <li><a href="#non-generative-framework-for-learning-probabilistic-models">Non-generative framework for learning probabilistic models</a><ul>
+ <li><a href="#hmms">HMM’s</a></li>
+ <li><a href="#kernel-hmm">Kernel HMM</a></li>
  </ul></li>
- <li><a href="#evaluation">Evaluation</a></li>
- <li><a href="#code">Code</a></li>
- <li><a href="#data">Data</a></li>
+ <li><a href="#markov-models-with-exponential-state-space">Markov models with exponential state space</a></li>
+ <li><a href="#context-vectors">Context vectors</a></li>
  </ul> </div>
 
   <div class="blog-main">
-    <p>What are convergence guarantees for dictionary learning? Consider the settings</p>
-<ul>
-<li>AGMM15 (Alternating minimization)</li>
-<li>2-layer NN
-<ul>
-<li>With <span class="math inline">\(b^Ty\)</span></li>
-<li>With <span class="math inline">\(\sgn(b^Ty)\)</span></li>
-</ul></li>
-</ul>
-<!--
-Sanjeev told me you did some experiments, so I wanted to check with you.
-
-Experimentally, does dictionary learning converge to the right dictionary under random initialization? What if we randomly initialize with samples drawn from $x=Ah$? What about for the neural net (backprop) model you showed me last time - does random initialization (with samples) converge to the dictionary? If you have code for experiments, please send it to me.
-
-I've done a lot of the calculations for neural nets learning dictionaries, and am getting stuck on the following: it appears that the gradient of the entire matrix is correlated with the right direction, but individual rows may not be (so a row may get far away until it no longer decodes correctly). Did you encounter something like this? If you have the bandwidth I'd be interested in working with you on this.
-
--->
-<h2 id="experiments">Experiments</h2>
-<p>Code is in <code>dl_convergence.py</code>. Run on ionic.</p>
-<h2 id="results">Results</h2>
-<!--1218589: -->
-<ul>
-<li>s = 3</li>
-<li>m = 50 # hidden vector</li>
-<li>n = 25 # observed vector</li>
-<li>q = s/m</li>
-<li>alpha = .01</li>
-<li>batchsize = 1024</li>
-<li>vary sigma (how close initialization is) <!-- * Approximate convergence for sigma = .05, .1; not 0.5--></li>
-</ul>
-<p>Next,</p>
-<ul>
-<li>add random initialization - check</li>
-<li>vary (s,m,n)</li>
-<li>check sparsity of learned vectors (do thresholding too) - check</li>
-<li>add initialization from samples - check
-<ul>
-<li>try overcomplete initialization from samples - check</li>
-</ul></li>
-</ul>
-<h3 id="first-observations">First observations</h3>
-<p>See <code>am_dl_3_50_25.txt</code> and <code>slurm-1218768.out</code></p>
-<ul>
-<li>Converges when close enough (as in AGMM15). For this, even 0.5 is close enough. Note it doesn’t converge to <span class="math inline">\(A\)</span> - it converges to something that has columns <span class="math inline">\(\approx 0.1\)</span> away from <span class="math inline">\(A\)</span>, consistant bias. (This makes sense.)</li>
-<li>Random initialization does not converge to global optimum. Initialization with samples seems to do slightly better.</li>
-</ul>
-<h2 id="evaluation">Evaluation</h2>
-<p>How to evaluate?</p>
-<ul>
-<li>Closeness of columns.</li>
-<li>Loss: how much sparsity, and how far away. (Reconstruction error)
-<ul>
-<li>How does reconstruction error compare to SVD? (Make dimensions comparable.)</li>
-</ul></li>
-<li>Put in random SVM on top. Can it learn the SVM well?</li>
-<li>Check framework in [HM16].</li>
-</ul>
-<h2 id="code">Code</h2>
-<ul>
-<li>Displaying images
-<ul>
-<li><a href="http://stackoverflow.com/questions/902761/saving-a-numpy-array-as-an-image">No PIL</a></li>
-<li><a href="http://stackoverflow.com/questions/2659312/how-do-i-convert-a-numpy-array-to-and-display-an-image">PIL</a></li>
-<li><a href="https://pillow.readthedocs.io/en/3.4.x/reference/index.html">Pillow</a></li>
-</ul></li>
-</ul>
-<h2 id="data">Data</h2>
-<p>In <code>am_dls_data.pickle</code>, data is stored as list <code>(m,n,s, st, loss, mins1, mins2, mins3, A, B, AB)</code>.</p>
+    <h2 id="non-generative-framework-for-learning-probabilistic-models">Non-generative framework for learning probabilistic models</h2>
+<p>We can adapt Hazan and Ma’s framework [HM16] to learning probabilistic models. Note that given a model, in the limit the number of bits needed to encode a sequence of samples (up to some level of accuracy) is the entropy of that sequence under the model. Thus the natural loss to look at here is the entropy.</p>
+<p>We say a distribution <span class="math inline">\(D\)</span> is <span class="math inline">\(\ga\)</span> C-learnable by a hypothesis class <span class="math inline">\(\mathcal H\)</span> of probabilistic models if there is an algorithm, that given <span class="math inline">\(\ep\)</span>, with probability <span class="math inline">\(1-\de\)</span>, outputs a model <span class="math inline">\(m\)</span> such that <span class="math display">\[
+\rc{l(\vec x)} \EE_{D} \ln \Pj(\vec x|m) le \rc{l(\vec x)} \min_{m\in \mathcal H} \EE_{D}\ln \Pj(\vec x|m) + \ep + \ga
+\]</span> in time polynomial in the parameters, <span class="math inline">\(\poly\pa{\rc\ep, \ln\prc{\de}, d}\)</span>. Equivalently, the <span class="math inline">\(m\)</span> that is output satisfies <span class="math display">\[
+KL(D || m)\le KL(D || \mu) \ep + \ga.
+\]</span> where <span class="math inline">\(\mu\)</span> is the distribution minimizing <span class="math inline">\(KL(D||\mu)\)</span>.</p>
+<p>We say the hypothesis class <span class="math inline">\(\mathcal H\)</span> is C-learnable if any distribution <span class="math inline">\(D\)</span> is C-learnable by <span class="math inline">\(\mathcal H\)</span>.</p>
+<h3 id="hmms">HMM’s</h3>
+<p><strong>Question</strong>: Is the class of HMM’s C-learnable?</p>
+<p>The tensor algorithm for HMM’s reduces from the problem of learning from 3 independent views to learning a HMM. Learning from 3 independent views relies on 3-tensor decomposition.</p>
+<p>The problem boils down to: <strong>Can we find the closest rank <span class="math inline">\(k\)</span> tensor to a given 3-tensor?</strong> (Consider the regime <span class="math inline">\(k\le n\)</span>, <span class="math inline">\(n\)</span> the dimension.) (If there are <span class="math inline">\(k\)</span> hidden states, the the tensor of probabilities is <span class="math display">\[\pa{\sum_h \Pj(h)\Pj(x_1|h)\Pj(x_2|h) \Pj(x_3|h)}_{x_1x_2x_3} = \sum \Pj(h) (p_1)_h\ot (p_2)_h\ot (p_3)_h.\]</span></p>
+<p>Actually, it’s a little harder: the distance here is not the <span class="math inline">\(L^2\)</span> distance but the KL divergence. (We can also consider the <span class="math inline">\(L^2\)</span> distance.) For 2 independent views, this problem becomes: given a matrix <span class="math inline">\(A\)</span> with nonnegative entries summing to 1, find a matrix <span class="math inline">\(B\)</span> with nonnegative entries summing to 1, of rank <span class="math inline">\(k\)</span>, and such that <span class="math inline">\(KL(p_B||p_A)\)</span> is as small as possible.</p>
+<h3 id="kernel-hmm">Kernel HMM</h3>
+<p>Apply the kernel methods of [SBSG10] Hilbert Space Embeddings of Hidden Markov Models not to the spectral algorithm in [HKZ12] but to the tensor algorithm.</p>
+<!--A spectral algorithm for learning Hidden Markov Models, we get a kernel algorithm in an esy -->
+<p>This requires some calculation but is straightforward.</p>
+<h2 id="markov-models-with-exponential-state-space">Markov models with exponential state space</h2>
+<p>Can we learn (hidden) Markov models with exponential state space?</p>
+<p>One model is that of a dynamic Bayes net (DBN). Even given pairs <span class="math inline">\((x,y)\)</span> it may be difficult to learn in general (check this…)—if the graph is bounded degree <span class="math inline">\(d\)</span> with bounded edge weights then it could be fixed parameter tractable in <span class="math inline">\(d\)</span>. (To be actually tractable probably the weights have to be <span class="math inline">\(1/d\)</span>.)</p>
+<h2 id="context-vectors">Context vectors</h2>
+<p>Currently we model documents with the context vector undergoing a random walk (<a href="../nlp/randwalk.html">ALLMR16</a>). I don’t think the different coordinates are so interpretable. (?) A random walk is like a DBM where the connections are <span class="math inline">\(1\to 1', 2\to 2'\)</span>, etc. Can we model the evolution of the context vector as something more complicated but still tractable?</p>
 
   </div>
 
