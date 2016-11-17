@@ -534,6 +534,106 @@ Example: If $f_G(x)=x_{17}$, then a first estimate could be $\wt E x_{17}=\fc{\o
 		* Known: $QMA(2)\in EE$. Quasipoly algorithms places in EXP.
 		* There always exists a pure state maximizing acceptance probability, so want $\max_{\ve{x}=1} \Tr(M(xx^T)^{\ot 2})$.
 
+### Tensor decomposition (11/14)
+
+Tensor decomposition with and without SoS
+
+Plan
+
+* Problem definition
+* Application (mixture of Gaussians)
+* Simple algorithm
+* SoS algorithm
+
+Problem
+
+* Unknown: $a_1,\ldots, a_n\in \R^d$.
+* Given: $\sumo in (1,a_i)^{\ot k}$. I.e., we get $\pa{\sumo in a_i^{\ot l},l\le k}$.
+<!--how important is 1, all components same-->
+* Goal: Find vectors close to $a_1,\ldots, a_n$.
+<!--can't hope polytime in full generality: conditions on $a_1,\ldots, a_n,k$. Depends on assumptions. Most cases, not a big difference. Simpler if lower moments. -->
+* Question: Under what conditions on the geometry of $a_1,\ldots, a_n$ and $k$ can we solve this problem?
+* Simplest case: $a_1,\ldots, a_n$ are orthogonal. $k=3$ is enough.
+	* Also: $a_1,\ldots, a_n$ linearly independent. $k=3$ is enough, $k=2$ is not.
+	
+Application
+
+* Unknown: probability distribution $D$ over $\R^d$, uniform mixture of $N(a_1,I),\ldots, N(a_n,I)$.
+* Given (polynomial number of) samples of $D$, find $a_1,\ldots, a_n$.
+	
+Algorithm (high-level)
+
+* Use samples to estimate $\sumo in a_i^{\ot 3}$. (Possible for many families of distribution, e.g. Latent Dirichlet, topic modeling)
+* Use tensor decomposition to find $a_1,\ldots, a_n$.
+
+Estimate $\sum a_i^{\ot 3}$ from samples
+
+*   Compute empirical moments from samples $y_1,\ldots, y_N$ from $D$.
+	$$ \wt M_l = \rc N \sumo iN y_i^{\ot l}. $$
+*   $\E \wt M_l = M_l = \EE_{y\sim D} y^{\ot l}$.
+	For $N\gg d^l$, $\wt M_l\approx M_l$ with high probability.
+*   Estimate $\sum a_i^{\ot3}$ from $\wt M_i\approx M_i$ for $i=1,3$.
+*   \begin{align}
+	M_1 &=\EE_{y\sim D} y = \rc n \sum a_i\\
+	M_2 &=\EE y^{\ot 2} = \rc n \sum \E_{g\sim N(0,I)} (a_i+g)^{\ot 2}\\
+	&= \rc n \sum a_i^{\ot 2} + \E g^{\ot 2}\\
+	&= I + \rc n \sum a_i^{\ot 2}\\
+	M_3 &= \rc n \sum \EE_{g\sim N(0,I)}(a_i+g)^{\ot 3}\\
+	&= \rc n \sumo in [a_i^{\ot 3} + \ub{\E a_i^{\ot 2}\ot g}{0} + \ub{\E a_i \ot g^{\ot 2} + a_i\ot g\ot a_i + a_i^{\ot 2}\ot g}{a_i\ot I + I \ot a_i + \sumo id e_i\ot a_i \ot e_i}]\\
+	&= \rc \sum a_i^{\ot 3} + \ub{\pa{\rc n \sum a_i}\ot I}{\text{already estimated}} + \pat{symmetric terms}
+	\sum a_i^{\ot 3} &= \pat{simple function of $M_1,M_3$}.
+	\end{align}
+
+Random contraction algorithm (Jeinrich)
+
+* Choose $g\sim N(0,I)$
+* Compute contraction ($(I\ot I\ot g^*) M_3=A$)
+* Compute top eigenvector of $A$. <!--$A_{\{1\},\{2\}}$-->
+
+Consider the orthogonal case first. Note that the most difficult case is if all the norms are the same (if they are all different, we can use SVD).
+
+... (see notebook)
+
+Decompose random gaussian along 2 directions. If correlation large ,more likely to recover $e_1$.
+
+**Claim**. $\E_g \ve{(I^{\ot 2}\ot g^T)X} \le \sqrt{\ln d} \si$ where $\si = \max\{\ve{X}_{13,2},\ve{X}_{1,23}\}$.
+
+<!-- how apply syntactically. both are linear functions of $g$. -->
+This is a linear function of $g$, we can write it as in the concentration inequality.
+
+\begin{align}
+(I^{\ot 2} \ot g^T)X &=\sum g_i \ub{(I^{\ot 2} \ot e_i^T)X}{A_i}\\
+\ve{X} &=\ve{X^TX}^{\rc 2} = \ve{XX^T}^{\rc 2}\\
+\sum A_iA_i^T &= X_{3,12}^T X_{3,12}\\
+\sum A_i^TA_i &= X_{1,23}^T X_{1,23}
+\end{align}
+(check the indices).
+
+Davis-Kahan: $\ve{A-aa^T}\le o(1) \ve{a}^2$ implies that the top eigenvector of $A$ is $o(1)$ close to $a$. So top eigenvector of $(I\ot I\ot a^T)X$ is close to $a$.
+
+**Theorem**. Let $a_1,\ldots, a_n\in R^d$, $\ve{a_i}=1$. Suppose $\sum a_i a_i^T = \si I$ ($\si$ is overcompleteness), $\max_{i\ne j} |\an{a_i,a_j}|=\rh$. Then, given $\sumo ih a_i^{\ot3}$, can recover vectors close to $a_1,\ldots, a_n$ in polytime whenever $\rh \si^2=o(1)$, e,g, $\si=d^{0.1}$, $\rh = d^{0.3}$. This is satisfied by $d^{1.1}$ random unit vectors.
+<!-- ex. $\si$ random ortho bases, $\rh$ close to $\sqrt d$. When $\si\ll d^{\rc 4}$. Up to $d^{0.1}$. Spectral noise $d^{0.1}$. Condition on $g_1$ large enough to swallow, $d^{-O(c^2)}$. Exponential in $d^{.1}$-->
+<!-- can this go up to 3/2? If $\rh=d^{-.5}$, $\si$ up to $d^{.5}$, would imply for random unit. -->
+
+This algorithm can be poly in $d$ and $n$.
+
+Open question: Is this true for $\rh\si <o(1)$? This would imply for $d^{1.5}$ random vectors. (Though there is another argument that can give up to $d^{1.5}$.) (Maybe a $-\ep$ in exponent.)
+
+<!-- isotropic position -->
+
+Algorithm: given $M_3$,
+
+1.  Compute p.d. $\mu$ over unit sphere of $\R^d$ so as to maximize $\an{\wt\E_{\mu} x^{\ot 3}, M_3}$, which satisfies
+	$$\ve{\wt \EE_{\mu} x^{\ot 6}}_{1234, 56}\le 2.$$
+2.  Run random contraction on $\wt\EE_{\mu} x^{\ot 6} = \wt\EE_{\mu} (x^{\ot 2})^{\ot 3}$. (Letting $X=\wt \E(x^{\ot 2})^{\ot 3}\in (\R^{d^2})^{\ot 3}$, this is $\ve{X}_{12,3}$.)
+
+Use SoS to find tensor which we can run random contraction on, living in higher-dimensional space.
+
+Under conditions of theorem, let $b_i=a_i^{\ot 2}$, can show that random contraction works for $X=\sum b_i^{\ot 3}$. (Show $\ve{X}_{12,3}\le  O(1)$ if $\rh\si^2\ll 1$.) Recover the $b_i$'s, then recover $a_i$'s. But we don't get $b_i^{\ot 3}$, we just get $a_i^{\ot 3}$. SoS: given $a_i^{\ot 3}$ it's computing $b_i^{\ot 3}$. Find pseudodistribution matching 3rd moment and outputs 6th moments.
+
+The intended $\mu$ is uniform over $a_1,\ldots, a_n$. $\wt \EE_{\mu} x^{\ot 3} = \rc n \sum a_i^{\ot 3}$ and $\E x^{\ot 6} = \rc n \sum a_i^{\ot 6} = \rc X$.
+
+Philosophy: first prove statement for distributions, then verify that the steps fall in SoS proof system.8
 
 ## Reading
 

@@ -60,3 +60,13 @@ Can also make $A$ continuous.
 
 * $A\sub \R^m$ convex
 * Given action $a$, the update is $U[s_t;a] + Va$ where $U_a\in \R^{n\times (m+n)}$, $V\in \R^{n\times m}$.
+
+# Prior work on continuous HMMs
+
+* [ResearchGate](https://www.researchgate.net/post/What_is_known_about_learning_of_continuous_state-space_hidden_Markov_models_with_continuous_observation_processes)
+* [slides, A. Saxena](http://www.cs.cornell.edu/Courses/cs4758/2013sp/lectures.html), [kalman](http://www.cs.cornell.edu/Courses/cs4758/2013sp/materials/cs4758_kalman_hmm_examples.pdf), [particle filters](http://www.cs.cornell.edu/Courses/cs4758/2013sp/materials/particle-filters.pdf)
+<!--
+http://www.cs.cornell.edu/Courses/cs4758/2013sp/materials/cs4758_hmm.pdf
+* [State space model](http://www.scholarpedia.org/article/State_space_model)
+https://en.wikipedia.org/wiki/Rejection_sampling
+-->
