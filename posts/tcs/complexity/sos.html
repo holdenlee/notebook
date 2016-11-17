@@ -114,7 +114,9 @@
  <li><a href="#general-domains">5.2 General domains</a></li>
  <li><a href="#planted-clique-hardness">5.3 Planted clique hardness</a></li>
  </ul></li>
- <li><a href="#sphere">6 Sphere</a></li>
+ <li><a href="#sphere">6 Sphere</a><ul>
+ <li><a href="#tensor-decomposition-1114">Tensor decomposition (11/14)</a></li>
+ </ul></li>
  <li><a href="#reading">Reading</a></li>
  </ul></li>
  </ul> </div>
@@ -511,6 +513,85 @@ Sum up inequalities and take expectation. Use <span class="math inline">\(|\E XY
 </ul></li>
 </ul></li>
 </ul>
+<h4 id="tensor-decomposition-1114">Tensor decomposition (11/14)</h4>
+<p>Tensor decomposition with and without SoS</p>
+<p>Plan</p>
+<ul>
+<li>Problem definition</li>
+<li>Application (mixture of Gaussians)</li>
+<li>Simple algorithm</li>
+<li>SoS algorithm</li>
+</ul>
+<p>Problem</p>
+<ul>
+<li>Unknown: <span class="math inline">\(a_1,\ldots, a_n\in \R^d\)</span>.</li>
+<li>Given: <span class="math inline">\(\sumo in (1,a_i)^{\ot k}\)</span>. I.e., we get <span class="math inline">\(\pa{\sumo in a_i^{\ot l},l\le k}\)</span>. <!--how important is 1, all components same--></li>
+<li>Goal: Find vectors close to <span class="math inline">\(a_1,\ldots, a_n\)</span>. <!--can't hope polytime in full generality: conditions on $a_1,\ldots, a_n,k$. Depends on assumptions. Most cases, not a big difference. Simpler if lower moments. --></li>
+<li>Question: Under what conditions on the geometry of <span class="math inline">\(a_1,\ldots, a_n\)</span> and <span class="math inline">\(k\)</span> can we solve this problem?</li>
+<li>Simplest case: <span class="math inline">\(a_1,\ldots, a_n\)</span> are orthogonal. <span class="math inline">\(k=3\)</span> is enough.
+<ul>
+<li>Also: <span class="math inline">\(a_1,\ldots, a_n\)</span> linearly independent. <span class="math inline">\(k=3\)</span> is enough, <span class="math inline">\(k=2\)</span> is not.</li>
+</ul></li>
+</ul>
+<p>Application</p>
+<ul>
+<li>Unknown: probability distribution <span class="math inline">\(D\)</span> over <span class="math inline">\(\R^d\)</span>, uniform mixture of <span class="math inline">\(N(a_1,I),\ldots, N(a_n,I)\)</span>.</li>
+<li>Given (polynomial number of) samples of <span class="math inline">\(D\)</span>, find <span class="math inline">\(a_1,\ldots, a_n\)</span>.</li>
+</ul>
+<p>Algorithm (high-level)</p>
+<ul>
+<li>Use samples to estimate <span class="math inline">\(\sumo in a_i^{\ot 3}\)</span>. (Possible for many families of distribution, e.g. Latent Dirichlet, topic modeling)</li>
+<li>Use tensor decomposition to find <span class="math inline">\(a_1,\ldots, a_n\)</span>.</li>
+</ul>
+<p>Estimate <span class="math inline">\(\sum a_i^{\ot 3}\)</span> from samples</p>
+<ul>
+<li>Compute empirical moments from samples <span class="math inline">\(y_1,\ldots, y_N\)</span> from <span class="math inline">\(D\)</span>. <span class="math display">\[ \wt M_l = \rc N \sumo iN y_i^{\ot l}. \]</span></li>
+<li><span class="math inline">\(\E \wt M_l = M_l = \EE_{y\sim D} y^{\ot l}\)</span>. For <span class="math inline">\(N\gg d^l\)</span>, <span class="math inline">\(\wt M_l\approx M_l\)</span> with high probability.</li>
+<li>Estimate <span class="math inline">\(\sum a_i^{\ot3}\)</span> from <span class="math inline">\(\wt M_i\approx M_i\)</span> for <span class="math inline">\(i=1,3\)</span>.</li>
+<li>\begin{align}
+M_1 &amp;=\EE_{y\sim D} y = \rc n \sum a_i\\
+M_2 &amp;=\EE y^{\ot 2} = \rc n \sum \E_{g\sim N(0,I)} (a_i+g)^{\ot 2}\\
+&amp;= \rc n \sum a_i^{\ot 2} + \E g^{\ot 2}\\
+&amp;= I + \rc n \sum a_i^{\ot 2}\\
+M_3 &amp;= \rc n \sum \EE_{g\sim N(0,I)}(a_i+g)^{\ot 3}\\
+&amp;= \rc n \sumo in [a_i^{\ot 3} + \ub{\E a_i^{\ot 2}\ot g}{0} + \ub{\E a_i \ot g^{\ot 2} + a_i\ot g\ot a_i + a_i^{\ot 2}\ot g}{a_i\ot I + I \ot a_i + \sumo id e_i\ot a_i \ot e_i}]\\
+&amp;= \rc \sum a_i^{\ot 3} + \ub{\pa{\rc n \sum a_i}\ot I}{\text{already estimated}} + \pat{symmetric terms}
+\sum a_i^{\ot 3} &amp;= \pat{simple function of $M_1,M_3$}.
+\end{align}</li>
+</ul>
+<p>Random contraction algorithm (Jeinrich)</p>
+<ul>
+<li>Choose <span class="math inline">\(g\sim N(0,I)\)</span></li>
+<li>Compute contraction (<span class="math inline">\((I\ot I\ot g^*) M_3=A\)</span>)</li>
+<li>Compute top eigenvector of <span class="math inline">\(A\)</span>. <!--$A_{\{1\},\{2\}}$--></li>
+</ul>
+<p>Consider the orthogonal case first. Note that the most difficult case is if all the norms are the same (if they are all different, we can use SVD).</p>
+<p>… (see notebook)</p>
+<p>Decompose random gaussian along 2 directions. If correlation large ,more likely to recover <span class="math inline">\(e_1\)</span>.</p>
+<p><strong>Claim</strong>. <span class="math inline">\(\E_g \ve{(I^{\ot 2}\ot g^T)X} \le \sqrt{\ln d} \si\)</span> where <span class="math inline">\(\si = \max\{\ve{X}_{13,2},\ve{X}_{1,23}\}\)</span>.</p>
+<!-- how apply syntactically. both are linear functions of $g$. -->
+<p>This is a linear function of <span class="math inline">\(g\)</span>, we can write it as in the concentration inequality.</p>
+\begin{align}
+(I^{\ot 2} \ot g^T)X &amp;=\sum g_i \ub{(I^{\ot 2} \ot e_i^T)X}{A_i}\\
+\ve{X} &amp;=\ve{X^TX}^{\rc 2} = \ve{XX^T}^{\rc 2}\\
+\sum A_iA_i^T &amp;= X_{3,12}^T X_{3,12}\\
+\sum A_i^TA_i &amp;= X_{1,23}^T X_{1,23}
+\end{align}
+<p>(check the indices).</p>
+<p>Davis-Kahan: <span class="math inline">\(\ve{A-aa^T}\le o(1) \ve{a}^2\)</span> implies that the top eigenvector of <span class="math inline">\(A\)</span> is <span class="math inline">\(o(1)\)</span> close to <span class="math inline">\(a\)</span>. So top eigenvector of <span class="math inline">\((I\ot I\ot a^T)X\)</span> is close to <span class="math inline">\(a\)</span>.</p>
+<p><strong>Theorem</strong>. Let <span class="math inline">\(a_1,\ldots, a_n\in R^d\)</span>, <span class="math inline">\(\ve{a_i}=1\)</span>. Suppose <span class="math inline">\(\sum a_i a_i^T = \si I\)</span> (<span class="math inline">\(\si\)</span> is overcompleteness), <span class="math inline">\(\max_{i\ne j} |\an{a_i,a_j}|=\rh\)</span>. Then, given <span class="math inline">\(\sumo ih a_i^{\ot3}\)</span>, can recover vectors close to <span class="math inline">\(a_1,\ldots, a_n\)</span> in polytime whenever <span class="math inline">\(\rh \si^2=o(1)\)</span>, e,g, <span class="math inline">\(\si=d^{0.1}\)</span>, <span class="math inline">\(\rh = d^{0.3}\)</span>. This is satisfied by <span class="math inline">\(d^{1.1}\)</span> random unit vectors. <!-- ex. $\si$ random ortho bases, $\rh$ close to $\sqrt d$. When $\si\ll d^{\rc 4}$. Up to $d^{0.1}$. Spectral noise $d^{0.1}$. Condition on $g_1$ large enough to swallow, $d^{-O(c^2)}$. Exponential in $d^{.1}$--> <!-- can this go up to 3/2? If $\rh=d^{-.5}$, $\si$ up to $d^{.5}$, would imply for random unit. --></p>
+<p>This algorithm can be poly in <span class="math inline">\(d\)</span> and <span class="math inline">\(n\)</span>.</p>
+<p>Open question: Is this true for <span class="math inline">\(\rh\si &lt;o(1)\)</span>? This would imply for <span class="math inline">\(d^{1.5}\)</span> random vectors. (Though there is another argument that can give up to <span class="math inline">\(d^{1.5}\)</span>.) (Maybe a <span class="math inline">\(-\ep\)</span> in exponent.)</p>
+<!-- isotropic position -->
+<p>Algorithm: given <span class="math inline">\(M_3\)</span>,</p>
+<ol type="1">
+<li>Compute p.d. <span class="math inline">\(\mu\)</span> over unit sphere of <span class="math inline">\(\R^d\)</span> so as to maximize <span class="math inline">\(\an{\wt\E_{\mu} x^{\ot 3}, M_3}\)</span>, which satisfies <span class="math display">\[\ve{\wt \EE_{\mu} x^{\ot 6}}_{1234, 56}\le 2.\]</span></li>
+<li>Run random contraction on <span class="math inline">\(\wt\EE_{\mu} x^{\ot 6} = \wt\EE_{\mu} (x^{\ot 2})^{\ot 3}\)</span>. (Letting <span class="math inline">\(X=\wt \E(x^{\ot 2})^{\ot 3}\in (\R^{d^2})^{\ot 3}\)</span>, this is <span class="math inline">\(\ve{X}_{12,3}\)</span>.)</li>
+</ol>
+<p>Use SoS to find tensor which we can run random contraction on, living in higher-dimensional space.</p>
+<p>Under conditions of theorem, let <span class="math inline">\(b_i=a_i^{\ot 2}\)</span>, can show that random contraction works for <span class="math inline">\(X=\sum b_i^{\ot 3}\)</span>. (Show <span class="math inline">\(\ve{X}_{12,3}\le O(1)\)</span> if <span class="math inline">\(\rh\si^2\ll 1\)</span>.) Recover the <span class="math inline">\(b_i\)</span>’s, then recover <span class="math inline">\(a_i\)</span>’s. But we don’t get <span class="math inline">\(b_i^{\ot 3}\)</span>, we just get <span class="math inline">\(a_i^{\ot 3}\)</span>. SoS: given <span class="math inline">\(a_i^{\ot 3}\)</span> it’s computing <span class="math inline">\(b_i^{\ot 3}\)</span>. Find pseudodistribution matching 3rd moment and outputs 6th moments.</p>
+<p>The intended <span class="math inline">\(\mu\)</span> is uniform over <span class="math inline">\(a_1,\ldots, a_n\)</span>. <span class="math inline">\(\wt \EE_{\mu} x^{\ot 3} = \rc n \sum a_i^{\ot 3}\)</span> and <span class="math inline">\(\E x^{\ot 6} = \rc n \sum a_i^{\ot 6} = \rc X\)</span>.</p>
+<p>Philosophy: first prove statement for distributions, then verify that the steps fall in SoS proof system.8</p>
 <h3 id="reading">Reading</h3>
 <ul>
 <li><a href="https://windowsontheory.org/2016/08/27/proofs-beliefs-and-algorithms-through-the-lens-of-sum-of-squares/">Windows on theory</a>, <a href="http://scrible.com/s/2KMCS">h</a></li>

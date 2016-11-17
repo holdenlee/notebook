@@ -8,8 +8,109 @@
         <name>Holden Lee</name>
         <email>oldheneel@gmail.com</email>
     </author>
-    <updated>2016-11-07T00:00:00Z</updated>
+    <updated>2016-11-14T00:00:00Z</updated>
     <entry>
+    <title>Weekly summary 2016-11-19</title>
+    <link href="http://holdenlee.github.io/notebook/posts/summaries/2016-11-19.html" />
+    <id>http://holdenlee.github.io/notebook/posts/summaries/2016-11-19.html</id>
+    <published>2016-11-14T00:00:00Z</published>
+    <updated>2016-11-14T00:00:00Z</updated>
+    <summary type="html"><![CDATA[
+<div class="container">
+  <div id="content">
+    <div class="page header">
+      <h1>Weekly summary 2016-11-19</h1>
+    </div>
+    <div class="info">
+      
+       
+        <p>Posted: 2016-11-14 
+          , Modified: 2016-11-14 
+	</p>
+      
+       <p>Tags: <a href="/tags/none.html">none</a></p> 
+    </div>
+    
+  </div>
+  <!--/div-->
+
+  <div class="toc"> <ul>
+ <li><a href="#hmmmdp-project">HMM/MDP project</a></li>
+ <li><a href="#alexanlp-experiments">Alexa/NLP experiments</a></li>
+ <li><a href="#other-experiments">Other experiments</a></li>
+ <li><a href="#learning">Learning</a></li>
+ </ul> </div>
+
+  <div class="blog-main">
+    <h2 id="hmmmdp-project">HMM/MDP project</h2>
+<ul>
+<li>Lit review
+<ul>
+<li>[TLF] Monte Carlo HiddenMarkov Models: Learning Non-Parametric Models of Partially Observable Stochastic Processes (Mon.)</li>
+</ul></li>
+<li>Theory review
+<ul>
+<li>Ch. 3, 5 of FA</li>
+<li>Ch. 6 Bertsekas</li>
+</ul></li>
+<li>Experiments
+<ul>
+<li>Program basic RL</li>
+</ul></li>
+<li>Theory: things to try
+<ul>
+<li>Nonparametric/kernel methods (cf. BCO)</li>
+</ul></li>
+</ul>
+<h2 id="alexanlp-experiments">Alexa/NLP experiments</h2>
+<ul>
+<li>Get LSTM up and running.</li>
+<li>Get Yingyu’s word2vec, DL code up and running.
+<ul>
+<li>Try modifying with other modalities (sentiments, etc.)</li>
+</ul></li>
+<li>Lisa Lee’s thesis</li>
+</ul>
+<h2 id="other-experiments">Other experiments</h2>
+<ul>
+<li>Neural net learns dictionaries: run experiments.
+<ul>
+<li>NNDL experiment.</li>
+<li>Where is the cusp?</li>
+</ul></li>
+</ul>
+<h2 id="learning">Learning</h2>
+<ul>
+<li>Sum of squares: tensor decomposition (Mon.)</li>
+<li>EM algorithm</li>
+<li>Tensor decomposition and latent variable model</li>
+<li>MDP theory (see above)</li>
+<li>Summarize papers</li>
+</ul>
+
+  </div>
+
+    
+
+    <!-- Extension : Sharing buttons @ www.sharethis.com -->
+    <span class='st_facebook_large' displayText='Facebook'></span>
+    <span class='st_twitter_large' displayText='Tweet'></span>
+    <span class='st_googleplus_large' displayText='Google +'></span>
+    <span class='st_reddit_large' displayText='Reddit'></span>
+    <span class='st__large' displayText=''></span>
+
+    <div id="disqus_thread"></div>
+    
+
+
+  
+    <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+  </div>
+  
+</div>
+]]></summary>
+</entry>
+<entry>
     <title>Probabilistic models - Ideas</title>
     <link href="http://holdenlee.github.io/notebook/posts/tcs/machine_learning/probabilistic/ideas.html" />
     <id>http://holdenlee.github.io/notebook/posts/tcs/machine_learning/probabilistic/ideas.html</id>
@@ -105,7 +206,7 @@ KL(D || m)\le KL(D || \mu) \ep + \ga.
       
        
         <p>Posted: 2016-11-07 
-          , Modified: 2016-11-07 
+          , Modified: 2016-11-14 
 	</p>
       
        <p>Tags: <a href="/tags/none.html">none</a></p> 
@@ -114,10 +215,27 @@ KL(D || m)\le KL(D || \mu) \ep + \ga.
   </div>
   <!--/div-->
 
-  <div class="toc"></div>
+  <div class="toc"> <ul>
+ <li><a href="#summary">Summary</a></li>
+ </ul> </div>
 
   <div class="blog-main">
-    
+    <h2 id="summary">Summary</h2>
+<ul>
+<li>Neural net learns dictionaries: run experiments. I found nothing unexpected: closeby initialization does converge. The farther away, the farther away the final <span class="math inline">\(A\)</span> is. (But I think it should be a <code>_/</code> shape—where is the cusp?)
+<ul>
+<li>Are the different dictionaries related by a linear transformation? It seems not.</li>
+</ul></li>
+<li>Simons meeting—spanning trees, bandit convex optimization.
+<ul>
+<li>Can we use kernel methods for MDP’s?</li>
+</ul></li>
+<li>Meeting with Arora
+<ul>
+<li>Learn about continuous HMM models.</li>
+<li>Improve NLP.</li>
+</ul></li>
+</ul>
 
   </div>
 
@@ -1042,181 +1160,6 @@ v_{*'}^{\ga'} = (I-\ga'P_*')^{-1}r_*, v_{*'}^{\ga}, v_\pi^\ga, v_\pi^{\ga'}.
 <p>Suppose payout is convex in policy parameters. But why would this ever be the case???</p>
 <p>Or: have to decide between several experts.</p>
 <h2 id="references">References</h2>
-
-  </div>
-
-    
-
-    <!-- Extension : Sharing buttons @ www.sharethis.com -->
-    <span class='st_facebook_large' displayText='Facebook'></span>
-    <span class='st_twitter_large' displayText='Tweet'></span>
-    <span class='st_googleplus_large' displayText='Google +'></span>
-    <span class='st_reddit_large' displayText='Reddit'></span>
-    <span class='st__large' displayText=''></span>
-
-    <div id="disqus_thread"></div>
-    
-
-
-  
-    <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
-  </div>
-  
-</div>
-]]></summary>
-</entry>
-<entry>
-    <title>Learning structured, robust, and multimodal deep models</title>
-    <link href="http://holdenlee.github.io/notebook/posts/tcs/machine_learning/neural_nets/salakhutdinov.html" />
-    <id>http://holdenlee.github.io/notebook/posts/tcs/machine_learning/neural_nets/salakhutdinov.html</id>
-    <published>2016-10-21T00:00:00Z</published>
-    <updated>2016-10-21T00:00:00Z</updated>
-    <summary type="html"><![CDATA[
-<div class="container">
-  <div id="content">
-    <div class="page header">
-      <h1>Learning structured, robust, and multimodal deep models</h1>
-    </div>
-    <div class="info">
-      
-       
-        <p>Posted: 2016-10-21 
-          , Modified: 2016-10-21 
-	</p>
-      
-       <p>Tags: <a href="/tags/neural%20networks.html">neural networks</a>, <a href="/tags/deep%20learning.html">deep learning</a>, <a href="/tags/multimodal.html">multimodal</a></p> 
-    </div>
-    
-  </div>
-  <!--/div-->
-
-  <div class="toc"> <ul>
- <li><a href="#abstract">Abstract</a></li>
- <li><a href="#learning-deep-generative-models">Learning deep generative models</a></li>
- <li><a href="#multi-modal-learning">Multi-modal learning</a></li>
- <li><a href="#open-problems">Open problems</a></li>
- <li><a href="#questions">Questions</a></li>
- </ul> </div>
-
-  <div class="blog-main">
-    <h2 id="abstract">Abstract</h2>
-<p>Building intelligent systems that are capable of extracting meaningful representations from high-dimensional data lies at the core of solving many Artificial Intelligence tasks, including visual object recognition, information retrieval, speech perception, and language understanding. In this talk I will first introduce a broad class of deep learning models and show that they can learn useful hierarchical representations from large volumes of high-dimensional data with applications in information retrieval, object recognition, and speech perception. I will next introduce deep models that are capable of extracting a unified representation that fuses together multiple data modalities as well as present the Reverse Annealed Importance Sampling Estimator (RAISE) for evaluating these deep generative models. Finally, I will discuss models that can generate natural language descriptions (captions) of images, as well as generate images from captions using attention mechanism. I will show that on several tasks, including modelling images and text, these models significantly improve upon many of the existing techniques.</p>
-<ul>
-<li>Develop statistical models to mine for structure: Deep learning models support inferences and discover structure at multiple levels. <!-- drug rec-->
-<ul>
-<li>Ex. understanding images (Nearest neighbor sentence: people taking pictures of a crazy person)</li>
-</ul></li>
-</ul>
-<h2 id="learning-deep-generative-models">Learning deep generative models</h2>
-<ul>
-<li>RBM: visible <span class="math inline">\(v\in B^D\)</span>, hidden <span class="math inline">\(h\in B^F\)</span>, bipartite connections. <span class="math inline">\(\Pj(v,h) \propto \exp(v^TWh + a^Th + b^Tv)\)</span>.
-<ul>
-<li>Ex. alphabets</li>
-<li>Derivative of LL. Partition function difficult to compute!</li>
-<li>Can change to Gaussians (real-valued variables), etc.</li>
-<li>Word counts (undirected version of topic models) (bag of words)</li>
-<li>Easy to infer states of hidden variables <span class="math inline">\(\Pj(h|v)\)</span>.</li>
-<li>“Product of experts”: after marginalizing over hidden variables (Government, corruption, and oil give high probability of Putin). Better for info retrieval than traditional topic models.</li>
-</ul></li>
-<li>DBM
-<ul>
-<li>Compose representations.</li>
-<li>MRF with hidden variables and specific structure</li>
-<li>Hidden variables dependent even conditioned on input.</li>
-<li>Both <span class="math inline">\(\E\)</span> now intractable</li>
-<li>Use variational inference for <span class="math inline">\(\E_{P_{data}}[vh^{1T}]\)</span> and stochastic approximation (MCMC) for <span class="math inline">\(\E_{P_\te}[vh^{1T}]\)</span>.</li>
-<li>Handwritten data: real data more diverse, crisp.</li>
-<li>Pattern completion (3-D object recognition) <!-- true bayesian hedges bets--></li>
-<li>Model A vs. B: Take training example at random and show, vs. RBM. Compute <span class="math inline">\(P\)</span> on validation set. Need estimate of <span class="math inline">\(Z\)</span>. RBM better than mixture of Bernoullis by 50 nats.</li>
-<li>Simple importance sampling. Given easy-to-sample-from and intractable target distribution, reweight and use MC approximation. Can’t just draw from uniform distribution!</li>
-<li>Annealed importance sampling, <span class="math inline">\(p_0,\ldots, p_K\)</span>. Geometric average <span class="math inline">\(p_\be(x) = f_\be/Z_\be = f_0^{1-\be}/f_{target}(x)^\be/Z_\be\)</span>. If initial is uniform, <span class="math inline">\(p_\be = f_t^\be/Z_\be\)</span>, <span class="math inline">\(\be\)</span> inverse temperature. (Annealing by averaging moments)
-<ul>
-<li>AIS gives unbiased estimator of <span class="math inline">\(Z_t\)</span>.</li>
-<li>We are interested in estimating <span class="math inline">\(\ln Z_t\)</span>. Jensen: <span class="math inline">\(\E \ln Z_t\le \ln Z_t\)</span>. Underestimate! We get a stochastic lower bound.</li>
-<li>Log-probability on test set, overestimate <span class="math inline">\(\ln p = \ln f - \ln Z_t\)</span>. <!--If sloppy, model looks nice!--></li>
-</ul></li>
-<li>Gibbs sampling. Pretend it’s equilibrium after 1000 steps.
-<ul>
-<li>Unrolled RBM as deep generative model. As approximation to RBM.</li>
-<li><span class="math inline">\(p_{fwd}(x_{0:K}) = p_0(x_0)\prodo kK T_k(x_k|x_{k-1})\)</span>.</li>
-<li>Reverse AIS estimator (RAISE). Start at data and melt distribution. Tends to underestimate log-probs.</li>
-</ul></li>
-<li>Learning hierarchical representations.</li>
-</ul></li>
-<li>Model evaluation: Good way of evaluating!</li>
-</ul>
-<p>Learn feature representations! <!--textons, audio features--></p>
-<h2 id="multi-modal-learning">Multi-modal learning</h2>
-<ul>
-<li>Image, text, audio. Joint representations?</li>
-<li>Product recommendations</li>
-<li><p>Robotic</p></li>
-<li>Challenges
-<ul>
-<li>Images are real-valued, text is sparse.</li>
-<li>Noisy and missing data</li>
-</ul></li>
-<li>Multimodal DBM, go up and then down the other way. Define joint distribution over images and text.</li>
-<li>Given text, sample from images
-<ul>
-<li>MIR-Flickr dataset</li>
-</ul></li>
-<li>Solve supervised learning tasks. Can do better if use unlabeled data. Learn better features and representations.</li>
-<li>Can pre-train image pathway and text pathways. <!-- Q: how much can you decouple? --></li>
-<li>Complete descriptions of images.
-<ul>
-<li>Encoder: CNN to semantic feature space.</li>
-<li>Decoder: neural language model.</li>
-<li>Learn joint embedding space of images and text. Natural definition of scoring function.</li>
-<li>Ex. Fluffy.</li>
-<li>Multimodal linguistic regularities: Addition and subtraction. (Cat - bowl + box)
-<ul>
-<li>Bird and reflection: Two birds are trying to be seen in the water.</li>
-<li>Giraffe is standing next to a fence in a field.</li>
-<li>Handlebars are trying to ride a bike rack.</li>
-</ul></li>
-<li>Caption generation with visual attention.</li>
-<li>Generate images from captions. (school bus flying in blue skies)</li>
-<li>Helmholtz machines/variational autoencoders. Directed counterparts. Generative process goes down. Approximate inference going up. Hinton95 (Science). Now it works, Kingma2014 (NIPS)
-<ul>
-<li>A toilet seat sits open in the bathroom, grass field</li>
-<li>Ask google. <!--worked on toilet project--></li>
-</ul></li>
-</ul></li>
-</ul>
-<h2 id="open-problems">Open problems</h2>
-<ul>
-<li>Unsupevised learning/transfer learning/one-shot learning</li>
-<li>Reasoning, attention, memory</li>
-<li>Natural language understanding
-<ul>
-<li>Sequence-to-sequence learning</li>
-<li>Skip-thought model
-<ul>
-<li>Generate previous and forward sentence</li>
-<li>Objective: sum of log-probabilities for previous/next sentence conditioned on current.</li>
-<li>How similar are 2 sentence are on the scale 1 to 5. (A person is performing a trick on a motorcycle? A person is tricking a man on a motorcycle.)</li>
-<li>We use no semantic features. <!-- AdaSent --></li>
-</ul></li>
-</ul></li>
-<li>Deep reinforcement learning</li>
-</ul>
-<p>Neural storytelling. Take corpus of books (romantic), generate captions about the image.</p>
-<p>Kiros2015 NIPS</p>
-<p>One-shot learning: humans vs. machines. How can we learn novel concept from few examples (Lake, S, Tenenbaum 2015, Science)</p>
-<h2 id="questions">Questions</h2>
-<p>CNN better for supervised. We’re trying to build convolutional DBM.</p>
-<p>vs. variational autoencoder. Reparametrization trick, backprop through whole model. Optimization better for VA. Both useful.</p>
-<p>Learning representation, not with language?</p>
-<!-- evaluation
-neural image on google $10^5$
--->
-<p>Microsoft dataset: 80000 images, 5 captions each. Not big enough, but captions clean!</p>
-<p>Topics vs. coherent model of sentences. What do we need? New architectures, training sets? <!--need rep to corresp with reality. have memory, check for consistency with memory --></p>
-<!--AlphaGo is more technological. Fast, evaluating -->
-<p>Actor-Mimic model.</p>
-<p>Transfer learning: learn new games faster by leveraging knowledge about previous games. Ex. star gunner</p>
-<p>Continuous state.</p>
 
   </div>
 
