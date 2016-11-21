@@ -570,7 +570,7 @@ Focus on the complexity of the target function as separate and distinct from the
 ## 8.4 Control with function approximation
 
 \begin{align}
-\te_{t+1} &= \te_t + \al\ba{v_t - Q_t(s_t,a_t)} \nb_{\te_t}(s_t,a_t)\\
+\te_{t+1} &= \te_t + \al\ba{v_t - Q_{\te_t}(s_t,a_t)} \nb_{\te_t}Q_{\te_t}(s_t,a_t)\\
 \te_{t+1} &=\te_t + \al \de_t e_t\\
 \de_t &= r_{t+1} + \ga Q_t(s_{t+1},a_{t+1}) - Q_t(s_t,a_t)\\
 e_t &= \ga \la e_{t-1} + \nb_{\te_t} Q_t(s_t,a_t).

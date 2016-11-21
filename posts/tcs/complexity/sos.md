@@ -611,7 +611,9 @@ This is a linear function of $g$, we can write it as in the concentration inequa
 
 Davis-Kahan: $\ve{A-aa^T}\le o(1) \ve{a}^2$ implies that the top eigenvector of $A$ is $o(1)$ close to $a$. So top eigenvector of $(I\ot I\ot a^T)X$ is close to $a$.
 
-**Theorem**. Let $a_1,\ldots, a_n\in R^d$, $\ve{a_i}=1$. Suppose $\sum a_i a_i^T = \si I$ ($\si$ is overcompleteness), $\max_{i\ne j} |\an{a_i,a_j}|=\rh$. Then, given $\sumo ih a_i^{\ot3}$, can recover vectors close to $a_1,\ldots, a_n$ in polytime whenever $\rh \si^2=o(1)$, e,g, $\si=d^{0.1}$, $\rh = d^{0.3}$. This is satisfied by $d^{1.1}$ random unit vectors.
+**Theorem**. Let $a_1,\ldots, a_n\in R^d$, $\ve{a_i}=1$. Suppose $\sum a_i a_i^T \preceq \si I$ ($\si$ is overcompleteness), $\max_{i\ne j} |\an{a_i,a_j}|\le \rh$. Then, given $\sumo ih a_i^{\ot3}$, can recover vectors close to $a_1,\ldots, a_n$ in polytime whenever $\rh \si^2=o(1)$.
+
+E.g., $\si=d^{0.1}$, $\rh = d^{0.3}$. This is satisfied by $d^{1.1}$ random unit vectors, or $n=d^{1.24}, (d^{.24},d^{-.5})$.
 <!-- ex. $\si$ random ortho bases, $\rh$ close to $\sqrt d$. When $\si\ll d^{\rc 4}$. Up to $d^{0.1}$. Spectral noise $d^{0.1}$. Condition on $g_1$ large enough to swallow, $d^{-O(c^2)}$. Exponential in $d^{.1}$-->
 <!-- can this go up to 3/2? If $\rh=d^{-.5}$, $\si$ up to $d^{.5}$, would imply for random unit. -->
 
@@ -634,6 +636,50 @@ Under conditions of theorem, let $b_i=a_i^{\ot 2}$, can show that random contrac
 The intended $\mu$ is uniform over $a_1,\ldots, a_n$. $\wt \EE_{\mu} x^{\ot 3} = \rc n \sum a_i^{\ot 3}$ and $\E x^{\ot 6} = \rc n \sum a_i^{\ot 6} = \rc X$.
 
 Philosophy: first prove statement for distributions, then verify that the steps fall in SoS proof system.8
+
+### Tensor decomposition (11/17) talk
+
+* 3rd moment enough for $n\le d$ linearly independent vectors
+* 4th moment for $n\le \fc{d^2}{10}$ generic vectors (e.g., randomly perturbed)
+
+When are 3rd moments enough for overcomplete tensors, $n\gg d$? Robustness against noise in input tensor?
+
+We use lower-degree moments, have better error robustness, and develop new improved analyses of classical tensor decomposition algorithms.
+
+SoS a priori not practical but we can extract practical algorithms
+
+Dream up higher-degree moments and apply classical algorithms.
+
+Algorithm: Magic box lifts 3rd moments to 6th moment, $M_3=\sum_i a_i^{\ot 3}$ to $M_6=\sum_i a_i^{\ot 6}$. Then apply Jennrich to get $a_i^{\ot 2}$.
+
+It's not even clear this is information theoretically possible!
+
+Ideal implementation: find $D$ over unit sphere subject to $\EE_D x^{\ot 3} = \rc n M_3$, then use $\EE_D x^{\ot 6}$. Claim is that this is $\approx \rc n M_6$. 
+
+Key inequality: by niceness of vectors, $a_1,\ldots, a_n$ are approximate global maximizers. For all $x\in \bS^{d-1}$, 
+\begin{align}
+P(x) &\le \max_{i\in [n]} \an{a_i,x} + O(\rh si^2).\\
+1 &\approx \EE_D \sumo in \an{a_i,x}^3\\
+\EE_{D} P(x) &\ge 1-o(1).
+\end{align}
+Also close to uniform over $a_i$.
+
+Remaining questions:
+
+1. Find $D$? Relax to pseudo-distributions.
+2. Can Jennrich tolerate this error (Frobenius)? No. Fix by adding maximum entropy constraint $\ve{\E_D x^{\ot 4}}_{\text{spectral}}\le \fc{1+o(1)}n$.
+
+SoS is slow. Instead find direct algorithm to fool Jennrich,
+$$
+\sum_{ijk} \an{a_i,a_k}\an{a_j,a_k}
+(a_i\ot a_j) \ot (a_i\ot a_j) \ot a_k\approx \sumo in a_i^{\ot 5} = M_5.
+$$
+
+Tensor structure to implement Jennrich in time $O(d^{1+\om})$.
+
+Open: 3 tensors with $d^{1+\ep}$ generic components, $d^{1.5+\ep}$ random components?
+
+Tensor power: fewer guarantees. Does better in amount of time needed to reduce error.
 
 ## Reading
 
