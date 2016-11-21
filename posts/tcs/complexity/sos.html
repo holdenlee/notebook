@@ -116,6 +116,7 @@
  </ul></li>
  <li><a href="#sphere">6 Sphere</a><ul>
  <li><a href="#tensor-decomposition-1114">Tensor decomposition (11/14)</a></li>
+ <li><a href="#tensor-decomposition-1117-talk">Tensor decomposition (11/17) talk</a></li>
  </ul></li>
  <li><a href="#reading">Reading</a></li>
  </ul></li>
@@ -579,7 +580,8 @@ M_3 &amp;= \rc n \sum \EE_{g\sim N(0,I)}(a_i+g)^{\ot 3}\\
 \end{align}
 <p>(check the indices).</p>
 <p>Davis-Kahan: <span class="math inline">\(\ve{A-aa^T}\le o(1) \ve{a}^2\)</span> implies that the top eigenvector of <span class="math inline">\(A\)</span> is <span class="math inline">\(o(1)\)</span> close to <span class="math inline">\(a\)</span>. So top eigenvector of <span class="math inline">\((I\ot I\ot a^T)X\)</span> is close to <span class="math inline">\(a\)</span>.</p>
-<p><strong>Theorem</strong>. Let <span class="math inline">\(a_1,\ldots, a_n\in R^d\)</span>, <span class="math inline">\(\ve{a_i}=1\)</span>. Suppose <span class="math inline">\(\sum a_i a_i^T = \si I\)</span> (<span class="math inline">\(\si\)</span> is overcompleteness), <span class="math inline">\(\max_{i\ne j} |\an{a_i,a_j}|=\rh\)</span>. Then, given <span class="math inline">\(\sumo ih a_i^{\ot3}\)</span>, can recover vectors close to <span class="math inline">\(a_1,\ldots, a_n\)</span> in polytime whenever <span class="math inline">\(\rh \si^2=o(1)\)</span>, e,g, <span class="math inline">\(\si=d^{0.1}\)</span>, <span class="math inline">\(\rh = d^{0.3}\)</span>. This is satisfied by <span class="math inline">\(d^{1.1}\)</span> random unit vectors. <!-- ex. $\si$ random ortho bases, $\rh$ close to $\sqrt d$. When $\si\ll d^{\rc 4}$. Up to $d^{0.1}$. Spectral noise $d^{0.1}$. Condition on $g_1$ large enough to swallow, $d^{-O(c^2)}$. Exponential in $d^{.1}$--> <!-- can this go up to 3/2? If $\rh=d^{-.5}$, $\si$ up to $d^{.5}$, would imply for random unit. --></p>
+<p><strong>Theorem</strong>. Let <span class="math inline">\(a_1,\ldots, a_n\in R^d\)</span>, <span class="math inline">\(\ve{a_i}=1\)</span>. Suppose <span class="math inline">\(\sum a_i a_i^T \preceq \si I\)</span> (<span class="math inline">\(\si\)</span> is overcompleteness), <span class="math inline">\(\max_{i\ne j} |\an{a_i,a_j}|\le \rh\)</span>. Then, given <span class="math inline">\(\sumo ih a_i^{\ot3}\)</span>, can recover vectors close to <span class="math inline">\(a_1,\ldots, a_n\)</span> in polytime whenever <span class="math inline">\(\rh \si^2=o(1)\)</span>.</p>
+<p>E.g., <span class="math inline">\(\si=d^{0.1}\)</span>, <span class="math inline">\(\rh = d^{0.3}\)</span>. This is satisfied by <span class="math inline">\(d^{1.1}\)</span> random unit vectors, or <span class="math inline">\(n=d^{1.24}, (d^{.24},d^{-.5})\)</span>. <!-- ex. $\si$ random ortho bases, $\rh$ close to $\sqrt d$. When $\si\ll d^{\rc 4}$. Up to $d^{0.1}$. Spectral noise $d^{0.1}$. Condition on $g_1$ large enough to swallow, $d^{-O(c^2)}$. Exponential in $d^{.1}$--> <!-- can this go up to 3/2? If $\rh=d^{-.5}$, $\si$ up to $d^{.5}$, would imply for random unit. --></p>
 <p>This algorithm can be poly in <span class="math inline">\(d\)</span> and <span class="math inline">\(n\)</span>.</p>
 <p>Open question: Is this true for <span class="math inline">\(\rh\si &lt;o(1)\)</span>? This would imply for <span class="math inline">\(d^{1.5}\)</span> random vectors. (Though there is another argument that can give up to <span class="math inline">\(d^{1.5}\)</span>.) (Maybe a <span class="math inline">\(-\ep\)</span> in exponent.)</p>
 <!-- isotropic position -->
@@ -592,6 +594,37 @@ M_3 &amp;= \rc n \sum \EE_{g\sim N(0,I)}(a_i+g)^{\ot 3}\\
 <p>Under conditions of theorem, let <span class="math inline">\(b_i=a_i^{\ot 2}\)</span>, can show that random contraction works for <span class="math inline">\(X=\sum b_i^{\ot 3}\)</span>. (Show <span class="math inline">\(\ve{X}_{12,3}\le O(1)\)</span> if <span class="math inline">\(\rh\si^2\ll 1\)</span>.) Recover the <span class="math inline">\(b_i\)</span>’s, then recover <span class="math inline">\(a_i\)</span>’s. But we don’t get <span class="math inline">\(b_i^{\ot 3}\)</span>, we just get <span class="math inline">\(a_i^{\ot 3}\)</span>. SoS: given <span class="math inline">\(a_i^{\ot 3}\)</span> it’s computing <span class="math inline">\(b_i^{\ot 3}\)</span>. Find pseudodistribution matching 3rd moment and outputs 6th moments.</p>
 <p>The intended <span class="math inline">\(\mu\)</span> is uniform over <span class="math inline">\(a_1,\ldots, a_n\)</span>. <span class="math inline">\(\wt \EE_{\mu} x^{\ot 3} = \rc n \sum a_i^{\ot 3}\)</span> and <span class="math inline">\(\E x^{\ot 6} = \rc n \sum a_i^{\ot 6} = \rc X\)</span>.</p>
 <p>Philosophy: first prove statement for distributions, then verify that the steps fall in SoS proof system.8</p>
+<h4 id="tensor-decomposition-1117-talk">Tensor decomposition (11/17) talk</h4>
+<ul>
+<li>3rd moment enough for <span class="math inline">\(n\le d\)</span> linearly independent vectors</li>
+<li>4th moment for <span class="math inline">\(n\le \fc{d^2}{10}\)</span> generic vectors (e.g., randomly perturbed)</li>
+</ul>
+<p>When are 3rd moments enough for overcomplete tensors, <span class="math inline">\(n\gg d\)</span>? Robustness against noise in input tensor?</p>
+<p>We use lower-degree moments, have better error robustness, and develop new improved analyses of classical tensor decomposition algorithms.</p>
+<p>SoS a priori not practical but we can extract practical algorithms</p>
+<p>Dream up higher-degree moments and apply classical algorithms.</p>
+<p>Algorithm: Magic box lifts 3rd moments to 6th moment, <span class="math inline">\(M_3=\sum_i a_i^{\ot 3}\)</span> to <span class="math inline">\(M_6=\sum_i a_i^{\ot 6}\)</span>. Then apply Jennrich to get <span class="math inline">\(a_i^{\ot 2}\)</span>.</p>
+<p>It’s not even clear this is information theoretically possible!</p>
+<p>Ideal implementation: find <span class="math inline">\(D\)</span> over unit sphere subject to <span class="math inline">\(\EE_D x^{\ot 3} = \rc n M_3\)</span>, then use <span class="math inline">\(\EE_D x^{\ot 6}\)</span>. Claim is that this is <span class="math inline">\(\approx \rc n M_6\)</span>.</p>
+Key inequality: by niceness of vectors, <span class="math inline">\(a_1,\ldots, a_n\)</span> are approximate global maximizers. For all <span class="math inline">\(x\in \bS^{d-1}\)</span>,
+\begin{align}
+P(x) &amp;\le \max_{i\in [n]} \an{a_i,x} + O(\rh si^2).\\
+1 &amp;\approx \EE_D \sumo in \an{a_i,x}^3\\
+\EE_{D} P(x) &amp;\ge 1-o(1).
+\end{align}
+<p>Also close to uniform over <span class="math inline">\(a_i\)</span>.</p>
+<p>Remaining questions:</p>
+<ol type="1">
+<li>Find <span class="math inline">\(D\)</span>? Relax to pseudo-distributions.</li>
+<li>Can Jennrich tolerate this error (Frobenius)? No. Fix by adding maximum entropy constraint <span class="math inline">\(\ve{\E_D x^{\ot 4}}_{\text{spectral}}\le \fc{1+o(1)}n\)</span>.</li>
+</ol>
+<p>SoS is slow. Instead find direct algorithm to fool Jennrich, <span class="math display">\[
+\sum_{ijk} \an{a_i,a_k}\an{a_j,a_k}
+(a_i\ot a_j) \ot (a_i\ot a_j) \ot a_k\approx \sumo in a_i^{\ot 5} = M_5.
+\]</span></p>
+<p>Tensor structure to implement Jennrich in time <span class="math inline">\(O(d^{1+\om})\)</span>.</p>
+<p>Open: 3 tensors with <span class="math inline">\(d^{1+\ep}\)</span> generic components, <span class="math inline">\(d^{1.5+\ep}\)</span> random components?</p>
+<p>Tensor power: fewer guarantees. Does better in amount of time needed to reduce error.</p>
 <h3 id="reading">Reading</h3>
 <ul>
 <li><a href="https://windowsontheory.org/2016/08/27/proofs-beliefs-and-algorithms-through-the-lens-of-sum-of-squares/">Windows on theory</a>, <a href="http://scrible.com/s/2KMCS">h</a></li>

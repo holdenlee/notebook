@@ -76,7 +76,7 @@
       
        
         <p>Posted: 2016-10-24 
-          , Modified: 2016-10-24 
+          , Modified: 2016-11-21 
 	</p>
       
        <p>Tags: <a href="../../../../tags/reinforcement%20learning.html">reinforcement learning</a></p> 
@@ -90,6 +90,10 @@
  <li><a href="#policyvalue-iteration">Policy/value iteration</a><ul>
  <li><a href="#changing-ga">Changing <span class="math inline">$\ga$</span></a></li>
  <li><a href="#alternating-policy-improvementevaluation">Alternating policy improvement/evaluation</a></li>
+ </ul></li>
+ <li><a href="#q-learning">Q-learning</a><ul>
+ <li><a href="#preliminaries">Preliminaries</a></li>
+ <li><a href="#convergence-of-q-learning">Convergence of Q-learning</a></li>
  </ul></li>
  </ul> </div>
 
@@ -155,6 +159,61 @@ v_{*'}^{\ga'} = (I-\ga'P_*')^{-1}r_*, v_{*'}^{\ga}, v_\pi^\ga, v_\pi^{\ga'}.
 \]</span> More involved with averaging <span class="math inline">\(\lim_{T\to \iy}\rc T\cdots\)</span>. Choose <span class="math inline">\(\ga\)</span> small enough so that can be approximated with rectangles, etc.</p>
 <h3 id="alternating-policy-improvementevaluation">Alternating policy improvement/evaluation</h3>
 <p><span class="math display">\[\pi'(s) = \amax_a \sum_{s'} p(s'|s,a) [r(s,a,s') + \ga v_\pi(s')].\]</span></p>
+<h2 id="q-learning">Q-learning</h2>
+<ul>
+<li>[WatkinsDayan92] Q-learning</li>
+<li>[Tsitsiklis94] Asynchronous Stochastic Approximation and Q-learning</li>
+</ul>
+<p>Main idea: to solve a fixed-point equation, need an unbiased approximation of operator <span class="math inline">\(F\)</span>, and <span class="math inline">\(F\)</span> to be a contraction. (Noise is not a big deal—finiteness is usually enough.)</p>
+<h3 id="preliminaries">Preliminaries</h3>
+<p>Abstraction: Solve fixed point equation <span class="math display">\[F(x)=x.\]</span> Let <span class="math inline">\(T^i\)</span> be the set of times when <span class="math inline">\(x_i\)</span> is updated, and the update equation be <span class="math display">\[x_i(t+1) = x_i(t) + \al_i(t) (F_i(x^i(t)) + w_i(t) - x_i(t)).\]</span> The components of <span class="math inline">\(x^i(t)\)</span> are <span class="math inline">\(x_j(\tau_j^i(t))\)</span>, possibly outdated. (If they are not outdated, <span class="math inline">\(\tau=t\)</span>.)</p>
+<p>Assumptions: Let <span class="math inline">\(\mathcal F(t)\)</span> be the subfield at time <span class="math inline">\(t\)</span>. Define <span class="math inline">\(\ve{x}_v=\max_i \fc{|x_i|}{v_i}\)</span>.</p>
+<ol type="1">
+<li><span class="math inline">\(\forall i,j, \lim_{t\to \iy} \tau_j^i(t)=\iy\)</span>. (This allows outdated info!)</li>
+<li>(Noise)
+<ul>
+<li>Mean: <span class="math inline">\(\E[w_i(t)|\mathcal F(t)]=0\)</span>.</li>
+<li>Variance: <span class="math inline">\(\E[w_i(t)^2| \mathcal F(t)]\le A + B\max_j \max_{\tau\le t}|x_j(\tau)|^2\)</span>.</li>
+</ul></li>
+<li>(Enough updating, but not too much)
+<ul>
+<li><span class="math inline">\(\sumz t{\iy} \al_i(t)=\iy\)</span></li>
+<li><span class="math inline">\(\sumz t{\iy} \al_i^2(t) \le C\)</span>.</li>
+</ul></li>
+<li><span class="math inline">\(F\)</span> is monotone wrt pointwise <span class="math inline">\(\le\)</span>, continuous, has unique fixed point, and is 1-Lipschitz in the <span class="math inline">\(\one\)</span> direction.</li>
+<li>(Contraction) <span class="math inline">\(\exists v&gt;0, \be\in [0,1),\forall x, \ve{F(x) - x^*}_v\le \be \ve{x-x^*}_v\)</span>.</li>
+<li>(Weaker form of contraction) <span class="math inline">\(\exists v&gt;0, \be\in[0,1), D, \forall x, \ve{F(x)}_v\le \be \ve{x}_v+D\)</span>.</li>
+<li>For undiscounted state only: There exists at least one proper stationary policy (probability at being absorbing state <span class="math inline">\(\to 1\)</span>), and every improper stationary policy has <span class="math inline">\(\iy\)</span> expected cost for some initial state.</li>
+</ol>
+<p><strong>Theorem</strong>: 1, 2, 3, 5 imply that <span class="math inline">\(x(t)\to x^*\)</span> w.p. 1.</p>
+<p><strong>Lemma</strong>: Let <span class="math inline">\(\{\mathcal F(t)\}\)</span> be an increasing sequence of <span class="math inline">\(\si\)</span>-fields, <span class="math inline">\(\al(t),w(t-1), B(t)\)</span> be <span class="math inline">\(\mathcal F(t)\)</span>-measurable. If</p>
+<ul>
+<li><span class="math inline">\(\E[w(t)|\mathcal F(t)]=0\)</span></li>
+<li><span class="math inline">\(\E[w^2(t)|\mathcal F(t)]\le B(t)\)</span></li>
+<li><span class="math inline">\(\al(t)\in [0,1]\)</span></li>
+<li><span class="math inline">\(\sumz t{\iy} \al(t)=\iy\)</span></li>
+<li><span class="math inline">\(\sumz t{\iy}\al^2(t)\le C\)</span></li>
+<li><span class="math inline">\(\{B(t)\}\)</span> is bounded wp 1</li>
+</ul>
+<p>and <span class="math inline">\(W(t+1)=(1-\al(t))W(t) + \al(t) w(t)\)</span> then <span class="math inline">\(\lim_{t\to \iy}W(t)=0\)</span> wp 1.</p>
+<p><em>Proof</em>. Write out the expression for <span class="math inline">\(W(t)\)</span>. The term <span class="math inline">\(\prodz t{T} (1-\al(t))W^0(t)\to 0\)</span>. The other terms: square and use Chebyshev.</p>
+<p><strong>Theorem</strong>. 1, 2, 3, 6 imply that <span class="math inline">\(x(t)\)</span> is bounded.</p>
+<p><em>Proof</em>. We have <span class="math inline">\(\max |F_i(x)|\le \ga \max(\max_j (|x_j|,G_0))\)</span>.</p>
+<p>Look at the relative fluctuations (wrt the nearest power of <span class="math inline">\(G_0\)</span>). As <span class="math inline">\(M(t)=\max_{\tau\le t}\ve{x(\tau)}_\iy\)</span> gets big it gets more and more difficult for the relative fluctuations (actually, relative to the next smaller <span class="math inline">\(G\ga^{-k}\)</span>, for technical reasons) to be big. To argue this, apply lemma to normalized <span class="math inline">\(\wt w_i(t) = \fc{w_i(t)}{G(t)}\)</span> to show the fluctuations after <span class="math inline">\(t_0\)</span> are go to 0 as <span class="math inline">\(t_0\to \iy\)</span>. (Define <span class="math inline">\(\wt W(t_0;t_0)=0\)</span> and define <span class="math inline">\(\wt W(t;t_0)\)</span> with the recurrence but with <span class="math inline">\(\wt w_i(t)\)</span>.) Now <span class="math inline">\(\wt W_i(t;t_0)\)</span> small means that <span class="math inline">\(x_i(t+1)\)</span> can’t “overcome” the <span class="math inline">\(\ga\)</span> contraction factor.</p>
+<p>Adding in assumption 5: Now show that <span class="math inline">\(\ve{x(t)}_{\iy}\le D_k\)</span> implies that <span class="math inline">\(\ve{x(t)}_{\iy}\le D_{k+1} := \be (1+2\ep)D_k\)</span> at some later <span class="math inline">\(r\)</span>. Proof is similar, except we establish contraction instead of just non-expansion. When bounding <span class="math inline">\(x_i(t+1)\)</span> use assumption 5.</p>
+<p><strong>Question: what is the convergence rate? (Exercise!)</strong> Based on the analysis (proceeding by a geometric sequence), it’s probably linear.</p>
+<h3 id="convergence-of-q-learning">Convergence of Q-learning</h3>
+<p><span class="math inline">\(c_{iu}\)</span> is cost of <span class="math inline">\(u\)</span> at state <span class="math inline">\(i\)</span>.</p>
+<p>Here</p>
+\begin{align}
+T_i(V) &amp;= \min_{u\in U(i)}
+\ba{\E[c_{iu}] + \be\sum_{j\in S} p_{ij}(u)V_j}\\
+F_{iu} (Q) &amp; = \E c_{iu} + \be \sum_{j\in S} p_{ij}(u) \min_{v\in U(j)} Q_{jv}\\
+W_{iu}(t) &amp;= c_{iu} - \E c_{iu} + \min_{v\in U(s(i,u))} Q_{s(i,u),v}(t) - \E[\min_{v\in U(s,(i,u))} Q_{s(i,u),v}(t) | \mathcal F(t)]
+\end{align}
+<p>(Note that implicitly <span class="math inline">\(\min_{v...}Q... = \sum_{j\in S} p_{ij}(u) \min_{v\in U(j)}Q_{jv}\)</span>.)</p>
+<p>(Skip: discounted policies.)</p>
+<p>(cf. stochastic gradient descent?)</p>
 
   </div>
 
