@@ -10,7 +10,7 @@
   <meta name="description" content="Holden Lee's Research Notebook">
   <meta name="author" content="Holden Lee">
     
-  <title>[ALLMR16] Linear Algebraic Structure of Word Senses, with Applications to Polysemy</title>
+  <title>(ALLMR16) Linear Algebraic Structure of Word Senses, with Applications to Polysemy</title>
 
   <!-- Bootstrap core CSS -->
   <link href="../../../../bootstrap/css/bootstrap.min.css" rel="stylesheet">
@@ -70,7 +70,7 @@
 <div class="container">
   <div id="content">
     <div class="page header">
-      <h1>[ALLMR16] Linear Algebraic Structure of Word Senses, with Applications to Polysemy</h1>
+      <h1>(ALLMR16) Linear Algebraic Structure of Word Senses, with Applications to Polysemy</h1>
     </div>
     <div class="info">
       
@@ -99,10 +99,10 @@
 </ol>
 <p>Let <span class="math inline">\(r=\fc{\Pj(w_2)}{\Pj(w_1)}\)</span>. The set of words that appear in both <span class="math inline">\(w_1,w_2\)</span> is much smaller than the set of words that appear with exactly one of them.</p>
 Suppose each <span class="math inline">\(\chi\)</span> appears with only one <span class="math inline">\(w_i\)</span>. Let <span class="math inline">\(T_i\)</span> be the <span class="math inline">\(\chi\)</span> appearing with <span class="math inline">\(w_i\)</span>. Then
-\begin{align}
+<span class="math display">\[\begin{align}
 \chi&amp;\in T_1\implies &amp;PMI(\chi,w) &amp;= PMI(\chi,w_1) - \ub{\log(1+r)}{\ka_1}\\
 \chi&amp;\in T_2\implies &amp;PMI(\chi,w) &amp;= PMI(\chi,w_2) - \ub{\log(1+\rc r)}{\ka_2}.
-\end{align}
+\end{align}\]</span>
 <p>Identify words and their context vectors.</p>
 <p><em>Claim</em>: under the assumptions</p>
 <ol type="1">

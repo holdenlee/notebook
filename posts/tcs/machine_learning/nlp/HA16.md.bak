@@ -1,0 +1,22 @@
+---
+title: \[HA16\] Unsupervised Learning of Word-Sequence Representations from Scratch via Convolutional Tensor Decomposition
+published: 2016-08-02
+modified: 2016-08-02
+tags: nlp, word embeddings
+showTOC: True
+---
+
+See also [HA15] Convolutional Dictionary Learning through Tensor Factorization.
+
+1.  Use PCA to reduce dimensionality of 1-hot encodings to $k$ dimensions. (Wouldn't it be better to use word embeddings?)
+2.  For each dimension and each sentence, obtain a vector $x$. Train on this set. Minimize
+	$$\min_{f_i,w_i:\ve{f_i}=1} \ve{x-\sum_{i\in [L]} f_i * w_i}^2.
+	$$
+	(How to avoid SGD or calculating the sum of these? Some tensor trickery?) $f$'s are filters, $w$'s are activation maps.
+
+Q: Why are we considering each dimension separately? Wouldn't it make more sense to consider them together, and try to write
+$$ X = \sum_{i\in [L]} F_i*w_i$$
+where $X$ is a matrix corresponding to a sentence, and $w_i$ is in the row direction. In [HA16]'s way of doing it, you're learning how a generic subject/theme/atom modulates throughout the space (sentence), not how combinations of subjects modulate. Is this what you want? This does need MUCH fewer atoms though, else you can expect $k$ times more.
+
+(T/F? Tensor algorithms are fragile in the sense that they depend on the model being exactly the way it is. Ex. tensor algorithm for NN---if you change the NN a bit it may fail.)
+	

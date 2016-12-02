@@ -86,6 +86,7 @@
   <!--/div-->
 
   <div class="toc"> <ul>
+ <li><a href="#at-a-glance">At a glance</a></li>
  <li><a href="#references">References</a></li>
  <li><a href="#section">3</a></li>
  <li><a href="#dynamic-programming">4 Dynamic programming</a></li>
@@ -124,6 +125,7 @@
  <li><a href="#full-vs.sample-backups">8.5 Full vs. sample backups</a></li>
  <li><a href="#trajectory-sampling">8.6 Trajectory sampling</a></li>
  <li><a href="#heuristic-search">8.7 Heuristic search</a></li>
+ <li><a href="#monte-carlo-tree-search">8.8 Monte Carlo Tree Search</a></li>
  </ul></li>
  <li><a href="#generalization-and-function-approximation-v1">8 Generalization and function approximation (v1)</a><ul>
  <li><a href="#value-prediction-with-function-approximation">8.1 Value Prediction with Function Approximation</a></li>
@@ -143,7 +145,55 @@
  </ul> </div>
 
   <div class="blog-main">
-    <h2 id="references">References</h2>
+    <h2 id="at-a-glance">At a glance</h2>
+<table style="width:30%;">
+<colgroup>
+<col style="width: 5%" />
+<col style="width: 5%" />
+<col style="width: 5%" />
+<col style="width: 5%" />
+<col style="width: 5%" />
+<col style="width: 5%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Type</th>
+<th>Evaluate Q, V knowing dynamics</th>
+<th>Not knowing dynamics (online)</th>
+<th>On-policy control</th>
+<th>Off-policy control</th>
+<th>Learning policy</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Discrete</td>
+<td>Q-iteration</td>
+<td>TD(<span class="math inline">\(\la\)</span>)</td>
+<td>Sarsa</td>
+<td>Q-learning</td>
+<td></td>
+</tr>
+<tr class="even">
+<td>Continuous</td>
+<td>fitted Q-iteration</td>
+<td>gradient TD(<span class="math inline">\(\la\)</span>)</td>
+<td>Gradient Sarsa</td>
+<td>Gradient Q-learning</td>
+<td>Policy gradient</td>
+</tr>
+</tbody>
+</table>
+<p>All discrete methods have convergence guarantees.</p>
+<p>For continuous methods: (I think you can replace linear function class by “local min for function class” everywhere here.)</p>
+<ul>
+<li>Fitted Q-iteration is provable for linear function classes.</li>
+<li>Gradient TD(<span class="math inline">\(\la\)</span>) has constant-factor guarantee for linear function classes.</li>
+<li>Gradient Sarsa is provable (how?) for linear function classes.</li>
+<li>Gradient Q-learning has no guarantees. It can diverge.</li>
+<li><a href="policy_gradient.html">Policy gradient</a> converges to local min given a compatibility between parametrizations.</li>
+</ul>
+<h2 id="references">References</h2>
 <ul>
 <li>Barton, Sutto.</li>
 <li>Deep RL tutorial, ICML 2016.</li>
@@ -152,12 +202,12 @@
 </ul>
 <h2 id="section">3</h2>
 <p>Bellman optimality equations</p>
-\begin{align}
+<span class="math display">\[\begin{align}
 v_*(s) &amp;= \max_\pi v_\pi(s)\\
 q_*(s,a) &amp;= \max_\pi q_\pi(s,a)\\
 v_*(s)&amp;= \max_{a\in \mathcal A(s)} \sum_{s'} p(s'|s,a) [r(s,a,s') + \ga v_*(s')\\
 q_*(s,a) &amp;= \sum_{s'} p(s'|s,a) [r(s,a,s') +\ga \max_{a'} q_*(s',a')].
-\end{align}
+\end{align}\]</span>
 <p>3 assumptions that are rarely all true in practice:</p>
 <ol type="1">
 <li>Know dynamics of environment</li>
@@ -242,20 +292,20 @@ v_{k+1}(s) = \sum_a \pi(a|s) \sum_{s'} p(s'|s,a) [r(s,a,s') + \ga v_k(s')].
 <li><span class="math inline">\(\pi\)</span> target policy.</li>
 </ul>
 Require ratio <span class="math inline">\(\pi/\mu\)</span> not be too large. Weight episodes by this ratio.
-\begin{align}
+<span class="math display">\[\begin{align}
 V(s) &amp;= \fc{\sumo i{n_s} \fc{p_i(s)}{p_i'(s)}G_i(s)}{\sumo i{n_s} \fc{p_i(s)}{p_i'(s)}}\\
 \fc{p_i(S_t)}{p_i'(S_t)}&amp;=\prod_{k=t}^{T_i(S_t)-1} \fc{\pi(A_k|S_k)}{\mu(A_k|S_k)}.
-\end{align}
+\end{align}\]</span>
 <h3 id="off-policy-mc-control">5.6 Off-policy MC control</h3>
 <p>Ex. estimation policy may be deterministic while behavior policy samples all possible actions.</p>
 <p>To do this, after generating an episode, look at the last time where <span class="math inline">\(A_\tau \ne \pi(S_\tau)\)</span>, and update <span class="math inline">\(Q\)</span> using pairs <span class="math inline">\((s,a)\)</span> appearing after that time.</p>
 <p>Note: only learns from tails of episodes. Learning is slow if nongreedy actions are frequent.</p>
 <h3 id="incremental-implementation">5.7 Incremental implementation</h3>
 For <span class="math inline">\(V_n=\fc{\sumo k{n-1}W_kG_k}{\sumo k{n-1}W_k}\)</span> is
-\begin{align}
+<span class="math display">\[\begin{align}
 V_{n+1} &amp;=V_n+\fc{W_n}{C_n} (G_n-V_n)\\
 C_{n+1} &amp;=C_n+W_{n+1}.
-\end{align}
+\end{align}\]</span>
 <p>Advantages of MC:</p>
 <ol type="1">
 <li>learn optimal behavior directly from interaction without model</li>
@@ -313,11 +363,11 @@ Q(S_t,A_t)\leftarrow Q(S_t,A_t) + \al [R_{t+1} + \ga \max_a Q(S_{t+1},a) - Q(S_t
 <h3 id="n-step-td-prediction">7.1 n-step TD prediction</h3>
 <p>Perform backup based on an intermediate number of rewards. (MC depends on entire sequence until end of episode, TD depends on 1 next reward.)</p>
 Replace the 1-step target by <span class="math inline">\(n\)</span>-step target (corrected <span class="math inline">\(n\)</span>-step truncated return).
-\begin{align}
+<span class="math display">\[\begin{align}
 G_t^{(1)} &amp;= R_{t+1} + \ga V(S_{t+1})\\
 G_t^{(n)} &amp;= \sumo i{n-1} \ga^{i-1} R_{t+i} + \ga^n V(S_{t+n})\\
 \De V_t(S_t) &amp;= \al [G_t^{(n)} - V_t(S_t)].
-\end{align}
+\end{align}\]</span>
 <p>MC methods are infinite-step returns.</p>
 <p>2 ways to update.</p>
 <ul>
@@ -357,14 +407,14 @@ Z_t(s) = \begin{cases}
 <p>To maintain equivalence in online case, <span class="math inline">\(\de_t= R_{t+1} + \ga V_t(S_{t+1})-V_{t-1}(S_t)\)</span>, <span class="math inline">\(R_t^{(n)} = \sumo in \ga^{i-1}R_{t+i} + \ga^n V_{t+n-1}(S_{t+n})\)</span>.</p>
 <h2 id="sarsala">7.5 Sarsa(<span class="math inline">\(\la\)</span>)</h2>
 How to use eligibility traces for control? Learn <span class="math inline">\(q\)</span> rather than <span class="math inline">\(V\)</span>. Keep a trace for each <span class="math inline">\((s,a)\)</span>.
-\begin{align}
+<span class="math display">\[\begin{align}
 Q_{t+1}(s,a) &amp;= Q_t(s,a) + \al \de_t Z_t(s,a)\\
 \de_t &amp;= R_{t+1} + \ga Q_t(S_{t+1}, A_{t+1}) - Q_t(S_t,A_t)\\
 Z_t(s,a) &amp;= \begin{cases}
 \ga \la Z_{t-1} (s,a) + 1, &amp;\text{if }s=S_t, a=A_t\\
 \ga \la Z_{t-1} (s,a), &amp;\text{otherwise.}
 \end{cases}
-\end{align}
+\end{align}\]</span>
 <h3 id="qla">7.6 <span class="math inline">\(Q(\la)\)</span></h3>
 <h4 id="watkins-qla">Watkin’s <span class="math inline">\(Q(\la)\)</span></h4>
 <p>We can use subsequent experience only as long as the greedy policy is being followed! Look ahead as far as the next exploratory action.</p>
@@ -486,6 +536,15 @@ Z_t(s,a) &amp;= \begin{cases}
 <p>When we have a perfect model and imperfect <span class="math inline">\(Q\)</span>, deeper search usually yields better policies.</p>
 <p>Grow the search tree selectively. How to use this idea for backups?</p>
 <p>Focus on the states and actions that might immediately follow the current state.</p>
+<h3 id="monte-carlo-tree-search">8.8 Monte Carlo Tree Search</h3>
+<p>Start with an single-node tree at the start state. Each iteration:</p>
+<ol type="1">
+<li>Selection: select a node in the current tree, e.g. by UCB.</li>
+<li>Expansion: from the node by adding nodes as children.</li>
+<li>Simulation: Rollout a complete game from a leaf node, according to rollout policy.</li>
+<li>Backpropagation: Result is backed up for nodes in the tree visited during the iteration.</li>
+</ol>
+<p>Question: how to deal with probabilistic choices by opponent? How to backprop?</p>
 <h2 id="generalization-and-function-approximation-v1">8 Generalization and function approximation (v1)</h2>
 <h3 id="value-prediction-with-function-approximation">8.1 Value Prediction with Function Approximation</h3>
 <p><span class="math display">\[
@@ -494,17 +553,17 @@ MSE(\te_t) = \sum_{s\in S} P(s) [V^{\pi}-V_t(s)]^2.
 <p>If we wish to minimize error over a certain distribution of states, then it makes sense to train the function approximator with examples from that same distribution. let us assume that the distribution of states at which backups are done and the distribution that weights errors, <span class="math inline">\(P\)</span>, are the same.</p>
 <p>Complex function approximators may seek to converge instead to a local optimum.</p>
 <h3 id="gradient-descent-methods-in-value-prediction">8.2 Gradient-descent methods (in value prediction)</h3>
-\begin{align}
+<span class="math display">\[\begin{align}
 \te_{t+1} &amp;= \te_t - \rc 2 \al \nb_{\te_t} (V^\pi(s_t) - V_t(s_t))^2\\
 &amp;=\te_t + \al\ba{V^\pi(s_t) - V_t(s_t)} \nb_{\te_t} V_t(s_t).
-\end{align}
+\end{align}\]</span>
 <p>In actuality we get an estimate <span class="math inline">\(v_t\)</span> of <span class="math inline">\(V^\pi(s_t)\)</span>. Ex. <span class="math inline">\(v_t=R_t^\la\)</span> is the <span class="math inline">\(n\)</span>-step TD return (bootstrapping). (Note this is a biased estimator.)</p>
 Backward view (check this):
-\begin{align}
+<span class="math display">\[\begin{align}
 \te_{t+1} &amp;=\te_t + \al \de_t e_t\\
 \de_t &amp;= r_{t+1} + \ga V_t(s_{t+1}) - V_t(s_t)\\
 e_t &amp;= \ga \la e_{t-1} + \nb_{\te_t} V_t(s_t).
-\end{align}
+\end{align}\]</span>
 <h3 id="linear-methods">8.3 Linear methods</h3>
 <p><span class="math display">\[V_t(s) = \te_t^T\phi_s.\]</span></p>
 <p>Here <span class="math inline">\(\nb_{\te_t} V_t(s) = \phi_s\)</span>. The local optimum is the global optimum.</p>
@@ -519,12 +578,12 @@ e_t &amp;= \ga \la e_{t-1} + \nb_{\te_t} V_t(s_t).
 <h4 id="kanerva-coding">8.3.4 Kanerva coding</h4>
 <p>Focus on the complexity of the target function as separate and distinct from the size and dimensionality of the state space. Given a certain level of complexity, we then seek to be able to accurately approximate any target function of that complexity or less. Choose binary features that correspond to particular prototype states.</p>
 <h3 id="control-with-function-approximation">8.4 Control with function approximation</h3>
-\begin{align}
+<span class="math display">\[\begin{align}
 \te_{t+1} &amp;= \te_t + \al\ba{v_t - Q_{\te_t}(s_t,a_t)} \nb_{\te_t}Q_{\te_t}(s_t,a_t)\\
 \te_{t+1} &amp;=\te_t + \al \de_t e_t\\
 \de_t &amp;= r_{t+1} + \ga Q_t(s_{t+1},a_{t+1}) - Q_t(s_t,a_t)\\
 e_t &amp;= \ga \la e_{t-1} + \nb_{\te_t} Q_t(s_t,a_t).
-\end{align}
+\end{align}\]</span>
 <p>Use accumulating eligibility traces.</p>
 <p>Ex. SARSA on mountain car.</p>
 <h3 id="off-policy-bootstrapping">8.5 Off-policy bootstrapping</h3>

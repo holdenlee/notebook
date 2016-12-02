@@ -1,5 +1,5 @@
 ---
-title: [A16] Provable algorithms for inference in topic models
+title: (A16) Provable algorithms for inference in topic models
 published: 2016-04-04
 modified: 2016-04-04
 tags: topic models

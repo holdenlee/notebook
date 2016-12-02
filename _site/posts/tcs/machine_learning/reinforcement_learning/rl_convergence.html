@@ -102,16 +102,16 @@
 <p>Recall: Mixing time <span class="math inline">\(\tau_\ep = \min\set{t}{\max_{P_0} \ve{P_t - P_{\text{eq}}}\le \ep} \le \fc{\ln \pf{N}{\ep}}{\de}\)</span>, <span class="math inline">\(\de=1-\max_{k\ge 2}|\la_k|\)</span>.</p>
 <h2 id="policy-estimation">Policy estimation</h2>
 Policy satisfies
-\begin{align}
+<span class="math display">\[\begin{align}
 v_\pi  &amp;= d(P_\pi^T R_\pi) + \ga P_\pi v\\
 \iff 
 v_\pi &amp;= (I-\ga P_\pi)^{-1} d(P_\pi^T R_\pi).
-\end{align}
+\end{align}\]</span>
 Then
-\begin{align}
+<span class="math display">\[\begin{align}
 v_{k+1} &amp;= d(P_\pi^T R_\pi) + \ga P_\pi v_k\\
 v_{k+1} - v_\pi &amp;= \ga P_\pi (v_k-v_\pi).
-\end{align}
+\end{align}\]</span>
 <p>So convergence happens at rate of <span class="math inline">\(\ga \ve{P_\pi}_2\)</span> to <span class="math inline">\(v_\pi\)</span>.</p>
 <p>For nondiscounted case, we get <span class="math display">\[
 v_t = \rc t[d + P_\pi d+ \cdots + P_\pi^{t-1} d].
@@ -125,20 +125,20 @@ v_t = \rc t[d + P_\pi d+ \cdots + P_\pi^{t-1} d].
 <li><span class="math inline">\(q_{\pi,\pi'} = q_\pi(s,\pi'(s))\)</span>.</li>
 </ul>
 Write the Bellman equation as (<span class="math inline">\(d(A)\)</span> is the diagonal of <span class="math inline">\(A\)</span>)
-\begin{align}
+<span class="math display">\[\begin{align}
 v_\pi &amp;= d(P_\pi^TR) + \ga P_\pi^T v_\pi\\
 q_{\pi,\pi'} &amp;= d(P_{\pi'}^TR_{\pi'}) + \ga P_{\pi'}^T v_\pi\\
 v_\pi &amp;=(I-\ga P_\pi^T)^{-1} d(P_{\pi'}^T, R_{\pi'})\\
 q_{\pi,\pi'} &amp;= (1-\ga P_{\pi'}^T)^{-1} d(P_{\pi'}^TR_{\pi'})
-\end{align}
+\end{align}\]</span>
 We have
-\begin{align}
+<span class="math display">\[\begin{align}
 q_{\pi,\pi'} &amp; \ge q_{\pi,\pi} = v_\pi\\
 \iff 
 d(P_{\pi'}^TR_{\pi'}) + \ga P_{\pi'}^T v_\pi &amp; \ge v_\pi \\
 \iff
 v_{\pi'} = (I-\ga P_{\pi'}^T)^{-1} d(P_{\pi'}^TR) &amp; \ge (I-\ga P_{\pi'}^T)^{-1} (I-\ga P_{\pi'}^T) v_\pi = v_\pi.
-\end{align}
+\end{align}\]</span>
 <!--\ge d(P_\pi^T R_\pi) + P_\pi^T v_\pi-->
 <p>(Note <span class="math inline">\(I-\ga P_{\pi'}^T\)</span> is a geometric series so has positive entries.)</p>
 <!-- analysis for $q$-values. How improve when $\ga$ increases to 1?-->
@@ -146,10 +146,10 @@ v_{\pi'} = (I-\ga P_{\pi'}^T)^{-1} d(P_{\pi'}^TR) &amp; \ge (I-\ga P_{\pi'}^T)^{
 <ol type="1">
 <li><p>Value iteration: <span class="math inline">\(\ve{v^{n+1}-v^n}\le \fc{\ep(1-\la)}{2\la}\implies \ve{v^{n+1}-v_\la^*}&lt;\eph\)</span>. (161)</p>
 Proof: Let <span class="math inline">\(v^{n+1}\)</span> be the vale if you follow <span class="math inline">\(\pi^n\)</span> after choosing the best <span class="math inline">\(a\)</span> and <span class="math inline">\(v^{*n+1}\)</span> be the value if you follow <span class="math inline">\(\pi^{n+1}\)</span>. Then
-\begin{align}
+<span class="math display">\[\begin{align}
 \ve{v^{*n+1} - v^{n+1}} &amp;\le \ve{Lv^{*n+1} - Lv^{n+1}} + \ve{Lv^{n+1} - v^{n+1}}\\
 \implies \ve{v^{*n+1} - v^{n+1}} &amp;\le \fc{\la }{1-\la} \ve{v^{n+1}-v^n}
-\end{align}
+\end{align}\]</span>
 Geometric series gives <span class="math display">\[\ve{v^{n+1} - v_\la^*} \le \fc{\la}{1-\la} \ve{v^{n+1} - v^n}.\]</span></li>
 <li><p>Policy iteration (180)</p></li>
 </ol>
@@ -205,12 +205,12 @@ v_{*'}^{\ga'} = (I-\ga'P_*')^{-1}r_*, v_{*'}^{\ga}, v_\pi^\ga, v_\pi^{\ga'}.
 <h3 id="convergence-of-q-learning">Convergence of Q-learning</h3>
 <p><span class="math inline">\(c_{iu}\)</span> is cost of <span class="math inline">\(u\)</span> at state <span class="math inline">\(i\)</span>.</p>
 <p>Here</p>
-\begin{align}
+<span class="math display">\[\begin{align}
 T_i(V) &amp;= \min_{u\in U(i)}
 \ba{\E[c_{iu}] + \be\sum_{j\in S} p_{ij}(u)V_j}\\
 F_{iu} (Q) &amp; = \E c_{iu} + \be \sum_{j\in S} p_{ij}(u) \min_{v\in U(j)} Q_{jv}\\
 W_{iu}(t) &amp;= c_{iu} - \E c_{iu} + \min_{v\in U(s(i,u))} Q_{s(i,u),v}(t) - \E[\min_{v\in U(s,(i,u))} Q_{s(i,u),v}(t) | \mathcal F(t)]
-\end{align}
+\end{align}\]</span>
 <p>(Note that implicitly <span class="math inline">\(\min_{v...}Q... = \sum_{j\in S} p_{ij}(u) \min_{v\in U(j)}Q_{jv}\)</span>.)</p>
 <p>(Skip: discounted policies.)</p>
 <p>(cf. stochastic gradient descent?)</p>

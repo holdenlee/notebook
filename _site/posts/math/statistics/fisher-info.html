@@ -97,10 +97,10 @@
   <div class="blog-main">
     <h2 id="definitions">Definitions</h2>
 Define the <strong>score</strong> and <strong>Fisher information</strong> by
-\begin{align}
+<span class="math display">\[\begin{align}
 s(X;\te)&amp;=\pd{\ln f}{\te}\\
 I(\te)&amp;=\Var_\te(s(X;\te))
-\end{align}
+\end{align}\]</span>
 <p>(This generalizes immediately to the multivariate case; for simplicity we consider the univariate case.)</p>
 <p>The expecation of score is 0: <span class="math display">\[\E s=\int_{-\iy}^{\iy} s(X;\te) f\,dx=\int_{-\iy}^{\iy} \fc{\ln f}{f}f\dx=(\int_{-\iy}^{\iy}f\,dx)_{\te}=0.\]</span> Thus <span class="math display">\[I(\te) = \Var(s(X;\te)) = \E [(\ln f)_\te^2] = -\E((\ln f)_{\te\te}).\]</span></p>
 <h2 id="intuition">Intuition</h2>

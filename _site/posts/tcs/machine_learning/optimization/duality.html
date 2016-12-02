@@ -107,10 +107,10 @@
     <h2 id="summary">Summary</h2>
 <h3 id="duality">Duality</h3>
 These problems are dual.
-\begin{align}
+<span class="math display">\[\begin{align}
 \min_{f_i\le 0, Ax=b} f &amp; \lra \max_{\la \ge 0,\nu} \ub{\min_x \ub{f+\la^T\vec{f} + \nu^T (Ax-b)}{\cal L(x,\la,\nu)}}{g(\la,\nu)}\\
 \max_{f_i\ge 0, Ax=b} f &amp; \lra \min_{\la \ge 0,\nu} \ub{\max_x \ub{f+\la^T\vec{f} - \nu^T (Ax-b)}{\cal L(x,\la,\nu)}}{g(\la,\nu)}
-\end{align}
+\end{align}\]</span>
 <p>In (1) the <span class="math inline">\(f_i\)</span> are convex; in (2) they are concave. In (1), we have dual<span class="math inline">\(\le\)</span>primal: <span class="math display">\[
 \min_{f_i\le 0, Ax=b} f \ge \max_{\la \ge 0,\nu} \ub{\min_x \ub{f+\la^T\vec{f} + \nu^T (Ax-b)}{\cal L(x,\la,\nu)}}{g(\la,\nu)}
 \]</span> Note: <span class="math inline">\(f^*(y)=\sup_x y^Tx - f(x)\)</span> is the conjugate or <strong>Legendre transform</strong>. It is convex, and for convex functions, the double conjugate is the original function.</p>
@@ -133,32 +133,32 @@ If $f_i(x)>0$, then it would have been strictly better for P1 to choose $\la=0$.
 <h3 id="examples">Examples</h3>
 <ol type="1">
 <li>Linear programming (equality when there exists a feasible solution)
-\begin{align}
+<span class="math display">\[\begin{align}
 \min_{Ax=b,x\ge 0} c^Tx &amp;= \max_{\la\ge 0, A^T\nu\ge -c} -b^T\nu\\
 \min_{Ax\le b} c^Tx &amp;= \max_{\la\ge 0, A^T\nu=-c} -b^T\nu.
-\end{align}</li>
+\end{align}\]</span></li>
 </ol>
 <h4 id="dual-functions">Dual functions</h4>
 <p>(Check this.)</p>
 <table>
 <thead>
 <tr class="header">
-<th style="text-align: left;">Function</th>
-<th style="text-align: left;">Dual</th>
+<th>Function</th>
+<th>Dual</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td style="text-align: left;"><span class="math inline">\(u\ln u\)</span></td>
-<td style="text-align: left;"><span class="math inline">\(e^{v-1}\)</span></td>
+<td><span class="math inline">\(u\ln u\)</span></td>
+<td><span class="math inline">\(e^{v-1}\)</span></td>
 </tr>
 <tr class="even">
-<td style="text-align: left;"><span class="math inline">\(\ve{x}\)</span></td>
-<td style="text-align: left;"><span class="math inline">\(\begin{cases}0,&amp;\ve{y}_*\le 1\\ \iy,&amp;\text{else}\end{cases}\)</span></td>
+<td><span class="math inline">\(\ve{x}\)</span></td>
+<td><span class="math inline">\(\begin{cases}0,&amp;\ve{y}_*\le 1\\ \iy,&amp;\text{else}\end{cases}\)</span></td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;"><span class="math inline">\(\ln \det(X^{-1})\)</span></td>
-<td style="text-align: left;"><span class="math inline">\(\ln \det(-Y)^{-1}-n\)</span></td>
+<td><span class="math inline">\(\ln \det(X^{-1})\)</span></td>
+<td><span class="math inline">\(\ln \det(-Y)^{-1}-n\)</span></td>
 </tr>
 </tbody>
 </table>
@@ -171,15 +171,15 @@ g(\la,\nu) \le f(x^*) + \sum \la_i \ub{f_i(x^*)}{\le 0} + \nu^T \ub{(Ax^*-b)}{=0
 <h3 id="strong-duality">Strong duality</h3>
 <ol type="1">
 <li>Express in terms of graphs. Let
-\begin{align}
+<span class="math display">\[\begin{align}
 \mathcal G &amp;= \{(\vec f, \vec h, f)\}\\
 \mathcal A &amp;= \mathcal G = (\R_+^m \times \{0\} \times \R_+).
-\end{align}
+\end{align}\]</span>
 Then
-\begin{align}
+<span class="math display">\[\begin{align}
 p^* &amp;= \inf_{(u,v,t)\in \mathcal G, u\le 0, v=0} = \inf_{(0,0,t)\in \mathcal A} t\\
 g(\la,\nu) &amp;= \inf_{(u,v,t)\in \mathcal G\text{ (or }\mathcal A)} \an{(\la,\nu, 1),(u,v,t)}.
-\end{align}
+\end{align}\]</span>
 Each value of <span class="math inline">\(g(\la,\nu)\)</span> gives the <span class="math inline">\(t\)</span>-intercept of a nonverticl supporting hyperplane <span class="math inline">\(\an{(\la,\nu,1), (u,v,t)}\ge g(\la,\nu)\)</span>.</li>
 <li>Weak duality (again). Set <span class="math inline">\((\la,\nu)=(0,0)\)</span> to get <span class="math inline">\(g(0,0) = \inf_{(u,v,t)\in \mathcal A} t \le \inf_{(0,0,t)\in \mathcal A} = p^*\)</span>.</li>
 <li><!--We've interpreted $p^*$ as an "extreme" point of $\mathcal A$. Now we reinterpret the dual optimum.-->
@@ -191,11 +191,11 @@ The idea is that there exists a supporting hyperplane tangent at <span class="ma
 <h3 id="intuition">Intuition</h3>
 <p>Think of the dual as (1) relaxing the strict conditions that <span class="math inline">\(f_i\le 0\)</span> and (2) being a game. If you fail to meet the constraint <span class="math inline">\(f_i\le 0\)</span>, you are penalized by cost <span class="math inline">\(\la_if_i\)</span> (and you gain money from constraints that are met). The adversary first sets “shadow prices” <span class="math inline">\(\la_i,\nu_i\)</span>, the cost for violating the constraints, and then you choose <span class="math inline">\(x^*\)</span>. Duality says you can’t do better in this game. (You can do just as well by choosing your original <span class="math inline">\(x^*\)</span>; this is weak duality.)</p>
 Let <span class="math inline">\(p^*(u,v)\)</span> be the optima under constraints <span class="math inline">\(f_i\le u_i,h_i=v_i\)</span>. The sensitivity to the constraints are given by the dual optima. We have the following (the derivative equations hold if <span class="math inline">\(p^*\)</span> is differentiable).<a href="#fn1" class="footnoteRef" id="fnref1"><sup>1</sup></a>
-\begin{align}
+<span class="math display">\[\begin{align}
 p^*(u,v) &amp;\ge p^*(0,0)-\la^{*T} u - \nu^{*T} v\\
 \pd{p^*}{v_i} &amp;= -\nu_i\\
 \pd{p^*}{u_i} &amp;= -\la_i.
-\end{align}
+\end{align}\]</span>
 <h2 id="applications">Applications</h2>
 <p>von Neumann minimax theorem. <span class="math display">\[
 \min_{1^T p = 1,p\ge 0} \max_{1^T q =1,q\ge 0} p^TAq = \max_q\min_p...

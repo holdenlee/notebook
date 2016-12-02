@@ -10,7 +10,7 @@
   <meta name="description" content="Holden Lee's Research Notebook">
   <meta name="author" content="Holden Lee">
     
-  <title>[AO15] Linear coupling</title>
+  <title>(AO15) Linear coupling</title>
 
   <!-- Bootstrap core CSS -->
   <link href="../../../../bootstrap/css/bootstrap.min.css" rel="stylesheet">
@@ -70,7 +70,7 @@
 <div class="container">
   <div id="content">
     <div class="page header">
-      <h1>[AO15] Linear coupling</h1>
+      <h1>(AO15) Linear coupling</h1>
     </div>
     <div class="info">
       
@@ -107,10 +107,10 @@
 <p>Assume <span class="math inline">\(f\)</span> is <span class="math inline">\(L\)</span>-smooth.</p>
 <ul>
 <li>Update:
-\begin{align}
+<span class="math display">\[\begin{align}
 x_{k+1} &amp;= \amin_y \ba{\fc{L}{2} \ve{y-x_k}^2 + \an{\nb f(x),y-x_k}}\\
 &amp;= x_k - \rc{L}\nb f(x_k)&amp;\text{for $\ell_2$ norm}.
-\end{align}</li>
+\end{align}\]</span></li>
 <li><strong>Lemma</strong>: <span class="math display">\[f(x')\le f(x)  - \fc{\ve{\nb f(x)}_*^2}{2L}.\]</span></li>
 <li>Guarantee: Let <span class="math inline">\(R=\max_{x:f(x)\le f(x_0)}\ve{x-x^*}_*\)</span>. <span class="math display">\[f(x_T)-f(x^*) \le O\pf{LR^2}{T}.\]</span> Obtain an <span class="math inline">\(\ep\)</span>-approximation in <span class="math inline">\(\fc{LR^2}{\ep}\)</span> steps.</li>
 </ul>
@@ -122,48 +122,48 @@ x_{k+1} &amp;= \amin_y \ba{\fc{L}{2} \ve{y-x_k}^2 + \an{\nb f(x),y-x_k}}\\
 <li>Now let <span class="math inline">\(D_k = f(x_k)-f(x^*)\)</span>. Measure progress by <span class="math inline">\(\rc{D_k}\)</span> whose differences telescope.</li>
 </ul>
 Let <span class="math inline">\(D_k = f(x_k) - f(x^*)\)</span>.
-\begin{align}
+<span class="math display">\[\begin{align}
 \ub{f(x_k)-f(x^*)}{D_k}&amp;\le \an{\nb f(x_k),x_k-x^*} \le \ve{\nb f(x_k)} \ve{x_k-x^*}\le R \ve{\nb f(x_k)}_*\\
 D_k - D_{k+1} &amp;\ge \rc{2L}\ve{\nb f(x_k)}_*^2\\
 D_k^2 &amp; \le 2LR^2(D_k-D_{k+1})\\
 \rc{D_{k+1}}-\rc{D_k} &amp;\ge \rc{2LR^2}\fc{D_k}{D_{k+1}} \ge \rc{2LR^2}\\
 \implies \rc{D_T}&amp;\ge T.
-\end{align}
+\end{align}\]</span>
 <h2 id="mirror-descent">Mirror descent</h2>
 <strong>Definition</strong>: <span class="math inline">\(w(x):Q\to \R\)</span> (<span class="math inline">\(Q\)</span> convex) is a <strong>distance generating function</strong> if the following holds. Then define <strong>Bregman divergence</strong> as follows. For all <span class="math inline">\(x\in Q\bs \pl Q, y\in Q\)</span>,
-\begin{align}
+<span class="math display">\[\begin{align}
 w(y) &amp;\ge w(x) + \an{\nb w(x),y-x} + \rc2\ve{x-y}^2\\
 V_x(y) &amp; = w(y) - \an{\nb w(x),y-x} - w(x).
-\end{align}
+\end{align}\]</span>
 <p>Note we can replace the gradient by a subgradient below.</p>
 <ul>
 <li>Update:
-\begin{align}
+<span class="math display">\[\begin{align}
  \wt x &amp;= \text{Mirr}(\al\nb f(x))\\
  \text{where }\text{Mirr}_x(\xi) &amp;= \amin_{y\in Q} V_x(y)+\an{\xi,y-x}.
- \end{align}</li>
+ \end{align}\]</span></li>
 <li><strong>Lemma</strong>: For all <span class="math inline">\(u\)</span>,
-\begin{align}
+<span class="math display">\[\begin{align}
 \al (f(x_k)-f(u))
 &amp;\le \al\an{\nb f(x_k),x_k-u}\\
 &amp;\le \fc{\al^2}2\ve{\nb f(x_k)}^2 +V_{x_k}(u) - V_{x_{k+1}}(u)\\
 &amp;=  \fc{\al^2}2\ve{\nb f(x_k)}^2 +\rc 2 \ve{z_k-u}^2 -\rc2 \ve{z_{k+1}-u}^2 &amp; \text{for }\ell^2.
-\end{align}
+\end{align}\]</span>
 Generalization:
-\begin{align}
+<span class="math display">\[\begin{align}
 \al (f(x_k)-f(u))
 &amp;\le \al\an{\nb f(x_k),x_k-u}\\
 &amp;\le \fc{\al^2}2\ve{\nb f(x_k)}^2 +V_{x_k}(u) - V_{x_{k+1}}(u)
-\end{align}</li>
+\end{align}\]</span></li>
 <li>Guarantee: When <span class="math inline">\(V_{x_0}(x^*)\le \Te, \ve{\nb f(x)}_*\le \rh\)</span> everywhere, <span class="math display">\[ f(\ol x) - f(x^*) \le \fc{\sqrt{2\Te}\rh}{\sqrt T}.\]</span> Obtain an <span class="math inline">\(\ep\)</span>-approximation in <span class="math inline">\(\fc{2\Te\rh^2}{\ep^2}\)</span> steps.</li>
 </ul>
 <h3 id="examples">Examples</h3>
-\begin{align}
+<span class="math display">\[\begin{align}
 w(y) &amp;= \rc2 \ve{y}_2^2\\
 V_x(y) &amp;= \rc2\ve{x-y}_2^2\\
 w(y) &amp;= \sum_i y_i \ln y_i &amp;\text{w.r.t. }\ell_1\text{ over }\De\\
 V_x(y) &amp;= \sum_{y_i} \ln \pf{y_i}{x_i} \ge \prc{x-y}_1^2.
-\end{align}
+\end{align}\]</span>
 <h3 id="intuition">Intuition</h3>
 <p>Note for <span class="math inline">\(\ved_2\)</span> MD is the same as GD except for a factor <span class="math inline">\(\al\)</span>.</p>
 <p>Note 3 formulations of mirror descent.</p>
@@ -174,21 +174,21 @@ V_x(y) &amp;= \sum_{y_i} \ln \pf{y_i}{x_i} \ge \prc{x-y}_1^2.
 </ol>
 <p>(1)<span class="math inline">\(\iff\)</span>(2): The min is when the gradient is 0.</p>
 (2)<span class="math inline">\(\iff\)</span>(3): The min is when the gradient is 0. Write this out for <span class="math inline">\(k,k-1\)</span>and subtract.
-\begin{align}
+<span class="math display">\[\begin{align}
 \nb w(x_{k+1}) + \al \sum_{i=0}^k \nb f(x_i) &amp;=0\\
 \nb w(x_k) + \al \sum_{i=0}^{k-1} \nb f(x_i) &amp;=0\\
 \nb w(x_{k+1})-w(x_k) + \nb f(x_k)&amp;=0
-\end{align}
+\end{align}\]</span>
 <h2 id="coupling">Coupling</h2>
 <h3 id="unconstrained-version-qr">Unconstrained version (Q=R)</h3>
 <ul>
 <li>Update:
-\begin{align}
+<span class="math display">\[\begin{align}
 \label{eq:weighted}
 x_{k+1} &amp;= \tau z_k + (1-\tau) y_k\\
 y_{k+1} &amp;= \text{Grad}(x_{k+1})\\
 z_{k+1} &amp;= \text{Mirr}_{z_k}(\al \nb f(x_{k+1})).
-\end{align}</li>
+\end{align}\]</span></li>
 <li><strong>Lemma</strong>: If <span class="math inline">\(\rc{1-\tau}{\tau}=\al L\)</span>, then <span class="math display">\[
 \al \an{\nb f(x_{k+1}), x_{k+1}-u} \le \al^2L (f(y_k)-f(y_{k+1}))+V_{z_k}(u) - V_{z_{k+1}}(u).
 \]</span></li>
@@ -198,15 +198,15 @@ z_{k+1} &amp;= \text{Mirr}_{z_k}(\al \nb f(x_{k+1})).
 <ol type="1">
 <li>Why the weird definition for <span class="math inline">\(x_{k+1}\)</span>? If we defined <span class="math inline">\(z_{k+1}=\text{Mirr}_{x_{k+1}}(\al \nb f(x_{k+1}))\)</span>, the expressions involve <span class="math inline">\(x_{k+1},z_{k+1}\)</span> and do not telescope.</li>
 <li>Thus, do the mirror descent starting from <span class="math inline">\(z_k\)</span> instead. If we try to bound the regret now,
-\begin{align}
+<span class="math display">\[\begin{align}
 \al \an{\nb f(x_{k+1}), x_{k+1}-u} &amp;\le \fc{\al^2}{2} \ve{\nb f(x_k)}^2 + V_{x_{k+1}}(u) - V_{z_{k+1}}(u)\\
 &amp;\le \al^2 L (\nb f(x_{k+1}) - \nb f(y_{k+1})) + V_{x_{k+1}}(u) - V_{z_{k+1}}(u).
-\end{align}
+\end{align}\]</span>
 which still does not telescope.</li>
 <li>We want <span class="math inline">\(z_k\)</span> to take the place of <span class="math inline">\(x_{k+1}\)</span>.</li>
 <li>Now write the real as the fake regret plus another term.</li>
 </ol>
-\begin{align}
+<span class="math display">\[\begin{align}
 \al \an{\nb f(x_{k+1}), z_{k}-u} &amp; \le \fc{\al^2}{2} \ve{\nb f(x_k)}^2 + V_{z_k}(u) - V_{z_{k+1}}(u)\\
 &amp;\le \al^2 L (\nb f(x_{k+1}) - \nb f(y_{k+1})) + V_{z_k}(u) - V_{z_{k+1}}(u) \label{eq:lem3-2}\\
 \al \an{\nb f(x_{k+1}),x_{k+1}-u}
@@ -214,7 +214,7 @@ which still does not telescope.</li>
 &amp;\le \al \an{\nb f(x_{k+1}), z_{k}-u} + \fc{(1-\tau)\al}{\tau} \an{\nb f(x_{k+1}), y_{k}-x_{k+1}}&amp;\text{by \eqref{eq:weighted}}\\
 &amp;\le \al^2 L (\nb f(x_{k+1}) - \nb f(y_{k+1})) + V_{z_k}(u) - V_{z_{k+1}}(u) + \fc{(1-\tau)\al}{\tau}\an{\nb f(x_{k+1}), y_k-x_{k+1}}&amp;\eqref{eq:lem3-2},\text{ convexity}\\
 &amp;\le \al^2L(f(y_{k})-f(y_{k+1})) + V_{z_k}(u) - V_{z_{k+1}(u)}.
-\end{align}
+\end{align}\]</span>
 <p>Telescoping, balancing <span class="math inline">\(\al^2Ld=\Te\implies \al = \sfc{\Te}{Ld}\)</span>, we get error <span class="math inline">\(\fc{2\sqrt{L\Te d}}{T}\)</span>. It takes <span class="math inline">\(T=4\sfc{L\Te}{d}\)</span> steps to halve error from <span class="math inline">\(\fc d2\)</span>, and <span class="math inline">\(O\pa{\sfc{L\Te}{\ep}}\)</span> time to go to <span class="math inline">\(\ep\)</span> error.</p>
 <h2 id="index-cards">Index cards:</h2>
 <ul>

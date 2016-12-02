@@ -1,5 +1,5 @@
 ---
-title: [CYHB13] Definability of Truth in Probabilistic Logic
+title: (CYHB13) Definability of Truth in Probabilistic Logic
 published: 2016-08-19
 modified: 2016-08-26
 tags: ai safety, logic

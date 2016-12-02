@@ -10,7 +10,7 @@
   <meta name="description" content="Holden Lee's Research Notebook">
   <meta name="author" content="Holden Lee">
     
-  <title>[CHMAL15] The Loss Surfaces of Multilayer Networks</title>
+  <title>(CHMAL15) The Loss Surfaces of Multilayer Networks</title>
 
   <!-- Bootstrap core CSS -->
   <link href="../../../../bootstrap/css/bootstrap.min.css" rel="stylesheet">
@@ -70,7 +70,7 @@
 <div class="container">
   <div id="content">
     <div class="page header">
-      <h1>[CHMAL15] The Loss Surfaces of Multilayer Networks</h1>
+      <h1>(CHMAL15) The Loss Surfaces of Multilayer Networks</h1>
     </div>
     <div class="info">
       
@@ -102,10 +102,10 @@
 <p>piecewise, continuous polynomial whose monomials are switched in and out at the boundaries between pieces.</p>
 <p>first work to give a “theoretical description of the optimization paradigm with neural networks in the presence of large number of parameters.”</p>
 Let <span class="math inline">\(\si(x)=\max(0,x)\)</span>. The random network is
-\begin{align}
+<span class="math display">\[\begin{align}
 Y&amp;= q \si(W_H^T\si(\cdots (W_1^TX)\cdots))\\
 &amp;=q\sumo i{n_0} \sum_{j=1}^{\ga (=\prod n_i)} X_{ij}\prod_{k=1}^H w_{i,j}^{(k)}.
-\end{align}
+\end{align}\]</span>
 <p>where <span class="math inline">\(A_{i,j}\)</span> is whether the path is active, <span class="math inline">\(X_{i,j}=X_i\)</span> is starting, and <span class="math inline">\(w_{i,j}^{(k)}\)</span> re weights.</p>
 <p>Assumptions</p>
 <ul>

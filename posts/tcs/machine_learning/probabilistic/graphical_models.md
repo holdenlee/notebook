@@ -1,5 +1,5 @@
 ---
-title: [WJ08] Graphical Models, Exponential Families, and Variational Inference
+title: (WJ08) Graphical Models, Exponential Families, and Variational Inference
 published: 2016-09-30
 modified: 2016-09-30
 tags: probabilistic models, graphical models, exponential families, variational inference

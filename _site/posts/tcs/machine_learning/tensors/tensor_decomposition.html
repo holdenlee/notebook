@@ -100,11 +100,11 @@
 <ul>
 <li>Suppose <span class="math inline">\(T=\sum^r u_i\ot v_i\ot w_i\)</span>, where <span class="math inline">\(\{u_i\}\)</span> is linearly independent, <span class="math inline">\(\{v_i\}\)</span> is l.i., and every pair in <span class="math inline">\(\{w_i\}\)</span> is l.i. Then this decomposition is unique and there is an efficient algorithm to find it.</li>
 <li>For a tensor <span class="math inline">\(T\in V^{\ot 3}\)</span>, view <span class="math inline">\(T_{\bullet}\in V\ot V^*\ot V^*\)</span>, with <span class="math inline">\(\bullet\)</span> corresponding to the last <span class="math inline">\(V^*\)</span>. The slices are sums of rank 1 matrices <span class="math inline">\(u_iv_i^*\)</span> with coefficients given by the projections of <span class="math inline">\(w_i\)</span> onto <span class="math inline">\(a\)</span>.
-\begin{align}
+<span class="math display">\[\begin{align}
 T_a &amp;=\sum \an{w_i,a}u_iv_i^* =: UD_aV^*
 T_aT_b^+ &amp;= UD_aD_b^+ U^+\\
 T_b^+T_a &amp;= VD_b^+D_a V^+
-\end{align}
+\end{align}\]</span>
 WHP diagonalization recovers <span class="math inline">\(U,V\)</span>.</li>
 </ul></li>
 <li>Give a perturbation bound for finding eigenvalues and eigenvectors of a matrix. What does the bound depend on, in what way (polynomial?)? Make it quantitative. Use this to give a bound on convergence in tensor decomposition.</li>

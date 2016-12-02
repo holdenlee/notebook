@@ -134,10 +134,10 @@
 <p>We can explore and exploit at the same time if we (a) keep track of a probability distribution and update it, and (b) if we reweight the loss functions to make the expected value correct.</p>
 <p>Idea: Use the MWU (hedge) algorithm.</p>
 Updates
-\begin{align}
+<span class="math display">\[\begin{align}
 y_{t+1}(i) &amp; = x_t(i) e^{\ep \wh\ell_t(i)}\\
 x_{t+1}&amp;= \pa{1-\rc{\sqrt T}} \fc{y_{t+1}}{\ve{y_{t+1}}_1} + \rc{n \sqrt T}\one.
-\end{align}
+\end{align}\]</span>
 <p><strong>Question</strong>: wht’s the purpose of the <span class="math inline">\(x_t\)</span> update? To make sure every arm is played at least with some probability? (E.g. will be played infinitely many times.)</p>
 <p>Get <span class="math inline">\(R_T\le O(\sqrt{Tn \ln n})\)</span>.</p>
 <h3 id="ucb1">UCB1</h3>
@@ -150,19 +150,19 @@ x_{t+1}&amp;= \pa{1-\rc{\sqrt T}} \fc{y_{t+1}}{\ve{y_{t+1}}_1} + \rc{n \sqrt T}\
 <p><em>Proof.</em></p>
 <ol type="1">
 <li>Let <span class="math inline">\(\De_i = \mu^*-\mu_i\)</span>, <span class="math inline">\(P_i(T)\)</span> be the number of times <span class="math inline">\(i\)</span> is picked by time <span class="math inline">\(T\)</span>, <span class="math inline">\(I_t\)</span> be the <span class="math inline">\(t\)</span>th choice, <span class="math inline">\(a(s,t)\)</span> be the width of the CI at time <span class="math inline">\(t\)</span> after <span class="math inline">\(s\)</span> observations. Then
-\begin{align}
+<span class="math display">\[\begin{align}
 \E G_A(T) &amp;= \sum_i \mu_i \E P_i(T)\\
 \E P_i(T) &amp;= 1+\sum_{t=K}^T (I_t=i)\\
 &amp;\le m + \sum_{t=K}^T (I_t=i\wedge P_i(t-1)\ge m)\\
 &amp;\le m + \sum_{t=K}^T (U_i(t-1) \ge U^*(t-1), P_i(t-1)\ge m)\\
 &amp;\le m + \sumo t{\iy} \sum_{s=m}^{t-1}\sum_{s'=1}^{t-1} (\ol x_{i,s} + a(s,t-1) \ge \ol x_{s'}^* + a(s',t-1))\\
 &amp;\le \ff{8\ln T}{\De_i^2} + \sumo t{\iy} \sum_{s=m}^t \sum_{s'=1}^t 2t^{-4} = \fc{8\ln T}{\De_i^2} + 1 + \fc{\pi^2}{3}.
-\end{align}
+\end{align}\]</span>
 We chose <span class="math inline">\(m\)</span> so that <span class="math inline">\(\mu^* \ge \mu_i +2a(m,t)\)</span>. This implies either
-\begin{align}
+<span class="math display">\[\begin{align}
 \ol x_{s'}^* &amp;\le \mu^* - a(s',t)\\
 \ol x_{i,s} &amp; \ge \mu_i + a(s,t)
-\end{align}
+\end{align}\]</span>
 which happen with probabilities <span class="math inline">\(t^{-4}\)</span>.</li>
 <li>This gives regret <span class="math display">\[\E R(T) \le \min(8 \sum_{i:\mu_i &lt;\mu^*} \fc{\ln T}{\De_i} + \pa{1+\fc{\pi^2}3}\pa{\sumo jK\De_j}, \max \De_i T).\]</span></li>
 <li>Optimizing gives <span class="math inline">\(\De_i = O(\sqrt{\ln T})\)</span>.</li>

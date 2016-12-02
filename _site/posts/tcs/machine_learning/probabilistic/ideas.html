@@ -98,9 +98,9 @@
     <h2 id="non-generative-framework-for-learning-probabilistic-models">Non-generative framework for learning probabilistic models</h2>
 <p>We can adapt Hazan and Ma’s framework [HM16] to learning probabilistic models. Note that given a model, in the limit the number of bits needed to encode a sequence of samples (up to some level of accuracy) is the entropy of that sequence under the model. Thus the natural loss to look at here is the entropy.</p>
 <p>We say a distribution <span class="math inline">\(D\)</span> is <span class="math inline">\(\ga\)</span> C-learnable by a hypothesis class <span class="math inline">\(\mathcal H\)</span> of probabilistic models if there is an algorithm, that given <span class="math inline">\(\ep\)</span>, with probability <span class="math inline">\(1-\de\)</span>, outputs a model <span class="math inline">\(m\)</span> such that <span class="math display">\[
-\rc{l(\vec x)} \EE_{D} \ln \Pj(\vec x|m) le \rc{l(\vec x)} \min_{m\in \mathcal H} \EE_{D}\ln \Pj(\vec x|m) + \ep + \ga
+\rc{l(\vec x)} \EE_{D} \ln \Pj(\vec x|m) \le \rc{l(\vec x)} \min_{m\in \mathcal H} \EE_{D}\ln \Pj(\vec x|m) + \ep + \ga
 \]</span> in time polynomial in the parameters, <span class="math inline">\(\poly\pa{\rc\ep, \ln\prc{\de}, d}\)</span>. Equivalently, the <span class="math inline">\(m\)</span> that is output satisfies <span class="math display">\[
-KL(D || m)\le KL(D || \mu) \ep + \ga.
+KL(D || m)\le KL(D || \mu) +\ep + \ga.
 \]</span> where <span class="math inline">\(\mu\)</span> is the distribution minimizing <span class="math inline">\(KL(D||\mu)\)</span>.</p>
 <p>We say the hypothesis class <span class="math inline">\(\mathcal H\)</span> is C-learnable if any distribution <span class="math inline">\(D\)</span> is C-learnable by <span class="math inline">\(\mathcal H\)</span>.</p>
 <h3 id="hmms">HMM’s</h3>

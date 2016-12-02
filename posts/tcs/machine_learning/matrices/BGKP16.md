@@ -1,5 +1,5 @@
 ---
-title: [BGKP16] Non-negative matrix factorization under heavy noise
+title: (BGKP16) Non-negative matrix factorization under heavy noise
 published: 2016-06-27
 modified: 2016-06-27
 tags: NMF

@@ -95,12 +95,12 @@
 \E(\text{cut edges})=\sum_{ij\in E}\fc{\te_{ij}}{\pi}\ge\ub{\min_{\te\in [0,\pi]}\fc{2\te}{\pi(1-\cos\te)}}{\approx .878} \sum_{ij\in E} \rc2(1-\cos\te_{ij}).
 \]</span></p>
 For MAX-2SAT, have a dummy vector <span class="math inline">\(u_0\)</span> for true (so that variable assignments correspond to <span class="math inline">\(u_i=\pm u_0\)</span>), maximize
-\begin{align}
+<span class="math display">\[\begin{align}
 OPT=\sum1-\rc4(u_0-u_{k1})(u_0-u_{k2})&amp;=\sum \rc 4(1+u_0\cdot u_{k1})+\rc 4(1+u_0\cdot u_{k2})+\rc 4(1 - u_{k1}\cdot u_{k2})\\
 &amp;=\sum \rc4(1 +\cos \fc{\te_{0,k1}}{\pi})+\cdots \\
 \E&amp;=\sum\rc 4(1-\fc{\te_{0,k1}}{\pi})+\cdots\\
 &amp;\ge \min_{\te\in[0,\pi]}\fc{2(\pi-\te)}{\pi(1+\cos\te)}\cdot OPT,
-\end{align}
+\end{align}\]</span>
 <p>so we get .878-approximation.</p>
 
   </div>

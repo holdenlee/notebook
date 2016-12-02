@@ -1,5 +1,5 @@
 ---
-title: [ALLMR16] Linear Algebraic Structure of Word Senses, with Applications to Polysemy
+title: (ALLMR16) Linear Algebraic Structure of Word Senses, with Applications to Polysemy
 published: 2016-03-15
 modified: 2016-03-15
 tags: nlp, word embeddings

@@ -123,12 +123,12 @@
 <h3 id="try-to-use-kernel-dictionary-learning">Try to use kernel dictionary learning</h3>
 <p>Warning: these steps are not justified.</p>
 Suppose that <span class="math inline">\(x\)</span>’s are latent variables, that are sparse<span class="math inline">\(+\)</span>noise, and we observe <span class="math display">\[y=Af(x).\]</span> In our case, <span class="math inline">\(f=\ln\)</span> (so that sparse<span class="math inline">\(+\)</span>positive noise becomes few large entries). Then (maybe we should have <span class="math inline">\(A^T\)</span>? Not sure)
-\begin{align}
+<span class="math display">\[\begin{align}
 A^+ y &amp;= f(x)\\
 f^{-1}(A^+y) &amp;= x\\
 \Phi(A^+)\Phi(y) &amp;= x \\
 \Phi(y) &amp;=\Phi(A^+)^+ x.
-\end{align}
+\end{align}\]</span>
 <p>This suggests doing dictionary learning on <span class="math inline">\(\Phi(y)\)</span> (or a finite approximation of this), finding <span class="math inline">\(x\)</span>’s, then solving the system of equations <span class="math inline">\(A^TY=f(X)\)</span>. (Take many samples <span class="math inline">\((x,y)\)</span> and do least squares.) In order for this to work, we need to</p>
 <ul>
 <li>justify all the pseudo-inverses, transposes (e.g. OK if inputs random: <span class="math inline">\(A^TAx\approx x\)</span> coordinatewise so things like thresholding work)</li>

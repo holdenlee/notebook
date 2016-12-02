@@ -7,6 +7,23 @@ type: notes
 showTOC: True
 ---
 
+# At a glance
+
+| Type | Evaluate Q, V knowing dynamics | Not knowing dynamics (online) |  On-policy control | Off-policy control | Learning policy |
+|---|---|---|---|---|---|
+|Discrete | Q-iteration | TD($\la$) | Sarsa | Q-learning | |
+|Continuous | fitted Q-iteration | gradient TD($\la$) | Gradient Sarsa | Gradient Q-learning | Policy gradient 
+
+All discrete methods have convergence guarantees.
+
+For continuous methods: (I think you can replace linear function class by "local min for function class" everywhere here.)
+
+* Fitted Q-iteration is provable for linear function classes.
+* Gradient TD($\la$) has constant-factor guarantee for linear function classes.
+* Gradient Sarsa is provable (how?) for linear function classes.
+* Gradient Q-learning has no guarantees. It can diverge.
+* [Policy gradient](policy_gradient.html) converges to local min given a compatibility between parametrizations.
+
 # References
 
 * Barton, Sutto.
@@ -512,6 +529,17 @@ When we have a perfect model and imperfect $Q$, deeper search usually yields bet
 Grow the search tree selectively. How to use this idea for backups?
 
 Focus on the states and actions that might immediately follow the current state.
+
+## 8.8 Monte Carlo Tree Search
+
+Start with an single-node tree at the start state. Each iteration:
+
+1. Selection: select a node in the current tree, e.g. by UCB.
+2. Expansion: from the node by adding nodes as children.
+3. Simulation: Rollout a complete game from a leaf node, according to rollout policy.
+4. Backpropagation: Result is backed up for nodes in the tree visited during the iteration.
+
+Question: how to deal with probabilistic choices by opponent? How to backprop?
 
 # 8 Generalization and function approximation (v1)
 

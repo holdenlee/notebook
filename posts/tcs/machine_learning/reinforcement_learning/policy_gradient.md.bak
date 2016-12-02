@@ -1,0 +1,20 @@
+---
+title: Policy gradient
+published: 2016-11-22
+modified: 2016-11-22
+tags: reinforcement learning
+type: notes
+showTOC: True
+---
+
+[SASM00] Policy gradient methods for RL with function approximation
+
+A version of policy iteration with arbitrary differentiable function converges to a locally optimal policy.
+
+Problems with the value-function approach
+
+* finds deterministic policies.
+* a small change in estimated vaue of action can change the action selected. (obstacles for convergence guarantees)
+
+$$\De \te \approx \al \pdd{\rh}{\te}.$$
+

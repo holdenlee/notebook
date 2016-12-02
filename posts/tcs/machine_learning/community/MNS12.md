@@ -1,5 +1,5 @@
 ---
-title: [MNS12] 
+title: (MNS12) 
 published: 2016-02-28
 modified: 2016-02-28
 tags: abbe

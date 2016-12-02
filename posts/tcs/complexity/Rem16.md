@@ -1,5 +1,5 @@
 ---
-title: [Rem16] The Hilbert Function, Algebraic Extractors, and Recursive Fourier Sampling
+title: (Rem16) The Hilbert Function, Algebraic Extractors, and Recursive Fourier Sampling
 published: 2016-02-29
 modified: 2016-02-29
 tags: none

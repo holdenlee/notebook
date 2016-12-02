@@ -90,7 +90,7 @@
   <div class="blog-main">
     <h2 id="math">Math</h2>
 <p>Here are the equations for LSTM.</p>
-\begin{align}
+<span class="math display">\[\begin{align}
 f_t&amp;=\si(W_f \coltwo{h_{t-1}}{x_t} + b_f)\\
 i_t&amp;=\si(W_i \coltwo{h_{t-1}}{x_t} + b_i)\\
 \wt{C}_t &amp;= \tanh (W_C\coltwo{h_{t-1}}{x_t}+b_C)\\
@@ -98,7 +98,7 @@ C_t &amp;= f_t \odot C_{t-1} + i_t \odot \wt{C}_t\\
 o_t &amp;= \si(W_o\coltwo{h_{t-1}}{x_t} + b_o)\\
 h_t &amp;= o_t\odot \tanh(C_t)\\
 \wh y &amp;= \text{softmax}(Wh_t + b).
-\end{align}
+\end{align}\]</span>
 <p>References:</p>
 <ul>
 <li>http://colah.github.io/posts/2015-08-Understanding-LSTMs/</li>
@@ -129,9 +129,9 @@ h_t &amp;= o_t\odot \tanh(C_t)\\
     h1 <span class="op">=</span> o <span class="op">*</span> T.tanh(C1) <span class="co">#dimension m</span>
     <span class="cf">return</span> [C1, h1] <span class="co">#dimension 2m</span></code></pre></div>
 <p>Now define <code>step_lstm</code> as the version with parameters grouped together.</p>
-<pre class="py"><code>def step_lstm(x, C, h, tparams): 
-    Wf, bf, Wi, bi, WC, bC, Wo, bo = unpack_params(tparams, [&quot;Wf&quot;, &quot;bf&quot;, &quot;Wi&quot;, &quot;bi&quot;, &quot;WC&quot;, &quot;bC&quot;, &quot;Wo&quot;, &quot;bo&quot;])
-    return step_lstm1(x, C, h, Wf, bf, Wi, bi, WC, bC, Wo, bo)</code></pre>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="kw">def</span> step_lstm(x, C, h, tparams): 
+    Wf, bf, Wi, bi, WC, bC, Wo, bo <span class="op">=</span> unpack_params(tparams, [<span class="st">&quot;Wf&quot;</span>, <span class="st">&quot;bf&quot;</span>, <span class="st">&quot;Wi&quot;</span>, <span class="st">&quot;bi&quot;</span>, <span class="st">&quot;WC&quot;</span>, <span class="st">&quot;bC&quot;</span>, <span class="st">&quot;Wo&quot;</span>, <span class="st">&quot;bo&quot;</span>])
+    <span class="cf">return</span> step_lstm1(x, C, h, Wf, bf, Wi, bi, WC, bC, Wo, bo)</code></pre></div>
 <p>To define <code>sequence_lstm</code> we use Theano’s can function. The arguments are</p>
 <ul>
 <li><code>fn</code> is the function</li>
@@ -142,29 +142,29 @@ h_t &amp;= o_t\odot \tanh(C_t)\\
 <div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="ot">scan' ::</span> ((a,b,c) <span class="ot">-&gt;</span> b) <span class="ot">-&gt;</span> [a] <span class="ot">-&gt;</span> b <span class="ot">-&gt;</span> c <span class="ot">-&gt;</span> [b]
 scan' f a's init fixed <span class="fu">=</span></code></pre></div>
 <p>we call</p>
-<pre class="py"><code>theano.scan(fn=f, sequences=a's, outputs_info=init, non_sequences=fixed)</code></pre>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">theano.scan(fn<span class="op">=</span>f, sequences<span class="op">=</span>a<span class="st">'s, outputs_info=init, non_sequences=fixed)</span></code></pre></div>
 <p>Note here a, b, c can encompass multiple arguments, in which case you pass a list to <code>sequences</code>, <code>outputs_info</code>, and <code>non_sequences</code>. However, a, b, c must appear in that order.</p>
-<pre class="py"><code>def sequence_lstm(C0, h0, xs, tparams):.
-    Wf, bf, Wi, bi, WC, bC, Wo, bo = unpack_params(tparams, [&quot;Wf&quot;, &quot;bf&quot;, &quot;Wi&quot;, &quot;bi&quot;, &quot;WC&quot;, &quot;bC&quot;, &quot;Wo&quot;, &quot;bo&quot;])
-    #the function fn should have arguments in the following order:
-    #sequences, outputs_info (accumulators), non_sequences
-    #(x, C, h, Wf, bf, Wi, bi, WC, bC, Wo, bo)
-    ([C_vals, h_vals], updates) = theano.scan(fn=step_lstm1,
-                                          sequences = xs, 
-                                          outputs_info=[C0, h0], #initial values of the memory/accumulator
-                                          non_sequences=[Wf, bf, Wi, bi, WC, bC, Wo, bo], #fixed parameters
-                                          strict=True)
-    return [C_vals, h_vals]</code></pre>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="kw">def</span> sequence_lstm(C0, h0, xs, tparams):.
+    Wf, bf, Wi, bi, WC, bC, Wo, bo <span class="op">=</span> unpack_params(tparams, [<span class="st">&quot;Wf&quot;</span>, <span class="st">&quot;bf&quot;</span>, <span class="st">&quot;Wi&quot;</span>, <span class="st">&quot;bi&quot;</span>, <span class="st">&quot;WC&quot;</span>, <span class="st">&quot;bC&quot;</span>, <span class="st">&quot;Wo&quot;</span>, <span class="st">&quot;bo&quot;</span>])
+    <span class="co">#the function fn should have arguments in the following order:</span>
+    <span class="co">#sequences, outputs_info (accumulators), non_sequences</span>
+    <span class="co">#(x, C, h, Wf, bf, Wi, bi, WC, bC, Wo, bo)</span>
+    ([C_vals, h_vals], updates) <span class="op">=</span> theano.scan(fn<span class="op">=</span>step_lstm1,
+                                          sequences <span class="op">=</span> xs, 
+                                          outputs_info<span class="op">=</span>[C0, h0], <span class="co">#initial values of the memory/accumulator</span>
+                                          non_sequences<span class="op">=</span>[Wf, bf, Wi, bi, WC, bC, Wo, bo], <span class="co">#fixed parameters</span>
+                                          strict<span class="op">=</span><span class="va">True</span>)
+    <span class="cf">return</span> [C_vals, h_vals]</code></pre></div>
 <p>Note this will map automatically; to define <code>sequence_multiple_lstm</code> all we have to do is swap two axes.</p>
 <p>(Note on Theano list in scan.)</p>
 <h2 id="neural-net-functions">Neural net functions</h2>
 <p>A vanilla neural net layer is</p>
-<pre class="py"><code>def nn_layer1(x, W, b):
-    return x * W + b
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="kw">def</span> nn_layer1(x, W, b):
+    <span class="cf">return</span> x <span class="op">*</span> W <span class="op">+</span> b
 
-def nn_layer(x, tparams):
-    W, b = unpack_params(tparams, [&quot;W&quot;, &quot;b&quot;])
-    return nn_layer1(x, W, b)</code></pre>
+<span class="kw">def</span> nn_layer(x, tparams):
+    W, b <span class="op">=</span> unpack_params(tparams, [<span class="st">&quot;W&quot;</span>, <span class="st">&quot;b&quot;</span>])
+    <span class="cf">return</span> nn_layer1(x, W, b)</code></pre></div>
 <p>We define functions</p>
 <ul>
 <li><code>nn_layer</code> :: <span class="math inline">\(\R^n\times \R^n\)</span></li>
@@ -186,7 +186,7 @@ We include a flag saying if we just want the output for the last in the sequence
 <h2 id="data-processing-functions">Data processing functions</h2>
 <p>We’ll keep parameters in a dictionary, and unpack them as needed.</p>
 <div class="sourceCode"><pre class="sourceCode python"><code class="sourceCode python"><span class="kw">def</span> unpack_params(tparams, li):
-    <span class="cf">return</span> [tparams[name] <span class="cf">for</span> name <span class="op">in</span> li]</code></pre></div>
+    <span class="cf">return</span> [tparams[name] <span class="cf">for</span> name <span class="kw">in</span> li]</code></pre></div>
 <ul>
 <li><code>wrap_theano_dict</code> and <code>unwrap_theano_dict</code>.</li>
 <li><code>get_minibatches_idx</code> (::Int -&gt; Int -&gt; Bool -&gt; [(Int, [Int])]) will give an enumerated list of minibatch indices, given <code>n</code>, the size of the list, and <code>minibatch_size</code>. It will make a minibatch out of the remainder.</li>

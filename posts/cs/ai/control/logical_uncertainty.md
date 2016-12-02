@@ -1,5 +1,5 @@
 ---
-title: [SF15] Questions of reasoning under logical uncertainty
+title: (SF15) Questions of reasoning under logical uncertainty
 published: 2016-08-19
 modified: 2016-08-19
 tags: ai safety

@@ -1,5 +1,5 @@
 ---
-title: [JSA15] Beating the Perils of Non-Convexity - Guaranteed Training of Neural Networks using Tensor Methods
+title: (JSA15) Beating the Perils of Non-Convexity - Guaranteed Training of Neural Networks using Tensor Methods
 published: 2016-06-27
 modified: 2016-06-27
 tags: neural net

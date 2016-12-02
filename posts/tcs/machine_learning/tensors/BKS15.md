@@ -1,5 +1,5 @@
 ---
-title: [BKS15] Dictionary Learning and Tensor Decomposition via the Sum-of-Squares Method
+title: (BKS15) Dictionary Learning and Tensor Decomposition via the Sum-of-Squares Method
 published: 2016-08-30
 modified: 2016-08-30
 tags: dictionary learning, tensor, sparse coding

@@ -98,10 +98,10 @@
 <ol type="1">
 <li>(Decoding) Let <span class="math inline">\(x \leftarrow \text{decode}_{A^{(t)}} y\)</span>.</li>
 <li>(Gradient step) Let <span class="math display">\[A^{(t+1)} = A^{(t)} - \eta \pi(\nb L_x(A))\]</span> where the loss function is the KL-divergence (negative log-likelihood)
-\begin{align}
+<span class="math display">\[\begin{align}
 L_x(A) &amp;= \sum y_i \ln \pf{y_i}{Ax_i}\\
 \nb L_x(A) &amp;= (-y\odot \rc{Ax}) x^T
-\end{align}
+\end{align}\]</span>
 and <span class="math inline">\(\pi\)</span> is projection to the probability simplex.</li>
 </ol>
 <p>The plan is to show this satisfies the conditions needed for approximate gradient descent: each step is correlated with the right direction. We want to find <span class="math inline">\(\al,\be,\ep\)</span> so that <span class="math display">\[ \an{g,A-A^*} \ge \al \ve{A-A^*}^2 + \be \ve{g}^2 - \ep\]</span> (for some norm).</p>
@@ -118,34 +118,34 @@ and <span class="math inline">\(\pi\)</span> is projection to the probability si
 <p>As a first step, show that <span class="math display">\[\an{\EE_y \pa{-y\odot \pa{\rc{Ax} -\rc{A^*x}}x^T} , A-A^*}&gt;0.\]</span></p>
 <h2 id="preliminary-calculations">Preliminary calculations</h2>
 First suppose <span class="math inline">\(y=A^*x\)</span> (no noise), <span class="math inline">\(x=x^*\)</span> (perfect decoding). Then letting <span class="math inline">\(D= \diag\prc{(Ax)_i}\)</span>,
-\begin{align}
+<span class="math display">\[\begin{align}
 \an{\EE_y \pa{-y\odot \pa{\rc{Ax} -\rc{A^*x}}x^T} , A-A^*}
 &amp;= x^T\ub{(A-A^*)^T D (A-A^*)}{=:M^2}x\\
 &amp;= \ve{x}_{M}^2.
-\end{align}
+\end{align}\]</span>
 Now relax <span class="math inline">\(y\approx A^*x\)</span>, We get
-\begin{align}
+<span class="math display">\[\begin{align}
 \an{\EE_y \pa{-y\odot \pa{\rc{Ax} -\rc{A^*x}}x^T} , A-A^*}
 &amp;= \EE_{y} \ve{x}_M^2 + \cancelto0{(x^TA^{*T} - y^T) D (A-A^*)x}
-\end{align}
+\end{align}\]</span>
 <p>using <span class="math inline">\(\E y = A^* x\)</span>.</p>
 Now relax <span class="math inline">\(x\approx x^*\)</span>. (Warning: <span class="math inline">\(x^*\)</span> simply being close may not imply convergence to <span class="math inline">\(A^*\)</span> without additional assumptions on <span class="math inline">\(A^*\)</span>, because of nonuniqueness.)
-\begin{align}
+<span class="math display">\[\begin{align}
 \EE_{x,y} \an{-D yx^T, A-A^*}
 &amp;= \EE_{x,y} [-y^T D(A-A^*) x]\\
 &amp;= \EE_{x,y} [-y^T DA^*x]-1\\
-\end{align}
+\end{align}\]</span>
 <p>The dependencies of the random variables are <span class="math inline">\(x^* \to y \to x\)</span> (<span class="math inline">\(\E_y = A^*x^*\)</span>). We can’t simply replace <span class="math inline">\(\E y = A^*x^*\)</span> because we have to average over <span class="math inline">\(x\)</span> first, which depends on the decoding. (If we could replace <span class="math inline">\(y\)</span> like that, we get <span class="math inline">\(\an{x,x-x^*}_M\)</span>.)</p>
 <h2 id="actual-calculations">Actual calculations</h2>
 <p>Recall that if we’re decoding by multiplying by <span class="math inline">\(B\)</span>, we also have to threshold, <span class="math inline">\(\text{Th}(Bx)\)</span>.</p>
 In Theorem 4.1, if <span class="math inline">\(A\)</span> is biased, then we instead obtain a bound <span class="math display">\[ (By)_i - \E x_i = \ub{(By)_i - BA^*x}{\text{w.h.p. }\le 2\la(A) \sfc{\ln r}{n}} + B(A^*-A) x^*. \]</span> For the second term, <span class="math display">\[ \ve{B(A-A^*)x}_{\iy} \le |B|_{\iy} \max_i \ve{A_{\cdot i} - A_{\cdot i}^*}_1 \le \la \ep.\]</span> We want to lower bound
-\begin{align}
+<span class="math display">\[\begin{align}
 \an{\nb A, A-A^*}
 &amp;= \sum \fc{y_iA_{ij}^*}{(Ax)_i} - 1\\
 &amp;= \sum_i \fc{y_i(A^*x)_i}{(Ax)_i} - 1\\
 &amp;= \sum \fc{b_i(A^* x)_i}{(Ax)_i} +
 \sum_i \fc{(A^*(x^*-x))_i (A^*x)_i}{(Ax)_i} + \sum_{i,j} \pa{(A^*x)_i\sfc{(Ax)_j}{(Ax)_i} - (A^*x)_j\sfc{(Ax)_i}{(Ax)_j}}^2.
-\end{align}
+\end{align}\]</span>
 <p>We may suppose <span class="math inline">\(\ve{A_{\bullet i} - A_{\bullet i}^*}\le \rc{\poly\log(n)}\)</span>, or something like this.</p>
 <p>Try 2: INCORRECT: I mixed up <span class="math inline">\(x,x^*\)</span> here. <span class="math display">\[\an{\nb A, A-A^*} = \an{\pa{y_i \sfc{(Ax)_j}{(Ax)_i} - y_j \sfc{(Ax)_i}{(Ax)_j}}_{ij}, \pa{(A^*x)_i  \sfc{(Ax)_j}{(Ax)_i} - (A^*x)_j  \sfc{(Ax)_i}{(Ax)_j}}_{ij}}.
 \]</span> It’s tempting to take <span class="math inline">\(\E_y\)</span> first, but we can’t do that.</p>
@@ -156,11 +156,11 @@ In Theorem 4.1, if <span class="math inline">\(A\)</span> is biased, then we ins
 <p>(5-12)</p>
 <p>Idea: use a different potential function. <span class="math inline">\(L^2\)</span> doesn’t make so much sense here.</p>
 Suppose <span class="math inline">\(x= (1)\)</span> and do MWU. The gradient is <span class="math display">\[-\diag\prc{Ax} yx^T = -\fc{y}{a}.\]</span> We get <span class="math display">\[a_i' = \fc{a_ie^{-\eta \fc{y_i}{a_i}}}{\sumo kn a_ke^{\eta \fc{y_k}{a_k}}}.\]</span> The metric is <span class="math display">\[d_{KL}(y,a) = \sumo in y_i \ln \pf{y_i}{a_i}.\]</span> The decrease is
-\begin{align}
+<span class="math display">\[\begin{align}
 d_{KL}(y,a) - d_{KL}(y,a') &amp;= \sumo in y_i \ln\pf{a_i'}{a_i}\\
 &amp;=\sumo in y_i \ln \fc{e^{\eta\fc{y_j}{a_j}}}{\sumo jn a_j e^{-\eta \fc{y_j}{a_j}}}\\
 &amp;=\sumo in y_i \ln e^{\eta \fc{y_j}{a_j}} - \ln \sumo jn a_j e^{-\eta\fc{y_j}{a_j}}
-\end{align}
+\end{align}\]</span>
 <p>Sanity check: For <span class="math inline">\(\eta\to 0\)</span>, this is <span class="math inline">\(\eta(\sum \fc{y_i^2}{a_i}-\sum y_i)&gt;0\)</span> by <span class="math inline">\(T_2\)</span>’s inequality.</p>
 
   </div>

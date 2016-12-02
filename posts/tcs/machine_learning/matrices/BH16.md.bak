@@ -1,0 +1,87 @@
+---
+title: \[BH16\] Algorithms for generalized topic modeling
+published: 2016-08-12
+modified: 2016-08-12
+tags: topic modeling
+type: paper
+showTOC: True
+---
+
+# Problem
+
+## Assumptions (Non-noisy case)
+
+Each document has two views $(x^1,x^2)$, ex., representing two paragraphs. There are $k$ topic vectors $v_1,\ldots, v_k$. 
+
+1.  Each document has a topic vector $w$ associated to it, satisfying 
+	$$\an{w,v_i}=w_i$$
+	with $\sum w_i=1$ ($w=(w_1,\ldots, w_k)$ ($\sum w_i=1$) is the mixture coefficients). Alternatively, letting $A$ be such that $V^TA=I$, 
+    $$\pi_{v_1,\ldots, v_k}(x^1)=\pi_{v_1,\ldots, v_k}(x^k) = w^TA.$$
+	(Let $\De=\conv A$.)
+2.  There exist pure documents: $\Pj\pat{document has $w_i=\an{v_i,x}=1$}>\xi$.
+3.  Non-correlation: For all $Z\sub \text{\null}\{v_1,\ldots, v_k\}$, $\dim Z<n-k$, 
+    $$\Pj_{(x^1,x^2)\sim D^w} ((x^1-x^2)\nin \Z) \ge \ze.$$
+	
+Problem: find $w_i$.
+
+## Assumptions (Noisy case)
+
+1.  Observe $\wh x_i^j=\begin{cases} x_i^j&\text{w.p. }1-p_0\\ x_i^j + N(0,\si^2I_n)&\text{w.p. }p_0\end{cases}$.
+2.  The least nonzero singular value of $\Var(x^1-x^2)$ is $\ge \si^2 + \de_0$.
+3. $\ve{x_i^j}_2\le M$.
+
+# Algorithm
+
+## Non-noisy case
+
+1. Let $X_1,X_2$ have $x^1$ and $x^2$'s in their columns. Let $P$ be the projection onto the last $k$ singular vectors of $X_1-X_2$.
+2. Let $S_\parallel = \{Px_i^j\}$. Let $A$ be the extreme points of the convex hull.
+3. Return $A^+=[v_1,\ldots, v_k]$.
+
+*Proof*. 
+
+1.  With $O\pa{\fc{n-k}{\ze}\ln \prc{\de}}$ samples, with probability $1-\de$, $\rank(Z)=n-k$.
+
+    *Proof*. Induct: $\rank\set{x_i^1-x_i^2}{i<\fc{j}{ze}\ln \pf{n}{\de}}<j$ with probability $\fc{j\de}{n}$.
+2.  $x_{\parallel} = \pi_{v_1,\ldots, v_k}(x) = \sum (v_i \cdot x)a_i = AV^T x$.
+3.  Takig $m=\Om(\rc{\ze}\ln \pf{k}{\de})$ samples, wp $1-\de$, $\{a_1,\ldots, a_k\}$ are extreme points of $\conv(S_{\parallel})$.
+
+## Noisy case
+
+1.  Let $P$ be the projection onto the last $k$ left singular values of $\wh X_1-\wh X_2$.
+2.  Take $m_2$ fresh samples and let $\wh S_{\parallel} = \{\wh P \wh x_i^1\}$.
+
+    Let $\ep' = \fc{\ep}{8r}$. Remove $\wh x_{\parallel}$ from $\wh S_{\parallel}$ if $<\fc{p_0 \xi m_2}2$ points in $B_{\fc{\ep'}2}(\wh x_{\parallel})$.
+3.  If $d(\wh x_{\parallel}, \conv (\wh S_{\parallel}\bs B_{6r \ep'}(\wh x))\ge 2\ep'$, add $\wh x_{\parallel}$ to $C$.
+
+    Cluster $C$ by single linkage (i.e. put in same cluster if $\le$) $16r\ep'=2\ep$. Return any point from cluster $i$ as $\wh a_i$.
+
+Here, $r$ is the smallest value such that $d(a_i, \conv(\De\bs B(a_i,r\ep))) \ge \ep$.
+
+*Proof*. 
+
+1.  Show whp $\ve{P-\wh P}_2\le \ep$.
+
+    Let $D=X_1-X_2$. Split
+	$$ \rc m \wh D \wh D^T - \si^2 I_n -\rc{m} DD^T = \pa{\rc m EE^T - \si^2 I_n} + \pa{\rc m DE^T + \rc m ED^T}. $$
+	Establish 2 properties:
+	
+	1.  Whp, this is $\le \ep$. Use Matrix Bernstein on each term above.
+	2.  Whp $\la_{n-k} \pa{\rc m \wh D \wh D^T) > \si^2 +\fc{\de_0}2$. Bound by the spectral norm of the difference.
+	
+	Now use Davis-Kahan.
+2.  (Denoising) For appropriate $\ep'$, $m$, for any $x\in \wh S_{\parallel}$, $d(x,\De)\le \ep'$ (points that are kept are close), and for all $i\in [k]$, there is $\wh a_i\in \wh S_{\parallel}$ such that $\ve{\wh a_i-a_i}\le \ep'$.
+
+    *Proof* Use Gaussian anticoncentration, and the fact that in a large sample set, the fraction of samples within any region is close to the density of the region.
+3.  Returns $\ve{a_i-\wh a_i}\le \ep$. Use the definition of $r$ and some geometry.
+
+## Lower bounds
+
+Any algorithm requires $\Om(n)$, not $\Om(k)$ samples.
+
+Further study:
+
+* Agnostic noise
+* General functions $f$: look at the convex cone of projected samples.
+* More general class of similarity functions, e.g. kernels.
+

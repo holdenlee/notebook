@@ -1,5 +1,5 @@
 ---
-title: [PMDH16] Convolutional Patch Representations for Image Retrieval - an Unsupervised Approach
+title: (PMDH16) Convolutional Patch Representations for Image Retrieval - an Unsupervised Approach
 published: 2016-09-26
 modified: 2016-09-26
 tags: neural net, vision

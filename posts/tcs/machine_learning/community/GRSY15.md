@@ -1,5 +1,5 @@
 ---
-title: [GRSY15] How Hard is Inference for Structured Prediction?
+title: (GRSY15) How Hard is Inference for Structured Prediction?
 published: 2016-03-03
 modified: 2016-03-03
 tags: paper, CBM

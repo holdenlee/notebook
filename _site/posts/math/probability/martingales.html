@@ -133,11 +133,11 @@
 <li>If <span class="math inline">\(X\)</span> is independent of <span class="math inline">\(\mathcal F\)</span> then <span class="math inline">\(\E[X|\mathcal F]=\E X\)</span>.</li>
 <li><p>(Relate to conditional probability) If <span class="math inline">\(\mathcal F = \si(\Om_1,\ldots)\)</span> and each <span class="math inline">\(\Om_i\)</span> has positive probability, then <span class="math inline">\(\E[X|\mathcal F] = \fc{\E[X;\Om_i]}{\Pj(\Om_i)}\)</span> on <span class="math inline">\(\Om_i\)</span>.</p>
 Generalize conditional probability by letting
-\begin{align}
+<span class="math display">\[\begin{align}
 \Pj(A|\mathcal G) &amp;= \E[1_A|\mathcal G]\\
 \Pj(A|B) &amp;= \fc{P(A\cap B)}{P(B)}\\
 \E[X|Y] &amp;= \E[X|\si(Y)].
-\end{align}</li>
+\end{align}\]</span></li>
 <li><p>If the probability density of <span class="math inline">\((X,Y)\)</span> is given by <span class="math inline">\(f(x,y)\)</span>, then <span class="math display">\[\E[g(X)|Y] = h(Y)\]</span> where <span class="math display">\[h(y) = \fc{\int g(x) f(x,y)\dx}{\int f(x,y)\dx}.\]</span> (5 and 6 omitted.)</p></li>
 </ol>
 <h3 id="properties">Properties</h3>
@@ -161,10 +161,10 @@ Generalize conditional probability by letting
 <ol type="1">
 <li><p>If <span class="math inline">\(X_n\)</span> is a supermartingale and <span class="math inline">\(n&gt;m\)</span>, then <span class="math inline">\(\E[X_n|\mathcal F_m]\le X_m\)</span>.</p>
 <em>Proof</em>. Induct and use monotonicity,
-\begin{align}
+<span class="math display">\[\begin{align}
 \E[X_{m+k}|\mathcal F_m] &amp;= \E[\E[X_{m+k}|\mathcal F_{n+k-1}]|\mathcal F_m]\\
 &amp;\le \E[X_{m+k-1}|\mathcal F_m]
-\end{align}</li>
+\end{align}\]</span></li>
 <li>We get a reversed inequality for a submartingale, and equality for a martingale</li>
 <li><p>If <span class="math inline">\(X_n\)</span> is a martingale, <span class="math inline">\(\ph\)</span> is convex, and <span class="math inline">\(\E[\ph(X_n)]&lt;\iy\)</span>, then <span class="math inline">\(\ph(X_n)\)</span> is a submartingale.</p>
 <em>Proof</em>. Use Jensen to bring the <span class="math inline">\(\ph\)</span> outside in <span class="math inline">\(\E[\ph(X_{n+1})|\mathcal F_n]\)</span>. We need <span class="math inline">\(X_n\)</span> to be a martingale so the inside becomes <span class="math inline">\(X_n\)</span>.</li>
@@ -178,12 +178,12 @@ If <span class="math inline">\(X_n\)</span> is super, <span class="math inline">
 <li><p><strong>Corollary</strong>: If <span class="math inline">\(N\)</span> is a stopping time and <span class="math inline">\(X_n\)</span> is super, then <span class="math inline">\(X_{N\wedge n}\)</span> is super.</p>
 <em>Proof</em>. Let <span class="math inline">\(H_n = 1_{N\ge n}\)</span>.</li>
 <li><strong>Theorem (Upcrossing inequality)</strong>: Let
-\begin{align}
+<span class="math display">\[\begin{align}
 N_0&amp;=-1\\
 N_{2k-1}&amp;=\inf\set{m&gt;N_{2k-2}}{X_m\le a}\\
 N_{2k}&amp;=\inf\set{m&gt;N_{2k-1}}{X_m\ge b}\\
 U_n&amp;=\sup\set{k}{N_{2k}\le n},
-\end{align}
+\end{align}\]</span>
 <p>number of upcrossings by time <span class="math inline">\(n\)</span>.</p>
 <p>If <span class="math inline">\(X_m\)</span> is sub, then <span class="math display">\[(b-a) \E U_n\le E(X_n-a)^+ - \E (X_0-a)^+.\]</span></p>
 <p><em>Motivation</em>. To prove the martingale convergence theorem (10). A martingale doesn’t converge if it has infinitely many upcrossings of some <span class="math inline">\([a,b]\)</span>. Show this happens with probability 0 and union-bound.</p>
@@ -199,16 +199,16 @@ U_n&amp;=\sup\set{k}{N_{2k}\le n},
 <ol type="1">
 <li><p>For <span class="math inline">\(i\le j\)</span>, <span class="math inline">\(\si(X_i)\subeq \mathcal F_i \subeq \mathcal F_j\)</span> so <span class="math inline">\(\si(X_i)\subeq \mathcal F_j\)</span>. Hence <span class="math inline">\(\mathcal G_j\subeq \mathcal F_j\)</span>.</p>
 Using definition and then taking <span class="math inline">\(\E[\bullet|\mathcal F_n]\)</span>,
-\begin{align}
+<span class="math display">\[\begin{align}
 \E[X_{n+1}|\mathcal G_n]&amp;=X_n\\
 \E[X_{n+1}|\mathcal F_n] = \E[\E[X_{n+1}|\mathcal G_n]|\mathcal F_n]&amp;=X_n.
-\end{align}</li>
+\end{align}\]</span></li>
 <li>Let <span class="math inline">\(\mathcal F_n = \si(S_n,\ldots, S_1)\)</span>.
-\begin{align}
+<span class="math display">\[\begin{align}
 \E[X_{n+1}|\mathcal F_n] &amp;= \E[X_{n+1}|\si(S_n,\ldots, S_1)]\\
 &amp;=\E[f(S_n+\xi_n)|S_n] &amp;\text{why?}\\
 &amp;=\rc{B(0,r)} \int_{B(S_n,r)} f(y)\le f(S_n)=X_n.
-\end{align}</li>
+\end{align}\]</span></li>
 <li>Let <span class="math inline">\(X_n = -\rc n\)</span>.</li>
 <li>Let <span class="math inline">\(X_n=\sumo in \xi_i\)</span>, <span class="math inline">\(\xi_i=\tcase{-1}{\text{w.p. }1-\rc{10^k}}{10^k}{\text{w.p. }\rc{10^k}}\)</span>.</li>
 <li><p><span class="math inline">\(A_n = A_{n-1} + \E[1_{B_n}|\mathcal F_{n-1}]\)</span>.</p></li>
@@ -216,10 +216,10 @@ Using definition and then taking <span class="math inline">\(\E[\bullet|\mathcal
 <h2 id="examples-1">3 Examples</h2>
 <ol type="1">
 <li>Let <span class="math inline">\(X_n\)</span> be a martingale with <span class="math inline">\(|X_{n+1}-X_n|\le M&lt;\iy\)</span>. Let
-\begin{align}
+<span class="math display">\[\begin{align}
 C &amp; = \{\lim X_n \text{ exists and is finite}\}\\
 D &amp; = \{\limsup X_n=\iy, \liminf X_n=-\iy\}.
-\end{align}
+\end{align}\]</span>
 <p>Then <span class="math inline">\(\Pj(C\cup D)=1\)</span>.</p>
 <em>Proof</em>. Show that when <span class="math inline">\(\liminf X_n&gt;-\iy\)</span> then <span class="math inline">\(\lim X_n\)</span> exists and is finite. By symmetry, also <span class="math inline">\(\limsup X_n&lt;\iy \implies \lim X_n\)</span> exists. To show existence, apply 2.11 to <span class="math inline">\(X_{n\wedge \inf\set{n}{X_n\le -K}} + K + M\)</span>.</li>
 <li><p><strong>Martingale Borel-Cantelli</strong>: Let <span class="math inline">\(\mathcal F_n\)</span> be a filtration with <span class="math inline">\(\mathcal F_0=\{\phi,\Om\}\)</span> and <span class="math inline">\(A_n\in \mathcal F_n\)</span>. Then <span class="math display">\[\{A_n\text{ i.o.}\} = \bc{\sumo n{\iy} \Pj(A_n|\mathcal F_{n-1}) = \iy}.\]</span></p>
@@ -232,10 +232,10 @@ D &amp; = \{\limsup X_n=\iy, \liminf X_n=-\iy\}.
 <p>Polya urn scheme: An urn starts with <span class="math inline">\(r,g\)</span> red and green balls. At each step draw a ball, replace it, and add <span class="math inline">\(c\)</span> more balls of the same color. The fraction of green balls <span class="math inline">\(X_n\)</span> after the <span class="math inline">\(n\)</span>th draw is a martingale. (p. 241)</p>
 <h3 id="branching-processes">Branching processes</h3>
 The <strong>Galton-Watson</strong> process is defined as follows. Given <span class="math inline">\(\xi_i^n\)</span> iid nonnegative integer rv’s, define
-\begin{align}
+<span class="math display">\[\begin{align}
 Z_0 &amp;=1\\
 Z_{n+1} &amp;= \tcase{\sumo i{Z_n} \xi_i^{n+1}}{\text{if }Z_n&gt;0}{0}{\text{if }Z_n=0}.
-\end{align}
+\end{align}\]</span>
 <ol start="6" type="1">
 <li>Let <span class="math inline">\(\mathcal F_n = \si(\xi_i^m:i\ge 1, 1\le m\le n)\)</span>, <span class="math inline">\(\mu = \E \xi_i^m\)</span> (same for all <span class="math inline">\(m\)</span>). Then <span class="math inline">\(\fc{Z_n}{\mu^n}\)</span> is a martingale wrt <span class="math inline">\(\mathcal F_n\)</span>.</li>
 <li><p>If <span class="math inline">\(\mu&lt;1\)</span> then <span class="math inline">\(Z_n=0\)</span> for sufficiently large <span class="math inline">\(n\)</span>.</p>
@@ -331,11 +331,11 @@ Note this proves Kolmogorov’s 0-1 law: take <span class="math inline">\(A\)</s
 <li>?</li>
 <li>?</li>
 <li>By <span class="math inline">\(L^1\)</span> convergence,
-\begin{align}
+<span class="math display">\[\begin{align}
 \int_{X_m\le x\text{ i.o.},\neg D} \E(1_D|X_1,\ldots, X_n) &amp;\to \int_{X_m\le x\text{ i.o.},\neg D} 1_D = 0\\
 \pat{LHS} &amp;\ge \int_{X_m\le x\text{ i.o.},\neg D, X_n\le x} \E(1_D|X_1,\ldots, X_n)\\
 &amp;\ge \Pj(X_n\le x) \Pj(D^c \wedge X_m\le x\text{ i.o.}|X_n\le x).
-\end{align}
+\end{align}\]</span>
 We may assume that if <span class="math inline">\(X_n=0\)</span>, then <span class="math inline">\(X_{n+1}=0\)</span> (redefine the random variable so this is true). <span class="math inline">\(\Pj(X_n\le x)\)</span> is bounded away from 0, so the second term goes to 0. Now <span class="math display">\[\Pj(D^c\wedge X_m\le x\text{ i.o.}) = \Pj(D^c\wedge X_m\le x\text{ i.o.}|X_n\le x) + \cdots.\]</span> Choosing <span class="math inline">\(n\)</span> large enough, we make the RHS as small as we want.</li>
 <li>The condition in 5 holds.</li>
 </ol>
@@ -355,11 +355,11 @@ We may assume that if <span class="math inline">\(X_n=0\)</span>, then <span cla
 <em>Proof</em>: Let <span class="math inline">\(T=\inf\set{k\ge -n}{X_k}\)</span>. (Take averages over fewer elements; stop when it’s <span class="math inline">\(\ge 1\)</span>.) (Let <span class="math inline">\(T=-1\)</span> if it’s <span class="math inline">\(\phi\)</span>.) <span class="math inline">\(X_T\ge 1\)</span> on <span class="math inline">\(G^c\)</span> and <span class="math inline">\(0\)</span> on <span class="math inline">\(G\)</span>. <span class="math display">\[\Pj(G^c|S_n) \le \E(X_T|\mathcal F_{-n}) = \fc{S_n}n.\]</span></li>
 <li><p>Hewitt-Savage 0-1 law (alternate proof): <strong>Lemma</strong>: Let <span class="math inline">\(A_n(\ph) = \rc{n\fp k} \sum_i \ph(X_{i_1},\ldots, X_{i_k})\)</span>. If <span class="math inline">\(X_i\)</span> are iid and <span class="math inline">\(\ph\)</span> is bounded, <span class="math inline">\(A_n(\ph) \to \E\ph(X_1,\ldots, X_k)\)</span> a.s.</p>
 <em>Proof</em>.
-\begin{align}
+<span class="math display">\[\begin{align}
 A_n(\ph) &amp;= \E(\ph(X_1,\ldots, X_k)|\mathcal E_n) &amp; \text{symmetry}\\
 &amp;\to \E (\ph(X_1,\ldots, X_k)|\mathcal E)\\
 &amp;=\E (\ph(X_1,\ldots, X_k))
-\end{align}
+\end{align}\]</span>
 <p>The last is because most permutations move <span class="math inline">\(X_1,\ldots, X_k\)</span> away from positions in <span class="math inline">\([1,k]\)</span>. Formally, we first have <span class="math inline">\(\E[\ph(X_1,\ldots, X_k)|\mathcal E] \in \si(X_{k+1},\ldots)\)</span>, and then show lemma: if <span class="math inline">\(\E X^2&lt;\iy\)</span>, <span class="math inline">\(\E(X|\mathcal G)\in \mathcal F\)</span>, and <span class="math inline">\(X\)</span> is independent of <span class="math inline">\(\mathcal F\)</span>, then <span class="math inline">\(\E(X|\mathcal G) = \E X\)</span>. (Proof: Show <span class="math inline">\(\Var(Y)=0\)</span>.)</p>
 Then <span class="math inline">\(\mathcal E\)</span> is independent of <span class="math inline">\(\mathcal G_k = \si(X_1,\ldots, X_k)\)</span>, so <span class="math inline">\(\mathcal E\)</span> is independent of <span class="math inline">\(\si\pa{\bigcup_k \mathcal G_k}\)</span>.</li>
 <li><p><strong>Theorem (de Finetti)</strong>: If <span class="math inline">\(X_1,\ldots\)</span> are exchangeable, then conditional on <span class="math inline">\(\mathcal E\)</span>, <span class="math inline">\(X_1,\ldots\)</span> are iid.<a href="#fn2" class="footnoteRef" id="fnref2"><sup>2</sup></a></p>
@@ -374,10 +374,10 @@ Then <span class="math inline">\(\mathcal E\)</span> is independent of <span cla
 <li><p>If <span class="math inline">\(X_n\)</span> is a uniformly integrable submartingale, then for any stopping time <span class="math inline">\(N\le \iy\)</span>, <span class="math inline">\(\E X_0\le \E X_n\le \E X_\iy\)</span> where <span class="math inline">\(X_\iy = \lim X_n\)</span>.</p>
 <em>Proof</em>. Use 4.1 and 5.3, which shows that a uniformly integrable submartingale converges in <span class="math inline">\(L^1\)</span>.</li>
 <li><strong>Theorem (Optional stopping)</strong>: If <span class="math inline">\(L\le M\)</span> are stopping times and <span class="math inline">\(Y_{M\wedge n}\)</span> is a uniformly integrable submartingale then
-\begin{align}
+<span class="math display">\[\begin{align}
 \E Y_L &amp;\le \E Y_M\\
 \E X_N &amp;\le \mathcal F_L.
-\end{align}
+\end{align}\]</span>
 <p><em>Proof</em>. Use 7.3 with <span class="math inline">\(X_n=Y_{M\wedge n}, N=L\)</span>.</p>
 Let <span class="math inline">\(N=\begin{cases} L,&amp;\text{on }A\\ M,&amp;\text{on }A^c\end{cases}\)</span>. Use the first part on <span class="math inline">\(N\le M\)</span> to get <span class="math inline">\(\E Y_N\le \E Y_M\)</span>. Note that <span class="math inline">\(N=M\)</span> on <span class="math inline">\(A^c\)</span> to get <span class="math display">\[A\in \mathcal F_L\implies \E(Y_L;A) \le \E(Y_M;A) = \E[\E[Y_M|\mathcal F_L];A].\]</span> (Define <span class="math inline">\(N\)</span> so we can just localize the inequality to <span class="math inline">\(A\)</span>.)</li>
 <li><p><strong>Theorem (Generalization of Wald’s equation)</strong>: If <span class="math inline">\(X_n\)</span> is a submartingale, <span class="math inline">\(\E[|X_{n+1}-X_n||\mathcal F_n]\le B\)</span> a.s., and <span class="math inline">\(\E N&lt;\iy\)</span>, then <span class="math inline">\(X_{N\wedge n}\)</span> is uniformly integrable and <span class="math inline">\(\E X_N\ge \E X_0\)</span>.<a href="#fn3" class="footnoteRef" id="fnref3"><sup>3</sup></a> (For a martingale, we have <span class="math inline">\(=\)</span>.)</p>
@@ -389,10 +389,10 @@ Let <span class="math inline">\(N=\begin{cases} L,&amp;\text{on }A\\ M,&amp;\tex
 <li>Let <span class="math inline">\(\ph(x) = \pf{1-p}{p}^x\)</span>. <span class="math inline">\(\ph(S_n)\)</span> is a martingale.</li>
 <li><p>(Absorption probabilities) Let <span class="math inline">\(T_x=\inf\set{n}{S_n=x}\)</span>. Then <span class="math display">\[\Pj(T_a&lt;T_b) = \fc{\ph(b)-\ph(0)}{\ph(b)-\ph(a)}.\]</span></p>
 Check that <span class="math inline">\(T_a\wedge T_b&lt;\iy\)</span> a.s. and apply 7.3. (Check directly, or use 5.6 on <span class="math inline">\(\ph(S_{N\wedge n})\)</span>.)</li>
-<li>\begin{align}
+<li><span class="math display">\[\begin{align}
 \Pj(T_a&lt;\iy) &amp;= \pf{1-p}{p}^{-a}\\
 \Pj(T_b&lt;\iy) &amp;= 1.
-\end{align}
+\end{align}\]</span>
 <em>Proof</em>. Let <span class="math inline">\(b\to \iy\)</span>; <span class="math inline">\(a\to \iy\)</span>, respectively in 2.</li>
 <li><p><span class="math inline">\(\E T_b = \fc{b}{2p-1}\)</span>.</p>
 <p><em>Proof</em>. <span class="math inline">\(S_n-(p-q)n\)</span> is a martingale. Either show <span class="math inline">\(\E T_b&lt;\iy\)</span>, or apply 4.1 to <span class="math inline">\(T_b\wedge n\)</span> and let <span class="math inline">\(n\to iy\)</span>.</p></li>

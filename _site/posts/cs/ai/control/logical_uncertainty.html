@@ -10,7 +10,7 @@
   <meta name="description" content="Holden Lee's Research Notebook">
   <meta name="author" content="Holden Lee">
     
-  <title>[SF15] Questions of reasoning under logical uncertainty</title>
+  <title>(SF15) Questions of reasoning under logical uncertainty</title>
 
   <!-- Bootstrap core CSS -->
   <link href="../../../../bootstrap/css/bootstrap.min.css" rel="stylesheet">
@@ -70,7 +70,7 @@
 <div class="container">
   <div id="content">
     <div class="page header">
-      <h1>[SF15] Questions of reasoning under logical uncertainty</h1>
+      <h1>(SF15) Questions of reasoning under logical uncertainty</h1>
     </div>
     <div class="info">
       
@@ -187,34 +187,34 @@
 </colgroup>
 <thead>
 <tr class="header">
-<th style="text-align: left;">Domain</th>
-<th style="text-align: left;">Agent</th>
-<th style="text-align: left;">Minimal sufficient conditions</th>
-<th style="text-align: left;">Desirability arguments</th>
-<th style="text-align: left;">Feasibility</th>
+<th>Domain</th>
+<th>Agent</th>
+<th>Minimal sufficient conditions</th>
+<th>Desirability arguments</th>
+<th>Feasibility</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td style="text-align: left;">Rational choice</td>
-<td style="text-align: left;">VNM utility maximizer</td>
-<td style="text-align: left;">VNM axioms</td>
-<td style="text-align: left;">Dutch book arguments, compelling axioms</td>
-<td style="text-align: left;">AIXI, POMDP solvers</td>
+<td>Rational choice</td>
+<td>VNM utility maximizer</td>
+<td>VNM axioms</td>
+<td>Dutch book arguments, compelling axioms</td>
+<td>AIXI, POMDP solvers</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">Probability</td>
-<td style="text-align: left;">Bayesian updater</td>
-<td style="text-align: left;">axioms of probability theory</td>
-<td style="text-align: left;">Dutch book arguments, compelling axioms</td>
-<td style="text-align: left;">Solomonoff induction</td>
+<td>Probability</td>
+<td>Bayesian updater</td>
+<td>axioms of probability theory</td>
+<td>Dutch book arguments, compelling axioms</td>
+<td>Solomonoff induction</td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;">Logical uncertainty</td>
-<td style="text-align: left;">Garrabrant inductor</td>
-<td style="text-align: left;">???</td>
-<td style="text-align: left;">Dutch book arguments, historical desiderata</td>
-<td style="text-align: left;">LIA2016</td>
+<td>Logical uncertainty</td>
+<td>Garrabrant inductor</td>
+<td>???</td>
+<td>Dutch book arguments, historical desiderata</td>
+<td>LIA2016</td>
 </tr>
 </tbody>
 </table>
@@ -273,18 +273,18 @@ converge to paper \iy
 </ul>
 <p>Analogy: Ramanujan vs. Hardy.</p>
 Timely manner:
-\begin{align}
+<span class="math display">\[\begin{align}
 x_n \simeq_n y_n \iff \lim_{n\to \iy} x_n-y_n=0\\
 x_n \gtrsim_n y_n\iff \lim\inf &gt;0\\
 ...
-\end{align}
+\end{align}\]</span>
 <ul>
 <li>Timely adoption of limits. <span class="math inline">\(p\)</span> sequence of rational probabilities. If <span class="math inline">\(P_\iy(\phi_n) \simeq_n p_n\)</span> then <span class="math inline">\(P_n(\phi_n) \simeq_n p_n\)</span>. (Keep up with todo list.)</li>
 <li>Introspection: ask about themselves. Knows what its own beliefs are at time it has them. For any pg <span class="math inline">\(\phi_n\)</span>, any <span class="math inline">\((a,b)\)</span> (or sequence of intervals), any <span class="math inline">\(\ep&gt;0\)</span>, large enough <span class="math inline">\(n\)</span>,
-\begin{align}
+<span class="math display">\[\begin{align}
 P_n(\phi_n)&amp;\in (a+\ep,b-\ep) &amp;\implies P_n'P_n(\phi_n)\in (a,b)' &gt; 1-\ep\\
 P_n(\phi_n)&amp;\nin (a-\ep,b+\ep) &amp;\Leftarrow P_n('P_n(\phi_n)\in (a,b)') &lt;\ep
-\end{align}
+\end{align}\]</span>
 (Spit out at once at time <span class="math inline">\(n\)</span>. It’s one static table with introspective property.)</li>
 <li>Liar’s paradox resistance: Liar sentences <span class="math inline">\(L_n\)</span>, <span class="math inline">\(\Ga\vdash L_n \iff 'P_n(L_n)\le p'\)</span>. Then <span class="math inline">\(\lim_{n\to \iy} P_n(L_n)=p\)</span>. (Oscillations…)</li>
 </ul>

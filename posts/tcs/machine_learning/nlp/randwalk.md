@@ -1,5 +1,5 @@
 ---
-title: [ALLMR16] RAND-WALK: A latent variable model approach to word embeddings
+title: (ALLMR16) RAND-WALK - A latent variable model approach to word embeddings
 published: 2016-03-15
 modified: 2016-03-15
 tags: nlp, word embeddings

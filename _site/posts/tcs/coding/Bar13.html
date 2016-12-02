@@ -10,7 +10,7 @@
   <meta name="description" content="Holden Lee's Research Notebook">
   <meta name="author" content="Holden Lee">
     
-  <title>[Bar13] Convexity of the image of a quadratic map via the relative entropy distance</title>
+  <title>(Bar13) Convexity of the image of a quadratic map via the relative entropy distance</title>
 
   <!-- Bootstrap core CSS -->
   <link href="../../../bootstrap/css/bootstrap.min.css" rel="stylesheet">
@@ -70,7 +70,7 @@
 <div class="container">
   <div id="content">
     <div class="page header">
-      <h1>[Bar13] Convexity of the image of a quadratic map via the relative entropy distance</h1>
+      <h1>(Bar13) Convexity of the image of a quadratic map via the relative entropy distance</h1>
     </div>
     <div class="info">
       
@@ -102,10 +102,10 @@
 <li><p>Prove Theorem 3.2 by SDP rounding. Let <span class="math inline">\(X\)</span> be the optimal solution, write <span class="math inline">\(X=T^2\)</span>. In SDP rounding, take <span class="math inline">\(x\sim N(0,I)\)</span>, <span class="math inline">\(y=Tx\)</span>, and hope that <span class="math inline">\(y\)</span> is a good solution to the original problem. (If <span class="math inline">\(X=xx^T\)</span>, then <span class="math inline">\(T\)</span> would be a projection.) We use the Quadratic Sampling Lemma—the expectation of <span class="math inline">\(q(y)\)</span> for any quadratic <span class="math inline">\(q\)</span> is the same as the <span class="math inline">\(\an{Q,X}\)</span>.</p>
 <p>Thus <span class="math inline">\(\E q_i(y) = \an{Q_i,X}=1\)</span>.</p>
 Now do some calculations (Lemma 2.1). Calculate that
-\begin{align}
+<span class="math display">\[\begin{align}
 \E |\ln q_i(y)| &amp; \le C_1 \implies \E\ab{\sumo ik a_i \ln q_i(y)}\le C\\
 \Pj( \ve{y}^2 \ge C_2) &amp; \le \ep_3
-\end{align}
+\end{align}\]</span>
 <p>for some <span class="math inline">\(C_1,C_2,\ep_3\)</span>. Use Markov’s inequality on the first inequality. Find there is a point with <span class="math inline">\(\ve{y}^2&lt;C_2\)</span>, <span class="math inline">\(\sumo ik a_i\ln q_i(y)&gt;-C_4\)</span>. Let <span class="math inline">\(y' = \wh y\)</span> be the solution.</p></li>
 </ol>
 

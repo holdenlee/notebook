@@ -1,5 +1,5 @@
 ---
-title: [DKLPRS] Markov logic
+title: (DKLPRS) Markov logic
 published: 2016-05-17
 modified: 2016-05-17
 tags: graphical model, probabilistic model, logic, FOL

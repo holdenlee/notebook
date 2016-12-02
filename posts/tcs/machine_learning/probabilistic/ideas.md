@@ -13,12 +13,12 @@ We can adapt Hazan and Ma's framework [HM16] to learning probabilistic models. N
 
 We say a distribution $D$ is $\ga$ C-learnable by a hypothesis class $\mathcal H$ of probabilistic models if there is an algorithm, that given $\ep$, with probability $1-\de$, outputs a model $m$ such that 
 $$
-\rc{l(\vec x)} \EE_{D} \ln \Pj(\vec x|m) le \rc{l(\vec x)} \min_{m\in \mathcal H} \EE_{D}\ln \Pj(\vec x|m) + \ep + \ga
+\rc{l(\vec x)} \EE_{D} \ln \Pj(\vec x|m) \le \rc{l(\vec x)} \min_{m\in \mathcal H} \EE_{D}\ln \Pj(\vec x|m) + \ep + \ga
 $$
 in time polynomial in the parameters, $\poly\pa{\rc\ep, \ln\prc{\de}, d}$.
 Equivalently, the $m$ that is output satisfies
 $$
-KL(D || m)\le KL(D || \mu) \ep + \ga.
+KL(D || m)\le KL(D || \mu) +\ep + \ga.
 $$
 where $\mu$ is the distribution minimizing $KL(D||\mu)$.
 

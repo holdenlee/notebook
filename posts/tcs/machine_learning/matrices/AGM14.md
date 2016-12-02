@@ -1,5 +1,5 @@
 ---
-title: [AGM14] New algorithms for learning incoherent and overcomplete dictionaries
+title: (AGM14) New algorithms for learning incoherent and overcomplete dictionaries
 published: 2016-04-02
 modified: 2016-04-02
 tags: none

@@ -1,5 +1,5 @@
 ---
-title: [MVB16] Geometry of Polysemy
+title: (MVB16) Geometry of Polysemy
 published: 2016-10-28
 modified: 2016-10-28
 tags: nlp, word vectors, polysemy

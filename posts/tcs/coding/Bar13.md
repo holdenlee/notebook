@@ -1,5 +1,5 @@
 ---
-title: [Bar13] Convexity of the image of a quadratic map via the relative entropy distance
+title: (Bar13) Convexity of the image of a quadratic map via the relative entropy distance
 published: 2016-04-02
 modified: 2016-04-02
 tags: none

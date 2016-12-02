@@ -1,5 +1,5 @@
 ---
-title: [AGMM15] Simple, efficient, and neural algorithms for sparse coding
+title: (AGMM15) Simple, efficient, and neural algorithms for sparse coding
 published: 2016-03-25
 modified: 2016-03-25
 tags: dictionary learning, sparse coding

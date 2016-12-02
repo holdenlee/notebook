@@ -10,7 +10,7 @@
   <meta name="description" content="Holden Lee's Research Notebook">
   <meta name="author" content="Holden Lee">
     
-  <title>[A16] Provable algorithms for inference in topic models</title>
+  <title>(A16) Provable algorithms for inference in topic models</title>
 
   <!-- Bootstrap core CSS -->
   <link href="../../../../bootstrap/css/bootstrap.min.css" rel="stylesheet">
@@ -70,7 +70,7 @@
 <div class="container">
   <div id="content">
     <div class="page header">
-      <h1>[A16] Provable algorithms for inference in topic models</h1>
+      <h1>(A16) Provable algorithms for inference in topic models</h1>
     </div>
     <div class="info">
       
@@ -106,10 +106,10 @@
 <li>the <span class="math inline">\(\ell_1\)</span> condition number <span class="math display">\[\ka(A) = \min \set{\ka}{\forall x\in \R^k, \ve{Ax}_1\ge \rc{\ka}\ve{x}_1}\]</span></li>
 <li>the <span class="math inline">\(\ell_\iy\to \ell_1\)</span> condition number <span class="math display">\[\la(A) = \min \set{\la}{\forall x\in \R^k, \ve{Ax}_1\ge \rc{\la}\ve{x}_\iy}\]</span></li>
 <li>the <span class="math inline">\(\de\)</span>-biased <span class="math inline">\(\ell_\iy\to \ell_1\)</span> condition number
-\begin{align}
+<span class="math display">\[\begin{align}
 \la_\de&amp;=\min_{|BA-I_k|\le \de, B\in \R^{k\times D}} |B|_{\iy}\\
 &amp;=\max_{\ve{Ax}_1\le 1} \ve{x}_{\iy} - \de\ve{x}_1.
-\end{align}
+\end{align}\]</span>
 (The equality follows from a duality calculation.)</li>
 <li>the restricted <span class="math inline">\(\ell_1\to \ell_1\)</span> condition number is <span class="math display">\[\ol{\ka}_r(A) = \min\set{\ol{\ka}}{\forall \ve{v}_0, \ve{Av}_1\ge \rc{\ol \ka}\ve{v}}.\]</span></li>
 </ul>
@@ -143,10 +143,10 @@
 <li><span class="math inline">\(n\ge c\ol{\ka}^2 r^2 \fc{\log k}{\tau^2}\)</span></li>
 </ul>
 then with high probability
-\begin{align}
+<span class="math display">\[\begin{align}
 \ve{Ax_{MLE}-Ax^*}_1 &amp;\le \wt O\pa{\sfc rn}\\
 \ve{x_{MLE}-x^*}_1 &amp;\le \wt O\pa{\ol \ka \sfc rn}
-\end{align}
+\end{align}\]</span>
 <p>The proof is like the <a href="../../math/statistics/fisher-info.html">proof of asymptotic normality of MLE</a>, but with matrix concentration to get a finite sample bound.</p>
 <h3 id="sample-complexity-lower-bounds">Sample complexity lower bounds</h3>
 <p>These exist!</p>

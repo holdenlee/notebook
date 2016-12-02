@@ -10,7 +10,7 @@
   <meta name="description" content="Holden Lee's Research Notebook">
   <meta name="author" content="Holden Lee">
     
-  <title>[WJ08] Graphical Models, Exponential Families, and Variational Inference</title>
+  <title>(WJ08) Graphical Models, Exponential Families, and Variational Inference</title>
 
   <!-- Bootstrap core CSS -->
   <link href="../../../../bootstrap/css/bootstrap.min.css" rel="stylesheet">
@@ -70,7 +70,7 @@
 <div class="container">
   <div id="content">
     <div class="page header">
-      <h1>[WJ08] Graphical Models, Exponential Families, and Variational Inference</h1>
+      <h1>(WJ08) Graphical Models, Exponential Families, and Variational Inference</h1>
     </div>
     <div class="info">
       
@@ -197,11 +197,11 @@
 <p>Sum-product and junctio-tree algorithms are DP algorithms based on method for sharing intermediate terms.</p>
 <p>Transform directed to undirected graphical model by making it <strong>moral</strong>: parents of each child are linked.</p>
 Tree-structured graph: For <span class="math inline">\(u\in N(s)\)</span> let <span class="math inline">\(T_u=(V_u,E_u)\)</span> be the component of <span class="math inline">\(u\)</span> after deleting <span class="math inline">\(s\)</span>.
-\begin{align}
+<span class="math display">\[\begin{align}
 p(x) &amp;= \rc Z \prod_{s\in V} \psi_s(x_s) \prod_{(s,t)}\psi_{st}(x_s,x_t)\\
 \mu_s(x_s) &amp; = \ka \psi_s(x_s) \prod_{t\in N(s)} M_{ts}^* (x_s)\\
 M_{ts}^*(x_s) &amp;= \sum_{x_{V_t}'} \psi_{st}(x_s,x_t') p(x_{V_t}'; T_t)
-\end{align}
+\end{align}\]</span>
 <!--p(x_{V_t}; T_t) &\propto \prod_{u\in V_t} \psi_u(x_u)-->
 <p>Compute marginals for all nodes simultaneously in parallel. <span class="math inline">\(M_{tu}(x_u)\)</span> is passed from <span class="math inline">\(t\)</span> to <span class="math inline">\(u\in N(t)\)</span>. <span class="math display">\[
 M_{ts}(x_s) \leftarrow \ka \sum_{x_t'} \ba{
@@ -219,17 +219,17 @@ M_{ts}(x_s) \leftarrow \ka \sum_{x_t'} \ba{
 </ol>
 <p>The separators are the intersection of cliques adjacent in the junction tree.</p>
 Passing a message from <span class="math inline">\(B\)</span> to <span class="math inline">\(C\)</span> (through <span class="math inline">\(S\)</span>):
-\begin{align}
+<span class="math display">\[\begin{align}
 \wt \phi_S(x_S) &amp;\leftarrow \sum_{x_{B\bs S}} \phi_B(x_B)\\
 \phi_C(x_C) &amp;\leftarrow \fc{\wt\phi_S(x_S)}{\phi_S(x_S)} \phi_C(x_C).
-\end{align}
+\end{align}\]</span>
 <p>After a round of message passing, clique potentials are proportional to marginal probabilities.</p>
 <p>For a separator set <span class="math inline">\(S\)</span>, let <span class="math inline">\(d(S)\)</span> be the number of maximal cliques to which it is adjacent. <span class="math display">\[p(x) = \fc{\prod_{C\in \mathcal C}\mu_C(x_C)}{\prod_{S\in \mathcal S} [\mu_S(x_S)]^{d(S)-1}}.\]</span> Ex. for <span class="math inline">\(x_1\to x_2\to x_3\)</span>, <span class="math inline">\(p(x) = \fc{p(x_1,x_2)p(x_2,x_3)}{p(x_2)}\)</span>.</p>
 <strong>Proposition 2.1</strong>. A candidate set of marginal distributions <span class="math inline">\(\tau_C, C\in \mathcal C, \mathcal S\)</span> is globally consistent iff
-\begin{align}
+<span class="math display">\[\begin{align}
 \forall S, \sum_{x_S'} \tau_S(x_S') &amp;= 1\\
 \forall S\subeq C, \sum_{x_C'|x_S'=x_S} \tau_{C}(x_C') &amp;=\tau_S(x_S).
-\end{align}
+\end{align}\]</span>
 <p>Computational cost grows exponentially in size of maximal clique in junction tree. Minimal size of maximl clique over all possible triangulations <span class="math inline">\(-1\)</span> is <strong>treewidth</strong>.</p>
 <p>Alternate definition (why equivalent?): covered by subgraphs of <span class="math inline">\(k+1\)</span> nodes in treelike fashion.</p>
 <h3 id="message-passing-algorithms-for-approximate-inference">2.6 Message-passing algorithms for approximate inference</h3>
@@ -244,17 +244,17 @@ Passing a message from <span class="math inline">\(B\)</span> to <span class="ma
 <h2 id="exponential-families">3 Exponential families</h2>
 <h3 id="exponential-representations-via-maximum-entropy">3.1 Exponential representations via maximum entropy</h3>
 Let <span class="math inline">\(\{\phi_\al\}\)</span> be a family of functions (called <strong>potential functions</strong> or <strong>sufficient statistics</strong>). Say <span class="math inline">\(p\)</span> is consistent with the data if <span class="math display">\[ \EE_p [\phi_\al (X)] = \wh \mu_\al.\]</span> Ex. <span class="math inline">\(\phi=\{x,x^2\}\)</span>. The maximum entropy distribution is
-\begin{align}
+<span class="math display">\[\begin{align}
 p^*:&amp;= \amax_{\EE_p [\phi_\al (X)] = \wh \mu_\al} H(p)\\
 H(p):&amp;= -\int_X p(x) \ln p(x)\,\nu(dx).
-\end{align}
+\end{align}\]</span>
 <p>Under certain conditions, the optimal solution is an exponential family.</p>
 <h3 id="basics-of-exponential-families">3.2 Basics of exponential families</h3>
 The <strong>exponential family</strong> associated with <span class="math inline">\(\phi\)</span> is the parametrized collection of density functions
-\begin{align}
+<span class="math display">\[\begin{align}
 p_\te(x_1,\ldots, x_m) &amp;= \exp[\an{\te,\phi(x)} - A(\te)]\\
 A(\te) &amp;= \ln \int_{X^m} \exp[\an{\te, \phi(x)}]\nu(dx).
-\end{align}
+\end{align}\]</span>
 <p>(<span class="math inline">\(A\)</span> is the <strong>log partition</strong> or <strong>cumulant</strong> function.) Here <span class="math inline">\(\te\in \Om:=\set{\te\in \R^d}{A(\te)&lt;\iy}\)</span>. A <strong>regular</strong> exponential family has <span class="math inline">\(\Om\)</span> open. Say <span class="math inline">\(\phi\)</span> is minimal if <span class="math inline">\(\phi\cup \{1\}\)</span> is linearly independent; otherwise it is overcomplete.</p>
 <h3 id="examples-of-graphical-models-in-exponential-form">3.3 Examples of graphical models in exponential form</h3>
 <ol type="1">
@@ -277,20 +277,20 @@ A(\te) &amp;= \ln \int_{X^m} \exp[\an{\te, \phi(x)}]\nu(dx).
 <li>Topics of document: <span class="math inline">\(Z\)</span> multinomial drawn from <span class="math inline">\(U\)</span>.</li>
 <li>Words: <span class="math inline">\(W\)</span> multinomial drawn from the topic distribution of <span class="math inline">\(Z\)</span>. <span class="math inline">\(\ga\)</span> specifies distribution of words in topics.</li>
 <li>Equations
-\begin{align}
+<span class="math display">\[\begin{align}
 \Pj(W=j|Z=i;\ga) &amp;= \exp(\ga_{ij})\\
 p_\ga(w|z) &amp;= \exp\ba{\sumz i{r-1}\sumz j{k-1} \ga_{ij} \one_i(z)\one_j(w)}\\
 p(z|u) &amp;\propto \exp\ba{\sumz i{r-1} \one_i(z)\ln u_i}.\\
 p_\al(u) &amp;= \exp\pa{\sumz i{r-1} \al_i\ln u_i}.
-\end{align}</li>
+\end{align}\]</span></li>
 </ul></li>
 <li>Hard-core constraints: subset of configurations that are forbidden. Ex. decoding linear codes, combinatorial optimization problems.
 <ul>
 <li>To express as exponential family, take density wrt appropriate bse measure. Ex. restrict to valid codewords.
-\begin{align}
+<span class="math display">\[\begin{align}
 p(y_i|x_i) &amp;= \exp(\te_ix_i-\ln (1+\exp(\te_i)))\\
 \te_i &amp;=(2y_i-1) \ln \prc{1-\ep}{\ep}.
-\end{align}
+\end{align}\]</span>
 for BSC.</li>
 </ul></li>
 </ol>
@@ -298,36 +298,36 @@ for BSC.</li>
 <table>
 <thead>
 <tr class="header">
-<th style="text-align: left;">Family</th>
-<th style="text-align: left;"><span class="math inline">\((X,\nu)\)</span></th>
-<th style="text-align: left;">Sufficient statistics</th>
+<th>Family</th>
+<th><span class="math inline">\((X,\nu)\)</span></th>
+<th>Sufficient statistics</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td style="text-align: left;">Bernoulli</td>
-<td style="text-align: left;"><span class="math inline">\(\{0,1\}\)</span></td>
-<td style="text-align: left;"><span class="math inline">\(x\)</span></td>
+<td>Bernoulli</td>
+<td><span class="math inline">\(\{0,1\}\)</span></td>
+<td><span class="math inline">\(x\)</span></td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">Gaussian</td>
-<td style="text-align: left;"><span class="math inline">\(\R\)</span></td>
-<td style="text-align: left;"><span class="math inline">\(x,x^2\)</span></td>
+<td>Gaussian</td>
+<td><span class="math inline">\(\R\)</span></td>
+<td><span class="math inline">\(x,x^2\)</span></td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;">Exponential</td>
-<td style="text-align: left;"><span class="math inline">\((0,\iy)\)</span></td>
-<td style="text-align: left;"><span class="math inline">\(x\)</span></td>
+<td>Exponential</td>
+<td><span class="math inline">\((0,\iy)\)</span></td>
+<td><span class="math inline">\(x\)</span></td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">Poisson</td>
-<td style="text-align: left;"><span class="math inline">\(\N\)</span></td>
-<td style="text-align: left;"><span class="math inline">\(x\)</span></td>
+<td>Poisson</td>
+<td><span class="math inline">\(\N\)</span></td>
+<td><span class="math inline">\(x\)</span></td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;">Beta</td>
-<td style="text-align: left;"><span class="math inline">\((0,1)\)</span></td>
-<td style="text-align: left;"><span class="math inline">\(\ln x, \ln (1-x)\)</span></td>
+<td>Beta</td>
+<td><span class="math inline">\((0,1)\)</span></td>
+<td><span class="math inline">\(\ln x, \ln (1-x)\)</span></td>
 </tr>
 </tbody>
 </table>
@@ -336,10 +336,10 @@ for BSC.</li>
 <p>Realizable mean parameters: <span class="math display">\[\mathcal M :=\set{\mu\in \R^d}{\exists p  \forall \al, \EE_p [\phi_\al(X)] = \mu_\al}.\]</span></p>
 <p>Ex. Gaussian MRF mean parameters are <span class="math inline">\(\Si=\E[XX^T]\)</span> and <span class="math inline">\(\mu=\E[X]\)</span>. Realizable parameters are those with <span class="math inline">\(\Si-\mu\mu^T\succsim 0\)</span>. <span class="math inline">\(\mathcal M\)</span> is always convex. (Take the convex combination of the distributions.) When <span class="math inline">\(|X^m|\)</span> is finite, <span class="math inline">\(\mathcal M\)</span> is a convex polytope, <span class="math display">\[ \mathcal M = \conv \set{\phi(x)}{x\in X^m}.\]</span></p>
 Ex. Ising mean parameters
-\begin{align}
+<span class="math display">\[\begin{align}
 \mu_s &amp;= \EE_p[X_s]=\Pj(X_s=1)\\
 \forall (s,t)\in E, \mu_{s,t} &amp;= \EE_p[X_sX_t] = \Pj[(X_s,X_t)=(1,1)]
-\end{align}
+\end{align}\]</span>
 <p>The set <span class="math inline">\(\mathcal M\)</span> is the set of singleton and pairwise marginal probabilities that can be realized by some distribution over <span class="math inline">\(\{0,1\}^m\)</span>, call the <strong>correlation/cut polytope</strong>. For <span class="math inline">\(\cdot -\cdot\)</span> this is <span class="math inline">\(\conv\{(0,0,0),(1,0,0),(0,1,0),(1,1,1)\}\)</span>.</p>
 <p>Ex. For binary linear codes, <span class="math inline">\(\mathcal M\)</span> is the codeword polytope, convex hull of codewords. <!-- distance $\ge 1$ from odd-parity vertices--></p>
 <p>Ex. For the standard overcomplete representation, <span class="math inline">\(\mathcal M\)</span> is the <strong>marginal polytope</strong>.</p>
@@ -351,10 +351,10 @@ Ex. Ising mean parameters
 </ul>
 <h3 id="properties-of-a">3.5 Properties of <span class="math inline">\(A\)</span></h3>
 <strong>Proposition</strong>: <span class="math inline">\(A(\te)=\ln \int_{X^m} \exp[\an{\te,\phi(x)}] \,\nu(dx)\)</span> has derivatives of all orders and is convex on <span class="math inline">\(\Om\)</span>, strictly convex if representation is minimal.
-\begin{align}
+<span class="math display">\[\begin{align}
 A_{\te_\al} &amp;= \EE_{\te}\phi_\al(X)\\
 A_{\te_\al\te_\be} &amp;= \Cov(\phi_\al(X),\phi_\be(X))\\
-\end{align}
+\end{align}\]</span>
 <p><em>Proof</em>. DCT, differentiate through integral.</p>
 <p>The range of <span class="math inline">\(\nb A:\Om \to \R^d\)</span> is contained in <span class="math inline">\(\mathcal M\)</span>.</p>
 <p>Questions:</p>
@@ -398,36 +398,36 @@ A^*(\mu) = \begin{cases}
 </colgroup>
 <thead>
 <tr class="header">
-<th style="text-align: left;">Family</th>
-<th style="text-align: left;"><span class="math inline">\(\Om\)</span></th>
-<th style="text-align: left;"><span class="math inline">\(A(\te)\)</span></th>
-<th style="text-align: left;"><span class="math inline">\(\mathcal M\)</span></th>
+<th>Family</th>
+<th><span class="math inline">\(\Om\)</span></th>
+<th><span class="math inline">\(A(\te)\)</span></th>
+<th><span class="math inline">\(\mathcal M\)</span></th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td style="text-align: left;">Bernoulli</td>
-<td style="text-align: left;"><span class="math inline">\(\ln(1+e^{\te})\)</span></td>
-<td style="text-align: left;"><span class="math inline">\([0,1]\)</span></td>
-<td style="text-align: left;"><span class="math inline">\(-H(\mu)\)</span></td>
+<td>Bernoulli</td>
+<td><span class="math inline">\(\ln(1+e^{\te})\)</span></td>
+<td><span class="math inline">\([0,1]\)</span></td>
+<td><span class="math inline">\(-H(\mu)\)</span></td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">Gaussian</td>
-<td style="text-align: left;"><span class="math inline">\(\R\times \R_{&lt;0}\)</span></td>
-<td style="text-align: left;"><span class="math inline">\(-\fc{\te_1^2}{4\te_2} - \ln (-2\te_2)\)</span></td>
-<td style="text-align: left;"><span class="math inline">\(\set{(\mu_1,\mu_2)}{\mu_2-\mu_1^2}&gt;0\)</span></td>
+<td>Gaussian</td>
+<td><span class="math inline">\(\R\times \R_{&lt;0}\)</span></td>
+<td><span class="math inline">\(-\fc{\te_1^2}{4\te_2} - \ln (-2\te_2)\)</span></td>
+<td><span class="math inline">\(\set{(\mu_1,\mu_2)}{\mu_2-\mu_1^2}&gt;0\)</span></td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;">Exponential</td>
-<td style="text-align: left;"><span class="math inline">\((-\iy,0)\)</span></td>
-<td style="text-align: left;"><span class="math inline">\(-\ln (-\te)\)</span></td>
-<td style="text-align: left;"><span class="math inline">\((0,\iy)\)</span></td>
+<td>Exponential</td>
+<td><span class="math inline">\((-\iy,0)\)</span></td>
+<td><span class="math inline">\(-\ln (-\te)\)</span></td>
+<td><span class="math inline">\((0,\iy)\)</span></td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">Poisson</td>
-<td style="text-align: left;"><span class="math inline">\(\R\)</span></td>
-<td style="text-align: left;"><span class="math inline">\(e^\te\)</span></td>
-<td style="text-align: left;"><span class="math inline">\((0,\te)\)</span></td>
+<td>Poisson</td>
+<td><span class="math inline">\(\R\)</span></td>
+<td><span class="math inline">\(e^\te\)</span></td>
+<td><span class="math inline">\((0,\te)\)</span></td>
 </tr>
 </tbody>
 </table>
@@ -448,18 +448,18 @@ A^*(\mu) = \begin{cases}
 <h2 id="bethe-approximation-and-sum-product-algorithm">4 Bethe approximation and sum-product algorithm</h2>
 <h3 id="sum-product-and-bethe-approximation">4.1 Sum-product and Bethe approximation</h3>
 Pairwise Markov random field: undirected graphical model with potential functions involving at most pairs of variables. (Often discrete or Gaussian.)
-\begin{align}
+<span class="math display">\[\begin{align}
 p_\te(x)&amp;\propto\exp\ba{\sum_{s\in V} \te_s(x_s) + \sum_{(s,t)\in E} \te_{st}(x_s,x_t)}\\
 \mu_{st}(x_s,x_t) :&amp;= \sum_{(j,k)\in X_s\times X_t} \mu_{st;jk} \one_{st;jk}(x_s,x_t)\\
 \mathbb{M}(G) :&amp;= \set{\mu\in \R^d}{\exists p\text{ with marginals }\mu_s(x_s), \mu_{st}(x_s,x_t)}
-\end{align}
+\end{align}\]</span>
 <p>(globally realizable distributions)</p>
 <p>(Q: how to convert an undirected GM into an equivalent pairwise form?)</p>
 Locally consistent marginal distributions:
-\begin{align}
+<span class="math display">\[\begin{align}
 \sum_{x_s} \tau_s(x_s) &amp;= 1\\
 \sum_{x_t'} \tau_{st}(x_s,x_t') &amp;=\tau_s(x_s)
-\end{align}
+\end{align}\]</span>
 <p>and vice versa. These constraints, and <span class="math inline">\(\tau\ge 0\)</span>, define <span class="math inline">\(\mathbb L(G)\)</span>.</p>
 <p>In general <span class="math inline">\(\mathbb M(G)\sub \mathbb L(G)\)</span>. (Elements in <span class="math inline">\(\mathbb L(G)\bs \mathbb M(G)\)</span> are pseudomarginals.) For trees they are equal.</p>
 <p><em>Proof</em>. Set <span class="math display">\[
@@ -467,11 +467,11 @@ p_\mu(x) := \prod_{s\in V} \mu_s(x_s) \prod_{(s,t)\in E}\fc{\mu_{st}(x_s,x_t)}{\
 \]</span></p>
 <!--what is the junction tree theorem?-->
 <p>The negative entropy <span class="math inline">\(A^*\)</span> as a function of <span class="math inline">\(\mu\)</span> has a closed form for trees.</p>
-\begin{align}
+<span class="math display">\[\begin{align}
 H(p_\mu) &amp;= \sum_{s\in V} H_s(\mu_s) - \sum_{(s,t)\in E} I_{st}(\mu_{st})\\
 H_s(\mu_s) :&amp;= -\sum_{x_s\in X_s} \mu_s(x_s)\ln \mu_s(x_s)\\
 I_{st}(\mu_{st}):&amp;=\sum_{(x_s,x_t)\in X_s\times X_t} \mu_{st}(x_s,x_t) \ln \fc{\mu_{st}}{\mu_s\mu_t}.
-\end{align}
+\end{align}\]</span>
 <p><strong>Check me!</strong></p>
 <p><strong>Bethe entropy approximation</strong> (<span class="math inline">\(\tau\)</span> a pseudomarginal) <span class="math display">\[
 H_{\text{Bethe}}(\tau) := \sum_{s\in V} H_s(\tau_s) - \sum_{(s,t)\in E} I_{st}(\tau_{st}).
@@ -502,21 +502,21 @@ H_{\text{Bethe}}(\tau) := \sum_{s\in V} H_s(\tau_s) - \sum_{(s,t)\in E} I_{st}(\
 <li>For a tree-structured MRF, the unique solution has <span class="math inline">\(\tau\)</span> the singleton and pairwise marginal distributions. The optimal value is <span class="math inline">\(A(\te)\)</span>.</li>
 </ol>
 <em>Proof</em> (of 1). Solving the Lagrange multiplier problem (note the multipliers are <span class="math inline">\(\la_s(x_s)\)</span> and <span class="math inline">\(\la_{ts}(x_s)\)</span>) gives
-\begin{align}
+<span class="math display">\[\begin{align}
 \nb_\tau \ub{(\an{\te,\tau} + \sum H_s - \sum I_{st})}{F} &amp;= \la^TD_\tau C\\
 \nb_\tau F&amp;= (\te_s - \cancel{1} - \ln \tau_s +cancel{\sum_t \tau_{st} \rc{\tau_s}}, \te_{st} - 1 - \ln \fc{\tau_{st}}{\tau_s\tau_t})\\
 \la^T \nb_\tau C &amp;= (-\la_{ss} + \sum_{t\in N(s)}\la_{ts}, -\la_{st}(x_s) - \la_{st}(x_t))\\
 \implies
 \ln \tau_s &amp;= \la_{ss} + \te_s \fixme{+} \sum_{t\in N(s)} \la_{ts}(x_s)\\
 \ln \fc{\tau_{st}}{\wt\tau_s \wt\tau_t} &amp; = \te_{st} \fixme{-} \la_{ts}(x_s) - \la_{st}(x_t)
-\end{align}
+\end{align}\]</span>
 where the last 2 equations are viewed as functions on <span class="math inline">\(X_s,X_s\times X_t\)</span>. <strong>I’m having sign errors and an extra <span class="math inline">\(-1\)</span> added…</strong> Substitute the first equation into the second to get <span class="math display">\[
 \ln \tau_{st} = \la_{ss} + \la_{tt} + \te_{st}(x_s,x_t) + \te_s(x_s) + \te_t(x_t) + \sum_{u\in N(s)\bs t} \la_{us}(x_s) + \sum_{u\in N(t)\bs s} \la_{ut}(x_t).
 \]</span> Letting <span class="math inline">\(M_{ts} = \exp(\la_{ts}(x_s))\)</span>,
-\begin{align}
+<span class="math display">\[\begin{align}
 \tau_s(x_s) &amp;= \ka_s \exp^{\te_s(x_s)} \prod_{t\in N(s)}M_{ts}(x_s)\\
 \tau_{st}(x_s,x_t) &amp;= \ka_{st} \exp^{\te_{st}(x_s,x_t)+\te_s(x_s) + \te_t(x_t)} \prod_{t\in N(s)\bs t}M_{us}(x_s) \prod_{u\in N(t)\bs s} M_{ut}(x_t).\\
-\end{align}
+\end{align}\]</span>
 <p>The constraint <span class="math inline">\(C_{st}\)</span> becomes <span class="math display">\[
 M_{st}(x_s) \propto \sum_{x_t} \ba{\exp\ba{\te_{st}(x_s,x_t) + \te_t(x_t)} \prod_{u\in N(t)\bs s} M_{ut}(x_t)}.
 \]</span> This is exactly the sum-product update.</p>
@@ -527,21 +527,21 @@ p_{\tau^*}(x) = \rc{Z(\tau^*)} \prod_{s\in V} \tau_s^*(x_s) \prod_{(s,t)\in E} \
 <p>(Note: we had <span class="math inline">\(\te\)</span> to begin with, so this is not surprising. The goal of BVP is to compute <span class="math inline">\(A\)</span> which can be used to compute marginals. But we don’t get the real marginals.)</p>
 <p>A generalized loop is a subgraph where every vertex has degree <span class="math inline">\(\ge2\)</span>.</p>
 <strong>Proposition 4.4</strong> (Loop series expansion). For the Ising model,
-\begin{align}
+<span class="math display">\[\begin{align}
 A(\te) &amp;= A_{\text{Bethe}}(\te) + \ln \ba{
 1 + \sum_{\phi\ne \wt E\subeq E} \be_{\wt E} \prod_{s\in V}\EE_{\tau_s} [(X_s-\tau_s)^{d_s(\wt E)}]
 }\\
 \be_{st} :&amp;= \fc{\tau_{st}-\tau_s\tau_t}{\tau(1-\tau_s)\tau_t(1-\tau_t)}\\
 \be_{\wt E} :&amp;=\prod_{(s,t)\in E}\be_{st}\\
 \tau_{st} &amp;=\tau_{st}(1,1).
-\end{align}
+\end{align}\]</span>
 <p>Note the term is nonzero only for generalized loops.</p>
 <p><em>Proof</em>. Note if <span class="math inline">\(\te,\te'\)</span> are such that <span class="math inline">\(p_\te=p_{\te'}\)</span> then <span class="math inline">\(A(\te)-A(\te') = A_{\text{Bethe}}(\te)-A_{\text{Bethe}}(\te')\)</span>. <strong>Q: Why?</strong> (First show <span class="math inline">\(H_{\text{Bethe}}(p_{\te(\mu)}) = H_{\text{Bethe}}(p_{\te'(\mu)})\)</span>. Then note for <span class="math inline">\(\mu\in \mathbb L(G)\)</span>, <span class="math inline">\(\an{\te'-\te,\mu}=0\)</span>.)</p>
 Check this for a BP fixed point where <span class="math inline">\(A_{\text{Bethe}}=0\)</span>. (See p.3 of 11/16. Check signs.) Calculate (here <span class="math inline">\(\E\)</span> is wrt <span class="math inline">\(\prod_s \tau_s\)</span>)
-\begin{align}
+<span class="math display">\[\begin{align}
 \fc{\tau_{st}}{\tau_s\tau_t} &amp;= 1+\be_{st}(x_s-\tau_s)(x_t-\tau_t)\\
 \exp(A(\wt \te)) &amp;=\E[\prod_{s,t}\in E (1+\be_{st}(x_s-\tau_s)(x_t-\tau_t))].
-\end{align}
+\end{align}\]</span>
 <p>Expand and use <span class="math inline">\(\E[X_s-\tau_s]=0\)</span>.</p>
 <p><strong>Q: is there a nice (nonvariational) expression for <span class="math inline">\(A_{\text{Bethe}}\)</span> like <span class="math inline">\(A\)</span>?</strong></p>
 <h3 id="kikuchi-and-hypertree-based-models">4.2 Kikuchi and Hypertree-based models</h3>

@@ -1,5 +1,5 @@
 ---
-title: [CHMAL15] The Loss Surfaces of Multilayer Networks
+title: (CHMAL15) The Loss Surfaces of Multilayer Networks
 published: 2016-03-07
 modified: 2016-03-07
 tags: none

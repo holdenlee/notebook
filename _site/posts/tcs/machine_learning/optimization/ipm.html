@@ -115,11 +115,11 @@
 C = \set{(t,x)}{x=\amin f(x) + \sum -\rc t \ln (-f_i(x))}.
 \]</span> Now <span class="math inline">\(f(c(t))\to f(x^*)\)</span>. For <span class="math inline">\((t,x')\in C\)</span>, we have <span class="math display">\[ \nb f + \sum - \fc{\nb f_i}{tf_i}=0.\]</span> This is the first KKT condition with <span class="math inline">\(\la_i = -\rc{tf_i(x')}\)</span>. (Complementarity is not satisfied though: we have <span class="math inline">\(-\la_if_i=\rc t\)</span>, not 0.)</p>
 Let <span class="math inline">\(x^*=\amin_{f_i\le 0} f\)</span>, <span class="math inline">\(x'=\amin f - \sum \rc t \ln (-f_i)\)</span>. Substituting <span class="math inline">\(x',\la_i\)</span> in the dual problem, we get
-\begin{align}
+<span class="math display">\[\begin{align}
 f(x^*) &amp;\ge \min_x f(x) - \sum \rc{t f_i(x')} f_i(x) \\
 &amp; = f(x') - \fc mt &amp; x=x'\\
 \implies f(x^*) \le f(x') &amp;\le f(x^*) + \fc mt.
-\end{align}
+\end{align}\]</span>
 <p>Now add in the condition <span class="math inline">\(Ax=b\)</span>, and the term <span class="math inline">\(\nu^T(Ax-b)\)</span>. The analysis stays the same.</p>
 <p>(<span class="math inline">\(\ln(-f_i)\)</span> has the magic that its gradient is <span class="math inline">\(\nb f_i\)</span> times something.)</p>
 <p>What questions do we need to address?</p>
@@ -138,12 +138,12 @@ f(x^*) &amp;\ge \min_x f(x) - \sum \rc{t f_i(x')} f_i(x) \\
 <ul>
 <li>For <span class="math inline">\(\min_{Fx\le g, Ax=b} \sumo in x_i\ln x_i\)</span>, <span class="math inline">\(tf_0(x)+\phi(x)\)</span> is not closed (?) or self-concordant. Using that <span class="math inline">\(ty\ln y - \ln y\)</span> is self-concordant, we add in the redundant constraint <span class="math inline">\(x\ge 0\)</span> to get <span class="math display">\[tf_0+\phi = \sumo in (tx_i\ln x_i - \ln x_i) - \sumo im \ln (g_i-f_i^Tx).\]</span></li>
 <li>For <span class="math inline">\(\min_{\ln(\sumo k{K_i}\exp(a_{ik}^T + b_{ik}))\le 0} \ln \pa{\sumo k{K_0} \exp(a_{0k}^Tx+b_{0k})}\)</span>, introduce the variables <span class="math inline">\(y_{ik}\)</span>. Change the problem to
-\begin{align}
+<span class="math display">\[\begin{align}
 \min \sumo k{K_0} y_{0k}\\
 \sumo k{K_i} y_{ik} &amp;\le 1\\
 a_{ik}^T x+b_{ik} - \ln y_{ik} &amp;\le 0\\
 y_{ik} &amp;\ge 0.
-\end{align}</li>
+\end{align}\]</span></li>
 </ul>
 <h2 id="analysis-and-algorithm-explanation">Analysis and algorithm explanation</h2>
 <h3 id="place-to-start">1 Place to start</h3>
@@ -154,10 +154,10 @@ y_{ik} &amp;\ge 0.
 Actually add an extra constraint (<span class="math inline">\(a\)</span> satisfies <span class="math inline">\(\ve{a}_2\le \rc R\)</span> so is redundant). <span class="math display">\[
 \min_{f_i\le s, a^Tx \le 1} s.
 \]</span> Choose <span class="math inline">\(a,s_0\)</span> so that <span class="math inline">\((x=0,s=s_0, t_0)\)</span> is on the central path (to make analysis easier), i.e., so <span class="math inline">\(x=0,s=s_0\)</span> minimizes <span class="math display">\[t^{(0)}s- \sumo im \ln (s-f_i(x)) - \ln (1-a^T x).\]</span> Set the gradient to 0 to see that we require
-\begin{align}
+<span class="math display">\[\begin{align}
 t^{(0)} &amp;= \sumo im \rc{s_0 - f_i(0)}\\
 a &amp;= -\sumo im \rc{s_0-f_i(0)} \nb f_i(0).
-\end{align}
+\end{align}\]</span>
 <p>What to choose for <span class="math inline">\(s_0\)</span>? We need <span class="math inline">\(s_0&gt;F:=\max_i f_i(0)\)</span> and <span class="math inline">\(\ve{a}_2\le \rc{R}\)</span>. Upper bound <span class="math inline">\(\ve{a}_2\)</span> by <span class="math display">\[
 \ve{a}_2\le \sumo im \rc{s_0-f_i(0)}\ve{\nb f_i(0)} \le \fc{mG}{s_0-F},\quad G=\max_i \ve{\nb f_i(0)}_2,
 \]</span> so we can take <span class="math inline">\(\boxed{s_0=mGR+F}\)</span>. Then <span class="math inline">\(t^{(0)} \ge \rc{mGR}\)</span> so the initial duality gap is <span class="math inline">\(\fc{m+1}{t^{(0)}} \le (m+1) mGR\)</span>. Use the barrier method until the duality gap is <span class="math inline">\(&lt;|\ol p^*|\)</span>, so that we can determine <span class="math inline">\(\sgn(\ol p^*)\)</span>. This requires (take <span class="math inline">\(\mu = 1+\rc{\sqrt{m+1}}\)</span>) <span class="math display">\[
@@ -165,21 +165,21 @@ a &amp;= -\sumo im \rc{s_0-f_i(0)} \nb f_i(0).
 \]</span> Newton steps. (Interpret <span class="math inline">\(\lg\pf{GR}{|\ol p^*|}\)</span> as how close the feasibility problem is to the boundary between feasibility and infeasibility.)</p>
 <p>(Equality constraints don’t change things too much. ?? <span class="math inline">\(G\)</span>, <span class="math inline">\(R\)</span> refer to reduced/eliminated problem.)</p>
 Why did we add in <span class="math inline">\(a^Tx\le 1\)</span>? Otherwise, we minimize <span class="math inline">\(ts-\sum \ln (-(f_i-s))\)</span>, and
-\begin{align}
+<span class="math display">\[\begin{align}
 \ddd{s} &amp;= t+\sum \rc{f_i-s} = 0\\
 \nb_x &amp;= \sum \fc{-\nb f_i}{f_i-s} =0.
-\end{align}
+\end{align}\]</span>
 <p>We can’t choose <span class="math inline">\(x=0\)</span> because we need <span class="math inline">\(s&gt;\max f_i\)</span>, and <span class="math inline">\(\nb_x&gt;0\)</span>.</p>
 <p>(Note if we add the constraint <span class="math inline">\(a^Tx\le 1\)</span> for phase 1, we have to include it for phase II as well.)</p>
 <h4 id="termination-near-phase-ii-central-path">Termination near phase II central path</h4>
 <p>During phase I, add in the extra constraint <span class="math inline">\(f_0(x)\le M\)</span> to make it intersect the phase II central path. (We can add the constraint <span class="math inline">\(a^Tx\le 1\)</span> below.) We want the point on the central path for phase I corresponding to <span class="math inline">\(s=0\)</span> to also be on the phase II central path. (I think you won’t get to <span class="math inline">\(s=0\)</span> exactly, but you get close—then the duality gap is <span class="math inline">\(m(M-f_0)+\)</span>(something small).)</p>
-\begin{align}
+<span class="math display">\[\begin{align}
 \min_{f_i\le s, f_0\le M, Ax=b} s:&amp;&amp; \nb(ts + (\sum-\ln (s-f_i)) - \ln (M-f_0) + A^T \nu) &amp;=0\\
 \iff &amp;&amp; t&amp;=\sum \rc{s-f_i} = \sum -\rc{f_i}\\
 &amp;&amp; \rc{M-f_0} \nb f_0 + \sum\rc{s-f_i} \nb f_i + A^T\nu &amp;=0\\
 \min_{f_i\le 0, Ax=b}f_0:&amp;&amp; \nb(tf_0+\sum - \ln (-f_i) + A^T \nu) &amp;=0\\
 \iff &amp;&amp;t\nb f + \fc{\nb f_i}{f_i} + A^T \nu &amp;=0
-\end{align}
+\end{align}\]</span>
 <p>Make these match by setting <span class="math inline">\(t=\rc{M-f_0}\)</span>. I.e., the initial duality gap for phase 2 is <span class="math inline">\(\fc{m}{t} = m(M-f_0)\)</span>.</p>
 <h3 id="inner-steps">2 Inner steps</h3>
 <p>Given <span class="math inline">\(x^*(t)\)</span>, how many steps does it take to compute <span class="math inline">\(x^*(\mu t)\)</span>?</p>
@@ -187,7 +187,7 @@ Why did we add in <span class="math inline">\(a^Tx\le 1\)</span>? Otherwise, we 
 <p>Let <span class="math inline">\(x=x^*(t)\)</span>, <span class="math inline">\(x^+=x^*(\mu t)\)</span>.</p>
 <p>It suffices to bound <span class="math display">\[\mu t f_0(x) + \phi(x) - \mu tf_0(x^+) - \phi(x^+).\]</span></p>
 <p>We can’t bound <span class="math inline">\(\ln(-f_i)\)</span> directly. We can hope to bound the dual function <span class="math inline">\(\cL\)</span> (we have info from the KKT conditions). Use the linear approximation to <span class="math inline">\(\ln\)</span>.</p>
-\begin{align}
+<span class="math display">\[\begin{align}
 \mu t f_0(x) + \phi(x) - \mu tf_0(x^+) - \phi(x^+)
 &amp;= \mu t f_0(x) - \mu t f_0(x^+) + \sum \ln \pf{\mu f_i(x^+)}{\mu f_i(x^+)}\\
 &amp;\le \mu t f_0(x) - \mu t f_0(x^+) + \sum \pa{\fc{\mu f_i(x^+)}{f_i(x)} - 1 -\ln \mu}\\
@@ -195,7 +195,7 @@ Why did we add in <span class="math inline">\(a^Tx\le 1\)</span>? Otherwise, we 
 &amp;= \mu t f_0(x) - \mu t \cL(x^+, \la, \nu) - m - m \ln \mu &amp;Ax^+=b, \la_i  = \rc{tf_i}\\
 &amp;\le \mu tf_0(x) - \mu t g(\la, \nu) - m - m\ln \mu\\
 &amp;=m(\mu-1 - \ln \mu).
-\end{align}
+\end{align}\]</span>
 <p>Thus, the number of inner steps is <span class="math display">\[
 \fc{f(x)=p^*}{\ga}+c = \fc{m(\mu - 1 - \ln \mu)}{\ga} + c
 \]</span> (See <a href="second-order.html">Newton</a> for definition of <span class="math inline">\(\ga\)</span>. We approximate <span class="math inline">\(\ln\ln\)</span> by a constant.) This is approximately quadratic for small <span class="math inline">\(\mu\)</span> (<span class="math inline">\(O(m(\mu-1)^2)\)</span>), linear (<span class="math inline">\(O(m\mu)\)</span>) for large <span class="math inline">\(\mu\)</span>. (This does not depend on <span class="math inline">\(n,p\)</span>.)</p>
@@ -207,10 +207,10 @@ Why did we add in <span class="math inline">\(a^Tx\le 1\)</span>? Otherwise, we 
 <li>In practice, though, choose <span class="math inline">\(\mu\)</span> constant.</li>
 </ul>
 <h3 id="total">Total</h3>
-\begin{align}
+<span class="math display">\[\begin{align}
 N_I &amp;= O(\sqrt m \log \pf{mGR}{|\ol p^*|} \rc{\ga})\\
 N_{II} &amp;= O(\sqrt m \log \pf{m(M-p^*)}{\ep}) \prc{\ga}.
-\end{align}
+\end{align}\]</span>
 <p>Explanation: The point at the end of phase I has duality gap <span class="math inline">\(\le (m+1)(M-p^*)\)</span>.</p>
 <h3 id="variations">Variations</h3>
 <p>What are other ways to do Phase I?</p>
@@ -226,22 +226,22 @@ N_{II} &amp;= O(\sqrt m \log \pf{m(M-p^*)}{\ep}) \prc{\ga}.
 <p>But here <span class="math inline">\(t\)</span> is fixed. We want to treat <span class="math inline">\(t\)</span> as a variable. Actually, we introduce <span class="math inline">\(\la\)</span>.</p>
 <p>Recall that a point on the central path gives a dual feasible <span class="math inline">\((\la, \nu)\)</span> with <span class="math inline">\(\la_if_i=-\rc t\)</span>. We write everything in terms of the primal <span class="math inline">\(x\)</span> and dual <span class="math inline">\((\la,\nu)\)</span>. Introduce <span class="math inline">\(\la\)</span> as a variable that we want to satisfy <span class="math inline">\(\la_if_i=-\rc t\)</span> (the modified KKT equation) to get the (dual, centrality, primal) residual <span class="math display">\[r_t(x,\la,\nu) = \colthree{\nb f + Df^T\la + A^T\nu}{-\diag(\la) f - \rc t \one}{Ax-b} =: \colthree{\De x}{\De \la}{\De \nu} = -\colthree{r_{dual}}{r_{cent}}{r_{pri}}.\]</span></p>
 The Newton step for solving the modified KKT equations
-\begin{align}
+<span class="math display">\[\begin{align}
 \nb f_0 + Df^T \la + A^T\nu &amp;=0\\
 -\la_i f_i &amp;=\rc t\\
 Ax-b &amp;=0
-\end{align}
+\end{align}\]</span>
 is hence (set the gradients of these equations to the negative residuals)
-\begin{align}
+<span class="math display">\[\begin{align}
 \mattn{\nb^2 f_0+\sum \la_i \nb^2 f_i}{Df^T}{A^T}{-\diag(\la)Df}{-\diag(f)}{0}{A}00 \colthree{\De x}{\De \la}{\De \nu} = -\colthree{r_{dual}}{r_{cent}}{r_{pri}}.
-\end{align}
+\end{align}\]</span>
 <p>(<span class="math inline">\(Df\)</span> has <span class="math inline">\(\nb f_i\)</span> as rows.) The solution is the primal-dual search direction. It is not the same as the search direction in the barrier method (because here we’re changing <span class="math inline">\(\la\)</span>).</p>
 Solving for <span class="math inline">\(\De \la\)</span> and substituting gives
-\begin{align}
+<span class="math display">\[\begin{align}
 \matt{\nb^2 f_0 + \sumo im \la_i \nb^2 f_i + \sumo im -\fc{\la_i}{f_i}\nb f_i \nb f_i^T}{A^T}A0 \coltwo{\De x_{pd}}{\De \nu_{pd}} &amp;= 
 \coltwo{r_{dual} - \sum \la_i \nb f_i - \sum \fc{\nb f_i}{tf_i}}{r_{pri}}\\
 &amp;=-\coltwo{\nb f_0 + \rc t \sumo im -\rc{f_i}\nb f_i+A^T\nu}{r_{pri}}.
-\end{align}
+\end{align}\]</span>
 <p>Compare to the Newton step for the centering method (<span class="math inline">\(t\)</span> fixed) in the barrier method. The upper-left entry is replaced by <span class="math inline">\(t\nb^2 f_0 + \sumo im -\rc{f_i} \nb^2 f_i + \sumo \rc{f_i^2} \nb f_i f_i^T\)</span>, and the dual residual is instead <span class="math inline">\(t\nb f_0 + \sumo im -\rc{f_i} \nb f_i\)</span>.</p>
 <p>The iterates are not necessarily feasible, so we can’t evaluate a duality gap. Define the <strong>surrogate duality gap</strong> for <span class="math inline">\(x,f(x)&lt;0, \la\ge 0\)</span> by <span class="math display">\[\wh \eta(x,\la) = -f^T\la.\]</span> It is the duality gap if <span class="math inline">\(x\)</span> were primal feasible and <span class="math inline">\(\la,\nu\)</span> were dual feasible (<span class="math inline">\(r_{pri}=0,r_{dual}=0\)</span>).</p>
 <p>The algorithm:</p>
