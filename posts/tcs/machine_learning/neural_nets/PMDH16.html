@@ -10,7 +10,7 @@
   <meta name="description" content="Holden Lee's Research Notebook">
   <meta name="author" content="Holden Lee">
     
-  <title>[PMDH16] Convolutional Patch Representations for Image Retrieval - an Unsupervised Approach</title>
+  <title>(PMDH16) Convolutional Patch Representations for Image Retrieval - an Unsupervised Approach</title>
 
   <!-- Bootstrap core CSS -->
   <link href="../../../../bootstrap/css/bootstrap.min.css" rel="stylesheet">
@@ -70,7 +70,7 @@
 <div class="container">
   <div id="content">
     <div class="page header">
-      <h1>[PMDH16] Convolutional Patch Representations for Image Retrieval - an Unsupervised Approach</h1>
+      <h1>(PMDH16) Convolutional Patch Representations for Image Retrieval - an Unsupervised Approach</h1>
     </div>
     <div class="info">
       
@@ -92,10 +92,10 @@
   <div class="blog-main">
     <p>We write things in the continuous limit. In actuality we have to discretize.</p>
 Define the kernel <span class="math inline">\(K:(\Om \to \R)\times (\Om\to \R) \to \R\)</span> by
-\begin{align}
+<span class="math display">\[\begin{align}
 K(M,M') = \sum_{z,z'\in \Om} e^{-\rc{2\be^2}\ve{z-z'}^2} \ka (P_z, P_{z'}')\\
 \ka(P_z,P_{z'}') &amp; = \ve{P_z}\ve{P_{z'}'} e^{-\rc{2\al^2} \ve{\wt P_z - \wt P_{z'}}^2}
-\end{align}
+\end{align}\]</span>
 <p>where <span class="math inline">\(P_z =M_{z+[0,e)\times [0,e)\times [0,d)}\)</span>.</p>
 <h2 id="background">Background</h2>
 <p>A <a href="https://en.wikipedia.org/wiki/Reproducing_kernel_Hilbert_space">reproducing kernel Hilbert space (RKHS)</a> is a Hilbert space of functions <span class="math inline">\(X\to \R\)</span> in which point evaluation <span class="math inline">\(L_x[f] = f(x)\)</span> is a continuous linear functional. (Equivalently, it is bounded, <span class="math inline">\(f(x)\le M_x\ve{f}_H\)</span>.</p>

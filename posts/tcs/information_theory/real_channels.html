@@ -184,7 +184,7 @@
 <li>In the Gaussian noise model, <span class="math inline">\(C=\rc 2 \log\pa{1+\fc{P_G}{N_G}}\)</span> where <span class="math inline">\(P\)</span> is power (average magnitude) and <span class="math inline">\(N\)</span> is variance.</li>
 <li>In the band-limited model, suppose <span class="math inline">\(W\)</span> is bandwidth, <span class="math inline">\(P\)</span> is power, and <span class="math inline">\(\fc{N_0}2\)</span> is variance (power spectral density - I don’t understand this).</li>
 <li>Match up by <span class="math inline">\(P_G=\fc{P}{2W}\)</span> (divide by sampling rate) and <span class="math inline">\(N_G=N_0/2\)</span> to get <span class="math inline">\(\rc2\lg\pa{1+\fc{P}{N_0W}}\)</span> per sample. Multiply by <span class="math inline">\(2W\)</span>. (<span class="math inline">\(\fc{P}{N_0W}\)</span> is SNR.)
-\begin{equation} C= W\lg\pa{1+\fc{P}{N_0W}}.\end{equation}
+<span class="math display">\[\begin{equation} C= W\lg\pa{1+\fc{P}{N_0W}}.\end{equation}\]</span>
 With infinite bandwidth, <span class="math inline">\(C=\fc{P}{N_0}\lg e\)</span>.</li>
 </ul></li>
 <li>9.4 Parallel Gaussian channels: set of Gaussian channels in parallel with common (total) power constraint <span class="math inline">\(P\)</span>. How to distribute.

@@ -232,16 +232,16 @@ What is the relationship between hypercontractivity and type?
 <h3 id="matrices">Matrices</h3>
 <h2 id="upper-bound">Upper bound</h2>
 Let
-\begin{align}
+<span class="math display">\[\begin{align}
 \La_D(f_1,\ldots, f_q)&amp;= \sum_{d\in D}\sum_{g\in G} f_1(g)\cdots f_q(g+(q-1)d)\\
 \ve{A} &amp;= \sup\set{\fc{A(f_1,\ldots, f_q)}{\prod_i\ve{f_i}_{\ell_q}}}{f_i\in \R^n\bs 0}\\
 \la(D) &amp;= \ve{\rc{|D|}\La_D-\rc{|G|}\La_G}\\
 \ka(\ep) &amp;= \max\set{k\in \N}{\E[\la(D)]\le \ep}.
-\end{align}
+\end{align}\]</span>
 <p>(Use the <span class="math inline">\(q\)</span>-norm for <span class="math inline">\(q\)</span>-linear forms because scaling is good?)</p>
 <p><strong>Theorem 3.3</strong>: For all <span class="math inline">\(\ep&gt;0\)</span> there exists <span class="math inline">\(\al,\be\in(0,1]\)</span>, <span class="math inline">\(C:\{-1,1\}^k\to \{-1,1\}^n\)</span> (where <span class="math inline">\(k=\al \ka(\ep)\)</span>, <span class="math inline">\(n=q|G|\)</span>), <span class="math inline">\(M_i\)</span> matchings of size <span class="math inline">\(\fc nq\)</span>, such that for all <span class="math inline">\(x\in \{-1,1\}^k\)</span>, <span class="math display">\[\EE_{i\in [k],(j_1,\ldots,j_q)\in M_i}[C(x)_{j_1}\cdots C(x)_{j_q}=x_i] \ge\be,\]</span> i.e.,there is a average case LDC with <span class="math inline">\((r,\fc{\be}2, q)\)</span>.<a href="#fn7" class="footnoteRef" id="fnref7"><sup>7</sup></a></p>
 <em>Proof</em>: Let <span class="math inline">\(K=\ka(\ep)\)</span> and <span class="math inline">\(D=(d_1,\ldots, d_K)\sub G\)</span> be a random multiset. Let <span class="math display">\[A_i=\rc{K} \La_{d_i} - \rc{K|G|}\La_G.\]</span> Then
-\begin{align}
+<span class="math display">\[\begin{align}
 \ep&amp;\le \EE_D\ba{\ve{\rc K\La_D-\rc{|G|}\La_G}}\\
 &amp;=\EE_{\mathcal A} \ba{\ve{\sumo ik \pa{A_i-\EE_{\mathcal A'}A_i'}}}\\
 &amp;\le \EE_{\mathcal A, \mathcal A'}\ba{\ve{ \sumo ik (A_i-A_i')}} &amp; \text{Jensen}\\
@@ -250,17 +250,17 @@ Let
 &amp;\le \fc 2K \EE_{D,D',x_i} \ba{\ve{\sumo ik \La_{d_i} - \La_{d_i'}}}&amp;\text{symmetrization}\\
 &amp;\le \fc 4K \EE_{D,x_i} \ve{\sumo ik x_i\La_{d_i}}&amp; \text{Jensen}\\
 \implies \exists D^*, \quad \rc{K}\ve{\sumo ik x_i \La_{d_i^*}}&amp;\ge \fc \ep4.
-\end{align}
+\end{align}\]</span>
 By Elton’s theorem there exists <span class="math inline">\(k\ge \fc{cK\ep^2}{16}\)</span>, <span class="math inline">\(E\subeq D^*\)</span> of size <span class="math inline">\(k\)</span>, for all <span class="math inline">\(x\in \{-1,1\}^E\)</span>, <span class="math display">\[\rc{k}\ve{\sum_{d\in E} \sum x_d \La_{d}}\ge \fc{c\ep}{4}.\]</span> For each <span class="math inline">\(x\)</span> there exists <span class="math inline">\(f^x\)</span>, <span class="math inline">\(\ve{f^x}=1\)</span> with <span class="math display">\[\rc k \ve{\sum_{d\in E} x_d \La_d(f_1^x,\ldots, f_q^x)} \ge \fc{c\ep}4.\]</span> We define the LDC by
-\begin{align}
+<span class="math display">\[\begin{align}
 C:\{-1,1\}^E &amp;\to (\R^q)^G\\
 C(x) &amp;=(f_1^x,\ldots, f_q^x).
-\end{align}
+\end{align}\]</span>
 Then <span class="math inline">\(\La\)</span> exactly gives the correlation of the decoded bit:
-\begin{align}
+<span class="math display">\[\begin{align}
 \La_d((f_i^x)_i) &amp;= \sum_{g\in G}\prod_i f_i^x(g+(i-1)d)\\
 &amp;=\sum_{(j_i)\in M_d} \prod_i C(x)_{j_i}.
-\end{align}
+\end{align}\]</span>
 <p>Defining <span class="math inline">\(C'(x)=\fc{C(x)}e\)</span> so that <span class="math inline">\(\ve{C'(x)}\le \fc{q^{\rc q}}e\le 1\)</span>, we get <span class="math display">\[
 \rc k \sum_{d\in E} \sum_{(j_i)\in M_d} x_d C'(x)_{j_1}\cdots C'(x)_{j_q}\ge \fc{c\ep}{4e^q},
 \]</span> the theorem with <span class="math inline">\(\al=\fc{c\ep^2}{16}\)</span> and <span class="math inline">\(\be = \fc{c\ep}{4e^q}\)</span>. <span class="math inline">\(\square\)</span></p>

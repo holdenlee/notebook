@@ -93,27 +93,27 @@
 <li><a href="http://blog.mrtz.org/2013/09/07/the-zen-of-gradient-descent.html">The Zen of gradient descent</a></li>
 </ul>
 Define the Chebyshev polynomials by
-\begin{align}
+<span class="math display">\[\begin{align}
 T_0 &amp;=1\\
 T_1 &amp;=x\\
 T_{n+1} &amp;= 2xT_n - T_{n-1}\\
 T_n(\cos x) &amp;= \cos(nx).
-\end{align}
+\end{align}\]</span>
 <strong>Theorem</strong>. There exists a polynomial <span class="math inline">\(p_k\)</span> such that
-\begin{align}
+<span class="math display">\[\begin{align}
 \deg(p_k) &amp;= O\pa{\sqrt{\fc{L}{l}} \ln \prc{\ep}}\\
 p_k(0) &amp;= 1\\
 p_k(x)&amp;\le \ep, &amp;x\in [l,L]
-\end{align}
+\end{align}\]</span>
 <p>First attempt: Scale and translate the Chebyshev polynomial to be <span class="math inline">\(\le \ep\)</span> on <span class="math inline">\([l,L]\)</span>. A Chebyshev poly at <span class="math inline">\(x\)</span> is <span class="math inline">\(O(2^{n-1}x^n)\)</span>. Then the value at 0 is <span class="math inline">\(2^{n-1}\)</span> is <span class="math inline">\(2^{n-1}\pf{l}{(L-l)/2}^n\)</span>, it suffices for this to be <span class="math inline">\(\le 1\)</span>. But this only that <span class="math inline">\(n\le \fc{\ln \prc{\ep}}{\ln \pf{4l}{L-l}}\)</span> is sufficient.</p>
 <p>This is a bad approximation!</p>
 We know
-\begin{align}
+<span class="math display">\[\begin{align}
 T_n\pf{e^x+e^{-x}}2 &amp;= \fc{e^{nx}+e^{-nx}}2\\
 T_n\pf{u+\rc u}{2} &amp;= \pf{u^n+\rc{u^n}}2.
-\end{align}
+\end{align}\]</span>
 Solving <span class="math inline">\(u+\rc{u} = x\)</span> gives <span class="math inline">\(u=x \pm\sqrt{x^2-1}\)</span> and <span class="math display">\[u^n +\rc{u^n} = (x+\sqrt{x^2-1})^n + (x-\sqrt{x^2-1})^n.\]</span> Thus it suffices to have (let <span class="math inline">\(k = \fc Ll\)</span>)
-\begin{align}
+<span class="math display">\[\begin{align}
 2\ba{\pf{L+l}{L-l} + \sqrt{\pf{L+l}{L-l}^2 - 1}}^n \ep &amp;\le 1\\
 \iff n\ln \ba{\pf{L+l}{L-l} + \sqrt{\pf{L+l}{L-l}^2 - 1}} &amp; \le \ln \fc{2}{\ep}\\
 \iff n\ln \pf{(\sqrt k+1)^2}{k-1} &amp; \le \ln \pf 2\ep\\
@@ -121,21 +121,21 @@ Solving <span class="math inline">\(u+\rc{u} = x\)</span> gives <span class="mat
 \Leftarrow n&amp;\le \fc{k-1}{2(\sqrt k + 1)}\ln \pf 2\ep\\
 &amp;=\rc{2}(\sqrt k - 1) \ln \pf 2\ep\\
 &amp;=O(\sqrt k \ln \prc{\ep}).
-\end{align}
+\end{align}\]</span>
 <p>Restatement: There exists a polynomial of degree <span class="math inline">\(O\pa{\sfc{L+l}{L-l}\ln \prc{\ep}}\)</span> such that <span class="math inline">\(p_k(L)=1\)</span> and <span class="math inline">\(p_k(x)=0\)</span> on <span class="math inline">\([-l,l]\)</span>.</p>
 Let’s solve <span class="math inline">\(Ax=b\)</span> when <span class="math inline">\(A\)</span> is positive definite. Consider <span class="math inline">\(f=\rc 2 x^TAx - b^Tx\)</span> starting at <span class="math inline">\(x_0=b\)</span>. Gradient descent with step size <span class="math inline">\(t\)</span> gives
-\begin{align}
+<span class="math display">\[\begin{align}
 x_{k+1} &amp;= x_k - t (Ax_k-b)\\
 &amp;= (I-tA)x_k + tb\\
 x_k &amp;= (I+\cdots +(I-tA)^k)tb
-\end{align}
+\end{align}\]</span>
 Now <span class="math inline">\(p(x) = 1+\cdots + (1-x)^n\)</span> is an approximation of <span class="math inline">\(\rc{x} = \rc{1-(1-x)}\)</span>. Suppose all eigenvalues of <span class="math inline">\(A\)</span> are in <span class="math inline">\([l,L]\)</span>. Then diagonalizing, we get that (take <span class="math inline">\(t=1\)</span>?)
-\begin{align}
+<span class="math display">\[\begin{align}
 \ve{(p(tA) - A^{-1})tb}_2 
 &amp;= \ve{tb}_2\max_{\la\text{ of }A} (p(\la) - \rc{\la})) \\
 &amp;= \ve{tb}_2\max_{x\in [l,L]} (p(x) - \rc x) \\
 &amp;= \ve{tb}_2 \ve{p(x) - \rc x}_{L^\iy([l,L])}.
-\end{align}
+\end{align}\]</span>
 <!-- (We may assume $A$ is diagonalizable with real eigenvalues by multiplying by a unitary.) -->
 <p>But <span class="math inline">\(p(x)\)</span>, although it is a power series expansion of <span class="math inline">\(\rc{x}\)</span>, is not the best estimator of <span class="math inline">\(\rc{x}\)</span> in the <span class="math inline">\(L^{\iy}\)</span> norm. Polynomials based on Chebyshev polynomials do better. The Chebyshev polynomials are defined by a recurrence, which corresponds to a different recurrence relation on the <span class="math inline">\(x_k\)</span>.</p>
 <p>For the above <span class="math inline">\(p\)</span>, the difference is <span class="math inline">\(\fc{(1-tx)^{n+1}}x\)</span>. Choosing <span class="math inline">\(t=\fc{2}{L+l}\)</span>, we get <span class="math inline">\(\pf{L-l}{L+l}^{n+1} = O\pf{\ka - 1}{\ka+1}^{n}\)</span> convergence.</p>
@@ -150,11 +150,11 @@ Now <span class="math inline">\(p(x) = 1+\cdots + (1-x)^n\)</span> is an approxi
 <p>(Thus, conjugate gradient gets <span class="math inline">\(\ep\)</span>-close in <span class="math inline">\(O(\sqrt\ka \ln \prc{\ep})\)</span> steps.)</p>
 <p>(We can get a lower bound by computing the best possible <span class="math inline">\(L^2\)</span> of the approximation. It should be on the same order.)</p>
 Conjugate gradient:
-\begin{align}
+<span class="math display">\[\begin{align}
 v_0&amp;=b\\
 w_i&amp;=Av_i\\
 v_i&amp;=w_i- \sumz j{i-1} \fc{\an{w_i,v_j}_A}{\an{v_j,v_j}_A}v_j.
-\end{align}
+\end{align}\]</span>
 <p>We have <span class="math inline">\(\an{w_{i+1},v_j} = \an{v_i,w_{j+1}}_A\)</span> and <span class="math inline">\(w_{i+1}\perp v_{i+2},ldots\)</span> so <span class="math inline">\(v_i\perp_A w_{i+3},\ldots\)</span>.</p>
 <!--We try to minimize $\max_\la (\la p(\la)-1)^2)$-->
 

@@ -93,6 +93,7 @@
  <li><a href="#continuous-actions">Continuous actions</a></li>
  </ul></li>
  </ul></li>
+ <li><a href="#section">11/21/16</a></li>
  <li><a href="#prior-work-on-continuous-hmms">Prior work on continuous HMMs</a></li>
  </ul> </div>
 
@@ -141,6 +142,16 @@
 <li><span class="math inline">\(A\sub \R^m\)</span> convex</li>
 <li>Given action <span class="math inline">\(a\)</span>, the update is <span class="math inline">\(U[s_t;a] + Va\)</span> where <span class="math inline">\(U_a\in \R^{n\times (m+n)}\)</span>, <span class="math inline">\(V\in \R^{n\times m}\)</span>.</li>
 </ul>
+<h2 id="section">11/21/16</h2>
+Assume that the dynamics and reward are given by
+<span class="math display">\[\begin{align}
+s_{t+1} &amp;= s_t + U\phi(s_t,a_t)\\
+r_{t+1} &amp;= \an{r, \phi(s_t)}.
+\end{align}\]</span>
+<p>Ex. <span class="math inline">\(\phi\)</span> low-degree monomials. Estimate <span class="math inline">\(U\)</span>, <span class="math inline">\(r\)</span> with samples.</p>
+<p>Then what?</p>
+<p>Latent variable models: Instead of predicting the next state directly from action and current state, what if you add an autoencoder-RNN, and the action feeds into the RNN which then generates the next state? The memory of the RNN is the latent, lower-dimensional space.</p>
+<p>(Q: can you have an argmax (cf. max pooling, but LOCATION) in a NN? How would you differentiate through it? Assume that the argmax is not affected by the parameters? This seems reasonable.)</p>
 <h2 id="prior-work-on-continuous-hmms">Prior work on continuous HMMs</h2>
 <ul>
 <li><a href="https://www.researchgate.net/post/What_is_known_about_learning_of_continuous_state-space_hidden_Markov_models_with_continuous_observation_processes">ResearchGate</a></li>

@@ -10,7 +10,7 @@
   <meta name="description" content="Holden Lee's Research Notebook">
   <meta name="author" content="Holden Lee">
     
-  <title>[ALM16] WHY ARE DEEP NETS REVERSIBLE: A SIMPLE THEORY, WITH IMPLICATIONS FOR TRAINING</title>
+  <title>(ALM16) WHY ARE DEEP NETS REVERSIBLE - A SIMPLE THEORY, WITH IMPLICATIONS FOR TRAINING</title>
 
   <!-- Bootstrap core CSS -->
   <link href="../../../../bootstrap/css/bootstrap.min.css" rel="stylesheet">
@@ -70,7 +70,7 @@
 <div class="container">
   <div id="content">
     <div class="page header">
-      <h1>[ALM16] WHY ARE DEEP NETS REVERSIBLE: A SIMPLE THEORY, WITH IMPLICATIONS FOR TRAINING</h1>
+      <h1>(ALM16) WHY ARE DEEP NETS REVERSIBLE - A SIMPLE THEORY, WITH IMPLICATIONS FOR TRAINING</h1>
     </div>
     <div class="info">
       
@@ -152,11 +152,11 @@ Note by this reversibility, there is not much to prove --></p>
 <p>To get an idea of why reversibility might hold, let’s consider a random one-layer neural net without nonlinearities (or bias), which is just multiplying by a random matrix. In this case <span class="math inline">\(x=\rc nWh\)</span>, <span class="math inline">\(\wh h = W^Tx=\rc n W^TWh\)</span>.</p>
 <p><strong>Theorem (Baby version)</strong>: Let <span class="math inline">\(h\in \{0,1\}^m\)</span> be fixed, <span class="math inline">\(m&lt;n\)</span>. Suppose <span class="math inline">\(W\in \R^{n\times m}\)</span> has <span class="math inline">\(N(0,1)\)</span> entries. Then for any polynomial <span class="math inline">\(p(n)\)</span> there is <span class="math inline">\(C\)</span> so that <span class="math display">\[\Pj_{W}\ba{\ve{W^TWh - h}_{\iy}\le C\ln(mn)\sfc{m}{n}}\ge 1-\rc{p(n)}.\]</span></p>
 <em>Proof</em>: We have
-\begin{align}
+<span class="math display">\[\begin{align}
 (W^TWh)_i &amp;= (w_{i\bullet})^TW h\\
 &amp;=\rc n (w_{i\bullet})^T w_{i\bullet}h + \ub{\rc n\sum_{j\ne i} (w_{i\bullet})^T w_{j\bullet} h}{\text{noise}}\\
 &amp;=\rc n (w_{i\bullet})^T w_{i\bullet} h +  \rc n\sum_{k=1}^m w_{ik} \sum_{j\ne i} W_{jk} h_k.
-\end{align}
+\end{align}\]</span>
 <p>By Chernoff, <span class="math inline">\(\rc n w_{i\bullet}^T w_{i\bullet}\)</span>, as a sum of <span class="math inline">\(n\)</span> variables distributed as <span class="math inline">\(\chi_1^2\)</span>, is <span class="math inline">\(\rc{\sqrt{n}}\)</span>-concentrated around 1. There are <span class="math inline">\(&lt;mn\)</span> terms in the noise term, so it is <span class="math inline">\(\fc{\sqrt{mn}}{n}\)</span> concentrated around 0 (a little work is needed here—details left to the reader). Thus we get <span class="math inline">\(\sfc{m}{n}\)</span>-concentration around 0.</p>
 <p>If we bound by <span class="math inline">\(\ln(mn)\)</span> times this quantity, then we can use the union bound to finish. <span class="math inline">\(\square\)</span></p>
 <p>Before moving on, we note two things.</p>
@@ -173,24 +173,24 @@ Note by this reversibility, there is not much to prove --></p>
 <ol type="1">
 <li><p><strong>Lemma 2.5</strong>: For <span class="math inline">\(\de=\wt O\prc{\sqrt m}\)</span>, <span class="math display">\[\Pj_{W,h,x}\ba{\ve{W^Tx - h}_\iy\le \de\ve{h}^2} \ge 1-\rc{\poly(n)}.\]</span></p>
 <em>Proof of (2.5)<span class="math inline">\(\implies\)</span>(2.3):</em> If we used the naive <span class="math inline">\(L^\iy-L^2\)</span> bound, we get that w.h.p. the <span class="math inline">\(L^2\)</span> norm is at most <span class="math inline">\(m(\de\ve{h})^2 = \wt O\pf{m\ve{h}^2}{t}\)</span>, which is too large. We need to use sparsity to get a good bound. The idea is to zero out the entries with <span class="math inline">\(h_i=0\)</span> by adding a bias term <span class="math inline">\(b\)</span> and thresholding using <span class="math inline">\(r\)</span>. The <span class="math inline">\(L^{\iy}\)</span> bound in Lemma 2.3 tells us the offset necessary to zero out the entries where <span class="math inline">\(h_i=0\)</span>, <span class="math inline">\(b=-\de \ve{h}_1\)</span>. With this value of <span class="math inline">\(b\)</span>,
-\begin{align}
+<span class="math display">\[\begin{align}
 h_i&amp;=0 &amp;\implies ((W^Tx)_i+b_i)&amp;\in [-2\de \ve{h},0]&amp;\implies \hat h_i&amp;=r((W^T)x_i + b_i) &amp;= h_i = 0\\
 h_i&amp;\ne 0 &amp; \implies |\wt h_i-h_i| &amp;\le 2\de\ve{h}.
-\end{align}
+\end{align}\]</span>
 Square and multiply by <span class="math inline">\(k\)</span>.</li>
 <li><em>Proof of Lemma 2.5:</em> We have
-\begin{align}
+<span class="math display">\[\begin{align}
 x_j &amp;= r\pa{\al \sumo im W_{ji} h_i} (n_\rh)_j\\
 \hat h_i &amp;= \sumo jn (W^T)_{ij} x_j\\
 &amp;= \sumo jn \ub{W_{ji} r\pa{\al \sumo km W_{jk} h_k}}{=:Z_j} (n_\rh)_j.
-\end{align}
+\end{align}\]</span>
 As before, think of the sum inside <span class="math inline">\(r\)</span> as a main term plus noise: <span class="math display">\[\sumo km W_{jk} h_k = W_{ji} h_i + \sum_{k\ne i} W_{jk} h_k.\]</span> We want to compute <span class="math inline">\(\E[\hat h_i|h]\)</span>. To do this we need to understand the distribution of expressions that look like <span class="math inline">\(Z_j\)</span>.
 <ul>
 <li><strong>Lemma (Technical)</strong>: Let <span class="math inline">\(w\sim N(0,1), \xi \sim N(0,\si^2), \si=\Om(1), 0\le h\le \ln \si\)</span>. Then
-\begin{align}
+<span class="math display">\[\begin{align}
 \EE_{w,\xi} [w\cdot r(wh+\xi)] &amp; = \fc h2 \pm \wt O\prc{\si^3}\\
 \EE_{w,\xi} [w^2\cdot r(wh+\xi)] &amp; \le 3h^2 + \si^2.
-\end{align}
+\end{align}\]</span>
 <em>Proof:</em> To calculate the expectation, take the integral over <span class="math inline">\(\xi\)</span> first and then <span class="math inline">\(w\)</span>. <span class="math inline">\(w,\xi\)</span> are Gaussians, so we can evaluate the expectation <span class="math display">\[ \E[\E[w\cdot r(wh+\xi)|w]] = \fc{h}2+\E[G(w)]\]</span> for some calculable error <span class="math inline">\(G\)</span>. Estimate <span class="math inline">\(G\)</span> with its Taylor expansion (of degree 4). Now calculate <span class="math inline">\(\E[G(w)]\)</span> by estimating it for values below and above a cutoff. Using the lemma on the terms and noting <span class="math inline">\(\E\ve{n_j}_0=\rh n\)</span>, and the normalizing constant <span class="math inline">\(\al=\fc{2}{\rh n}\)</span>, we have <span class="math display">\[ \E[\wh h_i|h] = h_i \pm \wt O\prc{k^{\fc 32}}.\]</span></li>
 <li>Show that <span class="math inline">\(\wh h_i|h_i\)</span> concentrates with high probability. The <span class="math inline">\(Z_j\)</span> are independent so we can use a version of Matrix Bernstein. Technically it seems we have to use a version for subexponential random variables, in terms of Orlicz norms, and check that <span class="math inline">\(Z_j\)</span> hve small norm in expectation. See Theorem D1.</li>
 </ul></li>

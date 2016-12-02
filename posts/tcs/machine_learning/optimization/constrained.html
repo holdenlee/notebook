@@ -101,11 +101,11 @@
 <li>Why wouldn’t you want to do this? It can be inefficient—somehow the equality constraint captures more of the problem’s structure.</li>
 </ul>
 Give the example for quadratic minimization. What do the KKT equations say?
-\begin{align}
+<span class="math display">\[\begin{align}
 \min_{Ax=b} \rc 2 x^T P x + q^T x + r &amp; \\
 Px^* + q + A^T \nu^*&amp;=0\\
 \iff \matt{P}{A^T}{A}0 \coltwo{x^*}{\nu^*} &amp;= \coltwo{-q}{b}.\label{eq:kkt-mat}
-\end{align}
+\end{align}\]</span>
 <p>This is unbounded below if there exist <span class="math inline">\(v,w\)</span> such that <span class="math inline">\(Pv+A^Tw=0\)</span>, <span class="math inline">\(Av=0\)</span>, <span class="math inline">\(-q^Tv+b^Tw&gt;0\)</span> (left-multiply by <span class="math inline">\((v^T\,w^T)\)</span>) to see that the equation above doesn’t have a solution).</p>
 <p>Recall the dual function. Why do we care about it? <span class="math display">\[g(\la,\nu) = \min_x f+\nu^T (Ax-b) = -\nu^Tb - f^*(-\nu^TA), \qquad f^*(y)=\max y^Tx - f(x).\]</span> Equality constraints disappear in the dual. If the dual is nice, we can just solve an unconstrained problem <span class="math inline">\(\max_{\la \ge 0} g(\la,\nu)\)</span>.</p>
 <h2 id="newton">Newton</h2>
@@ -117,9 +117,9 @@ Px^* + q + A^T \nu^*&amp;=0\\
 <p>Describe the infeasible start Newton method. Approximate <span class="math inline">\(f\)</span> by a quadratic using <span class="math inline">\(P=\nb^2 f\)</span> in <span class="math inline">\(\eqref{eq:kkt-mat}\)</span> and find <span class="math inline">\(\De x_{nt}\)</span> so that <span class="math inline">\(x+\De x_{nt}\)</span> satisfies the KKT conditions. The equation for <span class="math inline">\(\De x_{nt}\)</span> is <span class="math display">\[\matt{\nb^2 f}{A^T}A0 \coltwo{\De x_{nt}}w = \coltwo{-\nb f}{b-Ax}.\]</span></p>
 <p>Note here we’re just updating <span class="math inline">\(x\)</span> by solving for <span class="math inline">\(\De x_{nt}\)</span>. Ech time <span class="math inline">\(w\)</span> is treated just as an auxiliary variable. But <span class="math inline">\(w\)</span> comes from the dual solution <span class="math inline">\(\nu\)</span>. Can we look at <span class="math inline">\((x,\nu)\)</span> together as a primal-dual pair and update both of them?</p>
 Let the (dual and primal) residual be (recall KKT says we want <span class="math inline">\(\nb f + A^T\nu =0\)</span>)
-\begin{align}
+<span class="math display">\[\begin{align}
 r &amp;= (\nb f + A^T \nu, Ax-b).
-\end{align}
+\end{align}\]</span>
 <p>Instead of minimizing <span class="math inline">\(f\)</span>, we minimize the residual for the KKT conditions. The residual has a component for minimizing <span class="math inline">\(f\)</span>, and a component for trying to satisfy <span class="math inline">\(Ax=b\)</span>.</p>
 <p>Here is the algorithm.</p>
 <ol type="1">

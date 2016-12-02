@@ -91,44 +91,37 @@
     <p>(See 10/15 notebook for detailed notes.)</p>
 <p>See also <a href="AO15.html">AO15</a> and <a href="mirror-descend.html">mirror descent</a>.</p>
 <h2 id="summary">Summary</h2>
-<table style="width:25%;">
-<colgroup>
-<col style="width: 5%" />
-<col style="width: 5%" />
-<col style="width: 5%" />
-<col style="width: 5%" />
-<col style="width: 5%" />
-</colgroup>
+<table>
 <thead>
 <tr class="header">
-<th style="text-align: left;">Algorithm</th>
-<th style="text-align: left;">General</th>
-<th style="text-align: left;"><span class="math inline">\(\al\)</span>-strongly convex</th>
-<th style="text-align: left;"><span class="math inline">\(\be\)</span>-smooth</th>
-<th style="text-align: left;"><span class="math inline">\(\ga\)</span>-convex</th>
+<th>Algorithm</th>
+<th>General</th>
+<th><span class="math inline">\(\al\)</span>-strongly convex</th>
+<th><span class="math inline">\(\be\)</span>-smooth</th>
+<th><span class="math inline">\(\ga\)</span>-convex</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td style="text-align: left;">Gradient descent</td>
-<td style="text-align: left;"><span class="math inline">\(\rc{\sqrt{T}}\)</span></td>
-<td style="text-align: left;"><span class="math inline">\(\rc{\al T}\)</span></td>
-<td style="text-align: left;"><span class="math inline">\(\fc{\be}T\)</span></td>
-<td style="text-align: left;"><span class="math inline">\(e^{-\ga T}\)</span></td>
+<td>Gradient descent</td>
+<td><span class="math inline">\(\rc{\sqrt{T}}\)</span></td>
+<td><span class="math inline">\(\rc{\al T}\)</span></td>
+<td><span class="math inline">\(\fc{\be}T\)</span></td>
+<td><span class="math inline">\(e^{-\ga T}\)</span></td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">Accelerated gradient descent</td>
-<td style="text-align: left;"><span class="math inline">\(\fc{d}{T}\)</span></td>
-<td style="text-align: left;"><span class="math inline">\(\rc{\al T^2}\)</span></td>
-<td style="text-align: left;"><span class="math inline">\(\fc{\be}{T^2}\)</span></td>
-<td style="text-align: left;"><span class="math inline">\(e^{-\sqrt{\ga} T}\)</span></td>
+<td>Accelerated gradient descent</td>
+<td><span class="math inline">\(\fc{d}{T}\)</span></td>
+<td><span class="math inline">\(\rc{\al T^2}\)</span></td>
+<td><span class="math inline">\(\fc{\be}{T^2}\)</span></td>
+<td><span class="math inline">\(e^{-\sqrt{\ga} T}\)</span></td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;">GD (average regret)</td>
-<td style="text-align: left;">N/A</td>
-<td style="text-align: left;"><span class="math inline">\(\rc{\al} \ln T\)</span></td>
-<td style="text-align: left;"><span class="math inline">\(\rc{\sqrt T}\)</span></td>
-<td style="text-align: left;"><span class="math inline">\(\fc{n}{\ga} \ln T\)</span></td>
+<td>GD (average regret)</td>
+<td>N/A</td>
+<td><span class="math inline">\(\rc{\al} \ln T\)</span></td>
+<td><span class="math inline">\(\rc{\sqrt T}\)</span></td>
+<td><span class="math inline">\(\fc{n}{\ga} \ln T\)</span></td>
 </tr>
 </tbody>
 </table>
@@ -149,14 +142,14 @@
 <li>What is vanilla (one shot) gradient descent?
 <ul>
 <li>Gradient descent lemma: Suppose <span class="math inline">\(f\)</span> is convex and <span class="math inline">\(L\)</span>-smooth, <span class="math inline">\(\ve{\nb f(x)-\nb f(y)}\le L\ve{x-y}\)</span>.
-\begin{align}
+<span class="math display">\[\begin{align}
  x':&amp;=x-\rc L \nb f(x)\\
  \implies f(x')&amp;\le f(x) - \rc{2L}\ve{\nb f(x)}^2.
- \end{align}</li>
+ \end{align}\]</span></li>
 <li>There’s no guarantee for linear convergence unless we assume <span class="math inline">\(f\)</span> is <span class="math inline">\(l\)</span>-strongly convex, <span class="math inline">\(\ve{\nb f(x)-\nb f(y)}\le l\ve{x-y}\)</span>. Let <span class="math inline">\(\ka=\fc{L}{l}, t = \fc{2}{L+l}\)</span>.<a href="#fn1" class="footnoteRef" id="fnref1"><sup>1</sup></a> Then linear convergence holds:
-\begin{align}
+<span class="math display">\[\begin{align}
  \ve{x_{k+1}-x^*} \le \pf{\ka-1}{\ka+1} \ve{x_k-x^*}
- \end{align}</li>
+ \end{align}\]</span></li>
 <li>This requires knowing the condition number. If we don’t know the condition number, use something like backtracking to get similar convergence guarantees.</li>
 </ul></li>
 <li>What is gradient descent with backtracking?
@@ -175,10 +168,10 @@
 <ul>
 <li>Translate to <span class="math inline">\((0,0)\)</span> and look at 1-D slice. Then <span class="math inline">\(f\le b x + \rc2 M x^2\)</span>, <span class="math inline">\(b = \ve{\nb f(x)}\)</span>. <!--The quadratic equals $\al bx$ at $x=\fc{2b(1-\al)}{M}$.--></li>
 <li>One of the following holds.
-\begin{align}
+<span class="math display">\[\begin{align}
 f(x+t_0\De x) &amp;&gt; f(x) + \al \nb f^T \De x\\
 t &amp;= \fc{2\nb f^T\De x (1-\al)\be}{M} \ge \fc{\nb f^T \De x \be}{M}
-\end{align}
+\end{align}\]</span>
 where the last inequality follows from <span class="math inline">\(\al&lt;0.5\)</span>.</li>
 <li>What’s the right measure of progress?
 <ul>
@@ -209,12 +202,12 @@ Alternate proof off by factor of <span class="math inline">\(\log T\)</span>: re
 <h2 id="regret-bounds">Regret bounds</h2>
 <ul>
 <li>General (can replace gradient by subgradient): Suppose <span class="math inline">\(\ve{\nb f(x)}_2\le M\)</span> and <span class="math inline">\(\ve{x_1-x^*}_2\le R\)</span>.
-\begin{align}
+<span class="math display">\[\begin{align}
 \rc 2\ve{x_{k+1}-x^*}_2^2
 &amp; = \rc2 \ve{x_k-\al_k g_k -x^*}_2^2 \\
 &amp;= \rc 2\ve{x_k-x^*}_2^2 - \al_k \an{g_k,x_k-x^*} + \fc{\al_k^2}{2}\ve{g_k}^2\\
 &amp;\le \rc 2\ve{x_k-x^*}_2^2 - \al_k [f(x_k) - f(x^*)]+ \fc{\al_k^2}{2}\ve{g_k}^2&amp; (f(x^*) \ge f(x_k) + \an{g_k,x^*-x_k}).
-\end{align}
+\end{align}\]</span>
 Rearranging, <span class="math display">\[
 \al_k [f(x_k) - f(x^*)] \le \rc2 \ve{x_k-x^*}^2 \le 
 \rc2 \ve{x_k-x^*}-\rc2 \ve{x_{k+1}-x^*}^2 + \fc{\al_k^2}{2}\ve{g_k}_*^2.

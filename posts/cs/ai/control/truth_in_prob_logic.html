@@ -10,7 +10,7 @@
   <meta name="description" content="Holden Lee's Research Notebook">
   <meta name="author" content="Holden Lee">
     
-  <title>[CYHB13] Definability of Truth in Probabilistic Logic</title>
+  <title>(CYHB13) Definability of Truth in Probabilistic Logic</title>
 
   <!-- Bootstrap core CSS -->
   <link href="../../../../bootstrap/css/bootstrap.min.css" rel="stylesheet">
@@ -70,7 +70,7 @@
 <div class="container">
   <div id="content">
     <div class="page header">
-      <h1>[CYHB13] Definability of Truth in Probabilistic Logic</h1>
+      <h1>(CYHB13) Definability of Truth in Probabilistic Logic</h1>
     </div>
     <div class="info">
       
@@ -122,10 +122,10 @@ $$\forall \ph: True(\ce{\ph}) \iff \ph.$$-->
 <h2 id="reflection">Reflection</h2>
 <p>This reflection principle doesn’t work: <span class="math display">\[\forall \ph\in L', \forall a,b\in \Q: a&lt;\Pj(\ph)&lt;b\iff \Pj(a&lt;\Pj(\ce{\ph})&lt;b)=1\]</span> because we can construct <span class="math inline">\(G\iff \Pj(\ce{G})&lt;1\)</span>, <span class="math display">\[\Pj(G)&lt;1\iff \Pj(\Pj(\ce{G})&lt;1)=1 \iff \Pj(G)=1.\]</span></p>
 Instead imagine <span class="math inline">\(\Pj\)</span> having arbitrarily precise information about <span class="math inline">\(\Pj\)</span>. Say <span class="math inline">\(\Pj\)</span> is <strong>reflectively consistent</strong> if (these are equivalent)
-\begin{align}
+<span class="math display">\[\begin{align}
 \forall \ph\in L',\forall a,b\in \Q: (a&lt;\Pj(\ph)&lt;b) &amp;\implies \Pj(a&lt;\Pj(\ce{\phi})&lt;b) &amp;= 1\\
 \forall \ph\in L',\forall a,b\in \Q:  (a\le \Pj(\ph)\le b) &amp;\Leftarrow \Pj(a\le \Pj(\ce{\phi})\le b) &amp;= 1
-\end{align}
+\end{align}\]</span>
 <p><strong>Theorem</strong> (Consistency of reflection): Let <span class="math inline">\(T\)</span> be a consistent theory over <span class="math inline">\(L\)</span> where <span class="math inline">\((\Q,+)\)</span> can be embedded, and <span class="math inline">\(L'\)</span> be the extension of <span class="math inline">\(L\)</span> by <span class="math inline">\(\Pj\)</span>. There is a coherent probability function <span class="math inline">\(\Pj\)</span> over <span class="math inline">\(L'\)</span> assigning probability 1 to <span class="math inline">\(T\)</span> and satisfying the reflection principle.</p>
 <p><em>Proof</em>.</p>
 <p><strong>Theorem (Kakutani fixed point)</strong>: <a href="https://en.wikipedia.org/wiki/Kakutani_fixed-point_theorem">wikipedia</a></p>

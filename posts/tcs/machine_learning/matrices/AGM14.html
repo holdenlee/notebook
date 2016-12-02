@@ -10,7 +10,7 @@
   <meta name="description" content="Holden Lee's Research Notebook">
   <meta name="author" content="Holden Lee">
     
-  <title>[AGM14] New algorithms for learning incoherent and overcomplete dictionaries</title>
+  <title>(AGM14) New algorithms for learning incoherent and overcomplete dictionaries</title>
 
   <!-- Bootstrap core CSS -->
   <link href="../../../../bootstrap/css/bootstrap.min.css" rel="stylesheet">
@@ -70,7 +70,7 @@
 <div class="container">
   <div id="content">
     <div class="page header">
-      <h1>[AGM14] New algorithms for learning incoherent and overcomplete dictionaries</h1>
+      <h1>(AGM14) New algorithms for learning incoherent and overcomplete dictionaries</h1>
     </div>
     <div class="info">
       
@@ -136,11 +136,11 @@
 <li>Soundness (if <span class="math inline">\(\Supp(Y^i)\cap \Supp(Y^j)=\phi\)</span> then whp <span class="math inline">\(\an{Y^i,Y^j}&lt;\rc2\)</span>.</li>
 </ul>
 Both come from the same matrix concentration bound. We show soundness. Condition on the supports. Let <span class="math inline">\(S_i = \Supp(X^i)\)</span>. Write
-\begin{align}
+<span class="math display">\[\begin{align}
 \an{Y^i,Y^j} &amp;= X^T M X\\
 M_{(S_1\cup S_2)^2} :&amp;= \matt 0{\rc 2N^T}{\rc 2N}0\\
 N :&amp;= (A^TA)_{S_1\times S_2}.
-\end{align}
+\end{align}\]</span>
 <p>Now use Hanson-Wright to show <span class="math inline">\(X^TMX\approx \Tr(M)\)</span> with high probability.</p>
 <h3 id="overlapping-communities">Overlapping communities</h3>
 <p>We need to show</p>

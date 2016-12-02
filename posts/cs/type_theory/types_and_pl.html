@@ -154,7 +154,7 @@ fix_T = \la f:T\to T.(\la x:(\mu A. A\to T). f (x x)) (\la x:(\mu A. A\to T). f 
 <p>(This is a hybrid between the normal deductive system, and the bottom-up constraint generation system.)</p>
 <h3 id="let-polymorphism">22.7 Let-polymorphism</h3>
 <p>Not allowed: doubleFun:<span class="math inline">\(\forall a . (\forall f : a\to a) \to a \to a\)</span> defined by</p>
-<pre class="hs"><code>let doubleFun = \f x -&gt; f (f x)</code></pre>
+<div class="sourceCode"><pre class="sourceCode hs"><code class="sourceCode haskell"><span class="kw">let</span> doubleFun <span class="fu">=</span> \f x <span class="ot">-&gt;</span> f (f x)</code></pre></div>
 <p>Reason: a polytype cannot appear inside <code>-&gt;</code>.</p>
 <p>T-LetPoly: <span class="math display">\[
 \frac{\Ga \vdash [x\mapsto t_1]t_2:T_2 \quad \Ga \vdash t_1:T_1}{\Ga \vdash \text{let }x=t_1\text{ in }t_2:T_2}.

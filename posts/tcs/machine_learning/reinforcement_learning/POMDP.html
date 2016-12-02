@@ -10,7 +10,7 @@
   <meta name="description" content="Holden Lee's Research Notebook">
   <meta name="author" content="Holden Lee">
     
-  <title>(A16) Provable algorithms for inference in topic models</title>
+  <title>POMDPs</title>
 
   <!-- Bootstrap core CSS -->
   <link href="../../../../bootstrap/css/bootstrap.min.css" rel="stylesheet">
@@ -70,86 +70,42 @@
 <div class="container">
   <div id="content">
     <div class="page header">
-      <h1>(A16) Provable algorithms for inference in topic models</h1>
+      <h1>POMDPs</h1>
     </div>
     <div class="info">
       
        
-        <p>Posted: 2016-04-04 
-          , Modified: 2016-04-04 
+        <p>Posted: 2016-11-29 
+          , Modified: 2016-11-29 
 	</p>
       
-       <p>Tags: <a href="../../../../tags/topic%20models.html">topic models</a></p> 
+       <p>Tags: <a href="../../../../tags/none.html">none</a></p> 
     </div>
     
   </div>
   <!--/div-->
 
   <div class="toc"> <ul>
- <li><a href="#model">Model</a><ul>
- <li><a href="#definitions">Definitions</a></li>
- <li><a href="#model-1">Model</a></li>
- </ul></li>
- <li><a href="#algorithm">Algorithm</a></li>
- <li><a href="#analysis">Analysis</a><ul>
- <li><a href="#thresholded-linear-inverse-algorithm">Thresholded linear inverse algorithm</a></li>
- <li><a href="#mle-estimate">MLE estimate</a></li>
- <li><a href="#sample-complexity-lower-bounds">Sample complexity lower bounds</a></li>
- </ul></li>
+ <li><a href="#np-hardness">NP-hardness</a></li>
  </ul> </div>
 
   <div class="blog-main">
-    <h2 id="model">Model</h2>
-<h3 id="definitions">Definitions</h3>
-<p>Define</p>
-<ul>
-<li>the <span class="math inline">\(\ell_1\)</span> condition number <span class="math display">\[\ka(A) = \min \set{\ka}{\forall x\in \R^k, \ve{Ax}_1\ge \rc{\ka}\ve{x}_1}\]</span></li>
-<li>the <span class="math inline">\(\ell_\iy\to \ell_1\)</span> condition number <span class="math display">\[\la(A) = \min \set{\la}{\forall x\in \R^k, \ve{Ax}_1\ge \rc{\la}\ve{x}_\iy}\]</span></li>
-<li>the <span class="math inline">\(\de\)</span>-biased <span class="math inline">\(\ell_\iy\to \ell_1\)</span> condition number
-<span class="math display">\[\begin{align}
-\la_\de&amp;=\min_{|BA-I_k|\le \de, B\in \R^{k\times D}} |B|_{\iy}\\
-&amp;=\max_{\ve{Ax}_1\le 1} \ve{x}_{\iy} - \de\ve{x}_1.
-\end{align}\]</span>
-(The equality follows from a duality calculation.)</li>
-<li>the restricted <span class="math inline">\(\ell_1\to \ell_1\)</span> condition number is <span class="math display">\[\ol{\ka}_r(A) = \min\set{\ol{\ka}}{\forall \ve{v}_0, \ve{Av}_1\ge \rc{\ol \ka}\ve{v}}.\]</span></li>
-</ul>
-<p>Note <span class="math display">\[\la_\de\le \la_0=\la \le \ka.\]</span> (To see this, take <span class="math inline">\(x=By\)</span>.)</p>
-<h3 id="model-1">Model</h3>
-<ul>
-<li><span class="math inline">\(A\)</span> is a fixed <span class="math inline">\(n\times k\)</span> matrix with <span class="math inline">\(\de\)</span>-biased condition number <span class="math inline">\(\la_\de(A)\)</span>. (We want this to be small.)</li>
-<li><span class="math inline">\(x\in \De_k\)</span> is <span class="math inline">\(r\)</span>-sparse.</li>
-<li><span class="math inline">\(y\sim Ax\)</span> (<span class="math inline">\(Ax\)</span> is treated as a probability vector).</li>
-</ul>
-<h2 id="algorithm">Algorithm</h2>
-<p>Given <span class="math inline">\(y\sim Ax\)</span> and <span class="math inline">\(A\)</span>,</p>
-<ul>
-<li>Thresholded linear inverse
-<ul>
-<li>Let <span class="math inline">\(B=\amin_{|BA-I_k|\le \de, B\in \R^{k\times D}} |B|_{\iy}\)</span> be a <span class="math inline">\(\de\)</span>-biased minimum variance inverse.</li>
-<li>Compute <span class="math inline">\(\wh x = \rc n By\)</span>.</li>
-<li>Let <span class="math display">\[x_i = \wh x_i (\wh x_i \ge \ub{2\la_\de(A) \sfc{\ln k}{n} + \de}{\tau}).\]</span></li>
-</ul></li>
-<li>TLI finds the support of <span class="math inline">\(x^*\)</span> with high probability. Now find the MLE <span class="math inline">\(x^*\)</span> given the support. (This is a convex problem.)</li>
-</ul>
-<h2 id="analysis">Analysis</h2>
-<h3 id="thresholded-linear-inverse-algorithm">Thresholded linear inverse algorithm</h3>
-<p>We have <span class="math display">\[ \E \wh x_i  =x_j^* + \sumo jk ((BA)_{ij} - \de_{i,j}) x_j^*.\]</span> <em>This is why it’s natural to consider the <span class="math inline">\(\de\)</span>-biased inverse</em>: we don’t need <span class="math inline">\(B=A^+\)</span> exactly, we can relax this to each <span class="math inline">\((BA)_{ij} - \de_{i,j}\)</span> being small. Now use Bernstein’s inequality to get concentration on the order of <span class="math inline">\(\tau\)</span>. Finally use union bound. <!--check this--></p>
-<h3 id="mle-estimate">MLE estimate</h3>
-<p>If</p>
-<ul>
-<li><span class="math inline">\(x^*\in \De_k\)</span> is <span class="math inline">\(r\)</span>-sparse</li>
-<li><span class="math inline">\(x_i^*\ge \fc{\tau}r\)</span> for any <span class="math inline">\(i\in R\)</span>,</li>
-<li><span class="math inline">\(A\)</span> has <span class="math inline">\(\le \ol{\ka}\)</span> restricted <span class="math inline">\(\ell_1\to \ell_1\)</span> condition number (a bound on <span class="math inline">\(\ka\)</span> is sufficient as <span class="math inline">\(\ol\ka\le \ka\)</span>)</li>
-<li><span class="math inline">\(n\ge c\ol{\ka}^2 r^2 \fc{\log k}{\tau^2}\)</span></li>
-</ul>
-then with high probability
-<span class="math display">\[\begin{align}
-\ve{Ax_{MLE}-Ax^*}_1 &amp;\le \wt O\pa{\sfc rn}\\
-\ve{x_{MLE}-x^*}_1 &amp;\le \wt O\pa{\ol \ka \sfc rn}
-\end{align}\]</span>
-<p>The proof is like the <a href="../../math/statistics/fisher-info.html">proof of asymptotic normality of MLE</a>, but with matrix concentration to get a finite sample bound.</p>
-<h3 id="sample-complexity-lower-bounds">Sample complexity lower bounds</h3>
-<p>These exist!</p>
+    <p>[ALA16] Open problem - approximate planning of POMDPs in the class of memoryless policies</p>
+<p>The relevant matrices/tensors are <span class="math inline">\(f_T(x'|x,a) = T_{xx'a}\)</span>, <span class="math inline">\(f_R(r|x,a) = \Ga_{xar}\)</span>, and <span class="math inline">\(f_O(y|x) = O_{xy}\)</span>. View it two ways.</p>
+<ol type="1">
+<li>As an extended MDP, with transition matrix <span class="math inline">\(P_{(x,a), (y,b)} = T_{yxa}\Pi_{ay}\)</span>, <span class="math inline">\(\om'\)</span> the stationary vector. (I think it’s <span class="math inline">\(\om' = (I-P^T(PP^T)^{-1}P)e_1\)</span>.) We try to maximize <span class="math display">\[\max_{\Pi\ge 0, \sum_a \pi(a|y)=1} \sum_{x,a} \om_\pi(x) \sum_y O_{xy} \Pi_{ay} \ol r(x,a).\]</span></li>
+<li>As a MDP with restricted class of policies - a linear subspace, <span class="math display">\[ \Pi_{ax} = O_{xy} \Pi_{ay}.\]</span></li>
+</ol>
+<p>We are maximizing over a linear subspace, but the value is not convex in the policy. We can easily get to local min using policy gradient (this is easier than policy gradient because we know all parameters).</p>
+<p>Questions:</p>
+<ol type="1">
+<li>Why is this nonconvex? Since we are maximizing, actually the question is “why is this nonconcave”? Come up with a simple concrete example where this is nonconvex. Answer (this is not full-rank, but you can change it infinitesimally): Have a state machine that rewards you only if you choose LL or RR, not if you switch. Then the optimal strategy is to always play L or always play R, rather than somewhere in the middle. More complicatedly, you can set up something which rewards the player from playing probabilities close to <span class="math inline">\(p_1,\ldots, p_k\)</span>, so there can be multiple local optima.</li>
+<li>Simpler question: Suppose there are only 2 actions each step, and there is no view. Find the best strategy. Bellman’s equation gives <span class="math inline">\(Q=R + PQ\coltwo{p}{1-p}\)</span>. This is a linear equation in <span class="math inline">\(2|S|\)</span> variables, so the value is a rational function of degree <span class="math inline">\(\le 2|S|\)</span> in <span class="math inline">\(p\)</span>. I think in general you get rational functions also, but in more variables! Can we reduce from something hard like tensor decomposition to this? The difficulty is writing polynomials as solutions to systems of equations… (The denominator is multilinear if you treat all states as the same… but perhaps you can get a broader class.) Or maybe we can’t just perturb the non-full-rank case, we actually need something far enough from low-rank so that the strategy is not oblivious… (ALA16 don’t restrict to full rank.)</li>
+</ol>
+<p>See also Bertsekas on combining states.</p>
+<p>The projection in the expression seems messy to deal with.</p>
+<h2 id="np-hardness">NP-hardness</h2>
+<p>Finding the optimal memoryless policy for a POMDP is NP-hard. (Proof: We can reduce from any polynomial optimization problem over the simplex to a POMDP as follows. The observation space is trivial, <span class="math inline">\(\{1\}\)</span>. Then a memoryless policy is just a vector of probabilities for different actions, summing to 1. Note a deterministic POMDP is a finite state machine where the actions correspond to characters read in by the machine. Given a polynomial is degree <span class="math inline">\(n\)</span>, make a POMDP that is stratified in <span class="math inline">\(n\)</span> layers. For each monomial <span class="math inline">\(a_{i_1\ldots i_n} x_{i_1}\cdots x_{i_n}\)</span> create a path in the finite state machine that reads in actions <span class="math inline">\(i_1,\ldots, i_n\)</span>, ends in a reward of <span class="math inline">\(a_{i_1\ldots i_n}\)</span> and then resets. Then the average reward is <span class="math inline">\(1/n\)</span> times the polynomial.)</p>
 
   </div>
 

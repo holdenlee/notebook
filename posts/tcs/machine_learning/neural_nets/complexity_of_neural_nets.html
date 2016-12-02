@@ -122,24 +122,24 @@
 <p>COLT2016.</p>
 <p><img src="../../../../images/deepnets_tensor_1.png"></p>
 <p>Consider a neural network defined on input <span class="math inline">\((x_1,\ldots, x_N)\in (\R^s)^N\)</span>, as follows.</p>
-\begin{align}
+<span class="math display">\[\begin{align}
 rep(i,d) &amp;= f_{\te_d}(x_i)\\
 conv(i,z) &amp;= \an{a^{z,i}, rep(i,:)} = \sum_d a_d^{z,i} f_{\te_d}(x_i)\\
 pool(z) &amp;= \prod_{i=1}^N conv(i,z) = \prod_{i=1}^N \sum_d a_d^{z,i} f_{\te_d}(x_i)\\
 out(y) &amp;= \an{a_y, pool(:)} = \sum_{z=1}^Z a_{y,z} \prod_{i=1}^N\sum_d a_d^{z,i} f_{\te_d}(x_i)
-\end{align}
+\end{align}\]</span>
 <p>Note pool(z) is a 1-D tensor <span class="math display">\[ (a_d^{z,i\ot N *})_{i_1,\ldots, i_N, d} \ot (f_{\te_d}(x_i))^{i\ot N}_{d,i_1,\ldots, i_N} \]</span> so this is a rank <span class="math inline">\(Z\)</span> tensor.</p>
 <p>Think of conv as <span class="math inline">\(1\times 1\)</span> convolution. Weight sharing makes the tensor decomposition symmetric.</p>
 <p>Deep nets:</p>
 <p><img src="../../../../images/deepnets_tensor_2.png"></p>
 <p>(<strong>Warning: The indexing of <span class="math inline">\(a\)</span> has been switched around here.</strong></p>
 <p>We have a hierarchical decomposition. Ex. first layer:</p>
-\begin{align}
+<span class="math display">\[\begin{align}
 conv_1(j,\ga) &amp;= \an{a^{1,j,\ga}, pool_0(j,:)}\\
 &amp;=\an{a^{1,j,\ga}, \pa{\prod_{j'\in \{2j-1,2j\}} conv_0(j',k)}_k}\\
 &amp;=\an{a^{1,j,\ga}, (\conv_0(2j-1,k)\conv_0(2j,k))_k}\\
 &amp;=\sum_k a^{1,j,k} \conv_0(2j-1, k) \conv_0(2j,k).
-\end{align}
+\end{align}\]</span>
 <p>Iterating this gives the <strong>hierarchical Tucker decomposition</strong></p>
 <p><img src="../../../../images/deepnets_ht.png"></p>
 <p><strong>Theorem 1</strong>: Consider the space of hierarchical tensors of order <span class="math inline">\(N\)</span> and dimension <span class="math inline">\(M\)</span> in each mode, parametrized by <span class="math inline">\(\{a^{l,j,\ga\}\)</span>. In this space, the tensor has CP-rank <span class="math inline">\(\ge r^{\fc N2}\)</span> a.e.</p>

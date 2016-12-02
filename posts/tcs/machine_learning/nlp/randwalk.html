@@ -10,7 +10,7 @@
   <meta name="description" content="Holden Lee's Research Notebook">
   <meta name="author" content="Holden Lee">
     
-  <title>[ALLMR16] RAND-WALK: A latent variable model approach to word embeddings</title>
+  <title>(ALLMR16) RAND-WALK - A latent variable model approach to word embeddings</title>
 
   <!-- Bootstrap core CSS -->
   <link href="../../../../bootstrap/css/bootstrap.min.css" rel="stylesheet">
@@ -70,7 +70,7 @@
 <div class="container">
   <div id="content">
     <div class="page header">
-      <h1>[ALLMR16] RAND-WALK: A latent variable model approach to word embeddings</h1>
+      <h1>(ALLMR16) RAND-WALK - A latent variable model approach to word embeddings</h1>
     </div>
     <div class="info">
       
@@ -137,32 +137,32 @@
 </ul></li>
 </ul></li>
 <li>At each time <span class="math inline">\(t\)</span>, word <span class="math inline">\(w\)</span> is emitted with probability
-\begin{align}
+<span class="math display">\[\begin{align}
 \Pj[w|c_t] &amp;= \rc{Z_{c_t}} \exp(\an{v_w,c_t})\\
 \text{where} Z_{c}:&amp;= \sum_w \exp(\an{v_w,c}).
-\end{align}</li>
+\end{align}\]</span></li>
 </ul>
 <h2 id="explanation">Explanation</h2>
 <p>Let <span class="math inline">\(\Pj(w,w')\)</span> be the probability that <span class="math inline">\(w,w'\)</span> appear consecutively at time <span class="math inline">\(t,t+1\)</span> when <span class="math inline">\(c_t\sim U_{[-\rc{\sqrt d},\rc{\sqrt d}]^d}\)</span> is drawn from the stationary distribution. Then the following hold.</p>
 <strong>Theorem 1</strong>: With high probability over choice of <span class="math inline">\(v_w\)</span>’s,
-\begin{align}
+<span class="math display">\[\begin{align}
 \forall &amp;w,w', &amp;
 \ln \Pj (w,w')&amp;\approx \rc{2d}|v_w+v_w'|^2 - 2\lg Z - o(1)\\
 \forall &amp; w,&amp;
 \lg \Pj(w) &amp;\approx \rc{2d} |v_w|^2 - \lg Z -o(1)\\
 \therefore &amp;&amp; \lg \fc{\Pj[w,w']}{\Pj[w]\Pj[w']} &amp;\approx \rc d \an{v_w,v_w'}\pm o(1).
-\end{align}
+\end{align}\]</span>
 <p>This is exactly the PMI, so the theorem “explains” Mystery 1.</p>
 <p><em>Proof idea</em>:</p>
 <p>Let <span class="math inline">\(c\)</span> be the context vector at time <span class="math inline">\(t\)</span> and <span class="math inline">\(c'\)</span> be the vector at time <span class="math inline">\(t+1\)</span>.</p>
 <ol type="1">
 <li>The main difficulty is that <span class="math inline">\(Z_c\)</span> is intractable to compute. However, because the <span class="math inline">\(v_w\)</span> are random (or isotropic), so <span class="math inline">\(Z_c\)</span> concentrates around its mean, and we can approximate it by a constant <span class="math inline">\(Z\)</span> (Theorem 2 in the paper).</li>
 <li>Because drift is small, we can make the approximation <span class="math inline">\(c'\approx c\)</span>. Then
-\begin{align}
+<span class="math display">\[\begin{align}
 \Pj(w,w') &amp;= \int_{c,c'} \Pj(w|c)\Pj(w'|c_{t+1})\Pj(c,c')\,dc\,dc'\\
 &amp;\sim \rc{Z^2} \EE_{c} \exp(\an{v_w+v_w',c})\\
 &amp;\sim \rc{Z^2}\exp\pf{|v_w+v_{w'}|^2}{2}
-\end{align}
+\end{align}\]</span>
 using some calculus in the last step (exercise). <!--check this--></li>
 </ol>
 <p>The calculation for <span class="math inline">\(\Pj(w)\)</span> is even simpler.</p>

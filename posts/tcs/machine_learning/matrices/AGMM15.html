@@ -10,7 +10,7 @@
   <meta name="description" content="Holden Lee's Research Notebook">
   <meta name="author" content="Holden Lee">
     
-  <title>[AGMM15] Simple, efficient, and neural algorithms for sparse coding</title>
+  <title>(AGMM15) Simple, efficient, and neural algorithms for sparse coding</title>
 
   <!-- Bootstrap core CSS -->
   <link href="../../../../bootstrap/css/bootstrap.min.css" rel="stylesheet">
@@ -70,7 +70,7 @@
 <div class="container">
   <div id="content">
     <div class="page header">
-      <h1>[AGMM15] Simple, efficient, and neural algorithms for sparse coding</h1>
+      <h1>(AGMM15) Simple, efficient, and neural algorithms for sparse coding</h1>
     </div>
     <div class="info">
       
@@ -138,10 +138,10 @@
 <ul>
 <li>(Decode) Let <span class="math inline">\(x^{(i)}=1_{\ge \fc C2}((A^s)^Ty^{(i)})\)</span>.</li>
 <li>(Update)
-\begin{align}
+<span class="math display">\[\begin{align}
 \wh g^s &amp;=\rc p \sumo ip (y^{(i)} - A^{(s)}x^{(i)}) \sign(x^{(i)})^T\\
 A^{s+1} &amp;= A^s - \eta \wh g^s
-\end{align}</li>
+\end{align}\]</span></li>
 </ul></li>
 </ul>
 <p>The decoding step is doing a minimization with respect to <span class="math inline">\(x\)</span><a href="#fn2" class="footnoteRef" id="fnref2"><sup>2</sup></a>. Intuitively, since <span class="math inline">\(A^*\)</span> is incoherent (random-like), <span class="math inline">\((A^*)^TA^*\approx I\)</span>, so multiplying by <span class="math inline">\((A^*)^T\)</span> has the effect of inverting. The threshold acts as a denoiser.</p>
@@ -149,10 +149,10 @@ A^{s+1} &amp;= A^s - \eta \wh g^s
 <p>(There’s no regularization here?)</p>
 <h3 id="version-2">Version 2</h3>
 <p>A better version of the above is to use gradient descent (Olshausen-Field), rather than just the sign of the difference. Let <span class="math inline">\(A'=A - \eta g\)</span> where <span class="math inline">\(g=\E [(y-Ax) x^T]\)</span>. The complication is that this may not prserver <span class="math inline">\((\de,2)\)</span>-nearness, so the update rule is replaced by</p>
-\begin{align}
+<span class="math display">\[\begin{align}
 \wh g^s &amp;=\rc p \sumo ip (y^{(i)} - A^{(s)}x^{(i)}) \sign(x^{(i)})^T\\
 A^{s+1} &amp;= \Proj_B(A^s - \eta \wh g^s)
-\end{align}
+\end{align}\]</span>
 <p>where <span class="math inline">\(B\)</span> is the set of <span class="math inline">\((\de_0,2)\)</span>-close matrices to <span class="math inline">\(A^*\)</span>.</p>
 <h3 id="instantiation">Instantiation</h3>
 <p>The algorithms above require a matrix that is <span class="math inline">\(O^*\prc{\log n}\)</span>-close to the true matrix. Algorithm 3 gives such a matrix.</p>
@@ -172,18 +172,18 @@ A^{s+1} &amp;= \Proj_B(A^s - \eta \wh g^s)
 <p>An algorithm which makes correlated steps has geometric convergence. For example, gradient descent on strongly convex, smooth functions gives geometric convergence.</p>
 <p><strong>Proposition</strong>: If <span class="math inline">\(f\)</span> is <span class="math inline">\(2\al\)</span>-strongly convex and <span class="math inline">\(\rc{2\be}\)</span>-smooth, then <span class="math inline">\(\nb f(z)\)</span> is <span class="math inline">\((\al,\be,0)\)</span>-correlated with <span class="math inline">\(z^*\)</span>.</p>
 <em>Proof</em>: Note that <span class="math inline">\(L\)</span>-smooth means <span class="math inline">\(f(x) - f(x^*) \ge \rc{2L} \ve{\nb f(x)}^2\)</span> (cf. gradient descent lemma). Then
-\begin{align}
+<span class="math display">\[\begin{align}
 \an{g,x-x^*} &amp;\ge f(x)-f(x^*) + \al\ve{x-x^*}^2\\
 &amp;\ge \be \ve{\nb f}^2 + \al\ve{x-x^*}^2.
-\end{align}
+\end{align}\]</span>
 <p><strong>Theorem</strong> (Theorem 6): If <span class="math inline">\(g\)</span> is <span class="math inline">\((\al,\be,\ep)\)</span>-correlated with <span class="math inline">\(z^*\)</span> and <span class="math inline">\(z'=z-\eta g\)</span> and <span class="math inline">\(0&lt;\eta\le 2\be\)</span>, then <span class="math display">\[\ve{z'-z^*}^2 \le (1-2\al \eta)\ve{z-z^*}^2 + 2\eta \ep.\]</span> If <span class="math inline">\(z_{t+1}=z_t - \eta g_t\)</span> and each <span class="math inline">\(g_t\)</span> is <span class="math inline">\((\al,\be,\ep)\)</span>-correlated with <span class="math inline">\(z^*\)</span>, <span class="math display">\[\ve{z_t-z^*}^2\le (1-\al \eta)^t \ve{z_0-z^*}^2.\]</span></p>
 <p>(Note the usual gradient step size for <span class="math inline">\(\rc{2\be}\)</span>-smooth functions is <span class="math inline">\(2\be\)</span>.)</p>
 <em>Proof</em>: Break up <span class="math inline">\(z'-z^* = (z-z^*) - \eta g\)</span> in order to use the correlation.
-\begin{align}
+<span class="math display">\[\begin{align}
 \ve{z'-z^*}^2 &amp;=\ve{z-z^*} - 2\an{z-z^*, \eta g} + \eta^2\ve{g}^2\\
 &amp;\le \ve{z-z^*}^2 - 2\eta (\al\ve{z-z^*}^2+\be \ve{g}^2-\ep) + \eta^2\ve{g}^2\\
 &amp;= (1-2\eta \al)\ve{z-z^*}^2 +\ub{ \eta (\eta - 2\be) \ve{g}^2}{\le 0} + 2\eta \ep.
-\end{align}
+\end{align}\]</span>
 <p>In actuality, we’ll need a weaker form of this, “<span class="math inline">\((\al,\be,\ep_s)\)</span>-correlated with high probability” (Definition 38). There is an analogue of the theorem in this setting (Theorem 40).</p>
 <h2 id="theorems">Theorems</h2>
 <ul>
@@ -219,13 +219,13 @@ O\pf{k}n&amp;\\\end{cases},\]</span> respectively.<a href="#fn5" class="footnote
 <li>(Lemma 11) Now derive an expression for the expected value of the next value of <span class="math inline">\(A\)</span>. Let <span class="math inline">\(A'=A-\eta g\)</span>. We write it in the form <span class="math inline">\(\al (A-A^*)+\pat{error terms}\)</span>.
 <ul>
 <li><strong>Lemma</strong>: Let <span class="math inline">\(A'=A-\eta g\)</span>. Then <span class="math display">\[\E g_i = p_iq_i (\ub{\an{A_i' , A_i^*}}{=:\la_i}A_i - A_i^*+O\pf{k}n).\]</span><a href="#fn6" class="footnoteRef" id="fnref6"><sup>6</sup></a> <em>Proof</em>: With high probability, <span class="math inline">\(g\)</span> has the right sign as <span class="math inline">\(x\)</span>, so in calculating the expected value, we can assume it always has the right sign—its support is always <span class="math inline">\(\Supp(x)\)</span>. Then we can restrict to the support of <span class="math inline">\(x\)</span>. We separate the term <span class="math inline">\(i\)</span> because that will have the main contribution (recall incoherence means <span class="math inline">\(AA^T \approx I\)</span>).
-\begin{align}
+<span class="math display">\[\begin{align}
 \E g_i &amp;= \E[(y-Ax)\sgn(x_i)]\\
 &amp;\approx \E[(y-A_SA_S^Ty) \sgn(x_i)]\\
 &amp;=\E[(I-A_SA_S^T)A^* x \sgn(x_i)]\\
 &amp;=\E[(I-A_iA_i^T)A^* x \sgn(x_i)] - \E[A_{S\bs\{i\}} A_{S\bs\{i\}}^T A^* x \sgn(x_i)]\\
 &amp;= \ub{\E[x_i^*\sgn(x_i^*)|S]}{p_i} \ub{\Pj(i\in S)}{q_i} (I-A_iA_i^T) A_i^* - p_i A_{-i} \diag(\ub{\Pj(i,j\in S)}{q_{i,j}}) A_{-i} A_i^*.
-\end{align}
+\end{align}\]</span>
 The error is <span class="math inline">\(\ve{A_{-i}}^2\max\fc{q_{ij}}{q_i} = \fc mn O\pf km = O\pf kn\)</span>, as needed.</li>
 </ul></li>
 <li>(Lemma 15-18) Bound the error term to show that at each step of the algorithm, the step is correlated, and maintains nearness.
@@ -233,11 +233,11 @@ The error is <span class="math inline">\(\ve{A_{-i}}^2\max\fc{q_{ij}}{q_i} = \fc
 <li>Lemma 11 gives the following. Let <span class="math inline">\(k=p_iq_i\)</span>. We show the bound indicated below. <span class="math display">\[\E g_i  = \ub{p_iq_i}{=:k}(A_i - A^*) + \ub{p_iq_i ((1-\la_i) A_i + \ep_i + \ga)}{\ved \le \fc k4 \ve{A_i - A_i^*} + \ze}\]</span> where <span class="math inline">\(\ze=O\pf{k^2}{mn}\)</span>. Then <span class="math display">\[\an{g_i,A_i-A_i^*} \ge k\ve{A_i - A_i^*}^2 - \fc k4 \ve{A_i - A_i^*}^2 - \ze\ve{A_i - A_i^*}.\]</span> Using the inequality <span class="math inline">\(ax^2-bx \ge cx^2 + \fc{b^2}{4(a-c)}\)</span> with <span class="math inline">\(a=\fc 34k\)</span>, <span class="math inline">\(b=\ze\)</span>, <span class="math inline">\(c=\fc k4\)</span>, we get this is <span class="math inline">\(\ge \rc 4 k\ve{A_i-A_i^*}^2 + \fc{\ze^2}{2k}\)</span>.</li>
 <li>Thus <span class="math inline">\(\E g_i\)</span> is <span class="math inline">\((\Om\pf km, \Om\pf mk, O\pf{k^3}{mn^2})\)</span>-correlated with <span class="math inline">\(A^*\)</span>. The last term comes from <span class="math inline">\(\fc{\ep}{\al} = \fc{k^3/(mn^2)}{k/m}\)</span>.</li>
 <li>Note we need to maintain nearness in order to apply the estimates that gave correlation. (Where do we use 2-nearness in Lemma 11?) We show nearness is preserved. The natural way to decompose <span class="math inline">\(A_i'\)</span> is as follows.
-\begin{align}
+<span class="math display">\[\begin{align}
 \E(A_i' - A_i^*) &amp;= \E[(A_i' - A_i)+(A_i-A_i^*)]\\
 &amp;=-\eta p_iq_i (\la_i^s A_i^s - A_i^*+\ep_i +\ga) + A_i - A_i^*\\
 &amp;=\diag(1-\eta p_iq_i) (A_i-A_i^*) + (1-\la_i) \eta p_iq_i A_i - \eta p_iq_i(\ep_i+\ga).
-\end{align}
+\end{align}\]</span>
 Now bound the two error terms by bounding the spectral norm.</li>
 </ul></li>
 <li>Finish.

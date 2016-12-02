@@ -115,18 +115,18 @@
 <li>Steepest descent
 <ul>
 <li>For a norm <span class="math inline">\(\ved\)</span>, the steepest descent direction is (sd = steepest descent, nsd = normalized steepest descent)
-\begin{align}
+<span class="math display">\[\begin{align}
 \De x_{sd} &amp;= \min_{\ve{y}\le 1} \nb f(x)^T y.
-\end{align}</li>
+\end{align}\]</span></li>
 </ul></li>
 <li>Newton method
 <ul>
 <li>Let
-\begin{align}
+<span class="math display">\[\begin{align}
 \De x_{sd} &amp;= -H^{-1}\nb f\\
 \De x_{nsd} &amp;=\fc{H^{-1} \nb f}{\ve{H^{-\rc 2} \nb f}} = \fc{H^{-1} \nb f}{\la(x)^2}\\
 \la(x) &amp;= \ve{H^{-\rc 2}\nb f}^{\rc 2} = (\nb f^T H^{-1} \nb f)^{\rc 2}.
-\end{align}
+\end{align}\]</span>
 Here <span class="math inline">\(\la(x)\)</span> is the Newton decrement. (Use <span class="math inline">\(\Delta x = \Delta x_{nsd}\)</span>.)</li>
 </ul></li>
 <li>Newton for functions with Lipschitz Hessian: The number of steps to reach <span class="math inline">\(\ep\)</span> is <span class="math display">\[\fc{f(x^{(0)}-p^*)}{\ga} + \ln\ln \fc{\ep_0}{\ep}, \ep_0=\fc{2m^3}{L^2}.\]</span></li>
@@ -141,17 +141,17 @@ Here <span class="math inline">\(\la(x)\)</span> is the Newton decrement. (Use <
 <li>Newton method is steepest descent for <span class="math inline">\(H\)</span>:
 <ul>
 <li>Let <span class="math inline">\(A\)</span> be a symmetric positive definite matrix. Defining <span class="math inline">\(\ved_A\)</span> as follows, we note that the dual norm is the norm corresponding to the inverse.
-\begin{align}
+<span class="math display">\[\begin{align}
 \ve{A} :&amp;= x^TAx = \ve{\sqrt A}_2\\
 \ve{x}_{A}^* &amp; = \ve{x}_{A^{-1}}.
-\end{align}
+\end{align}\]</span>
 <ul>
 <li><em>Proof.</em> <span class="math display">\[\ve{x}_A^* = \max_{\ve{y}_A=1} x^Ty \stackrel{z = \sqrt{A}y}{=} \max_{\ve{z}=1} x^T A^{-\rc 2} z = \ve{A^{-\rc 2}x^T}  = \ve{x}_{A^{-1}}.\]</span></li>
 <li>This calculation also shows that <span class="math display">\[\amin_{\ve{y}_A=1} v^Ty = \fc{A^{-1} x}{\ve{A^{-\rc 2}x}}.\]</span></li>
 <li>Thus,
-\begin{align}
+<span class="math display">\[\begin{align}
 \De x_{nsd} &amp;= \fc{H^{-1} \nb f(x)}{\ve{H^{-\rc 2} \nb f}}.
-\end{align}</li>
+\end{align}\]</span></li>
 </ul></li>
 <li>Why is <span class="math inline">\(\De x_{nsd}\)</span> the right normalization? <span class="math display">\[ f\pa{x - t\fc{H^{-1} \nb f(x)}{\ve{H^{-\rc 2} \nb f}}} \approx f(x) + (-t+\fc{t^2}2) \fc{H^{-1} \nb f(x)}{\ve{H^{-\rc 2} \nb f}}\]</span> and <span class="math inline">\(t=1\)</span> minimizes this.</li>
 </ul></li>
@@ -170,19 +170,19 @@ Here <span class="math inline">\(\la(x)\)</span> is the Newton decrement. (Use <
 <li>What should <span class="math inline">\(\eta\)</span> depend on? <span class="math inline">\(\al\)</span> (the slope for backtracking), <span class="math inline">\(m\)</span> (strong convexity parameter), <span class="math inline">\(L\)</span> (Lipschitz constant on Hessian).</li>
 </ul>
 <em>Proof (for Lipschitz)</em>. We do the calculations for 1 dimension. The calculations are the same, except we have to use matrices and vectors. Let <span class="math inline">\(\te(y)\)</span> be a quantity in <span class="math inline">\([-y,y]\)</span>. Suppose we are at <span class="math inline">\((0,0)\)</span>. Let <span class="math inline">\(d=f'(0), a=f''(0), \la = \fc{d}{a^{\rc 2}}\)</span>, <span class="math inline">\(\De x_{nt} = \fc{d}{a} = \fc{\la}{a^{\rc 2}}\)</span>.
-\begin{align}
+<span class="math display">\[\begin{align}
 f(x) &amp;= dx + \rc 2 ax^2 + \te\pa{\rc 6 Lx^3}\\
 f\pa{-\fc da} &amp;= -\rc 2 \fc{d^2}a\\
 &amp;\le -\fc{d^2}{a} \ub{\pa{\rc 2 - \rc 6 L \fc{d}{a^2}}}{\ge \al}.
-\end{align}
+\end{align}\]</span>
 <p>In order for the quantity to be <span class="math inline">\(\ge \al\)</span>, noting <span class="math inline">\(\fc{d}{a^2} = \fc{d}{a^{\fc 32}}\)</span>, we want <span class="math inline">\(\la \le \fc{3(1-2\al) a^{\fc 32}}L\)</span>; it’s sufficient for <span class="math inline">\(f'\le \fc{3(1-2\al)m^2}{L}\)</span>.</p>
 Note that unlike for linear convergence, we don’t prove something like <span class="math inline">\(f(x') - f(x^*)\le \cdots\)</span>. We have to work with the gradients to get quadratic convergence. (Gradients also control the distance to the optimum.) We have
-\begin{align}
+<span class="math display">\[\begin{align}
 f'(x) &amp;= d+ ax + \te\pa{\rc L x^2}\\
 f'\pa{-\fc da} &amp; \le \rc 2 L\fc{d^2}{a^2} \le \fc{L}{2m^2}f'(0).
-\end{align}
+\end{align}\]</span>
 <em>Proof (for self-concordant)</em>. Work in 1-D. Instead of integrating <span class="math inline">\(\int f'''=\int (f'')^{\fc 32}\)</span>, we let <span class="math inline">\(F(y)=y^{-\rc 2}\)</span> and integrate <span class="math inline">\(\int (F(f''))'\)</span>.
-\begin{align}
+<span class="math display">\[\begin{align}
 |(f'')^{-\rc 2} (t)| &amp;= \ab{\int_0^t ((f'')^{-\rc 2})'} =\int_0^t \ab{-\rc 2 (f'')^{-\fc 32} f'''}\le t\\
 \label{eq:f''}
 \implies
@@ -191,35 +191,35 @@ f'\pa{-\fc da} &amp; \le \rc 2 L\fc{d^2}{a^2} \le \fc{L}{2m^2}f'(0).
 \rc{-t+f''(0)^{-\rc 2}} - f''(0)^{\rc 2} &amp; \ge f'(t)-f'(0) \ge \rc{t+f''(0)^{-\rc 2}} + f''(0)^{\rc 2}\\
 \implies f(t) &amp;\le f(0) + (f'(0) - f''(0)^{\rc 2}) t + \ln \pf{f''(0)^{-\rc 2}}{t + f''(0)^{-\rc 2}}\\
 \implies f\pa{-\fc{f'}{f''}t} &amp; \le f(0) - \la^2 t + \la t - \ln (1-t\la(x)).
-\end{align}
+\end{align}\]</span>
 <p>Now consider 2 cases.</p>
 <ul>
 <li><span class="math inline">\(\la(x^{(k)})&gt;\eta\)</span>. We show <span class="math inline">\(f(x^{(k+1)}) - f(x^{(k)}) \le -\ga\)</span>.
 <ul>
 <li>Using <span class="math inline">\(-x + \ln (1+x) + \fc{x^2}{2(1+x)}\le 0\)</span>, for <span class="math inline">\(t=\rc{1+\la(x)}\)</span>,
-\begin{align}
+<span class="math display">\[\begin{align}
 f(-\fc{f'}{f''} t) &amp; \le f(0) - \al \la(x)^2 t\\
 t=\rc{1+\la(x)^2}\implies f(-\fc{f'}{f''} t) &amp; \le f(0) - \al \la(x)^2 t
-\end{align}
+\end{align}\]</span>
 so backtracking line search chooses <span class="math inline">\(t\ge \fc{\be}{1+\la(x)}\)</span> with <span class="math display">\[f(-\fc{f'}{f''} t)  \le -\al \be \fc{\la^2}{1+\la} \le -\al \be \fc{\eta^2}{1+\eta}.\]</span></li>
 </ul></li>
 <li><span class="math inline">\(\la(x^{(k)})\le \eta\)</span>. We show <span class="math inline">\(2\la(x^{(k+1)})\le (2\la(x^{(k)}))^2\)</span>. (Note we are not getting a bound on <span class="math inline">\(f'(x_{k+1})\)</span> like before because we don’t have strong convexity, which upper-bounds <span class="math inline">\(f''(x)^{-\rc 2}\)</span>.)
 <ul>
 <li>We take a unit step because <span class="math display">\[f(-\fc{f'}{f''})   = f(0) - \la^2 + \la - \ln (1-\la(x))\le f(0)-\al \la(x)^2\]</span> when <span class="math inline">\(\la(x) \le \fc{1-2\al}{2}\)</span>.</li>
 <li>Self-concordance gives multiplicative bound on how <span class="math inline">\(H\)</span> changes, <span class="math inline">\((1-t\al)^2 H \preceq H(x+tv) \preceq \rc{(1-t\al)^2} H(x)\)</span>, where <span class="math inline">\(\al=\ve{v}_{H^{\rc 2}}\)</span>. Proof:
-\begin{align}
+<span class="math display">\[\begin{align}
 \ln f''(t) - \ln f''(0) &amp; = \int_0^t (\ln f'')' \\
 &amp; \le \int_0^t (2f'')^{\rc 2}\\
 &amp;\le \int_0^t \fc{2}{-x+(f'')^{-\rc 2}} &amp;\eqref{eq:f''}\\
 &amp;\le 2\ln (-t (f'')^{\rc 2} + 1).
-\end{align}</li>
+\end{align}\]</span></li>
 <li>Now we show <span class="math inline">\(\la(x-\fc{f'}{f''}) \le \fc{\la^2}{(1-\la)^2}\)</span>. Using the multiplicative bound (here <span class="math inline">\(t=1\)</span>, <span class="math inline">\(v=-\fc{f'}{f''}\)</span>, <span class="math inline">\(\al=\la\)</span>.
-\begin{align}
+<span class="math display">\[\begin{align}
 f''(x_{k+1})&amp;\in f''(x_k) [1-\la, \rc{1-\la}]\\
 f'(x_{k+1}) &amp; \in f'(x_k) + \ba{-\rc{\fc{f'}{f''} + \rc{(f'')^{\rc 2}}} + (f'')^{\rc 2}, \rc{-\fc{f'}{f''}+\rc{(f'')^{\rc2}}} - (f'')^{\rc 2}}\\
 &amp;= f'(x_k) \ba{\fc{\la}{-\la + 1}, \fc{\la}{\la+1}}\\
 \la(x_{k+1})&amp;\le \fc{\la(x_k)^2}{(1-\la(x_k))^2} \\ &amp; \le 2\la^2
-\end{align}
+\end{align}\]</span>
 where the last inequality is when <span class="math inline">\(\la\le \rc 4\)</span>.</li>
 </ul></li>
 <li>Finally, bound the distance to optimum by <span class="math inline">\(\la\)</span>, <span class="math inline">\(f(x^{(l)})-p^* \le \la(x^{(l)})^2\)</span>.</li>

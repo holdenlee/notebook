@@ -109,10 +109,10 @@
 <p><strong>Definition</strong> (Theorem I.5.2). Let <span class="math inline">\(X_1,Y_1\in \C^{n\times l}\)</span> have orthonormal columns, <span class="math inline">\(X_1^{\dagger}X_1=I\)</span>, <span class="math inline">\(Y_1^{\dagger}Y_1=I\)</span></p>
 <ul>
 <li>If <span class="math inline">\(2l\le n\)</span>, there are <span class="math inline">\(Q,U_{11}, V_{11}\)</span> (i.e., a change of basis on either side) such that
-\begin{align}
+<span class="math display">\[\begin{align}
 QX_1U_{11} &amp;= \colthree IOO\\
 QY_1V_{11} &amp;= \colthree \Ga \Si O
-\end{align}
+\end{align}\]</span>
 where <span class="math inline">\(\Ga, \Si\)</span> are positive diagonal. The diagonal of <span class="math inline">\(\Si\)</span> are the sines of the canonical angles, and <span class="math inline">\(\Ga\)</span> are the cosines.</li>
 <li>If <span class="math inline">\(2l&gt;n\)</span>, then the matrices are <span class="math inline">\(\colthree{IO}{OI}{OO}\)</span> and <span class="math inline">\(\colthree{\Ga O}{O I}{\Si O}\)</span>.</li>
 </ul>
@@ -134,11 +134,11 @@ where <span class="math inline">\(\Ga, \Si\)</span> are positive diagonal. The d
 <li><p>Relate the canonical angle to Sylvester’s equation.</p>
 <ul>
 <li>(Theorem V.3.4) If <span class="math inline">\(\coltwo{X_1^{\dagger}}{X_2^{\dagger}} A (X_1\,X_2) = \diag(L_1,L_2)\)</span>, letting <span class="math inline">\(R=AZ-ZM\)</span>, supposing <span class="math inline">\(L(M)\subeq [\al,\be]\)</span>, <span class="math inline">\(L(L_2)\subeq \R\bs [\al-\de, \be+\de]\)</span>,
-\begin{align}
+<span class="math display">\[\begin{align}
 X_2^{\dagger}A &amp;= L_2X_2^{\dagger}\\
 X_2^{\dagger}(AZ-ZM) &amp;= L_2 X_2^{\dagger} Z - X_2^{\dagger} ZM.
 \implies \ve{\sin\Te[R(X_1),R(Z)]} = \ve{X_2^{\dagger} Z} \le \fc{\ve{R}}{\de}
-\end{align}</li>
+\end{align}\]</span></li>
 </ul></li>
 </ol>
 <p>(Can be generlized to other norms. More involved—need to show existence of fixed point by a contractive iteration. V.2.1, V.2.11.)</p>
@@ -152,11 +152,11 @@ X_2^{\dagger}(AZ-ZM) &amp;= L_2 X_2^{\dagger} Z - X_2^{\dagger} ZM.
 L_{2.2} X_{2.2}^{\dagger}
 \]</span></p>
 For simplicity consider <span class="math inline">\(A\)</span> symmetric. (Otherwise, consider <span class="math inline">\(\matt OA{A^{\dagger}}O\)</span>.) Let <span class="math inline">\(\wh A\)</span> be diagonalized by <span class="math inline">\(\wh X_1,\wh X_2\)</span> (first <span class="math inline">\(s\)</span> eigenvectors). Let <span class="math inline">\(\wh A+E=A\)</span> be diagonalized by <span class="math inline">\(X_1,X_{2.1},X_{2.2}\)</span> (first <span class="math inline">\(s\)</span>, next <span class="math inline">\(t-s\)</span>, others). We have
-\begin{align}
+<span class="math display">\[\begin{align}
 L_{2.2}X_{2.2}^{\dagger} \wh X_1 - X_{2.2}^{\dagger}\wh X_1 \wh X_1^{\dagger} (A+E) \wh X_1 &amp;= X_{2.2}^{\dagger} (A\wh X_1 - (A+E) \wh X_1) \\
 &amp;=X_{2.2}^{\dagger} (-E\wh X_1)\\
 \implies \ve{X_{2.2}^{\dagger}\wh X_1} &amp; \le \fc{\ve{E}}{|\si_s-\si_{t+1}|}.
-\end{align}
+\end{align}\]</span>
 <h2 id="weyls-theorem">Weyl’s Theorem</h2>
 <h2 id="wedins-theorem">Wedin’s Theorem</h2>
 <p>(Davis-Kahan for <span class="math inline">\(r=s=1\)</span>.)</p>

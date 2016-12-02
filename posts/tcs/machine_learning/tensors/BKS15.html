@@ -10,7 +10,7 @@
   <meta name="description" content="Holden Lee's Research Notebook">
   <meta name="author" content="Holden Lee">
     
-  <title>[BKS15] Dictionary Learning and Tensor Decomposition via the Sum-of-Squares Method</title>
+  <title>(BKS15) Dictionary Learning and Tensor Decomposition via the Sum-of-Squares Method</title>
 
   <!-- Bootstrap core CSS -->
   <link href="../../../../bootstrap/css/bootstrap.min.css" rel="stylesheet">
@@ -70,7 +70,7 @@
 <div class="container">
   <div id="content">
     <div class="page header">
-      <h1>[BKS15] Dictionary Learning and Tensor Decomposition via the Sum-of-Squares Method</h1>
+      <h1>(BKS15) Dictionary Learning and Tensor Decomposition via the Sum-of-Squares Method</h1>
     </div>
     <div class="info">
       
@@ -157,10 +157,10 @@
 <ol type="1">
 <li>Attempt to find a degree <span class="math inline">\(k\)</span> pseudo-distribution <span class="math inline">\(U\)</span> satisfying the constraints <span class="math inline">\(P(U) \ge 1-\tau\)</span>, <span class="math inline">\(\ve{U}_2^2=1\)</span>, <span class="math inline">\(\an{s,U}^2\le 1-\ga\)</span> for every <span class="math inline">\(s\in S\)</span> (to repel it away from vectors we already found). If fail, stop.</li>
 <li>Use the “sampling pseudo-distributions” algorithm to obtain a unit vector <span class="math inline">\(c'\)</span> such that
-\begin{align}
+<span class="math display">\[\begin{align}
 P(c') &amp; \ge e^{-\ep d} - \tau\\
 \ep &amp;:= O(\pf{\tau}{d} + \fc{\ln \si}{d} \fc{\ln m}k)
-\end{align}</li>
+\end{align}\]</span></li>
 <li>Add <span class="math inline">\(c'\)</span> to <span class="math inline">\(S\)</span>.</li>
 </ol></li>
 </ol>
@@ -208,10 +208,10 @@ There are 3 parts. (a) We need to understand how “renormalization” of pseudo
 (?? Discrepancy between <span class="math inline">\(k\)</span> and <span class="math inline">\(k+2\)</span>.)</li>
 <li>By reweighting, there exists a degree 2 p.d. <span class="math inline">\(U'\)</span> such that <span class="math display">\[\wt \E_{U'} \an{v,u'}^2 = \rc{\wt \E_U W(U)} \wt\E_{U} W(U) \an{v,U}^2.\]</span> By Lemma 5.2, the value at <span class="math inline">\(c\)</span> is <span class="math inline">\(\ge 1-O(\ep)\)</span>.</li>
 <li><em>Proof</em> (Sketch). This is more likely to be true if <span class="math inline">\(\an{c,\xi}\)</span> is large. Let <span class="math inline">\(w=\an{\xi,u}^2\)</span>. Let <span class="math inline">\(\tau_M\)</span> be such that <span class="math inline">\(\E_{\xi_0|\xi_0\ge \tau_M}\xi_0^2 =M\)</span>. Conditioning on <span class="math inline">\(\an{c,\xi}\ge \tau_{M+1}\)</span> and expanding <span class="math inline">\(\xi=\an{c,\xi}c+\xi'\)</span>, find that <span class="math display">\[ \E_{\xi | \an{c,\xi}\ge \tau_{M+1}} w = M\an{c,u}^2 + \ve{U}_2^2.\]</span> Let <span class="math inline">\(\ol W = \E W = \pa{\an{c,U}^2 + \rc M}^{\fc k2}\)</span> (assume <span class="math inline">\(\ve{u}_2^2=1\)</span>). Algebra shows
-\begin{align}
+<span class="math display">\[\begin{align}
 \ol W \an{c,U}^2 &amp;\succeq \pa{1-\fc 2M } \ol W - \pa{1-\rc M}^{\fc k2}\\
 \EE_W \wt \E W\an{c,u}^2 &amp; \ge (1-O(\ep)) \EE_W \wt \E W.
-\end{align}
+\end{align}\]</span>
 <p>(Take <span class="math inline">\(M=\rc{\ep}\ln \prc{\ep}\)</span>.) This is almost what we want, except that we conditioned on <span class="math inline">\(\an{c,\xi}\ge \tau_{M+1}\)</span> and that this is an inequality about absolute values.</p>
 <p>To get rid of the conditioning, note that the event <span class="math inline">\(\forall i, \an{\xi^{(i)},c}\ge \tau_{M+1}\)</span> has probability <span class="math inline">\(2^{-O(kM^2)}\)</span>.</p>
 To get the result with not-too-small probability, rearrange as <span class="math display">\[
@@ -259,12 +259,12 @@ O(\ep) \EE_W \wt \E W \ge \EE_W \wt \E W - \EE_W \wt \E W\an{c,U}^2,
 <ol type="1">
 <li><p>(Calculate expectation) <em>Lemma 4.5</em>. If the distribution of <span class="math inline">\(x\)</span> is <span class="math inline">\((d,\tau)\)</span>-nice and <span class="math inline">\(A\)</span> is <span class="math inline">\(\si\)</span>-overcomplete, then <span class="math display">\[\EE_x \an{Ax,u}^d \in \ve{A^Tu}_d^d + [0,\tau \si^dd^d \ve{u}_2^d]\]</span> (where inequalities are in the SoS sense).</p>
 <em>Proof</em>. Expand the sum as <span class="math inline">\(\sum_\al x_\al (A^Tu)_\al\)</span>. For <span class="math inline">\(\al=[i,\ldots, i]\)</span> we get the term <span class="math inline">\((A^Tu)_i^d\)</span>. For the other terms, <!--each even term $\al\ne [i,\ldots, i]$ we get the term -->
-\begin{align}
+<span class="math display">\[\begin{align}
 0 &amp;\le \sum_{\al \in [n]^d,\al \ne [i,\ldots, i] }(\E x_\al) (A^Tu)_\al \\
 &amp; \le \tau \sum_{\al \in [n]^d,\al \ne [i,\ldots, i] } (A^Tu)_\al \\
 &amp; \le \tau d^d\sum_{\be \in [n]^{d/2},\be \ne [i,\ldots, i] } (A^Tu)_\be\\
 &amp; \le \tau d^d\ve{A^Tu}_2^d \le \tau \si^d \ve{u}_2^d.
-\end{align}
+\end{align}\]</span>
 (The <span class="math inline">\(d^d\)</span> bound is crude; this is not the bottleneck.) Note the lower inequality depends on there only being even nonzero terms.</li>
 <li>(Calculate concentration, Proof of 4.2) We use a Chebyshev bound<a href="#fn1" class="footnoteRef" id="fnref1"><sup>1</sup></a>. We have <span class="math inline">\(|(A^Tx)_\al|\le 1\)</span>. <strong>I think we need assumption on <span class="math inline">\(\ve{A^Tx}_{\iy}\)</span></strong>. Thus taking <span class="math inline">\(\wt \Om\pf{n^{2d}}{\tau^2}\)</span> samples we get that the coefficients are whp <span class="math inline">\(\fc{\tau}{n^d}\)</span>-close. This means the value at <span class="math inline">\(u\)</span> is <span class="math inline">\(n^d \si^d\fc{\tau}{n^d}\)</span>-close, and we get whp <span class="math display">\[P\in \ve{A^Tu}_d^d + 2\tau \si^d d^d \ve{u}_2^d[-1,1].\]</span></li>
 <li><p>Use noisy tensor decomposition. Check parameters. There we needed <span class="math inline">\(d \ge D=O(\rc{\ep}\ln \si)\)</span>. We need <span class="math inline">\(\tau\le \fc{\ep}{\si^DD^D}\)</span>. (<strong>Errata?</strong> The value of <span class="math inline">\(\tau\)</span> is different than in the theorem.)</p></li>
@@ -276,22 +276,22 @@ O(\ep) \EE_W \wt \E W \ge \EE_W \wt \E W - \EE_W \wt \E W\an{c,U}^2,
 <table>
 <thead>
 <tr class="header">
-<th style="text-align: left;">Before</th>
-<th style="text-align: left;">Now</th>
+<th>Before</th>
+<th>Now</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td style="text-align: left;">5.2</td>
-<td style="text-align: left;">7.2</td>
+<td>5.2</td>
+<td>7.2</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">5.1</td>
-<td style="text-align: left;">7.1</td>
+<td>5.1</td>
+<td>7.1</td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;">6.1</td>
-<td style="text-align: left;">7.3</td>
+<td>6.1</td>
+<td>7.3</td>
 </tr>
 </tbody>
 </table>

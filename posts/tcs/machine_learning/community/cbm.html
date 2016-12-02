@@ -144,10 +144,10 @@
 <p>By duality, this is <span class="math display">\[\le \min_{\sum \nu_i E_{ii} \succeq W}\sum \nu_i = \min_{Q\succeq W} \Tr(Q).\]</span></p>
 <p>WLOG, we can take the solution to be <span class="math inline">\(W=11^T\)</span>.</p>
 By <a href="SDP-duality.html">SDP duality</a>, <span class="math inline">\(X=11^T\)</span> is the optimal solution iff
-\begin{align}
+<span class="math display">\[\begin{align}
 \Tr(Q)&amp;=\Tr(W11^T)\\
 \Tr(11^T(Q-W))&amp;=0.
-\end{align}
+\end{align}\]</span>
 <p>I’m pretty confused here.<a href="#fn2" class="footnoteRef" id="fnref2"><sup>2</sup></a> If <span class="math inline">\(L_G-2L_H\succeq0\)</span> then we can let <span class="math inline">\(Q=D_G-2D_H\)</span>. Claim: If <span class="math inline">\(L_G-2L_H\succeq 0\)</span> and <span class="math inline">\(\la_2(L_G-2L_H)&gt;0\)</span> then the unique solution is <span class="math inline">\(gg^T\)</span>. The first condition makes sure that <span class="math inline">\(gg^T\)</span> is an optimal solution, the second makes sure it is unique. (Proof: The gap between a solution <span class="math inline">\(X\)</span> and <span class="math inline">\(Q\)</span> is <span class="math inline">\(\Tr((Q-W)X)\)</span>. (We can multiply <span class="math inline">\(Q\)</span> by <span class="math inline">\(X\)</span> because <span class="math inline">\(X_{ii}=1\)</span> and <span class="math inline">\(Q\)</span> is diagonal. The second smallest eigenvalue of <span class="math inline">\(Q-W\)</span> needs to be <span class="math inline">\(&gt;0\)</span> for there to be unique <span class="math inline">\(X\)</span> making this 0.)</p>
 <h3 id="random-graph">Random graph</h3>
 <p>For a randomly chosen <span class="math inline">\(H\subeq G\)</span>, what is <span class="math inline">\(\Pj(L_G-2L_H\succeq0)\)</span> large? Write this as a sum of random matrices with expectation 0: <span class="math display">\[
@@ -161,12 +161,12 @@ L_G-2L_H = \sum_{i&lt;j} \al_{ij} \La_{ij}, \quad \al_{ij}=\begin{cases}0,&amp;w
 <p>Suggestion: Let <span class="math inline">\(X\)</span> be the node colors and <span class="math inline">\(Y_\ep\)</span> be the observed edges. Consider the entropy <span class="math inline">\(H(X|Y_\ep)\)</span>. This is like a measure of connectivity “on average.” Ex. When <span class="math inline">\(\ep=0\)</span>, this measures the number of components. Think of it as a average-case Cheeger: rather than look at the proportionally minimal cut, we’re looking at an average cut size. (Related is the probability of success for ML decoding, which is <span class="math inline">\(\E_{X,Y_\ep}P(X|Y)\)</span>.)</p>
 <p>Thoughts: Any nontrivial partition <span class="math inline">\(A\sqcup B= V\)</span> of the vertices is associated with a cut. For a set <span class="math inline">\(S\)</span>, let <span class="math inline">\(X_S\)</span> be <span class="math inline">\(X\)</span> with the colors of vertices in <span class="math inline">\(S\)</span> flipped. Given observed <span class="math inline">\(Y_\ep\)</span>, <span class="math inline">\(P(X_S|Y_\ep)\ge P(X|Y_\ep)\)</span> iff most of the edges of the cut <span class="math inline">\((A,V\bs A)\)</span> are flipped. Thus, the ML decoding is the <span class="math inline">\(X\)</span> such that in no cut is the majority of the edges wrong.</p>
 Let <span class="math inline">\(G_C\)</span> be the (good) event that the majority of edges of cut <span class="math inline">\(C\)</span> are correct. Letting <span class="math inline">\(|C|\)</span> be the number of edges in the cut,
-\begin{align}
+<span class="math display">\[\begin{align}
 P\pa{\bigwedge_C G_C} &amp; \ge \prod P(G_C) &amp; \text{Correlation inequality} \\
 &amp; = \prod_C P(\Binom(|C|, 1-\ep) &gt; \fc{|C|}2)\\
 &amp; = \prod_C (1-e^{-K_\ep|C|})\\
 &amp; \ge 1-\sum_C e^{-K_\ep|C|}.
-\end{align}
+\end{align}\]</span>
 <p>(By Chernoff, we can take <span class="math inline">\(K_\ep = \fc{(\ep-\rc2)^2}{2\ep(1-\ep)}\)</span>.)</p>
 <p>Question: is there an efficient algorithm to approximate <span class="math inline">\(\sum_C e^{-K|C|}\)</span>? By Karger’s algorithm, we can estimate the number of minimum cuts. By sampling, we can estimate the number of cuts of some size if it’s <span class="math inline">\(&gt;\rc{\poly}\)</span> proportion. But what about all cuts in between?</p>
 <p>Note: The inequalities are not close to sharp because the events are very correlated when the cuts overlap a lot. Somehow it should be more affected by small cuts which <em>don’t</em> share a lot of edges in common.</p>

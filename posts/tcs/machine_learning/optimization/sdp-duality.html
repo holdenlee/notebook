@@ -99,7 +99,7 @@
  \la_{\min}(X)=\min_{\Tr(A)=1, A\succeq 0}\an{A,X}\ge 0.
  \]</span> (Use (2) in <a href="duality.html">duality</a>.)</li>
 <li>Simplify, using minimax as a key step.
-\begin{align}
+<span class="math display">\[\begin{align}
  g(\la,\nu) &amp;= \max_X(\an{C,X} + \la \min_{\Tr(A)=1, A\succeq 0}\an{A,X} - \sum \nu_i (\an{A_i,X}-b_i)\\
  &amp;=\max_X\min_{\Tr(A)=1}\an{\ub{C-\sum \nu_iA_i}{Z}+\la A,X} + \nu^Tb\\
  &amp;=\max_X\min_{\Tr(A)=\la}\an{Z + A,X} + \nu^Tb\\
@@ -108,7 +108,7 @@
  0,&amp;\Tr(Z)=-\la, Z\preceq 0\\
  \iy,&amp;\text{else.}
  \end{cases}}-\nu^Tb
- \end{align}
+ \end{align}\]</span>
 using minimax, then noting the inside <span class="math inline">\(\max\)</span> forces the condition <span class="math inline">\(Z=-A\)</span>.</li>
 <li>Taking <span class="math inline">\(\min\)</span> of this, <span class="math inline">\(Z\preceq 0\)</span> turns into a constraint.</li>
 </ol>

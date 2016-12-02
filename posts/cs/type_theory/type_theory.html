@@ -148,7 +148,7 @@ freeC ga = S.unions (map (\case Bind v s -&gt; freeP s) (S.elems ga))
 <!--this requires a bit more work to code...-->
 <!--note: need to add deriving...-->
 <h2 id="axioms">Axioms</h2>
-\begin{align}
+<span class="math display">\[\begin{align}
 \frac{x:\si\in \Ga}{\Ga\vdash x:\si}&amp;&amp; \text{[Var]}\\
 \frac{\Ga\vdash e_0:\tau \to \tau'\quad
 \Ga\vdash e_1:\tau}{\Ga\vdash e_0 \,e_1:\tau'}&amp;&amp; \text{[App]}\\
@@ -156,7 +156,7 @@ freeC ga = S.unions (map (\case Bind v s -&gt; freeP s) (S.elems ga))
 \frac{\Ga \vdash  e_0:\si\quad \Ga\cup \{x:\si\}\vdash e_1:\tau}{\Ga \vdash \text{let }x=e_0\text{ in }e_1:\tau}&amp;&amp; \text{[Let]}\\
 \frac{\Ga \vdash e:\si'\quad \si'\sqsubseteq \si}{\Ga \vdash e:\si}&amp;&amp;\text{[Inst]}\\
 \frac{\Ga \vdash e:\si\quad \al\nin \text{free}(\Ga)}{\Ga \vdash e:\forall \al.\si}&amp;&amp;\text{[Gen]}.
-\end{align}
+\end{align}\]</span>
 <p>Abs is abstraction. Inst is instantiation. Note we add to the context when we go inside a lambda or a let. Gen then Inst together help specialize given information in context.</p>
 <p>Subtlety: in <code>let</code>, variables enter in polymorphic form and can be specialized. Contrast <span class="math display">\[
 \la f. (f \,\text{true}, f \,0)
@@ -238,21 +238,21 @@ in bar</code></pre>
 <table>
 <thead>
 <tr class="header">
-<th style="text-align: left;">*</th>
-<th style="text-align: left;">None</th>
-<th style="text-align: left;">Dependent types</th>
+<th>*</th>
+<th>None</th>
+<th>Dependent types</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td style="text-align: left;">Polymorphism</td>
-<td style="text-align: left;">F, <span class="math inline">\(\la2\)</span></td>
-<td style="text-align: left;"><span class="math inline">\(\la P2\)</span></td>
+<td>Polymorphism</td>
+<td>F, <span class="math inline">\(\la2\)</span></td>
+<td><span class="math inline">\(\la P2\)</span></td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">None</td>
-<td style="text-align: left;"><span class="math inline">\(\la_{\to}\)</span></td>
-<td style="text-align: left;">LF, <span class="math inline">\(\la P\)</span></td>
+<td>None</td>
+<td><span class="math inline">\(\la_{\to}\)</span></td>
+<td>LF, <span class="math inline">\(\la P\)</span></td>
 </tr>
 </tbody>
 </table>
@@ -260,21 +260,21 @@ in bar</code></pre>
 <table>
 <thead>
 <tr class="header">
-<th style="text-align: left;">*</th>
-<th style="text-align: left;">None</th>
-<th style="text-align: left;">Dependent types</th>
+<th>*</th>
+<th>None</th>
+<th>Dependent types</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td style="text-align: left;">Polymorphism</td>
-<td style="text-align: left;"><span class="math inline">\(F_\om\)</span>, <span class="math inline">\(\la \om\)</span></td>
-<td style="text-align: left;">CIC, <span class="math inline">\(\la P\om\)</span></td>
+<td>Polymorphism</td>
+<td><span class="math inline">\(F_\om\)</span>, <span class="math inline">\(\la \om\)</span></td>
+<td>CIC, <span class="math inline">\(\la P\om\)</span></td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">None</td>
-<td style="text-align: left;"><span class="math inline">\(\la_\om\)</span>, <span class="math inline">\(\la\ul{\om}\)</span></td>
-<td style="text-align: left;"><span class="math inline">\(\la P \ul{\om}\)</span></td>
+<td>None</td>
+<td><span class="math inline">\(\la_\om\)</span>, <span class="math inline">\(\la\ul{\om}\)</span></td>
+<td><span class="math inline">\(\la P \ul{\om}\)</span></td>
 </tr>
 </tbody>
 </table>

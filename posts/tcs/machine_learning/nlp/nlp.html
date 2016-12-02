@@ -109,12 +109,12 @@
 <p>in speech recognition the language model is combined with an acoustic model that models the pronunciation of different words: one way to think about it is that the acoustic model generates a large number of candidate sentences, together with probabilities; the language model is then used to reorder these possibilities based on how likely they are to be a sentence in the language.</p>
 </blockquote>
 <p>A <span class="math inline">\(t\)</span>th order Markov model (<span class="math inline">\(n+1\)</span>-grams) assumes the probability distribution of the next word depends only on the previous <span class="math inline">\(t\)</span>. To model variable-length sentences, include STOP as a word. Treat the <span class="math inline">\(0,\ldots,-(t-1)\)</span> words as <span class="math inline">\(*\)</span>.</p>
-<p>The most naive estimate is to let <span class="math display">\[wh p_{x_{t+1}|x_1\ldots x_t} = \fc{\#(x_1,\ldots, x_{t+1})}{\#(x_1,\ldots, x_t)}\]</span> but this requires lots of computations and makes many counts 0.</p>
+<p>The most naive estimate is to let <span class="math display">\[\wh p_{x_{t+1}|x_1\ldots x_t} = \fc{\#(x_1,\ldots, x_{t+1})}{\#(x_1,\ldots, x_t)}\]</span> but this requires lots of computations and makes many counts 0.</p>
 <p>Let <span class="math inline">\(x^{(i)}\)</span> be the test sentences. Letting <span class="math inline">\(l=\rc{M} \sumo im \lg p(x^{(i)})\)</span> (average log probability), the <strong>perplexity</strong> is <span class="math inline">\(2^{-l}\)</span> (geometric mean of probabilities).</p>
 <ol type="1">
 <li><strong>Linear interpolation</strong> is <span class="math display">\[ \wh p(x_{t+1}|x_1\cdots x_t) = \sumo i{t+1} \la_i p(x_i|x_{[1,i-1]}).\]</span> Find <span class="math inline">\(\amax_{\la} L(\la)\)</span> over the development data (separate from training and test data).</li>
-<li><strong>Bucketing</strong> is replacing <span class="math inline">\(\la_{t+1} = \fc{\#(x_1,\ldots, x_{t+1})}{#+\ga}\)</span>, <span class="math inline">\(\la_{t} = (1-\la_{t+1}) \fc{\#(x_1,\ldots, x_t)}{\#(x_1,\ldots, x_{t-1})+\ga}\)</span>,…</li>
-<li><strong>Discount counts</strong> by <span class="math inline">\(c^(\mathbf x) = c(\mathbf x) - \be\)</span>, <span class="math inline">\(\be\in [0,1]\)</span>, let <span class="math inline">\(\wh p = \fc{c^*(\cdots)}{c(\cdots)}\)</span>. Spread the missing mass evenly over those that have not appeared.</li>
+<li>Replacing <span class="math inline">\(\la_{t+1} = \fc{\#(x_1,\ldots, x_{t})}{\#(x_1,\ldots, x_{t})+\ga}\)</span>, <span class="math inline">\(\la_{t} = (1-\la_{t+1}) \fc{\#(x_1,\ldots, x_{t})}{\#(x_1,\ldots, x_{t})+\ga}\)</span>,…</li>
+<li><strong>Discount counts</strong> by <span class="math inline">\(c^*(\mathbf x) = c(\mathbf x) - \be\)</span>, <span class="math inline">\(\be\in [0,1]\)</span>, let <span class="math inline">\(\wh p = \fc{c^*(\cdots)}{c(\cdots)}\)</span>. Spread the missing mass evenly over those that have not appeared.</li>
 <li><strong>Linear interpolation with bucketing</strong>: Let <span class="math inline">\(\Pi: \mathcal V^{t} \to [K]\)</span> depending on counts seen in the training data. Now make the smoothing parameters depend on <span class="math inline">\(\Pi(u,v)\)</span>.</li>
 </ol>
 <p>Note that bucketing and discounting only have 1 parameter.</p>
@@ -125,7 +125,7 @@
 <li><span class="math inline">\(N\)</span> has non-terminals</li>
 <li><span class="math inline">\(\Si\)</span> has terminals</li>
 <li><span class="math inline">\(R\)</span> has rules <span class="math inline">\(X\to Y_1\ldots, Y_n\)</span>.</li>
-<li><span class="math inline">\(S\in N\)</span> is te start symbol.</li>
+<li><span class="math inline">\(S\in N\)</span> is the start symbol.</li>
 </ul>
 <p>A leftmost derivation is one where we choose to replace the leftmost nonterminal each time.</p>
 <p>Strings can be ambiguous under a CFG.</p>
@@ -136,7 +136,12 @@
 <li><span class="math inline">\(\mathcal T_G(s)\)</span> is the set of possible parse trees for <span class="math inline">\(s\)</span>.</li>
 <li>A sentence is ambiguous/grammatical if <span class="math inline">\(|\mathcal T_G(s)|&gt;1\)</span> and grammatical if <span class="math inline">\(&gt;0\)</span>.</li>
 </ul>
-<p>We want * define a probability distribution <span class="math inline">\(p\)</span> on parse trees * learn parameters * find <span class="math inline">\(\amax_{t\in \mathcal T_G(s)}p(t)\)</span> (decoding/parsing)</p>
+<p>We want to</p>
+<ul>
+<li>define a probability distribution <span class="math inline">\(p\)</span> on parse trees</li>
+<li>learn parameters</li>
+<li>find <span class="math inline">\(\amax_{t\in \mathcal T_G(s)}p(t)\)</span> (decoding/parsing)</li>
+</ul>
 <p>A <strong>PCFG</strong> has probabilities with <span class="math inline">\(\sum_{X\to \be\in R} a(X\to \be)=1\)</span>. The probability is the product of the probabilities of the derivations.</p>
 <p>To learn parameters given <em>parse trees</em>, let <span class="math inline">\(\wh p (\al \to \be) = \fc{\#(\al\to \be)}{\#\al}\)</span>.</p>
 <p><strong>Chomsky normal form</strong> has rules in the form <span class="math inline">\(X\to Y_1Y_2\)</span> and <span class="math inline">\(X\to Y\)</span> where <span class="math inline">\(Y_1,Y_2\)</span> are nonterminal and <span class="math inline">\(Y\)</span> is terminal.</p>

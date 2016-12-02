@@ -99,10 +99,10 @@
 <li>LP: <span class="math inline">\(f(x)=c^T\cdot x\)</span>.</li>
 <li>SDP: Infinitely many constraints <span class="math inline">\(a^TXa\ge 0\)</span>.</li>
 <li>Held-Karp relaxation for traveling salesman: <span class="math inline">\(\min \sum_{i,j}c_{i,j}X_{i,j}\)</span> under conditions
-\begin{align}
+<span class="math display">\[\begin{align}
 0 \le X_{ij} &amp;\le 1\\
 \forall S\ne \phi, V, \quad \sum_{i\in S, j\in \ol S} X_{ij} &amp;\ge 2
-\end{align}
+\end{align}\]</span>
 (Last constraint is subtour elimination constraints. We can find a violation by finding a minimum cut with capacity <span class="math inline">\(&lt;2\)</span>.)</li>
 </ol>
 <!--
@@ -130,11 +130,11 @@ We only need to be able to project to the convex body.-->
 <p><strong>Theorem</strong>: <span class="math inline">\(\Vol(E_{i+1})\le \pa{1-\rc{2n}}\Vol(E_i)\)</span>.</p>
 <p>What we need: 1. Rephrase optimization as feasibility. (Binary search.) 2. Find a “reasonably snug” bounding ellipsoid for <span class="math inline">\(K\)</span>. 3. Implement separation oracle for <span class="math inline">\(K\)</span>. 4. Implement computation to find <span class="math inline">\(E_{i+1}\)</span> given <span class="math inline">\(E_i\)</span> and separation oracle.</p>
 <strong>Lemma</strong>. The minimum volume ellipsoid containing <span class="math inline">\(Ell(D,z)\cap \set{x}{a\cdot x\le a\cdot z}\)</span> is <span class="math inline">\(E'=Ell(D',z')\)</span> where
-\begin{align}
+<span class="math display">\[\begin{align}
 z' &amp;= z-\rc{n+1} \fc{Da}{\sqrt{a^TDa}}\\
 D' &amp;= \fc{n^2}{n^2-1} \pa{D-\fc{2}{n+1}\fc{Daa^TD}{a^TDa}}\\
 \fc{\Vol(E')}{\Vol(E)} &amp;\le e^{-\rc{2n+2}}.
-\end{align}
+\end{align}\]</span>
 <p><em>Proof</em>. It suffices to prove this for <span class="math inline">\(D=I\)</span>, <span class="math inline">\(a=e_1\)</span>. Here <span class="math display">\[ D' = \fc{n^2}{n^2-1} \mattn{1-\fc{2}{n+1}}0{\cdots}0{1}{\cdots}{\vdots}{\vdots}{\ddots}.\]</span> Volume bound follows from determinant calculation.</p>
 <p>The number of steps needed is <span class="math inline">\(n\ln \pf{V_1}{V_0}\)</span> where <span class="math inline">\(V_1\)</span> is the volume of the smallest ellipsoid containing the body and <span class="math inline">\(V_0\)</span> is volume of the starting ellipsoid. Ex. If <span class="math inline">\(P\)</span> is a polyhedron, and <span class="math inline">\(\nu\)</span> is the number of bits required to write down any <span class="math inline">\(n\times n\)</span> subset of <span class="math inline">\((A,b)\)</span>, then <span class="math inline">\(\Vol(P)\ge 2^{-2n\nu}\)</span>. (Use Cramer’s rule to get expressions for vertices of <span class="math inline">\(Ax\le b\)</span>.) Then the number of iterations is <span class="math inline">\(O(n^2)\)</span>. ?? Each step takes <span class="math inline">\(O(n^2L)O(mn)\)</span> time (<span class="math inline">\(L\)</span>-bit numbers, check validity of point) for a total of <span class="math inline">\(O(mn^5L)\)</span>.</p>
 <blockquote>

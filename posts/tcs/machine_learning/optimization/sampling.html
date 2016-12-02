@@ -120,10 +120,10 @@
 \end{cases}.\]</span> In particular, if <span class="math inline">\(\Psi\)</span> is symmetric, then it cancels out in the ratio.</p>
 <p><strong>Theorem</strong>. The stationary distribution of this Metropolis chain is <span class="math inline">\(\pi\)</span>.</p>
 <em>Proof/derivation</em>. At <span class="math inline">\(x\)</span>, we propose to move to <span class="math inline">\(y\)</span> with probability <span class="math inline">\(\Psi(x,y)\)</span>. For the new chain, let’s accept this move with probability <span class="math inline">\(a(x,y)\)</span>, and reject with probability <span class="math inline">\(1-a(x,y)\)</span> and stay at the current location. Then <span class="math inline">\(P(x,y) = \Psi(x,y) a(x,y)\)</span> for <span class="math inline">\(y\ne x\)</span>. For <span class="math inline">\(\pi\)</span> to be stationary, we want detailed balance,
-\begin{align}
+<span class="math display">\[\begin{align}
 \pi(x) \Psi(x,y) a(x,y) &amp;= \pi(y) \Psi(y,x) a(y,x)\\
 \fc{ a(x,y)}{a(y,x)} &amp;= \fc{\pi(y) \Psi(y,x)}{\pi(x) \Psi(x,y)}.
-\end{align}
+\end{align}\]</span>
 <p>We want <span class="math inline">\(a\)</span> to be as large as possible for fast mixing, so choose <span class="math inline">\(a\)</span> as defined.</p>
 <p>Examples: coloring, optimization</p>
 <h3 id="gibbs-samplingglauber-dynamics">Gibbs sampling/Glauber dynamics</h3>

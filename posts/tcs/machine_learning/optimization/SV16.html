@@ -10,7 +10,7 @@
   <meta name="description" content="Holden Lee's Research Notebook">
   <meta name="author" content="Holden Lee">
     
-  <title>[SV16] The mixing time of the Dikin walk in a polytope - a simple proof</title>
+  <title>(SV16) The mixing time of the Dikin walk in a polytope - a simple proof</title>
 
   <!-- Bootstrap core CSS -->
   <link href="../../../../bootstrap/css/bootstrap.min.css" rel="stylesheet">
@@ -70,7 +70,7 @@
 <div class="container">
   <div id="content">
     <div class="page header">
-      <h1>[SV16] The mixing time of the Dikin walk in a polytope - a simple proof</h1>
+      <h1>(SV16) The mixing time of the Dikin walk in a polytope - a simple proof</h1>
     </div>
     <div class="info">
       
@@ -92,12 +92,12 @@
 <p>Main theorem (informal): From a warm start (i.e., density <span class="math inline">\(\Pj(A)\le C\Pj_{U_K}(A)\)</span> where <span class="math inline">\(U_K\)</span> is the uniform distribution on <span class="math inline">\(K\)</span>), the Dikin walk mixes in time <span class="math inline">\(O(mn)\)</span> for a <span class="math inline">\(n\)</span>-dimensional polytope described with <span class="math inline">\(m\)</span> inequalities.</p>
 <h2 id="dikin-walk">Dikin walk</h2>
 For <span class="math inline">\(K\)</span> defined by <span class="math inline">\(a_i^Tx\ge b\)</span>, let
-\begin{align}
+<span class="math display">\[\begin{align}
 F(x) :&amp;= -\sum_{i\in [m]} \ln (a_i^Tx-b_i)\\
 H(x) = \nb^2F(x) &amp;= \sum_{i\in [m]} \rc{(a_i^Tx-b_i)^2}a_ia_i^T\\
 \ve{v}_x^2 :&amp;= v^TH(x)v\\
 \text{Dikin ellipsoid }\mathcal E_x:&amp;=\set{z}{\ve{z-x}_x\le 1}.
-\end{align}
+\end{align}\]</span>
 <p>Consider the random variable <span class="math inline">\(g_x\)</span> given by <span class="math display">\[ z = x + \fc{r}{\sqrt n} H(x)^{-\rc 2}g,\quad g\sim N(0,1),\]</span> i.e. it is a Gaussian with covariance matrix <span class="math inline">\(\fc{r^2}{n}H(x)^{-1}\)</span> centered at <span class="math inline">\(x\)</span>.</p>
 <p>Let <span class="math inline">\(p_x\)</span> be the <span class="math inline">\(g_x\)</span> with the Metropolis filter applied, <span class="math display">\[ p_x(z) = \min\{g_x(z),g_z(x)\}\]</span> (stay at <span class="math inline">\(x\)</span> with remaining probability).</p>
 <h2 id="theorem-and-proof">Theorem and Proof</h2>

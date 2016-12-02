@@ -109,10 +109,10 @@
 <p>Here are possible formalizations of the problem.</p>
 <h3 id="clustering">Clustering</h3>
 Let <span class="math inline">\(|S|=c_1m\)</span> be a random subset of <span class="math inline">\([m]\)</span>. Let <span class="math inline">\(k\)</span> be fixed. Let <span class="math inline">\(((x^{(i)},\si^{(i)2})\in \R^{S})_{i=1}^k\)</span> be <span class="math inline">\(k\)</span> centers and variances. (Assume some reasonable separation.) Each data point comes from some cluster <span class="math inline">\(i\in [k]\)</span> (ex. uniformly at random). If <span class="math inline">\(x\)</span> comes from cluster <span class="math inline">\(i\)</span>, then generate <span class="math inline">\(x\)</span> by
-\begin{align}
+<span class="math display">\[\begin{align}
 x_S &amp;\sim N(x^{(i)}, \si^{(i)2})\\
 x_j &amp;\sim N(0,1),&amp;j&amp;\nin S.
-\end{align}
+\end{align}\]</span>
 <p>The goal is to find <span class="math inline">\(S\)</span>. (Then we can recover the centers by standard clustering algorithms.)</p>
 <p>Note: There may be a cheap way to do this by identifying which coordinates are <span class="math inline">\(\sim N(0,1)\)</span>. We want something more generalizable. Ex. assume <span class="math inline">\(x_j\sim N(y_j, \tau_j^2)\)</span>. Even better, assume that the <span class="math inline">\(x_j\)</span> are independent but their distribution is arbitrary.</p>
 <h3 id="svd">SVD</h3>
@@ -123,16 +123,16 @@ x_j &amp;\sim N(0,1),&amp;j&amp;\nin S.
 <p>Look at the <span class="math inline">\(L^1\)</span> norm and variance (<span class="math inline">\(L^2\)</span> norm) of each row.</p>
 <ul>
 <li>For the noise rows, we have (whp)
-\begin{align}
+<span class="math display">\[\begin{align}
 A=\EE_{j=1}^n |A_{ij}| &amp; =2\iiy x e^{-\fc{x^2}2}\rc{\sqrt{2\pi}}\dx\\
 B=\EE_{j=1}^n |A_{ij}|^2 - (\EE_{j=1}^n |A_{ij}|)^2 &amp;=1,
-\end{align}
+\end{align}\]</span>
 and the ratio <span class="math inline">\(\fc{\sqrt B}A\)</span> between these is concentrated at some constant (whp).</li>
 <li><pre><code>For the non-noise rows,</code></pre>
-\begin{align}
+<span class="math display">\[\begin{align}
 A=\EE_{j=1}^n |A_{ij}| &amp; &gt; \sfc{2}{\pi}\sum|\si_{k_j}|\\
 B=\EE_{j=1}^n |A_{ij}|^2 - (\EE_{j=1}^n |A_{ij}|)^2 &amp;=\sum_i \si_i^2,
-\end{align}
+\end{align}\]</span>
 and <span class="math inline">\(\fc{\sqrt B}{A}&gt;\sfc{2}{\pi}\)</span>.</li>
 </ul>
 <p>But this is heavily dependent on the exact distribution of noise! We want something more generalizable.</p>

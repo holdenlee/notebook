@@ -141,20 +141,20 @@
 <li>Show it suffices to bound on <span class="math inline">\(\ep\)</span>-nets, and bound the size of the smallest <span class="math inline">\(\ep\)</span>-net.
 <ol type="1">
 <li>Let <span class="math inline">\(\mathcal{N}_\de\)</span> be a <span class="math inline">\(\de\)</span>-net of <span class="math inline">\(S_X\)</span>. Then
-\begin{align}
+<span class="math display">\[\begin{align}
 \ve{T}&amp;\le \rc{1-\de} \sup_{x\in \mathcal{N}_\de}\ve{Tx}\\
 \inf_{y\in S_X} &amp;\ge \inf_{x\in N} - \de\ve{T}.
-\end{align}
+\end{align}\]</span>
 Applying this to the identity map from <span class="math inline">\(\ved_2\)</span> to <span class="math inline">\(\ved\)</span>, obtain: if <span class="math inline">\(\ve{x}\in [1-\ep,1+\ep]M\)</span> for all <span class="math inline">\(x\in \cal N\)</span>, then for all <span class="math inline">\(x\in \bS^{n-1}\)</span>, <span class="math display">\[\ve{x} \in \ba{1-\ep-2\de, \pf{1+\ep}{1-\de}M}.\]</span></li>
 <li>There is an <span class="math inline">\(\ep\)</span>-net of size <span class="math inline">\(\pa{1+\fc 2\ep}^n\)</span>.</li>
 </ol></li>
 <li>General Dvoretzky: Apply concentration of measure to a fixed vector <span class="math inline">\(x\)</span> of the function <span class="math inline">\(\ved\)</span>. Union bound over a <span class="math inline">\(\de\)</span>-net and approximate the sphere by the <span class="math inline">\(\de\)</span>-net using 1.</li>
 <li>(Aside) We can calculate <span class="math inline">\(\ell_X\)</span> for many spaces. Standard concentration bounds give
-\begin{align}
+<span class="math display">\[\begin{align}
 1\le p\le 2\implies \ell_{\ell_p^n} &amp;= c(\ep) n&amp;\implies k(\ell_p^n) &amp;\ge c(\ep)n\\
 q\ge 2\implies \ell_{\ell_q^n} &amp;= c(\ep) q n^{\fc 2q}&amp;\implies k(\ell_q^n) &amp; \ge c(\ep)q n^{\fc 2q}\\
 \ell_{\ell_{\iy}^n} &amp; c\sqrt{\ln n} &amp;\implies k(\ell_\iy^n) &amp; \ge c(\ep)\ln n.
-\end{align}</li>
+\end{align}\]</span></li>
 <li>We show <span class="math inline">\(k(\ell_\iy^n) \asymp\ln n\)</span>. Spherical caps!</li>
 </ol>
 
