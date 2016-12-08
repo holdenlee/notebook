@@ -85,3 +85,148 @@ Say the system is observable if $Nx_1\equiv Nx_2$ on $[0,t]$ implies $x_1\equiv 
 * The set of admissible controls is convex in $L^{\iy}$ and $w^*$ compact (show sequential compactness using Alaoglu.). 
 * If an extreme point has $|\al^i|<1-\ep$ on $F$, then write as combination of $\al^*\pm \ep \be e_i \one_F$.
 * Extreme points exist by Krein-Milman.
+
+# 3
+
+For the linear system and $A=[-1,1]^n$, there exist a time-optimal bang-bang solution. I.e. $\tau^*=\inf \set{t}{x^0\in C(t)}$ is attainable.
+
+*Proof.* Take $t_n\to t$, $\al_n$. Use Alaoglu.
+
+Let the reachable set be $K(t,x^0) = \set{x^1}{\exists \al, x(x^0, \al, t) = x^1}$. It is convex and closed (Pf. Alaoglu).
+
+**Theorem**. There is $h$ (depending on $x_0$, but not on $t$) such that the optimal action is
+$$
+\al^*(t) = \max_{a\in A} [h^T X^{-1}(t)Na].
+$$
+
+*Proof.*
+
+1. By convexity of $K(\tau, x)$, $0\in \pl K(\tau^*,x^0)$. Take $g$ such that $g^T x_1\le 0$ for $x_1\in K(\tau^*,x^0)$.
+2. Write the trajectories $\al, \al^*$ ending in $x^1, 0$. Dot with $g$. Het $h^T = g^T X(\tau^*)$, get $\int_0^{\tau^*} h^T X^{-1}(s) N(\al^*-\al)\,ds\ge 0$.
+3. If $h^TX^{-1}N\al^* \le \max_{a\in A}h^T X^{-1}Na$ on some set then we can replace $\al^*$ on that set and get something larger, contradiction.
+
+**Corollary**. For $H(x,p,a) = (Mx + Na)^Tp$, the optimal trajectory solves
+\begin{align}
+\cdot x &= \nb_p H\\
+\cdot p &= -\nb_x H\\
+\al &= \max_a\in A H.
+\end{align}
+
+(Take $p(0) = h$, $p=h^TX^{-1}$.)
+
+## Examples
+
+* Rocket train: $\al^* = \sgn(-th_1+h_2)$ so switch at most once.
+* Pendulum $\ddot x + x = \al$. $\al^* = \sign(\sin(t+\de))$, switch every $\pi$ (between 2 circles).
+
+# 4 The Pontryagin Maximum Principle
+
+Let $L:\R^n\times \R^r\to \R$ (a Lagrangian). Suppose we want to solve (action equation)
+$$
+\min I[x], \quad I[x] = \int_0^T L(x,\dot x)\,dt.
+$$
+Assume that $p=\nb_v L(x,v)$ can be solved for $v$. (How important is this?) 
+The solution satisfies the Euler-Lagrange equation
+$$
+\ddd t \ub{[\nb_v L(x^*, \dot x^*)]}{p} = \nb_x L(x^*, \dot x^*).
+$$
+
+*Proof.* Consider "differentiating" in directoin $y:[0,T]\to \R^n$, $y(0)=y(T) = 0$. Consider $i(\tau) = I[x+\tau y]$. $i(\tau)\ge i(0)$ so $i'(0)=0$. 
+$$
+i'(0) = \sumo in \int_0^T L_x(x,\dot x)y_i + L_{v_i} (x,\dot x) \dot y_i\,dt.
+$$
+Choose $y = \psi(t) e_j$. IbP gives $L_{x_j} - (L_{v_j})_t=0$.
+
+The solution to EL satisfies Hamiltonian system: let $H=p^Tv - L(x, v(x,p))$, 
+\begin{align} 
+\dot x &= \nb_p H\\
+\dot p &= -\nb_x H.
+\end{align}
+
+*Proof.* 
+\begin{align}
+\nb_x H &= p\nb_x v - \nb_x L - \nb_v L \nb_x v = -\nb_xL\\
+\nb_p H &= v(p) + p^T \fc{Dv}{Dp} - \nb_p L \\
+&= \dot x + p^T \fc{Dv}{Dp} - (\nb_v L)^T\fc{Dp}{Dv}=\dot x.
+\end{align}
+(This is pretty confusing. $v$ is implicitly defined in terms of $p$, the value such that $p=\nb_v L(x,v)$.)
+
+Example:
+\begin{align}
+L &= \fc{m|v|^2}{2} - V(x)\\
+m\ddot x &= -\nb V(x(t))\\
+p &= \nb_v L = mv\\
+H(x,p) &= \fc{|p|^2}{2m} + V.
+\end{align}
+
+4.2. Constraints create Lagrange multipliers, which contain valuable information. If $x^*\in \pl R$, $R=\{g\le 0\}$, $x^*=\amax f$, then $\nb f = \nb g$, $\mu \nb f(x^*) = \la \nb g(x^*)$.
+
+## Maximal principle
+
+The control theory Hamiltonian corresponding to
+\begin{align}
+\dot x & = f(x(t),a(t))\\
+P[\al] &=\int_0^T r(x(t),a(t))\,dt + g(x(T))
+\end{align}
+is 
+$$ H(x,p,a) = f(x,a)^Tp+r(x,a)$$
+
+1.  Fixed time, free endpoint
+    \begin{align}
+	\dot x &= \nb_p H\\
+	\dot p &= -\nb_x H\\
+	H(x,p,\al) &= \max_{a\in A} H(x(t),p(t),a)\\
+	p(T) &= \nb g(x^*(T)).
+	\end{align}
+	Moreover $t\mapsto H(x(t), p(t),\al(t))$ is constant.
+2.  Free time, fixed endpoint $P[\al] = \int_0^\tau r\,dt$. Everything is same except there is no end boundary value condition, and there is $H(x(t),p(t),\al(t))\equiv 0$.
+
+(See warning on p. 50.)
+	
+Methodology: solve for $\al(x,p)$, substitute back, solve the DE, then sub $x,p$ into expression $\al$. "Feedback controls": set $\al(t) = c(t)x(t)$ and write equation for $c(t)$. (Cf. eigenfunctions??)
+
+Transversality: adding condition to start in $X_0$ and end in $X_1$, we have $p^*(\tau^*)\perp T_1$, $p^*(0)\perp T_0$.
+
+# Dynamic programming
+
+Adding a variable can help. Ex.
+$$
+I(\al) = \iiy \redd{e^{-\al x}} \fc{\sin x}{x} \dx,\quad I'(\al) = -\rc{\al^2+1}.
+$$
+
+Fix $T$. Vary starting time and point:
+$$
+v(x,t) = \sup_{\al \in A} P_{x,t}[\al].
+$$
+
+Hamilton-Jacobi-Bellman equation
+\begin{align}
+v_t + \ub{\max_{a\in A}[f\cdot \nb_x v + r]}{a^*(x,\nb_x v)} &= 0\\
+v(x,T) & = g(x).
+\end{align}
+
+*Proof.* Taking the first equation, dividing by $h\to 0$, using the chain rule
+\begin{align}
+v_t & \ge \int_t^{t+h} r\,ds + v(x(t+h), t+h) \\
+v_t + \nb_x v \cdot x + r&\le 0.
+\end{align}
+Now take the max. Equality attained at optimal $\al^*$.
+
+General procedure;:
+
+1. Solve HJB, compute $v$.
+2. Solve for $\al$, plug in.
+3. The feedback control is $\al^*(s) = \al(x^*(s),s)$.
+
+General linear-quadratic regulator
+\begin{align}
+\dot x &= Mx + N\al\\
+P[\al] &= \int_t^T (x^TBx+\al^TC \al) \,ds - x(T)^T D x(T)\\
+v_t + \max_{a\in \R^m} (\nb v^T Na - a^TCa) + (\nb v)^T Mx - x^TBx &=0\\
+v(x,T)&=-x^TDx\\
+a & = \rc 2 C^{-1} N^T\nb_x v\\
+&=C^{-1} N^T Kx
+\end{align}
+where $K$ satisfies the matrix Riccati equation.
+
+5.3. HJ equations...
