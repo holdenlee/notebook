@@ -1,7 +1,7 @@
 ---
 title: Embedding methods in NLP
-published: 2016-12-16
-modified: 2016-12-16
+published: 2016-12-06
+modified: 2016-12-06
 tags: nlp, word vectors
 type: topic
 showTOC: True

@@ -8,222 +8,106 @@
         <name>Holden Lee</name>
         <email>oldheneel@gmail.com</email>
     </author>
-    <updated>2016-12-16T00:00:00Z</updated>
+    <updated>2016-12-09T00:00:00Z</updated>
     <entry>
-    <title>Embedding methods in NLP</title>
-    <link href="http://holdenlee.github.io/notebook/posts/tcs/machine_learning/nlp/em_nlp.html" />
-    <id>http://holdenlee.github.io/notebook/posts/tcs/machine_learning/nlp/em_nlp.html</id>
-    <published>2016-12-16T00:00:00Z</published>
-    <updated>2016-12-16T00:00:00Z</updated>
+    <title>Linear quadratic regulator</title>
+    <link href="http://holdenlee.github.io/notebook/posts/tcs/machine_learning/reinforcement_learning/lqr.html" />
+    <id>http://holdenlee.github.io/notebook/posts/tcs/machine_learning/reinforcement_learning/lqr.html</id>
+    <published>2016-12-09T00:00:00Z</published>
+    <updated>2016-12-09T00:00:00Z</updated>
     <summary type="html"><![CDATA[
 <div class="container">
   <div id="content">
     <div class="page header">
-      <h1>Embedding methods in NLP</h1>
+      <h1>Linear quadratic regulator</h1>
     </div>
     <div class="info">
       
        
-        <p>Posted: 2016-12-16 
-          , Modified: 2016-12-16 
+        <p>Posted: 2016-12-09 
+          , Modified: 2016-12-09 
 	</p>
       
-       <p>Tags: <a href="/tags/nlp.html">nlp</a>, <a href="/tags/word%20vectors.html">word vectors</a></p> 
+       <p>Tags: <a href="/tags/control%20theory.html">control theory</a></p> 
     </div>
     
   </div>
   <!--/div-->
 
   <div class="toc"> <ul>
- <li><a href="#emnlp">EMNLP</a><ul>
- <li><a href="#methods">Methods</a></li>
- <li><a href="#details">Details</a></li>
- <li><a href="#embeddings-for-multi-relational-data">Embeddings for multi-relational data</a></li>
- </ul></li>
- <li><a href="#spwc-recursive-deep-models-for-semantic-compositionality-over-a-sentiment-treebank">[SPWC] Recursive deep models for semantic compositionality over a sentiment treebank</a></li>
- <li><a href="#scmn16-reasoning-with-neural-tensor-networks-for-knowledge-base-completion">[SCMN16] Reasoning With Neural Tensor Networks for Knowledge Base Completion</a></li>
+ <li><a href="#solve-the-hamiltonian">Solve the Hamiltonian</a></li>
+ <li><a href="#the-algebraic-riccati-equation">The algebraic Riccati equation</a></li>
+ <li><a href="#solve-the-riccati-equation">Solve the Riccati equation</a></li>
+ <li><a href="#choose-the-stable-solution">Choose the stable solution</a></li>
  </ul> </div>
 
   <div class="blog-main">
-    <h2 id="emnlp">EMNLP</h2>
-<p><a href="http://emnlp2014.org/tutorials.html#embedding">EMNLP 2014 tutorial</a></p>
-<h3 id="methods">Methods</h3>
+    <p>We derive the solution to the linear quadratic regulator problem in the continuous, infinite-horizon setting. <em>Handwavy parts are in italics</em>.</p>
+<p>References: Ch. 5 of <a href="https://math.berkeley.edu/~evans/control.course.pdf">course notes</a> and <a href="http://www.kybernetika.cz/content/1973/1/42/paper.pdf">Riccati equation paper</a>. Wikipedia on <a href="https://en.wikipedia.org/wiki/Linear%E2%80%93quadratic_regulator">LQR</a> and <a href="https://en.wikipedia.org/wiki/Algebraic_Riccati_equation">Riccati</a>.</p>
+<p>The problem:</p>
+<span class="math display">\[\begin{align}
+\dot x &amp; = Ax + Ba = f(x,a)\\
+r(x,a) &amp; = -c(x,a) = -\rc2 x^TQx - a^Ta\\
+\pat{Total reward} &amp;= \iiy r(x(t), a(t))\,dt.
+\end{align}\]</span>
+<p>Here <span class="math inline">\(Q\)</span> is positive definite. Write <span class="math inline">\(Q=C^TC\)</span>.</p>
+<h2 id="solve-the-hamiltonian">Solve the Hamiltonian</h2>
+We write down the corresponding Hamiltonian system and then solve it. (See <a href="control_theory.html">Control theory</a> Section 5.)
+<span class="math display">\[\begin{align}
+H(x,a) &amp;= f(x,a)^T p + r(x,a) = f(x,a)^T p - \rc2 x^TQx - a^Ta\\
+\dot x &amp;= \nb_p H(x(t),p(t),a(t)) = Ax + Ba \\
+\dot p &amp;= -\nb_x H(x(t),p(t),a(t)) = -A^T p + Qx\\
+a &amp;= \amax_a H(x(t),p(t),a(t))\\
+\iff 0 &amp;= \nb_a H(x(t),p(t),a(t))\\
+\iff B^T p - a &amp;=0\\
+\iff a &amp;= B^T p
+\end{align}\]</span>
+We get
+<span class="math display">\[\begin{align}
+\dot x &amp;= Ax + BB^Tp\\
+\dot p &amp;= -Qx + A^Tp\\
+\ddd t \coltwo xp &amp;= \matt{A}{BB^T}{-Q}{A^T} \coltwo xp.
+\end{align}\]</span>
+<h2 id="the-algebraic-riccati-equation">The algebraic Riccati equation</h2>
+<p><em>Look for a solution in the form <span class="math inline">\(p=-Px\)</span>.</em> (Note that in the finite-horizon setting, solving the Hamiltonian system with the appropriate boundary condition <span class="math inline">\(p(T)=0\)</span> gives that the solution is <span class="math inline">\(p=-P(t)x\)</span> where <span class="math inline">\(P(t)\)</span> satisfies a differential equation called the Matrix Riccati differential equation. In the infinite-horizon setting, <span class="math inline">\(P\)</span> doesn’t change with time and we get a single <span class="math inline">\(P\)</span>.)</p>
+Substituting <span class="math inline">\(p=-Px\)</span>, the system becomes
+<span class="math display">\[\begin{align}
+-(PA - PBB^TP) x &amp;= -P \dot x = \dot p = (Q+A^TP)x\\
+-PBB^TP + PA + A^TP + Q &amp;= 0 
+\end{align}\]</span>
+<p>This is called the <a href="https://en.wikipedia.org/wiki/Algebraic_Riccati_equation">algebraic Riccati equation</a>.</p>
+<h2 id="solve-the-riccati-equation">Solve the Riccati equation</h2>
+Write the Riccati equation as (set <span class="math inline">\(Q=C^TC\)</span>) <span class="math display">\[
+(-P\; I) \matt{A}{-BB^T}{-CC^T}{-A^T}\coltwo IP = 0
+\]</span> Let <span class="math inline">\(K=A-BB^TP\)</span>. This is <span class="math display">\[
+\ub{\matt{A}{-BB^T}{-C^TC}{-A^T}}M\coltwo IP = \coltwo K{PK} = \coltwo IP K.
+\]</span> <em>Assume <span class="math inline">\(K\)</span> is diagonalizable</em>. Write <span class="math inline">\(K=XDX^{-1}\)</span>.
+<span class="math display">\[\begin{align}
+M\coltwo IP &amp;= \coltwo X{PX} DX^{-1}\\
+M\coltwo{X}{PX} &amp;= \coltwo{X}{PX}D.
+\end{align}\]</span>
+<p>Hence the columns of <span class="math inline">\(\coltwo{X}{PX}\)</span> are eigenvalues of <span class="math inline">\(M\)</span>.</p>
+<p>So the <span class="math inline">\(P\)</span> that solve the algebraic Riccati equation are <span class="math inline">\(P=YX^{-1}\)</span> where the columns of <span class="math inline">\(\coltwo XY\)</span> are <span class="math inline">\(n\)</span> of the eigenvectors of <span class="math inline">\(M\)</span>.</p>
+<h2 id="choose-the-stable-solution">Choose the stable solution</h2>
+<p>First some definitions.</p>
 <ul>
-<li>Ranking/retrieval
-<ul>
-<li>LSI</li>
-<li>SSI</li>
-</ul></li>
-<li>Language modeling
-<ul>
-<li>NNLM</li>
-<li>Word2vec</li>
-<li>GloVe</li>
-</ul></li>
-<li>Supervised prediction
-<ul>
-<li>RNN(LM)</li>
-<li>Convolutional nets for tagging (SENNA)</li>
-</ul></li>
+<li><span class="math inline">\(\la\)</span> is <strong>stable</strong> if <span class="math inline">\(\Re \la&lt;0\)</span>. <span class="math inline">\(A\)</span> is stable if all eigenvalues of <span class="math inline">\(A\)</span> are stable. (This means that any solution to <span class="math inline">\(\dot x = Ax\)</span> has <span class="math inline">\(x(t)\to 0\)</span>.)</li>
+<li><span class="math inline">\(\la\)</span> is a <strong>controllable</strong> eigenvalue for <span class="math inline">\((A,B)\)</span> if for all row eigenvectors of <span class="math inline">\(A\)</span> corresponding to <span class="math inline">\(\la\)</span> (<span class="math inline">\(wA=\la w, w\ne 0\)</span>), <span class="math inline">\(wB\ne 0\)</span>. <span class="math inline">\((A,B)\)</span> is controllable if all its eigenvalues are controllable. (Equivalently, <span class="math inline">\((A^T,B^T)\)</span> is observable.)</li>
+<li><span class="math inline">\((A,C)\)</span> is <strong>observable</strong> if for all (column) eigenvectors of <span class="math inline">\(A\)</span>, <span class="math inline">\(Cz\ne 0\)</span>.</li>
+<li><span class="math inline">\((A,B)\)</span> is <strong>stabilizable</strong> if every unstable eigenvalue is controllable. (This is true for e.g. random matrices, because w.p. 1 a random vector is not in the left nullspace of <span class="math inline">\(B\)</span>.) Equivalently, there exists <span class="math inline">\(L\)</span> (with real entries) such that <span class="math inline">\(A+BL\)</span> is stable.</li>
 </ul>
-<h3 id="details">Details</h3>
-<ul>
-<li>Bag of words (baseline)</li>
-<li>LSI <span class="math inline">\(\phi(d) = Ud\)</span> (<span class="math inline">\(d\)</span> document as sum of words)</li>
-<li>SSI Similarity of query <span class="math inline">\(q\)</span> to document <span class="math inline">\(d\)</span> given by <span class="math inline">\(f(q,d) = q^TWd\)</span>, <span class="math inline">\(W\)</span> from data.
-<ul>
-<li><span class="math inline">\(W\)</span> is big.</li>
-<li>Make <span class="math inline">\(W\)</span> low rank. <span class="math inline">\(W=U^TV+I\)</span>.</li>
-<li>Maximize AUC. Want <span class="math inline">\(f(q,d^+)&gt;f(q,d^-)\)</span>. (14)</li>
-<li>Ex. cross-language retrieval</li>
-<li>Better: replace AUC with rank weighted loss</li>
-</ul></li>
-<li><span class="math inline">\(n\)</span>-gram (baseline)</li>
-<li>NNLM
-<ul>
-<li>Arrange in tree. Cluster dictionary according to semantics or frequency.</li>
-</ul></li>
-<li>Word2Vec
-<ul>
-<li>CBOW: predict current word from neighbors</li>
-<li>Skip-gram: predict neighbors from current word</li>
-<li>Compositionality (addition)</li>
-</ul></li>
-<li>NLP tasks: POS tagging, chunking (NP, VP), named entity recognition, semantic role labeling</li>
-<li>Hand-made features, SVM. ASSERT. Pipeline
-<ul>
-<li>POS tagger, parser</li>
-<li>NER tagging</li>
-<li>Put together for SRL labeler</li>
-</ul></li>
-<li>Deep learning way
-<ul>
-<li>Avoid parse tree</li>
-<li>Avoid hand-built features</li>
-<li>Joint train NLP tasks on common embedding</li>
-<li>Window approach: feed fixed-size window around each word</li>
-<li>Sentence: feed whole sentence, tag 1 word at a time, convolutions handle variable length inputs. Max pool over time</li>
-<li>Deep SRL
-<ul>
-<li>Softmax: Train for word tag likelihood, or</li>
-<li>Sentence tag likelihood. Sentence score is sum of likelihoods for individual words and transition score</li>
-</ul></li>
-<li>Bad for rare words</li>
-</ul></li>
-<li>? semi-supervised (61)</li>
-<li>Recursive NN’s
-<ul>
-<li>Socher ICML13, EMNLP13</li>
-<li>Build sentence representations using parse tree <span class="math inline">\(f(W[c_1;c_2]+b)\)</span></li>
-</ul></li>
-<li>Paragraph vector predicts words in doc, <span class="math inline">\(n\)</span>-grams in the doc.</li>
-<li>Words are combined with linear matrices dependendent on the P.O.S.: G. Dinu and M. Baroni. How to make words with vectors: Phrase generation in distributional semantics. ACL ’14.</li>
-<li>Previous common belief in NLP: engineering syntactic features necessary for semantic tasks. One can do well by engineering a model/algorithm rather than features.</li>
-</ul>
-<h3 id="embeddings-for-multi-relational-data">Embeddings for multi-relational data</h3>
-<ul>
-<li>Embeddings for multi-relational data
-<ul>
-<li>Relation (sub, rel, obj)</li>
-<li>WordNet: dictionary where each entity is a sense (synset).</li>
-<li>Freebase</li>
-<li>KB’s are hard to manipulate.
-<ul>
-<li>Large</li>
-<li>Sparse</li>
-<li>Noisy/incomplete</li>
-</ul></li>
-<li>Solutions:
-<ul>
-<li>Encode into low-dimensional vector spaces</li>
-<li>Use representations to complete/visualize, in applications</li>
-</ul></li>
-<li>Link prediction
-<ul>
-<li>RESCAL (<span class="math inline">\(X_k\)</span> are matrices) <span class="math display">\[
-\min_{A,R} \rc2 \pa{\sum_k \ve{X_k - AR_k A^T}_F^2} + \la_A \ve{A}_F^2 + \la_R \sum_k \ve{R_k}_F^2.
-\]</span>
-<ul>
-<li>Downsides: many parameters, bad scalability, bad reconstruction criteria for binary data</li>
-</ul></li>
-<li>Ideas
-<ul>
-<li>Low-dimensionsal continuous vector embedding trained on similarity</li>
-<li>Stochastic training based on ranking loss</li>
-</ul></li>
-<li><span class="math inline">\(d(sub, rel, obj) = -\ve{R^{left}s^T - R^{right} o^T}_1\)</span>. (Note: this is projection onto a common space, rather than something quadratic!)
-<ul>
-<li>SGD with negative examples</li>
-<li>Still have problems</li>
-</ul></li>
-<li>Neural tensor networks
-<ul>
-<li><span class="math inline">\(d(sub, rel, obj) = u_r^T \tanh (h^TW_r t + V_r^1 h + V_3^2 t + b_r).\)</span></li>
-<li><span class="math inline">\(d^3\)</span> parameters</li>
-</ul></li>
-<li>Model relations as translations
-<ul>
-<li>$d = _2^2.</li>
-<li>there may exist embedding spaces in which relationships among concepts are all decribed by translations</li>
-<li>Much fewer parameters. Does better!</li>
-<li>Refinements (108)</li>
-</ul></li>
-</ul></li>
-<li>Embeddings for information extraction
-<ul>
-<li>Entity linking: Identify mentions</li>
-<li>Relation extraction: extract facts</li>
-<li>Word-sense disambiguation is key</li>
-<li>Embedding-based classifier to predict relation (Weston13, 11) (predict based on other text besides subj, obj. Can combine with KB</li>
-<li>Universal schemas (I don’t get this.)</li>
-</ul></li>
-<li>Question answering
-<ul>
-<li>Subgraph embeddings: learn embeddings of questions and candidate answers (Bordes14) (Q: How to embed subgraph???)</li>
-<li>Convert Freebase to Q&amp;A pairs.</li>
-<li>Paraphrase questions</li>
-</ul></li>
-</ul></li>
-<li>Issues
-<ul>
-<li>Must train embeddings together</li>
-<li>Compression, blurring (How to one-shot learn new symbols?)</li>
-<li>Sequential models suffer from long-term memory</li>
-<li>Need many updates</li>
-<li>Negative example sampling inefficient</li>
-<li>How to use nonlinearity?</li>
-</ul></li>
-<li>Code
-<ul>
-<li><a href="www.torch.ch">Torch</a></li>
-<li><a href="ronan.collobert.com/senna">SENNA</a></li>
-<li><a href="www.fit.vutbr.cz/~imikolov/rnnlm">RNNLM</a></li>
-<li><a href="code.google.com/p/word2vec">Word2vec</a></li>
-<li><a href="nlp.stanford.edu/sentiment">Recursive NN</a></li>
-<li><a href="github.com/glorotxa/sme">SME (multi-relational data)</a></li>
-</ul></li>
-</ul>
-<h2 id="spwc-recursive-deep-models-for-semantic-compositionality-over-a-sentiment-treebank">[SPWC] Recursive deep models for semantic compositionality over a sentiment treebank</h2>
-<p>Put triplet (subj, rel, obj) through tensor network to predict. <span class="math display">\[
-g(e_1,R,e_2) = 
-u_R^T f\pa{
-e_1^T W_R^{[1:k]} e_2 + 
-V_R\coltwo{e_1}{e_2} + b_R
-}
-\]</span></p>
-<!--
-(Q: how about subj, obj -> rel, etc.? Joint probability distribution makes more sense? What is relationship between prob and NN models?)
--->
-<h2 id="scmn16-reasoning-with-neural-tensor-networks-for-knowledge-base-completion">[SCMN16] Reasoning With Neural Tensor Networks for Knowledge Base Completion</h2>
-<p>Recursive neural tensor model</p>
-<p>Sentiment Treebank: sentiment labels for phrases in parse trees of sentences. <a href="http://nlp.stanford.edu/sentiment">Website</a></p>
-<p>Captures effects of negation and its scope.</p>
-<ul>
-<li>RNN with a classifier at each node in the parse tree that predicts sentiment in one of 5 classes. (<span class="math inline">\(W\)</span> is the same matrix.) (Q: how do you make it a binary tree?)</li>
-<li>MV-RNN (matrix-vector): represent every word and longer phrase in parse tree as both vector and matrix (initialized as <span class="math inline">\(I_d+\)</span>noise). Matrix of one multiplied by vector of other. (parameters is large and depends on vocab)</li>
-<li>RNTN allows quadratic interaction: <span class="math inline">\(p = f\pa{(b\,c)V^{[1:d]}\coltwo bc + W \coltwo bc}\)</span>.</li>
-</ul>
-<p>Train: Classification at each node. Minimize KL-divergence.</p>
+<p><strong>Theorem</strong>. The following are equivalent.</p>
+<ol type="1">
+<li>There exists a stable solution <span class="math inline">\(P\)</span> to the algebraic Riccati equation, giving the solution <span class="math inline">\(p = -Px\)</span>, <span class="math inline">\(\boxed{a = B^Tp = -B^TPx}\)</span>.</li>
+<li>All eigenvalues satisfy <span class="math inline">\(\Re \la \ne 0\)</span> and <span class="math inline">\((A,B)\)</span> is stabilizable.</li>
+</ol>
+<p>The stable solution is unique.</p>
+<p><em>Proof</em>.</p>
+<p>From the previous section, a solution <span class="math inline">\(P\)</span> has to be in the form <span class="math inline">\(Y^{-1}X\)</span> where <span class="math inline">\(X, Y\)</span> are such that <span class="math inline">\(\coltwo XY\)</span> are the eigenvectors corresponding to the stable eigenvalues. Note that the eigenvectors come in <span class="math inline">\(\pm\)</span> pairs because letting <span class="math inline">\(J=\matt O{-I}{I}O\)</span>, <span class="math inline">\(M^T = J M J\)</span>, <span class="math inline">\(M^T \coltwo{-y}x = -JM\coltwo xy\)</span>. (<span class="math inline">\(M\)</span> is a <a href="https://en.wikipedia.org/wiki/Hamiltonian_matrix">Hamiltonian matrix</a>, i.e. <span class="math inline">\(JM\)</span> is symmetric.) So exactly <span class="math inline">\(n\)</span> of the <span class="math inline">\(2n\)</span> eigenvalues are stable, which is the unique choice for <span class="math inline">\(\coltwo XY\)</span> up to permutation.</p>
+<ol type="1">
+<li><span class="math inline">\(\Rightarrow\)</span>: Take <span class="math inline">\(L=-B^TP\)</span>. Then <span class="math inline">\(A+B(-B^TP)=K\)</span> is stable. (Its eigenvalues are exactly the eigenvalues of <span class="math inline">\(M\)</span>.)</li>
+<li><span class="math inline">\(\Leftarrow\)</span>: We just have to check that <span class="math inline">\(Y\)</span> is invertible, which is implied by the stabilizable condition. <em>Proof omitted</em>.</li>
+</ol>
 
   </div>
 
@@ -477,6 +361,244 @@ a &amp; = \rc 2 C^{-1} N^T\nb_x v\\
 \end{align}\]</span>
 <p>where <span class="math inline">\(K\)</span> satisfies the matrix Riccati equation.</p>
 <p>5.3. HJ equations…</p>
+
+  </div>
+
+    
+
+    <!-- Extension : Sharing buttons @ www.sharethis.com -->
+    <span class='st_facebook_large' displayText='Facebook'></span>
+    <span class='st_twitter_large' displayText='Tweet'></span>
+    <span class='st_googleplus_large' displayText='Google +'></span>
+    <span class='st_reddit_large' displayText='Reddit'></span>
+    <span class='st__large' displayText=''></span>
+
+    <div id="disqus_thread"></div>
+    
+
+
+  
+    <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+  </div>
+  
+</div>
+]]></summary>
+</entry>
+<entry>
+    <title>Embedding methods in NLP</title>
+    <link href="http://holdenlee.github.io/notebook/posts/tcs/machine_learning/nlp/em_nlp.html" />
+    <id>http://holdenlee.github.io/notebook/posts/tcs/machine_learning/nlp/em_nlp.html</id>
+    <published>2016-12-06T00:00:00Z</published>
+    <updated>2016-12-06T00:00:00Z</updated>
+    <summary type="html"><![CDATA[
+<div class="container">
+  <div id="content">
+    <div class="page header">
+      <h1>Embedding methods in NLP</h1>
+    </div>
+    <div class="info">
+      
+       
+        <p>Posted: 2016-12-06 
+          , Modified: 2016-12-06 
+	</p>
+      
+       <p>Tags: <a href="/tags/nlp.html">nlp</a>, <a href="/tags/word%20vectors.html">word vectors</a></p> 
+    </div>
+    
+  </div>
+  <!--/div-->
+
+  <div class="toc"> <ul>
+ <li><a href="#emnlp">EMNLP</a><ul>
+ <li><a href="#methods">Methods</a></li>
+ <li><a href="#details">Details</a></li>
+ <li><a href="#embeddings-for-multi-relational-data">Embeddings for multi-relational data</a></li>
+ </ul></li>
+ <li><a href="#spwc-recursive-deep-models-for-semantic-compositionality-over-a-sentiment-treebank">[SPWC] Recursive deep models for semantic compositionality over a sentiment treebank</a></li>
+ <li><a href="#scmn16-reasoning-with-neural-tensor-networks-for-knowledge-base-completion">[SCMN16] Reasoning With Neural Tensor Networks for Knowledge Base Completion</a></li>
+ </ul> </div>
+
+  <div class="blog-main">
+    <h2 id="emnlp">EMNLP</h2>
+<p><a href="http://emnlp2014.org/tutorials.html#embedding">EMNLP 2014 tutorial</a></p>
+<h3 id="methods">Methods</h3>
+<ul>
+<li>Ranking/retrieval
+<ul>
+<li>LSI</li>
+<li>SSI</li>
+</ul></li>
+<li>Language modeling
+<ul>
+<li>NNLM</li>
+<li>Word2vec</li>
+<li>GloVe</li>
+</ul></li>
+<li>Supervised prediction
+<ul>
+<li>RNN(LM)</li>
+<li>Convolutional nets for tagging (SENNA)</li>
+</ul></li>
+</ul>
+<h3 id="details">Details</h3>
+<ul>
+<li>Bag of words (baseline)</li>
+<li>LSI <span class="math inline">\(\phi(d) = Ud\)</span> (<span class="math inline">\(d\)</span> document as sum of words)</li>
+<li>SSI Similarity of query <span class="math inline">\(q\)</span> to document <span class="math inline">\(d\)</span> given by <span class="math inline">\(f(q,d) = q^TWd\)</span>, <span class="math inline">\(W\)</span> from data.
+<ul>
+<li><span class="math inline">\(W\)</span> is big.</li>
+<li>Make <span class="math inline">\(W\)</span> low rank. <span class="math inline">\(W=U^TV+I\)</span>.</li>
+<li>Maximize AUC. Want <span class="math inline">\(f(q,d^+)&gt;f(q,d^-)\)</span>. (14)</li>
+<li>Ex. cross-language retrieval</li>
+<li>Better: replace AUC with rank weighted loss</li>
+</ul></li>
+<li><span class="math inline">\(n\)</span>-gram (baseline)</li>
+<li>NNLM
+<ul>
+<li>Arrange in tree. Cluster dictionary according to semantics or frequency.</li>
+</ul></li>
+<li>Word2Vec
+<ul>
+<li>CBOW: predict current word from neighbors</li>
+<li>Skip-gram: predict neighbors from current word</li>
+<li>Compositionality (addition)</li>
+</ul></li>
+<li>NLP tasks: POS tagging, chunking (NP, VP), named entity recognition, semantic role labeling</li>
+<li>Hand-made features, SVM. ASSERT. Pipeline
+<ul>
+<li>POS tagger, parser</li>
+<li>NER tagging</li>
+<li>Put together for SRL labeler</li>
+</ul></li>
+<li>Deep learning way
+<ul>
+<li>Avoid parse tree</li>
+<li>Avoid hand-built features</li>
+<li>Joint train NLP tasks on common embedding</li>
+<li>Window approach: feed fixed-size window around each word</li>
+<li>Sentence: feed whole sentence, tag 1 word at a time, convolutions handle variable length inputs. Max pool over time</li>
+<li>Deep SRL
+<ul>
+<li>Softmax: Train for word tag likelihood, or</li>
+<li>Sentence tag likelihood. Sentence score is sum of likelihoods for individual words and transition score</li>
+</ul></li>
+<li>Bad for rare words</li>
+</ul></li>
+<li>? semi-supervised (61)</li>
+<li>Recursive NN’s
+<ul>
+<li>Socher ICML13, EMNLP13</li>
+<li>Build sentence representations using parse tree <span class="math inline">\(f(W[c_1;c_2]+b)\)</span></li>
+</ul></li>
+<li>Paragraph vector predicts words in doc, <span class="math inline">\(n\)</span>-grams in the doc.</li>
+<li>Words are combined with linear matrices dependendent on the P.O.S.: G. Dinu and M. Baroni. How to make words with vectors: Phrase generation in distributional semantics. ACL ’14.</li>
+<li>Previous common belief in NLP: engineering syntactic features necessary for semantic tasks. One can do well by engineering a model/algorithm rather than features.</li>
+</ul>
+<h3 id="embeddings-for-multi-relational-data">Embeddings for multi-relational data</h3>
+<ul>
+<li>Embeddings for multi-relational data
+<ul>
+<li>Relation (sub, rel, obj)</li>
+<li>WordNet: dictionary where each entity is a sense (synset).</li>
+<li>Freebase</li>
+<li>KB’s are hard to manipulate.
+<ul>
+<li>Large</li>
+<li>Sparse</li>
+<li>Noisy/incomplete</li>
+</ul></li>
+<li>Solutions:
+<ul>
+<li>Encode into low-dimensional vector spaces</li>
+<li>Use representations to complete/visualize, in applications</li>
+</ul></li>
+<li>Link prediction
+<ul>
+<li>RESCAL (<span class="math inline">\(X_k\)</span> are matrices) <span class="math display">\[
+\min_{A,R} \rc2 \pa{\sum_k \ve{X_k - AR_k A^T}_F^2} + \la_A \ve{A}_F^2 + \la_R \sum_k \ve{R_k}_F^2.
+\]</span>
+<ul>
+<li>Downsides: many parameters, bad scalability, bad reconstruction criteria for binary data</li>
+</ul></li>
+<li>Ideas
+<ul>
+<li>Low-dimensionsal continuous vector embedding trained on similarity</li>
+<li>Stochastic training based on ranking loss</li>
+</ul></li>
+<li><span class="math inline">\(d(sub, rel, obj) = -\ve{R^{left}s^T - R^{right} o^T}_1\)</span>. (Note: this is projection onto a common space, rather than something quadratic!)
+<ul>
+<li>SGD with negative examples</li>
+<li>Still have problems</li>
+</ul></li>
+<li>Neural tensor networks
+<ul>
+<li><span class="math inline">\(d(sub, rel, obj) = u_r^T \tanh (h^TW_r t + V_r^1 h + V_3^2 t + b_r).\)</span></li>
+<li><span class="math inline">\(d^3\)</span> parameters</li>
+</ul></li>
+<li>Model relations as translations
+<ul>
+<li>$d = _2^2.</li>
+<li>there may exist embedding spaces in which relationships among concepts are all decribed by translations</li>
+<li>Much fewer parameters. Does better!</li>
+<li>Refinements (108)</li>
+</ul></li>
+</ul></li>
+<li>Embeddings for information extraction
+<ul>
+<li>Entity linking: Identify mentions</li>
+<li>Relation extraction: extract facts</li>
+<li>Word-sense disambiguation is key</li>
+<li>Embedding-based classifier to predict relation (Weston13, 11) (predict based on other text besides subj, obj. Can combine with KB</li>
+<li>Universal schemas (I don’t get this.)</li>
+</ul></li>
+<li>Question answering
+<ul>
+<li>Subgraph embeddings: learn embeddings of questions and candidate answers (Bordes14) (Q: How to embed subgraph???)</li>
+<li>Convert Freebase to Q&amp;A pairs.</li>
+<li>Paraphrase questions</li>
+</ul></li>
+</ul></li>
+<li>Issues
+<ul>
+<li>Must train embeddings together</li>
+<li>Compression, blurring (How to one-shot learn new symbols?)</li>
+<li>Sequential models suffer from long-term memory</li>
+<li>Need many updates</li>
+<li>Negative example sampling inefficient</li>
+<li>How to use nonlinearity?</li>
+</ul></li>
+<li>Code
+<ul>
+<li><a href="www.torch.ch">Torch</a></li>
+<li><a href="ronan.collobert.com/senna">SENNA</a></li>
+<li><a href="www.fit.vutbr.cz/~imikolov/rnnlm">RNNLM</a></li>
+<li><a href="code.google.com/p/word2vec">Word2vec</a></li>
+<li><a href="nlp.stanford.edu/sentiment">Recursive NN</a></li>
+<li><a href="github.com/glorotxa/sme">SME (multi-relational data)</a></li>
+</ul></li>
+</ul>
+<h2 id="spwc-recursive-deep-models-for-semantic-compositionality-over-a-sentiment-treebank">[SPWC] Recursive deep models for semantic compositionality over a sentiment treebank</h2>
+<p>Put triplet (subj, rel, obj) through tensor network to predict. <span class="math display">\[
+g(e_1,R,e_2) = 
+u_R^T f\pa{
+e_1^T W_R^{[1:k]} e_2 + 
+V_R\coltwo{e_1}{e_2} + b_R
+}
+\]</span></p>
+<!--
+(Q: how about subj, obj -> rel, etc.? Joint probability distribution makes more sense? What is relationship between prob and NN models?)
+-->
+<h2 id="scmn16-reasoning-with-neural-tensor-networks-for-knowledge-base-completion">[SCMN16] Reasoning With Neural Tensor Networks for Knowledge Base Completion</h2>
+<p>Recursive neural tensor model</p>
+<p>Sentiment Treebank: sentiment labels for phrases in parse trees of sentences. <a href="http://nlp.stanford.edu/sentiment">Website</a></p>
+<p>Captures effects of negation and its scope.</p>
+<ul>
+<li>RNN with a classifier at each node in the parse tree that predicts sentiment in one of 5 classes. (<span class="math inline">\(W\)</span> is the same matrix.) (Q: how do you make it a binary tree?)</li>
+<li>MV-RNN (matrix-vector): represent every word and longer phrase in parse tree as both vector and matrix (initialized as <span class="math inline">\(I_d+\)</span>noise). Matrix of one multiplied by vector of other. (parameters is large and depends on vocab)</li>
+<li>RNTN allows quadratic interaction: <span class="math inline">\(p = f\pa{(b\,c)V^{[1:d]}\coltwo bc + W \coltwo bc}\)</span>.</li>
+</ul>
+<p>Train: Classification at each node. Minimize KL-divergence.</p>
 
   </div>
 
@@ -1133,108 +1255,6 @@ KL(D || m)\le KL(D || \mu) +\ep + \ga.
 <h4 id="example-approximate-q-iteration-for-a-dc-motor">3.4.5 Example: Approximate Q-iteration for a DC motor</h4>
 <p>Fitted <span class="math inline">\(Q\)</span>-iteration using ensembles of extremely randomized trees.</p>
 <h3 id="approximate-policy-iteration">3.5 Approximate policy iteration</h3>
-
-  </div>
-
-    
-
-    <!-- Extension : Sharing buttons @ www.sharethis.com -->
-    <span class='st_facebook_large' displayText='Facebook'></span>
-    <span class='st_twitter_large' displayText='Tweet'></span>
-    <span class='st_googleplus_large' displayText='Google +'></span>
-    <span class='st_reddit_large' displayText='Reddit'></span>
-    <span class='st__large' displayText=''></span>
-
-    <div id="disqus_thread"></div>
-    
-
-
-  
-    <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
-  </div>
-  
-</div>
-]]></summary>
-</entry>
-<entry>
-    <title>Weekly summary 2016-11-05</title>
-    <link href="http://holdenlee.github.io/notebook/posts/summaries/2016-11-05.html" />
-    <id>http://holdenlee.github.io/notebook/posts/summaries/2016-11-05.html</id>
-    <published>2016-10-31T00:00:00Z</published>
-    <updated>2016-10-31T00:00:00Z</updated>
-    <summary type="html"><![CDATA[
-<div class="container">
-  <div id="content">
-    <div class="page header">
-      <h1>Weekly summary 2016-11-05</h1>
-    </div>
-    <div class="info">
-      
-       
-        <p>Posted: 2016-10-31 
-          , Modified: 2016-10-31 
-	</p>
-      
-       <p>Tags: <a href="/tags/none.html">none</a></p> 
-    </div>
-    
-  </div>
-  <!--/div-->
-
-  <div class="toc"> <ul>
- <li><a href="#threads">Threads</a><ul>
- <li><a href="#priority">Priority</a></li>
- <li><a href="#other">Other</a></li>
- </ul></li>
- <li><a href="#other-papers">Other papers</a></li>
- <li><a href="#people-to-talk-to">People to talk to</a></li>
- </ul> </div>
-
-  <div class="blog-main">
-    <p><a href="2016-10-29.html">Last week</a>. (See also <a href="2016-10-22.html">wonderings</a>.)</p>
-<h2 id="threads">Threads</h2>
-<h3 id="priority">Priority</h3>
-<ul>
-<li>Come up with a class of MDPs on exponential space that is interesting and tractable. <a href="/posts/tcs/machine_learning/reinforcement_learning/continuous.html">Thoughts</a> (Tuesday)
-<ul>
-<li>Understand provable guarantees on MDP’s first</li>
-</ul></li>
-<li>PMI - get some results!
-<ul>
-<li>Mon. - train CIFAR.</li>
-<li>Todos
-<ul>
-<li>Check MNIST model 1. What are sizes of coefficients?</li>
-<li>Run experiments on CIFAR.</li>
-</ul></li>
-</ul></li>
-</ul>
-<h3 id="other">Other</h3>
-<ul>
-<li>SoS <a href="/posts/tcs/complexity/sos.html">summary</a> (Monday: wrote up notes.)</li>
-<li>DL experiments <a href="/posts/tcs/machine_learning/matrices/DL_generalization.html">DL generalization</a></li>
-<li>On hold
-<ul>
-<li>(*) NN learns DL. Can write up weak result, worth doing?</li>
-</ul></li>
-<li>Papers (Wednesday: read through)
-<ul>
-<li>[HM16] on unsupervised learning (finish)</li>
-<li>[HMR16] on dynamical system learning</li>
-<li>[R16] on convex relaxations for partition function calculation</li>
-</ul></li>
-<li>Ch. 3-4 of Graphical models book. (Friday) <a href="/posts/tcs/machine_learning/probabilistic/graphical_models.html">Notes</a></li>
-<li><a href="/posts/tcs/machine_learning/probabilistic/ideas.html">Thoughts on HMMs, etc.</a> (Friday)</li>
-</ul>
-<p>Analyze Arora and Ge’s NMF algorithm in the presence of noise. Exactly how much noise can it tolerate?</p>
-<h2 id="other-papers">Other papers</h2>
-<ul>
-<li>TODO Read this paper: [CFP16] Assessing significance in a Markov chain without mixing</li>
-</ul>
-<h2 id="people-to-talk-to">People to talk to</h2>
-<ul>
-<li>Yingyu, on PMI</li>
-</ul>
 
   </div>
 
