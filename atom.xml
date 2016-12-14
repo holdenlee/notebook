@@ -8,8 +8,106 @@
         <name>Holden Lee</name>
         <email>oldheneel@gmail.com</email>
     </author>
-    <updated>2016-12-10T00:00:00Z</updated>
+    <updated>2016-12-14T00:00:00Z</updated>
     <entry>
+    <title>Linear convex regulator</title>
+    <link href="http://holdenlee.github.io/notebook/posts/tcs/machine_learning/reinforcement_learning/lcr.html" />
+    <id>http://holdenlee.github.io/notebook/posts/tcs/machine_learning/reinforcement_learning/lcr.html</id>
+    <published>2016-12-14T00:00:00Z</published>
+    <updated>2016-12-14T00:00:00Z</updated>
+    <summary type="html"><![CDATA[
+<div class="container">
+  <div id="content">
+    <div class="page header">
+      <h1>Linear convex regulator</h1>
+    </div>
+    <div class="info">
+      
+       
+        <p>Posted: 2016-12-14 
+          , Modified: 2016-12-14 
+	</p>
+      
+       <p>Tags: <a href="/tags/none.html">none</a></p> 
+    </div>
+    
+  </div>
+  <!--/div-->
+
+  <div class="toc"> <ul>
+ <li><a href="#linear-quadratic-regulator">Linear quadratic regulator</a></li>
+ <li><a href="#linear-convex-regulator">Linear convex regulator</a></li>
+ <li><a href="#problem">Problem</a></li>
+ <li><a href="#email">Email</a></li>
+ </ul> </div>
+
+  <div class="blog-main">
+    <p>Project evolved from <a href="continuous.html">Continuous MDP</a>.</p>
+<h2 id="linear-quadratic-regulator">Linear quadratic regulator</h2>
+The linear quadratic regulator is
+<span class="math display">\[\begin{align}
+\dot x &amp; = Ax + Ba = f(x,a)\\
+r(x,a) &amp; = -c(x,a) = -\rc2 x^TQx - \rc 2 a^Ta\\
+\pat{Total reward} &amp;= \int_0^T r(x(t), a(t))\,dt.
+\end{align}\]</span>
+<p>The optimal action (for fixed horizon <span class="math inline">\(T\)</span>, take <span class="math inline">\(T= \iy\)</span> to get the infinite-horizon case) is given by <span class="math display">\[
+a = -P_{t}x
+\]</span> where <span class="math inline">\(P_{t}\)</span> satisfies the matrix Riccati equation. For the infinite horizon case, take <span class="math inline">\(T=\iy\)</span> and find that <span class="math inline">\(a=-Px\)</span> where <!-- , and $P_{-\iy}$ is the steady-state solution, which can be solved by solving --> <span class="math inline">\(P\)</span> is the solution to an algebraic Riccati equation, which has an expression in terms of eigenvalues of <span class="math inline">\(\matt{A}{BB^T}{Q}{-A^T}\)</span>.</p>
+<h2 id="linear-convex-regulator">Linear convex regulator</h2>
+Generalize this to
+<span class="math display">\[\begin{align}
+\dot x &amp; = Ax + Ba = f(x,a)\\
+r(x,a) &amp; = -c(x,a) = -g(x) - a^Ta\\
+\pat{Total reward} &amp;= \int_0^T r(x(t), a(t))\,dt.
+\end{align}\]</span>
+<p>For example, take <span class="math inline">\(g\)</span> to be a convex function.</p>
+<p>Idea: Approximate <span class="math inline">\(g\)</span> locally with a quadratic function and then make the action that optimizes the linear quadratic system.</p>
+<h2 id="problem">Problem</h2>
+The starting point is the linear quadratic regulator, which is well-understood. The linear quadratic regulator is (here <span class="math inline">\(x\in \mathbb R^n, a\in \mathbb R^k\)</span>)
+<span class="math display">\[\begin{align}
+\dot x &amp; = Ax + Ba = f(x,a)\\
+r(x,a) &amp; = -c(x,a) = -\frac12 x^TQx - \rc2 a^Ta\\
+x(0) &amp;= x_0\\
+V_t(x,a(\cdot)) &amp;= \int_t^T r(x(t), a(t))\,dt, \quad x(t) = x, \dot x = f(x,a).
+\end{align}\]</span>
+<p>The problem to find the function <span class="math inline">\(a(t)\)</span> that maximizes <span class="math inline">\(V_{t}(x,a)\)</span>. Especially we care about when <span class="math inline">\(T\to \iy\)</span>. There are two ways to solve this problem:</p>
+<ol type="1">
+<li><p>Use Pontryagrin’s maximal principle to write this as a Hamiltonian system. One can show the optimal control has the form <span class="math inline">\(a(t) = -P(t)x(t)\)</span>. Get a differential equation in <span class="math inline">\(P(t)\)</span> which is the matrix Riccati equation.</p>
+For infinite-horizon, the optimal control is <span class="math inline">\(a= -Px\)</span> independent of time. (Reparameterizing <span class="math inline">\([0,\iy)\)</span> as <span class="math inline">\((-\iy, 0]\)</span>, the solution <span class="math inline">\(P\)</span> is the limit <span class="math inline">\(\lim_{t\to \iy}P(-t)\)</span>. <!-- can be solved for explicitly. Then $a=-Px$ is the optimal action when the time horizon is infinite.--></li>
+<li><p>Use the Bellman-Jacobi-Hamilton equation. Let <span class="math inline">\(v(x,t) = \max_{a(\cdot)} V_{t}(x,a(\cdot))\)</span>. Then <span class="math inline">\(v\)</span> satisfies <span class="math inline">\(v_t + \max_a [r(x,a) + (\nabla_x v)^T f(x,a)]=0\)</span>. <span class="math inline">\(v(x,t)=-x^TK(t)x\)</span> is quadratic in <span class="math inline">\(x\)</span>, <span class="math inline">\(a\)</span> is linear in <span class="math inline">\(x\)</span>, and we also get a matrix Riccati equation in <span class="math inline">\(K\)</span>.</p>
+<p>For infinite-horizon, reparameterizing <span class="math inline">\([0,\iy)\)</span> as <span class="math inline">\((-\iy, 0]\)</span>, the solution <span class="math inline">\(v\)</span> is a steady-state solution, <span class="math inline">\(\max_a [r(x,a) + (\nabla_x v)^T f(x,a)]=0\)</span>.</p></li>
+</ol>
+<p>We want to generalize <span class="math inline">\(\rc 2 x^TQx\)</span>, e.g. to <span class="math inline">\(g(x)\)</span>. Suppose that <span class="math inline">\(g\)</span> is convex. In general it’s infeasible to solve for the optimal action (you can only numerically approximate the solution, which is infeasible in high dimension); the question is whether we can find a simple policy <span class="math inline">\(a\)</span> that approximates the optimal action (e.g. up to a constant factor depending on properties of <span class="math inline">\(g\)</span>). For example <span class="math inline">\(a(x)\)</span> could be chosen based on a quadratic approximation of <span class="math inline">\(g\)</span>. For a particular choice of <span class="math inline">\(a(x)\)</span>, the value satisfies <span class="math display">\[ -g(x) - \rc2 a^Ta + (\nb_x v)^T f(x,a) = 0
+\]</span> and for the optimal choice <span class="math inline">\(a(x) = B^T(\nb_x v)\)</span> the value satisfies <span class="math display">\[
+-g(x) + \rc 2 (\nb_x v^*)^T BB^T (\nb_x v^*) + (\nb_x v^*)^T Ax=0
+\]</span> We’d have to relate <span class="math inline">\(v\)</span> and <span class="math inline">\(v^*\)</span> in some way.</p>
+<h2 id="email">Email</h2>
+<p>Hi …,</p>
+<p>I’m trying to develop a way to approximate an optimal control for some general class of control problems. This involves understanding some differential equations. I don’t really have intuition or have a good idea of whether what we’re trying to do is feasible. Would you have time to talk? Just getting some qualitative understanding or knowing what tools are available would be great!</p>
+
+  </div>
+
+    
+
+    <!-- Extension : Sharing buttons @ www.sharethis.com -->
+    <span class='st_facebook_large' displayText='Facebook'></span>
+    <span class='st_twitter_large' displayText='Tweet'></span>
+    <span class='st_googleplus_large' displayText='Google +'></span>
+    <span class='st_reddit_large' displayText='Reddit'></span>
+    <span class='st__large' displayText=''></span>
+
+    <div id="disqus_thread"></div>
+    
+
+
+  
+    <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+  </div>
+  
+</div>
+]]></summary>
+</entry>
+<entry>
     <title>Weekly summary 2016-12-10</title>
     <link href="http://holdenlee.github.io/notebook/posts/summaries/2016-12-10.html" />
     <id>http://holdenlee.github.io/notebook/posts/summaries/2016-12-10.html</id>
@@ -1181,75 +1279,6 @@ KL(D || m)\le KL(D || \mu) +\ep + \ga.
 <p>One model is that of a dynamic Bayes net (DBN). Even given pairs <span class="math inline">\((x,y)\)</span> it may be difficult to learn in general (check this…)—if the graph is bounded degree <span class="math inline">\(d\)</span> with bounded edge weights then it could be fixed parameter tractable in <span class="math inline">\(d\)</span>. (To be actually tractable probably the weights have to be <span class="math inline">\(1/d\)</span>.)</p>
 <h2 id="context-vectors">Context vectors</h2>
 <p>Currently we model documents with the context vector undergoing a random walk (<a href="../nlp/randwalk.html">ALLMR16</a>). I don’t think the different coordinates are so interpretable. (?) A random walk is like a DBM where the connections are <span class="math inline">\(1\to 1', 2\to 2'\)</span>, etc. Can we model the evolution of the context vector as something more complicated but still tractable?</p>
-
-  </div>
-
-    
-
-    <!-- Extension : Sharing buttons @ www.sharethis.com -->
-    <span class='st_facebook_large' displayText='Facebook'></span>
-    <span class='st_twitter_large' displayText='Tweet'></span>
-    <span class='st_googleplus_large' displayText='Google +'></span>
-    <span class='st_reddit_large' displayText='Reddit'></span>
-    <span class='st__large' displayText=''></span>
-
-    <div id="disqus_thread"></div>
-    
-
-
-  
-    <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
-  </div>
-  
-</div>
-]]></summary>
-</entry>
-<entry>
-    <title>Weekly summary 2016-11-12</title>
-    <link href="http://holdenlee.github.io/notebook/posts/summaries/2016-11-12.html" />
-    <id>http://holdenlee.github.io/notebook/posts/summaries/2016-11-12.html</id>
-    <published>2016-11-07T00:00:00Z</published>
-    <updated>2016-11-07T00:00:00Z</updated>
-    <summary type="html"><![CDATA[
-<div class="container">
-  <div id="content">
-    <div class="page header">
-      <h1>Weekly summary 2016-11-12</h1>
-    </div>
-    <div class="info">
-      
-       
-        <p>Posted: 2016-11-07 
-          , Modified: 2016-11-14 
-	</p>
-      
-       <p>Tags: <a href="/tags/none.html">none</a></p> 
-    </div>
-    
-  </div>
-  <!--/div-->
-
-  <div class="toc"> <ul>
- <li><a href="#summary">Summary</a></li>
- </ul> </div>
-
-  <div class="blog-main">
-    <h2 id="summary">Summary</h2>
-<ul>
-<li>Neural net learns dictionaries: run experiments. I found nothing unexpected: closeby initialization does converge. The farther away, the farther away the final <span class="math inline">\(A\)</span> is. (But I think it should be a <code>_/</code> shape—where is the cusp?)
-<ul>
-<li>Are the different dictionaries related by a linear transformation? It seems not.</li>
-</ul></li>
-<li>Simons meeting—spanning trees, bandit convex optimization.
-<ul>
-<li>Can we use kernel methods for MDP’s?</li>
-</ul></li>
-<li>Meeting with Arora
-<ul>
-<li>Learn about continuous HMM models.</li>
-<li>Improve NLP.</li>
-</ul></li>
-</ul>
 
   </div>
 
