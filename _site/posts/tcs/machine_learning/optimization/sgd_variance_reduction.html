@@ -92,7 +92,7 @@
  </ul> </div>
 
   <div class="blog-main">
-    <p><span class="math display">\[\min_{x\in \R^d} \set{F(x):=f(x)+\psi(x) := \rc n \sumo in f_i(x) + \psi(x).\]</span></p>
+    <p><span class="math display">\[\min_{x\in \R^d} [F(x):=f(x)+\psi(x) := \rc n \sumo in f_i(x) + \psi(x)].\]</span></p>
 <p>2 ways to choose a better gradient estimator.</p>
 <h2 id="svrg">SVRG</h2>
 <p>Keep a snapshot vector <span class="math inline">\(\wt x=x_k\)</span> every <span class="math inline">\(m\approx 2n\)</span> iterations. <span class="math display">\[\wt \nb_k := \nb f_i(x_k) - \nb f_i(\wt x) + \nb f(\wt x)\]</span> where <span class="math inline">\(i\sim[n]\)</span> randomly.</p>

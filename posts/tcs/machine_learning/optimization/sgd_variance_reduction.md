@@ -7,7 +7,7 @@ type: topic
 showTOC: True
 ---
 
-$$\min_{x\in \R^d} \set{F(x):=f(x)+\psi(x) := \rc n \sumo in f_i(x) + \psi(x).$$
+$$\min_{x\in \R^d} [F(x):=f(x)+\psi(x) := \rc n \sumo in f_i(x) + \psi(x)].$$
 
 2 ways to choose a better gradient estimator.
 
