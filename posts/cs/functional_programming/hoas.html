@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+
+  <meta name="description" content="Holden Lee's Research Notebook">
+  <meta name="author" content="Holden Lee">
+    
+  <title>Higher-order abstract syntax</title>
+
+  <!-- Bootstrap core CSS -->
+  <link href="../../../bootstrap/css/bootstrap.min.css" rel="stylesheet">
+
+  <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+  <!-- <link href="../../assets/css/ie10-viewport-bug-workaround.css" rel="stylesheet"> -->
+
+  <!-- Custom styles for this template -->
+  <link href="../../../css/blog.css" rel="stylesheet">
+  <link href="../../../css/default.css" rel="stylesheet">
+
+  <!-- Extension : Footnotes -->
+  <link href="../../../footnotes/css/footnotes.css" rel="stylesheet">
+
+  <!-- Extension : InlineDisqussions @ https://github.com/tsi/inlineDisqussions -->
+  
+
+  <!-- Extension : Collapsible lists @ http://code.stephenmorley.org/javascript/collapsible-lists/-->
+  <link href="../../../collapsible_lists/css/collapsible.css" rel="stylesheet">
+  <script type="text/javascript" src="../../../collapsible_lists/js/CollapsibleLists.js"></script>
+
+</head>
+
+<body>
+
+<!-- Navigation bar. navbar-inverse is black, navbar-default is white.-->
+<!-- To make a button active (pressed), use <li class="active"> -->
+<div id="header">
+  <nav class="navbar navbar-inverse navbar-fixed-top">
+    <div class="container">
+      <div class="navbar-header">
+        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+          <span class="sr-only">Toggle navigation</span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="../../../">Notebook</a>
+      </div>
+      <div id="navbar" class="collapse navbar-collapse">
+        <ul class="nav navbar-nav">
+          <li><a href="../../../">Home</a></li>
+          <li><a href="../../../sitemap.html">Sitemap</a></li>
+<!-- TODO: Distinguish between PAPERS, RESEARCH QUESTIONS, BOOKS -->
+<!-- TODO: make this part a for loop over main pages -->
+        </ul>
+      </div><!--/.nav-collapse -->
+    </div>
+  </nav>
+</div>
+<!-- Content -->
+<!--div id="content">
+  <h1>Mental Wilderness</h1>-->
+
+
+
+<div class="container">
+  <div id="content">
+    <div class="page header">
+      <h1>Higher-order abstract syntax</h1>
+    </div>
+    <div class="info">
+      
+       
+        <p>Posted: 2016-12-26 
+          , Modified: 2016-12-26 
+	</p>
+      
+       <p>Tags: <a href="../../../tags/haskell.html">haskell</a>, <a href="../../../tags/functional%20programming.html">functional programming</a></p> 
+    </div>
+    
+  </div>
+  <!--/div-->
+
+  <div class="toc"> <ul>
+ <li><a href="#hoas">HOAS</a></li>
+ <li><a href="#rotten-bananas">Rotten bananas</a></li>
+ <li><a href="#phoas">PHOAS</a></li>
+ <li><a href="#misc">Misc</a></li>
+ </ul> </div>
+
+  <div class="blog-main">
+    <h2 id="hoas">HOAS</h2>
+<p>Higher-order abstract syntax (abbreviated HOAS) is a technique for the representation of abstract syntax trees for languages with variable binders. <a href="https://en.wikipedia.org/wiki/Higher-order_abstract_syntax">wikipedia</a></p>
+<p>Compared to FOAS (which are basically just normal abstract syntax trees), HOAS exposes additional structure: the relationship between variables and their binding sites.</p>
+<p>(What is a binding site?)</p>
+<p>In HOAS, <code>let</code> is a function <code>exp -&gt; (exp -&gt; exp) -&gt; exp</code>.</p>
+<div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="kw">let</span> x <span class="fu">=</span> <span class="dv">1</span> <span class="fu">+</span> <span class="dv">2</span> <span class="kw">in</span> x <span class="fu">+</span> x</code></pre></div>
+<p>becomes</p>
+<pre><code>let (1 + 2) (\x -&gt; x + x)</code></pre>
+<p>To reason about these expressions as data, limit <code>exp -&gt; exp</code> to “nice” functions. PHOAS is a solution.</p>
+<p><a href="http://cstheory.stackexchange.com/questions/20071/what-is-higher-order-in-higher-order-abstract-syntax">SE</a></p>
+<h2 id="rotten-bananas">Rotten bananas</h2>
+<p>Encoding a language that binds variables in higher order abstract syntax generally involves constructing an abstract data type that contains functions. <a href="http://comonad.com/reader/2008/rotten-bananas/">Rotten bananas</a> <a href="http://scrible.com/s/4JQM6">h</a> <!-- [h](http://scrible.com/s/6BQM6)--></p>
+<p>An exponential functor:</p>
+<div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="kw">class</span> <span class="dt">ExpFunctor</span> f <span class="kw">where</span>
+<span class="ot">    xmap ::</span> (a <span class="ot">-&gt;</span> b) <span class="ot">-&gt;</span> (b <span class="ot">-&gt;</span> a) <span class="ot">-&gt;</span> f a <span class="ot">-&gt;</span> f b</code></pre></div>
+<p>We know from <a href="catamorphism.html">catamorphism</a>: (<code>old</code> is <code>unFix</code>)</p>
+<div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="kw">newtype</span> <span class="dt">Nu</span> f  <span class="fu">=</span> <span class="dt">Nu</span> {<span class="ot"> old ::</span> f (<span class="dt">Nu</span> f) }
+ 
+<span class="kw">class</span> <span class="dt">Cata</span> f t <span class="fu">|</span> t <span class="ot">-&gt;</span> f <span class="kw">where</span>
+<span class="ot">    cata ::</span> (f a <span class="ot">-&gt;</span> a) <span class="ot">-&gt;</span> t <span class="ot">-&gt;</span> a
+ 
+<span class="kw">instance</span> <span class="dt">Functor</span> f <span class="ot">=&gt;</span> <span class="dt">Cata</span> f (<span class="dt">Nu</span> f) <span class="kw">where</span>
+    cata f <span class="fu">=</span> f <span class="fu">.</span> fmap (cata f) <span class="fu">.</span> old</code></pre></div>
+<p>Catamorphism for exponential functor:</p>
+<div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="ot">cataMH ::</span> <span class="dt">ExpFunctor</span> f <span class="ot">=&gt;</span> (f a <span class="ot">-&gt;</span> a) <span class="ot">-&gt;</span> (a <span class="ot">-&gt;</span> f a) <span class="ot">-&gt;</span> <span class="dt">Nu</span> f <span class="ot">-&gt;</span> a
+cataMH f g <span class="fu">=</span> f <span class="fu">.</span> xmap (cataMH f g) (anaMH f g) <span class="fu">.</span> old
+ 
+<span class="ot">anaMH ::</span> <span class="dt">ExpFunctor</span> f <span class="ot">=&gt;</span> (f a <span class="ot">-&gt;</span> a) <span class="ot">-&gt;</span> (a <span class="ot">-&gt;</span> f a) <span class="ot">-&gt;</span> a <span class="ot">-&gt;</span> <span class="dt">Nu</span> f
+anaMH f g <span class="fu">=</span> <span class="dt">Nu</span> <span class="fu">.</span> xmap (anaMH f g) (cataMH f g) <span class="fu">.</span> g</code></pre></div>
+<p>To get a catamorphism for the fixpoint of an exponential functor, you need both a folding and unfolding operation. “To use the Meijer/Hutton catamorphism to write a pretty printer, you have to write a parser as well; to use it to eval, you must also be able to reify values back into programs.”</p>
+<p>Actually, you don’t need a full inverse, just a right-inverse such that <code>cata f . place = id</code>. Put the Place term into an explicit recursion ADT (Roll is just Fix):</p>
+<pre><code>data Rec f a = Roll (f (Rec f a)) | Place a</code></pre>
+<p>Now we can define a catamorphism:</p>
+<pre><code>cataFS :: ExpFunctor f =&gt; (f a -&gt; a) -&gt; Rec f a -&gt; a
+cataFS f (Roll x) = f (xmap (cataFS f) Place x)
+cataFS f (Place x) = x</code></pre>
+<h2 id="phoas">PHOAS</h2>
+<p><a href="https://www.schoolofhaskell.com/user/edwardk/phoas">PHOAS for free</a></p>
+<h2 id="misc">Misc</h2>
+<p>From Rotten Bananas:</p>
+<p>fmap can really only be defined for ‘covariant endofunctors on the category of types’ (?)</p>
+<p>Most covariant functors used in Haskell are among the so-called ‘polynomial’ functors, meaning that they can be built up out of sums, products and constants.</p>
+<p>That said, polynomial functors are not the only covariant functors, because you can also have some functions in the type, as long as the type over which you are parameterized only occurs in ‘positive’ position. The informal way to think about it is that every time you have a parameter on the left of an (-&gt;) in the type, the occurrence switches signs, starting positive, so for some Functors, you can have functions, as long as the parameter occurs only in positive positions.</p>
+<p><a href="http://comonad.com/reader/2011/free-monads-for-less/">Free monads for less</a></p>
+
+  </div>
+
+    
+
+    <!-- Extension : Sharing buttons @ www.sharethis.com -->
+    <span class="st_facebook_large" displayText="Facebook"></span>
+    <span class="st_twitter_large" displayText="Tweet"></span>
+    <span class="st_googleplus_large" displayText="Google +"></span>
+    <span class="st_reddit_large" displayText="Reddit"></span>
+    <span class="st__large" displayText></span>
+
+    <div id="disqus_thread"></div>
+    
+
+
+  
+    <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+  </div>
+  
+</div>
+
+
+<!-- Footer -->
+<div id="footer">
+  <div class="container">
+    Built with
+    <a href="http://jaspervdj.be/hakyll">Hakyll</a> 
+    using 
+    <a href="http://www.getbootstrap.com">Bootstrap</a>, 
+    <a href="http://www.disqus.com">Disqus</a>,
+    <a href="http://ignorethecode.net/blog/2010/04/20/footnotes/">Footnotes.js</a>,
+    <a href="http://highlightjs.org/">Highlight.js</a>, 
+    <a href="http://www.mathjax.org">MathJax</a>, 
+    and <a href="http://www.sharethis.com">ShareThis</a>.
+  </div>
+</div>
+</body>
+
+</html>
+
+<!-- SCRIPTS -->
+<!-- jQuery-->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+<script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
+
+<script src="../../../bootstrap/js/bootstrap.min.js"></script>
+
+<!-- Extension : Highlight.js @ https://highlightjs.org/ -->
+<!-- Syntax highlighting tomorrow-night-bright, agate-->
+<link rel="stylesheet" href="../../../highlight/css/tomorrow-night-bright.css">
+<script src="../../../highlight/js/highlight.pack.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+
+<!-- Extension : MathJax @ https://docs.mathjax.org/en/v2.5-latest/tex.html -->
+<!-- MathJax/config/local/local.js contains macros. Need to provide entire URL-->
+<script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML,http://holdenlee.github.io/notebook/MathJax/config/local/local"></script>
+
+<!-- Extension : Footnotes @ http://ignorethecode.net/blog/2010/04/20/footnotes/ -->
+<script src="../../../footnotes/js/footnotes.js"></script>
+
+<!-- Extension : Disqus @ http://disqus.com -->
+<!-- Extension : InlineDisqussions @ https://github.com/tsi/inlineDisqussions -->
+
+<script src="../../../disqus/js/disqus.js"></script>
+
+
+
+<!-- Extension : Google Analytics -->
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-73261814-1', 'auto');
+  ga('send', 'pageview');
+
+</script>
+

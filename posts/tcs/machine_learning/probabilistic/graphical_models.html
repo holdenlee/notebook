@@ -114,6 +114,12 @@
  <li><a href="#variational-methods-based-on-convex-relaxations">7 Variational methods based on convex relaxations</a></li>
  <li><a href="#mode-computation">8 Mode computation</a></li>
  <li><a href="#conic-programming-relaxations">9 Conic programming relaxations</a></li>
+ <li><a href="#review">Review</a><ul>
+ <li><a href="#section-1">1</a></li>
+ <li><a href="#section-2">2</a></li>
+ <li><a href="#section-3">3</a></li>
+ <li><a href="#section-4">4</a></li>
+ </ul></li>
  <li><a href="#misc">Misc</a></li>
  </ul> </div>
 
@@ -367,9 +373,21 @@ A_{\te_\al\te_\be} &amp;= \Cov(\phi_\al(X),\phi_\be(X))\\
 </ul></li>
 <li>When does image of <span class="math inline">\(\Om\)</span> fully cover <span class="math inline">\(\mathcal M\)</span>?
 <ul>
-<li><span class="math inline">\(\nb A(\Om)=\mathcal M^{\circ}\)</span>.</li>
+<li>When <span class="math inline">\(\Om\)</span> is open, <span class="math inline">\(\nb A(\Om)=\mathcal M^{\circ}\)</span>.</li>
 <li>Corollary: except for boundary points, all mean parameters realizable by some distribution can be realized by a member of the exponential family.</li>
-<li><em>Proof</em>. ADD ME.</li>
+<li><em>Proof</em>.
+<ul>
+<li>Sufficient to prove for minimal <span class="math inline">\(\phi\)</span>. (Just reparametrize.)</li>
+<li><span class="math inline">\(\nb A(\Om)\subeq \mathcal M^{\circ}\)</span>: This follows from <span class="math inline">\(\nb A(\Om)\subeq \mathcal M\)</span>, <span class="math inline">\(\Om\)</span> open, and <span class="math inline">\(\nb A\)</span> strictly convex.</li>
+<li><span class="math inline">\(\mathcal M^{\circ}\subeq \nb A(\Om)\)</span>: WLOG, <span class="math inline">\(0\in \mathcal M^{\circ}\)</span> and we show <span class="math inline">\(0\in \nb A(\Om)\)</span>.</li>
+<li>Let <span class="math inline">\(H_{\ga,\ep} = \set{x\in X^m}{\an{\ga,\phi(x)}\ge \ep}\)</span>. For small enough <span class="math inline">\(\ep\)</span>, this has measure <span class="math inline">\(&gt;0\)</span>. Now
+<span class="math display">\[\begin{align}
+A(\te^0 + t\ga)
+&amp;\ge \ln \int_{\R^n} e^{\an{\te^0 + t\ga,\phi(x)}}\nu(dx)\\
+&amp; \ge t\ep + C_0.
+\end{align}\]</span>
+so taking <span class="math inline">\(t\to \iy\)</span> this blows up. This shows that <span class="math inline">\(A\)</span> has a minimum where <span class="math inline">\(\nb A=0\)</span>, i.e., <span class="math inline">\(0\in \nb A(\Om)\)</span>.</li>
+</ul></li>
 </ul></li>
 </ol>
 <h3 id="conjugate-duality-maximum-likelihood-and-maximum-entropy">3.6 Conjugate duality: maximum likelihood and maximum entropy</h3>
@@ -553,6 +571,31 @@ Check this for a BP fixed point where <span class="math inline">\(A_{\text{Bethe
 <h2 id="variational-methods-based-on-convex-relaxations">7 Variational methods based on convex relaxations</h2>
 <h2 id="mode-computation">8 Mode computation</h2>
 <h2 id="conic-programming-relaxations">9 Conic programming relaxations</h2>
+<h2 id="review">Review</h2>
+<h3 id="section-1">1</h3>
+<h3 id="section-2">2</h3>
+<h3 id="section-3">3</h3>
+<ol type="1">
+<li>Define an exponential family. What does it mean for it to be regular? Minimal? (3.2)</li>
+<li>Write the Ising model as an exponential family. (3.3)</li>
+<li>Given <span class="math inline">\(\phi\)</span>, define the set of realizable mean parameters <span class="math inline">\(\mathcal M\)</span>. What is the forward/backward mapping? (3.4)</li>
+<li>What are the (realizable) mean parameters for Gaussians? The Ising model? (3.4)</li>
+<li>Define the correlation (cut) polytope and marginal polytope. (3.4)</li>
+<li>What are the derivatives of <span class="math inline">\(A\)</span>? (3.5)</li>
+<li>When is <span class="math inline">\(\nb A\)</span> convex/strictly convex/one-to-one? (3.6)</li>
+<li>What is the relationship between <span class="math inline">\(\nb A\)</span> and <span class="math inline">\(\mathcal M\)</span>? (3.6)</li>
+<li>Define the conjugate dual function <span class="math inline">\(f^*\)</span>. When is the double dual the original function? (3.6)</li>
+<li>Relate <span class="math inline">\(A^*\)</span> to the entropy. (3.6)</li>
+<li>What is the relationship between <span class="math inline">\(\nb A^*\)</span> and <span class="math inline">\(\nb A\)</span>? (3.6)</li>
+</ol>
+<h3 id="section-4">4</h3>
+<ol type="1">
+<li>Define <span class="math inline">\(\mathbb M(G)\)</span>, <span class="math inline">\(\mathbb L(G)\)</span>.</li>
+<li>Define the Bethe approximation and variational problem. What is its Lagrangian?</li>
+<li>Explain the relationship with the sum-product updates.</li>
+<li>What is the solution to the problem for tree-structured MRF’s?</li>
+<li>What is the loop series expansion?</li>
+</ol>
 <h2 id="misc">Misc</h2>
 <p>The treewidth</p>
 <ul>
