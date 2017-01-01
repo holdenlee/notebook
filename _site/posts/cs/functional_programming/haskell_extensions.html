@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+
+  <meta name="description" content="Holden Lee's Research Notebook">
+  <meta name="author" content="Holden Lee">
+    
+  <title>Haskell extensions</title>
+
+  <!-- Bootstrap core CSS -->
+  <link href="../../../bootstrap/css/bootstrap.min.css" rel="stylesheet">
+
+  <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+  <!-- <link href="../../assets/css/ie10-viewport-bug-workaround.css" rel="stylesheet"> -->
+
+  <!-- Custom styles for this template -->
+  <link href="../../../css/blog.css" rel="stylesheet">
+  <link href="../../../css/default.css" rel="stylesheet">
+
+  <!-- Extension : Footnotes -->
+  <link href="../../../footnotes/css/footnotes.css" rel="stylesheet">
+
+  <!-- Extension : InlineDisqussions @ https://github.com/tsi/inlineDisqussions -->
+  
+
+  <!-- Extension : Collapsible lists @ http://code.stephenmorley.org/javascript/collapsible-lists/-->
+  <link href="../../../collapsible_lists/css/collapsible.css" rel="stylesheet">
+  <script type="text/javascript" src="../../../collapsible_lists/js/CollapsibleLists.js"></script>
+
+</head>
+
+<body>
+
+<!-- Navigation bar. navbar-inverse is black, navbar-default is white.-->
+<!-- To make a button active (pressed), use <li class="active"> -->
+<div id="header">
+  <nav class="navbar navbar-inverse navbar-fixed-top">
+    <div class="container">
+      <div class="navbar-header">
+        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+          <span class="sr-only">Toggle navigation</span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="../../../">Notebook</a>
+      </div>
+      <div id="navbar" class="collapse navbar-collapse">
+        <ul class="nav navbar-nav">
+          <li><a href="../../../">Home</a></li>
+          <li><a href="../../../sitemap.html">Sitemap</a></li>
+<!-- TODO: Distinguish between PAPERS, RESEARCH QUESTIONS, BOOKS -->
+<!-- TODO: make this part a for loop over main pages -->
+        </ul>
+      </div><!--/.nav-collapse -->
+    </div>
+  </nav>
+</div>
+<!-- Content -->
+<!--div id="content">
+  <h1>Mental Wilderness</h1>-->
+
+
+
+<div class="container">
+  <div id="content">
+    <div class="page header">
+      <h1>Haskell extensions</h1>
+    </div>
+    <div class="info">
+      
+       
+        <p>Posted: 2016-12-25 
+          , Modified: 2016-12-25 
+	</p>
+      
+       <p>Tags: <a href="../../../tags/haskell.html">haskell</a>, <a href="../../../tags/functional%20programming.html">functional programming</a></p> 
+    </div>
+    
+  </div>
+  <!--/div-->
+
+  <div class="toc"></div>
+
+  <div class="blog-main">
+    <ul>
+<li>ConstraintKinds
+<ul>
+<li><a href="https://downloads.haskell.org/~ghc/7.8.4/docs/html/users_guide/constraint-kind.html">GHC</a></li>
+<li>TypeFamilies or GADTs allow equality constraints <code>a ~ Int</code>.</li>
+<li>Tuples whose components have type <code>Constraint</code>.</li>
+<li><p>Anything declared to have type constraint:</p>
+<pre><code>type family Typ a b :: Constraint
+type instance Typ Int  b = Show b
+type instance Typ Bool b = Num b
+
+func :: Typ a b =&gt; a -&gt; b -&gt; b
+func = ...</code></pre></li>
+<li>Allows type constraint synonyms <code>type Stringy a = (Read a, Show a)</code></li>
+</ul></li>
+<li>DataKinds
+<ul>
+<li>Suitable (?) types (ex. algebraic data types) automatically get promoted to kinds. Here <code>Nat</code> goes from a type to a kind and <code>Ze</code> goes from a value of type <code>Nat</code>, to a type of kind <code>Nat</code>.</li>
+<li>Example: <code>data Nat = Ze | Su Nat  data Vec :: * -&gt; Nat -&gt; * where    Nil  :: Vec a Ze    Cons :: a -&gt; Vec a n -&gt; Vec a (Su n)</code></li>
+</ul></li>
+<li>DeriveFunctor
+<ul>
+<li><a href="http://stackoverflow.com/questions/20336987/what-exactly-does-deriving-functor-do">SO</a></li>
+</ul></li>
+<li>FlexibleContexts
+<ul>
+<li>Allows non-type variables in constraints. <!--class arguments in contexts of type signatures and class declarations may be arbitrary types.--></li>
+<li><code>g :: (C [a], D (a -&gt; b)) =&gt; [a] -&gt; b</code></li>
+<li><a href="https://prime.haskell.org/wiki/FlexibleContexts">Prime</a></li>
+<li><a href="https://prime.haskell.org/wiki/FlexibleContexts">SO</a></li>
+</ul></li>
+<li>FunctionalDependencies
+<ul>
+<li>Specify that some parameters of a type class determine others.</li>
+<li><code>class Mult a b c | a b -&gt; c</code></li>
+<li><code>class Extract container elem | container -&gt; elem</code></li>
+<li><a href="https://wiki.haskell.org/Functional_dependencies">Wiki</a></li>
+</ul></li>
+<li>GADTs
+<ul>
+<li><a href="https://en.wikibooks.org/wiki/Haskell/GADT">Wikibooks</a></li>
+<li><p>Example:</p>
+<pre><code>data List a where
+Nil  :: List a
+Cons :: a -&gt; List a -&gt; List a</code></pre></li>
+<li><p>Example that can’t be done with regular ADTs:</p>
+<pre><code>data Expr a where
+I   :: Int  -&gt; Expr Int
+B   :: Bool -&gt; Expr Bool
+Add :: Expr Int -&gt; Expr Int -&gt; Expr Int
+Mul :: Expr Int -&gt; Expr Int -&gt; Expr Int
+Eq  :: Expr Int -&gt; Expr Int -&gt; Expr Bool</code></pre></li>
+</ul></li>
+<li>GeneralizedNewtypeDeriving
+<ul>
+<li><a href="http://downloads.haskell.org/~ghc/7.8.4/docs/html/users_guide/deriving.html">Haskell</a></li>
+<li>A newtype can derive anything from the type that it wraps. (Normally you’d have to write an instance, by unwrapping.)</li>
+</ul></li>
+<li>MultiParamTypeClasses
+<ul>
+<li>Type classes which can take multiple arguments.</li>
+<li><a href="https://wiki.haskell.org/Multi-parameter_type_class">Wiki</a></li>
+</ul></li>
+<li>PolyKinds
+<ul>
+<li>Allow kind polymorphism: a type variable doesn’t have to be restricted to one kind.</li>
+</ul></li>
+<li>RebindableSyntax
+<ul>
+<li><a href="https://ocharles.org.uk/blog/guest-posts/2014-12-06-rebindable-syntax.html">24</a></li>
+<li>Overload <code>&gt;&gt;</code> and <code>return</code> in order to make do notation do - basically - whatever we want it to!</li>
+<li><p>Example: composition</p>
+<div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell">(<span class="fu">&gt;&gt;</span>)    <span class="fu">=</span> flip (<span class="fu">.</span>)
+return  <span class="fu">=</span> id</code></pre></div></li>
+<li>Example: Kleisli arrows: <code>(&gt;&gt;) = (&lt;=&lt;)</code></li>
+<li>It’s a relatively common problem in Haskell to think you have a Monad instance for some data type, but in reality, additional constraints make this impossible.</li>
+<li><p>Example:</p>
+<pre><code>setBind :: Ord b =&gt; Set a -&gt; (a -&gt; Set b) -&gt; Set b</code></pre></li>
+</ul></li>
+<li>RecordWildCards
+<ul>
+<li><a href="https://ocharles.org.uk/blog/posts/2014-12-04-record-wildcards.html">24</a></li>
+<li>For <code>data Record = Record {a :: A, b :: b}</code> and a function <code>f r = g (a w)  (b w)</code> you can save writing the <code>w</code> by: <code>f Record{..} = g a b</code>.</li>
+<li>To also be able to refer to the variable, do <code>f r@Record{..} =</code></li>
+<li><p>Create a Record field by field</p>
+<div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="kw">do</span>
+  a <span class="ot">&lt;-</span> <span class="fu">...</span>
+  b <span class="ot">&lt;-</span> <span class="fu">...</span>
+  return <span class="dt">Record</span>{<span class="fu">..</span>}</code></pre></div></li>
+<li>See also <a href="http://www.haskellforall.com/2012/07/first-class-modules-without-defaults.html">Gabriel’s blog post</a>.</li>
+</ul></li>
+<li>StandaloneDeriving
+<ul>
+<li><p>Allow nonempty contexts when deriving</p>
+<div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="kw">data</span> <span class="dt">T</span> m <span class="fu">=</span> <span class="dt">MkT</span> (m <span class="dt">Int</span>)
+<span class="kw">deriving</span> <span class="kw">instance</span> <span class="dt">Eq</span> (m <span class="dt">Int</span>) <span class="ot">=&gt;</span> <span class="dt">Eq</span> (<span class="dt">T</span> m)</code></pre></div></li>
+<li>May need FlexibleContexts and UndecideableInstances</li>
+<li><a href="http://downloads.haskell.org/~ghc/7.8.4/docs/html/users_guide/deriving.html">Haskell</a></li>
+</ul></li>
+<li>TypeOperators
+<ul>
+<li><a href="https://ocharles.org.uk/blog/posts/2014-12-08-type-operators.html">Reference</a></li>
+<li><code>data a + b = Plus a b</code>.</li>
+<li>(+) can be used both as a function and as a type operator - they are in different namespaces. To export the type operator, use ExplicitNamespaces, <code>import M( type (+))</code>.</li>
+</ul></li>
+</ul>
+
+  </div>
+
+    
+
+    <!-- Extension : Sharing buttons @ www.sharethis.com -->
+    <span class="st_facebook_large" displayText="Facebook"></span>
+    <span class="st_twitter_large" displayText="Tweet"></span>
+    <span class="st_googleplus_large" displayText="Google +"></span>
+    <span class="st_reddit_large" displayText="Reddit"></span>
+    <span class="st__large" displayText></span>
+
+    <div id="disqus_thread"></div>
+    
+
+
+  
+    <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+  </div>
+  
+</div>
+
+
+<!-- Footer -->
+<div id="footer">
+  <div class="container">
+    Built with
+    <a href="http://jaspervdj.be/hakyll">Hakyll</a> 
+    using 
+    <a href="http://www.getbootstrap.com">Bootstrap</a>, 
+    <a href="http://www.disqus.com">Disqus</a>,
+    <a href="http://ignorethecode.net/blog/2010/04/20/footnotes/">Footnotes.js</a>,
+    <a href="http://highlightjs.org/">Highlight.js</a>, 
+    <a href="http://www.mathjax.org">MathJax</a>, 
+    and <a href="http://www.sharethis.com">ShareThis</a>.
+  </div>
+</div>
+</body>
+
+</html>
+
+<!-- SCRIPTS -->
+<!-- jQuery-->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+<script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
+
+<script src="../../../bootstrap/js/bootstrap.min.js"></script>
+
+<!-- Extension : Highlight.js @ https://highlightjs.org/ -->
+<!-- Syntax highlighting tomorrow-night-bright, agate-->
+<link rel="stylesheet" href="../../../highlight/css/tomorrow-night-bright.css">
+<script src="../../../highlight/js/highlight.pack.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+
+<!-- Extension : MathJax @ https://docs.mathjax.org/en/v2.5-latest/tex.html -->
+<!-- MathJax/config/local/local.js contains macros. Need to provide entire URL-->
+<script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML,http://holdenlee.github.io/notebook/MathJax/config/local/local"></script>
+
+<!-- Extension : Footnotes @ http://ignorethecode.net/blog/2010/04/20/footnotes/ -->
+<script src="../../../footnotes/js/footnotes.js"></script>
+
+<!-- Extension : Disqus @ http://disqus.com -->
+<!-- Extension : InlineDisqussions @ https://github.com/tsi/inlineDisqussions -->
+
+<script src="../../../disqus/js/disqus.js"></script>
+
+
+
+<!-- Extension : Google Analytics -->
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-73261814-1', 'auto');
+  ga('send', 'pageview');
+
+</script>
+

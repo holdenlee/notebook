@@ -248,9 +248,19 @@ Questions:
 	* *Proof*. Minimal implies strict convexity which gives $\an{\nb A(\te^1) - \nb A(\te^2), \te^1-\te^2}$.
 	* If not minimal, there is 1-to-1 correspondence after modding out by nullspace.
 2. When does image of $\Om$ fully cover $\mathcal M$?
-	* $\nb A(\Om)=\mathcal M^{\circ}$.
+	* When $\Om$ is open, $\nb A(\Om)=\mathcal M^{\circ}$.
 	* Corollary: except for boundary points, all mean parameters realizable by some distribution can be realized by a member of the exponential family.
-	* *Proof*. ADD ME.
+	* *Proof*.
+		* Sufficient to prove for minimal $\phi$. (Just reparametrize.)
+	    * $\nb A(\Om)\subeq \mathcal M^{\circ}$: This follows from $\nb A(\Om)\subeq \mathcal M$, $\Om$ open, and $\nb A$ strictly convex.
+		* $\mathcal M^{\circ}\subeq \nb A(\Om)$: WLOG, $0\in \mathcal M^{\circ}$ and we show $0\in \nb A(\Om)$. 
+		*   Let $H_{\ga,\ep} = \set{x\in X^m}{\an{\ga,\phi(x)}\ge \ep}$. For small enough $\ep$, this has measure $>0$. Now 
+		    \begin{align}
+			A(\te^0 + t\ga)
+			&\ge \ln \int_{\R^n} e^{\an{\te^0 + t\ga,\phi(x)}}\nu(dx)\\
+			& \ge t\ep + C_0.
+			\end{align}
+			so taking $t\to \iy$ this blows up. This shows that $A$ has a minimum where $\nb A=0$, i.e., $0\in \nb A(\Om)$.
 
 ## 3.6 Conjugate duality: maximum likelihood and maximum entropy
 
@@ -454,6 +464,34 @@ A hypergraph is acyclic if you can specify (**??**) a junction tree using maxima
 
 # 9 Conic programming relaxations
 
+# Review
+
+## 1
+
+## 2
+
+## 3
+
+1. Define an exponential family. What does it mean for it to be regular? Minimal? (3.2)
+2. Write the Ising model as an exponential family. (3.3)
+3. Given $\phi$, define the set of realizable mean parameters $\mathcal M$. What is the forward/backward mapping? (3.4)
+4. What are the (realizable) mean parameters for Gaussians? The Ising model? (3.4)
+5. Define the correlation (cut) polytope and marginal polytope. (3.4)
+6. What are the derivatives of $A$? (3.5)
+7. When is $\nb A$ convex/strictly convex/one-to-one? (3.6)
+8. What is the relationship between $\nb A$ and $\mathcal M$? (3.6)
+9. Define the conjugate dual function $f^*$. When is the double dual the original function? (3.6)
+10. Relate $A^*$ to the entropy. (3.6)
+11. What is the relationship between $\nb A^*$ and $\nb A$? (3.6)
+
+## 4
+
+1. Define $\mathbb M(G)$, $\mathbb L(G)$.
+2. Define the Bethe approximation and variational problem. What is its Lagrangian?
+3. Explain the relationship with the sum-product updates. 
+4. What is the solution to the problem for tree-structured MRF's?
+5. What is the loop series expansion?
+
 # Misc
 
 The treewidth
@@ -469,3 +507,4 @@ Having trouble finding the complete algorithm! I want: Given a graph has treewid
 * Find the junction tree of the chordal completion, of width $k$.
 
 In time $e^{O(k)}\poly(n)$.
+

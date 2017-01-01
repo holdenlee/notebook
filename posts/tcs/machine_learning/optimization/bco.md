@@ -93,6 +93,30 @@ $$ \E R(T) = O(\sqrt{KT \ln T}). $$
 
 The idea is to upper bound by events that cover and we can better estimate. This involves summing over all $(s,s')$. The $m$ is introduced so that at that time $\mu^*$ and $\mu_i$ will be far enough apart.
 
+## Thompson sampling
+
+(from 229T p. 191)
+
+For each time $t = 1,\ldots, T$:
+
+* Sample a model from the posterior: $\theta_t\sim p(\te | a_{1:t-1}, r_{1:t-1})$
+* Choose the best action under that model: $a_t = \amax_a p(r | \te_t, a)$.
+
+Thompson sampling outperforms UCB in many settings.
+
+$$
+\E[\text{Regret}]
+\le (1+\ep)
+\sum_{j:\De_j>0}
+\fc{\De_j\ln T}{KL(\mu_j||\mu^*)}
++O\pf{d}{\ep^2}.
+$$
+
+* Thompson sampling generalizes to RL.
+* It does not choose actions that take into accound the value of information gained.
+
+Gittins index?
+
 # BLO
 
 ## SCRIBLE

@@ -10,7 +10,7 @@
   <meta name="description" content="Holden Lee's Research Notebook">
   <meta name="author" content="Holden Lee">
     
-  <title>Posts in category "tcs/machine_learning/neural_nets"</title>
+  <title>Musings on Barron's Theorem</title>
 
   <!-- Bootstrap core CSS -->
   <link href="../../../../bootstrap/css/bootstrap.min.css" rel="stylesheet">
@@ -70,99 +70,73 @@
 <div class="container">
   <div id="content">
     <div class="page header">
-      <h1>Posts in category "tcs/machine_learning/neural_nets"</h1>
+      <h1>Musings on Barron's Theorem</h1>
     </div>
     <div class="info">
       
+       
+        <p>Posted: 2016-12-22 
+          , Modified: 2016-12-22 
+	</p>
       
-      
+       <p>Tags: <a href="../../../../tags/neural%20net.html">neural net</a></p> 
     </div>
     
   </div>
   <!--/div-->
 
-  
+  <div class="toc"> <ul>
+ <li><a href="#directions-1222">Directions 12/22</a></li>
+ <li><a href="#generalization-bounds">Generalization bounds</a></li>
+ </ul> </div>
 
   <div class="blog-main">
-    <ul>
-    
-        <li>
-            <a href="../../../../posts/tcs/machine_learning/neural_nets/GANs.html">GANs</a> (2016-12-28)
-        </li>
-    
-        <li>
-            <a href="../../../../posts/tcs/machine_learning/neural_nets/barron_musings.html">Musings on Barron's Theorem</a> (2016-12-22)
-        </li>
-    
-        <li>
-            <a href="../../../../posts/tcs/machine_learning/neural_nets/salakhutdinov.html">Learning structured, robust, and multimodal deep models</a> (2016-10-21)
-        </li>
-    
-        <li>
-            <a href="../../../../posts/tcs/machine_learning/neural_nets/interpretability.html">Interpretable neural nets</a> (2016-10-12)
-        </li>
-    
-        <li>
-            <a href="../../../../posts/tcs/machine_learning/neural_nets/nndl.html">Neural nets learn dictionaries</a> (2016-10-10)
-        </li>
-    
-        <li>
-            <a href="../../../../posts/tcs/machine_learning/neural_nets/PMDH16.html">(PMDH16) Convolutional Patch Representations for Image Retrieval - an Unsupervised Approach</a> (2016-09-26)
-        </li>
-    
-        <li>
-            <a href="../../../../posts/tcs/machine_learning/neural_nets/pcanet.html">PCANet -  A simple deep learning baseline for image classification?</a> (2016-09-10)
-        </li>
-    
-        <li>
-            <a href="../../../../posts/tcs/machine_learning/neural_nets/convnets_ideas.html">Convnets ideas</a> (2016-08-02)
-        </li>
-    
-        <li>
-            <a href="../../../../posts/tcs/machine_learning/neural_nets/pmi_images_scratch.html">PMI for images (scratch)</a> (2016-08-01)
-        </li>
-    
-        <li>
-            <a href="../../../../posts/tcs/machine_learning/neural_nets/pmi_images.html">PMI for images</a> (2016-08-01)
-        </li>
-    
-        <li>
-            <a href="../../../../posts/tcs/machine_learning/neural_nets/complexity_of_neural_nets.html">Complexity of neural networks</a> (2016-07-25)
-        </li>
-    
-        <li>
-            <a href="../../../../posts/tcs/machine_learning/neural_nets/JSA15.html">(JSA15) Beating the Perils of Non-Convexity - Guaranteed Training of Neural Networks using Tensor Methods</a> (2016-06-27)
-        </li>
-    
-        <li>
-            <a href="../../../../posts/tcs/machine_learning/neural_nets/lstm_code.html">LSTM Programming</a> (2016-03-19)
-        </li>
-    
-        <li>
-            <a href="../../../../posts/tcs/machine_learning/neural_nets/basics.html">Neural nets basics</a> (2016-03-13)
-        </li>
-    
-        <li>
-            <a href="../../../../posts/tcs/machine_learning/neural_nets/ALM16.html">(ALM16) WHY ARE DEEP NETS REVERSIBLE - A SIMPLE THEORY, WITH IMPLICATIONS FOR TRAINING</a> (2016-03-13)
-        </li>
-    
-        <li>
-            <a href="../../../../posts/tcs/machine_learning/neural_nets/CHMAL15.html">(CHMAL15) The Loss Surfaces of Multilayer Networks</a> (2016-03-07)
-        </li>
-    
-        <li>
-            <a href="../../../../posts/tcs/machine_learning/neural_nets/nn_modeling.html">Analysis of neural networks</a> (2016-03-05)
-        </li>
-    
+    <h2 id="directions-1222">Directions 12/22</h2>
+<ul>
+<li>Wild baseless ideas: given distribution <span class="math inline">\(\mu\)</span>, there is some sequence of eigenfunctions associated with it of increasing oscillations; writing a function as a combination of these, if most weight is on small eigenfunctions, then it can be represented by a 1-hidden layer NN on <span class="math inline">\(\mu\)</span>. Estimate <span class="math inline">\(\mu\)</span> with kernels around sampled points?</li>
+<li>Forget NN. Can we estimate a Barron function (in MISE sense) well using Fourier sampling?</li>
+<li>Rademacher for real-valued functions?</li>
+<li>Barron’s theorem has a hard-to-check condition: that <span class="math inline">\(f\)</span> has some extension <span class="math inline">\(f_1\)</span> such that <span class="math inline">\(\ve{\wh{f_1'}}_1\)</span> is small. Can we replace this by a more natural, easy to check condition? Ex. use the wavelet transform or windowed FT (both are localized) instead of Fourier.</li>
+<li>Converse of Barron: a function computed by a 1-hidden layer NN with <span class="math inline">\(a_i\)</span>’s small is Barron. (Note difference from ES16: a Barron counterexample will be a NN counterexample only if we limit the <span class="math inline">\(a_i\)</span>’s.)</li>
+<li>(Warning: If you only care about being close in <span class="math inline">\(\mu\)</span>…)</li>
+<li>Can we make [ES16]’s criterion into an if-and-only-if criteria for representability by 1-hidden layer NN? Ex. concentration on some tubes.</li>
+<li>What is the advantage of sigmoids over Fourier basis? Somehow easier to train by monotonicity (less minima)? The relationship to sigmoids is tenuous. In NN the hidden layer often isn’t vastly overcomplete like in Barron to get <span class="math inline">\(\ep\)</span> error, certainly you don’t have multiple in the same direction (I think? - what if you add kernel to fit for that direction). Also you don’t get a lot of oscillation in any direction - like the counterexamples, or even like <span class="math inline">\(\cos\)</span> for large phase. In fact, maybe even it is unimodal. So why sigmoids? Is there a function class for which sigmoids work better? Or are they just better for optimization?</li>
+<li>Boundary of accepting set (threshold) rather than function values?</li>
 </ul>
-
-
+<h2 id="generalization-bounds">Generalization bounds</h2>
+<p>229T p. 198</p>
+<p>Let <span class="math inline">\(h\)</span> be 1-Lipschitz sigmoid function.</p>
+<span class="math display">\[\begin{align}
+f_{w,\al}(x) &amp;=\sumo jm v_j h(w_j\cdot x)\\
+\mathcal F &amp;= \set{f_{w,\al}}{\forall j\in [m],\ve{\al}_2\le B_2', \ve{w_j}_2\le B_2}\\
+R_n(\mathcal F)&amp;\le \fc{2B_2B_2'C_2\sqrt m}{\sqrt n}
+\end{align}\]</span>
+<p>Composition properties of Rademacher complexity aligns very nicely with the layer-by-layer compositionality of neural networks.</p>
+<p>Problems</p>
+<ul>
+<li>Set of all bounded continuous functions is too rich.</li>
+<li>Optimization?</li>
+</ul>
+<p>[Andoni, Panigrahy, Valiant, Zhang] Neural networks approximate bounded-degree polynomials.</p>
 
   </div>
 
     
 
+    <!-- Extension : Sharing buttons @ www.sharethis.com -->
+    <span class="st_facebook_large" displayText="Facebook"></span>
+    <span class="st_twitter_large" displayText="Tweet"></span>
+    <span class="st_googleplus_large" displayText="Google +"></span>
+    <span class="st_reddit_large" displayText="Reddit"></span>
+    <span class="st__large" displayText></span>
 
+    <div id="disqus_thread"></div>
+    
+
+
+  
+    <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+  </div>
   
 </div>
 
@@ -207,6 +181,9 @@
 
 <!-- Extension : Disqus @ http://disqus.com -->
 <!-- Extension : InlineDisqussions @ https://github.com/tsi/inlineDisqussions -->
+
+<script src="../../../../disqus/js/disqus.js"></script>
+
 
 
 <!-- Extension : Google Analytics -->

@@ -90,6 +90,7 @@
  <li><a href="#de-greedy-algorithm"><span class="math inline">$\de$</span>-greedy algorithm</a></li>
  <li><a href="#exp3">EXP3</a></li>
  <li><a href="#ucb1">UCB1</a></li>
+ <li><a href="#thompson-sampling">Thompson sampling</a></li>
  </ul></li>
  <li><a href="#blo">BLO</a><ul>
  <li><a href="#scrible">SCRIBLE</a></li>
@@ -168,6 +169,26 @@ which happen with probabilities <span class="math inline">\(t^{-4}\)</span>.</li
 <li>Optimizing gives <span class="math inline">\(\De_i = O(\sqrt{\ln T})\)</span>.</li>
 </ol>
 <p>The idea is to upper bound by events that cover and we can better estimate. This involves summing over all <span class="math inline">\((s,s')\)</span>. The <span class="math inline">\(m\)</span> is introduced so that at that time <span class="math inline">\(\mu^*\)</span> and <span class="math inline">\(\mu_i\)</span> will be far enough apart.</p>
+<h3 id="thompson-sampling">Thompson sampling</h3>
+<p>(from 229T p. 191)</p>
+<p>For each time <span class="math inline">\(t = 1,\ldots, T\)</span>:</p>
+<ul>
+<li>Sample a model from the posterior: <span class="math inline">\(\theta_t\sim p(\te | a_{1:t-1}, r_{1:t-1})\)</span></li>
+<li>Choose the best action under that model: <span class="math inline">\(a_t = \amax_a p(r | \te_t, a)\)</span>.</li>
+</ul>
+<p>Thompson sampling outperforms UCB in many settings.</p>
+<p><span class="math display">\[
+\E[\text{Regret}]
+\le (1+\ep)
+\sum_{j:\De_j&gt;0}
+\fc{\De_j\ln T}{KL(\mu_j||\mu^*)}
++O\pf{d}{\ep^2}.
+\]</span></p>
+<ul>
+<li>Thompson sampling generalizes to RL.</li>
+<li>It does not choose actions that take into accound the value of information gained.</li>
+</ul>
+<p>Gittins index?</p>
 <h2 id="blo">BLO</h2>
 <h3 id="scrible">SCRIBLE</h3>
 <p>Attains <span class="math inline">\(O(\sqrt T\ln T)\)</span> regret.</p>

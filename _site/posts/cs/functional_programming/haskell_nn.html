@@ -10,27 +10,27 @@
   <meta name="description" content="Holden Lee's Research Notebook">
   <meta name="author" content="Holden Lee">
     
-  <title>Posts tagged "neural net"</title>
+  <title>Neural nets in Haskell</title>
 
   <!-- Bootstrap core CSS -->
-  <link href="../bootstrap/css/bootstrap.min.css" rel="stylesheet">
+  <link href="../../../bootstrap/css/bootstrap.min.css" rel="stylesheet">
 
   <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
   <!-- <link href="../../assets/css/ie10-viewport-bug-workaround.css" rel="stylesheet"> -->
 
   <!-- Custom styles for this template -->
-  <link href="../css/blog.css" rel="stylesheet">
-  <link href="../css/default.css" rel="stylesheet">
+  <link href="../../../css/blog.css" rel="stylesheet">
+  <link href="../../../css/default.css" rel="stylesheet">
 
   <!-- Extension : Footnotes -->
-  <link href="../footnotes/css/footnotes.css" rel="stylesheet">
+  <link href="../../../footnotes/css/footnotes.css" rel="stylesheet">
 
   <!-- Extension : InlineDisqussions @ https://github.com/tsi/inlineDisqussions -->
   
 
   <!-- Extension : Collapsible lists @ http://code.stephenmorley.org/javascript/collapsible-lists/-->
-  <link href="../collapsible_lists/css/collapsible.css" rel="stylesheet">
-  <script type="text/javascript" src="../collapsible_lists/js/CollapsibleLists.js"></script>
+  <link href="../../../collapsible_lists/css/collapsible.css" rel="stylesheet">
+  <script type="text/javascript" src="../../../collapsible_lists/js/CollapsibleLists.js"></script>
 
 </head>
 
@@ -48,12 +48,12 @@
           <span class="icon-bar"></span>
           <span class="icon-bar"></span>
         </button>
-        <a class="navbar-brand" href="../">Notebook</a>
+        <a class="navbar-brand" href="../../../">Notebook</a>
       </div>
       <div id="navbar" class="collapse navbar-collapse">
         <ul class="nav navbar-nav">
-          <li><a href="../">Home</a></li>
-          <li><a href="../sitemap.html">Sitemap</a></li>
+          <li><a href="../../../">Home</a></li>
+          <li><a href="../../../sitemap.html">Sitemap</a></li>
 <!-- TODO: Distinguish between PAPERS, RESEARCH QUESTIONS, BOOKS -->
 <!-- TODO: make this part a for loop over main pages -->
         </ul>
@@ -70,63 +70,59 @@
 <div class="container">
   <div id="content">
     <div class="page header">
-      <h1>Posts tagged "neural net"</h1>
+      <h1>Neural nets in Haskell</h1>
     </div>
     <div class="info">
       
+       
+        <p>Posted: 2016-12-25 
+          , Modified: 2016-12-25 
+	</p>
       
-      
+       <p>Tags: <a href="../../../tags/haskell.html">haskell</a>, <a href="../../../tags/functional%20programming.html">functional programming</a></p> 
     </div>
     
   </div>
   <!--/div-->
 
-  
+  <div class="toc"> <ul>
+ <li><a href="#tensorflow">Tensorflow</a></li>
+ </ul> </div>
 
   <div class="blog-main">
-    <ul>
-    
-        <li>
-            <a href="../posts/tcs/machine_learning/neural_nets/barron_musings.html">Musings on Barron's Theorem</a> (2016-12-22)
-        </li>
-    
-        <li>
-            <a href="../posts/tcs/machine_learning/neural_nets/PMDH16.html">(PMDH16) Convolutional Patch Representations for Image Retrieval - an Unsupervised Approach</a> (2016-09-26)
-        </li>
-    
-        <li>
-            <a href="../posts/tcs/machine_learning/neural_nets/pcanet.html">PCANet -  A simple deep learning baseline for image classification?</a> (2016-09-10)
-        </li>
-    
-        <li>
-            <a href="../posts/tcs/machine_learning/neural_nets/complexity_of_neural_nets.html">Complexity of neural networks</a> (2016-07-25)
-        </li>
-    
-        <li>
-            <a href="../posts/tcs/machine_learning/neural_nets/JSA15.html">(JSA15) Beating the Perils of Non-Convexity - Guaranteed Training of Neural Networks using Tensor Methods</a> (2016-06-27)
-        </li>
-    
-        <li>
-            <a href="../posts/tcs/machine_learning/neural_nets/basics.html">Neural nets basics</a> (2016-03-13)
-        </li>
-    
-        <li>
-            <a href="../posts/tcs/machine_learning/neural_nets/ALM16.html">(ALM16) WHY ARE DEEP NETS REVERSIBLE - A SIMPLE THEORY, WITH IMPLICATIONS FOR TRAINING</a> (2016-03-13)
-        </li>
-    
-        <li>
-            <a href="../posts/tcs/machine_learning/neural_nets/nn_modeling.html">Analysis of neural networks</a> (2016-03-05)
-        </li>
-    
+    <pre><code>data Tensor dim a where
+  ZTensor :: a -&gt; Tensor '[] a
+  STensor :: Vec n (Tensor dim a) -&gt; Tensor (n ': dim) a</code></pre>
+<p><a href="https://hackage.haskell.org/package/accelerate-0.15.1.0/docs/Data-Array-Accelerate.html">Accelerate</a></p>
+<p><a href="https://www.reddit.com/r/haskell/comments/4rynuq/directed_acyclic_graphs_and_phoas/">DAGs and PHOAS</a></p>
+<h2 id="tensorflow">Tensorflow</h2>
+<ul>
+<li><a href="https://github.com/tensorflow/haskell">Tensorflow bindings</a></li>
+<li><a href="file:///C:/Users/oldhe/Dropbox/CS/hs/tensorflow-haskell/docs/haddock/doc-index-G.html">Documentation index</a></li>
+<li><a href="https://github.com/tensorflow/haskell/blob/master/tensorflow-mnist/app/Main.hs">MNIST example</a></li>
+<li><a href="https://github.com/tensorflow/haskell/blob/master/tensorflow-mnist-input-data/src/TensorFlow/Examples/MNIST/InputData.hs">Input for MNIST</a> (WHERE IS <code>Paths_tensorflow_mnist_input_data</code>?)</li>
+<li><a href="file:///C:/Users/oldhe/Dropbox/CS/hs/tensorflow-haskell/docs/haddock/tensorflow-core-ops-0.1.0.0/TensorFlow-GenOps-Core.html#v:softmax">Ops doc</a></li>
+<li><a href="https://github.com/tensorflow/haskell/blob/master/tensorflow-core-ops/Setup.hs">CoreOps Setup.hs</a></li>
 </ul>
-
-
 
   </div>
 
     
 
+    <!-- Extension : Sharing buttons @ www.sharethis.com -->
+    <span class="st_facebook_large" displayText="Facebook"></span>
+    <span class="st_twitter_large" displayText="Tweet"></span>
+    <span class="st_googleplus_large" displayText="Google +"></span>
+    <span class="st_reddit_large" displayText="Reddit"></span>
+    <span class="st__large" displayText></span>
 
+    <div id="disqus_thread"></div>
+    
+
+
+  
+    <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+  </div>
   
 </div>
 
@@ -154,12 +150,12 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
 <script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
 
-<script src="../bootstrap/js/bootstrap.min.js"></script>
+<script src="../../../bootstrap/js/bootstrap.min.js"></script>
 
 <!-- Extension : Highlight.js @ https://highlightjs.org/ -->
 <!-- Syntax highlighting tomorrow-night-bright, agate-->
-<link rel="stylesheet" href="../highlight/css/tomorrow-night-bright.css">
-<script src="../highlight/js/highlight.pack.js"></script>
+<link rel="stylesheet" href="../../../highlight/css/tomorrow-night-bright.css">
+<script src="../../../highlight/js/highlight.pack.js"></script>
 <script>hljs.initHighlightingOnLoad();</script>
 
 <!-- Extension : MathJax @ https://docs.mathjax.org/en/v2.5-latest/tex.html -->
@@ -167,10 +163,13 @@
 <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML,http://holdenlee.github.io/notebook/MathJax/config/local/local"></script>
 
 <!-- Extension : Footnotes @ http://ignorethecode.net/blog/2010/04/20/footnotes/ -->
-<script src="../footnotes/js/footnotes.js"></script>
+<script src="../../../footnotes/js/footnotes.js"></script>
 
 <!-- Extension : Disqus @ http://disqus.com -->
 <!-- Extension : InlineDisqussions @ https://github.com/tsi/inlineDisqussions -->
+
+<script src="../../../disqus/js/disqus.js"></script>
+
 
 
 <!-- Extension : Google Analytics -->
