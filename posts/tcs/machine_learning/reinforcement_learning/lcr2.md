@@ -29,6 +29,7 @@ What guarantees do we get from convex optimization? We can consider different se
 
 * We know the function $c$ (full information) vs. we don't know $c$, only get access to $c$ through the trajectories that we sample, i.e., for each episode we choose a sequence of actions $(a_1,\ldots, a_T)$ and observe $c(x_1,a_1), c(f_{a_1}(x_1),a_2),\ldots$. (Then we can care about regret bounds, etc.)
 * If we don't know $c$: $c$ can be deterministic or stochastic (so we care about $\min_{a_1,...,a_T} \E c(x_1,a_1) + c(f_{a_1}(x_1),a_2) + c(f_{a_1a_2} (x_1),a_3)+\cdots$). (Stochasticity not incorporated below, but easy to include.)
+* Whether we know the dynamics. Otherwise we would have to learn the dynamics. ([HMR16](../optimization/HMR16.html) applies if there is noise in the observation.)
 
 ## Full information
 
@@ -67,12 +68,15 @@ Applying this here, we have
 	\ve{\nb_{a_{1:T}}F} & \le \sqrt{T} (L + \fc{\be}{1-\ga}m).
 	\end{align}
 
+## Unknown dynamics
+
+**Exploration/exploitation involved in balancing learning the dynamics with choosing the best action given known information.** Think about each linearly independent $a$ as giving more information.
+
 ## Notes
 
 * This does not use any kind of function approximation, so the optimization only gives us information about the optimal action at $x_1$. **If we choose a different starting point, we have to run the optimization procedure with that new starting point.**
 * **We ignore the structure of each point $x$ in the space being a tuple of actions** $(a_1,\ldots, a_T)$. Is there a way to use the structure of the cost function (as a sum of costs) to get better complexity?
 * Complexity scales as lookahead time $T$. We can do better by realizing that later actions are less important - so e.g. to estimate the gradient we can do ellipsoid sampling instead of sphere sampling.
-* This assumes we know the dynamics. Otherwise we would have to learn them (cf. [HMR16](../optimization/HMR16.html)). (This is only interesting if there is noise in the observation.)
 
 # Noisy dynamics
 
