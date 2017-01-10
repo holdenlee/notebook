@@ -95,6 +95,7 @@
  <li><a href="#evaluating-one-policywhile-following-an-other-off-policy-policy-evaluation">5.5 Evaluating One PolicyWhile Following An-other (Off-policy Policy Evaluation)</a></li>
  <li><a href="#off-policy-mc-control">5.6 Off-policy MC control</a></li>
  <li><a href="#incremental-implementation">5.7 Incremental implementation</a></li>
+ <li><a href="#return-specific-importance-sampling">5.8 Return-specific importance sampling</a></li>
  </ul></li>
  <li><a href="#temporal-difference-learning">6 Temporal-difference learning</a><ul>
  <li><a href="#optimality-of-td0">6.3 Optimality of TD(0)</a></li>
@@ -107,8 +108,7 @@
  <li><a href="#the-forward-view-of-tdla">7.2 The forward view of TD(<span class="math inline">$\la$</span>)</a></li>
  <li><a href="#the-backward-view-of-tdla">7.3 The backward view of TD(<span class="math inline">$\la$</span>)</a></li>
  <li><a href="#equivalence-of-forward-and-backward-views">7.4 Equivalence of forward and backward views</a></li>
- </ul></li>
- <li><a href="#sarsala">7.5 Sarsa(<span class="math inline">$\la$</span>)</a><ul>
+ <li><a href="#sarsala">7.5 Sarsa(<span class="math inline">$\la$</span>)</a></li>
  <li><a href="#qla">7.6 <span class="math inline">$Q(\la)$</span></a><ul>
  <li><a href="#watkins-qla">Watkin’s <span class="math inline">$Q(\la)$</span></a></li>
  <li><a href="#pengs-qla">Peng’s <span class="math inline">$Q(\la)$</span></a></li>
@@ -316,6 +316,35 @@ C_{n+1} &amp;=C_n+W_{n+1}.
 <p>Maintaining sufficient exploration is an issue.</p>
 <p>MC uses experience and does not bootstrap (update value based on other value estimates) (instead MC waits for a bunch of samples), unlike DP.</p>
 <p>Next chapter: experience + bootstrap.</p>
+<h3 id="return-specific-importance-sampling">5.8 Return-specific importance sampling</h3>
+<p>Sampling by the entire product <span class="math inline">\(\prod \fc{\pi(A_i|S_i)}{\mu(A_i|S_i)}\)</span> has a lot of variance and is unnecessary. Scale by the first factor and use previous updates.</p>
+<p>Think of discounting as determining a probability of termination or, equivalently, a degree of partial termination.</p>
+Write full return as sum of discounted partial returns. (Idea: any long sequence will be weighted down by a large discount factor.)
+<span class="math display">\[\begin{align}
+\ol G_t^h :&amp;= R_{t+1}+\cdots +R_h\\
+G_t :&amp;= \sumo i{T-t}\ga^{i-1} R_{t+i}\\
+&amp;= (1-\ga) \sum_{h=t+1}^{T-1} \ga^{h-t-1} \ol G_t^h + \ga^{T-t-1} \ol G_t^T
+\end{align}\]</span>
+Ordinary and weighted importance-sampling estimator:
+<span class="math display">\[\begin{align}
+V(s) :&amp;= \fc{
+\sum_{t\in T(s)}(1-\ga) \sum_{h=t+1}^{T-1} \ga^{h-t-1} \blu{\rh_t^h} \ol G_t^h + \ga^{T-t-1} \blu{\rh_t^{T(t)}}\ol G_t^T
+}{|T(s)|}\\
+V(s) :&amp;=
+\fc{
+\sum_{t\in T(s)}(1-\ga) \sum_{h=t+1}^{T-1} \ga^{h-t-1} \blu{\rh_t^h} \ol G_t^h + \ga^{T-t-1} \blu{\rh_t^{T(t)}}\ol G_t^T
+}{
+\sum_{t\in T(s)}(1-\ga) \sum_{h=t+1}^{T-1} \ga^{h-t-1} \blu{\rh_t^h}  + \ga^{T-t-1} \blu{\rh_t^{T(t)}}
+}
+\end{align}\]</span>
+Per-reward importance sampling: Note
+<span class="math display">\[\begin{align}
+\E_\mu [\rh_tR_{t+k}] &amp;= \E[\rh_t^{t+k} R_{t+k}]\\
+\E[\rh_t^T G_t] &amp;= \E[\wt G_t]\\
+\wt G_t &amp;= \sumo k{T-t} \ga^{k-1}\rh_t^{t+k}R_{t+k}\\
+V(s) :&amp;= \fc{\sum_{t\in T(s)}\wt G_t}{|T(s)|}.
+\end{align}\]</span>
+<p>Not clear how to extend to weighted importance sampling.</p>
 <h2 id="temporal-difference-learning">6 Temporal-difference learning</h2>
 <p>MC methods can incrementally update <span class="math inline">\(V\)</span>, after waiting to get the actual return, <span class="math display">\[V(S_t) \mapsfrom V(S_t) + \al [G_t-V(S_t)].\]</span> (n.b. <span class="math inline">\(S_t\)</span> is the state at time <span class="math inline">\(t\)</span>, not the state labeled <span class="math inline">\(t\)</span>.) TD methods only wait until the next time step. <span class="math display">\[V(S_t) \mapsfrom V(S_t) + \al [R_{t+1} + \ga V(S_{t+1})-V(S_t)].
 \]</span> I.e., it uses the estimate of <span class="math inline">\(v_\pi = \EE_\pi [R_{t+1}+\ga v_\pi(S_{t+1})|S_t=s]\)</span> as a target.</p>
@@ -405,7 +434,7 @@ Z_t(s) = \begin{cases}
 \sumz t{T-1} V_t^\la(S_t)I_{sS_t}.\]</span> (Online updating is different because <span class="math inline">\(V_t\)</span> changes as <span class="math inline">\(t\)</span>.)</p>
 <p>Online algorithm generally works better over a broader range of parameters.</p>
 <p>To maintain equivalence in online case, <span class="math inline">\(\de_t= R_{t+1} + \ga V_t(S_{t+1})-V_{t-1}(S_t)\)</span>, <span class="math inline">\(R_t^{(n)} = \sumo in \ga^{i-1}R_{t+i} + \ga^n V_{t+n-1}(S_{t+n})\)</span>.</p>
-<h2 id="sarsala">7.5 Sarsa(<span class="math inline">\(\la\)</span>)</h2>
+<h3 id="sarsala">7.5 Sarsa(<span class="math inline">\(\la\)</span>)</h3>
 How to use eligibility traces for control? Learn <span class="math inline">\(q\)</span> rather than <span class="math inline">\(V\)</span>. Keep a trace for each <span class="math inline">\((s,a)\)</span>.
 <span class="math display">\[\begin{align}
 Q_{t+1}(s,a) &amp;= Q_t(s,a) + \al \de_t Z_t(s,a)\\

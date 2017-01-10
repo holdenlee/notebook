@@ -13,9 +13,29 @@ data Tensor dim a where
   STensor :: Vec n (Tensor dim a) -> Tensor (n ': dim) a
 ```
 
-[Accelerate](https://hackage.haskell.org/package/accelerate-0.15.1.0/docs/Data-Array-Accelerate.html)
+* [Accelerate](https://hackage.haskell.org/package/accelerate-0.15.1.0/docs/Data-Array-Accelerate.html)
+* [DAGs and PHOAS](https://www.reddit.com/r/haskell/comments/4rynuq/directed_acyclic_graphs_and_phoas/)
+* https://github.com/tensorflow/haskell
+* https://github.com/albertoruiz/hmatrix
+* http://hackage.haskell.org/package/HaskellNN
+* https://themonadreader.files.wordpress.com/2013/03/issue214.pdf
+* http://okmij.org/ftp/Haskell/
+* https://www.schoolofhaskell.com/user/edwardk/phoas
+* https://github.com/vladfi1/hs-nn
+* https://github.com/holdenlee/hasflow
+* https://hackage.haskell.org/package/singletons
 
-[DAGs and PHOAS](https://www.reddit.com/r/haskell/comments/4rynuq/directed_acyclic_graphs_and_phoas/)
+# Automatic differentiation
+
+* https://hackage.haskell.org/package/ad
+* [wiki](https://wiki.haskell.org/Automatic_Differentiation)
+* http://comonad.com/reader/2010/reverse-mode-automatic-differentiation-in-haskell/
+* http://www.danielbrice.net/blog/10/
+* http://www.danielbrice.net/blog/15/
+* http://conal.net/blog/posts/beautiful-differentiation
+* http://stackoverflow.com/questions/14676075/haskell-ad-package
+* http://stackoverflow.com/questions/30888615/how-to-get-more-performance-out-of-automatic-differentiation
+* [reddit](https://www.reddit.com/r/haskell/comments/35ud22/neural_networks_and_fast_automatic_differentiation/)
 
 # Tensorflow
 

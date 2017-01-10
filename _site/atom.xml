@@ -8,8 +8,141 @@
         <name>Holden Lee</name>
         <email>oldheneel@gmail.com</email>
     </author>
-    <updated>2016-12-31T00:00:00Z</updated>
+    <updated>2017-01-10T00:00:00Z</updated>
     <entry>
+    <title>Linear convex regulator 2</title>
+    <link href="http://holdenlee.github.io/notebook/posts/tcs/machine_learning/reinforcement_learning/lcr2.html" />
+    <id>http://holdenlee.github.io/notebook/posts/tcs/machine_learning/reinforcement_learning/lcr2.html</id>
+    <published>2017-01-10T00:00:00Z</published>
+    <updated>2017-01-10T00:00:00Z</updated>
+    <summary type="html"><![CDATA[
+<div class="container">
+  <div id="content">
+    <div class="page header">
+      <h1>Linear convex regulator 2</h1>
+    </div>
+    <div class="info">
+      
+       
+        <p>Posted: 2017-01-10 
+          , Modified: 2017-01-10 
+	</p>
+      
+       <p>Tags: <a href="/tags/none.html">none</a></p> 
+    </div>
+    
+  </div>
+  <!--/div-->
+
+  <div class="toc"> <ul>
+ <li><a href="#convex-optimization">Convex optimization</a><ul>
+ <li><a href="#full-information">Full information</a></li>
+ <li><a href="#see-only-costs-of-sampled-trajectories">See only costs of sampled trajectories</a></li>
+ <li><a href="#notes">Notes</a></li>
+ </ul></li>
+ <li><a href="#noisy-dynamics">Noisy dynamics</a></li>
+ <li><a href="#references">References</a></li>
+ </ul> </div>
+
+  <div class="blog-main">
+    <p><a href="lcr.html">Part 1</a></p>
+<p>Fix <span class="math inline">\(x_1\)</span>. Let the cost function (jointly convex in <span class="math inline">\(x,a\)</span>) be <span class="math inline">\(c(x,a)\)</span> (for example, <span class="math inline">\(g(x) + \ve{a}^2\)</span>) the actions be <span class="math inline">\(a_1,a_2,...\)</span> and the recurrence describing the dynamics be <span class="math inline">\(x_{n+1} =Ax_n+Ba_n\)</span>, we want</p>
+<span class="math display">\[\begin{align}
+&amp;\quad
+\min_{a_1} [c(x_1,a_1) + \min_{a_2} [c(Ax_1+Ba_1,a_2) + ...]] \\
+&amp;=
+\min_{a_1,...,a_T} c(x_1,a_1) + c(Ax_1+Ba_1,a_2) + ...
+\end{align}\]</span>
+<p>This objective is jointly convex because we are assuming <span class="math inline">\(c\)</span> is convex, and a convex function composed with a linear function is convex. Letting <span class="math inline">\(f_a(x) = Ax + Ba\)</span> be the function describing the dynamics and <span class="math inline">\(f_{a_1\cdots a_n} (x) = f_{a_n}\circ \cdots \circ f_{a_1}(x)\)</span>, we can write this as <span class="math display">\[
+\min_{a_1,...,a_T} \ub{c(x_1,a_1) + c(f_{a_1}(x_1),a_2) + c(f_{a_1a_2} (x_1),a_3)+\cdots}{F(a_1,\ldots, a_T)}
+\]</span></p>
+<h2 id="convex-optimization">Convex optimization</h2>
+<p>What guarantees do we get from convex optimization? We can consider different settings:</p>
+<ul>
+<li>We know the function <span class="math inline">\(c\)</span> (full information) vs. we don’t know <span class="math inline">\(c\)</span>, only get access to <span class="math inline">\(c\)</span> through the trajectories that we sample, i.e., for each episode we choose a sequence of actions <span class="math inline">\((a_1,\ldots, a_T)\)</span> and observe <span class="math inline">\(c(x_1,a_1), c(f_{a_1}(x_1),a_2),\ldots\)</span>. (Then we can care about regret bounds, etc.)</li>
+<li>If we don’t know <span class="math inline">\(c\)</span>: <span class="math inline">\(c\)</span> can be deterministic or stochastic (so we care about <span class="math inline">\(\min_{a_1,...,a_T} \E c(x_1,a_1) + c(f_{a_1}(x_1),a_2) + c(f_{a_1a_2} (x_1),a_3)+\cdots\)</span>). (Stochasticity not incorporated below, but easy to include.)</li>
+</ul>
+<h3 id="full-information">Full information</h3>
+<p>This is just gradient descent. The dimension is <span class="math inline">\(Tn\)</span>, the gradient is a sum of gradients of <span class="math inline">\(c\)</span>’s, see below. If <span class="math inline">\(c\)</span> is stochastic, then this is SGD.</p>
+<h3 id="see-only-costs-of-sampled-trajectories">See only costs of sampled trajectories</h3>
+<p><strong>Theorem 6.6 in OCO</strong>. Online gradient descent without a gradient attains regret bound <span class="math display">\[
+\E R_T \le 9nDGT^{\fc 34}
+\]</span> where</p>
+<ul>
+<li><span class="math inline">\(n\)</span> is the dimension.</li>
+<li><span class="math inline">\(D=\diam K\)</span>, where <span class="math inline">\(K\)</span> is the convex set we’re optimizing over.</li>
+<li><span class="math inline">\(G=\sup_{x\in K} \ve{\nb f(x)}\)</span>.</li>
+<li><span class="math inline">\(T\)</span> is the number of steps.</li>
+</ul>
+<p>Applying this here, we have</p>
+<ul>
+<li>The dimension is <span class="math inline">\(Tn\)</span>.</li>
+<li>Suppose each action is in <span class="math inline">\(K\)</span>. Then <span class="math inline">\(D=\sqrt n \diam(B)\)</span>.</li>
+<li>Suppose <span class="math inline">\(f_a(x)\)</span> is a function <span class="math inline">\(K\times C \to C\)</span> and <span class="math inline">\(x_1\in C\)</span>. Let
+<span class="math display">\[\begin{align}
+m &amp;= \max_{x\in C, a\in K^T}\nb_x c(x,a)\\
+L &amp;= \max_{x\in C, a\in K^T}\nb_a c(x,a).
+\end{align}\]</span>
+Let <span class="math inline">\(\ga\)</span> be the max eigenvalue of <span class="math inline">\(B\)</span>. Then
+<span class="math display">\[\begin{align}
+\ve{\nb_{a_i}F} &amp;= \ve{
+\nb_{a_i} c(f_{a_{1:i-1}}(x_1),a_i)
++\nb_{a_i} c(f_{a_{1:i}}(x_1), a_{i+1})
++\cdots \nb_{a_i} c(f_{a_{1:T-1}}(x_1),a_T)}\\
+&amp;\le L + \be (1+\ga +\cdots + \ga^{T-1-i})m\\
+&amp;\le L + \fc{\be}{1-\ga}m\\
+\ve{\nb_{a_{1:T}}F} &amp; \le \sqrt{T} (L + \fc{\be}{1-\ga}m).
+\end{align}\]</span></li>
+</ul>
+<h3 id="notes">Notes</h3>
+<ul>
+<li>This does not use any kind of function approximation, so the optimization only gives us information about the optimal action at <span class="math inline">\(x_1\)</span>. <strong>If we choose a different starting point, we have to run the optimization procedure with that new starting point.</strong></li>
+<li><strong>We ignore the structure of each point <span class="math inline">\(x\)</span> in the space being a tuple of actions</strong> <span class="math inline">\((a_1,\ldots, a_T)\)</span>. Is there a way to use the structure of the cost function (as a sum of costs) to get better complexity?</li>
+<li>Complexity scales as lookahead time <span class="math inline">\(T\)</span>. We can do better by realizing that later actions are less important - so e.g. to estimate the gradient we can do ellipsoid sampling instead of sphere sampling.</li>
+<li>This assumes we know the dynamics. Otherwise we would have to learn them (cf. <a href="../optimization/HMR16.html">HMR16</a>). (This is only interesting if there is noise in the observation.)</li>
+</ul>
+<h2 id="noisy-dynamics">Noisy dynamics</h2>
+<p>The problem changes when there is noise in the dynamics. <span class="math display">\[
+x_{n+1} = Ax_n+Ba_n + \ep_n.
+\]</span></p>
+<ul>
+<li>The convex optimization problem solves for the best actions if all actions <span class="math inline">\(a_{1:T}\)</span> have to be chosen ahead of time - you don’t get to choose your action <span class="math inline">\(a_n\)</span> online after observing <span class="math inline">\(x_n\)</span>. This may be very suboptimal.
+<ul>
+<li>For general MDP’s, there can be a significant gap between what you can achieve with and without an online strategy (not sure how significant the gap is for convex <span class="math inline">\(c\)</span>, but I expect it will still be there).</li>
+</ul></li>
+<li>(If the noise is nice, ex. Gaussian, then because we are basically convolving with the noise, convexity is preserved.)</li>
+<li>If we want an online strategy (which makes much more sense), we can’t unroll like this and get a convex optimization problem. <strong>What to do?</strong></li>
+</ul>
+<h2 id="references">References</h2>
+<p>Might be useful.</p>
+<ul>
+<li>Kernel methods solve bandit convex optimization: [BEL16] Kernel-based methods for bandit convex optimization (Can something like this work in the RL setting?)</li>
+<li>Relationship between sampling and interior point methods: [AH15] Faster Convex Optimization - Simulated Annealing with an Efficient Universal Barrier</li>
+</ul>
+
+  </div>
+
+    
+
+    <!-- Extension : Sharing buttons @ www.sharethis.com -->
+    <span class='st_facebook_large' displayText='Facebook'></span>
+    <span class='st_twitter_large' displayText='Tweet'></span>
+    <span class='st_googleplus_large' displayText='Google +'></span>
+    <span class='st_reddit_large' displayText='Reddit'></span>
+    <span class='st__large' displayText=''></span>
+
+    <div id="disqus_thread"></div>
+    
+
+
+  
+    <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+  </div>
+  
+</div>
+]]></summary>
+</entry>
+<entry>
     <title>Arrows</title>
     <link href="http://holdenlee.github.io/notebook/posts/cs/functional_programming/arrows.html" />
     <id>http://holdenlee.github.io/notebook/posts/cs/functional_programming/arrows.html</id>
@@ -1118,76 +1251,6 @@ A(C) &amp; = \set{C=AB}\cup
 \end{align}\]</span>
 Now redo the proof for low SRW using a SoS proof. Motivation: for <span class="math inline">\(Q\)</span> we use an inequality involving <span class="math inline">\(L^1,L^{\iy}\)</span>. In oreder to convert to SoS proof, we need to turn this into <span class="math inline">\(L^{\fc{p}{p-1}},L^p\)</span>.</li>
 </ol>
-
-  </div>
-
-    
-
-    <!-- Extension : Sharing buttons @ www.sharethis.com -->
-    <span class='st_facebook_large' displayText='Facebook'></span>
-    <span class='st_twitter_large' displayText='Tweet'></span>
-    <span class='st_googleplus_large' displayText='Google +'></span>
-    <span class='st_reddit_large' displayText='Reddit'></span>
-    <span class='st__large' displayText=''></span>
-
-    <div id="disqus_thread"></div>
-    
-
-
-  
-    <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
-  </div>
-  
-</div>
-]]></summary>
-</entry>
-<entry>
-    <title>Free monads</title>
-    <link href="http://holdenlee.github.io/notebook/posts/cs/functional_programming/free_monads.html" />
-    <id>http://holdenlee.github.io/notebook/posts/cs/functional_programming/free_monads.html</id>
-    <published>2016-12-27T00:00:00Z</published>
-    <updated>2016-12-27T00:00:00Z</updated>
-    <summary type="html"><![CDATA[
-<div class="container">
-  <div id="content">
-    <div class="page header">
-      <h1>Free monads</h1>
-    </div>
-    <div class="info">
-      
-       
-        <p>Posted: 2016-12-27 
-          , Modified: 2016-12-27 
-	</p>
-      
-       <p>Tags: <a href="/tags/haskell.html">haskell</a>, <a href="/tags/functional%20programming.html">functional programming</a>, <a href="/tags/monads.html">monads</a></p> 
-    </div>
-    
-  </div>
-  <!--/div-->
-
-  <div class="toc"> <ul>
- <li><a href="#free">Free</a></li>
- <li><a href="#freer">Freer</a></li>
- <li><a href="#operational">Operational</a></li>
- </ul> </div>
-
-  <div class="blog-main">
-    <p>Why aren’t free monads more commonly used??</p>
-<h2 id="free">Free</h2>
-<p>“A free monad is just substitution with the minimum amount of renormalization needed to pass the monad laws – and the monad laws are the minimum amount of laws to make it so that you can write functions and choose what to do based on what has been done before.”</p>
-<p><a href="https://www.reddit.com/r/haskell/comments/3zlji8/do_free_monads_actually_matter/">Reddit</a> <a href="https://www.reddit.com/r/haskell/comments/3zlji8/do_free_monads_actually_matter/cyn551z/">Free monads should be default</a></p>
-<h2 id="freer">Freer</h2>
-<ul>
-<li><a href="http://okmij.org/ftp/Haskell/extensible/more.pdf">Freer monads paper</a></li>
-<li><a href="https://hackage.haskell.org/package/freer">hackage</a></li>
-</ul>
-<h2 id="operational">Operational</h2>
-<ul>
-<li><a href="http://apfelmus.nfshost.com/articles/operational-monad.html">apfelmus</a></li>
-<li><a href="https://wiki.haskell.org/Operational">wiki</a></li>
-<li><a href="http://okmij.org/ftp/Computation/free-monad.html">okmij</a></li>
-</ul>
 
   </div>
 

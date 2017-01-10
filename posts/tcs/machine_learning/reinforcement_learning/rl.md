@@ -191,6 +191,41 @@ MC uses experience and does not bootstrap (update value based on other value est
 
 Next chapter: experience + bootstrap.
 
+## 5.8 Return-specific importance sampling
+
+Sampling by the entire product $\prod \fc{\pi(A_i|S_i)}{\mu(A_i|S_i)}$ has a lot of variance and is unnecessary. Scale by the first factor and use previous updates.
+
+Think of discounting as determining a probability of
+termination or, equivalently, a degree of partial termination.
+
+Write full return as sum of discounted partial returns. (Idea: any long sequence will be weighted down by a large discount factor.)
+\begin{align}
+\ol G_t^h :&= R_{t+1}+\cdots +R_h\\
+G_t :&= \sumo i{T-t}\ga^{i-1} R_{t+i}\\
+&= (1-\ga) \sum_{h=t+1}^{T-1} \ga^{h-t-1} \ol G_t^h + \ga^{T-t-1} \ol G_t^T
+\end{align}
+Ordinary and weighted importance-sampling estimator:
+\begin{align}
+V(s) :&= \fc{
+\sum_{t\in T(s)}(1-\ga) \sum_{h=t+1}^{T-1} \ga^{h-t-1} \blu{\rh_t^h} \ol G_t^h + \ga^{T-t-1} \blu{\rh_t^{T(t)}}\ol G_t^T
+}{|T(s)|}\\
+V(s) :&=
+\fc{
+\sum_{t\in T(s)}(1-\ga) \sum_{h=t+1}^{T-1} \ga^{h-t-1} \blu{\rh_t^h} \ol G_t^h + \ga^{T-t-1} \blu{\rh_t^{T(t)}}\ol G_t^T
+}{
+\sum_{t\in T(s)}(1-\ga) \sum_{h=t+1}^{T-1} \ga^{h-t-1} \blu{\rh_t^h}  + \ga^{T-t-1} \blu{\rh_t^{T(t)}}
+}
+\end{align}
+
+Per-reward importance sampling: Note
+\begin{align}
+\E_\mu [\rh_tR_{t+k}] &= \E[\rh_t^{t+k} R_{t+k}]\\
+\E[\rh_t^T G_t] &= \E[\wt G_t]\\
+\wt G_t &= \sumo k{T-t} \ga^{k-1}\rh_t^{t+k}R_{t+k}\\
+V(s) :&= \fc{\sum_{t\in T(s)}\wt G_t}{|T(s)|}.
+\end{align}
+Not clear how to extend to weighted importance sampling.
+
 # 6 Temporal-difference learning
 
 MC methods can incrementally update $V$, after waiting to get the actual return,
@@ -341,7 +376,7 @@ Online algorithm generally works better over a broader range of parameters.
 
 To maintain equivalence in online case, $\de_t= R_{t+1} + \ga V_t(S_{t+1})-V_{t-1}(S_t)$, $R_t^{(n)} = \sumo in \ga^{i-1}R_{t+i} + \ga^n V_{t+n-1}(S_{t+n})$.
 
-# 7.5 Sarsa($\la$)
+## 7.5 Sarsa($\la$)
 
 How to use eligibility traces for control? Learn $q$ rather than $V$. Keep a trace for each $(s,a)$.
 \begin{align}

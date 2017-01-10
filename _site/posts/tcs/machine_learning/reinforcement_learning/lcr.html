@@ -89,7 +89,9 @@
  <li><a href="#linear-quadratic-regulator">Linear quadratic regulator</a></li>
  <li><a href="#linear-convex-regulator">Linear convex regulator</a></li>
  <li><a href="#problem">Problem</a></li>
- <li><a href="#email">Email</a></li>
+ <li><a href="#convex-optimization">Convex optimization</a><ul>
+ <li><a href="#re">Re</a></li>
+ </ul></li>
  </ul> </div>
 
   <div class="blog-main">
@@ -132,9 +134,27 @@ For infinite-horizon, the optimal control is <span class="math inline">\(a= -Px\
 \]</span> and for the optimal choice <span class="math inline">\(a(x) = B^T(\nb_x v)\)</span> the value satisfies <span class="math display">\[
 -g(x) + \rc 2 (\nb_x v^*)^T BB^T (\nb_x v^*) + (\nb_x v^*)^T Ax=0
 \]</span> We’d have to relate <span class="math inline">\(v\)</span> and <span class="math inline">\(v^*\)</span> in some way.</p>
-<h2 id="email">Email</h2>
-<p>Hi …,</p>
-<p>I’m trying to develop a way to approximate an optimal control for some general class of control problems. This involves understanding some differential equations. I don’t really have intuition or have a good idea of whether what we’re trying to do is feasible. Would you have time to talk? Just getting some qualitative understanding or knowing what tools are available would be great!</p>
+<h2 id="convex-optimization">Convex optimization</h2>
+<p>Fix <span class="math inline">\(x_1\)</span>. Letting actions be <span class="math inline">\(a_1,a_2,...\)</span> and the recurrence be <span class="math inline">\(x_{n+1} =Ax_n+Ba_n\)</span> we want</p>
+<span class="math display">\[\begin{align}
+&amp;\quad
+\min_{a_1} [g(x_1) + ||a_1||^2 + \min_{a_2} [g(Ax_1+Ba_1) + ||a_2||^2 + ...]] \\
+&amp;=
+\min_{a_1,...,a_T} g(x_1) + ||a_1||^2 + g(Ax_1+Ba_1) + ||a_2||^2 + g(A^2x_1 + ABa_1 + Ba_2) +...
+\end{align}\]</span>
+<p>and the objective is jointly convex because we are assuming g is convex, and a convex function composed with a linear function is convex.</p>
+<h3 id="re">Re</h3>
+<p>Optimizing this function in various settings with various algorithms (like alternating minimization) sound pretty plausible given that it’s convex.</p>
+<p>The observation above seems to suggest that for any loss function and any dynamics, if we believe that the non-convex optimization can converge to some good minimum, then this whole problem is solved. But of course, in practice, the dynamics and loss function are not known, and we can only observe the state transition and loss value for the state that we have reached.</p>
+<p>So the situation here is a bit analogous to the situation we faced for offline optimization v.s. online learning and bandits. Our “offline” case (or full observation case) is tractable and we need to extend this to the “online” or “bandit” case where we don’t know the model (i.e. dynamics). Because the full observation case is tractable, I felt that there are ways to extend it to partial observation case using similar exploration-exploitation intuition in bandit.</p>
+<!--
+# Email
+
+Hi ...,
+
+I'm trying to develop a way to approximate an optimal control for some general class of control problems. This involves understanding some differential equations. I don't really have intuition or have a good idea of whether what we're trying to do is feasible. Would you have time to talk? Just getting some qualitative understanding or knowing what tools are available would be great!
+
+-->
 
   </div>
 

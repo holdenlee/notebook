@@ -65,10 +65,32 @@ $$
 $$
 We'd have to relate $v$ and $v^*$ in some way.
 
+# Convex optimization
 
+Fix $x_1$. Letting actions be $a_1,a_2,...$ and the recurrence be $x_{n+1} =Ax_n+Ba_n$  we want
+
+\begin{align}
+&\quad
+\min_{a_1} [g(x_1) + ||a_1||^2 + \min_{a_2} [g(Ax_1+Ba_1) + ||a_2||^2 + ...]] \\
+&=
+\min_{a_1,...,a_T} g(x_1) + ||a_1||^2 + g(Ax_1+Ba_1) + ||a_2||^2 + g(A^2x_1 + ABa_1 + Ba_2) +...
+\end{align}
+
+and the objective is jointly convex because we are assuming g is convex, and a convex function composed with a linear function is convex.
+
+## Re
+
+Optimizing this function in various settings with various algorithms (like alternating minimization) sound pretty plausible given that it's convex. 
+
+The observation above seems to suggest that for any loss function and any dynamics, if we believe that the non-convex optimization can converge to some good minimum, then this whole problem is solved.  But of course, in practice, the dynamics and loss function are not known, and we can only observe the state transition and loss value for the state that we have reached. 
+
+So the situation here is a bit analogous to the situation we faced for offline optimization v.s. online learning and bandits. Our "offline" case (or full observation case) is tractable and we need to extend this to the "online" or "bandit" case where we don't know the model (i.e. dynamics). Because the full observation case is tractable, I felt that there are ways to extend it to partial observation case using similar exploration-exploitation intuition in bandit. 
+
+<!--
 # Email
 
 Hi ...,
 
 I'm trying to develop a way to approximate an optimal control for some general class of control problems. This involves understanding some differential equations. I don't really have intuition or have a good idea of whether what we're trying to do is feasible. Would you have time to talk? Just getting some qualitative understanding or knowing what tools are available would be great!
 
+-->
