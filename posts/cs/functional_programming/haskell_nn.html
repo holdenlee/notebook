@@ -86,6 +86,7 @@
   <!--/div-->
 
   <div class="toc"> <ul>
+ <li><a href="#automatic-differentiation">Automatic differentiation</a></li>
  <li><a href="#tensorflow">Tensorflow</a></li>
  </ul> </div>
 
@@ -93,8 +94,31 @@
     <pre><code>data Tensor dim a where
   ZTensor :: a -&gt; Tensor '[] a
   STensor :: Vec n (Tensor dim a) -&gt; Tensor (n ': dim) a</code></pre>
-<p><a href="https://hackage.haskell.org/package/accelerate-0.15.1.0/docs/Data-Array-Accelerate.html">Accelerate</a></p>
-<p><a href="https://www.reddit.com/r/haskell/comments/4rynuq/directed_acyclic_graphs_and_phoas/">DAGs and PHOAS</a></p>
+<ul>
+<li><a href="https://hackage.haskell.org/package/accelerate-0.15.1.0/docs/Data-Array-Accelerate.html">Accelerate</a></li>
+<li><a href="https://www.reddit.com/r/haskell/comments/4rynuq/directed_acyclic_graphs_and_phoas/">DAGs and PHOAS</a></li>
+<li>https://github.com/tensorflow/haskell</li>
+<li>https://github.com/albertoruiz/hmatrix</li>
+<li>http://hackage.haskell.org/package/HaskellNN</li>
+<li>https://themonadreader.files.wordpress.com/2013/03/issue214.pdf</li>
+<li>http://okmij.org/ftp/Haskell/</li>
+<li>https://www.schoolofhaskell.com/user/edwardk/phoas</li>
+<li>https://github.com/vladfi1/hs-nn</li>
+<li>https://github.com/holdenlee/hasflow</li>
+<li>https://hackage.haskell.org/package/singletons</li>
+</ul>
+<h2 id="automatic-differentiation">Automatic differentiation</h2>
+<ul>
+<li>https://hackage.haskell.org/package/ad</li>
+<li><a href="https://wiki.haskell.org/Automatic_Differentiation">wiki</a></li>
+<li>http://comonad.com/reader/2010/reverse-mode-automatic-differentiation-in-haskell/</li>
+<li>http://www.danielbrice.net/blog/10/</li>
+<li>http://www.danielbrice.net/blog/15/</li>
+<li>http://conal.net/blog/posts/beautiful-differentiation</li>
+<li>http://stackoverflow.com/questions/14676075/haskell-ad-package</li>
+<li>http://stackoverflow.com/questions/30888615/how-to-get-more-performance-out-of-automatic-differentiation</li>
+<li><a href="https://www.reddit.com/r/haskell/comments/35ud22/neural_networks_and_fast_automatic_differentiation/">reddit</a></li>
+</ul>
 <h2 id="tensorflow">Tensorflow</h2>
 <ul>
 <li><a href="https://github.com/tensorflow/haskell">Tensorflow bindings</a></li>
