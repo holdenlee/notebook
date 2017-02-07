@@ -207,6 +207,76 @@ You can use the logic to encode the computation of the market prices, i.e. $\ul{
 	
 [^p31]: How do polytime traders get access to prices if they are real numbers? Do they only get $\rc{\poly(n)}$ precision?
 
+# Extended paper: Intro
+
+* 13 Gaifman inductivity: Given a $\Pi_1$ statement $\phi = \forall x, \psi$, as the set of examples approaches all examples, belief in $\phi$ approaches 1.
+* 18 Use of old evidence: When a bounded reasoner comes up with a new theory that neatly describes anomalies in the old theory, the old evidence should count in favor of the new theory. (Why isn't this Bayesian? Bayesian keeps track of all hypotheses at all times.)
+* 1, 2, 13 cannot be satisfied simultaneously (why?). 1, 6, 13, weak 2 cannot be satisfied simultaneously. 
+* Algorithm doesn't satisfy 13, 14, 15. 16, 17 are unclear.
+* 1 and 12 are key.
+
+# Construction
+
+Given deductive process $\ol D$, construct computable belief sequence $\ol{LIA}$.
+
+* Belief history $\Pj_\le n$: sequence of belief states.
+* $n$-strategy history $T_{\le n}$: finite list of trading strategies, $T_i$ is $i$-strategy.
+
+## MarketMaker
+
+Sets market prices anticipating what a single trader is about to do.
+
+**Fixed point lemma** Let $T_n$ be $n$-strategy, $\Pj_{\le n-1}$ belief history. There exists $\mathbb V$, $\Supp(\mathbb V)\subeq \Supp(T_n):=S'$, s.t. 
+$$
+\forall \mathbb\in \mathcal W, \mathbb W(T_n(\Pj_{\le n-1}, \mathbb V))\le 0.
+$$
+
+*Proof*. Define $V' = [0,1]^{S'}$, 
+$$
+f(\mathbb V)(\phi):= \text{clamp}_{[0,1]} [\mathbb V(\phi) + T(\Pj_{\le n-1}, \mathbb V)[\phi]].
+$$
+Idea: if the trader buys under $\mathbb V$, then increase the price. (Note the scaling of $T$ doesn't really matter.) If the trader doesn't buy/sell $\phi$, there is no change.
+
+By Brouwer on the simply connected compact $[0,1]^{S'}$, there is a fixed point $\mathbb V^{\text{fix}}$. $T_n$ only buys shares when $\mathbb V^{\text{fix}}=1$, and sell when $=0$: no profit!
+
+**MarketMaker**: on input $T_n, \Pj_{\le n-1}$, return $\Pj\subeq [0,1]^{S'}$, 
+$$
+\forall \mathbb\in \mathcal W, \mathbb W(T_n(\Pj_{\le n-1}, \mathbb V))\le 2^{-n}.
+$$
+
+(Note we haven't restricted to consistent worlds at all.)
+
+Idea: brute force approximate search.
+
+Let $\mathbb W' = \mathbb W\one_{S'}$. Consider
+$$g:\mathbb V \mapsto \max_{\mathbb W'\in \mathcal W'} \mathbb W'(T_n(\Pj_{\le n-1}, \mathbb V)).$$
+We find a rational belief state $\Pj\in (g')^{-1}((-\iy, 2^{-n}))$ because we can compute $g$.
+
+**Lemma**. MarketMaker $\Pj_n=MarketMaker_n(T_n,\Pj_{\le n-1})$ is not exploitable by $\ol T$ relative to any $\ol D$.
+
+(No assumptions on $D$.)
+
+*Proof*. Sum $\le 1$.
+
+## Budgeter
+
+Alter trader to stay within budget.
+
+## TradingFirm
+
+Uses budgeter to combine infinite sequence of carefully chosen e.c. traders into a single trader that exploits a given market if any e.c. trader exploits the market.
+
+## LIA
+
+Uses MarketMaker to make market not exploitable by TradingFirm.
+
 # Misc
 
 "No dutch book" in expected utility theory, Bayesian probability theory
+
+Given a sequence of bits which follow a polytime generable pattern, will it learn it in the limit?
+
+## Extended paper
+
+* In what sense is self-trust impossible in formal logic? p. 8
+* Where do you use the fact, in proving the consequences, that it was against polytime continuous traders with coefficients in $\mathcal EF$?

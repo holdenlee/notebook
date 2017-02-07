@@ -13,6 +13,7 @@ References
     * [InfoGAN: Interpretable Representation Learning by Information Maximizing Generative Adversarial Nets](https://arxiv.org/pdf/1606.03657v1.pdf)
 	* [Improved techniques for training GANs](https://arxiv.org/abs/1606.03498)
 	* [Generative adversarial nets](http://papers.nips.cc/paper/5423-generative-adversarial-nets.pdf)
+	* [AdaGAN: Boosting generative models](https://arxiv.org/abs/1701.02386)
 * Blog posts
     * [New perspectives, NIPS2016](http://www.inference.vc/my-summary-of-adversarial-training-nips-workshop/) [h](http://scrible.com/s/g5QQ6)
 	* [How to train your generative models](http://www.inference.vc/how-to-train-your-generative-models-why-generative-adversarial-networks-work-so-well-2/) [h](http://scrible.com/s/i5AQ6)
@@ -38,7 +39,7 @@ $$
 (The second expectation is over $G(z)$, $z\sim p_z$ a fixed distribution.)
 If the data was real, there is a loss $\ln \wh\Pj\pat{real}$, and if the data was fake, there is a loss $\ln \wh \Pj\pat{fake}$. (Penalize for mistakes.)
 
-Note that given $G$, the optimal $D$ is $\ln \fc{p(x)}{p(x) + \wh p(x)}$,
+Note that given $G$, the optimal $D$ is $ \fc{p(x)}{p(x) + \wh p(x)}$,
 \begin{align}
 \max_D V(D,G) &= \EE_p \ln \fc{p}{p+\wh p} + \EE_{\wh p} \ln \fc{\wh p}{p+\wh p}\\
 &= -2\ln 2 + KL\ba{p||\fc{p+\wh p}2} + KL\ba{\wh p ||\fc{p+\wh p}2}.
@@ -59,11 +60,11 @@ JSD[Q||P] &= \pi KL\ba{P||\pi P+(1-\pi)Q}
 
 Let $P$ be the natural distribution and $Q$ be the estimated one.
 
-* $KL[Q||P] = H(Q) + CE(Q,P)$, $CE(Q,P)$ is the perplexity of seeing samples from $P$ when you think the distribution is $Q$. It is maximized by a model $Q$ that deterministically picks the most likely stimulus. $H(Q)$ enforces diversity.
-    * Favors approximations $Q$ to overgeneralize $P$. It's allowed to introduce probability mass where $P$ has no or little mass.
-	* Hard to optimize based on a finite sample. (Why?)
-* $KL[P||Q] = H(P) + CE(P,Q)$, $H(P)$ is constant and $CE(P,Q)$ is the average negative log likelihood. Optimizing this corresponds to maximizing the log likelihood.
+* $KL[Q||P] = H(Q) + CE(Q,P)$, $CE(Q,P)$ is the perplexity of seeing samples from $P$ when you think the distribution is $Q$. It is maximized by a model $Q$ that deterministically picks the most likely stimulus. $H(Q)$ tries to counteract by enforcing diversity.
 	* Favors undergeneralization, ex. describing the largest mode only. It's infinitely penalized in introducing probability mass when $P$ has none.
+	* Hard to optimize based on a finite sample. (Why? It's not well-behaved unless $\Supp(Q)\subeq \Supp(P)$!)
+* $KL[P||Q] = H(P) + CE(P,Q)$, $H(P)$ is constant and $CE(P,Q)$ is the average negative log likelihood. Optimizing this corresponds to maximizing the log likelihood.
+    * Favors approximations $Q$ to overgeneralize $P$. It's allowed to introduce probability mass where $P$ has no or little mass.
 * JSD is a compromise.
 
 ## Another interpretation
@@ -72,7 +73,7 @@ Let $s=0,1$ wp $\rc2$, determining whether we see real or fake data. Let $\wt p$
 $$I[s;x] = KL[\wt p(s,x)||\wt p(s) \wt p(x)].$$
 This is intractable to estimate. Subtract out KL divergence:
 $$
-L[p;q] := I[s;x] - \E_{\wt p(x)} [KL[\wt p(s|x)||w(s|x)]] = H[s] + \E_{\wt p(s,x)} [\ln q(s|x)]
+L[p;q] := I[s;x] - \E_{\wt p(x)} [KL[\wt p(s|x)||q(s|x)]] = H[s] + \E_{\wt p(s,x)} [\ln q(s|x)]
 $$
 (CHECK THIS)
 The second term is the GAN objective function. "GAN can be viewed as an augmented generative model which is trained by minimizing mutual information." [YZL](http://www.yingzhenli.net/home/blog/?p=421)
@@ -110,7 +111,7 @@ Label generated samples with "generated" class $K+1$. For unlabeled data, maximi
 
 # InfoGAN
 
-* Extend the GAN objective with new term encouraging high mutual information between generated samples and subset of latent variables $c$.
+* Extend the GAN objective with new term encouraging high mutual information between generated samples and subset of latent variables $c$. (Other variables are noise variables.)
 * Hopefully $c$ will represent the most meaningful sources of variation.
 * Use a variational lower bound to maximize mutual information. (cf. variational autoencoders)
 
@@ -121,7 +122,42 @@ Want $c$ to effectively explain most variation in fake data.
 Variational bound on MI:
 $$I[X,Y] = \max_q \bc{H[Y] + \EE_{x,y} \ln q(y|x)}.$$
 
-GANs use this bound in the wrong direction. InfoGANs use it twice.
+Thus, 
+$$
+I[x_{\text{fake}},c]\ge \EE_{x_{\text{fake}}\sim G(z,c), c\sim C|x}[\ln \fc{Q(c|x)}] + H(c)
+$$
+<!-- trivial! By Bayes, we can replace the expectation with $\EE_{c\sim C, x\sim X|C}$-->
+Sample using Monte Carlo. 
+
+GANs use the variational bound in the wrong direction $I(s;x) \ge H(s) + V$. InfoGANs use it twice.
+$$
+\ub{I(s;x)}{\ge H(s)+V} - \la \ub{I[x_{\text{fake}}, c]}{\ge ...}
+$$
+
+Example: for MNIST, have 10 known labels and 2 latent variables which turn out to represent slant and width.
+
+# AdaGAN: Boosting Generative Models
+
+GANs suffer from missing modes: the model doesn't produce examples in certain regions.
+
+Idea: combine multiple generative models into a mixture. Each step, focus on examples that the mixture has not been able to properly generate, and add another model addressing those.
+
+This is a meta-algorithm which can be used with any implementation of generative models (e.g. GANs).
+
+## Minimizing f-divergence with additive mixtures
+
+$f$-divergence is
+$$
+D_f(Q||P):=\int f\pa{\dd QP (x)}\,dP(x)
+$$
+Note $D_f(P||Q) = D_{f^{\circ}}(Q||P)$ where $f^{\circ}(x) = xf(1/x)$. Adding a multiple of $x-1$ doesn't change.
+
+Examples:
+
+* KL $-ln x$
+* reverse KL $x\ln x$
+* TV $|x-1|$
+* JSD $-(x+1)\ln \fc{x+1}2 + x\ln x$
 
 # Two views of GANs
 
