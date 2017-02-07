@@ -10,27 +10,27 @@
   <meta name="description" content="Holden Lee's Research Notebook">
   <meta name="author" content="Holden Lee">
     
-  <title>Posts tagged "neural nets"</title>
+  <title>Variational Bayes</title>
 
   <!-- Bootstrap core CSS -->
-  <link href="../bootstrap/css/bootstrap.min.css" rel="stylesheet">
+  <link href="../../../../bootstrap/css/bootstrap.min.css" rel="stylesheet">
 
   <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
   <!-- <link href="../../assets/css/ie10-viewport-bug-workaround.css" rel="stylesheet"> -->
 
   <!-- Custom styles for this template -->
-  <link href="../css/blog.css" rel="stylesheet">
-  <link href="../css/default.css" rel="stylesheet">
+  <link href="../../../../css/blog.css" rel="stylesheet">
+  <link href="../../../../css/default.css" rel="stylesheet">
 
   <!-- Extension : Footnotes -->
-  <link href="../footnotes/css/footnotes.css" rel="stylesheet">
+  <link href="../../../../footnotes/css/footnotes.css" rel="stylesheet">
 
   <!-- Extension : InlineDisqussions @ https://github.com/tsi/inlineDisqussions -->
   
 
   <!-- Extension : Collapsible lists @ http://code.stephenmorley.org/javascript/collapsible-lists/-->
-  <link href="../collapsible_lists/css/collapsible.css" rel="stylesheet">
-  <script type="text/javascript" src="../collapsible_lists/js/CollapsibleLists.js"></script>
+  <link href="../../../../collapsible_lists/css/collapsible.css" rel="stylesheet">
+  <script type="text/javascript" src="../../../../collapsible_lists/js/CollapsibleLists.js"></script>
 
 </head>
 
@@ -48,12 +48,12 @@
           <span class="icon-bar"></span>
           <span class="icon-bar"></span>
         </button>
-        <a class="navbar-brand" href="../">Notebook</a>
+        <a class="navbar-brand" href="../../../../">Notebook</a>
       </div>
       <div id="navbar" class="collapse navbar-collapse">
         <ul class="nav navbar-nav">
-          <li><a href="../">Home</a></li>
-          <li><a href="../sitemap.html">Sitemap</a></li>
+          <li><a href="../../../../">Home</a></li>
+          <li><a href="../../../../sitemap.html">Sitemap</a></li>
 <!-- TODO: Distinguish between PAPERS, RESEARCH QUESTIONS, BOOKS -->
 <!-- TODO: make this part a for loop over main pages -->
         </ul>
@@ -70,63 +70,57 @@
 <div class="container">
   <div id="content">
     <div class="page header">
-      <h1>Posts tagged "neural nets"</h1>
+      <h1>Variational Bayes</h1>
     </div>
     <div class="info">
       
+       
+        <p>Posted: 2016-12-28 
+          , Modified: 2016-12-28 
+	</p>
       
-      
+       <p>Tags: <a href="../../../../tags/neural%20nets.html">neural nets</a></p> 
     </div>
     
   </div>
   <!--/div-->
 
-  
+  <div class="toc"></div>
 
   <div class="blog-main">
     <ul>
-    
-        <li>
-            <a href="../posts/tcs/machine_learning/probabilistic/vb.html">Variational Bayes</a> (2016-12-28)
-        </li>
-    
-        <li>
-            <a href="../posts/tcs/machine_learning/neural_nets/GANs.html">GANs</a> (2016-12-28)
-        </li>
-    
-        <li>
-            <a href="../posts/tcs/machine_learning/neural_nets/interpretability.html">Interpretable neural nets</a> (2016-10-12)
-        </li>
-    
-        <li>
-            <a href="../posts/tcs/machine_learning/optimization/generalization.html">Generalization of neural nets</a> (2016-10-10)
-        </li>
-    
-        <li>
-            <a href="../posts/tcs/machine_learning/neural_nets/nndl.html">Neural nets learn dictionaries</a> (2016-10-10)
-        </li>
-    
-        <li>
-            <a href="../posts/tcs/machine_learning/neural_nets/convnets_ideas.html">Convnets ideas</a> (2016-08-02)
-        </li>
-    
-        <li>
-            <a href="../posts/tcs/machine_learning/neural_nets/pmi_images_scratch.html">PMI for images (scratch)</a> (2016-08-01)
-        </li>
-    
-        <li>
-            <a href="../posts/tcs/machine_learning/neural_nets/pmi_images.html">PMI for images</a> (2016-08-01)
-        </li>
-    
+<li><a href="https://en.wikipedia.org/wiki/Variational_Bayesian_methods">Wiki</a></li>
+<li><a href="https://www.cs.princeton.edu/courses/archive/fall11/cos597C/lectures/variational-inference-i.pdf">Notes by Blei</a></li>
 </ul>
-
-
+<p>Two purposes:</p>
+<ol type="1">
+<li>To provide an analytical approximation to the posterior probability of the unobserved variables, in order to do statistical inference over these variables.</li>
+<li>To derive a lower bound for the marginal likelihood (sometimes called the “evidence”) of the observed data (i.e. the marginal probability of the data given the model, with marginalization performed over unobserved variables). This is typically used for performing model selection.</li>
+</ol>
+<p>Monte Carlo techniques provide a numerical approximation to the exact posterior using a set of samples. Variational Bayes provides a locally-optimal, exact analytical solution to an approximation of the posterior.</p>
+<p>Find the minimizer of <span class="math inline">\(D_{KL}(Q||P)\)</span> over some class <span class="math inline">\(Q\)</span> of distributions.</p>
+<p>Ex. for <span class="math inline">\(Q(Z) =\prodo iM q_i(Z_i|X)\)</span>, <span class="math display">\[
+q_j^*(Z_j|X) = \fc{e^{\E_{i\ne j}[\ln p(Z,X)]}}{\int e^{\E_{i\ne j}[\ln p(Z_{-j},X)]}\,dZ_j}.
+\]</span> Simplify, get circular dependencies between parameters in one and other partition, solve in iterative fashion like EM.</p>
 
   </div>
 
     
 
+    <!-- Extension : Sharing buttons @ www.sharethis.com -->
+    <span class="st_facebook_large" displayText="Facebook"></span>
+    <span class="st_twitter_large" displayText="Tweet"></span>
+    <span class="st_googleplus_large" displayText="Google +"></span>
+    <span class="st_reddit_large" displayText="Reddit"></span>
+    <span class="st__large" displayText></span>
 
+    <div id="disqus_thread"></div>
+    
+
+
+  
+    <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+  </div>
   
 </div>
 
@@ -154,12 +148,12 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
 <script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
 
-<script src="../bootstrap/js/bootstrap.min.js"></script>
+<script src="../../../../bootstrap/js/bootstrap.min.js"></script>
 
 <!-- Extension : Highlight.js @ https://highlightjs.org/ -->
 <!-- Syntax highlighting tomorrow-night-bright, agate-->
-<link rel="stylesheet" href="../highlight/css/tomorrow-night-bright.css">
-<script src="../highlight/js/highlight.pack.js"></script>
+<link rel="stylesheet" href="../../../../highlight/css/tomorrow-night-bright.css">
+<script src="../../../../highlight/js/highlight.pack.js"></script>
 <script>hljs.initHighlightingOnLoad();</script>
 
 <!-- Extension : MathJax @ https://docs.mathjax.org/en/v2.5-latest/tex.html -->
@@ -167,10 +161,13 @@
 <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML,http://holdenlee.github.io/notebook/MathJax/config/local/local"></script>
 
 <!-- Extension : Footnotes @ http://ignorethecode.net/blog/2010/04/20/footnotes/ -->
-<script src="../footnotes/js/footnotes.js"></script>
+<script src="../../../../footnotes/js/footnotes.js"></script>
 
 <!-- Extension : Disqus @ http://disqus.com -->
 <!-- Extension : InlineDisqussions @ https://github.com/tsi/inlineDisqussions -->
+
+<script src="../../../../disqus/js/disqus.js"></script>
+
 
 
 <!-- Extension : Google Analytics -->

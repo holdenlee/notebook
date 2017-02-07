@@ -99,7 +99,16 @@
  <li><a href="#results">Results</a></li>
  </ul></li>
  </ul></li>
- <li><a href="#misc">Misc</a></li>
+ <li><a href="#extended-paper-intro">Extended paper: Intro</a></li>
+ <li><a href="#construction">Construction</a><ul>
+ <li><a href="#marketmaker">MarketMaker</a></li>
+ <li><a href="#budgeter">Budgeter</a></li>
+ <li><a href="#tradingfirm">TradingFirm</a></li>
+ <li><a href="#lia">LIA</a></li>
+ </ul></li>
+ <li><a href="#misc">Misc</a><ul>
+ <li><a href="#extended-paper">Extended paper</a></li>
+ </ul></li>
  </ul> </div>
 
   <div class="blog-main">
@@ -271,8 +280,52 @@
 <li>Roughly: If we ask <span class="math inline">\(\ol\Pj\)</span> what it believes about <span class="math inline">\(\phi\)</span> now if it learned it was going to believe <span class="math inline">\(\phi\)</span> wp <span class="math inline">\(\ge p\)</span> in the future, it will answer with probability <span class="math inline">\(\ge p\)</span>. (Some subtlety with continuous indicators, paradoxical sentences.)</li>
 </ul></li>
 </ul>
+<h2 id="extended-paper-intro">Extended paper: Intro</h2>
+<ul>
+<li>13 Gaifman inductivity: Given a <span class="math inline">\(\Pi_1\)</span> statement <span class="math inline">\(\phi = \forall x, \psi\)</span>, as the set of examples approaches all examples, belief in <span class="math inline">\(\phi\)</span> approaches 1.</li>
+<li>18 Use of old evidence: When a bounded reasoner comes up with a new theory that neatly describes anomalies in the old theory, the old evidence should count in favor of the new theory. (Why isn’t this Bayesian? Bayesian keeps track of all hypotheses at all times.)</li>
+<li>1, 2, 13 cannot be satisfied simultaneously (why?). 1, 6, 13, weak 2 cannot be satisfied simultaneously.</li>
+<li>Algorithm doesn’t satisfy 13, 14, 15. 16, 17 are unclear.</li>
+<li>1 and 12 are key.</li>
+</ul>
+<h2 id="construction">Construction</h2>
+<p>Given deductive process <span class="math inline">\(\ol D\)</span>, construct computable belief sequence <span class="math inline">\(\ol{LIA}\)</span>.</p>
+<ul>
+<li>Belief history <span class="math inline">\(\Pj_\le n\)</span>: sequence of belief states.</li>
+<li><span class="math inline">\(n\)</span>-strategy history <span class="math inline">\(T_{\le n}\)</span>: finite list of trading strategies, <span class="math inline">\(T_i\)</span> is <span class="math inline">\(i\)</span>-strategy.</li>
+</ul>
+<h3 id="marketmaker">MarketMaker</h3>
+<p>Sets market prices anticipating what a single trader is about to do.</p>
+<p><strong>Fixed point lemma</strong> Let <span class="math inline">\(T_n\)</span> be <span class="math inline">\(n\)</span>-strategy, <span class="math inline">\(\Pj_{\le n-1}\)</span> belief history. There exists <span class="math inline">\(\mathbb V\)</span>, <span class="math inline">\(\Supp(\mathbb V)\subeq \Supp(T_n):=S'\)</span>, s.t. <span class="math display">\[
+\forall \mathbb\in \mathcal W, \mathbb W(T_n(\Pj_{\le n-1}, \mathbb V))\le 0.
+\]</span></p>
+<p><em>Proof</em>. Define <span class="math inline">\(V' = [0,1]^{S'}\)</span>, <span class="math display">\[
+f(\mathbb V)(\phi):= \text{clamp}_{[0,1]} [\mathbb V(\phi) + T(\Pj_{\le n-1}, \mathbb V)[\phi]].
+\]</span> Idea: if the trader buys under <span class="math inline">\(\mathbb V\)</span>, then increase the price. (Note the scaling of <span class="math inline">\(T\)</span> doesn’t really matter.) If the trader doesn’t buy/sell <span class="math inline">\(\phi\)</span>, there is no change.</p>
+<p>By Brouwer on the simply connected compact <span class="math inline">\([0,1]^{S'}\)</span>, there is a fixed point <span class="math inline">\(\mathbb V^{\text{fix}}\)</span>. <span class="math inline">\(T_n\)</span> only buys shares when <span class="math inline">\(\mathbb V^{\text{fix}}=1\)</span>, and sell when <span class="math inline">\(=0\)</span>: no profit!</p>
+<p><strong>MarketMaker</strong>: on input <span class="math inline">\(T_n, \Pj_{\le n-1}\)</span>, return <span class="math inline">\(\Pj\subeq [0,1]^{S'}\)</span>, <span class="math display">\[
+\forall \mathbb\in \mathcal W, \mathbb W(T_n(\Pj_{\le n-1}, \mathbb V))\le 2^{-n}.
+\]</span></p>
+<p>(Note we haven’t restricted to consistent worlds at all.)</p>
+<p>Idea: brute force approximate search.</p>
+<p>Let <span class="math inline">\(\mathbb W' = \mathbb W\one_{S'}\)</span>. Consider <span class="math display">\[g:\mathbb V \mapsto \max_{\mathbb W'\in \mathcal W'} \mathbb W'(T_n(\Pj_{\le n-1}, \mathbb V)).\]</span> We find a rational belief state <span class="math inline">\(\Pj\in (g')^{-1}((-\iy, 2^{-n}))\)</span> because we can compute <span class="math inline">\(g\)</span>.</p>
+<p><strong>Lemma</strong>. MarketMaker <span class="math inline">\(\Pj_n=MarketMaker_n(T_n,\Pj_{\le n-1})\)</span> is not exploitable by <span class="math inline">\(\ol T\)</span> relative to any <span class="math inline">\(\ol D\)</span>.</p>
+<p>(No assumptions on <span class="math inline">\(D\)</span>.)</p>
+<p><em>Proof</em>. Sum <span class="math inline">\(\le 1\)</span>.</p>
+<h3 id="budgeter">Budgeter</h3>
+<p>Alter trader to stay within budget.</p>
+<h3 id="tradingfirm">TradingFirm</h3>
+<p>Uses budgeter to combine infinite sequence of carefully chosen e.c. traders into a single trader that exploits a given market if any e.c. trader exploits the market.</p>
+<h3 id="lia">LIA</h3>
+<p>Uses MarketMaker to make market not exploitable by TradingFirm.</p>
 <h2 id="misc">Misc</h2>
 <p>“No dutch book” in expected utility theory, Bayesian probability theory</p>
+<p>Given a sequence of bits which follow a polytime generable pattern, will it learn it in the limit?</p>
+<h3 id="extended-paper">Extended paper</h3>
+<ul>
+<li>In what sense is self-trust impossible in formal logic? p. 8</li>
+<li>Where do you use the fact, in proving the consequences, that it was against polytime continuous traders with coefficients in <span class="math inline">\(\mathcal EF\)</span>?</li>
+</ul>
 <section class="footnotes">
 <hr />
 <ol>
