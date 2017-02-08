@@ -55,7 +55,7 @@ showTOC: True
 	*   Define evaluation of a value function on a $\mathcal F$-combination, $(S\to [0,1]) \times (\mathcal F^{\opl(S\cup \{1\})}) \to \mathcal F$ in the natural way, sending $\phi$ to $\mathbb V(\phi)$ and extending by linearity. ($\mathbb V(1)=1$.)
 *   $\ol T$ **exploits** $\mathbb V$ relative to a deductive process $\ol D$ if 
     $$
-	\set{\mathbb W\pa{\sumz in \mathbb V(_i(T_i))}}{n\in \N^+, \mathbb W\in PC(D_n)}
+	\set{\mathbb W\pa{\sumz in \mathbb V_i(T_i)}}{n\in \N^+, \mathbb W\in PC(D_n)}
 	$$
 	is bounded below, but not bounded above.[^f3] This set is the set of **plausible assessments** of net worth. "The trader can make unbounded returns with bounded risk." 
 	* Ex. if PA proves $\phi\vee \psi$, then a trader who buys $\phi,\psi$ at combined price $<1$ exploits the market.[^f4]
@@ -260,21 +260,142 @@ We find a rational belief state $\Pj\in (g')^{-1}((-\iy, 2^{-n}))$ because we ca
 
 ## Budgeter
 
-Alter trader to stay within budget.
+Alter trader to stay within budget $b$. 
+
+If there is some PC world where the trader could have lost \$b or more, do nothing. Else, scale down to stay within budget in worst possible world.
+
+Define Budgeter${}_n^{\ol D}(b, T_{\le n}, \Pj_{\le n-1})$ by:
+
+* if $\mathbb W(\sum_{i\le m}T_i(\Pj_{\le i}))\le -b$ for some $m<n$, $\mathbb W \in PC(D_m)$, then 0.
+* else: $T_n \inf_{\mathbb W\in PC(D_n)}\ba{\max\pa{1,\fc{-\mathbb W(T_n)}{b+ \mathbb W(\sum_{i\le n-1} T_i(\Pj_{\le i}))}}^{-2}}$. (can write as $\min\pa{1, \fc{b+ \mathbb W(...)}{-\mathbb W(T_n)}}$.)
+
+**Lemma** (Properties):
+
+1. B doesn't change $T$ if for all past times $m\le n$, in all PC worlds ($\mathbb W\in PC(D_m)$) the value is $>-b$ ($\mathbb W(\sum_{i\le m}T_i(\ol \Pj))>-b$).
+2. (Stays within budget) $\mathbb W(\sum_{i\le n}B_i^b(\ol\Pj)) \ge -b$.
+3. If $\ol T$ exploits $\ol\Pj$ relative to $\ol D$< then so does $\ol B^b$ for some $b\in \N^+$. (Proof. choose $b$ to be the lower bound, then $T$ doesn't change.)
 
 ## TradingFirm
 
-Uses budgeter to combine infinite sequence of carefully chosen e.c. traders into a single trader that exploits a given market if any e.c. trader exploits the market.
+Uses budgeter to combine infinite (enumerable) sequence of  e.c. traders into a single trader that exploits a given market if any e.c. trader exploits the market.
+<!-- carefully chosen-->
 
-## LIA
+(5.3.1) there exists a computable sequence of e.c. traders containing every e.c. trader.
+
+Idea of construction of TradingFirm
+
+* At finite step $n$, incorporate the first $n$ traders in the list $\ol T^k$.
+* We don't know the right $b$, so define a converging sum over $b$.
+
+In math:
+
+* $S_n^k = \one_{n\ge k} T^k_n$.
+* TradingFirm${}_n^{\ol D} (\Pj_{\le n-1}) = \sumo k{\iy}\sumo b{\iy}2^{-k-b} \text{Budgeter}_n^{\ol D} (b, S_{\le n}^k, \Pj_{\le n-1})$.
+
+Note this is a computable finite sum because we can compute a lower bound on $\mathbb W(\sum_{i\le m} S_i^k (\Pj_{\le m}))$, $-C_n:=-\sum_{i\le n}\ve{S_i^k (\ol{\mathbb V})}_1$. When the budget is more than $C_n$, the trading strategy doesn't change.
+
+**Lemma** (Trading firm dominance): If there exists any e.c. trader $\ol T$ that exploits $\ol\Pj$ relative to $\ol D$, then $(\text{TradingFirm}_n^{\ol D}(\Pj_{\le n-1}))_{n\in \N^+}$ also exploits $\ol\Pj$ relative to $\ol D$.
+
+*Proof*. Use repeatedly: If $A_n$ exploits $\ol\Pj$ and $\mathbb W(\sum_{i\le n}A_n(\Pj)) \ge c_1 \mathbb W(\sum_{i\le n}T_n^k(\Pj)) + c_2$ for $c_1>0$, then $B_n$ exploits $\ol \Pj$.
+
+## LIA (Logical Induction Algorithm)
 
 Uses MarketMaker to make market not exploitable by TradingFirm.
+
+Define 
+$$
+LIA_n := \text{MarketMaker}_n(\text{TradingFirm}_n^{\ol D}(LIA_{\le n-1}), LIA_{\le n-1}).
+$$
+
+**LIA satisfies the logical induction criterion.**
+
+*Proof*.  If any e.c. trader exploits LIA, then so does the trading firm, contradiction.
+
+## Runtime and convergence
+
+Tradeoff between runtime of $\Pj_n$ as function of $n$ and how quickly $\Pj_n(\phi) \to \Pj_\iy(\phi)$.
+
+## Selected proofs
+
+Idea: if a market doesn't satisfy nice properties, then there are ec traders taking advantage of this.
+
+* Convergence: $\Pj_\iy(\phi):=\limn \Pj_n(\phi)$ exists.
+    * Proof sketch: If $\ol\Pj$ never makes up its mind about $\phi$ then it can be exploited by a trader that buys at $<p-\ep$ and sells at $>p+\ep$. (cf. [upcrossing inequality](/posts/math/probability/martingales.html#martingales-almost-sure-convergence)) Technicalities
+	    * Use a continuous indicator function.
+		* Need to track net $\phi$-shares bought (holdings $H_n$). Don't buy too many, so maintain bounded risk. (E.g. Cap at 1 at all times.)
+* Limit coherence: 
+	* Show that 3 properties are satisfied:
+		* $\Ga \vdash \phi\implies \Pj_\iy(\phi)=1$.
+		* $\Ga \vdash \neg \phi\implies \Pj_\iy(\phi)=0$.
+		* $\Ga \vdash \neg(\phi\wedge \psi)\implies \Pj_\iy(\phi\vee \psi) = \Pj_\iy(\phi)+\Pj_\iy(\psi)$. 
+		* Otherwise, we can construct a trader taking advantage of this "inconsistency".
+	* Gaifman showed that these properties imply that $\Pj$ extends to a probability measure. ([Kolmogorov extension](https://en.wikipedia.org/wiki/Kolmogorov_extension_theorem) over $\{0,1\}^S$?)
+	* It's important here that the trader considers PC worlds---over PC worlds, these trading strategies are bounded below. (More generally, if you allow other computable transformations, I think what happens is that $\Pj_\iy$ will be guaranteed to respect those transformations.)
+* Non-dogmatism
+	* Proof that if $\Ga\not\vdash \neg \phi$, then $\Pj_\iy(\phi)>0$. Otherwise, for every $k$, make sure the trader buys one share of $\phi$ for price $\le 2^{-k}$. 
+	* Idea: we can have $\sum a_k 2^{-k}$ bounded (spend a bounded amount of money in any world) but $\sum a_k (1-2^{-k})$ unbounded (potentially unbounded returns in the world where $\phi$ is true).
+* Pseudorandom frequencies
+	* Buy $\phi_n$ shares whenever price goes below $p-\ep$. $p$ proportion pays out (by pseudorandomness---since there is by definition no way you can get something other than $p$ by a poly trader looking at $\Pj$). Make trades continuous and budget. 
+		* (Q: this seems probabilistic---how do you prevent having bad luck for arbitrarily long bounded time?)
+		* **This seems more complicated than the rest; read this proof.**
+* Provability induction
+	* Use pseudorandomness with answer 1.
+	* Confusion: what if deduction process doesn't hit all theorems?
+
+# Discussion
+
+Compare with Solomonoff induction.
+
+> This (uncomputable) algorithm is impractical, but has nevertheless been of theoretical use: its basic idiom-consult a series of experts, reward accurate predictions, and penalize complexity-is commonplace in statistics, predictive analytics, and machine learning.
+
+> experts consulted by logical inductors don't make predictions about what is going to happen next; instead, they observe the aggregated advice of all the experts (including themselves) and attempt to exploit inefficiencies in that aggregate model.
+
+> consider the task of designing an AI system that reasons about the behavior of computer programs, or that reasons about its own beliefs and its own effects on the world. While practical algorithms for achieving these feats are sure to make use of heuristics and approximations, we believe scientists will have an easier time designing robust and reliable systems if they have some way to relate those approximations to theoretical algorithms that are known to behave well in principle 
+
+3 takeaways.
+
+1. Make predictions by combining advice from ensemble of experts (Solomonoff + Gaifman). Note LIA many only see sequence of sets from a theorem prover. (Ex. only see "#1 is true" "#2 is false or #3 is true", etc.)
+    * No meta-cognition (what to think about)
+	* Not practical---bad bounds
+2. Keep experts small. **Experts do not predict the world**. They identify inconsistencies even if they don't know what's actually happening.
+3. Make trading functions continuous.
+
+>  Showing traders the current market prices is not trivial, because the market prices on day n depend on which trades are made on day n, creating a circular dependency. Our framework breaks this cycle by requiring that the traders use continuous betting strategies, guaranteeing that stable beliefs can be found...  something like continuity is strictly necessary, if the market is to have accurate beliefs about itself.
+
+This breaks paradoxes. Ex. $\chi = "\Pj_n(\chi)<0.5"$.
+
+Generality: 
+
+* not tied to any specific notion of efficiency.
+* definition of trader flexible.
+* not specific to domain of logic (all that is necessary is a set of atomic events that can be "true" or "false", a language for talking about Boolean combinations of those atoms, and a deductive process that asserts things about those atoms over time)
+
+## Open problems
+
+* 15. Decision rationality: target specific, decision-relevant claims; reason as efficiently as possible about those claims. (Ex. reason about one sentence in particular.)
+<!-- also steer deductive process? -->
+* 16. Answers counterpossible questions.
+    * Why? Need to reason what would happen if agent had output a vs. b.
+*   17. Use of old evidence. 
+	
+	>  a strong solution to the problem of old evidence isn't just about finding new ways to use old data every so often; it's about giving a satisfactory account of how to algorithmically generate new scientific theories. 
+*   14. Efficiency
+	
+	> Imagine we pick some limited domain of reasoning, and a collection of constant- and linear-time traders. Imagine we use standard approximation methods (such as gradient descent) to find approximately-stable market prices that aggregate knowledge from those traders.
+
 
 # Misc
 
 "No dutch book" in expected utility theory, Bayesian probability theory
 
 Given a sequence of bits which follow a polytime generable pattern, will it learn it in the limit?
+
+Limitation (5.5.1): If $\ol\Pj$ is a logical inductor over $\Ga$ representing computable functions,  $\forall \phi, \Ga\vdash \phi, \forall n>f(\phi,\ep), \Pj_n(\phi) >1-\ep$, then $f$ is uncomputable.
+
+Otherwise, you can use $f$ to design an algorithm that tells whether $\Ga\vdash \phi$. (Falsify $\phi$ by finding $n>f(\phi,\rc b)$ and $\Pj_n(\phi)\le 1-\rc b$.
+
+If $D$ does not eventually spew out a theorem $\phi$, then there's no guarantee of convergence for $\phi$?
+
 
 ## Extended paper
 

@@ -1,7 +1,7 @@
 ---
 title: Variational Bayes
-published: 2016-12-28
-modified: 2016-12-28
+published: 2017-02-06
+modified: 2017-02-06
 tags: neural nets
 type: notes
 showTOC: True
