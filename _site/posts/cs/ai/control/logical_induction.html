@@ -108,6 +108,9 @@
  <li><a href="#runtime-and-convergence">Runtime and convergence</a></li>
  <li><a href="#selected-proofs">Selected proofs</a></li>
  </ul></li>
+ <li><a href="#discussion">Discussion</a><ul>
+ <li><a href="#open-problems">Open problems</a></li>
+ </ul></li>
  <li><a href="#misc">Misc</a><ul>
  <li><a href="#extended-paper">Extended paper</a></li>
  </ul></li>
@@ -161,7 +164,7 @@
 <li>Define evaluation of a value function on a <span class="math inline">\(\mathcal F\)</span>-combination, <span class="math inline">\((S\to [0,1]) \times (\mathcal F^{\opl(S\cup \{1\})}) \to \mathcal F\)</span> in the natural way, sending <span class="math inline">\(\phi\)</span> to <span class="math inline">\(\mathbb V(\phi)\)</span> and extending by linearity. (<span class="math inline">\(\mathbb V(1)=1\)</span>.)</li>
 </ul></li>
 <li><span class="math inline">\(\ol T\)</span> <strong>exploits</strong> <span class="math inline">\(\mathbb V\)</span> relative to a deductive process <span class="math inline">\(\ol D\)</span> if <span class="math display">\[
-\set{\mathbb W\pa{\sumz in \mathbb V(_i(T_i))}}{n\in \N^+, \mathbb W\in PC(D_n)}
+\set{\mathbb W\pa{\sumz in \mathbb V_i(T_i)}}{n\in \N^+, \mathbb W\in PC(D_n)}
 \]</span> is bounded below, but not bounded above.<a href="#fn3" class="footnoteRef" id="fnref3"><sup>3</sup></a> This set is the set of <strong>plausible assessments</strong> of net worth. “The trader can make unbounded returns with bounded risk.”
 <ul>
 <li>Ex. if PA proves <span class="math inline">\(\phi\vee \psi\)</span>, then a trader who buys <span class="math inline">\(\phi,\psi\)</span> at combined price <span class="math inline">\(&lt;1\)</span> exploits the market.<a href="#fn4" class="footnoteRef" id="fnref4"><sup>4</sup></a></li>
@@ -354,17 +357,108 @@ LIA_n := \text{MarketMaker}_n(\text{TradingFirm}_n^{\ol D}(LIA_{\le n-1}), LIA_{
 <h3 id="runtime-and-convergence">Runtime and convergence</h3>
 <p>Tradeoff between runtime of <span class="math inline">\(\Pj_n\)</span> as function of <span class="math inline">\(n\)</span> and how quickly <span class="math inline">\(\Pj_n(\phi) \to \Pj_\iy(\phi)\)</span>.</p>
 <h3 id="selected-proofs">Selected proofs</h3>
+<p>Idea: if a market doesn’t satisfy nice properties, then there are ec traders taking advantage of this.</p>
 <ul>
 <li>Convergence: <span class="math inline">\(\Pj_\iy(\phi):=\limn \Pj_n(\phi)\)</span> exists.
 <ul>
-<li>Proof sketch: If <span class="math inline">\(\ol\Pj\)</span> never makes up its mind about <span class="math inline">\(\phi\)</span> then it can be exploited by a trader that buys at <span class="math inline">\(&lt;p-\ep\)</span> and sells at <span class="math inline">\(&gt;p+\ep\)</span>.</li>
+<li>Proof sketch: If <span class="math inline">\(\ol\Pj\)</span> never makes up its mind about <span class="math inline">\(\phi\)</span> then it can be exploited by a trader that buys at <span class="math inline">\(&lt;p-\ep\)</span> and sells at <span class="math inline">\(&gt;p+\ep\)</span>. (cf. <a href="../../../../posts/math/probability/martingales.html#martingales-almost-sure-convergence">upcrossing inequality</a>) Technicalities
+<ul>
+<li>Use a continuous indicator function.</li>
+<li>Need to track net <span class="math inline">\(\phi\)</span>-shares bought (holdings <span class="math inline">\(H_n\)</span>). Don’t buy too many, so maintain bounded risk. (E.g. Cap at 1 at all times.)</li>
 </ul></li>
+</ul></li>
+<li>Limit coherence:
+<ul>
+<li>Show that 3 properties are satisfied:
+<ul>
+<li><span class="math inline">\(\Ga \vdash \phi\implies \Pj_\iy(\phi)=1\)</span>.</li>
+<li><span class="math inline">\(\Ga \vdash \neg \phi\implies \Pj_\iy(\phi)=0\)</span>.</li>
+<li><span class="math inline">\(\Ga \vdash \neg(\phi\wedge \psi)\implies \Pj_\iy(\phi\vee \psi) = \Pj_\iy(\phi)+\Pj_\iy(\psi)\)</span>.</li>
+<li>Otherwise, we can construct a trader taking advantage of this “inconsistency”.</li>
+</ul></li>
+<li>Gaifman showed that these properties imply that <span class="math inline">\(\Pj\)</span> extends to a probability measure. (<a href="https://en.wikipedia.org/wiki/Kolmogorov_extension_theorem">Kolmogorov extension</a> over <span class="math inline">\(\{0,1\}^S\)</span>?)</li>
+<li>It’s important here that the trader considers PC worlds—over PC worlds, these trading strategies are bounded below. (More generally, if you allow other computable transformations, I think what happens is that <span class="math inline">\(\Pj_\iy\)</span> will be guaranteed to respect those transformations.)</li>
+</ul></li>
+<li>Non-dogmatism
+<ul>
+<li>Proof that if <span class="math inline">\(\Ga\not\vdash \neg \phi\)</span>, then <span class="math inline">\(\Pj_\iy(\phi)&gt;0\)</span>. Otherwise, for every <span class="math inline">\(k\)</span>, make sure the trader buys one share of <span class="math inline">\(\phi\)</span> for price <span class="math inline">\(\le 2^{-k}\)</span>.</li>
+<li>Idea: we can have <span class="math inline">\(\sum a_k 2^{-k}\)</span> bounded (spend a bounded amount of money in any world) but <span class="math inline">\(\sum a_k (1-2^{-k})\)</span> unbounded (potentially unbounded returns in the world where <span class="math inline">\(\phi\)</span> is true).</li>
+</ul></li>
+<li>Pseudorandom frequencies
+<ul>
+<li>Buy <span class="math inline">\(\phi_n\)</span> shares whenever price goes below <span class="math inline">\(p-\ep\)</span>. <span class="math inline">\(p\)</span> proportion pays out (by pseudorandomness—since there is by definition no way you can get something other than <span class="math inline">\(p\)</span> by a poly trader looking at <span class="math inline">\(\Pj\)</span>). Make trades continuous and budget.
+<ul>
+<li>(Q: this seems probabilistic—how do you prevent having bad luck for arbitrarily long bounded time?)</li>
+<li><strong>This seems more complicated than the rest; read this proof.</strong></li>
+</ul></li>
+</ul></li>
+<li>Provability induction
+<ul>
+<li>Use pseudorandomness with answer 1.</li>
+<li>Confusion: what if deduction process doesn’t hit all theorems?</li>
+</ul></li>
+</ul>
+<h2 id="discussion">Discussion</h2>
+<p>Compare with Solomonoff induction.</p>
+<blockquote>
+<p>This (uncomputable) algorithm is impractical, but has nevertheless been of theoretical use: its basic idiom-consult a series of experts, reward accurate predictions, and penalize complexity-is commonplace in statistics, predictive analytics, and machine learning.</p>
+</blockquote>
+<blockquote>
+<p>experts consulted by logical inductors don’t make predictions about what is going to happen next; instead, they observe the aggregated advice of all the experts (including themselves) and attempt to exploit inefficiencies in that aggregate model.</p>
+</blockquote>
+<blockquote>
+<p>consider the task of designing an AI system that reasons about the behavior of computer programs, or that reasons about its own beliefs and its own effects on the world. While practical algorithms for achieving these feats are sure to make use of heuristics and approximations, we believe scientists will have an easier time designing robust and reliable systems if they have some way to relate those approximations to theoretical algorithms that are known to behave well in principle</p>
+</blockquote>
+<p>3 takeaways.</p>
+<ol type="1">
+<li>Make predictions by combining advice from ensemble of experts (Solomonoff + Gaifman). Note LIA many only see sequence of sets from a theorem prover. (Ex. only see “#1 is true” “#2 is false or #3 is true”, etc.)
+<ul>
+<li>No meta-cognition (what to think about)</li>
+<li>Not practical—bad bounds</li>
+</ul></li>
+<li>Keep experts small. <strong>Experts do not predict the world</strong>. They identify inconsistencies even if they don’t know what’s actually happening.</li>
+<li>Make trading functions continuous.</li>
+</ol>
+<blockquote>
+<p>Showing traders the current market prices is not trivial, because the market prices on day n depend on which trades are made on day n, creating a circular dependency. Our framework breaks this cycle by requiring that the traders use continuous betting strategies, guaranteeing that stable beliefs can be found… something like continuity is strictly necessary, if the market is to have accurate beliefs about itself.</p>
+</blockquote>
+<p>This breaks paradoxes. Ex. <span class="math inline">\(\chi = &quot;\Pj_n(\chi)&lt;0.5&quot;\)</span>.</p>
+<p>Generality:</p>
+<ul>
+<li>not tied to any specific notion of efficiency.</li>
+<li>definition of trader flexible.</li>
+<li>not specific to domain of logic (all that is necessary is a set of atomic events that can be “true” or “false”, a language for talking about Boolean combinations of those atoms, and a deductive process that asserts things about those atoms over time)</li>
+</ul>
+<h3 id="open-problems">Open problems</h3>
+<ul>
+<li><ol start="15" type="1">
+<li>Decision rationality: target specific, decision-relevant claims; reason as efficiently as possible about those claims. (Ex. reason about one sentence in particular.) <!-- also steer deductive process? --></li>
+</ol></li>
+<li><ol start="16" type="1">
+<li>Answers counterpossible questions.</li>
+</ol>
+<ul>
+<li>Why? Need to reason what would happen if agent had output a vs. b.</li>
+</ul></li>
+<li><ol start="17" type="1">
+<li>Use of old evidence.</li>
+</ol>
+<blockquote>
+<p>a strong solution to the problem of old evidence isn’t just about finding new ways to use old data every so often; it’s about giving a satisfactory account of how to algorithmically generate new scientific theories.</p>
+</blockquote></li>
+<li><ol start="14" type="1">
+<li>Efficiency</li>
+</ol>
+<blockquote>
+<p>Imagine we pick some limited domain of reasoning, and a collection of constant- and linear-time traders. Imagine we use standard approximation methods (such as gradient descent) to find approximately-stable market prices that aggregate knowledge from those traders.</p>
+</blockquote></li>
 </ul>
 <h2 id="misc">Misc</h2>
 <p>“No dutch book” in expected utility theory, Bayesian probability theory</p>
 <p>Given a sequence of bits which follow a polytime generable pattern, will it learn it in the limit?</p>
 <p>Limitation (5.5.1): If <span class="math inline">\(\ol\Pj\)</span> is a logical inductor over <span class="math inline">\(\Ga\)</span> representing computable functions, <span class="math inline">\(\forall \phi, \Ga\vdash \phi, \forall n&gt;f(\phi,\ep), \Pj_n(\phi) &gt;1-\ep\)</span>, then <span class="math inline">\(f\)</span> is uncomputable.</p>
 <p>Otherwise, you can use <span class="math inline">\(f\)</span> to design an algorithm that tells whether <span class="math inline">\(\Ga\vdash \phi\)</span>. (Falsify <span class="math inline">\(\phi\)</span> by finding <span class="math inline">\(n&gt;f(\phi,\rc b)\)</span> and <span class="math inline">\(\Pj_n(\phi)\le 1-\rc b\)</span>.</p>
+<p>If <span class="math inline">\(D\)</span> does not eventually spew out a theorem <span class="math inline">\(\phi\)</span>, then there’s no guarantee of convergence for <span class="math inline">\(\phi\)</span>?</p>
 <h3 id="extended-paper">Extended paper</h3>
 <ul>
 <li>In what sense is self-trust impossible in formal logic? p. 8</li>
