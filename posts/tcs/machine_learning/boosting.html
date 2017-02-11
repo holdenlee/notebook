@@ -10,7 +10,7 @@
   <meta name="description" content="Holden Lee's Research Notebook">
   <meta name="author" content="Holden Lee">
     
-  <title>Stanford quals</title>
+  <title>Boosting</title>
 
   <!-- Bootstrap core CSS -->
   <link href="../../../bootstrap/css/bootstrap.min.css" rel="stylesheet">
@@ -70,96 +70,75 @@
 <div class="container">
   <div id="content">
     <div class="page header">
-      <h1>Stanford quals</h1>
+      <h1>Boosting</h1>
     </div>
     <div class="info">
       
        
-        <p>Posted: 2016-06-29 
-          , Modified: 2016-06-29 
+        <p>Posted: 2017-02-08 
+          , Modified: 2017-02-08 
 	</p>
       
-       <p>Tags: <a href="../../../tags/none.html">none</a></p> 
+       <p>Tags: <a href="../../../tags/Boosting.html">Boosting</a></p> 
     </div>
     
   </div>
   <!--/div-->
 
   <div class="toc"> <ul>
- <li><a href="#supervised-learning-1">Supervised learning [1]</a></li>
- <li><a href="#unsupervised-learning-1">Unsupervised learning [1]</a></li>
+ <li><a href="#weak-learnability">Weak learnability</a></li>
+ <li><a href="#boosting-problem">Boosting problem</a></li>
+ <li><a href="#adaboost">AdaBoost</a></li>
  </ul> </div>
 
   <div class="blog-main">
-    <p>(from Jacob’s notes on Stanford quals)</p>
-<h2 id="supervised-learning-1">Supervised learning [1]</h2>
-<p><a href="http://cs229.stanford.edu/materials.html">CS229</a></p>
+    <p>Ref:</p>
 <ul>
-<li>Perceptron, logistic regression, SVMs</li>
-<li>Kernel methods, Gaussian processes</li>
-<li><a href="boosting.html">Boosting</a> (AdaBoost)
-<ul>
-<li>What is the convergence rate?
-<ul>
-<li><span class="math inline">\(\exp(-\sum_{t=1}^T \gamma_t^2)\)</span></li>
-<li>Key property: <em>adaptive</em></li>
-</ul></li>
-<li>What problems can it be applied to?
-<ul>
-<li>binary classification on fixed dataset</li>
-</ul></li>
+<li>Ch. 10 of <a href="http://www.cs.huji.ac.il/~shais/UnderstandingMachineLearning">Machine learning theory and algorithms</a></li>
 <li><a href="http://cseweb.ucsd.edu/~yfreund/papers/IntroToBoosting.pdf">notes</a></li>
-</ul></li>
-<li><a href="cart.html">Decision trees, random forests</a>
-<ul>
-<li>Bagging (given subset of size <span class="math inline">\(N\)</span>, create many versions of the dataset by subsampling <span class="math inline">\(N\)</span> things with replacement repeatedly)</li>
-<li>For each of these versions, also subsample <span class="math inline">\(\sqrt{d})\)</span> of the features to use for the decision tree</li>
-</ul></li>
-<li>Neural networks</li>
-<li>Linear regression</li>
-<li>Regularization: L1, L2 and their properties</li>
+<li>0306 and 0311 in COS511 lectures</li>
 </ul>
-<h2 id="unsupervised-learning-1">Unsupervised learning [1]</h2>
-<p><a href="http://cs229.stanford.edu/materials.html">CS229</a></p>
+<p>Generalization of linear predictors to address 2 issues</p>
 <ul>
-<li><a href="matrices/k-means.html">K-means</a></li>
-<li><a href="matrices/dimensionality_reduction.html">Linear dimension reduction</a> PCA, CCA, factor analysis, ICA
-<ul>
-<li>What is PCA / what is it used for?</li>
-<li>Given input dataset, assuming it’s elliptical, finds the principle axes of the ellipse
-<ul>
-<li>In more statistical language, this finds a low-dimensional representation that explains as much of the variance as possible</li>
-</ul></li>
-<li>Can be computed by just taking SVD of covariance matrix</li>
-<li>Typically we mean-center first</li>
-<li>Sometimes want to do other scalings but no clear consensus on the best one</li>
-<li><a href="matrices/cca.html">CCA</a> What is CCA / what is it used for?</li>
-<li>Same intuition as PCA, but wants to find cross-correlations between two sets of variables (X and Y)</li>
-<li>Obtained by taking singular vectors of <span class="math inline">\(\Cov(X,X)^{\rc 2}\Cov(X,Y)Cov(Y,Y)^{-\rc2}\)</span>.</li>
-<li>?Isn’t this used for semi-supervised learning?
-<ul>
-<li>?E.g. given two sets of features, use CCA as a regularizer.</li>
-</ul></li>
-<li><a href="matrices/factor-analysis.html">Factor analysis</a> What is factor analysis / what is it used for?</li>
-<li>Basically, this is just matrix factorization</li>
-<li>Often allows more domain knowledge to be incorporated</li>
-<li><a href="matrices/ica.html">ICA</a> What is ICA / what is it used for?</li>
-<li>Blind source separation</li>
-<li>Tries to break into independent signals</li>
-<li>Often done by maximizing non-gaussianity of signals</li>
-</ul></li>
-<li>EM</li>
-<li>What theoretical property does EM satisfy?
-<ul>
-<li>Maximizes lower bound <span class="math inline">\(\log p(x) - KL(q(z|x) || p(z|x))\)</span></li>
-</ul></li>
-<li>What are the general updates?
-<ul>
-<li>Compute expectation of log-likelihood under current model</li>
-<li>Minimize expectation</li>
-<li>Sort of like iteratively approximating setting the gradient to zero</li>
-</ul></li>
+<li>bias-complexity tradeoff (smooth control)</li>
+<li>computational complexity of learning (amplify accuracy of weak learner - ERM can be hard)</li>
 </ul>
+<p>AdaBoost relies on the family of hypothesis classes obtained by composing a linear predictor on top of simple classes.</p>
+<h2 id="weak-learnability">Weak learnability</h2>
+<p><span class="math inline">\(C\)</span> is strongly PAC-learnable by <span class="math inline">\(A\)</span> if:</p>
+<ul>
+<li><span class="math inline">\(\forall\)</span> distribution <span class="math inline">\(D\)</span> over <span class="math inline">\(X\)</span>,</li>
+<li><span class="math inline">\(\forall c\in C\)</span></li>
+<li><span class="math inline">\(\forall \ep&gt;0\)</span></li>
+<li><span class="math inline">\(\forall \de&gt;0\)</span>,</li>
+<li><span class="math inline">\(A\)</span>, given <span class="math inline">\(m=\poly(\rc\ep,\rc \de)\)</span> examples, computes <span class="math inline">\(h\)</span> with <span class="math inline">\(\Pj[err(h)\le \ep] \ge 1-\de\)</span>.</li>
+</ul>
+<p><span class="math inline">\(C\)</span> is weakly PAC-learnable by <span class="math inline">\(A\)</span> if:</p>
+<ul>
+<li><span class="math inline">\(\exists \ga &gt;0\)</span></li>
+<li><span class="math inline">\(\forall\)</span> distribution <span class="math inline">\(D\)</span> over <span class="math inline">\(X\)</span>,</li>
+<li><span class="math inline">\(\forall c\in C\)</span></li>
+<li><span class="math inline">\(\forall \de&gt;0\)</span></li>
+<li><span class="math inline">\(A\)</span>, given <span class="math inline">\(m=\poly(\rc\de)\)</span> examples, computes <span class="math inline">\(h\)</span> with <span class="math inline">\(\Pj[err(h)\le \rc2-\ga] \ge 1-\de\)</span>.</li>
+</ul>
+<p>[Q: what is an explicit example of a provable weak learner?]</p>
+<p>Q: Is weak learning equivalent to strong learning?</p>
+<p>A: Yes if you increase the hypothesis class.</p>
+<h2 id="boosting-problem">Boosting problem</h2>
+<p>Given <span class="math inline">\((x_i,y_i)\)</span> with <span class="math inline">\(y_i\in \{-1,+1\}\)</span> and access to a weak learner <span class="math inline">\(A\)</span>, find <span class="math inline">\(H\)</span> such <span class="math inline">\(\Pj(err_D(H)\le \ep)\ge 1-\de\)</span> (learn strongly).</p>
+<h2 id="adaboost">AdaBoost</h2>
+<p>Idea: produce different distributions <span class="math inline">\(D\)</span> from <span class="math inline">\(\mathcal D\)</span>. Pick distributions at each round that provide info about points that are hard to learn.</p>
+<ul>
+<li>At each step, run weak learner on <span class="math inline">\(D_t\)</span>. Suppose error is <span class="math display">\[err_{D_t}(h_t) = \rc2-\ga_t=\ep_t.\]</span></li>
+<li>Set <span class="math inline">\(\al_t=\ln \pf{1-\ep_t}{\ep_t}\)</span>. (If error is close to <span class="math inline">\(\rc2\)</span>, this is small.)</li>
+<li>Update distribution:
+<span class="math display">\[\begin{align}
+D_1(i) &amp;=\rc m\\
+D_{t+1}(i) &amp;= \fc{D_t(i)}{Z_t}e^{\one_{h_t(x_i)=y_i}\al_t}
+\end{align}\]</span></li>
+<li>Return <span class="math inline">\(H(x) = \sgn \pa{\sumo tT \al_t h_t(x)}\)</span>.</li>
+</ul>
+<p>Q: Can we unify this with multiplicative weights? This seems like some kind of dual. (Check multiplicative weights paper?)</p>
 
   </div>
 

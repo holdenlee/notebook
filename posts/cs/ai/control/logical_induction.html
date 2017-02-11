@@ -100,6 +100,9 @@
  </ul></li>
  </ul></li>
  <li><a href="#extended-paper-intro">Extended paper: Intro</a></li>
+ <li><a href="#properties-2">Properties</a><ul>
+ <li><a href="#others-not-covered-before">Others not covered before</a></li>
+ </ul></li>
  <li><a href="#construction">Construction</a><ul>
  <li><a href="#marketmaker">MarketMaker</a></li>
  <li><a href="#budgeter">Budgeter</a></li>
@@ -210,7 +213,10 @@
 <li>Provability induction: Let <span class="math inline">\(\ol{\phi}\)</span> be e.c. sequence of theorems. Then <span class="math display">\[
 \Pj_n(\phi_n) \simeq_n 1
 \]</span> For disprovable sentences, <span class="math inline">\(\simeq_n0\)</span>. (Analogy: Ramanujan and Hardy)</li>
-<li>Preemptive learning: For e.c. sequence <span class="math inline">\(\ol\phi\)</span>, <span class="math inline">\(\liminf_{n\to \iy}\Pj_n(\phi_n) = \liminf_{n\to \iy} \sup_{m\ge n} \Pj_m(\phi_n).\)</span> and similarly for inf/sup switched.</li>
+<li>Preemptive learning: For e.c. sequence <span class="math inline">\(\ol\phi\)</span>, <span class="math inline">\(\liminf_{n\to \iy}\Pj_n(\phi_n) = \liminf_{n\to \iy} \sup_{m\ge n} \Pj_m(\phi_n).\)</span> and similarly for inf/sup switched.
+<ul>
+<li>if <span class="math inline">\(P\)</span> always eventually pushes <span class="math inline">\(\phi_n\)</span> up to a probability at least <span class="math inline">\(p\)</span>, then it will learn to assign each <span class="math inline">\(\phi_n\)</span> a probability at least <span class="math inline">\(p\)</span> in a timely manner (and similarly for least upper bounds). (p.26 in main paper)</li>
+</ul></li>
 <li>Learning pseudorandom frequencies. <span class="math inline">\(\ol{\phi}\)</span> of decidable sentences is <strong>pseudorandom with frequency p</strong> wrt set of divergent weightings <span class="math inline">\(S\)</span> if for all <span class="math inline">\(\ol w\in S\)</span>, <span class="math inline">\(\limn \fc{\sumo in w_i \one_{\phi_i \text{ is theorem in }\Ga}}{\sumo in w_i}=p\)</span>. For <span class="math inline">\(\ol\phi\)</span> e.c., if <span class="math inline">\(\ol\phi\)</span> is pseudorandom over <em>all <span class="math inline">\(\ol\Pj\)</span>-generable divergent weightings</em>, <span class="math inline">\(\Pj_n(\phi_n) \simeq_n p\)</span>.
 <ul>
 <li>Think of <span class="math inline">\(\ol{\Pj}\)</span>-generable as meaning: trading strategies you could come up with looking at past history of beliefs. This still doesn’t fit my picture of traders as adversaries, rather than unkind nature.</li>
@@ -293,6 +299,103 @@
 <li>Algorithm doesn’t satisfy 13, 14, 15. 16, 17 are unclear.</li>
 <li>1 and 12 are key.</li>
 </ul>
+<h2 id="properties-2">Properties</h2>
+<ol type="1">
+<li>Convergence and Coherence: In the limit, the prices of a logical inductor describe a belief state which is fully logically consistent, and represents a probability distribution over all consistent worlds.</li>
+<li>Timely Learning: For any efficiently computable sequence of theorems, a logical inductor learns to assign them high probability in a timely manner, regardless of how difficult they are to prove. (And similarly for assigning low probabilities to refutable statements.)</li>
+<li>Learning Statistical Patterns: If a sequence of sentences appears pseudorandom to all reasoners with the same runtime as the logical inductor, it learns the appropriate statistical summary (assigning, e.g., 10% probability to the claim “the nth digit of <span class="math inline">\(\pi\)</span> is a 7” for large n, if digits of <span class="math inline">\(\pi\)</span> are actually hard to predict).</li>
+<li>Calibration and Unbiasedness: Logical inductors are well-calibrated and, given good feedback, unbiased.</li>
+<li>Learning Logical Relationships: Logical inductors inductively learn to respect logical constraints that hold between different types of claims, such as by ensuring that mutually exclusive sentences have probabilities summing to at most 1.</li>
+<li>Non-Dogmatism: The probability that a logical inductor assigns to an independent sentence <span class="math inline">\(\phi\)</span> is bounded away from 0 and 1 in the limit, by an amount dependent on the complexity of <span class="math inline">\(\phi\)</span>. In fact, logical inductors strictly dominate the universal semimeasure in the limit. This means that we can condition logical inductors on independent sentences, and when we do, they perform empirical induction.</li>
+<li>Conditionals: Given a logical inductor P, the market given by the conditional probabilities <span class="math inline">\(P(- | \psi)\)</span> is a logical inductor over <span class="math inline">\(\ol D\)</span> extended to include <span class="math inline">\(\psi\)</span>. Thus, when we condition logical inductors on new axioms, they continue to perform logical induction.</li>
+<li>Expectations: Logical inductors give rise to a well-behaved notion of the expected value of a logically uncertain variable.</li>
+<li>Trust in Consistency: If the theory <span class="math inline">\(\Ga\)</span> underlying a logical inductor’s deductive process is expressive enough to talk about itself, then the logical inductor learns inductively to trust <span class="math inline">\(\Ga\)</span>.</li>
+<li>Reasoning about Halting: If there’s an efficient method for generating programs that halt, a logical inductor will learn in a timely manner that those programs halt (often long before having the resources to evaluate them). If there’s an efficient method for generating programs that don’t halt, a logical inductor will at least learn not to expect them to halt for a very long time.</li>
+<li>Introspection: Logical inductors “know what they know”, in that their beliefs about their current probabilities and expectations are accurate.</li>
+<li>Self-Trust: Logical inductors trust their future beliefs.</li>
+</ol>
+<h3 id="others-not-covered-before">Others not covered before</h3>
+<ul>
+<li>4.2.3 persistence of knowledge: If <span class="math inline">\(\ol\Pj\)</span> assigns <span class="math inline">\(\ol p\)</span> to <span class="math inline">\(\ol\phi\)</span> in the limit, then <span class="math inline">\(\ol\Pj\)</span> assigns probability near <span class="math inline">\(p_n\)</span> to <span class="math inline">\(\phi_n\)</span> at times <span class="math inline">\(m\ge n\)</span>.</li>
+<li>4.3 Calibration and unbiasedness is hard to check.
+<ul>
+<li>Check conditional rather than marginal probabilities.</li>
+<li><ol type="a">
+<li>restrict our consideration to sequences where the average frequency of truth converges; or</li>
+</ol></li>
+<li><ol start="2" type="a">
+<li>look at subsequences of <span class="math inline">\(\phi\)</span> where P has “good feedback” about the truth values of previous elements of the subsequence, in a manner defined below.</li>
+</ol></li>
+<li>4.3.3 Recurring calibration: In any sequence, consider the theorems that were assigned probabilities in <span class="math inline">\((a,b)\)</span>. (<span class="math inline">\(a&lt;\Pj_i(\phi_i)&lt;b\)</span>.) This sequence has a limit point in <span class="math inline">\([a,b]\)</span>.
+<ul>
+<li>If the frequency of truth diverges (like <span class="math inline">\(1-2+4-8...\)</span>) then it’s still well-calibrated infinitely often.</li>
+</ul></li>
+<li>A trader can cheat; we want unbiasedness: no efficient method for detecting bias in beliefs.</li>
+<li>4.3.6 Recurring unbiasedness: For any decidable ec <span class="math inline">\(\ol\phi\)</span>, any generable divergent weighting, weighted average of <span class="math inline">\(\Pj_i(\phi_i) - Thm_\Ga(\phi)\)</span> has limit point 0.</li>
+<li>Bias converges when weighting is sparse enough so that <span class="math inline">\(\ol\Pj\)</span> can gather sufficient feedback between guesses.</li>
+<li>4.3.8 Unbiasedness from feedback: deferral <span class="math inline">\(f\)</span>. for <span class="math inline">\(Supp \ol w\subeq \im f\)</span>, <span class="math inline">\(Thm_\Ga(\phi_{f(n)})\)</span> computable in <span class="math inline">\(O(f(n+1))\)</span> time. (Figure out how previous elements turned out before forced to predict the next one.)</li>
+</ul></li>
+<li>4.4 Learning statistical patterns
+<ul>
+<li>Weaken pseudorandom.</li>
+<li><span class="math inline">\(\ol w\)</span> is <span class="math inline">\(f\)</span>-patient if weight it places between <span class="math inline">\(n\)</span>, <span class="math inline">\(f(n)\)</span> is bounded.</li>
+<li>4.4.4. <span class="math inline">\(\ol p\)</span>-varied pseudorandom sequence: Relative to set <span class="math inline">\(S\)</span> of <span class="math inline">\(f\)</span>-patient divergent weightings, <span class="math inline">\(\E_w(p_i-Thm_\Ga(\phi_i))\simeq 0_n\)</span>.</li>
+<li>4.4.5. If there is some <span class="math inline">\(f\)</span> such that <span class="math inline">\(\ol\phi\)</span> is <span class="math inline">\(\ol p\)</span>-varied pseudorandom, <span class="math inline">\(\Pj_n(\phi_n)\simeq_np_n\)</span>.</li>
+<li>(? where is assumption of <span class="math inline">\(n\)</span> being decided before <span class="math inline">\(n+1\)</span> presented?)</li>
+</ul></li>
+<li>4.5 Logical relationships
+<ul>
+<li>4.5.1 Exclusive-exhaustive</li>
+<li>4.5.5 Affine coherence: learns in a timely manner to respect all linear inequalities that actually hold between sentences, so long as those relationships can be enumerated in polynomial time.</li>
+<li>(is BCS bound for all <span class="math inline">\(\Pj\)</span>?)</li>
+<li>4.5.6 Persistence of affine knowledge.</li>
+<li>4.5.7. Affine preemptive</li>
+<li>… (skip)</li>
+</ul></li>
+<li>4.6 Non-dogmatism
+<ul>
+<li>4.6.1 Closure under finite perturbations</li>
+<li>Non-dogmatism doesn’t guarantee reasonable beliefs about theories</li>
+<li>Uniform non-dogmatism: For any computably enumerable sequence such that <span class="math inline">\(\Ga\cup \ol\phi\)</span> is consistent, there is <span class="math inline">\(\ep&gt;0\)</span>, <span class="math inline">\(\forall n\)</span>, <span class="math inline">\(\Pj_\iy(\phi_n)\ge \ep\)</span>.</li>
+<li>Domination, strict domination of universal semimeasure. (Logical inductors assign positive probabilities to set of completions of theories, universal semimeasures do not.)</li>
+</ul></li>
+<li>4.7 Conditionals
+<ul>
+<li>Define <span class="math inline">\(\mathbb V(\phi|\psi)\)</span>. <span class="math inline">\(=1\)</span> if <span class="math inline">\(\mathbb V(\phi\wedge \psi)\ge \mathbb V(\psi)\)</span>.</li>
+<li>4.7.2 Closure under conditioning. <span class="math inline">\(\Pj_n(-|\bigwedge_{i\le n}\psi_i)\)</span> is logical inductor over <span class="math inline">\(\Ga\cup \Psi\)</span>.</li>
+</ul></li>
+<li>4.8 Expectations
+<ul>
+<li>Idea of expectation definition: integration by parts naturally puts in terms of <span class="math inline">\(\mathbb V\)</span>.</li>
+<li>4.8.6 Expectation of indicators.</li>
+</ul></li>
+<li>4.9 Trust in consistency
+<ul>
+<li><span class="math inline">\(Con(\Ga')(\nu)\)</span> is “There is no proof of <span class="math inline">\(\perp\)</span> from <span class="math inline">\(\ol{\Ga'}\)</span> with <span class="math inline">\(\le \nu\)</span> symbols.”</li>
+<li>Belief in finitistic consistency: for <span class="math inline">\(f\)</span> computable, <span class="math inline">\(\Pj_n(Con(\Ga)(``f(n)&quot;))\simeq_n1\)</span>.</li>
+<li>Learns to trust PA inductively.</li>
+<li>Also true if replace <span class="math inline">\(\Ga\)</span> with <span class="math inline">\(\Ga'\)</span> any recursively axiomatizable consistent theory.</li>
+<li>4.9.4 Disbelief in (sequence of) inconsistent theories.</li>
+</ul></li>
+<li>4.10 Halting
+<ul>
+<li>4.10.1/2. Learn (ec) halting patterns “<span class="math inline">\(m_n\)</span> halts on input <span class="math inline">\(x_n\)</span>” and nonhalting patterns.</li>
+<li>Only apply to cases where <span class="math inline">\(\Ga\)</span> can prove machines halt or don’t. Else,</li>
+<li>4.10.3 learning not to anticipate halting: in <span class="math inline">\(f(n)\)</span> steps.</li>
+<li>It is impossible to tell whether or not a Turing machine halts in full generality, but for large classes of well-behaved computer programs (such as e.c. sequences of halting programs and provably non-halting programs) it’s quite possible to develop reasonable and accurate beliefs</li>
+</ul></li>
+<li>4.11 Introspection
+<ul>
+<li>Expectations of probabilities, iterated expectations</li>
+</ul></li>
+<li>4.12 Self-trust
+<ul>
+<li>4.12.1 Expected future expectations: current expectation on day <span class="math inline">\(n\)</span> already equal to expected value in <span class="math inline">\(f(n)\)</span> days.</li>
+<li>4.12.2/3: No expected net update under conditionals.</li>
+</ul></li>
+</ul>
+<p>[Q: can SoS give reasonable estimates of probabilities to a given statement given a web of propositional statements?]</p>
+<p>[Don’t want traders to do more computation beyond propositional correctness… they can still utilize eventual theoremhood by not keeping too much open.]</p>
 <h2 id="construction">Construction</h2>
 <p>Given deductive process <span class="math inline">\(\ol D\)</span>, construct computable belief sequence <span class="math inline">\(\ol{LIA}\)</span>.</p>
 <ul>

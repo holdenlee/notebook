@@ -99,6 +99,7 @@
  <li><a href="#infogan">InfoGAN</a></li>
  <li><a href="#adagan-boosting-generative-models">AdaGAN: Boosting Generative Models</a><ul>
  <li><a href="#minimizing-f-divergence-with-additive-mixtures">Minimizing f-divergence with additive mixtures</a></li>
+ <li><a href="#adagan-derivation">AdaGAN derivation</a></li>
  </ul></li>
  <li><a href="#two-views-of-gans">Two views of GANs</a></li>
  <li><a href="#adversarial-training-with-maximum-mean-discrepancy">Adversarial training with maximum mean discrepancy</a></li>
@@ -209,6 +210,7 @@ I[x_{\text{fake}},c]\ge \EE_{x_{\text{fake}}\sim G(z,c), c\sim C|x}[\ln \fc{Q(c|
 \]</span></p>
 <p>Example: for MNIST, have 10 known labels and 2 latent variables which turn out to represent slant and width.</p>
 <h2 id="adagan-boosting-generative-models">AdaGAN: Boosting Generative Models</h2>
+<p><a href="../boosting.html">Background on boosting</a></p>
 <p>GANs suffer from missing modes: the model doesn’t produce examples in certain regions.</p>
 <p>Idea: combine multiple generative models into a mixture. Each step, focus on examples that the mixture has not been able to properly generate, and add another model addressing those.</p>
 <p>This is a meta-algorithm which can be used with any implementation of generative models (e.g. GANs).</p>
@@ -216,12 +218,78 @@ I[x_{\text{fake}},c]\ge \EE_{x_{\text{fake}}\sim G(z,c), c\sim C|x}[\ln \fc{Q(c|
 <p><span class="math inline">\(f\)</span>-divergence is <span class="math display">\[
 D_f(Q||P):=\int f\pa{\dd QP (x)}\,dP(x)
 \]</span> Note <span class="math inline">\(D_f(P||Q) = D_{f^{\circ}}(Q||P)\)</span> where <span class="math inline">\(f^{\circ}(x) = xf(1/x)\)</span>. Adding a multiple of <span class="math inline">\(x-1\)</span> doesn’t change.</p>
+<p><span class="math inline">\(f\)</span> is Hilbertian if <span class="math inline">\(\sqrt{D_f(P||Q)}\)</span> satisfies the triangle inequality (ex. JSD, H, TV)</p>
 <p>Examples:</p>
 <ul>
-<li>KL <span class="math inline">\(-ln x\)</span></li>
+<li>KL <span class="math inline">\(-\ln x\)</span></li>
 <li>reverse KL <span class="math inline">\(x\ln x\)</span></li>
 <li>TV <span class="math inline">\(|x-1|\)</span></li>
 <li>JSD <span class="math inline">\(-(x+1)\ln \fc{x+1}2 + x\ln x\)</span></li>
+</ul>
+<h3 id="adagan-derivation">AdaGAN derivation</h3>
+<ul>
+<li>At each step we want to combine a mixture of the current distribution <span class="math inline">\(P_g\)</span> with the new distribution <span class="math inline">\(Q\)</span> to minimize divergence with real distribution <span class="math inline">\(P_d\)</span> <span class="math display">\[
+\min_{Q\in \mathcal D} D_f((1-\be)P_g+\be Q||P_d).
+\]</span></li>
+<li>If we can get a constant factor closer at each step <span class="math display">\[
+D_f((1-\be)P_g + \be Q||P_d) \le c D_f(P_g||P_d)
+\]</span> then we can get exponential convergence.</li>
+<li>Difficulty, and where boosting comes in: we somehow need to focus attention on the mistakes.</li>
+<li>What is the optimal for <span class="math inline">\(Q_\be^*\)</span>? By calculation, (Theorem 1) <span class="math display">\[
+Q = \rc \be (\la^* P_d - (1-\be)P_g)_+
+\]</span> for some <span class="math inline">\(\la^*\)</span>.
+<ul>
+<li>How well does this optimum do? (Lemma 2) <span class="math display">\[
+D_f((1-\be)P_g+\be Q_\be^* ||P_d) \le D_f((1-\be)P_g + \be P_d||P_d) \le (1-\be)D_f(P_g||P_d).
+\]</span></li>
+</ul></li>
+<li>We show that it suffices to find <span class="math inline">\(Q\)</span> such that <span class="math display">\[D_f(Q||Q_\be^*)\le \ga D_f(P_g||P_d)\]</span> where <span class="math inline">\(Q_\be^*\)</span> is optimal for the objective.
+<ul>
+<li>Use a triangle-like inequality (Lemma 1 (10)): For Hilbertian metrics, <span class="math display">\[
+D_f((1-\be)P_g + \be Q||P_d) \le (\sqrt{\ga D_f(Q||R)} + \sqrt{D_f ((1-\be)P_g + \be R||P_d)})^2.
+\]</span></li>
+<li>Let <span class="math inline">\(R=Q_\be^*\)</span>. Corollary 3 and the calculation for <span class="math inline">\(R\)</span> then gives (Lemma 2) <span class="math display">\[
+D_f((1-\be) P_g + \be Q||P_d) \le (\sqrt{\ga \be} + \sqrt{1-\be})^2 D_f(P_g||P_d).
+\]</span>
+<ul>
+<li>Comment: this can be refined if <span class="math inline">\(\dd{P_g}{P_d}\)</span> is almost surely bounded (Lemma 3).</li>
+<li>Comment: this requires a pretty strong weak learner, because we need <span class="math inline">\(\ga &lt;\fc{\be}{4}\)</span> to get the coefficient <span class="math inline">\(&lt;1\)</span>. Often <span class="math inline">\(\be\to 0\)</span>.</li>
+</ul></li>
+</ul></li>
+<li>Hope is that GAN can estimate <span class="math inline">\(Q_\be^*\)</span>. How to estimate <span class="math inline">\(Q_\be^*\)</span>? We can reinterpret the expression for <span class="math display">\[Q_\be^*= \rc\be (\la^* P_d-(1-\be)P_g)_+\]</span> as reweighting the samples.
+<ul>
+<li>How does discriminator give an estimate for <span class="math inline">\(P_g\)</span>? As long as the optimal discriminator satisfies <span class="math display">\[ \dd{P_g}{P_d}(x) =h(D(x))\]</span> for some <span class="math inline">\(h\)</span>. Ex. for GAN <span class="math inline">\(h(y) = \fc{1-y}{y}\)</span>. Thus we get an estimate of <span class="math inline">\(\dd{P_g}{P_d}\)</span>.</li>
+<li>Think about <span class="math inline">\(dQ_\be^*\)</span> as giving a weighting over sample points. For point <span class="math inline">\(i\)</span>, <span class="math display">\[
+w_i = \fc{p_i}{\be}(\la^* - (1-\be)h(d_i))
+\]</span> where <span class="math inline">\(d_i\)</span> is the discriminator output on <span class="math inline">\(x_i\)</span>, <span class="math inline">\(p_i=\rc N\)</span>.</li>
+<li>Solving for <span class="math inline">\(\la^*\)</span> gives
+<span class="math display">\[\begin{align}
+I(\la) &amp;= \set{i}{\la &gt;(1-\be) h(d_i)}\\
+\la^* &amp;= \fc{\be}{\sum_{i\in I(\la^*)} p_i} \pa{1+\fc{1-\be}{\be} \sum_{i\in I(\la^*)} p_i h(d_i)}.
+\end{align}\]</span>
+This is in terms of <span class="math inline">\(\la^*\)</span>, but we can break this by noting that <span class="math inline">\(I(\la^*)\)</span> will contain <span class="math inline">\(k\)</span> smallest <span class="math inline">\(d_i\)</span>’s for some <span class="math inline">\(k\)</span>. Thus, initialize <span class="math inline">\(k=1\)</span>; while <span class="math inline">\((1-\be)h(d_k)\ge \la\)</span>, set <span class="math inline">\(k\leftarrow k+1\)</span> and <span class="math inline">\(\la \leftarrow \fc{\be}{\sumo ik p_i}(1+\fc{1-\be}\be \sumo ik p_ih(d_i))\)</span>.</li>
+</ul></li>
+<li>Mixture weights <span class="math inline">\(\be\)</span> can be constant, <span class="math inline">\(\be_t=\rc t\)</span> for equal weights, etc. (S3.2)</li>
+<li>Run GAN with modified weights at each step.</li>
+</ul>
+<p>An alternate analysis:</p>
+<ul>
+<li>Instead bound (Lemma 1 (9)) (note this doesn’t require Hilbertian) <span class="math display">\[
+D_f((1-\be)P_g + \be Q||P_d)\le 
+\be D(Q||R) + (1-\be) D_f\pa{P_g||\fc{P_d-\be R}{1-\be}}.
+\]</span></li>
+<li>Minimize this upper bound instead. Assume <span class="math inline">\(P_d(dP_g=0)&lt;\be\)</span>. (Theorem 2) <span class="math display">\[
+dQ_\be^{\dagger} = \rc\be (dP_d-\la^{\dagger} (1-\be)dP_g)_+
+\]</span></li>
+<li>The optimum satisfies (Lemma 2.2) <span class="math display">\[
+D_f\pa{P_g||\fc{P_d-\be Q_\be^{\dagger}}{1-\be}}\le D_f(P_g||P_d).
+\]</span></li>
+<li>If <span class="math inline">\(D_f(Q||Q_\be^{\dagger}) \le \ga D_f(P_g||P_d)\)</span> and <span class="math inline">\(P_d\pa{\dd{P_g}{P_d}=0}&lt;\be\)</span>, then <span class="math display">\[D_f((1-\be) P_g + \be Q||P_d)\le  (1-\be(1-\ga))D_f(P_g||P_d).\]</span></li>
+<li>The condition on <span class="math inline">\(\ga\)</span> is milder here. However, we need the extra condition that <span class="math inline">\(\be\)</span>&gt;(mass of true data missed by current model). (Else, need to increase the weight <span class="math inline">\(\be\)</span>!)</li>
+</ul>
+<p>Remarks:</p>
+<ul>
+<li>Convergence rate depends on the ratio of probability mass: logarithmic in <span class="math inline">\(\fc{dP_1}{dP_d}\)</span>. (Corollary 1)</li>
 </ul>
 <h2 id="two-views-of-gans">Two views of GANs</h2>
 <ol type="1">
