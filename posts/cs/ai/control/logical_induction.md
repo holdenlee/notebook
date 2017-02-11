@@ -125,6 +125,7 @@ $\ol q$ is **generable** from $\ol\Pj$ if there exists e.c. $\mathcal{EF}$-progr
 *   Preemptive learning: For e.c. sequence $\ol\phi$,
 	$\liminf_{n\to \iy}\Pj_n(\phi_n) = \liminf_{n\to \iy} \sup_{m\ge n} \Pj_m(\phi_n).$
 	and similarly for inf/sup switched.
+	*  if $P$ always eventually pushes $\phi_n$ up to a probability at least $p$, then it will learn to assign each $\phi_n$ a probability at least $p$ in a timely manner (and similarly for least upper bounds). (p.26 in main paper)
 *   Learning pseudorandom frequencies. $\ol{\phi}$ of decidable sentences is **pseudorandom with frequency p** wrt set of divergent weightings $S$ if for all $\ol w\in S$, $\limn \fc{\sumo in w_i \one_{\phi_i \text{ is theorem in }\Ga}}{\sumo in w_i}=p$. For $\ol\phi$ e.c., if $\ol\phi$ is pseudorandom over *all $\ol\Pj$-generable divergent weightings*, $\Pj_n(\phi_n) \simeq_n p$.
     * Think of $\ol{\Pj}$-generable as meaning: trading strategies you could come up with looking at past history of beliefs. This still doesn't fit my picture of traders as adversaries, rather than unkind nature.
 *   Affine coherence: Let $\ol A\in BCS(\ol\Pj)$.
@@ -204,7 +205,6 @@ You can use the logic to encode the computation of the market prices, i.e. $\ul{
 	* "Trust that if beliefs change, they must have changed for good reason"
 	* Roughly: If we ask $\ol\Pj$ what it believes about $\phi$ now if it learned it was going to believe $\phi$ wp $\ge p$ in the future, it will answer with probability $\ge p$. (Some subtlety with continuous indicators, paradoxical sentences.)
 	
-	
 [^p31]: How do polytime traders get access to prices if they are real numbers? Do they only get $\rc{\poly(n)}$ precision?
 
 # Extended paper: Intro
@@ -214,6 +214,79 @@ You can use the logic to encode the computation of the market prices, i.e. $\ul{
 * 1, 2, 13 cannot be satisfied simultaneously (why?). 1, 6, 13, weak 2 cannot be satisfied simultaneously. 
 * Algorithm doesn't satisfy 13, 14, 15. 16, 17 are unclear.
 * 1 and 12 are key.
+
+# Properties
+
+1. Convergence and Coherence: In the limit, the prices of a logical inductor describe a belief state which is fully logically consistent, and represents a probability distribution over all consistent worlds.
+2. Timely Learning: For any efficiently computable sequence of theorems, a logical inductor learns to assign them high probability in a timely manner, regardless of how difficult they are to prove. (And similarly for assigning low probabilities to refutable statements.)
+3. Learning Statistical Patterns: If a sequence of sentences appears pseudorandom to all reasoners with the same runtime as the logical inductor, it learns the appropriate statistical summary (assigning, e.g., 10% probability to the claim "the nth digit of $\pi$ is a 7" for large n, if digits of $\pi$ are actually hard to predict).
+4. Calibration and Unbiasedness: Logical inductors are well-calibrated and, given good feedback, unbiased.
+5. Learning Logical Relationships: Logical inductors inductively learn to respect logical constraints that hold between different types of claims, such as by ensuring that mutually exclusive sentences have probabilities summing to at most 1.
+6. Non-Dogmatism: The probability that a logical inductor assigns to an independent sentence $\phi$ is bounded away from 0 and 1 in the limit, by an amount dependent on the complexity of $\phi$. In fact, logical inductors strictly dominate the universal semimeasure in the limit. This means that we can condition logical inductors on independent sentences, and when we do, they perform empirical induction.
+7. Conditionals: Given a logical inductor P, the market given by the conditional probabilities $P(- | \psi)$ is a logical inductor over $\ol D$ extended to include $\psi$. Thus, when we condition logical inductors on new axioms, they continue to perform logical induction.
+8. Expectations: Logical inductors give rise to a well-behaved notion of the expected value of a logically uncertain variable.
+9. Trust in Consistency: If the theory $\Ga$ underlying a logical inductor's deductive process is expressive enough to talk about itself, then the logical inductor learns inductively to trust $\Ga$.
+10. Reasoning about Halting: If there's an efficient method for generating programs that halt, a logical inductor will learn in a timely manner that those programs halt (often long before having the resources to evaluate them). If there's an efficient method for generating programs that don't halt, a logical inductor will at least learn not to expect them to halt for a very long time.
+11. Introspection: Logical inductors "know what they know", in that their beliefs about their current probabilities and expectations are accurate.
+12. Self-Trust: Logical inductors trust their future beliefs.
+
+## Others not covered before
+
+* 4.2.3 persistence of knowledge: If $\ol\Pj$ assigns $\ol p$ to $\ol\phi$ in the limit, then $\ol\Pj$ assigns probability near $p_n$ to $\phi_n$ at times $m\ge n$.
+* 4.3 Calibration and unbiasedness is hard to check. 
+	* Check conditional rather than marginal probabilities.
+	* (a) restrict our consideration to sequences where the average frequency of truth converges; or 
+	* (b) look at subsequences of $\phi$ where P has "good feedback" about the truth values of previous elements of the subsequence, in a manner defined below.
+	* 4.3.3 Recurring calibration: In any sequence, consider the theorems that were assigned probabilities in $(a,b)$. ($a<\Pj_i(\phi_i)<b$.) This sequence has a limit point in $[a,b]$.
+		* If the frequency of truth diverges (like $1-2+4-8...$) then it's still well-calibrated infinitely often.
+	* A trader can cheat; we want unbiasedness: no efficient method for detecting bias in beliefs.
+	* 4.3.6 Recurring unbiasedness: For any decidable ec $\ol\phi$, any generable divergent weighting, weighted average of $\Pj_i(\phi_i) - Thm_\Ga(\phi)$ has limit point 0.
+	* Bias converges when weighting is sparse enough so that $\ol\Pj$ can gather sufficient feedback between guesses.
+	* 4.3.8 Unbiasedness from feedback: deferral $f$. for $Supp \ol w\subeq \im f$, $Thm_\Ga(\phi_{f(n)})$ computable in $O(f(n+1))$ time. (Figure out how previous elements turned out before forced to predict the next one.)
+* 4.4 Learning statistical patterns
+	* Weaken pseudorandom.
+	* $\ol w$ is $f$-patient if weight it places between $n$, $f(n)$ is bounded.
+	* 4.4.4. $\ol p$-varied pseudorandom sequence: Relative to set $S$ of $f$-patient divergent weightings, $\E_w(p_i-Thm_\Ga(\phi_i))\simeq 0_n$.
+	* 4.4.5. If there is some $f$ such that $\ol\phi$ is $\ol p$-varied pseudorandom, $\Pj_n(\phi_n)\simeq_np_n$.
+	* (? where is assumption of $n$ being decided before $n+1$ presented?)
+* 4.5 Logical relationships
+	* 4.5.1 Exclusive-exhaustive
+	* 4.5.5 Affine coherence: learns in a timely manner to respect all linear inequalities that actually hold between sentences, so long as those relationships can be enumerated in polynomial time.
+	* (is BCS bound for all $\Pj$?)
+	* 4.5.6 Persistence of affine knowledge.
+	* 4.5.7. Affine preemptive
+	* ... (skip)
+* 4.6 Non-dogmatism
+	* 4.6.1 Closure under finite perturbations
+	* Non-dogmatism doesn't guarantee reasonable beliefs about theories
+	* Uniform non-dogmatism: For any computably enumerable sequence such that $\Ga\cup \ol\phi$ is consistent, there is $\ep>0$, $\forall n$, $\Pj_\iy(\phi_n)\ge \ep$.
+	* Domination, strict domination of universal semimeasure. (Logical inductors assign positive probabilities to set of completions of theories, universal semimeasures do not.)
+* 4.7 Conditionals
+	* Define $\mathbb V(\phi|\psi)$. $=1$ if $\mathbb V(\phi\wedge \psi)\ge \mathbb V(\psi)$.
+	* 4.7.2 Closure under conditioning. $\Pj_n(-|\bigwedge_{i\le n}\psi_i)$ is logical inductor over $\Ga\cup \Psi$.
+* 4.8 Expectations
+	* Idea of expectation definition: integration by parts naturally puts in terms of $\mathbb V$.
+	* 4.8.6 Expectation of indicators.
+* 4.9 Trust in consistency
+	* $Con(\Ga')(\nu)$ is "There is no proof of $\perp$ from $\ol{\Ga'}$ with $\le \nu$ symbols."
+	* Belief in finitistic consistency: for $f$ computable, $\Pj_n(Con(\Ga)(``f(n)"))\simeq_n1$.
+	* Learns to trust PA inductively.
+	* Also true if replace $\Ga$ with $\Ga'$ any recursively axiomatizable consistent theory.
+	* 4.9.4 Disbelief in (sequence of) inconsistent theories.
+* 4.10 Halting
+	* 4.10.1/2. Learn (ec) halting patterns "$m_n$ halts on input $x_n$" and nonhalting patterns.
+	* Only apply to cases where $\Ga$ can prove machines halt or don't. Else,
+	* 4.10.3 learning not to anticipate halting: in $f(n)$ steps.
+	*  It is impossible to tell whether or not a Turing machine halts in full generality, but for large classes of well-behaved computer programs (such as e.c. sequences of halting programs and provably non-halting programs) it's quite possible to develop reasonable and accurate beliefs
+* 4.11 Introspection
+	* Expectations of probabilities, iterated expectations
+* 4.12 Self-trust
+	* 4.12.1 Expected future expectations: current expectation on day $n$ already equal to expected value in $f(n)$ days.
+	* 4.12.2/3: No expected net update under conditionals.
+	
+[Q: can SoS give reasonable estimates of probabilities to a given statement given a web of propositional statements?]
+
+[Don't want traders to do more computation beyond propositional correctness... they can still utilize eventual theoremhood by not keeping too much open.]
 
 # Construction
 

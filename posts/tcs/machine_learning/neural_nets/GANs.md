@@ -138,6 +138,8 @@ Example: for MNIST, have 10 known labels and 2 latent variables which turn out t
 
 # AdaGAN: Boosting Generative Models
 
+[Background on boosting](../boosting.html)
+
 GANs suffer from missing modes: the model doesn't produce examples in certain regions.
 
 Idea: combine multiple generative models into a mixture. Each step, focus on examples that the mixture has not been able to properly generate, and add another model addressing those.
@@ -152,12 +154,91 @@ D_f(Q||P):=\int f\pa{\dd QP (x)}\,dP(x)
 $$
 Note $D_f(P||Q) = D_{f^{\circ}}(Q||P)$ where $f^{\circ}(x) = xf(1/x)$. Adding a multiple of $x-1$ doesn't change.
 
+$f$ is Hilbertian if $\sqrt{D_f(P||Q)}$ satisfies the triangle inequality (ex. JSD, H, TV)
+
 Examples:
 
-* KL $-ln x$
+* KL $-\ln x$
 * reverse KL $x\ln x$
 * TV $|x-1|$
 * JSD $-(x+1)\ln \fc{x+1}2 + x\ln x$
+
+## AdaGAN derivation
+
+*   At each step we want to combine a mixture of the current distribution $P_g$ with the new distribution $Q$ to minimize divergence with real distribution $P_d$
+	$$
+	\min_{Q\in \mathcal D} D_f((1-\be)P_g+\be Q||P_d).
+	$$
+*   If we can get a constant factor closer at each step
+	$$
+	D_f((1-\be)P_g + \be Q||P_d) \le c D_f(P_g||P_d)
+	$$
+	then we can get exponential convergence.
+*   Difficulty, and where boosting comes in: we somehow need to focus attention on the mistakes.
+*   What is the optimal for $Q_\be^*$? By calculation, (Theorem 1) 
+	$$
+	Q = \rc \be (\la^* P_d - (1-\be)P_g)_+
+	$$
+	for some $\la^*$.
+	* How well does this optimum do? (Lemma 2)
+	$$
+	D_f((1-\be)P_g+\be Q_\be^* ||P_d) \le D_f((1-\be)P_g + \be P_d||P_d) \le (1-\be)D_f(P_g||P_d).
+	$$
+*   We show that it suffices to find $Q$ such that 
+	$$D_f(Q||Q_\be^*)\le \ga D_f(P_g||P_d)$$
+	where $Q_\be^*$ is optimal for the objective.
+	*   Use a triangle-like inequality (Lemma 1 (10)): For Hilbertian metrics,
+		$$
+		D_f((1-\be)P_g + \be Q||P_d) \le (\sqrt{\ga D_f(Q||R)} + \sqrt{D_f ((1-\be)P_g + \be R||P_d)})^2.
+		$$
+	*   Let $R=Q_\be^*$. Corollary 3 and the calculation for $R$ then gives (Lemma 2)
+		$$
+		D_f((1-\be) P_g + \be Q||P_d) \le (\sqrt{\ga \be} + \sqrt{1-\be})^2 D_f(P_g||P_d).
+		$$
+		* Comment: this can be refined if $\dd{P_g}{P_d}$ is almost surely bounded (Lemma 3).
+		* Comment: this requires a pretty strong weak learner, because we need $\ga <\fc{\be}{4}$ to get the coefficient $<1$. Often $\be\to 0$.
+*   Hope is that GAN can estimate $Q_\be^*$. How to estimate $Q_\be^*$? We can reinterpret the expression for 
+	$$Q_\be^*= \rc\be (\la^* P_d-(1-\be)P_g)_+$$ 
+	as reweighting the samples. 
+	*   How does discriminator give an estimate for $P_g$? As long as the optimal discriminator satisfies 
+	    $$ \dd{P_g}{P_d}(x) =h(D(x))$$
+		for some $h$. Ex. for GAN $h(y) = \fc{1-y}{y}$. Thus we get an estimate of $\dd{P_g}{P_d}$.
+	*   Think about $dQ_\be^*$ as giving a weighting over sample points. For point $i$,
+		$$
+		w_i = \fc{p_i}{\be}(\la^* - (1-\be)h(d_i))
+		$$
+		where $d_i$ is the discriminator output on $x_i$, $p_i=\rc N$.
+	*   Solving for $\la^*$ gives
+		\begin{align}
+		I(\la) &= \set{i}{\la >(1-\be) h(d_i)}\\
+		\la^* &= \fc{\be}{\sum_{i\in I(\la^*)} p_i} \pa{1+\fc{1-\be}{\be} \sum_{i\in I(\la^*)} p_i h(d_i)}.
+		\end{align}
+		This is in terms of $\la^*$, but we can break this by noting that $I(\la^*)$ will contain $k$ smallest $d_i$'s for some $k$. Thus, initialize $k=1$; while $(1-\be)h(d_k)\ge \la$, set $k\leftarrow k+1$ and $\la \leftarrow \fc{\be}{\sumo ik p_i}(1+\fc{1-\be}\be \sumo ik p_ih(d_i))$.
+* Mixture weights $\be$ can be constant, $\be_t=\rc t$ for equal weights, etc. (S3.2)
+* Run GAN with modified weights at each step.
+
+An alternate analysis:
+
+*   Instead bound (Lemma 1 (9)) (note this doesn't require Hilbertian)
+	$$
+	D_f((1-\be)P_g + \be Q||P_d)\le 
+	\be D(Q||R) + (1-\be) D_f\pa{P_g||\fc{P_d-\be R}{1-\be}}.
+	$$
+*   Minimize this upper bound instead. Assume $P_d(dP_g=0)<\be$. (Theorem 2)
+	$$
+	dQ_\be^{\dagger} = \rc\be (dP_d-\la^{\dagger} (1-\be)dP_g)_+
+	$$
+*   The optimum satisfies (Lemma 2.2)
+	$$
+	D_f\pa{P_g||\fc{P_d-\be Q_\be^{\dagger}}{1-\be}}\le D_f(P_g||P_d).
+	$$
+*   If $D_f(Q||Q_\be^{\dagger}) \le \ga D_f(P_g||P_d)$ and $P_d\pa{\dd{P_g}{P_d}=0}<\be$, then 
+	$$D_f((1-\be) P_g + \be Q||P_d)\le  (1-\be(1-\ga))D_f(P_g||P_d).$$
+*   The condition on $\ga$ is milder here. However, we need the extra condition that $\be$>(mass of true data missed by current model). (Else, need to increase the weight $\be$!)
+
+Remarks:
+
+* Convergence rate depends on the ratio of probability mass: logarithmic in $\fc{dP_1}{dP_d}$. (Corollary 1)
 
 # Two views of GANs
 

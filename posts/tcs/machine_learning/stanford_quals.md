@@ -15,7 +15,7 @@ showTOC: True
 
 * Perceptron, logistic regression, SVMs
 * Kernel methods, Gaussian processes
-* Boosting (AdaBoost)
+* [Boosting](boosting.html) (AdaBoost)
 	* What is the convergence rate?
 		* $\exp(-\sum_{t=1}^T \gamma_t^2)$
 		* Key property: *adaptive*
