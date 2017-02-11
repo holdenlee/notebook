@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+
+  <meta name="description" content="Holden Lee's Research Notebook">
+  <meta name="author" content="Holden Lee">
+    
+  <title>Tensorflow setup</title>
+
+  <!-- Bootstrap core CSS -->
+  <link href="../../../bootstrap/css/bootstrap.min.css" rel="stylesheet">
+
+  <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+  <!-- <link href="../../assets/css/ie10-viewport-bug-workaround.css" rel="stylesheet"> -->
+
+  <!-- Custom styles for this template -->
+  <link href="../../../css/blog.css" rel="stylesheet">
+  <link href="../../../css/default.css" rel="stylesheet">
+
+  <!-- Extension : Footnotes -->
+  <link href="../../../footnotes/css/footnotes.css" rel="stylesheet">
+
+  <!-- Extension : InlineDisqussions @ https://github.com/tsi/inlineDisqussions -->
+  
+
+  <!-- Extension : Collapsible lists @ http://code.stephenmorley.org/javascript/collapsible-lists/-->
+  <link href="../../../collapsible_lists/css/collapsible.css" rel="stylesheet">
+  <script type="text/javascript" src="../../../collapsible_lists/js/CollapsibleLists.js"></script>
+
+</head>
+
+<body>
+
+<!-- Navigation bar. navbar-inverse is black, navbar-default is white.-->
+<!-- To make a button active (pressed), use <li class="active"> -->
+<div id="header">
+  <nav class="navbar navbar-inverse navbar-fixed-top">
+    <div class="container">
+      <div class="navbar-header">
+        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+          <span class="sr-only">Toggle navigation</span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="../../../">Notebook</a>
+      </div>
+      <div id="navbar" class="collapse navbar-collapse">
+        <ul class="nav navbar-nav">
+          <li><a href="../../../">Home</a></li>
+          <li><a href="../../../sitemap.html">Sitemap</a></li>
+<!-- TODO: Distinguish between PAPERS, RESEARCH QUESTIONS, BOOKS -->
+<!-- TODO: make this part a for loop over main pages -->
+        </ul>
+      </div><!--/.nav-collapse -->
+    </div>
+  </nav>
+</div>
+<!-- Content -->
+<!--div id="content">
+  <h1>Mental Wilderness</h1>-->
+
+
+
+<div class="container">
+  <div id="content">
+    <div class="page header">
+      <h1>Tensorflow setup</h1>
+    </div>
+    <div class="info">
+      
+       
+        <p>Posted: 2016-07-22 
+          , Modified: 2016-07-22 
+	</p>
+      
+       <p>Tags: <a href="../../../tags/programming.html">programming</a></p> 
+    </div>
+    
+  </div>
+  <!--/div-->
+
+  
+
+  <div class="blog-main">
+    <h2 id="setup-on-tiger">Setup on Tiger</h2>
+<p>Load tensorflow on startup, e.g. put in <code>.bashrc</code>.</p>
+<pre><code>module load python cudatoolkit/7.5 cudann
+pip install --user /tigress/plazonic/public_html/tensorflow/rhel6/tensorflow_pkg_gpu/tensorflow-0.8.0-py2-none-any.whl</code></pre>
+<p>Sample script</p>
+<pre><code>#!/bin/bash
+
+#SBATCH -t 10:00:00
+#SBATCH -N 1
+#SBATCH --ntasks-per-node=4
+#SBATCH --ntasks-per-socket=2
+#SBATCH --gres=gpu:2
+#SBATCH --mail-type=begin  
+#SBATCH --mail-type=end  
+#SBATCH --mail-user=holdenl@princeton.edu  
+
+module load python
+module load cudatoolkit/7.5
+module load cudann
+THEANO_FLAGS=mode=FAST_RUN,device=gpu,floatX=float32 python cifar10_multi_gpu_train.py --num_gpus=2 --train_dir='/tigress/holdenl/tmp/cifar10_train1'</code></pre>
+<p>Run by <code>sbatch script.cmd</code>.</p>
+<h2 id="cifar-setup">CIFAR setup</h2>
+<ul>
+<li>Train by calling <code>cifar10_multi_gpu_train.py</code> or <code>cifar10_train.py</code>.
+<ul>
+<li>This calls <code>cifar10.py</code> to build the graph.</li>
+<li>It calls <code>cifar10_input.py</code> to download or load the data.
+<ul>
+<li><code>data_dir</code> defined in <code>cifar10.py</code>. (Changed to <code>/tigress/knv/cifar10_data</code>.)</li>
+</ul></li>
+</ul></li>
+</ul>
+<p>Settings: Override flags as above.</p>
+<ul>
+<li><code>num_gpus=2</code> seems to work best.</li>
+<li>Specify training directory, ex. <code>train_dir='/tigress/holdenl/tmp/cifar10_train1'</code>.</li>
+</ul>
+<h2 id="train">Train</h2>
+<div class="sourceCode"><pre class="sourceCode python"><code class="sourceCode python">train(fs, step_f, output_steps<span class="op">=</span><span class="dv">10</span>, summary_steps<span class="op">=</span><span class="dv">100</span>, save_steps<span class="op">=</span><span class="dv">1000</span>, eval_steps <span class="op">=</span> <span class="dv">1000</span>, max_steps<span class="op">=</span><span class="dv">1000000</span>, train_dir<span class="op">=</span><span class="st">&quot;/&quot;</span>, log_device_placement<span class="op">=</span><span class="va">False</span>, batch_size<span class="op">=</span><span class="dv">128</span>,train_data<span class="op">=</span><span class="va">None</span>,validation_data<span class="op">=</span><span class="va">None</span>, test_data<span class="op">=</span><span class="va">None</span>, train_feed<span class="op">=</span>{}, eval_feed<span class="op">=</span>{}, x_pl<span class="op">=</span><span class="st">&quot;x&quot;</span>, y_pl<span class="op">=</span><span class="st">&quot;y_&quot;</span>, batch_feeder_args<span class="op">=</span>[])</code></pre></div>
+<ul>
+<li><code>fs</code> is a dictionary containing: inference, loss functions</li>
+<li><p><code>step_f</code> is function to execute at each training step, taking arguments <code>fs</code> and <code>global_step</code>. Example</p>
+<div class="sourceCode"><pre class="sourceCode python"><code class="sourceCode python"><span class="kw">lambda</span> fs, global_step: (
+  train_step(fs[<span class="st">&quot;loss&quot;</span>], fs[<span class="st">&quot;losses&quot;</span>], global_step, 
+             <span class="kw">lambda</span> gs: tf.train.AdamOptimizer(<span class="fl">1e-4</span>)))</code></pre></div></li>
+<li></li>
+</ul>
+<h2 id="misc-notes">Misc notes</h2>
+<p>Constants</p>
+<ul>
+<li><code>NUM_EXAMPLES_PER_EPOCH_FOR_TRAIN=50000</code></li>
+<li><code>NUM_EXAMPLES_PER_EPOCH_FOR_EVAL=10000</code></li>
+<li><code>NUM_EPOCHS_PER_DECAY</code></li>
+<li><code>INITIAL_LEARNING_RATE</code></li>
+<li><code>LEARNING_RATE_DECAY_FACTOR</code></li>
+<li><code>NUM_CLASSES=10</code></li>
+<li><code>MOVING_AVERAGE_DECAY = 0.9999</code></li>
+<li><code>NUM_EPOCHS_PER_DECAY = 350.0</code></li>
+<li><code>LEARNING_RATE_DECAY_FACTOR = 0.1</code></li>
+<li><code>INITIAL_LEARNING_RATE = 0.1</code></li>
+</ul>
+<h2 id="todo">Todo</h2>
+<ul>
+<li>Find tiger’s policies on storing files.</li>
+</ul>
+
+  </div>
+
+    
+
+    <!-- Extension : Sharing buttons @ www.sharethis.com -->
+    <span class="st_facebook_large" displayText="Facebook"></span>
+    <span class="st_twitter_large" displayText="Tweet"></span>
+    <span class="st_googleplus_large" displayText="Google +"></span>
+    <span class="st_reddit_large" displayText="Reddit"></span>
+    <span class="st__large" displayText></span>
+
+    <div id="disqus_thread"></div>
+    
+
+
+  
+    <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+  </div>
+  
+</div>
+
+
+<!-- Footer -->
+<div id="footer">
+  <div class="container">
+    Built with
+    <a href="http://jaspervdj.be/hakyll">Hakyll</a> 
+    using 
+    <a href="http://www.getbootstrap.com">Bootstrap</a>, 
+    <a href="http://www.disqus.com">Disqus</a>,
+    <a href="http://ignorethecode.net/blog/2010/04/20/footnotes/">Footnotes.js</a>,
+    <a href="http://highlightjs.org/">Highlight.js</a>, 
+    <a href="http://www.mathjax.org">MathJax</a>, 
+    and <a href="http://www.sharethis.com">ShareThis</a>.
+  </div>
+</div>
+</body>
+
+</html>
+
+<!-- SCRIPTS -->
+<!-- jQuery-->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+<script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
+
+<script src="../../../bootstrap/js/bootstrap.min.js"></script>
+
+<!-- Extension : Highlight.js @ https://highlightjs.org/ -->
+<!-- Syntax highlighting tomorrow-night-bright, agate-->
+<link rel="stylesheet" href="../../../highlight/css/tomorrow-night-bright.css">
+<script src="../../../highlight/js/highlight.pack.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+
+<!-- Extension : MathJax @ https://docs.mathjax.org/en/v2.5-latest/tex.html -->
+<!-- MathJax/config/local/local.js contains macros. Need to provide entire URL-->
+<script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML,http://holdenlee.github.io/notebook/MathJax/config/local/local"></script>
+
+<!-- Extension : Footnotes @ http://ignorethecode.net/blog/2010/04/20/footnotes/ -->
+<script src="../../../footnotes/js/footnotes.js"></script>
+
+<!-- Extension : Disqus @ http://disqus.com -->
+<!-- Extension : InlineDisqussions @ https://github.com/tsi/inlineDisqussions -->
+
+<script src="../../../disqus/js/disqus.js"></script>
+
+
+
+<!-- Extension : Google Analytics -->
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-73261814-1', 'auto');
+  ga('send', 'pageview');
+
+</script>
+

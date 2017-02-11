@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+
+  <meta name="description" content="Holden Lee's Research Notebook">
+  <meta name="author" content="Holden Lee">
+    
+  <title>Matrix perturbation</title>
+
+  <!-- Bootstrap core CSS -->
+  <link href="../../../../../bootstrap/css/bootstrap.min.css" rel="stylesheet">
+
+  <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+  <!-- <link href="../../assets/css/ie10-viewport-bug-workaround.css" rel="stylesheet"> -->
+
+  <!-- Custom styles for this template -->
+  <link href="../../../../../css/blog.css" rel="stylesheet">
+  <link href="../../../../../css/default.css" rel="stylesheet">
+
+  <!-- Extension : Footnotes -->
+  <link href="../../../../../footnotes/css/footnotes.css" rel="stylesheet">
+
+  <!-- Extension : InlineDisqussions @ https://github.com/tsi/inlineDisqussions -->
+  
+
+  <!-- Extension : Collapsible lists @ http://code.stephenmorley.org/javascript/collapsible-lists/-->
+  <link href="../../../../../collapsible_lists/css/collapsible.css" rel="stylesheet">
+  <script type="text/javascript" src="../../../../../collapsible_lists/js/CollapsibleLists.js"></script>
+
+</head>
+
+<body>
+
+<!-- Navigation bar. navbar-inverse is black, navbar-default is white.-->
+<!-- To make a button active (pressed), use <li class="active"> -->
+<div id="header">
+  <nav class="navbar navbar-inverse navbar-fixed-top">
+    <div class="container">
+      <div class="navbar-header">
+        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+          <span class="sr-only">Toggle navigation</span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="../../../../../">Notebook</a>
+      </div>
+      <div id="navbar" class="collapse navbar-collapse">
+        <ul class="nav navbar-nav">
+          <li><a href="../../../../../">Home</a></li>
+          <li><a href="../../../../../sitemap.html">Sitemap</a></li>
+<!-- TODO: Distinguish between PAPERS, RESEARCH QUESTIONS, BOOKS -->
+<!-- TODO: make this part a for loop over main pages -->
+        </ul>
+      </div><!--/.nav-collapse -->
+    </div>
+  </nav>
+</div>
+<!-- Content -->
+<!--div id="content">
+  <h1>Mental Wilderness</h1>-->
+
+
+
+<div class="container">
+  <div id="content">
+    <div class="page header">
+      <h1>Matrix perturbation</h1>
+    </div>
+    <div class="info">
+      
+       
+        <p>Posted: 2016-08-30 
+          , Modified: 2016-08-30 
+	</p>
+      
+       <p>Tags: <a href="../../../../../tags/matrices.html">matrices</a></p> 
+    </div>
+    
+  </div>
+  <!--/div-->
+
+  <div class="toc"> <ul>
+ <li><a href="#davis-kahan">Davis-Kahan</a><ul>
+ <li><a href="#proof">Proof</a></li>
+ <li><a href="#generalization">Generalization</a></li>
+ </ul></li>
+ <li><a href="#weyls-theorem">Weyl’s Theorem</a></li>
+ <li><a href="#wedins-theorem">Wedin’s Theorem</a></li>
+ <li><a href="#other">Other</a></li>
+ </ul> </div>
+
+  <div class="blog-main">
+    <h2 id="davis-kahan">Davis-Kahan</h2>
+<p>(Theorem 4.8 <a href="http://ocw.mit.edu/courses/mathematics/18-s997-high-dimensional-statistics-spring-2015/lecture-notes/MIT18_S997S15_Chapter4.pdf">here</a>)</p>
+<p><a href="http://epubs.siam.org/doi/pdf/10.1137/0707001">Original paper</a> (In a different form here—how does it connect?)</p>
+<p>Distance between eigenvectors.</p>
+<p>Theorem 1 <a href="http://www.statslab.cam.ac.uk/~yy366/index_files/Biometrika-2015-Yu-biomet_asv008.pdf">here</a>, Theorem V.3.6 in Stewart and sun</p>
+<p>Let <span class="math inline">\(\Si,\wh \Si\)</span> be symmetric with eigenvalues <span class="math inline">\(\la_1\ge \cdots \la_p\)</span>, <span class="math inline">\(\wh \la_1\ge \cdots \ge \wh \la_p\)</span> corresponding to eigenvectors <span class="math inline">\(\la_i,\wh\la_i\)</span>. Fix <span class="math inline">\(1\le r\le s\le p\)</span>. Suppose <span class="math inline">\(\wh \la_{r-1}&gt;\la_r \ge \la_s &gt;\wh \la_{s+1}\)</span>, <span class="math inline">\(\de = \min (\wh \la_{r-1}-\la_r, \la_s - \wh \la_{s+1})\)</span>. (Let <span class="math inline">\(\wh \la_0=-\iy, \wh \la_{p+1}=\iy\)</span>.) Then <span class="math display">\[\ve{\sin \Te(\wh V, V)}_F \le \fc{\ve{\wh \Si - \Si}_F}{\de}.\]</span> (<span class="math inline">\(\ve{\sin \Te(\wh V, V)}_F\)</span> has some definition as a matrix, but I think you can interpret the LHS as the sin of the angle between the spaces.)</p>
+<h3 id="proof">Proof</h3>
+<p>References are to Stewart and Sun.</p>
+<ol type="1">
+<li><p>First, define the canonical angles and relate them to the projection matrix. The largest canonical angle can be thought of as the distance between the 2 subspaces. However, a single angle doesn’t characterize the positioning of the 2 subspaces. There are as many canonical angles as dimensions in the subspace.</p>
+<p><strong>Definition</strong> (Theorem I.5.2). Let <span class="math inline">\(X_1,Y_1\in \C^{n\times l}\)</span> have orthonormal columns, <span class="math inline">\(X_1^{\dagger}X_1=I\)</span>, <span class="math inline">\(Y_1^{\dagger}Y_1=I\)</span></p>
+<ul>
+<li>If <span class="math inline">\(2l\le n\)</span>, there are <span class="math inline">\(Q,U_{11}, V_{11}\)</span> (i.e., a change of basis on either side) such that
+<span class="math display">\[\begin{align}
+QX_1U_{11} &amp;= \colthree IOO\\
+QY_1V_{11} &amp;= \colthree \Ga \Si O
+\end{align}\]</span>
+where <span class="math inline">\(\Ga, \Si\)</span> are positive diagonal. The diagonal of <span class="math inline">\(\Si\)</span> are the sines of the canonical angles, and <span class="math inline">\(\Ga\)</span> are the cosines.</li>
+<li>If <span class="math inline">\(2l&gt;n\)</span>, then the matrices are <span class="math inline">\(\colthree{IO}{OI}{OO}\)</span> and <span class="math inline">\(\colthree{\Ga O}{O I}{\Si O}\)</span>.</li>
+</ul>
+<p><em>Proof</em>. The CS decomposition block-diagonalizes a matrix with block-diagonal unitary matrices: <span class="math inline">\(\diag(U_{11},U_{22})^{\dagger} W \diag(V_{11},V_{22}) =\mattn{\Ga}{-\Si}O{\Si}{\Ga}OOOI\)</span> where <span class="math inline">\(U_{11}\)</span> is <span class="math inline">\(l\times l\)</span>, <span class="math inline">\(2l\le n\)</span>, and the partition is <span class="math inline">\(l,l,n-2l\)</span>. Use the CS decomposition on <span class="math inline">\(X^{\dagger}Y\)</span>.</p>
+<p>Use the CS decomposition to make</p>
+<p><strong>Lemma</strong>. Let <span class="math inline">\(P_X=XX^T\)</span>, <span class="math inline">\(P_Y=YY^T\)</span> be the projections. Let <span class="math inline">\(k=\min \{l,n-l\}\)</span>. Then</p>
+<ol type="1">
+<li>Singular values of <span class="math inline">\(P_X(1-P_Y)\)</span> are <span class="math inline">\(\si_1,\ldots, \si_k,0,\ldots, 0\)</span>.</li>
+<li>Singular values of <span class="math inline">\(P_X-P_Y\)</span> are <span class="math inline">\(\si_1,\si_1,\ldots, \si_k,\si_k,0,\ldots\)</span>.</li>
+</ol>
+<em>Proof</em>. Change into the basis above.</li>
+<li><p>Consider the linear operator <span class="math inline">\(T:X\mapsto AX-XB\)</span>.</p>
+<ul>
+<li>The eigenvalues are <span class="math inline">\(L(T)=L(A)-L(B)\)</span>. Thus its conditioning (and invertibility) is related to how close the eigenvalues of <span class="math inline">\(A,B\)</span> are.</li>
+<li>Define <span class="math inline">\(sep_{\ved}(L_1,L_2) = \inf_{\ve{P}=1}\ve{T(P)}\)</span>.</li>
+<li>(Theorem V.3.1) We have <span class="math inline">\(sep_F(L,M) = \min |L(L) - L(M)|\)</span>.</li>
+<li>(Lemma V.3.5) Considering the condition number, if <span class="math inline">\(AX-XB=C\)</span>, <span class="math inline">\(\ve{A}\le \al\)</span>, <span class="math inline">\(\ve{B^{-1}}^{-1}\ge \al+\de\)</span>, then <span class="math inline">\(\ve{X}\le \fc{\ve{C}}{\de}\)</span>.</li>
+</ul></li>
+<li><p>Relate the canonical angle to Sylvester’s equation.</p>
+<ul>
+<li>(Theorem V.3.4) If <span class="math inline">\(\coltwo{X_1^{\dagger}}{X_2^{\dagger}} A (X_1\,X_2) = \diag(L_1,L_2)\)</span>, letting <span class="math inline">\(R=AZ-ZM\)</span>, supposing <span class="math inline">\(L(M)\subeq [\al,\be]\)</span>, <span class="math inline">\(L(L_2)\subeq \R\bs [\al-\de, \be+\de]\)</span>,
+<span class="math display">\[\begin{align}
+X_2^{\dagger}A &amp;= L_2X_2^{\dagger}\\
+X_2^{\dagger}(AZ-ZM) &amp;= L_2 X_2^{\dagger} Z - X_2^{\dagger} ZM.
+\implies \ve{\sin\Te[R(X_1),R(Z)]} = \ve{X_2^{\dagger} Z} \le \fc{\ve{R}}{\de}
+\end{align}\]</span></li>
+</ul></li>
+</ol>
+<p>(Can be generlized to other norms. More involved—need to show existence of fixed point by a contractive iteration. V.2.1, V.2.11.)</p>
+<h3 id="generalization">Generalization</h3>
+<p><strong>Theorem</strong>: Let <span class="math inline">\(A\)</span> have eigenvalues, vectprs <span class="math inline">\(\la_i, v_i\)</span>, and <span class="math inline">\(A+E\)</span> have eigenvalues, vectors <span class="math inline">\(\wh \la_i, \wh v_i\)</span>. Suppose <span class="math inline">\(\la_s-\ve{E}_2&gt;\la_t\)</span>. Then <span class="math display">\[\sin \angle' (\spn (\wh v_1, \ldots, \wh v_s), \spn (v_1,\ldots, v_{s+t})) \le \fc{ve{E}_2}{\la_s-\ve{E}_2 - \la_t}\]</span> where <span class="math inline">\(\angle'(U,V)\)</span> is asymmetrically defined as <span class="math display">\[
+\max_{u\in U}\min_{v\in V} \angle(u,v).
+\]</span></p>
+<p><em>Proof</em>. Note that <span class="math inline">\(X, Y\)</span> don’t have to be the same dimension in the above.</p>
+<p>Consider <span class="math inline">\((I-P_X)P_Y\)</span> where <span class="math inline">\(X\)</span> has more columns than <span class="math inline">\(Y\)</span>, <span class="math inline">\(m&gt;l\)</span>. Add in <span class="math inline">\(m-l\)</span> columns from <span class="math inline">\(Y\)</span>, that are orthonormal to the columns of <span class="math inline">\(X\)</span>. Then apply the theorem with <span class="math inline">\(X,Y\)</span> having the same dimension, noting we have <span class="math inline">\(m-l\)</span> extra 0’s. These angles are now interpreted as the angle between <span class="math inline">\(X\)</span> and the projection of <span class="math inline">\(X\)</span> to <span class="math inline">\(Y\)</span>. (Abusing notation and identifying subspaces with matrices.)</p>
+<p>Now the rest of the proof goes as in 3.4. We include the perturbation part. Break up int <span class="math display">\[
+L_{2.2} X_{2.2}^{\dagger}
+\]</span></p>
+For simplicity consider <span class="math inline">\(A\)</span> symmetric. (Otherwise, consider <span class="math inline">\(\matt OA{A^{\dagger}}O\)</span>.) Let <span class="math inline">\(\wh A\)</span> be diagonalized by <span class="math inline">\(\wh X_1,\wh X_2\)</span> (first <span class="math inline">\(s\)</span> eigenvectors). Let <span class="math inline">\(\wh A+E=A\)</span> be diagonalized by <span class="math inline">\(X_1,X_{2.1},X_{2.2}\)</span> (first <span class="math inline">\(s\)</span>, next <span class="math inline">\(t-s\)</span>, others). We have
+<span class="math display">\[\begin{align}
+L_{2.2}X_{2.2}^{\dagger} \wh X_1 - X_{2.2}^{\dagger}\wh X_1 \wh X_1^{\dagger} (A+E) \wh X_1 &amp;= X_{2.2}^{\dagger} (A\wh X_1 - (A+E) \wh X_1) \\
+&amp;=X_{2.2}^{\dagger} (-E\wh X_1)\\
+\implies \ve{X_{2.2}^{\dagger}\wh X_1} &amp; \le \fc{\ve{E}}{|\si_s-\si_{t+1}|}.
+\end{align}\]</span>
+<h2 id="weyls-theorem">Weyl’s Theorem</h2>
+<h2 id="wedins-theorem">Wedin’s Theorem</h2>
+<p>(Davis-Kahan for <span class="math inline">\(r=s=1\)</span>.)</p>
+<p>Let <span class="math inline">\(v_1(A)\)</span> be the top eigenvector of <span class="math inline">\(A\)</span>. If <span class="math inline">\(\de=|\la_1(A)-\la_2(A)|\)</span>, then <span class="math inline">\(\sin(\angle (v_1(A), v_1(A+E)))\le \fc{\ve{E}_2}{\de}\)</span>.</p>
+<!--?? What's the analogue of this for subspaces? Ex. $\la_1,\ldots, \la_c$ large and $\la_{c+1}$ small.-->
+<h2 id="other">Other</h2>
+<ul>
+<li><a href="https://arxiv.org/pdf/1004.2000.pdf">singular vectors under random perturbation</a></li>
+</ul>
+
+  </div>
+
+    
+
+    <!-- Extension : Sharing buttons @ www.sharethis.com -->
+    <span class="st_facebook_large" displayText="Facebook"></span>
+    <span class="st_twitter_large" displayText="Tweet"></span>
+    <span class="st_googleplus_large" displayText="Google +"></span>
+    <span class="st_reddit_large" displayText="Reddit"></span>
+    <span class="st__large" displayText></span>
+
+    <div id="disqus_thread"></div>
+    
+
+
+  
+    <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+  </div>
+  
+</div>
+
+
+<!-- Footer -->
+<div id="footer">
+  <div class="container">
+    Built with
+    <a href="http://jaspervdj.be/hakyll">Hakyll</a> 
+    using 
+    <a href="http://www.getbootstrap.com">Bootstrap</a>, 
+    <a href="http://www.disqus.com">Disqus</a>,
+    <a href="http://ignorethecode.net/blog/2010/04/20/footnotes/">Footnotes.js</a>,
+    <a href="http://highlightjs.org/">Highlight.js</a>, 
+    <a href="http://www.mathjax.org">MathJax</a>, 
+    and <a href="http://www.sharethis.com">ShareThis</a>.
+  </div>
+</div>
+</body>
+
+</html>
+
+<!-- SCRIPTS -->
+<!-- jQuery-->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+<script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
+
+<script src="../../../../../bootstrap/js/bootstrap.min.js"></script>
+
+<!-- Extension : Highlight.js @ https://highlightjs.org/ -->
+<!-- Syntax highlighting tomorrow-night-bright, agate-->
+<link rel="stylesheet" href="../../../../../highlight/css/tomorrow-night-bright.css">
+<script src="../../../../../highlight/js/highlight.pack.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+
+<!-- Extension : MathJax @ https://docs.mathjax.org/en/v2.5-latest/tex.html -->
+<!-- MathJax/config/local/local.js contains macros. Need to provide entire URL-->
+<script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML,http://holdenlee.github.io/notebook/MathJax/config/local/local"></script>
+
+<!-- Extension : Footnotes @ http://ignorethecode.net/blog/2010/04/20/footnotes/ -->
+<script src="../../../../../footnotes/js/footnotes.js"></script>
+
+<!-- Extension : Disqus @ http://disqus.com -->
+<!-- Extension : InlineDisqussions @ https://github.com/tsi/inlineDisqussions -->
+
+<script src="../../../../../disqus/js/disqus.js"></script>
+
+
+
+<!-- Extension : Google Analytics -->
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-73261814-1', 'auto');
+  ga('send', 'pageview');
+
+</script>
+

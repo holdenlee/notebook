@@ -1,0 +1,692 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+
+  <meta name="description" content="Holden Lee's Research Notebook">
+  <meta name="author" content="Holden Lee">
+    
+  <title>(WJ08) Graphical Models, Exponential Families, and Variational Inference</title>
+
+  <!-- Bootstrap core CSS -->
+  <link href="../../../../bootstrap/css/bootstrap.min.css" rel="stylesheet">
+
+  <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+  <!-- <link href="../../assets/css/ie10-viewport-bug-workaround.css" rel="stylesheet"> -->
+
+  <!-- Custom styles for this template -->
+  <link href="../../../../css/blog.css" rel="stylesheet">
+  <link href="../../../../css/default.css" rel="stylesheet">
+
+  <!-- Extension : Footnotes -->
+  <link href="../../../../footnotes/css/footnotes.css" rel="stylesheet">
+
+  <!-- Extension : InlineDisqussions @ https://github.com/tsi/inlineDisqussions -->
+  
+
+  <!-- Extension : Collapsible lists @ http://code.stephenmorley.org/javascript/collapsible-lists/-->
+  <link href="../../../../collapsible_lists/css/collapsible.css" rel="stylesheet">
+  <script type="text/javascript" src="../../../../collapsible_lists/js/CollapsibleLists.js"></script>
+
+</head>
+
+<body>
+
+<!-- Navigation bar. navbar-inverse is black, navbar-default is white.-->
+<!-- To make a button active (pressed), use <li class="active"> -->
+<div id="header">
+  <nav class="navbar navbar-inverse navbar-fixed-top">
+    <div class="container">
+      <div class="navbar-header">
+        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+          <span class="sr-only">Toggle navigation</span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="../../../../">Notebook</a>
+      </div>
+      <div id="navbar" class="collapse navbar-collapse">
+        <ul class="nav navbar-nav">
+          <li><a href="../../../../">Home</a></li>
+          <li><a href="../../../../sitemap.html">Sitemap</a></li>
+<!-- TODO: Distinguish between PAPERS, RESEARCH QUESTIONS, BOOKS -->
+<!-- TODO: make this part a for loop over main pages -->
+        </ul>
+      </div><!--/.nav-collapse -->
+    </div>
+  </nav>
+</div>
+<!-- Content -->
+<!--div id="content">
+  <h1>Mental Wilderness</h1>-->
+
+
+
+<div class="container">
+  <div id="content">
+    <div class="page header">
+      <h1>(WJ08) Graphical Models, Exponential Families, and Variational Inference</h1>
+    </div>
+    <div class="info">
+      
+       
+        <p>Posted: 2016-09-30 
+          , Modified: 2016-09-30 
+	</p>
+      
+       <p>Tags: <a href="../../../../tags/probabilistic%20models.html">probabilistic models</a>, <a href="../../../../tags/graphical%20models.html">graphical models</a>, <a href="../../../../tags/exponential%20families.html">exponential families</a>, <a href="../../../../tags/variational%20inference.html">variational inference</a></p> 
+    </div>
+    
+  </div>
+  <!--/div-->
+
+  <div class="toc"> <ul>
+ <li><a href="#introduction">1 Introduction</a></li>
+ <li><a href="#graphical-models">2 Graphical models</a><ul>
+ <li><a href="#section">2.1</a></li>
+ <li><a href="#conditional-independence">2.2 Conditional independence</a></li>
+ <li><a href="#statistical-inference-and-exact-algorithms">2.3 Statistical inference and exact algorithms</a></li>
+ <li><a href="#applications">2.4 Applications</a></li>
+ <li><a href="#exact-inference-algorithms">2.5 Exact inference algorithms</a></li>
+ <li><a href="#message-passing-algorithms-for-approximate-inference">2.6 Message-passing algorithms for approximate inference</a></li>
+ </ul></li>
+ <li><a href="#exponential-families">3 Exponential families</a><ul>
+ <li><a href="#exponential-representations-via-maximum-entropy">3.1 Exponential representations via maximum entropy</a></li>
+ <li><a href="#basics-of-exponential-families">3.2 Basics of exponential families</a></li>
+ <li><a href="#examples-of-graphical-models-in-exponential-form">3.3 Examples of graphical models in exponential form</a></li>
+ <li><a href="#mean-parameterization-and-inference-problems">3.4 Mean parameterization and inference problems</a></li>
+ <li><a href="#properties-of-a">3.5 Properties of <span class="math inline"><em>A</em></span></a></li>
+ <li><a href="#conjugate-duality-maximum-likelihood-and-maximum-entropy">3.6 Conjugate duality: maximum likelihood and maximum entropy</a></li>
+ <li><a href="#computational-challenges-with-high-dimensional-models">3.7 Computational challenges with high-dimensional models</a></li>
+ <li><a href="#thoughts">Thoughts</a></li>
+ </ul></li>
+ <li><a href="#bethe-approximation-and-sum-product-algorithm">4 Bethe approximation and sum-product algorithm</a><ul>
+ <li><a href="#sum-product-and-bethe-approximation">4.1 Sum-product and Bethe approximation</a></li>
+ <li><a href="#kikuchi-and-hypertree-based-models">4.2 Kikuchi and Hypertree-based models</a></li>
+ </ul></li>
+ <li><a href="#mean-field-methods">5 Mean field methods</a></li>
+ <li><a href="#variational-methods-in-parameter-estimation">6 Variational methods in parameter estimation</a></li>
+ <li><a href="#variational-methods-based-on-convex-relaxations">7 Variational methods based on convex relaxations</a></li>
+ <li><a href="#mode-computation">8 Mode computation</a></li>
+ <li><a href="#conic-programming-relaxations">9 Conic programming relaxations</a></li>
+ <li><a href="#review">Review</a><ul>
+ <li><a href="#section-1">1</a></li>
+ <li><a href="#section-2">2</a></li>
+ <li><a href="#section-3">3</a></li>
+ <li><a href="#section-4">4</a></li>
+ </ul></li>
+ <li><a href="#misc">Misc</a></li>
+ </ul> </div>
+
+  <div class="blog-main">
+    <h2 id="introduction">1 Introduction</h2>
+<p>Inference: computing marginal probabilities.</p>
+<h2 id="graphical-models">2 Graphical models</h2>
+<p>Probability distributions that factorize according to underlying graph.</p>
+<h3 id="section">2.1</h3>
+<ul>
+<li>Vertices <span class="math inline">\(s\in V\)</span> correspond to random variables <span class="math inline">\(X_s\sim \mathcal X_s\)</span>.</li>
+<li>DAG graphical model: <span class="math inline">\(\pi(s)\)</span> parents, <span class="math inline">\(p(x) = \prod_{s\in V} p_s(x_s|x_{\pi(s)})\)</span>.</li>
+<li>Undirected graphical model: Cliques have compatibility function <span class="math inline">\(\psi_C:(\bigot_{s\in C}\mathcal X_s)\to \R_+\)</span>. <span class="math display">\[ p(x) = \rc{Z}\prod_{C\in \mathcal C} \psi_C(x_C).\]</span>
+<ul>
+<li>A DAG can be thought of as undirected by having node-parent groups as cliques.</li>
+</ul></li>
+<li>Let <span class="math inline">\(F\)</span> be the set of factors for a graphical model (node-parents for DAGs, <span class="math inline">\(\mathcal C\)</span> for undirected GMs). The factor graph is the bipartite graph <span class="math inline">\((V,F,E')\)</span>.</li>
+</ul>
+<h3 id="conditional-independence">2.2 Conditional independence</h3>
+<ul>
+<li>Undirected: <span class="math inline">\(X_A\perp X_B| X_C\)</span> if there is no path from <span class="math inline">\(A\)</span> to <span class="math inline">\(B\)</span> removing <span class="math inline">\(C\)</span>.</li>
+<li>Directed ?? See Pearl?</li>
+</ul>
+<h3 id="statistical-inference-and-exact-algorithms">2.3 Statistical inference and exact algorithms</h3>
+<p>Computational inference problems</p>
+<ul>
+<li>Compute likelihood of observed data</li>
+<li>Compute marginal <span class="math inline">\(p(x_A)\)</span></li>
+<li>Compute conditional <span class="math inline">\(p(x_A|x_B)\)</span>.</li>
+<li>Compute mode <span class="math inline">\(\amax_{x\in \mathcal X^m} p(x)\)</span>.</li>
+</ul>
+<p>For undirected graphs without cycles or directed graphs where each node has a single parent, problems can be solved by recursive message-passing algorithms (cf. DP).</p>
+<ul>
+<li>Marginals: sum-product</li>
+<li>Modes: max-product</li>
+<li>Junction tree algorithm, exponential in treewidth.</li>
+</ul>
+<h3 id="applications">2.4 Applications</h3>
+<ul>
+<li>Hierarchical Bayesian model</li>
+<li>Contingency table analysis (<span class="math inline">\((X_1,\ldots, X_m)\)</span>, each takes <span class="math inline">\(r\)</span> possible values). A contingency table is a <span class="math inline">\(r\times \cdots \times r\)</span> tensor.
+<ul>
+<li>Ex. given 3 variables, are they independent, or pairwise independent, or is there 3-way interaction? Note the undirected graph can’t distinguish the last two.</li>
+</ul></li>
+<li>Constraint satisfaction and combintorial optimization
+<ul>
+<li><span class="math inline">\(\psi_{stu}=1\)</span> iff satisfied; get uniform distribution over satisfying assignments.</li>
+<li>Random 3-SAT instances tend to have locally tree-like structure. Phase transition?</li>
+<li>Survey propagation algorithm.</li>
+</ul></li>
+<li>Bioinformatics
+<ul>
+<li>Hidden Markov model
+<ul>
+<li>Junction tree becomes forward-backward algorithm, Viterbi algorithm (for MAP).</li>
+</ul></li>
+<li>Phylogeny</li>
+<li>Hidden Markov phylogeny</li>
+<li>Factorial HMM: multiple chains coupled by link to common set of observed variables.</li>
+</ul></li>
+<li>Language and speech processing
+<ul>
+<li>Also HMM.</li>
+<li>Coupled HMM (fuse pairs of data streams, e.g. audio and lip)</li>
+<li>Bag-of-words, ex. latent Dirichlet allocation</li>
+</ul></li>
+<li>Image processing and spatial statistics
+<ul>
+<li>2d lattice, potential functions enforce local smoothness</li>
+<li>Multiscale quad trees</li>
+</ul></li>
+<li>Error-correcting coding
+<ul>
+<li>Parity-check codes. Codewords are those satisfying all parity relations.
+<ul>
+<li>Most successful decoder for many graphical codes is sum-product algorithm. Martingale arguments [160, 199]</li>
+</ul></li>
+</ul></li>
+</ul>
+<h3 id="exact-inference-algorithms">2.5 Exact inference algorithms</h3>
+<p>Sum-product and junctio-tree algorithms are DP algorithms based on method for sharing intermediate terms.</p>
+<p>Transform directed to undirected graphical model by making it <strong>moral</strong>: parents of each child are linked.</p>
+Tree-structured graph: For <span class="math inline">\(u\in N(s)\)</span> let <span class="math inline">\(T_u=(V_u,E_u)\)</span> be the component of <span class="math inline">\(u\)</span> after deleting <span class="math inline">\(s\)</span>.
+<span class="math display">\[\begin{align}
+p(x) &amp;= \rc Z \prod_{s\in V} \psi_s(x_s) \prod_{(s,t)}\psi_{st}(x_s,x_t)\\
+\mu_s(x_s) &amp; = \ka \psi_s(x_s) \prod_{t\in N(s)} M_{ts}^* (x_s)\\
+M_{ts}^*(x_s) &amp;= \sum_{x_{V_t}'} \psi_{st}(x_s,x_t') p(x_{V_t}'; T_t)
+\end{align}\]</span>
+<!--p(x_{V_t}; T_t) &\propto \prod_{u\in V_t} \psi_u(x_u)-->
+<p>Compute marginals for all nodes simultaneously in parallel. <span class="math inline">\(M_{tu}(x_u)\)</span> is passed from <span class="math inline">\(t\)</span> to <span class="math inline">\(u\in N(t)\)</span>. <span class="math display">\[
+M_{ts}(x_s) \leftarrow \ka \sum_{x_t'} \ba{
+\psi_{st}(x_s,x_t') \psi_t(x_t') \prod_{u\in N(t)\bs \{s\}} M_{ut}(x_t')
+}.
+\]</span> (To see this holds for <span class="math inline">\(M^*\)</span> up to constant, expand out the <span class="math inline">\(p(x_{V_t}';T_t)\)</span>.) For tree-structured graphs, converges to unique fixed point after finite iterations, up to normalization equal to <span class="math inline">\(M_{ts}^*(x_s)\)</span>. (<strong>Why?</strong> TODO: derive this.)</p>
+<p>Max-product: replace <span class="math inline">\(\sum\)</span> with max. Backtracking computes the argmax.</p>
+<p>(Updates apply to arbitrary commutative semirings.)</p>
+<p>A clique tree is an acyclic graph whose nodes are maximal cliques of <span class="math inline">\(G\)</span>. Running intersection property: for any 2 clique nodes <span class="math inline">\(C_1\)</span>, <span class="math inline">\(C_2\)</span>, all nodes on the unique path joining them contain <span class="math inline">\(C_1\cap C_2\)</span>. Then it’s a <strong>junction tree</strong>.</p>
+<p><span class="math inline">\(G\)</span> has a junction tree iff it is triangulated.</p>
+<ol type="1">
+<li>Triangulage <span class="math inline">\(G\)</span>. (HOW)</li>
+<li>Form junction tree <span class="math inline">\(G\)</span>. (HOW? Naive way is take 2 vertices, sort into those in between, recurse.)</li>
+<li>Run tree inference on junction tree.</li>
+</ol>
+<p>The separators are the intersection of cliques adjacent in the junction tree.</p>
+Passing a message from <span class="math inline">\(B\)</span> to <span class="math inline">\(C\)</span> (through <span class="math inline">\(S\)</span>):
+<span class="math display">\[\begin{align}
+\wt \phi_S(x_S) &amp;\leftarrow \sum_{x_{B\bs S}} \phi_B(x_B)\\
+\phi_C(x_C) &amp;\leftarrow \fc{\wt\phi_S(x_S)}{\phi_S(x_S)} \phi_C(x_C).
+\end{align}\]</span>
+<p>After a round of message passing, clique potentials are proportional to marginal probabilities.</p>
+<p>For a separator set <span class="math inline">\(S\)</span>, let <span class="math inline">\(d(S)\)</span> be the number of maximal cliques to which it is adjacent. <span class="math display">\[p(x) = \fc{\prod_{C\in \mathcal C}\mu_C(x_C)}{\prod_{S\in \mathcal S} [\mu_S(x_S)]^{d(S)-1}}.\]</span> Ex. for <span class="math inline">\(x_1\to x_2\to x_3\)</span>, <span class="math inline">\(p(x) = \fc{p(x_1,x_2)p(x_2,x_3)}{p(x_2)}\)</span>.</p>
+<strong>Proposition 2.1</strong>. A candidate set of marginal distributions <span class="math inline">\(\tau_C, C\in \mathcal C, \mathcal S\)</span> is globally consistent iff
+<span class="math display">\[\begin{align}
+\forall S, \sum_{x_S'} \tau_S(x_S') &amp;= 1\\
+\forall S\subeq C, \sum_{x_C'|x_S'=x_S} \tau_{C}(x_C') &amp;=\tau_S(x_S).
+\end{align}\]</span>
+<p>Computational cost grows exponentially in size of maximal clique in junction tree. Minimal size of maximl clique over all possible triangulations <span class="math inline">\(-1\)</span> is <strong>treewidth</strong>.</p>
+<p>Alternate definition (why equivalent?): covered by subgraphs of <span class="math inline">\(k+1\)</span> nodes in treelike fashion.</p>
+<h3 id="message-passing-algorithms-for-approximate-inference">2.6 Message-passing algorithms for approximate inference</h3>
+<ul>
+<li>Sum-product message-passing applied to graph with cycles: loopy sum-product or BP.</li>
+<li>Naive mean field algorithm
+<ul>
+<li>Ex. Ising model. Apply Gibbs sampling to update a node.</li>
+<li>For dense graph, replace neighbors by their means. Hope LoLN works.</li>
+</ul></li>
+</ul>
+<h2 id="exponential-families">3 Exponential families</h2>
+<h3 id="exponential-representations-via-maximum-entropy">3.1 Exponential representations via maximum entropy</h3>
+Let <span class="math inline">\(\{\phi_\al\}\)</span> be a family of functions (called <strong>potential functions</strong> or <strong>sufficient statistics</strong>). Say <span class="math inline">\(p\)</span> is consistent with the data if <span class="math display">\[ \EE_p [\phi_\al (X)] = \wh \mu_\al.\]</span> Ex. <span class="math inline">\(\phi=\{x,x^2\}\)</span>. The maximum entropy distribution is
+<span class="math display">\[\begin{align}
+p^*:&amp;= \amax_{\EE_p [\phi_\al (X)] = \wh \mu_\al} H(p)\\
+H(p):&amp;= -\int_X p(x) \ln p(x)\,\nu(dx).
+\end{align}\]</span>
+<p>Under certain conditions, the optimal solution is an exponential family.</p>
+<h3 id="basics-of-exponential-families">3.2 Basics of exponential families</h3>
+The <strong>exponential family</strong> associated with <span class="math inline">\(\phi\)</span> is the parametrized collection of density functions
+<span class="math display">\[\begin{align}
+p_\te(x_1,\ldots, x_m) &amp;= \exp[\an{\te,\phi(x)} - A(\te)]\\
+A(\te) &amp;= \ln \int_{X^m} \exp[\an{\te, \phi(x)}]\nu(dx).
+\end{align}\]</span>
+<p>(<span class="math inline">\(A\)</span> is the <strong>log partition</strong> or <strong>cumulant</strong> function.) Here <span class="math inline">\(\te\in \Om:=\set{\te\in \R^d}{A(\te)&lt;\iy}\)</span>. A <strong>regular</strong> exponential family has <span class="math inline">\(\Om\)</span> open. Say <span class="math inline">\(\phi\)</span> is minimal if <span class="math inline">\(\phi\cup \{1\}\)</span> is linearly independent; otherwise it is overcomplete.</p>
+<h3 id="examples-of-graphical-models-in-exponential-form">3.3 Examples of graphical models in exponential form</h3>
+<ol type="1">
+<li>Ising model: <span class="math inline">\(p_\te(x\in \{\pm 1\}^V) = \exp\ba{\sum_{s\in V} \te_s x_s + \sum_{(s,t)\in E} \te_{st}x_sx_t-A(\te)}\)</span>.</li>
+<li>Potts model: Nodes take values in <span class="math inline">\(\{0,\ldots, r-1\}\)</span>. Sufficient statistics are <span class="math inline">\(\one_{st;jk}(x_s,x_t) = \one_{x_s=j, x_t=k}\)</span>. (Note this is overcomplete—the standard overcomplete representation. Note the state space of nodes can also be different.)
+<ul>
+<li>Metric labeling problem: <span class="math inline">\(\te_{st;jk} = -\rh(j,k)\)</span> for <span class="math inline">\(\rh\)</span> a metric. <!-- cf. CSP --></li>
+</ul></li>
+<li>Sufficient statistics <span class="math inline">\(x_s,x_s^2, x_sx_t, (s,t)\in E\)</span>. <span class="math inline">\(\Te = -(\E xx^T)^{-1}\)</span> has <span class="math inline">\((s,t)\)</span> entry 0 for <span class="math inline">\((s,t)\nin E\)</span>.
+<ul>
+<li>Multivariate Gaussian is <span class="math inline">\(\exp\ba{\an{te,x} + \rc 2 \Tr(\Te xx^T) - A(\te, \Te)}\)</span>. (<span class="math inline">\(\Om\)</span> consists of symmetric <span class="math inline">\(\Te\prec 0\)</span>.) <!-- question: are $\rh$-correlated Gaussians included here? What about $\an{x_i,g}$? --></li>
+</ul></li>
+<li>Mixture models: Ex. mixture of Gaussians. Let <span class="math inline">\(\one_j[x_s], j\in [0,r-1]\cap \N\)</span> be sufficient statistics with parameters <span class="math inline">\(\al_{s;0},\ldots, \al_{s;r-1}\)</span>.
+<ul>
+<li>Let the distributions have parameters <span class="math inline">\(\ga_{s;i}, \ga_{s;i}'\)</span>. The density is <span class="math display">\[\propto \exp\ba{\sumz j{r-1} \al_{s;j} \one_j(x_s) + \sumz j{r-1} \one_j(x_s) [\ga_{s;j}y_s+\ga_{s;j}'y_s^2]}.\]</span></li>
+</ul></li>
+<li>Latent Dirichlet Allocation: <span class="math inline">\(\al \to U\to Z \to W, \ga \to W\)</span>.
+<ul>
+<li>Topic distribution: <span class="math inline">\(U\)</span> follows Dirichlet distribution with parameter <span class="math inline">\(\al\)</span>.</li>
+<li>Topics of document: <span class="math inline">\(Z\)</span> multinomial drawn from <span class="math inline">\(U\)</span>.</li>
+<li>Words: <span class="math inline">\(W\)</span> multinomial drawn from the topic distribution of <span class="math inline">\(Z\)</span>. <span class="math inline">\(\ga\)</span> specifies distribution of words in topics.</li>
+<li>Equations
+<span class="math display">\[\begin{align}
+\Pj(W=j|Z=i;\ga) &amp;= \exp(\ga_{ij})\\
+p_\ga(w|z) &amp;= \exp\ba{\sumz i{r-1}\sumz j{k-1} \ga_{ij} \one_i(z)\one_j(w)}\\
+p(z|u) &amp;\propto \exp\ba{\sumz i{r-1} \one_i(z)\ln u_i}.\\
+p_\al(u) &amp;= \exp\pa{\sumz i{r-1} \al_i\ln u_i}.
+\end{align}\]</span></li>
+</ul></li>
+<li>Hard-core constraints: subset of configurations that are forbidden. Ex. decoding linear codes, combinatorial optimization problems.
+<ul>
+<li>To express as exponential family, take density wrt appropriate bse measure. Ex. restrict to valid codewords.
+<span class="math display">\[\begin{align}
+p(y_i|x_i) &amp;= \exp(\te_ix_i-\ln (1+\exp(\te_i)))\\
+\te_i &amp;=(2y_i-1) \ln \prc{1-\ep}{\ep}.
+\end{align}\]</span>
+for BSC.</li>
+</ul></li>
+</ol>
+<p>Simple distributions</p>
+<table>
+<thead>
+<tr class="header">
+<th>Family</th>
+<th><span class="math inline">\((X,\nu)\)</span></th>
+<th>Sufficient statistics</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Bernoulli</td>
+<td><span class="math inline">\(\{0,1\}\)</span></td>
+<td><span class="math inline">\(x\)</span></td>
+</tr>
+<tr class="even">
+<td>Gaussian</td>
+<td><span class="math inline">\(\R\)</span></td>
+<td><span class="math inline">\(x,x^2\)</span></td>
+</tr>
+<tr class="odd">
+<td>Exponential</td>
+<td><span class="math inline">\((0,\iy)\)</span></td>
+<td><span class="math inline">\(x\)</span></td>
+</tr>
+<tr class="even">
+<td>Poisson</td>
+<td><span class="math inline">\(\N\)</span></td>
+<td><span class="math inline">\(x\)</span></td>
+</tr>
+<tr class="odd">
+<td>Beta</td>
+<td><span class="math inline">\((0,1)\)</span></td>
+<td><span class="math inline">\(\ln x, \ln (1-x)\)</span></td>
+</tr>
+</tbody>
+</table>
+<h3 id="mean-parameterization-and-inference-problems">3.4 Mean parameterization and inference problems</h3>
+<p>Any exponential family has alternative parameterization in terms of a vector of <strong>mean parameters</strong>.</p>
+<p>Realizable mean parameters: <span class="math display">\[\mathcal M :=\set{\mu\in \R^d}{\exists p  \forall \al, \EE_p [\phi_\al(X)] = \mu_\al}.\]</span></p>
+<p>Ex. Gaussian MRF mean parameters are <span class="math inline">\(\Si=\E[XX^T]\)</span> and <span class="math inline">\(\mu=\E[X]\)</span>. Realizable parameters are those with <span class="math inline">\(\Si-\mu\mu^T\succsim 0\)</span>. <span class="math inline">\(\mathcal M\)</span> is always convex. (Take the convex combination of the distributions.) When <span class="math inline">\(|X^m|\)</span> is finite, <span class="math inline">\(\mathcal M\)</span> is a convex polytope, <span class="math display">\[ \mathcal M = \conv \set{\phi(x)}{x\in X^m}.\]</span></p>
+Ex. Ising mean parameters
+<span class="math display">\[\begin{align}
+\mu_s &amp;= \EE_p[X_s]=\Pj(X_s=1)\\
+\forall (s,t)\in E, \mu_{s,t} &amp;= \EE_p[X_sX_t] = \Pj[(X_s,X_t)=(1,1)]
+\end{align}\]</span>
+<p>The set <span class="math inline">\(\mathcal M\)</span> is the set of singleton and pairwise marginal probabilities that can be realized by some distribution over <span class="math inline">\(\{0,1\}^m\)</span>, call the <strong>correlation/cut polytope</strong>. For <span class="math inline">\(\cdot -\cdot\)</span> this is <span class="math inline">\(\conv\{(0,0,0),(1,0,0),(0,1,0),(1,1,1)\}\)</span>.</p>
+<p>Ex. For binary linear codes, <span class="math inline">\(\mathcal M\)</span> is the codeword polytope, convex hull of codewords. <!-- distance $\ge 1$ from odd-parity vertices--></p>
+<p>Ex. For the standard overcomplete representation, <span class="math inline">\(\mathcal M\)</span> is the <strong>marginal polytope</strong>.</p>
+<p><strong>Q: Codeword polytope can be converted to MRF?</strong></p>
+<p>The facet complexity—number of constraints required to express—depends on the graph structure. For non-trees, this grows quickly.</p>
+<ul>
+<li>Forward mapping: <span class="math inline">\(\te\mapsto \mu\)</span>. Inference.</li>
+<li>Backward mapping: <span class="math inline">\(\mu\mapsto \te\)</span>. Finding the MLE is equivalent (under some conditions) to computing the backward mapping.</li>
+</ul>
+<h3 id="properties-of-a">3.5 Properties of <span class="math inline">\(A\)</span></h3>
+<strong>Proposition</strong>: <span class="math inline">\(A(\te)=\ln \int_{X^m} \exp[\an{\te,\phi(x)}] \,\nu(dx)\)</span> has derivatives of all orders and is convex on <span class="math inline">\(\Om\)</span>, strictly convex if representation is minimal.
+<span class="math display">\[\begin{align}
+A_{\te_\al} &amp;= \EE_{\te}\phi_\al(X)\\
+A_{\te_\al\te_\be} &amp;= \Cov(\phi_\al(X),\phi_\be(X))\\
+\end{align}\]</span>
+<p><em>Proof</em>. DCT, differentiate through integral.</p>
+<p>The range of <span class="math inline">\(\nb A:\Om \to \R^d\)</span> is contained in <span class="math inline">\(\mathcal M\)</span>.</p>
+<p>Questions:</p>
+<ol type="1">
+<li>When is <span class="math inline">\(\nb A\)</span> one-to-one?
+<ul>
+<li>Iff exponential representation is minimal.</li>
+<li><em>Proof</em>. Minimal implies strict convexity which gives <span class="math inline">\(\an{\nb A(\te^1) - \nb A(\te^2), \te^1-\te^2}\)</span>.</li>
+<li>If not minimal, there is 1-to-1 correspondence after modding out by nullspace.</li>
+</ul></li>
+<li>When does image of <span class="math inline">\(\Om\)</span> fully cover <span class="math inline">\(\mathcal M\)</span>?
+<ul>
+<li>When <span class="math inline">\(\Om\)</span> is open, <span class="math inline">\(\nb A(\Om)=\mathcal M^{\circ}\)</span>.</li>
+<li>Corollary: except for boundary points, all mean parameters realizable by some distribution can be realized by a member of the exponential family.</li>
+<li><em>Proof</em>.
+<ul>
+<li>Sufficient to prove for minimal <span class="math inline">\(\phi\)</span>. (Just reparametrize.)</li>
+<li><span class="math inline">\(\nb A(\Om)\subeq \mathcal M^{\circ}\)</span>: This follows from <span class="math inline">\(\nb A(\Om)\subeq \mathcal M\)</span>, <span class="math inline">\(\Om\)</span> open, and <span class="math inline">\(\nb A\)</span> strictly convex.</li>
+<li><span class="math inline">\(\mathcal M^{\circ}\subeq \nb A(\Om)\)</span>: WLOG, <span class="math inline">\(0\in \mathcal M^{\circ}\)</span> and we show <span class="math inline">\(0\in \nb A(\Om)\)</span>.</li>
+<li>Let <span class="math inline">\(H_{\ga,\ep} = \set{x\in X^m}{\an{\ga,\phi(x)}\ge \ep}\)</span>. For small enough <span class="math inline">\(\ep\)</span>, this has measure <span class="math inline">\(&gt;0\)</span>. Now
+<span class="math display">\[\begin{align}
+A(\te^0 + t\ga)
+&amp;\ge \ln \int_{\R^n} e^{\an{\te^0 + t\ga,\phi(x)}}\nu(dx)\\
+&amp; \ge t\ep + C_0.
+\end{align}\]</span>
+so taking <span class="math inline">\(t\to \iy\)</span> this blows up. This shows that <span class="math inline">\(A\)</span> has a minimum where <span class="math inline">\(\nb A=0\)</span>, i.e., <span class="math inline">\(0\in \nb A(\Om)\)</span>.</li>
+</ul></li>
+</ul></li>
+</ol>
+<h3 id="conjugate-duality-maximum-likelihood-and-maximum-entropy">3.6 Conjugate duality: maximum likelihood and maximum entropy</h3>
+<p>Conjugate dual function</p>
+<p><span class="math display">\[A*(\mu) :=\sup_{\te\in \Om} [\an{\mu, \te} - A(\te)].\]</span></p>
+<p>Let <span class="math inline">\(\te(\mu)\)</span> be such that <span class="math inline">\(\EE_{\te(\mu)} [\phi(X)] = \nb A(\te(\mu)) = \mu\)</span>.</p>
+<p><strong>Theorem</strong>.</p>
+<ol type="1">
+<li>The conjugate dual function satisfies <span class="math display">\[
+A^*(\mu) = \begin{cases}
+-H(p_{\te(\mu)}), &amp;\text{if }\mu\in \mathcal M^{\circ}\\
+\iy, &amp;\text{if }\mu\nin \ol{\mathcal M}\\
+\lim_{\mu^n\to \mu} A^*(\mu^n).
+\end{cases}
+\]</span></li>
+<li><span class="math inline">\(A(\te) = \sup_{\mu\in \mathcal M} [\an{\te,\mu} - A^*(\mu)]\)</span>. (This holds for any convex function?)</li>
+<li>The sup is attained uniquely at <span class="math inline">\(\mu=\mu(\te)\)</span>.</li>
+<li><span class="math inline">\(\nb A^*\)</span> is the inverse of <span class="math inline">\(\nb A\)</span>.</li>
+</ol>
+<table style="width:20%;">
+<colgroup>
+<col style="width: 5%" />
+<col style="width: 5%" />
+<col style="width: 5%" />
+<col style="width: 5%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Family</th>
+<th><span class="math inline">\(\Om\)</span></th>
+<th><span class="math inline">\(A(\te)\)</span></th>
+<th><span class="math inline">\(\mathcal M\)</span></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Bernoulli</td>
+<td><span class="math inline">\(\ln(1+e^{\te})\)</span></td>
+<td><span class="math inline">\([0,1]\)</span></td>
+<td><span class="math inline">\(-H(\mu)\)</span></td>
+</tr>
+<tr class="even">
+<td>Gaussian</td>
+<td><span class="math inline">\(\R\times \R_{&lt;0}\)</span></td>
+<td><span class="math inline">\(-\fc{\te_1^2}{4\te_2} - \ln (-2\te_2)\)</span></td>
+<td><span class="math inline">\(\set{(\mu_1,\mu_2)}{\mu_2-\mu_1^2}&gt;0\)</span></td>
+</tr>
+<tr class="odd">
+<td>Exponential</td>
+<td><span class="math inline">\((-\iy,0)\)</span></td>
+<td><span class="math inline">\(-\ln (-\te)\)</span></td>
+<td><span class="math inline">\((0,\iy)\)</span></td>
+</tr>
+<tr class="even">
+<td>Poisson</td>
+<td><span class="math inline">\(\R\)</span></td>
+<td><span class="math inline">\(e^\te\)</span></td>
+<td><span class="math inline">\((0,\te)\)</span></td>
+</tr>
+</tbody>
+</table>
+<h3 id="computational-challenges-with-high-dimensional-models">3.7 Computational challenges with high-dimensional models</h3>
+<p>We can compute <span class="math inline">\(A,\mu\)</span> by solving the variational problem.</p>
+<p>The optimization problem is a concave function over a convex set—what’s hard?</p>
+<ul>
+<li><span class="math inline">\(\mathcal M\)</span> is complex.</li>
+<li><span class="math inline">\(A^*\)</span> is not given explicitly (it has a variational form). It is a composition of <span class="math inline">\((\nb A)^{-1}(\mu) = \te(\mu)\)</span> and <span class="math inline">\(-H(p_{\cdot})\)</span>.
+<ol type="1">
+<li>Inverse mapping</li>
+<li>High-dimensional integration.</li>
+</ol></li>
+</ul>
+<p>Instead approximate!</p>
+<h3 id="thoughts">Thoughts</h3>
+<!-- This gives a quick proof that you can't necessarily sample from degree $\ge 3$ pseudo-distributions. We can obtain an exponential distribution-->
+<h2 id="bethe-approximation-and-sum-product-algorithm">4 Bethe approximation and sum-product algorithm</h2>
+<h3 id="sum-product-and-bethe-approximation">4.1 Sum-product and Bethe approximation</h3>
+Pairwise Markov random field: undirected graphical model with potential functions involving at most pairs of variables. (Often discrete or Gaussian.)
+<span class="math display">\[\begin{align}
+p_\te(x)&amp;\propto\exp\ba{\sum_{s\in V} \te_s(x_s) + \sum_{(s,t)\in E} \te_{st}(x_s,x_t)}\\
+\mu_{st}(x_s,x_t) :&amp;= \sum_{(j,k)\in X_s\times X_t} \mu_{st;jk} \one_{st;jk}(x_s,x_t)\\
+\mathbb{M}(G) :&amp;= \set{\mu\in \R^d}{\exists p\text{ with marginals }\mu_s(x_s), \mu_{st}(x_s,x_t)}
+\end{align}\]</span>
+<p>(globally realizable distributions)</p>
+<p>(Q: how to convert an undirected GM into an equivalent pairwise form?)</p>
+Locally consistent marginal distributions:
+<span class="math display">\[\begin{align}
+\sum_{x_s} \tau_s(x_s) &amp;= 1\\
+\sum_{x_t'} \tau_{st}(x_s,x_t') &amp;=\tau_s(x_s)
+\end{align}\]</span>
+<p>and vice versa. These constraints, and <span class="math inline">\(\tau\ge 0\)</span>, define <span class="math inline">\(\mathbb L(G)\)</span>.</p>
+<p>In general <span class="math inline">\(\mathbb M(G)\sub \mathbb L(G)\)</span>. (Elements in <span class="math inline">\(\mathbb L(G)\bs \mathbb M(G)\)</span> are pseudomarginals.) For trees they are equal.</p>
+<p><em>Proof</em>. Set <span class="math display">\[
+p_\mu(x) := \prod_{s\in V} \mu_s(x_s) \prod_{(s,t)\in E}\fc{\mu_{st}(x_s,x_t)}{\mu_s(x_s)\mu_t(x_t)}.
+\]</span></p>
+<!--what is the junction tree theorem?-->
+<p>The negative entropy <span class="math inline">\(A^*\)</span> as a function of <span class="math inline">\(\mu\)</span> has a closed form for trees.</p>
+<span class="math display">\[\begin{align}
+H(p_\mu) &amp;= \sum_{s\in V} H_s(\mu_s) - \sum_{(s,t)\in E} I_{st}(\mu_{st})\\
+H_s(\mu_s) :&amp;= -\sum_{x_s\in X_s} \mu_s(x_s)\ln \mu_s(x_s)\\
+I_{st}(\mu_{st}):&amp;=\sum_{(x_s,x_t)\in X_s\times X_t} \mu_{st}(x_s,x_t) \ln \fc{\mu_{st}}{\mu_s\mu_t}.
+\end{align}\]</span>
+<p><strong>Check me!</strong></p>
+<p><strong>Bethe entropy approximation</strong> (<span class="math inline">\(\tau\)</span> a pseudomarginal) <span class="math display">\[
+H_{\text{Bethe}}(\tau) := \sum_{s\in V} H_s(\tau_s) - \sum_{(s,t)\in E} I_{st}(\tau_{st}).
+= -\sum_{s\in V} (d_s-1)H_s(\tau_s) + \sum_{(s,t)\in E} H_{st}(\tau_{st}).
+\]</span></p>
+<p>Bethe variational problem: <span class="math display">\[
+\max_{\tau\in \mathbb L(G)}\ba{
+\an{\te, \tau} -H_{\text{Bethe}}(\tau)
+}
+\]</span> <!--
+\sum_{s\in V} H_s(\tau_s)
+-\sum_{(s,t)\in E} I_{st}(\tau_{st}).
+--></p>
+<!-- $M_{ts}(x_s) = \exp(\la_{ts}(x_s))$.-->
+<p>The corresponding Lagrangian is <span class="math display">\[
+\mathcal L(\tau,\la;\te) =
+\an{\te,\tau} + H_{\text{Bethe}} + \sum_{s\in V} \la_{ss} C_{ss}(\tau) 
++ \sum_{(s,t)\in E} \ba{
+\sum_{x_s} \la_{ts}(x_s) C_{ts}(x_s;\tau)
++\sum_{x_t} \la_{st}(x_t) C_{st}(x_t;\tau)
+}.
+\]</span></p>
+<p><strong>Theorem</strong> (Sum-product and Bethe).</p>
+<ol type="1">
+<li>Any fixed point of sum-product updates satisfies <span class="math display">\[
+\nb_{\tau,\la} \mathcal L(\tau^*, \la^*; \te)=0.
+\]</span></li>
+<li>For a tree-structured MRF, the unique solution has <span class="math inline">\(\tau\)</span> the singleton and pairwise marginal distributions. The optimal value is <span class="math inline">\(A(\te)\)</span>.</li>
+</ol>
+<em>Proof</em> (of 1). Solving the Lagrange multiplier problem (note the multipliers are <span class="math inline">\(\la_s(x_s)\)</span> and <span class="math inline">\(\la_{ts}(x_s)\)</span>) gives
+<span class="math display">\[\begin{align}
+\nb_\tau \ub{(\an{\te,\tau} + \sum H_s - \sum I_{st})}{F} &amp;= \la^TD_\tau C\\
+\nb_\tau F&amp;= (\te_s - \cancel{1} - \ln \tau_s +cancel{\sum_t \tau_{st} \rc{\tau_s}}, \te_{st} - 1 - \ln \fc{\tau_{st}}{\tau_s\tau_t})\\
+\la^T \nb_\tau C &amp;= (-\la_{ss} + \sum_{t\in N(s)}\la_{ts}, -\la_{st}(x_s) - \la_{st}(x_t))\\
+\implies
+\ln \tau_s &amp;= \la_{ss} + \te_s \fixme{+} \sum_{t\in N(s)} \la_{ts}(x_s)\\
+\ln \fc{\tau_{st}}{\wt\tau_s \wt\tau_t} &amp; = \te_{st} \fixme{-} \la_{ts}(x_s) - \la_{st}(x_t)
+\end{align}\]</span>
+where the last 2 equations are viewed as functions on <span class="math inline">\(X_s,X_s\times X_t\)</span>. <strong>I’m having sign errors and an extra <span class="math inline">\(-1\)</span> added…</strong> Substitute the first equation into the second to get <span class="math display">\[
+\ln \tau_{st} = \la_{ss} + \la_{tt} + \te_{st}(x_s,x_t) + \te_s(x_s) + \te_t(x_t) + \sum_{u\in N(s)\bs t} \la_{us}(x_s) + \sum_{u\in N(t)\bs s} \la_{ut}(x_t).
+\]</span> Letting <span class="math inline">\(M_{ts} = \exp(\la_{ts}(x_s))\)</span>,
+<span class="math display">\[\begin{align}
+\tau_s(x_s) &amp;= \ka_s \exp^{\te_s(x_s)} \prod_{t\in N(s)}M_{ts}(x_s)\\
+\tau_{st}(x_s,x_t) &amp;= \ka_{st} \exp^{\te_{st}(x_s,x_t)+\te_s(x_s) + \te_t(x_t)} \prod_{t\in N(s)\bs t}M_{us}(x_s) \prod_{u\in N(t)\bs s} M_{ut}(x_t).\\
+\end{align}\]</span>
+<p>The constraint <span class="math inline">\(C_{st}\)</span> becomes <span class="math display">\[
+M_{st}(x_s) \propto \sum_{x_t} \ba{\exp\ba{\te_{st}(x_s,x_t) + \te_t(x_t)} \prod_{u\in N(t)\bs s} M_{ut}(x_t)}.
+\]</span> This is exactly the sum-product update.</p>
+<p><span class="math inline">\(A_{\text{Bethe}}\)</span> is simply an approximation to <span class="math inline">\(A\)</span>. It is a lower bound only for certain classes of models. <!--ferro?--></p>
+<p><strong>Proposition</strong> (reparameterization properties). Let <span class="math inline">\(\tau^*\)</span> be an optimum of BVP defined by <span class="math inline">\(p_\te\)</span>. Then <span class="math display">\[
+p_{\tau^*}(x) = \rc{Z(\tau^*)} \prod_{s\in V} \tau_s^*(x_s) \prod_{(s,t)\in E} \fc{\tau_{st}^*(x_s,x_t)}{\tau_s^*(x_s)\tau_t^*(x_t)} = p_\te(x).
+\]</span></p>
+<p>(Note: we had <span class="math inline">\(\te\)</span> to begin with, so this is not surprising. The goal of BVP is to compute <span class="math inline">\(A\)</span> which can be used to compute marginals. But we don’t get the real marginals.)</p>
+<p>A generalized loop is a subgraph where every vertex has degree <span class="math inline">\(\ge2\)</span>.</p>
+<strong>Proposition 4.4</strong> (Loop series expansion). For the Ising model,
+<span class="math display">\[\begin{align}
+A(\te) &amp;= A_{\text{Bethe}}(\te) + \ln \ba{
+1 + \sum_{\phi\ne \wt E\subeq E} \be_{\wt E} \prod_{s\in V}\EE_{\tau_s} [(X_s-\tau_s)^{d_s(\wt E)}]
+}\\
+\be_{st} :&amp;= \fc{\tau_{st}-\tau_s\tau_t}{\tau(1-\tau_s)\tau_t(1-\tau_t)}\\
+\be_{\wt E} :&amp;=\prod_{(s,t)\in E}\be_{st}\\
+\tau_{st} &amp;=\tau_{st}(1,1).
+\end{align}\]</span>
+<p>Note the term is nonzero only for generalized loops.</p>
+<p><em>Proof</em>. Note if <span class="math inline">\(\te,\te'\)</span> are such that <span class="math inline">\(p_\te=p_{\te'}\)</span> then <span class="math inline">\(A(\te)-A(\te') = A_{\text{Bethe}}(\te)-A_{\text{Bethe}}(\te')\)</span>. <strong>Q: Why?</strong> (First show <span class="math inline">\(H_{\text{Bethe}}(p_{\te(\mu)}) = H_{\text{Bethe}}(p_{\te'(\mu)})\)</span>. Then note for <span class="math inline">\(\mu\in \mathbb L(G)\)</span>, <span class="math inline">\(\an{\te'-\te,\mu}=0\)</span>.)</p>
+Check this for a BP fixed point where <span class="math inline">\(A_{\text{Bethe}}=0\)</span>. (See p.3 of 11/16. Check signs.) Calculate (here <span class="math inline">\(\E\)</span> is wrt <span class="math inline">\(\prod_s \tau_s\)</span>)
+<span class="math display">\[\begin{align}
+\fc{\tau_{st}}{\tau_s\tau_t} &amp;= 1+\be_{st}(x_s-\tau_s)(x_t-\tau_t)\\
+\exp(A(\wt \te)) &amp;=\E[\prod_{s,t}\in E (1+\be_{st}(x_s-\tau_s)(x_t-\tau_t))].
+\end{align}\]</span>
+<p>Expand and use <span class="math inline">\(\E[X_s-\tau_s]=0\)</span>.</p>
+<p><strong>Q: is there a nice (nonvariational) expression for <span class="math inline">\(A_{\text{Bethe}}\)</span> like <span class="math inline">\(A\)</span>?</strong></p>
+<h3 id="kikuchi-and-hypertree-based-models">4.2 Kikuchi and Hypertree-based models</h3>
+<p>BVP involves approximating both the entropy and <span class="math inline">\(\mathbb M(G)\)</span>. Improve both of these simultaneously. Use more complex junction trees.</p>
+<p>A hypergraph can be drawn using a poset diagram of its edges (reverse inclusion).</p>
+<p>A hypergraph is acyclic if you can specify (<strong>??</strong>) a junction tree using maximal hyperedges and intersections. The width is (largest hyperedge)-1. A <span class="math inline">\(k\)</span>-hypertree is an acyclic hypergraph with a single connected component.</p>
+<h2 id="mean-field-methods">5 Mean field methods</h2>
+<h2 id="variational-methods-in-parameter-estimation">6 Variational methods in parameter estimation</h2>
+<h2 id="variational-methods-based-on-convex-relaxations">7 Variational methods based on convex relaxations</h2>
+<h2 id="mode-computation">8 Mode computation</h2>
+<h2 id="conic-programming-relaxations">9 Conic programming relaxations</h2>
+<h2 id="review">Review</h2>
+<h3 id="section-1">1</h3>
+<h3 id="section-2">2</h3>
+<h3 id="section-3">3</h3>
+<ol type="1">
+<li>Define an exponential family. What does it mean for it to be regular? Minimal? (3.2)</li>
+<li>Write the Ising model as an exponential family. (3.3)</li>
+<li>Given <span class="math inline">\(\phi\)</span>, define the set of realizable mean parameters <span class="math inline">\(\mathcal M\)</span>. What is the forward/backward mapping? (3.4)</li>
+<li>What are the (realizable) mean parameters for Gaussians? The Ising model? (3.4)</li>
+<li>Define the correlation (cut) polytope and marginal polytope. (3.4)</li>
+<li>What are the derivatives of <span class="math inline">\(A\)</span>? (3.5)</li>
+<li>When is <span class="math inline">\(\nb A\)</span> convex/strictly convex/one-to-one? (3.6)</li>
+<li>What is the relationship between <span class="math inline">\(\nb A\)</span> and <span class="math inline">\(\mathcal M\)</span>? (3.6)</li>
+<li>Define the conjugate dual function <span class="math inline">\(f^*\)</span>. When is the double dual the original function? (3.6)</li>
+<li>Relate <span class="math inline">\(A^*\)</span> to the entropy. (3.6)</li>
+<li>What is the relationship between <span class="math inline">\(\nb A^*\)</span> and <span class="math inline">\(\nb A\)</span>? (3.6)</li>
+</ol>
+<h3 id="section-4">4</h3>
+<ol type="1">
+<li>Define <span class="math inline">\(\mathbb M(G)\)</span>, <span class="math inline">\(\mathbb L(G)\)</span>.</li>
+<li>Define the Bethe approximation and variational problem. What is its Lagrangian?</li>
+<li>Explain the relationship with the sum-product updates.</li>
+<li>What is the solution to the problem for tree-structured MRF’s?</li>
+<li>What is the loop series expansion?</li>
+</ol>
+<h2 id="misc">Misc</h2>
+<p>The treewidth</p>
+<ul>
+<li><a href="https://en.wikipedia.org/wiki/Tree_decomposition">Tree decomposition</a></li>
+<li><a href="https://en.wikipedia.org/wiki/Chordal_completion">Chordal completion</a></li>
+<li><a href="https://en.wikipedia.org/wiki/Treewidth#Algorithms">Treewidth algorithms</a></li>
+<li><a href="http://ai.stanford.edu/~paskin/gm-short-course/lec3.pdf">Junction tree algorithm</a></li>
+</ul>
+<p>Having trouble finding the complete algorithm! I want: Given a graph has treewidth <span class="math inline">\(k\)</span>,</p>
+<ul>
+<li>Find a choral completion.</li>
+<li>Find the junction tree of the chordal completion, of width <span class="math inline">\(k\)</span>.</li>
+</ul>
+<p>In time <span class="math inline">\(e^{O(k)}\poly(n)\)</span>.</p>
+
+  </div>
+
+    
+
+    <!-- Extension : Sharing buttons @ www.sharethis.com -->
+    <span class="st_facebook_large" displayText="Facebook"></span>
+    <span class="st_twitter_large" displayText="Tweet"></span>
+    <span class="st_googleplus_large" displayText="Google +"></span>
+    <span class="st_reddit_large" displayText="Reddit"></span>
+    <span class="st__large" displayText></span>
+
+    <div id="disqus_thread"></div>
+    
+
+
+  
+    <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+  </div>
+  
+</div>
+
+
+<!-- Footer -->
+<div id="footer">
+  <div class="container">
+    Built with
+    <a href="http://jaspervdj.be/hakyll">Hakyll</a> 
+    using 
+    <a href="http://www.getbootstrap.com">Bootstrap</a>, 
+    <a href="http://www.disqus.com">Disqus</a>,
+    <a href="http://ignorethecode.net/blog/2010/04/20/footnotes/">Footnotes.js</a>,
+    <a href="http://highlightjs.org/">Highlight.js</a>, 
+    <a href="http://www.mathjax.org">MathJax</a>, 
+    and <a href="http://www.sharethis.com">ShareThis</a>.
+  </div>
+</div>
+</body>
+
+</html>
+
+<!-- SCRIPTS -->
+<!-- jQuery-->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+<script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
+
+<script src="../../../../bootstrap/js/bootstrap.min.js"></script>
+
+<!-- Extension : Highlight.js @ https://highlightjs.org/ -->
+<!-- Syntax highlighting tomorrow-night-bright, agate-->
+<link rel="stylesheet" href="../../../../highlight/css/tomorrow-night-bright.css">
+<script src="../../../../highlight/js/highlight.pack.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+
+<!-- Extension : MathJax @ https://docs.mathjax.org/en/v2.5-latest/tex.html -->
+<!-- MathJax/config/local/local.js contains macros. Need to provide entire URL-->
+<script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML,http://holdenlee.github.io/notebook/MathJax/config/local/local"></script>
+
+<!-- Extension : Footnotes @ http://ignorethecode.net/blog/2010/04/20/footnotes/ -->
+<script src="../../../../footnotes/js/footnotes.js"></script>
+
+<!-- Extension : Disqus @ http://disqus.com -->
+<!-- Extension : InlineDisqussions @ https://github.com/tsi/inlineDisqussions -->
+
+<script src="../../../../disqus/js/disqus.js"></script>
+
+
+
+<!-- Extension : Google Analytics -->
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-73261814-1', 'auto');
+  ga('send', 'pageview');
+
+</script>
+

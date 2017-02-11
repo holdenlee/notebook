@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+
+  <meta name="description" content="Holden Lee's Research Notebook">
+  <meta name="author" content="Holden Lee">
+    
+  <title>GANs</title>
+
+  <!-- Bootstrap core CSS -->
+  <link href="../../../../bootstrap/css/bootstrap.min.css" rel="stylesheet">
+
+  <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+  <!-- <link href="../../assets/css/ie10-viewport-bug-workaround.css" rel="stylesheet"> -->
+
+  <!-- Custom styles for this template -->
+  <link href="../../../../css/blog.css" rel="stylesheet">
+  <link href="../../../../css/default.css" rel="stylesheet">
+
+  <!-- Extension : Footnotes -->
+  <link href="../../../../footnotes/css/footnotes.css" rel="stylesheet">
+
+  <!-- Extension : InlineDisqussions @ https://github.com/tsi/inlineDisqussions -->
+  
+
+  <!-- Extension : Collapsible lists @ http://code.stephenmorley.org/javascript/collapsible-lists/-->
+  <link href="../../../../collapsible_lists/css/collapsible.css" rel="stylesheet">
+  <script type="text/javascript" src="../../../../collapsible_lists/js/CollapsibleLists.js"></script>
+
+</head>
+
+<body>
+
+<!-- Navigation bar. navbar-inverse is black, navbar-default is white.-->
+<!-- To make a button active (pressed), use <li class="active"> -->
+<div id="header">
+  <nav class="navbar navbar-inverse navbar-fixed-top">
+    <div class="container">
+      <div class="navbar-header">
+        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+          <span class="sr-only">Toggle navigation</span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="../../../../">Notebook</a>
+      </div>
+      <div id="navbar" class="collapse navbar-collapse">
+        <ul class="nav navbar-nav">
+          <li><a href="../../../../">Home</a></li>
+          <li><a href="../../../../sitemap.html">Sitemap</a></li>
+<!-- TODO: Distinguish between PAPERS, RESEARCH QUESTIONS, BOOKS -->
+<!-- TODO: make this part a for loop over main pages -->
+        </ul>
+      </div><!--/.nav-collapse -->
+    </div>
+  </nav>
+</div>
+<!-- Content -->
+<!--div id="content">
+  <h1>Mental Wilderness</h1>-->
+
+
+
+<div class="container">
+  <div id="content">
+    <div class="page header">
+      <h1>GANs</h1>
+    </div>
+    <div class="info">
+      
+       
+        <p>Posted: 2016-12-28 
+          , Modified: 2016-12-28 
+	</p>
+      
+       <p>Tags: <a href="../../../../tags/neural%20nets.html">neural nets</a></p> 
+    </div>
+    
+  </div>
+  <!--/div-->
+
+  <div class="toc"> <ul>
+ <li><a href="#gans">GANs</a><ul>
+ <li><a href="#objective">Objective</a></li>
+ <li><a href="#interpretation-of-objective">Interpretation of objective</a></li>
+ <li><a href="#another-interpretation">Another interpretation</a></li>
+ <li><a href="#training">Training</a></li>
+ <li><a href="#notes">Notes</a></li>
+ </ul></li>
+ <li><a href="#improved-techniques.">Improved techniques.</a><ul>
+ <li><a href="#semi-supervised-learning">Semi-supervised learning</a></li>
+ </ul></li>
+ <li><a href="#infogan">InfoGAN</a></li>
+ <li><a href="#adagan-boosting-generative-models">AdaGAN: Boosting Generative Models</a><ul>
+ <li><a href="#minimizing-f-divergence-with-additive-mixtures">Minimizing f-divergence with additive mixtures</a></li>
+ <li><a href="#adagan-derivation">AdaGAN derivation</a></li>
+ </ul></li>
+ <li><a href="#two-views-of-gans">Two views of GANs</a></li>
+ <li><a href="#adversarial-training-with-maximum-mean-discrepancy">Adversarial training with maximum mean discrepancy</a></li>
+ </ul> </div>
+
+  <div class="blog-main">
+    <p>References</p>
+<ul>
+<li>Papers
+<ul>
+<li><a href="https://arxiv.org/pdf/1606.03657v1.pdf">InfoGAN: Interpretable Representation Learning by Information Maximizing Generative Adversarial Nets</a></li>
+<li><a href="https://arxiv.org/abs/1606.03498">Improved techniques for training GANs</a></li>
+<li><a href="http://papers.nips.cc/paper/5423-generative-adversarial-nets.pdf">Generative adversarial nets</a></li>
+<li><a href="https://arxiv.org/abs/1701.02386">AdaGAN: Boosting generative models</a></li>
+</ul></li>
+<li>Blog posts
+<ul>
+<li><a href="http://www.inference.vc/my-summary-of-adversarial-training-nips-workshop/">New perspectives, NIPS2016</a> <a href="http://scrible.com/s/g5QQ6">h</a></li>
+<li><a href="http://www.inference.vc/how-to-train-your-generative-models-why-generative-adversarial-networks-work-so-well-2/">How to train your generative models</a> <a href="http://scrible.com/s/i5AQ6">h</a></li>
+<li><a href="http://www.inference.vc/infogan-variational-bound-on-mutual-information-twice/">InfoGAN</a> <a href="http://scrible.com/s/6BAQ6">h</a></li>
+<li><a href="https://openai.com/blog/generative-models/">OpenAI</a></li>
+<li><a href="http://www.yingzhenli.net/home/blog/?p=421">GANs, MI, and algorithm selection</a></li>
+</ul></li>
+</ul>
+<h2 id="gans">GANs</h2>
+<p>Ferenc: When the goal is to train a model that can generate natural-looking samples, maximum likelihood is not a desirable training objective. Under model misspecification and finite data (that is, in pretty much every practically interesting scenario), it has a tendency to produce models that overgeneralise.</p>
+<h3 id="objective">Objective</h3>
+<p>Train 2 neural networks <span class="math inline">\(D\)</span> and <span class="math inline">\(G\)</span>. <span class="math inline">\(P\)</span> generates real data, and <span class="math inline">\(G=\wh P\)</span> generates fake data. Suppose either <span class="math inline">\(P\)</span> or <span class="math inline">\(\wh P\)</span> is chosen with probability <span class="math inline">\(\rc2\)</span> and then one same <span class="math inline">\(x\)</span> is drawn. (I.e., consider <span class="math inline">\(\rc2 (P+\wh P)\)</span>.)</p>
+<ul>
+<li><span class="math inline">\(G\)</span> is generator: it tries to generate <span class="math inline">\(x\)</span> with distribution close to <span class="math inline">\(P\)</span>.</li>
+<li><span class="math inline">\(D\)</span> is discriminator: given <span class="math inline">\(x\)</span>, it tries to output the probability that <span class="math inline">\(x\)</span> is real data.</li>
+</ul>
+<p><span class="math inline">\(G\)</span> tries to minimize the objective and <span class="math inline">\(D\)</span> tries to maximize it: <span class="math display">\[
+V(D, G) = \E_P \ln D + \E_G \ln (1-D).
+\]</span> (The second expectation is over <span class="math inline">\(G(z)\)</span>, <span class="math inline">\(z\sim p_z\)</span> a fixed distribution.) If the data was real, there is a loss <span class="math inline">\(\ln \wh\Pj\pat{real}\)</span>, and if the data was fake, there is a loss <span class="math inline">\(\ln \wh \Pj\pat{fake}\)</span>. (Penalize for mistakes.)</p>
+Note that given <span class="math inline">\(G\)</span>, the optimal <span class="math inline">\(D\)</span> is $ $,
+<span class="math display">\[\begin{align}
+\max_D V(D,G) &amp;= \EE_p \ln \fc{p}{p+\wh p} + \EE_{\wh p} \ln \fc{\wh p}{p+\wh p}\\
+&amp;= -2\ln 2 + KL\ba{p||\fc{p+\wh p}2} + KL\ba{\wh p ||\fc{p+\wh p}2}.
+\end{align}\]</span>
+<h3 id="interpretation-of-objective">Interpretation of objective</h3>
+<span class="math display">\[
+KL[Q||P] := \EE_Q\ln \fc{Q}{P} = H(Q) - \EE_Q\ln P = H(Q) + CE(Q,P)
+\]</span> where CE is cross-entropy.
+<span class="math display">\[\begin{align}
+JSD[P||Q] &amp;= \rc 2 KL\ba{P||\fc{P+Q}2}
++ \rc 2 KL\ba{Q||\fc{P+Q}2}\\
+JSD[Q||P] &amp;= \pi KL\ba{P||\pi P+(1-\pi)Q}
++ (1-\pi) KL\ba{Q||\pi P+(1-\pi)Q}
+\end{align}\]</span>
+<p>Let <span class="math inline">\(P\)</span> be the natural distribution and <span class="math inline">\(Q\)</span> be the estimated one.</p>
+<ul>
+<li><span class="math inline">\(KL[Q||P] = H(Q) + CE(Q,P)\)</span>, <span class="math inline">\(CE(Q,P)\)</span> is the perplexity of seeing samples from <span class="math inline">\(P\)</span> when you think the distribution is <span class="math inline">\(Q\)</span>. It is maximized by a model <span class="math inline">\(Q\)</span> that deterministically picks the most likely stimulus. <span class="math inline">\(H(Q)\)</span> tries to counteract by enforcing diversity.
+<ul>
+<li>Favors undergeneralization, ex. describing the largest mode only. It’s infinitely penalized in introducing probability mass when <span class="math inline">\(P\)</span> has none.</li>
+<li>Hard to optimize based on a finite sample. (Why? It’s not well-behaved unless <span class="math inline">\(\Supp(Q)\subeq \Supp(P)\)</span>!)</li>
+</ul></li>
+<li><span class="math inline">\(KL[P||Q] = H(P) + CE(P,Q)\)</span>, <span class="math inline">\(H(P)\)</span> is constant and <span class="math inline">\(CE(P,Q)\)</span> is the average negative log likelihood. Optimizing this corresponds to maximizing the log likelihood.
+<ul>
+<li>Favors approximations <span class="math inline">\(Q\)</span> to overgeneralize <span class="math inline">\(P\)</span>. It’s allowed to introduce probability mass where <span class="math inline">\(P\)</span> has no or little mass.</li>
+</ul></li>
+<li>JSD is a compromise.</li>
+</ul>
+<h3 id="another-interpretation">Another interpretation</h3>
+<p>Let <span class="math inline">\(s=0,1\)</span> wp <span class="math inline">\(\rc2\)</span>, determining whether we see real or fake data. Let <span class="math inline">\(\wt p\)</span> be combined distribution. <span class="math display">\[I[s;x] = KL[\wt p(s,x)||\wt p(s) \wt p(x)].\]</span> This is intractable to estimate. Subtract out KL divergence: <span class="math display">\[
+L[p;q] := I[s;x] - \E_{\wt p(x)} [KL[\wt p(s|x)||q(s|x)]] = H[s] + \E_{\wt p(s,x)} [\ln q(s|x)]
+\]</span> (CHECK THIS) The second term is the GAN objective function. “GAN can be viewed as an augmented generative model which is trained by minimizing mutual information.” <a href="http://www.yingzhenli.net/home/blog/?p=421">YZL</a></p>
+<h3 id="training">Training</h3>
+<ul>
+<li>Alternate between <span class="math inline">\(k\)</span> steps of optimizing <span class="math inline">\(D\)</span> and one step of optimizing <span class="math inline">\(G\)</span>.</li>
+<li>At the beginning <span class="math inline">\(G\)</span> is poor so <span class="math inline">\(D\)</span> predicts close to 1, and <span class="math inline">\(\ln (1-D)\)</span> can blow up. So at the beginning train <span class="math inline">\(G\)</span> to maximize <span class="math inline">\(\E_G\ln D\)</span> instead.</li>
+<li>Use stochastic backprop.</li>
+<li>Use momentum.</li>
+<li>Generator nets used ReLU and sigmoid, discriminator used maxout, dropout.</li>
+<li>Estimate probability of test set data under <span class="math inline">\(p_g\)</span> by fitting Gaussian Parzen window. (What is this? [7])</li>
+</ul>
+<h3 id="notes">Notes</h3>
+<ul>
+<li>No explicit representation of <span class="math inline">\(p_g\)</span>.</li>
+<li><span class="math inline">\(D\)</span> must be synchronized well with <span class="math inline">\(G\)</span> during training. (? Avoid “Helvetica”)</li>
+</ul>
+<p>Table p. 8</p>
+<h2 id="improved-techniques.">Improved techniques.</h2>
+<p>“GANs are typically trained using gradient descent techniques that are designed to find a low value of a cost function, rather than to find the Nash equilibrium of a game.”</p>
+<ul>
+<li>Feature matching: new objective for generator that prevents it from overtraining on current discriminator. Train the generator to match the expected value of features <span class="math inline">\(f(x)\)</span> on intermediate layer of discriminator. <span class="math display">\[ \ve{\E_{x\sim p_{\text{data}}}f(x) - \E_{z\sim p_z(z)} f(G(z))}_2^2.\]</span></li>
+<li>Minibatch discrimination: A failure mode for GAN is for the generator to collapse to a point. So allow discriminator to look at multiple data examples in combination.</li>
+<li>Historical averaging: include term <span class="math inline">\(\ve{\te - \rc t \sumo it \te[i]}^2\)</span>. cf. fictitious play [16] algorithm that works for other games.</li>
+<li>One-sided label smoothing. Replace positive and negative classification targets 1, 0 with <span class="math inline">\(\al,\be\)</span>. This makes it less vulnerable to adversarial examples. Actually, don’t change <span class="math inline">\(\be=0\)</span>.</li>
+<li>Virtual batch normalization</li>
+</ul>
+<h3 id="semi-supervised-learning">Semi-supervised learning</h3>
+<p>Label generated samples with “generated” class <span class="math inline">\(K+1\)</span>. For unlabeled data, maximize <span class="math inline">\(\ln p_{\text{model}}(y\in [K]|x)\)</span>.</p>
+<h2 id="infogan">InfoGAN</h2>
+<ul>
+<li>Extend the GAN objective with new term encouraging high mutual information between generated samples and subset of latent variables <span class="math inline">\(c\)</span>. (Other variables are noise variables.)</li>
+<li>Hopefully <span class="math inline">\(c\)</span> will represent the most meaningful sources of variation.</li>
+<li>Use a variational lower bound to maximize mutual information. (cf. variational autoencoders)</li>
+</ul>
+<p><span class="math display">\[L_{infoGAN}(\te) = I[x,y] - \la I[x_{\text{fake}},c].\]</span></p>
+<p>Want <span class="math inline">\(c\)</span> to effectively explain most variation in fake data.</p>
+<p>Variational bound on MI: <span class="math display">\[I[X,Y] = \max_q \bc{H[Y] + \EE_{x,y} \ln q(y|x)}.\]</span></p>
+<p>Thus, <span class="math display">\[
+I[x_{\text{fake}},c]\ge \EE_{x_{\text{fake}}\sim G(z,c), c\sim C|x}[\ln \fc{Q(c|x)}] + H(c)
+\]</span> <!-- trivial! By Bayes, we can replace the expectation with $\EE_{c\sim C, x\sim X|C}$--> Sample using Monte Carlo.</p>
+<p>GANs use the variational bound in the wrong direction <span class="math inline">\(I(s;x) \ge H(s) + V\)</span>. InfoGANs use it twice. <span class="math display">\[
+\ub{I(s;x)}{\ge H(s)+V} - \la \ub{I[x_{\text{fake}}, c]}{\ge ...}
+\]</span></p>
+<p>Example: for MNIST, have 10 known labels and 2 latent variables which turn out to represent slant and width.</p>
+<h2 id="adagan-boosting-generative-models">AdaGAN: Boosting Generative Models</h2>
+<p><a href="../boosting.html">Background on boosting</a></p>
+<p>GANs suffer from missing modes: the model doesn’t produce examples in certain regions.</p>
+<p>Idea: combine multiple generative models into a mixture. Each step, focus on examples that the mixture has not been able to properly generate, and add another model addressing those.</p>
+<p>This is a meta-algorithm which can be used with any implementation of generative models (e.g. GANs).</p>
+<h3 id="minimizing-f-divergence-with-additive-mixtures">Minimizing f-divergence with additive mixtures</h3>
+<p><span class="math inline">\(f\)</span>-divergence is <span class="math display">\[
+D_f(Q||P):=\int f\pa{\dd QP (x)}\,dP(x)
+\]</span> Note <span class="math inline">\(D_f(P||Q) = D_{f^{\circ}}(Q||P)\)</span> where <span class="math inline">\(f^{\circ}(x) = xf(1/x)\)</span>. Adding a multiple of <span class="math inline">\(x-1\)</span> doesn’t change.</p>
+<p><span class="math inline">\(f\)</span> is Hilbertian if <span class="math inline">\(\sqrt{D_f(P||Q)}\)</span> satisfies the triangle inequality (ex. JSD, H, TV)</p>
+<p>Examples:</p>
+<ul>
+<li>KL <span class="math inline">\(-\ln x\)</span></li>
+<li>reverse KL <span class="math inline">\(x\ln x\)</span></li>
+<li>TV <span class="math inline">\(|x-1|\)</span></li>
+<li>JSD <span class="math inline">\(-(x+1)\ln \fc{x+1}2 + x\ln x\)</span></li>
+</ul>
+<h3 id="adagan-derivation">AdaGAN derivation</h3>
+<ul>
+<li>At each step we want to combine a mixture of the current distribution <span class="math inline">\(P_g\)</span> with the new distribution <span class="math inline">\(Q\)</span> to minimize divergence with real distribution <span class="math inline">\(P_d\)</span> <span class="math display">\[
+\min_{Q\in \mathcal D} D_f((1-\be)P_g+\be Q||P_d).
+\]</span></li>
+<li>If we can get a constant factor closer at each step <span class="math display">\[
+D_f((1-\be)P_g + \be Q||P_d) \le c D_f(P_g||P_d)
+\]</span> then we can get exponential convergence.</li>
+<li>Difficulty, and where boosting comes in: we somehow need to focus attention on the mistakes.</li>
+<li>What is the optimal for <span class="math inline">\(Q_\be^*\)</span>? By calculation, (Theorem 1) <span class="math display">\[
+Q = \rc \be (\la^* P_d - (1-\be)P_g)_+
+\]</span> for some <span class="math inline">\(\la^*\)</span>.
+<ul>
+<li>How well does this optimum do? (Lemma 2) <span class="math display">\[
+D_f((1-\be)P_g+\be Q_\be^* ||P_d) \le D_f((1-\be)P_g + \be P_d||P_d) \le (1-\be)D_f(P_g||P_d).
+\]</span></li>
+</ul></li>
+<li>We show that it suffices to find <span class="math inline">\(Q\)</span> such that <span class="math display">\[D_f(Q||Q_\be^*)\le \ga D_f(P_g||P_d)\]</span> where <span class="math inline">\(Q_\be^*\)</span> is optimal for the objective.
+<ul>
+<li>Use a triangle-like inequality (Lemma 1 (10)): For Hilbertian metrics, <span class="math display">\[
+D_f((1-\be)P_g + \be Q||P_d) \le (\sqrt{\ga D_f(Q||R)} + \sqrt{D_f ((1-\be)P_g + \be R||P_d)})^2.
+\]</span></li>
+<li>Let <span class="math inline">\(R=Q_\be^*\)</span>. Corollary 3 and the calculation for <span class="math inline">\(R\)</span> then gives (Lemma 2) <span class="math display">\[
+D_f((1-\be) P_g + \be Q||P_d) \le (\sqrt{\ga \be} + \sqrt{1-\be})^2 D_f(P_g||P_d).
+\]</span>
+<ul>
+<li>Comment: this can be refined if <span class="math inline">\(\dd{P_g}{P_d}\)</span> is almost surely bounded (Lemma 3).</li>
+<li>Comment: this requires a pretty strong weak learner, because we need <span class="math inline">\(\ga &lt;\fc{\be}{4}\)</span> to get the coefficient <span class="math inline">\(&lt;1\)</span>. Often <span class="math inline">\(\be\to 0\)</span>.</li>
+</ul></li>
+</ul></li>
+<li>Hope is that GAN can estimate <span class="math inline">\(Q_\be^*\)</span>. How to estimate <span class="math inline">\(Q_\be^*\)</span>? We can reinterpret the expression for <span class="math display">\[Q_\be^*= \rc\be (\la^* P_d-(1-\be)P_g)_+\]</span> as reweighting the samples.
+<ul>
+<li>How does discriminator give an estimate for <span class="math inline">\(P_g\)</span>? As long as the optimal discriminator satisfies <span class="math display">\[ \dd{P_g}{P_d}(x) =h(D(x))\]</span> for some <span class="math inline">\(h\)</span>. Ex. for GAN <span class="math inline">\(h(y) = \fc{1-y}{y}\)</span>. Thus we get an estimate of <span class="math inline">\(\dd{P_g}{P_d}\)</span>.</li>
+<li>Think about <span class="math inline">\(dQ_\be^*\)</span> as giving a weighting over sample points. For point <span class="math inline">\(i\)</span>, <span class="math display">\[
+w_i = \fc{p_i}{\be}(\la^* - (1-\be)h(d_i))
+\]</span> where <span class="math inline">\(d_i\)</span> is the discriminator output on <span class="math inline">\(x_i\)</span>, <span class="math inline">\(p_i=\rc N\)</span>.</li>
+<li>Solving for <span class="math inline">\(\la^*\)</span> gives
+<span class="math display">\[\begin{align}
+I(\la) &amp;= \set{i}{\la &gt;(1-\be) h(d_i)}\\
+\la^* &amp;= \fc{\be}{\sum_{i\in I(\la^*)} p_i} \pa{1+\fc{1-\be}{\be} \sum_{i\in I(\la^*)} p_i h(d_i)}.
+\end{align}\]</span>
+This is in terms of <span class="math inline">\(\la^*\)</span>, but we can break this by noting that <span class="math inline">\(I(\la^*)\)</span> will contain <span class="math inline">\(k\)</span> smallest <span class="math inline">\(d_i\)</span>’s for some <span class="math inline">\(k\)</span>. Thus, initialize <span class="math inline">\(k=1\)</span>; while <span class="math inline">\((1-\be)h(d_k)\ge \la\)</span>, set <span class="math inline">\(k\leftarrow k+1\)</span> and <span class="math inline">\(\la \leftarrow \fc{\be}{\sumo ik p_i}(1+\fc{1-\be}\be \sumo ik p_ih(d_i))\)</span>.</li>
+</ul></li>
+<li>Mixture weights <span class="math inline">\(\be\)</span> can be constant, <span class="math inline">\(\be_t=\rc t\)</span> for equal weights, etc. (S3.2)</li>
+<li>Run GAN with modified weights at each step.</li>
+</ul>
+<p>An alternate analysis:</p>
+<ul>
+<li>Instead bound (Lemma 1 (9)) (note this doesn’t require Hilbertian) <span class="math display">\[
+D_f((1-\be)P_g + \be Q||P_d)\le 
+\be D(Q||R) + (1-\be) D_f\pa{P_g||\fc{P_d-\be R}{1-\be}}.
+\]</span></li>
+<li>Minimize this upper bound instead. Assume <span class="math inline">\(P_d(dP_g=0)&lt;\be\)</span>. (Theorem 2) <span class="math display">\[
+dQ_\be^{\dagger} = \rc\be (dP_d-\la^{\dagger} (1-\be)dP_g)_+
+\]</span></li>
+<li>The optimum satisfies (Lemma 2.2) <span class="math display">\[
+D_f\pa{P_g||\fc{P_d-\be Q_\be^{\dagger}}{1-\be}}\le D_f(P_g||P_d).
+\]</span></li>
+<li>If <span class="math inline">\(D_f(Q||Q_\be^{\dagger}) \le \ga D_f(P_g||P_d)\)</span> and <span class="math inline">\(P_d\pa{\dd{P_g}{P_d}=0}&lt;\be\)</span>, then <span class="math display">\[D_f((1-\be) P_g + \be Q||P_d)\le  (1-\be(1-\ga))D_f(P_g||P_d).\]</span></li>
+<li>The condition on <span class="math inline">\(\ga\)</span> is milder here. However, we need the extra condition that <span class="math inline">\(\be\)</span>&gt;(mass of true data missed by current model). (Else, need to increase the weight <span class="math inline">\(\be\)</span>!)</li>
+</ul>
+<p>Remarks:</p>
+<ul>
+<li>Convergence rate depends on the ratio of probability mass: logarithmic in <span class="math inline">\(\fc{dP_1}{dP_d}\)</span>. (Corollary 1)</li>
+</ul>
+<h2 id="two-views-of-gans">Two views of GANs</h2>
+<ol type="1">
+<li>Divergence minimization: minimize divergence between real data and implicit generative model <span class="math inline">\(q_\te\)</span>. Problems
+<ul>
+<li>GAN algorithms minimize lower bounds. The discriminator must be powerful.</li>
+<li>Degenerate distributions</li>
+</ul></li>
+<li>Constrast function view: learn a function that takes low values on data manifold and high values everywhere else. The generator is a smart way of generating contrastive points.</li>
+</ol>
+<h2 id="adversarial-training-with-maximum-mean-discrepancy">Adversarial training with maximum mean discrepancy</h2>
+<ul>
+<li><a href="http://www.jmlr.org/papers/volume13/gretton12a/gretton12a.pdf">A kernel two sample test</a></li>
+<li><a href="https://arxiv.org/abs/1505.03906">Training generative neural networks via Maximum Mean Discrepancy optimization</a></li>
+<li><a href="https://arxiv.org/pdf/1502.02761v1.pdf">Generative Moment Matching Networks</a></li>
+</ul>
+
+  </div>
+
+    
+
+    <!-- Extension : Sharing buttons @ www.sharethis.com -->
+    <span class="st_facebook_large" displayText="Facebook"></span>
+    <span class="st_twitter_large" displayText="Tweet"></span>
+    <span class="st_googleplus_large" displayText="Google +"></span>
+    <span class="st_reddit_large" displayText="Reddit"></span>
+    <span class="st__large" displayText></span>
+
+    <div id="disqus_thread"></div>
+    
+
+
+  
+    <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+  </div>
+  
+</div>
+
+
+<!-- Footer -->
+<div id="footer">
+  <div class="container">
+    Built with
+    <a href="http://jaspervdj.be/hakyll">Hakyll</a> 
+    using 
+    <a href="http://www.getbootstrap.com">Bootstrap</a>, 
+    <a href="http://www.disqus.com">Disqus</a>,
+    <a href="http://ignorethecode.net/blog/2010/04/20/footnotes/">Footnotes.js</a>,
+    <a href="http://highlightjs.org/">Highlight.js</a>, 
+    <a href="http://www.mathjax.org">MathJax</a>, 
+    and <a href="http://www.sharethis.com">ShareThis</a>.
+  </div>
+</div>
+</body>
+
+</html>
+
+<!-- SCRIPTS -->
+<!-- jQuery-->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+<script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
+
+<script src="../../../../bootstrap/js/bootstrap.min.js"></script>
+
+<!-- Extension : Highlight.js @ https://highlightjs.org/ -->
+<!-- Syntax highlighting tomorrow-night-bright, agate-->
+<link rel="stylesheet" href="../../../../highlight/css/tomorrow-night-bright.css">
+<script src="../../../../highlight/js/highlight.pack.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+
+<!-- Extension : MathJax @ https://docs.mathjax.org/en/v2.5-latest/tex.html -->
+<!-- MathJax/config/local/local.js contains macros. Need to provide entire URL-->
+<script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML,http://holdenlee.github.io/notebook/MathJax/config/local/local"></script>
+
+<!-- Extension : Footnotes @ http://ignorethecode.net/blog/2010/04/20/footnotes/ -->
+<script src="../../../../footnotes/js/footnotes.js"></script>
+
+<!-- Extension : Disqus @ http://disqus.com -->
+<!-- Extension : InlineDisqussions @ https://github.com/tsi/inlineDisqussions -->
+
+<script src="../../../../disqus/js/disqus.js"></script>
+
+
+
+<!-- Extension : Google Analytics -->
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-73261814-1', 'auto');
+  ga('send', 'pageview');
+
+</script>
+

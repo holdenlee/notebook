@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+
+  <meta name="description" content="Holden Lee's Research Notebook">
+  <meta name="author" content="Holden Lee">
+    
+  <title>Weekly summary 2016-10-01</title>
+
+  <!-- Bootstrap core CSS -->
+  <link href="../../bootstrap/css/bootstrap.min.css" rel="stylesheet">
+
+  <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+  <!-- <link href="../../assets/css/ie10-viewport-bug-workaround.css" rel="stylesheet"> -->
+
+  <!-- Custom styles for this template -->
+  <link href="../../css/blog.css" rel="stylesheet">
+  <link href="../../css/default.css" rel="stylesheet">
+
+  <!-- Extension : Footnotes -->
+  <link href="../../footnotes/css/footnotes.css" rel="stylesheet">
+
+  <!-- Extension : InlineDisqussions @ https://github.com/tsi/inlineDisqussions -->
+  
+
+  <!-- Extension : Collapsible lists @ http://code.stephenmorley.org/javascript/collapsible-lists/-->
+  <link href="../../collapsible_lists/css/collapsible.css" rel="stylesheet">
+  <script type="text/javascript" src="../../collapsible_lists/js/CollapsibleLists.js"></script>
+
+</head>
+
+<body>
+
+<!-- Navigation bar. navbar-inverse is black, navbar-default is white.-->
+<!-- To make a button active (pressed), use <li class="active"> -->
+<div id="header">
+  <nav class="navbar navbar-inverse navbar-fixed-top">
+    <div class="container">
+      <div class="navbar-header">
+        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+          <span class="sr-only">Toggle navigation</span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="../../">Notebook</a>
+      </div>
+      <div id="navbar" class="collapse navbar-collapse">
+        <ul class="nav navbar-nav">
+          <li><a href="../../">Home</a></li>
+          <li><a href="../../sitemap.html">Sitemap</a></li>
+<!-- TODO: Distinguish between PAPERS, RESEARCH QUESTIONS, BOOKS -->
+<!-- TODO: make this part a for loop over main pages -->
+        </ul>
+      </div><!--/.nav-collapse -->
+    </div>
+  </nav>
+</div>
+<!-- Content -->
+<!--div id="content">
+  <h1>Mental Wilderness</h1>-->
+
+
+
+<div class="container">
+  <div id="content">
+    <div class="page header">
+      <h1>Weekly summary 2016-10-01</h1>
+    </div>
+    <div class="info">
+      
+       
+        <p>Posted: 2016-09-26 
+          , Modified: 2016-09-26 
+	</p>
+      
+       <p>Tags: <a href="../../tags/none.html">none</a></p> 
+    </div>
+    
+  </div>
+  <!--/div-->
+
+  <div class="toc"> <ul>
+ <li><a href="#threads">Threads</a></li>
+ <li><a href="#meeting-with-arora">Meeting with Arora</a></li>
+ <li><a href="#thoughts-about-pmi">Thoughts about PMI</a></li>
+ </ul> </div>
+
+  <div class="blog-main">
+    <h2 id="threads">Threads</h2>
+<ul>
+<li>PMI - get some results!</li>
+<li>CKN - understood theory, RKHS (9/26)</li>
+<li>SoS - lectures 2 and 3</li>
+<li>DL: do experiments suggested in <a href="../../posts/tcs/machine_learning/matrices/DL_generalization.html">DL generalization</a>
+<ul>
+<li>NN learns DL? Preliminary calculations.</li>
+</ul></li>
+<li>Stability of SGD
+<ul>
+<li><span class="citation" data-cites="Elad">@Elad</span>: do local minima generalize?</li>
+</ul></li>
+<li>RL and cousins: see below. <a href="../../posts/tcs/machine_learning/reinforcement_learning/rl.html">Notes</a></li>
+</ul>
+<h2 id="meeting-with-arora">Meeting with Arora</h2>
+<p>Directions</p>
+<ul>
+<li>Learning noisy or-nets with 3-tensors (<span class="math inline">\(n^4\)</span> time) (<span class="citation" data-cites="Andrej">@Andrej</span>, <span class="citation" data-cites="Tengyu">@Tengyu</span>)</li>
+<li>Matrix factorization assuming separability</li>
+<li>Mike Collins NLP. Words as features.
+<ul>
+<li>Logliear/NN</li>
+<li>For bigram classifiers, it’s fine to use word embeddings. (<span class="citation" data-cites="Tengyu">@Tengyu</span>)</li>
+</ul></li>
+<li>Systems with memory
+<ul>
+<li>Learning HMM’s with tensor methods</li>
+<li>Reinforcement learning (MDP’s)
+<ul>
+<li>Theoretical algorithms are polynomial in state size and mixing time.</li>
+<li>What if we have a succinct reprsentation? <span class="citation" data-cites="Mengdi">@Mengdi</span> Wang. Vector in <span class="math inline">\(\R^n\)</span>.
+<ul>
+<li>Stochastic Primal-Dual Methods and Sample Complexity of Markov Decision Process. (recent results on learning in MDPs via a primal-dual approach, and new ideas on finding compact representations of MDPs via low-rank approximation.)</li>
+</ul></li>
+</ul></li>
+<li>cf. contextual bandits (<span class="citation" data-cites="Elad">@Elad</span>, <span class="citation" data-cites="Karan">@Karan</span>)
+<ul>
+<li><a href="http://www.research.rutgers.edu/~lihong/pub/Li10Contextual.pdf">LCLS10 A Contextual-Bandit Approach to Personalized News Article Recommendation</a></li>
+<li><a href="http://www.cs.columbia.edu/~djhsu/papers/amo.pdf">DHKK Efficient Optimal Learning for Contextual Bandits</a></li>
+<li><a href="http://www.cs.columbia.edu/~djhsu/papers/poshmm-tacl.pdf">SCH Unsupervised Part-Of-Speech Tagging with Anchor Hidden Markov Models</a></li>
+<li><a href="http://www.cs.columbia.edu/~djhsu/papers/hmm-jcss-final.pdf">A spectral algorithm for learning Hidden Markov Models</a></li>
+</ul></li>
+</ul></li>
+<li>Representation learning
+<ul>
+<li>Is PCA/SVD “complete” for classification? <a href="https://www.quora.com/How-can-PCA-be-used-as-a-pre-processing-step-for-classification">PCA as preprocessing for classification</a></li>
+</ul></li>
+<li>PMI for images
+<ul>
+<li>How is it NMF? (<span class="citation" data-cites="Tengyu">@Tengyu</span>)</li>
+</ul></li>
+<li>Dictionary learning
+<ul>
+<li>Relax incoherence. Only correlated with <span class="math inline">\(n^\de\)</span> others.</li>
+<li><span class="citation" data-cites="Elad">@Elad</span>: Training on top of improperly learned dictionary.</li>
+</ul></li>
+</ul>
+<h2 id="thoughts-about-pmi">Thoughts about PMI</h2>
+<p>(9/28)</p>
+<p>In the CKN, given that one layer is <span class="math inline">\(x\)</span>, the next layer (before pooling) is computed as <span class="math inline">\(y_i=(e^{v_i^x+b_i})_i\)</span> for some <span class="math inline">\(v_i,b_i\)</span>. We have that the dimension of <span class="math inline">\(y\)</span> is larger than the dimension of <span class="math inline">\(x\)</span>.</p>
+<p>This looks very much like in PMI for word vectors, where the probability of word with vector <span class="math inline">\(v\)</span> given context <span class="math inline">\(x\)</span> is <span class="math inline">\(e^{-v^Tx}\)</span>, and the low-rank approximation to the PMI matrix recovers the <span class="math inline">\(v\)</span>’s.</p>
+<p>But does that mean applying weighted SVD for PMI for the CKN feature vectors is somehow just trying to recover the <span class="math inline">\(v_i\)</span>? In that case the dimension reduction would just be going from <span class="math inline">\(y\)</span> back to <span class="math inline">\(x\)</span>, which doesn’t help classification.</p>
+<p>(This doesn’t take into account the Gaussian pooling though.)</p>
+<p>What would be the “test” for interpretability? For word embeddings, the test was analogy completion.</p>
+<p>If the PMI matrix is low-rank, then what do we get beyond the fact that the feature vectors (7200-dim) came from a lower-dimensional (28x28) space? (In what sense would we expect the dimension-reduced feature vectors to be more interpretable than the original image?)</p>
+<p>TODO:</p>
+<ul>
+<li>Try thresholding + WSVD + SVM.</li>
+<li>Do pipeline (data exploration) with other MNIST and CIFAR architectures.</li>
+<li>Think about the interpretability test above.</li>
+<li><span class="citation" data-cites="Tengyu">@Tengyu</span> on interpreting CKN as NMF.</li>
+</ul>
+
+  </div>
+
+    
+
+    <!-- Extension : Sharing buttons @ www.sharethis.com -->
+    <span class="st_facebook_large" displayText="Facebook"></span>
+    <span class="st_twitter_large" displayText="Tweet"></span>
+    <span class="st_googleplus_large" displayText="Google +"></span>
+    <span class="st_reddit_large" displayText="Reddit"></span>
+    <span class="st__large" displayText></span>
+
+    <div id="disqus_thread"></div>
+    
+
+
+  
+    <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+  </div>
+  
+</div>
+
+
+<!-- Footer -->
+<div id="footer">
+  <div class="container">
+    Built with
+    <a href="http://jaspervdj.be/hakyll">Hakyll</a> 
+    using 
+    <a href="http://www.getbootstrap.com">Bootstrap</a>, 
+    <a href="http://www.disqus.com">Disqus</a>,
+    <a href="http://ignorethecode.net/blog/2010/04/20/footnotes/">Footnotes.js</a>,
+    <a href="http://highlightjs.org/">Highlight.js</a>, 
+    <a href="http://www.mathjax.org">MathJax</a>, 
+    and <a href="http://www.sharethis.com">ShareThis</a>.
+  </div>
+</div>
+</body>
+
+</html>
+
+<!-- SCRIPTS -->
+<!-- jQuery-->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+<script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
+
+<script src="../../bootstrap/js/bootstrap.min.js"></script>
+
+<!-- Extension : Highlight.js @ https://highlightjs.org/ -->
+<!-- Syntax highlighting tomorrow-night-bright, agate-->
+<link rel="stylesheet" href="../../highlight/css/tomorrow-night-bright.css">
+<script src="../../highlight/js/highlight.pack.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+
+<!-- Extension : MathJax @ https://docs.mathjax.org/en/v2.5-latest/tex.html -->
+<!-- MathJax/config/local/local.js contains macros. Need to provide entire URL-->
+<script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML,http://holdenlee.github.io/notebook/MathJax/config/local/local"></script>
+
+<!-- Extension : Footnotes @ http://ignorethecode.net/blog/2010/04/20/footnotes/ -->
+<script src="../../footnotes/js/footnotes.js"></script>
+
+<!-- Extension : Disqus @ http://disqus.com -->
+<!-- Extension : InlineDisqussions @ https://github.com/tsi/inlineDisqussions -->
+
+<script src="../../disqus/js/disqus.js"></script>
+
+
+
+<!-- Extension : Google Analytics -->
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-73261814-1', 'auto');
+  ga('send', 'pageview');
+
+</script>
+

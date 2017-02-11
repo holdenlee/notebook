@@ -1,0 +1,763 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+
+  <meta name="description" content="Holden Lee's Research Notebook">
+  <meta name="author" content="Holden Lee">
+    
+  <title>Reinforcement learning</title>
+
+  <!-- Bootstrap core CSS -->
+  <link href="../../../../bootstrap/css/bootstrap.min.css" rel="stylesheet">
+
+  <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+  <!-- <link href="../../assets/css/ie10-viewport-bug-workaround.css" rel="stylesheet"> -->
+
+  <!-- Custom styles for this template -->
+  <link href="../../../../css/blog.css" rel="stylesheet">
+  <link href="../../../../css/default.css" rel="stylesheet">
+
+  <!-- Extension : Footnotes -->
+  <link href="../../../../footnotes/css/footnotes.css" rel="stylesheet">
+
+  <!-- Extension : InlineDisqussions @ https://github.com/tsi/inlineDisqussions -->
+  
+
+  <!-- Extension : Collapsible lists @ http://code.stephenmorley.org/javascript/collapsible-lists/-->
+  <link href="../../../../collapsible_lists/css/collapsible.css" rel="stylesheet">
+  <script type="text/javascript" src="../../../../collapsible_lists/js/CollapsibleLists.js"></script>
+
+</head>
+
+<body>
+
+<!-- Navigation bar. navbar-inverse is black, navbar-default is white.-->
+<!-- To make a button active (pressed), use <li class="active"> -->
+<div id="header">
+  <nav class="navbar navbar-inverse navbar-fixed-top">
+    <div class="container">
+      <div class="navbar-header">
+        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+          <span class="sr-only">Toggle navigation</span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="../../../../">Notebook</a>
+      </div>
+      <div id="navbar" class="collapse navbar-collapse">
+        <ul class="nav navbar-nav">
+          <li><a href="../../../../">Home</a></li>
+          <li><a href="../../../../sitemap.html">Sitemap</a></li>
+<!-- TODO: Distinguish between PAPERS, RESEARCH QUESTIONS, BOOKS -->
+<!-- TODO: make this part a for loop over main pages -->
+        </ul>
+      </div><!--/.nav-collapse -->
+    </div>
+  </nav>
+</div>
+<!-- Content -->
+<!--div id="content">
+  <h1>Mental Wilderness</h1>-->
+
+
+
+<div class="container">
+  <div id="content">
+    <div class="page header">
+      <h1>Reinforcement learning</h1>
+    </div>
+    <div class="info">
+      
+       
+        <p>Posted: 2016-09-28 
+          , Modified: 2016-10-07 
+	</p>
+      
+       <p>Tags: <a href="../../../../tags/reinforcement%20learning.html">reinforcement learning</a></p> 
+    </div>
+    
+  </div>
+  <!--/div-->
+
+  <div class="toc"> <ul>
+ <li><a href="#at-a-glance">At a glance</a></li>
+ <li><a href="#references">References</a></li>
+ <li><a href="#section">3</a></li>
+ <li><a href="#dynamic-programming">4 Dynamic programming</a></li>
+ <li><a href="#monte-carlo-methods">5 Monte Carlo methods</a><ul>
+ <li><a href="#on-policy-mc-control">5.4 On-policy MC control</a></li>
+ <li><a href="#evaluating-one-policywhile-following-an-other-off-policy-policy-evaluation">5.5 Evaluating One PolicyWhile Following An-other (Off-policy Policy Evaluation)</a></li>
+ <li><a href="#off-policy-mc-control">5.6 Off-policy MC control</a></li>
+ <li><a href="#incremental-implementation">5.7 Incremental implementation</a></li>
+ <li><a href="#return-specific-importance-sampling">5.8 Return-specific importance sampling</a></li>
+ </ul></li>
+ <li><a href="#temporal-difference-learning">6 Temporal-difference learning</a><ul>
+ <li><a href="#optimality-of-td0">6.3 Optimality of TD(0)</a></li>
+ <li><a href="#sarsa-on-policy-td-control">6.4 Sarsa: On-policy TD control</a></li>
+ <li><a href="#q-learning-off-policy-td-control">6.5 Q-learning: Off-policy TD control</a></li>
+ <li><a href="#games">6.6 Games</a></li>
+ </ul></li>
+ <li><a href="#eligibility-traces">7 Eligibility traces</a><ul>
+ <li><a href="#n-step-td-prediction">7.1 n-step TD prediction</a></li>
+ <li><a href="#the-forward-view-of-tdla">7.2 The forward view of TD(<span class="math inline">$\la$</span>)</a></li>
+ <li><a href="#the-backward-view-of-tdla">7.3 The backward view of TD(<span class="math inline">$\la$</span>)</a></li>
+ <li><a href="#equivalence-of-forward-and-backward-views">7.4 Equivalence of forward and backward views</a></li>
+ <li><a href="#sarsala">7.5 Sarsa(<span class="math inline">$\la$</span>)</a></li>
+ <li><a href="#qla">7.6 <span class="math inline">$Q(\la)$</span></a><ul>
+ <li><a href="#watkins-qla">Watkin’s <span class="math inline">$Q(\la)$</span></a></li>
+ <li><a href="#pengs-qla">Peng’s <span class="math inline">$Q(\la)$</span></a></li>
+ </ul></li>
+ <li><a href="#replacing-traces">7.7 Replacing traces</a></li>
+ <li><a href="#implementation-issues">7.8 Implementation issues</a></li>
+ <li><a href="#variable-la">7.9 Variable <span class="math inline">$\la$</span></a></li>
+ </ul></li>
+ <li><a href="#planning-and-learning-with-tabular-methods">8 Planning and learning with tabular methods</a><ul>
+ <li><a href="#models-and-planning">8.1 Models and planning</a></li>
+ <li><a href="#integrating-planning-acting-and-learning">8.2 Integrating planning, acting, and learning</a></li>
+ <li><a href="#when-the-model-is-wrong">8.3 When the model is wrong</a></li>
+ <li><a href="#prioritized-sweeping">8.4 Prioritized sweeping</a></li>
+ <li><a href="#full-vs.sample-backups">8.5 Full vs. sample backups</a></li>
+ <li><a href="#trajectory-sampling">8.6 Trajectory sampling</a></li>
+ <li><a href="#heuristic-search">8.7 Heuristic search</a></li>
+ <li><a href="#monte-carlo-tree-search">8.8 Monte Carlo Tree Search</a></li>
+ </ul></li>
+ <li><a href="#generalization-and-function-approximation-v1">8 Generalization and function approximation (v1)</a><ul>
+ <li><a href="#value-prediction-with-function-approximation">8.1 Value Prediction with Function Approximation</a></li>
+ <li><a href="#gradient-descent-methods-in-value-prediction">8.2 Gradient-descent methods (in value prediction)</a></li>
+ <li><a href="#linear-methods">8.3 Linear methods</a><ul>
+ <li><a href="#coarse-coding">8.3.1 Coarse coding</a></li>
+ <li><a href="#tile-coding">8.3.2 Tile coding</a></li>
+ <li><a href="#radial-basis-functions">8.3.3 Radial basis functions</a></li>
+ <li><a href="#kanerva-coding">8.3.4 Kanerva coding</a></li>
+ </ul></li>
+ <li><a href="#control-with-function-approximation">8.4 Control with function approximation</a></li>
+ <li><a href="#off-policy-bootstrapping">8.5 Off-policy bootstrapping</a></li>
+ <li><a href="#should-we-bootstrap">8.7 Should we bootstrap?</a></li>
+ </ul></li>
+ <li><a href="#deep-rl">Deep RL</a></li>
+ <li><a href="#search">Search</a></li>
+ </ul> </div>
+
+  <div class="blog-main">
+    <h2 id="at-a-glance">At a glance</h2>
+<table style="width:30%;">
+<colgroup>
+<col style="width: 5%" />
+<col style="width: 5%" />
+<col style="width: 5%" />
+<col style="width: 5%" />
+<col style="width: 5%" />
+<col style="width: 5%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Type</th>
+<th>Evaluate Q, V knowing dynamics</th>
+<th>Not knowing dynamics (online)</th>
+<th>On-policy control</th>
+<th>Off-policy control</th>
+<th>Learning policy</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Discrete</td>
+<td>Q-iteration</td>
+<td>TD(<span class="math inline">\(\la\)</span>)</td>
+<td>Sarsa</td>
+<td>Q-learning</td>
+<td></td>
+</tr>
+<tr class="even">
+<td>Continuous</td>
+<td>fitted Q-iteration</td>
+<td>gradient TD(<span class="math inline">\(\la\)</span>)</td>
+<td>Gradient Sarsa</td>
+<td>Gradient Q-learning</td>
+<td>Policy gradient</td>
+</tr>
+</tbody>
+</table>
+<p>All discrete methods have convergence guarantees.</p>
+<p>For continuous methods: (I think you can replace linear function class by “local min for function class” everywhere here.)</p>
+<ul>
+<li>Fitted Q-iteration is provable for linear function classes.</li>
+<li>Gradient TD(<span class="math inline">\(\la\)</span>) has constant-factor guarantee for linear function classes.</li>
+<li>Gradient Sarsa is provable (how?) for linear function classes.</li>
+<li>Gradient Q-learning has no guarantees. It can diverge.</li>
+<li><a href="policy_gradient.html">Policy gradient</a> converges to local min given a compatibility between parametrizations.</li>
+</ul>
+<h2 id="references">References</h2>
+<ul>
+<li>Barton, Sutto.</li>
+<li>Deep RL tutorial, ICML 2016.</li>
+<li>Algorithms course Lecture 8</li>
+<li>…</li>
+</ul>
+<h2 id="section">3</h2>
+<p>Bellman optimality equations</p>
+<span class="math display">\[\begin{align}
+v_*(s) &amp;= \max_\pi v_\pi(s)\\
+q_*(s,a) &amp;= \max_\pi q_\pi(s,a)\\
+v_*(s)&amp;= \max_{a\in \mathcal A(s)} \sum_{s'} p(s'|s,a) [r(s,a,s') + \ga v_*(s')\\
+q_*(s,a) &amp;= \sum_{s'} p(s'|s,a) [r(s,a,s') +\ga \max_{a'} q_*(s',a')].
+\end{align}\]</span>
+<p>3 assumptions that are rarely all true in practice:</p>
+<ol type="1">
+<li>Know dynamics of environment</li>
+<li>Have enough computational resources</li>
+<li>Markov property</li>
+</ol>
+<p>Many decision-making methods attempt to approximately solve the Bellman optimal equations.</p>
+<p>A RL algorithm puts more effort into learning good decisions for frequently encountered states.</p>
+<h2 id="dynamic-programming">4 Dynamic programming</h2>
+<p>Three classes of methods for solving MDP’s.</p>
+<ol type="1">
+<li>Dynamic programming
+<ul>
+<li>Well-developed mathematically</li>
+<li>Require complete, accurate model of environment</li>
+</ul></li>
+<li>Monte Carlo methods
+<ul>
+<li>Don’t require model, conceptually simple</li>
+<li>Not suitable for incremental computation</li>
+</ul></li>
+<li>Temporal-difference learning
+<ul>
+<li>Don’t require model, fully incremental</li>
+<li>Complex to analyze</li>
+</ul></li>
+</ol>
+<p>Think of other methods as attempts to achieve the same effect as DP with less computation and without a perfect model.</p>
+<p>Use value functions to organize the search for good policies.</p>
+<p>Iterative <strong>policy evaluation</strong>: (make value function consistent with current policy) <span class="math display">\[
+v_{k+1}(s) = \sum_a \pi(a|s) \sum_{s'} p(s'|s,a) [r(s,a,s') + \ga v_k(s')].
+\]</span> This is a full backup because we calculate <span class="math inline">\(v_k(s)\)</span> for all <span class="math inline">\(s\)</span> in each stage. (TODO: prove convergence.) Stop when maximum difference <span class="math inline">\(\max_{s\in S}|v_{k-1}(s)-v_k(s)|&lt;\te\)</span>.</p>
+<p>(Can also update in-place. Then update order makes a difference.)</p>
+<p><strong>Policy improvement theorem</strong>. If <span class="math inline">\(\pi,\pi'\)</span> are deterministic policies such that for all <span class="math inline">\(s\in S\)</span>, <span class="math display">\[q_\pi(s,\pi'(s))\ge v_\pi(s),\]</span> then <span class="math inline">\(\pi'\)</span> is at least as good as <span class="math inline">\(\pi\)</span>, <span class="math inline">\(v_{\pi'}(s) \ge v_\pi(s)\)</span>.</p>
+<p><em>Proof</em>. Unfold and note convergence.</p>
+<p>This shows that iterative policy improvement can only help: <span class="math display">\[
+\pi'(s) = \amax_a \sum_{s'} p(s'|s,a) [r(s,a,s') + \ga v_\pi(s')].
+\]</span> If it stops improving, then <span class="math inline">\(\pi'\)</span> is optimal.</p>
+<p>Policy iteration: <span class="math inline">\(\pi_k\xra E v_{\pi_k} \xra I \pi_{k+1}\)</span>. Alternately evaluate and improve.</p>
+<!-- assuming we know p's-->
+<!-- Value iteration is when policy evaluation is stopped after one sweep.-->
+<p>Above, to evaluate, we have to keep doing policy iterations until convergence. For speed, we just do one (or a few) step of policy evaluation. Combining the improvement and evaluation steps: <span class="math display">\[v_{k+1} := \max_a \sum_{s'} p(s'|s,a)[r(s,a,s') + \ga v_k(s')].\]</span> (cf. EM/AM?)</p>
+<!-- Q: if this stabilizes, does it mean we have converged? p. 100-->
+<p>Asynchronous DP: back up values of states in any order, using whatever values of other states are available. Can do with value iteration and policy iteration. Helps intermix computation with interaction (actually experiencing MDP—apply backups as agent visits states).</p>
+<p>The time that DP methods take is polynomial in number of states and actions. LP can be used to solve MDP’s but become impractical at smaller number of states than DP.</p>
+<!-- can such iterative methods solve LP? -->
+<h2 id="monte-carlo-methods">5 Monte Carlo methods</h2>
+<p>Don’t assume complete knowledge of the environment. Learn from online and simulated experience. The model only needs to generate sample transitions rather than give a complete probability distribution.</p>
+<p>MC assumes experience is divided into episodes.</p>
+<p>Each occurrence of a state in an episode is a <em>visit</em>.</p>
+<ul>
+<li>Every-visit MC: estimate <span class="math inline">\(v_\pi(s)\)</span> as the average of returns following all visits to <span class="math inline">\(s\)</span></li>
+<li>First-visit MC: average just returns following first visits (in an episode) to <span class="math inline">\(s\)</span>.</li>
+</ul>
+<p>DP shows all possible transitions but the MC diagram only shows those sampled on one episode.</p>
+<p>(Ex. of finding bubble surface given wire frame. Iterative = compute surface iteratively by averaging at each point. MC = take a random walk from each point; expected height at boundary is approximation of height. This is more efficient if we are interested in a small number of points.)</p>
+<p>If the model is not available, it’s mre useful to estimate action than state values. (From the action-value function <span class="math inline">\(q\)</span> we can directly construct the greedy policy.)</p>
+<p>Problem: if you follow a deterministic policy, you will only observe one action from each state.</p>
+<p>Solution: Explore! Assume each state-action pair has a nonzero probability of being selected at the start of an episode (exploring starts). More realistic: consider policies that are stochastic with nonzero probability of selecting all actions.</p>
+<p>This works assuming:</p>
+<ol type="1">
+<li>episodes have exploring starts</li>
+<li>policy evaluation can be done with infinitely many episodes.
+<ul>
+<li>Instead: approximate and keep track of error bounds. But this requires many episodes.</li>
+<li>Forgo policy evaluation: move value function toward <span class="math inline">\(q_{\pi_k}\)</span>.</li>
+</ul></li>
+</ol>
+<p>MC ES cannot converge to any suboptimal policy (if it did, the value function converges to the value function for that policy, and the policy changes). <em>Open question</em>: does it always converge? [Tsitsiklis02]</p>
+<h3 id="on-policy-mc-control">5.4 On-policy MC control</h3>
+<p>Improve the policy used to make decisions.</p>
+<p>Soft policy: <span class="math inline">\(\forall s,a\in \mathcal A(s), \pi(a|s)&gt;0\)</span>. <span class="math inline">\(\ep\)</span>-soft: <span class="math inline">\(\ge \fc{\ep}{|\mathcal A(s)|}\)</span>.</p>
+<p>Policy iterations works for <span class="math inline">\(\ep\)</span>-soft policies.</p>
+<ol type="1">
+<li>The policy improvement theorem shows that for any <span class="math inline">\(\ep\)</span>-soft <span class="math inline">\(\pi\)</span>, the <span class="math inline">\(\ep\)</span>-greedy policy wrt <span class="math inline">\(q_\pi\)</span> is at least as good as <span class="math inline">\(\pi\)</span>.</li>
+<li>Equality only when both <span class="math inline">\(\pi,pi'\)</span> are optimal among <span class="math inline">\(\ep\)</span>-soft. Use optimality for all policies, under the modified environment where an action is chosen randomly with probability <span class="math inline">\(\ep\)</span>.</li>
+</ol>
+<h3 id="evaluating-one-policywhile-following-an-other-off-policy-policy-evaluation">5.5 Evaluating One PolicyWhile Following An-other (Off-policy Policy Evaluation)</h3>
+<p>What if we have episodes generated from a different policy?</p>
+<ul>
+<li><span class="math inline">\(\mu\)</span> behavior policy</li>
+<li><span class="math inline">\(\pi\)</span> target policy.</li>
+</ul>
+Require ratio <span class="math inline">\(\pi/\mu\)</span> not be too large. Weight episodes by this ratio.
+<span class="math display">\[\begin{align}
+V(s) &amp;= \fc{\sumo i{n_s} \fc{p_i(s)}{p_i'(s)}G_i(s)}{\sumo i{n_s} \fc{p_i(s)}{p_i'(s)}}\\
+\fc{p_i(S_t)}{p_i'(S_t)}&amp;=\prod_{k=t}^{T_i(S_t)-1} \fc{\pi(A_k|S_k)}{\mu(A_k|S_k)}.
+\end{align}\]</span>
+<h3 id="off-policy-mc-control">5.6 Off-policy MC control</h3>
+<p>Ex. estimation policy may be deterministic while behavior policy samples all possible actions.</p>
+<p>To do this, after generating an episode, look at the last time where <span class="math inline">\(A_\tau \ne \pi(S_\tau)\)</span>, and update <span class="math inline">\(Q\)</span> using pairs <span class="math inline">\((s,a)\)</span> appearing after that time.</p>
+<p>Note: only learns from tails of episodes. Learning is slow if nongreedy actions are frequent.</p>
+<h3 id="incremental-implementation">5.7 Incremental implementation</h3>
+For <span class="math inline">\(V_n=\fc{\sumo k{n-1}W_kG_k}{\sumo k{n-1}W_k}\)</span> is
+<span class="math display">\[\begin{align}
+V_{n+1} &amp;=V_n+\fc{W_n}{C_n} (G_n-V_n)\\
+C_{n+1} &amp;=C_n+W_{n+1}.
+\end{align}\]</span>
+<p>Advantages of MC:</p>
+<ol type="1">
+<li>learn optimal behavior directly from interaction without model</li>
+<li>used with simulation</li>
+<li>focus MC on small subset of states</li>
+<li>less harmed by violations of Markov property.</li>
+</ol>
+<p>Maintaining sufficient exploration is an issue.</p>
+<p>MC uses experience and does not bootstrap (update value based on other value estimates) (instead MC waits for a bunch of samples), unlike DP.</p>
+<p>Next chapter: experience + bootstrap.</p>
+<h3 id="return-specific-importance-sampling">5.8 Return-specific importance sampling</h3>
+<p>Sampling by the entire product <span class="math inline">\(\prod \fc{\pi(A_i|S_i)}{\mu(A_i|S_i)}\)</span> has a lot of variance and is unnecessary. Scale by the first factor and use previous updates.</p>
+<p>Think of discounting as determining a probability of termination or, equivalently, a degree of partial termination.</p>
+Write full return as sum of discounted partial returns. (Idea: any long sequence will be weighted down by a large discount factor.)
+<span class="math display">\[\begin{align}
+\ol G_t^h :&amp;= R_{t+1}+\cdots +R_h\\
+G_t :&amp;= \sumo i{T-t}\ga^{i-1} R_{t+i}\\
+&amp;= (1-\ga) \sum_{h=t+1}^{T-1} \ga^{h-t-1} \ol G_t^h + \ga^{T-t-1} \ol G_t^T
+\end{align}\]</span>
+Ordinary and weighted importance-sampling estimator:
+<span class="math display">\[\begin{align}
+V(s) :&amp;= \fc{
+\sum_{t\in T(s)}(1-\ga) \sum_{h=t+1}^{T-1} \ga^{h-t-1} \blu{\rh_t^h} \ol G_t^h + \ga^{T-t-1} \blu{\rh_t^{T(t)}}\ol G_t^T
+}{|T(s)|}\\
+V(s) :&amp;=
+\fc{
+\sum_{t\in T(s)}(1-\ga) \sum_{h=t+1}^{T-1} \ga^{h-t-1} \blu{\rh_t^h} \ol G_t^h + \ga^{T-t-1} \blu{\rh_t^{T(t)}}\ol G_t^T
+}{
+\sum_{t\in T(s)}(1-\ga) \sum_{h=t+1}^{T-1} \ga^{h-t-1} \blu{\rh_t^h}  + \ga^{T-t-1} \blu{\rh_t^{T(t)}}
+}
+\end{align}\]</span>
+Per-reward importance sampling: Note
+<span class="math display">\[\begin{align}
+\E_\mu [\rh_tR_{t+k}] &amp;= \E[\rh_t^{t+k} R_{t+k}]\\
+\E[\rh_t^T G_t] &amp;= \E[\wt G_t]\\
+\wt G_t &amp;= \sumo k{T-t} \ga^{k-1}\rh_t^{t+k}R_{t+k}\\
+V(s) :&amp;= \fc{\sum_{t\in T(s)}\wt G_t}{|T(s)|}.
+\end{align}\]</span>
+<p>Not clear how to extend to weighted importance sampling.</p>
+<h2 id="temporal-difference-learning">6 Temporal-difference learning</h2>
+<p>MC methods can incrementally update <span class="math inline">\(V\)</span>, after waiting to get the actual return, <span class="math display">\[V(S_t) \mapsfrom V(S_t) + \al [G_t-V(S_t)].\]</span> (n.b. <span class="math inline">\(S_t\)</span> is the state at time <span class="math inline">\(t\)</span>, not the state labeled <span class="math inline">\(t\)</span>.) TD methods only wait until the next time step. <span class="math display">\[V(S_t) \mapsfrom V(S_t) + \al [R_{t+1} + \ga V(S_{t+1})-V(S_t)].
+\]</span> I.e., it uses the estimate of <span class="math inline">\(v_\pi = \EE_\pi [R_{t+1}+\ga v_\pi(S_{t+1})|S_t=s]\)</span> as a target.</p>
+<p>TD samples expected values and uses the current estimate <span class="math inline">\(V\)</span> instead of <span class="math inline">\(v_\pi\)</span>.</p>
+<p>Each estimate is shifted towards the estimate that immediately follows it.</p>
+<p>p. 133: driving home example.</p>
+<p>In practice, TD methods converge faster than constant-<span class="math inline">\(\al\)</span> MC methods on stochastic tasks.</p>
+<h3 id="optimality-of-td0">6.3 Optimality of TD(0)</h3>
+<p>Finite amount of experience: present it repeatedly until method converges. (cf. SGD?) Do batch updates.</p>
+<p>Ex. p.139 example is enlightening.</p>
+<p>Batch Monte Carlo methods always find the estimates that minimize mean-squared error on the training set, whereas batch TD(0) always finds the estimates that would be exactly correct for the maximum-likelihood model of the Markov process.</p>
+<!-- ? certainty-equivalence estimate-->
+<h3 id="sarsa-on-policy-td-control">6.4 Sarsa: On-policy TD control</h3>
+<p>For state-action pairs: <span class="math display">\[Q(S_t,A_t) \mapsfrom Q(S_t,A_t) + \al [R_{t+1} + \ga Q(S_{t+1}, A_{t+1})-Q(S_t,A_t)].
+\]</span> (<span class="math inline">\(A_{t+1}\)</span> is the action chosen by the (<span class="math inline">\(\ep\)</span>-greedy?<a href="#fn1" class="footnoteRef" id="fnref1"><sup>1</sup></a>) policy on <span class="math inline">\(S_{t+1}\)</span>.) SARSA refers to <span class="math inline">\((S_t,A_t,R_{t+1},S_{t+1},A_{t+1})\)</span>.</p>
+<p>(Convergence guarantees: p. 142)</p>
+<p>SARSA can learn during the episode!</p>
+<h3 id="q-learning-off-policy-td-control">6.5 Q-learning: Off-policy TD control</h3>
+<p>One-step Q-learning</p>
+<p><span class="math display">\[
+Q(S_t,A_t)\leftarrow Q(S_t,A_t) + \al [R_{t+1} + \ga \max_a Q(S_{t+1},a) - Q(S_t,A_t)].
+\]</span></p>
+<p><span class="math inline">\(Q\)</span> approximates the optimal <span class="math inline">\(q_*\)</span> <em>independently of the policy being followed</em>!</p>
+<p>TODO: prove this. [Watkins Dayan 1992] [JJS94] [T94]</p>
+<p>Ex. cliff</p>
+<ul>
+<li>SARSA learns the safe path steering clear of the cliff (because it takes account the <span class="math inline">\(\ep\)</span>-greedy exploration).</li>
+<li>Q-learning learns the short path at the edge of the cliff (the optimal).</li>
+</ul>
+<h3 id="games">6.6 Games</h3>
+<p>A conventional state-value function evaluates states in which the agent has the option of selecting an action (arrived at <span class="math inline">\(s'\)</span> where you will select a new <span class="math inline">\(a'\)</span>), but the state-value function in games of perfect information evaluates the board after the agent has mades its move—afterstates.</p>
+<p>This is more efficient: many position-move pairs produce the same resulting position.</p>
+<p>Often it’s useful to break the environment’s dynamics into</p>
+<ul>
+<li>immediate effect of action (deterministic) and</li>
+<li>unknown random processes.</li>
+</ul>
+<h2 id="eligibility-traces">7 Eligibility traces</h2>
+<p>A general mechanism that can be combined with any TD method.</p>
+<p>2 views:</p>
+<ol type="1">
+<li>(theoretical, forward) bridge from TD to MC. (understand what is computed)</li>
+<li>(mechanistic, backward) temporary record of event occurrence. Only “eligible” states/actions are assigned credit/blame. (intuition for algorithms)</li>
+</ol>
+<h3 id="n-step-td-prediction">7.1 n-step TD prediction</h3>
+<p>Perform backup based on an intermediate number of rewards. (MC depends on entire sequence until end of episode, TD depends on 1 next reward.)</p>
+Replace the 1-step target by <span class="math inline">\(n\)</span>-step target (corrected <span class="math inline">\(n\)</span>-step truncated return).
+<span class="math display">\[\begin{align}
+G_t^{(1)} &amp;= R_{t+1} + \ga V(S_{t+1})\\
+G_t^{(n)} &amp;= \sumo i{n-1} \ga^{i-1} R_{t+i} + \ga^n V(S_{t+n})\\
+\De V_t(S_t) &amp;= \al [G_t^{(n)} - V_t(S_t)].
+\end{align}\]</span>
+<p>MC methods are infinite-step returns.</p>
+<p>2 ways to update.</p>
+<ul>
+<li>Online updating: during episode.</li>
+<li>Offline updating: accumulated and not used to change estimates until the end.</li>
+</ul>
+<p>Error-reduction property of <span class="math inline">\(n\)</span>-step returns: (exponential reduction in worst-case error) <span class="math display">\[
+\max_s\ab{\EE_\pi\ba{G_t^{(n)} | S_t=s}-v_\pi(s)}
+\le \ga^n \max_s |v(s) - v_\pi(s)|.
+\]</span></p>
+<p>Rarely used because inconvenient to implement; waiting <span class="math inline">\(n\)</span> states is problematic.</p>
+<h3 id="the-forward-view-of-tdla">7.2 The forward view of TD(<span class="math inline">\(\la\)</span>)</h3>
+<p>Complex backup: Backup can be done toward any average of <span class="math inline">\(n\)</span>-step returns. <!--$G_t^{avg}= \rc2 G_t^{(2)} + \rc2 G_t^{(4)}$.--></p>
+<p><span class="math inline">\(TD(\la)\)</span> is averaging <span class="math inline">\(n\)</span>-step backups <span class="math inline">\(\propto \la^{n-1}\)</span>, i.e., with weights <span class="math inline">\((1-\la)\la^{n-1}\)</span>. The <span class="math inline">\(\la\)</span>-return is <span class="math display">\[
+G_t^\la = (1-\la) \sumo n\iy \la^{n-1}G_t^{(n)}.
+\]</span></p>
+<ul>
+<li><span class="math inline">\(\la=1\)</span> reduces to MC.</li>
+<li><span class="math inline">\(\la=0\)</span> reduces to <span class="math inline">\(G_t^{(1)}\)</span>, one-step return.</li>
+</ul>
+<p>Forward view: look forward to all future rewards and decide how to combine them.</p>
+<!-- don't you have to wait until end of episode?-->
+<h3 id="the-backward-view-of-tdla">7.3 The backward view of TD(<span class="math inline">\(\la\)</span>)</h3>
+<p>The <strong>eligibility trace</strong> is a memory variable associated with each state. It is a <em>random variable</em> <span class="math inline">\(Z_t(s)\in \R^+\)</span>, <span class="math display">\[
+Z_t(s) = \begin{cases} 
+\ga \la Z_{t-1}(s), &amp;\text{if }s\ne S_t\\
+\ga \la Z_{t-1}(s) + 1, &amp;\text{if }s=S_t.
+\end{cases}
+\]</span> <span class="math inline">\(\la\)</span> is the trace-decy parameter. Traces indicate the degree to which each state is eligible for undergoing learning changes. <span class="math display">\[\De V_t(s) = \al \ub{(R_{t+1}+\ga V_tS_{t+1} - V_t(S_t))}{\de_t} Z_t(s).\]</span> <!-- Q: \ga\la (Z+1) or \ga\la Z + 1? latter one. They update before multiplying by $\ga\la$--></p>
+<p>Note TD(1) is MC but it can also be applied to discounted continuing tasks, and can be applied incrementally and online.</p>
+<h3 id="equivalence-of-forward-and-backward-views">7.4 Equivalence of forward and backward views</h3>
+<!-- what if also influence actions/policy? -->
+<p>For offline updating, <span class="math display">\[\sumz t{T-1} \De V_t^{TD}(s) = 
+\sumz t{T-1} \al \de_t \sumz kt (\ga \la)^{t-k} I_{sS_k} =
+\sumz t{T-1} V_t^\la(S_t)I_{sS_t}.\]</span> (Online updating is different because <span class="math inline">\(V_t\)</span> changes as <span class="math inline">\(t\)</span>.)</p>
+<p>Online algorithm generally works better over a broader range of parameters.</p>
+<p>To maintain equivalence in online case, <span class="math inline">\(\de_t= R_{t+1} + \ga V_t(S_{t+1})-V_{t-1}(S_t)\)</span>, <span class="math inline">\(R_t^{(n)} = \sumo in \ga^{i-1}R_{t+i} + \ga^n V_{t+n-1}(S_{t+n})\)</span>.</p>
+<h3 id="sarsala">7.5 Sarsa(<span class="math inline">\(\la\)</span>)</h3>
+How to use eligibility traces for control? Learn <span class="math inline">\(q\)</span> rather than <span class="math inline">\(V\)</span>. Keep a trace for each <span class="math inline">\((s,a)\)</span>.
+<span class="math display">\[\begin{align}
+Q_{t+1}(s,a) &amp;= Q_t(s,a) + \al \de_t Z_t(s,a)\\
+\de_t &amp;= R_{t+1} + \ga Q_t(S_{t+1}, A_{t+1}) - Q_t(S_t,A_t)\\
+Z_t(s,a) &amp;= \begin{cases}
+\ga \la Z_{t-1} (s,a) + 1, &amp;\text{if }s=S_t, a=A_t\\
+\ga \la Z_{t-1} (s,a), &amp;\text{otherwise.}
+\end{cases}
+\end{align}\]</span>
+<h3 id="qla">7.6 <span class="math inline">\(Q(\la)\)</span></h3>
+<h4 id="watkins-qla">Watkin’s <span class="math inline">\(Q(\la)\)</span></h4>
+<p>We can use subsequent experience only as long as the greedy policy is being followed! Look ahead as far as the next exploratory action.</p>
+<p>If <span class="math inline">\(A_{t+n}\)</span> is first exploratory action, the longest backup is toward <span class="math display">\[
+ \sumo in \ga^{i-1}R_{t+i} + \ga^n \max_a Q_t(s_{t+n},a).
+\]</span> Q: why 1 step past?</p>
+<p>Set eligibility traces to 0 whenever an exploratory action is taken.</p>
+<p>But cutting off traces every time an exploratory action is taken loses the advantage of eligibility traces.</p>
+<h4 id="pengs-qla">Peng’s <span class="math inline">\(Q(\la)\)</span></h4>
+<p>Hybrid of Sarsa and Watkin’s <span class="math inline">\(Q(\la)\)</span>.</p>
+<p>Converges to some hybrid of <span class="math inline">\(q_\pi, q_*\)</span>. If made gradually more greedy, may still converge to <span class="math inline">\(q_*\)</span>.</p>
+<p>Cannot be implemented as simply.</p>
+<p>Naive <span class="math inline">\(Q(\la)\)</span>: traces not set to 0.</p>
+<!-- formula? -->
+<h3 id="replacing-traces">7.7 Replacing traces</h3>
+<p><span class="math display">\[Z_t (s) = \begin{cases}
+\ga \la Z_{t-1}(s), &amp; s\ne S_t\\
+1, &amp; s=S_t.
+\end{cases}\]</span> (Max out at 1.)</p>
+<p>Can produce significant improvement in learning rate.</p>
+<p>Ex. when this helps: reward at rightmost. Sequence WWWWWWWWWWRRRR (wrong stays, right goes right) reinforces W more times.</p>
+<p>Another solution: set the traces of all other actions from the revisited state to 0.</p>
+<!-- check 7.12-->
+<h3 id="implementation-issues">7.8 Implementation issues</h3>
+<p>Larger computational cost.</p>
+<h3 id="variable-la">7.9 Variable <span class="math inline">\(\la\)</span></h3>
+<p>Never been used practically, but interesting/useful theoretically.</p>
+<p>Ex. Vary as function of state: depend on confidence</p>
+<p><span class="math display">\[G_t^\la = \sum_{k=t+1}^{T-1} G_t^{(k-t)} (1-\la_k) \prod_{i=t+1}^{k-1} \la_i + G_t\prod_{i=t+1}^{T-1}\la_i.\]</span></p>
+<h2 id="planning-and-learning-with-tabular-methods">8 Planning and learning with tabular methods</h2>
+<p>Planning requires a model of the environment; learning methods don’t.</p>
+<h3 id="models-and-planning">8.1 Models and planning</h3>
+<p>A model is anything an agent cn use to predict how the environment responds to its actions.</p>
+<ul>
+<li>Distribution model (e.g. needed in DP)</li>
+<li>Sample model</li>
+</ul>
+<p>Models can simulate experience.</p>
+<p>Planning takes a model as input and produces or improves a policy.</p>
+<p>Approaches:</p>
+<ul>
+<li>State-space planning: search through state-space for optimal policy or path to goal.</li>
+<li>Plan-space planning: search through space of plans.
+<ul>
+<li>Evolutionary methods</li>
+<li>Partial-order planning</li>
+</ul></li>
+</ul>
+<p>State-space planning methods share common structure.</p>
+<ol type="1">
+<li>Involve computing value functions</li>
+<li>Compte value functions by backup applied to simulated experience.</li>
+</ol>
+<p>Go from… to…</p>
+<ol type="1">
+<li>model</li>
+<li>simulated experience</li>
+<li>values</li>
+<li>policy</li>
+</ol>
+<p>Common structure means many ideas/algorithms can be transferred between planning and learning. (They differ only in source of experience.)</p>
+<p>Planning in small incremental steps helps intermix planning with acting/learnig.</p>
+<h3 id="integrating-planning-acting-and-learning">8.2 Integrating planning, acting, and learning</h3>
+<ul>
+<li>New information from interaction may change the model and interact with planning.</li>
+<li>Customize planning to the states/decisions under consideration or expect in the near future.</li>
+</ul>
+<p>Two roles for experience:</p>
+<ol type="1">
+<li>improve model (model-learning) - make fuller use of limited experience</li>
+<li>directly improve value function (direct reinforcement learning) - simpler, not affect by model biases</li>
+</ol>
+<p>Dyna-Q: repeat</p>
+<ol type="1">
+<li>Run (<span class="math inline">\(\ep\)</span>-greedy) Q-learning for 1 step.</li>
+<li>Update model (assume deterministic environment)</li>
+<li>Repeat <span class="math inline">\(n\)</span> times Q-learning using simulated experience. (Take a random <span class="math inline">\((S,A)\)</span> pair that has been observed.)</li>
+</ol>
+<!-- what if instead of greedy, use temperature? -->
+<p>Q: why is only 1 step added without planning? A: because rewards only go back 1 step.</p>
+<h3 id="when-the-model-is-wrong">8.3 When the model is wrong</h3>
+<ul>
+<li>Sometimes the suboptimal policy computed leads to discovery/correction of the modeling error. Happens when model is optimistic.</li>
+<li>Difficulties arise when the environment changes to become better and the formerly correct policy does not reveal the improvement.</li>
+</ul>
+<p>Dyna-Q+: This agent keeps track for each state{action pair of how many time steps have elapsed since the pair was last tried in a real interaction with the environment. The more time that has elapsed, the greater (we might presume) the chance that the dynamics of this pair has changed and that the model of it is incorrect. Bonus reward for long-untried actions, <span class="math inline">\(R+\ka \sqrt \tau\)</span> if not tried for <span class="math inline">\(\tau\)</span> time steps.</p>
+<h3 id="prioritized-sweeping">8.4 Prioritized sweeping</h3>
+<p>Planning can be more efficient if simulated transitions and backups are focused on particular state-action pairs.</p>
+<p>Work backwards from goal state/reward?</p>
+<p>Ex. change estimated value of 1 state. The only useful 1-state backups are those of actions leading directly into that state. Propagate.</p>
+<p>Prioritize backups according to urgency and perform in order of priority.</p>
+<ol type="1">
+<li>Execute 1 step of Q-learning</li>
+<li>If the update is <span class="math inline">\(&gt;\te\)</span>, insert <span class="math inline">\((S,A)\)</span> into the priority queue with priority |update|.</li>
+<li>Repeat <span class="math inline">\(n\)</span> steps: take <span class="math inline">\((S,A)\)</span> from the top of the queue. Update it. Then for all <span class="math inline">\((\ol S, \ol A)\)</span> predicted to lead to <span class="math inline">\(S\)</span>, update. If difference is <span class="math inline">\(&gt;\te\)</span>, insert into queue.</li>
+</ol>
+<p>Problem: algorithms rely on the assumption of discrete states.</p>
+<p>For stochastic environments: keep counts. Backup each pair with a full backup.</p>
+<h3 id="full-vs.sample-backups">8.5 Full vs. sample backups</h3>
+<p>1-step backups vary in 3 ways.</p>
+<ol type="1">
+<li>State vs. action values</li>
+<li>Estimate value for optimal policy vs. arbitrary policy.</li>
+<li>Full vs. sample backups.</li>
+</ol>
+<p>Sample backups are TD(0), Sarsa, and Q-learning.</p>
+<p>Full backup requires <span class="math inline">\(b\)</span> times as much computation, <span class="math inline">\(b\)</span> the branching factor.</p>
+<p>Sample backups have the advantage that the values backed up from successor states will be more accurate.</p>
+<h3 id="trajectory-sampling">8.6 Trajectory sampling</h3>
+<p>2 ways of distributing backups</p>
+<ol type="1">
+<li>(classical, DP, exhaustive) sweep through entire state space, backing up each state (or state-action pair) once per sweep.</li>
+<li>sample from state/state-action space according to distribution, ex. according to on-policy distribution. Simulate trajectories and perform backups at those encountered. (This ignores large, uninteresting parts of the space.)</li>
+</ol>
+<p>Experimentally: sampling according to on-policy results in faster planning initially and retarded planning in long run. (In the long run, commonly occurring states already have correct values.)</p>
+<h3 id="heuristic-search">8.7 Heuristic search</h3>
+<p>Heuristic search is concerned with policy computation, i.e., making improved action selections given the current value function.</p>
+<p>Unlike in usual heuristic search, it’s natural to consider allowing the value function to be improved.</p>
+<p>When we have a perfect model and imperfect <span class="math inline">\(Q\)</span>, deeper search usually yields better policies.</p>
+<p>Grow the search tree selectively. How to use this idea for backups?</p>
+<p>Focus on the states and actions that might immediately follow the current state.</p>
+<h3 id="monte-carlo-tree-search">8.8 Monte Carlo Tree Search</h3>
+<p>Start with an single-node tree at the start state. Each iteration:</p>
+<ol type="1">
+<li>Selection: select a node in the current tree, e.g. by UCB.</li>
+<li>Expansion: from the node by adding nodes as children.</li>
+<li>Simulation: Rollout a complete game from a leaf node, according to rollout policy.</li>
+<li>Backpropagation: Result is backed up for nodes in the tree visited during the iteration.</li>
+</ol>
+<p>Question: how to deal with probabilistic choices by opponent? How to backprop?</p>
+<h2 id="generalization-and-function-approximation-v1">8 Generalization and function approximation (v1)</h2>
+<h3 id="value-prediction-with-function-approximation">8.1 Value Prediction with Function Approximation</h3>
+<p><span class="math display">\[
+MSE(\te_t) = \sum_{s\in S} P(s) [V^{\pi}-V_t(s)]^2.
+\]</span></p>
+<p>If we wish to minimize error over a certain distribution of states, then it makes sense to train the function approximator with examples from that same distribution. let us assume that the distribution of states at which backups are done and the distribution that weights errors, <span class="math inline">\(P\)</span>, are the same.</p>
+<p>Complex function approximators may seek to converge instead to a local optimum.</p>
+<h3 id="gradient-descent-methods-in-value-prediction">8.2 Gradient-descent methods (in value prediction)</h3>
+<span class="math display">\[\begin{align}
+\te_{t+1} &amp;= \te_t - \rc 2 \al \nb_{\te_t} (V^\pi(s_t) - V_t(s_t))^2\\
+&amp;=\te_t + \al\ba{V^\pi(s_t) - V_t(s_t)} \nb_{\te_t} V_t(s_t).
+\end{align}\]</span>
+<p>In actuality we get an estimate <span class="math inline">\(v_t\)</span> of <span class="math inline">\(V^\pi(s_t)\)</span>. Ex. <span class="math inline">\(v_t=R_t^\la\)</span> is the <span class="math inline">\(n\)</span>-step TD return (bootstrapping). (Note this is a biased estimator.)</p>
+Backward view (check this):
+<span class="math display">\[\begin{align}
+\te_{t+1} &amp;=\te_t + \al \de_t e_t\\
+\de_t &amp;= r_{t+1} + \ga V_t(s_{t+1}) - V_t(s_t)\\
+e_t &amp;= \ga \la e_{t-1} + \nb_{\te_t} V_t(s_t).
+\end{align}\]</span>
+<h3 id="linear-methods">8.3 Linear methods</h3>
+<p><span class="math display">\[V_t(s) = \te_t^T\phi_s.\]</span></p>
+<p>Here <span class="math inline">\(\nb_{\te_t} V_t(s) = \phi_s\)</span>. The local optimum is the global optimum.</p>
+<p>Gradient descent TD(<span class="math inline">\(\la\)</span>) converges in the linear case if step-size is reduced over time, to <span class="math inline">\(\te^*\)</span> close to <span class="math inline">\(\te\)</span>, <span class="math inline">\(MSE(\te_\iy) \le \fc{1-\ga \la}{1-\ga} MSE(\te^*)\)</span>. (What does this mean?)</p>
+<p>But we may also need features for combinations of natural qualities!</p>
+<h4 id="coarse-coding">8.3.1 Coarse coding</h4>
+<p>Features correspond to circles (balls) (receptive fields). A point being in a circle means having that feature. Each circle has a parameter <span class="math inline">\(\te_t\)</span>.</p>
+<h4 id="tile-coding">8.3.2 Tile coding</h4>
+<p>The receptive fields of the features are grouped into exhaustive partitions of the input space. Can combine multiple tilings. <!--(cf. convnets?)--> (Ex. grid discretization, hashing.)</p>
+<h4 id="radial-basis-functions">8.3.3 Radial basis functions</h4>
+<p>Generalization of coarse-coding to continuous-valued features. <span class="math inline">\(\phi_s(i) = \exp\pa{-\fc{\ve{s-c_i}^2}{2\si_i^2}}\)</span>.</p>
+<h4 id="kanerva-coding">8.3.4 Kanerva coding</h4>
+<p>Focus on the complexity of the target function as separate and distinct from the size and dimensionality of the state space. Given a certain level of complexity, we then seek to be able to accurately approximate any target function of that complexity or less. Choose binary features that correspond to particular prototype states.</p>
+<h3 id="control-with-function-approximation">8.4 Control with function approximation</h3>
+<span class="math display">\[\begin{align}
+\te_{t+1} &amp;= \te_t + \al\ba{v_t - Q_{\te_t}(s_t,a_t)} \nb_{\te_t}Q_{\te_t}(s_t,a_t)\\
+\te_{t+1} &amp;=\te_t + \al \de_t e_t\\
+\de_t &amp;= r_{t+1} + \ga Q_t(s_{t+1},a_{t+1}) - Q_t(s_t,a_t)\\
+e_t &amp;= \ga \la e_{t-1} + \nb_{\te_t} Q_t(s_t,a_t).
+\end{align}\]</span>
+<p>Use accumulating eligibility traces.</p>
+<p>Ex. SARSA on mountain car.</p>
+<h3 id="off-policy-bootstrapping">8.5 Off-policy bootstrapping</h3>
+<p>By bootstrapping we mean the updating of a value estimate on the basis of other value estimates. (TD(<span class="math inline">\(\la\)</span>), <span class="math inline">\(\la&lt;1\)</span> is bootstrapping, MC is not.)</p>
+<p>Ex. linear, gradient-descent function approximation: Bootstrapping only finds near-minimal MSE.</p>
+<p>The restriction of the convergence results for bootstrapping methods to the on-policy distribution is of greatest concern.</p>
+<p>Baird’s counterexample: on a episodic Markov process with 0 reward, <span class="math inline">\(\te\)</span> can undergo resonance. Distribution of DP backups is uniform, off-policy. There are also counterexamples similar to Baird’s showing divergence for Q-learning. This is cause for concern because otherwise Q-learning has the best convergence guarantees of all control methods.</p>
+<p>It may be possible to guarantee convergence of Q-learning as long as the behavior policy (the policy used to select actions) is sufficiently close to the estimation policy (the policy used in GPI), for example, when it is the <span class="math inline">\(\varepsilon\)</span>-greedy policy. (open?)</p>
+<p>Stability is guaranteed for function approximation methods that do not extrapolate from the observed targets. These methods, called averagers, include nearest neighbor methods and local weighted regression, but not popular methods such as tile coding and backpropagation.</p>
+<h3 id="should-we-bootstrap">8.7 Should we bootstrap?</h3>
+<p>Nonbootstrapping methods can be used with function approximation more reliably and over a broader range of conditions than bootstrapping methods. We can use eligibility traces with <span class="math inline">\(\la=1\)</span>. But bootstrapping is still method of choice.</p>
+<blockquote>
+<p>At this time it is unclear why methods that involve some bootstrapping perform so much better than pure nonbootstrapping methods. It could be that bootstrapping methods learn faster, or it could be that they actually learn something better than nonbootstrapping methods. The available results indicate that nonbootstrapping methods are better than bootstrapping methods at reducing MSE from the true value function, but reducing MSE is not necessarily the most important goal.</p>
+</blockquote>
+<h2 id="deep-rl">Deep RL</h2>
+<p>“AI = RL + DL”: RL defines objective, DL gives mechanism.</p>
+<!-- value, policy, model-based -->
+<p>Use deep NN to represent value function, policy, and model.</p>
+<ul>
+<li><p>Value: <span class="math inline">\(Q\)</span>-network <span class="math inline">\(Q(s,a,w)\)</span>. (either accept <span class="math inline">\(a\)</span> as input, or list out <span class="math inline">\(Q\)</span> for all values of <span class="math inline">\(a\)</span>)</p>
+Tread <span class="math inline">\(r+\ga \max_{a'} Q(s',a',w)\)</span> as target. Minimize <span class="math display">\[I = (r+\ga \max_a Q(s',a',w) - Q(s,a,w))^2.\]</span>
+<ul>
+<li>Converges using lookup table representation, but diverges using NN due to
+<ul>
+<li>correlations between samples
+<ul>
+<li>To remove correlations, build data-set from agent’s own experience</li>
+</ul></li>
+<li>non-stationary targets
+<ul>
+<li>Hold target parameters <span class="math inline">\(w^-\)</span> fixed <span class="math display">\[I = (r+\ga \max_a Q(s',a',w^-) - Q(s,a,w))^2.\]</span></li>
+</ul></li>
+</ul></li>
+<li>Ex. Atari: Stack of 4 previous frames <span class="math inline">\(4\times 84\times 84\)</span>, conv layers. Output for 18 joystick positions. Reward is change in score.</li>
+<li>Double DQN: Remove upward bias caused by <span class="math inline">\(\max_a Q(s,a,w)\)</span> (?). Use current network to select actions and older network <span class="math inline">\(w^-\)</span> to evaluate actions. <span class="math display">\[ I = \pa{ r + \ga Q(s', \amax_{a'} Q(s', a', w), w^-) - Q(s,a,w)}^2.\]</span></li>
+<li>Prioritized replay: weight experience according to surprise. Priority queue according to <span class="math display">\[ |r + \ga \max_{a'} Q(s',a', w^-) - Q(s,a,w)|.\]</span></li>
+<li>Duelling network: Split <span class="math inline">\(Q\)</span>-network into 2 channels, <span class="math inline">\(Q(s,a) = V(s,v) + A(s,a,w)\)</span>.
+<ul>
+<li>Action-independent value function <span class="math inline">\(V(s,v)\)</span></li>
+<li>Action-dependent advantage function <span class="math inline">\(A(s,a,w)\)</span>.</li>
+</ul></li>
+<li>Asynchronous: execute instances in parallel.</li>
+</ul></li>
+<li>Policy: stochastic <span class="math inline">\(\pi(a|s,u)\)</span>, deterministic <span class="math inline">\(a=\pi(s,u)\)</span>, objective <span class="math display">\[ L(u) = \E\ba{\sumo n{\iy} \ga^{n-1}r_n|\pi(\cdot, u)}.\]</span>
+<ul>
+<li>Actor-critic: Estimate <span class="math inline">\(Q(s,a,w)\)</span> and update <span class="math inline">\(u\)</span> by SG ascent. (What more does this gain from just having Q-network? See below.)</li>
+<li>A3C, Asynchronous Advantage Actor-Critic: Estimate <span class="math inline">\(V\)</span>, <span class="math inline">\(Q\)</span> value estimated from <span class="math inline">\(V\)</span>, actor updated towards target, critic updated.</li>
+<li>High-dimensional continuous action spaces: Can’t compute <span class="math inline">\(\max_a Q(s,a)\)</span>, learn without max. <span class="math inline">\(Q\)</span> differentiable wrt <span class="math inline">\(a\)</span>.
+<ul>
+<li>DPG <span class="math display">\[I_w = \pa{r + \ga Q(s', \pi(s', u^-), w^-) - Q(s,a,w)}^2.\]</span> Actor improves <span class="math inline">\(Q\)</span>. Critic provides loss function for actor.</li>
+</ul></li>
+</ul></li>
+<li><p>Model - ???</p></li>
+</ul>
+<p>Notes:</p>
+<ul>
+<li>Can use LSTM (how?)</li>
+<li>Simulated physics.</li>
+<li>Fictitious self-play. Nash equilibria in multi-agent games?</li>
+</ul>
+<h2 id="search">Search</h2>
+<p>Tree search, etc.</p>
+<section class="footnotes">
+<hr />
+<ol>
+<li id="fn1"><p>Why not greedy?<a href="#fnref1">↩</a></p></li>
+</ol>
+</section>
+
+  </div>
+
+    
+
+    <!-- Extension : Sharing buttons @ www.sharethis.com -->
+    <span class="st_facebook_large" displayText="Facebook"></span>
+    <span class="st_twitter_large" displayText="Tweet"></span>
+    <span class="st_googleplus_large" displayText="Google +"></span>
+    <span class="st_reddit_large" displayText="Reddit"></span>
+    <span class="st__large" displayText></span>
+
+    <div id="disqus_thread"></div>
+    
+
+
+  
+    <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+  </div>
+  
+</div>
+
+
+<!-- Footer -->
+<div id="footer">
+  <div class="container">
+    Built with
+    <a href="http://jaspervdj.be/hakyll">Hakyll</a> 
+    using 
+    <a href="http://www.getbootstrap.com">Bootstrap</a>, 
+    <a href="http://www.disqus.com">Disqus</a>,
+    <a href="http://ignorethecode.net/blog/2010/04/20/footnotes/">Footnotes.js</a>,
+    <a href="http://highlightjs.org/">Highlight.js</a>, 
+    <a href="http://www.mathjax.org">MathJax</a>, 
+    and <a href="http://www.sharethis.com">ShareThis</a>.
+  </div>
+</div>
+</body>
+
+</html>
+
+<!-- SCRIPTS -->
+<!-- jQuery-->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+<script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
+
+<script src="../../../../bootstrap/js/bootstrap.min.js"></script>
+
+<!-- Extension : Highlight.js @ https://highlightjs.org/ -->
+<!-- Syntax highlighting tomorrow-night-bright, agate-->
+<link rel="stylesheet" href="../../../../highlight/css/tomorrow-night-bright.css">
+<script src="../../../../highlight/js/highlight.pack.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+
+<!-- Extension : MathJax @ https://docs.mathjax.org/en/v2.5-latest/tex.html -->
+<!-- MathJax/config/local/local.js contains macros. Need to provide entire URL-->
+<script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML,http://holdenlee.github.io/notebook/MathJax/config/local/local"></script>
+
+<!-- Extension : Footnotes @ http://ignorethecode.net/blog/2010/04/20/footnotes/ -->
+<script src="../../../../footnotes/js/footnotes.js"></script>
+
+<!-- Extension : Disqus @ http://disqus.com -->
+<!-- Extension : InlineDisqussions @ https://github.com/tsi/inlineDisqussions -->
+
+<script src="../../../../disqus/js/disqus.js"></script>
+
+
+
+<!-- Extension : Google Analytics -->
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-73261814-1', 'auto');
+  ga('send', 'pageview');
+
+</script>
+

@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+
+  <meta name="description" content="Holden Lee's Research Notebook">
+  <meta name="author" content="Holden Lee">
+    
+  <title>Linear quadratic regulator</title>
+
+  <!-- Bootstrap core CSS -->
+  <link href="../../../../bootstrap/css/bootstrap.min.css" rel="stylesheet">
+
+  <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+  <!-- <link href="../../assets/css/ie10-viewport-bug-workaround.css" rel="stylesheet"> -->
+
+  <!-- Custom styles for this template -->
+  <link href="../../../../css/blog.css" rel="stylesheet">
+  <link href="../../../../css/default.css" rel="stylesheet">
+
+  <!-- Extension : Footnotes -->
+  <link href="../../../../footnotes/css/footnotes.css" rel="stylesheet">
+
+  <!-- Extension : InlineDisqussions @ https://github.com/tsi/inlineDisqussions -->
+  
+
+  <!-- Extension : Collapsible lists @ http://code.stephenmorley.org/javascript/collapsible-lists/-->
+  <link href="../../../../collapsible_lists/css/collapsible.css" rel="stylesheet">
+  <script type="text/javascript" src="../../../../collapsible_lists/js/CollapsibleLists.js"></script>
+
+</head>
+
+<body>
+
+<!-- Navigation bar. navbar-inverse is black, navbar-default is white.-->
+<!-- To make a button active (pressed), use <li class="active"> -->
+<div id="header">
+  <nav class="navbar navbar-inverse navbar-fixed-top">
+    <div class="container">
+      <div class="navbar-header">
+        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+          <span class="sr-only">Toggle navigation</span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="../../../../">Notebook</a>
+      </div>
+      <div id="navbar" class="collapse navbar-collapse">
+        <ul class="nav navbar-nav">
+          <li><a href="../../../../">Home</a></li>
+          <li><a href="../../../../sitemap.html">Sitemap</a></li>
+<!-- TODO: Distinguish between PAPERS, RESEARCH QUESTIONS, BOOKS -->
+<!-- TODO: make this part a for loop over main pages -->
+        </ul>
+      </div><!--/.nav-collapse -->
+    </div>
+  </nav>
+</div>
+<!-- Content -->
+<!--div id="content">
+  <h1>Mental Wilderness</h1>-->
+
+
+
+<div class="container">
+  <div id="content">
+    <div class="page header">
+      <h1>Linear quadratic regulator</h1>
+    </div>
+    <div class="info">
+      
+       
+        <p>Posted: 2016-12-09 
+          , Modified: 2016-12-09 
+	</p>
+      
+       <p>Tags: <a href="../../../../tags/control%20theory.html">control theory</a></p> 
+    </div>
+    
+  </div>
+  <!--/div-->
+
+  <div class="toc"> <ul>
+ <li><a href="#solve-the-hamiltonian">Solve the Hamiltonian</a></li>
+ <li><a href="#the-algebraic-riccati-equation">The algebraic Riccati equation</a></li>
+ <li><a href="#solve-the-riccati-equation">Solve the Riccati equation</a></li>
+ <li><a href="#choose-the-stable-solution">Choose the stable solution</a></li>
+ </ul> </div>
+
+  <div class="blog-main">
+    <p>We derive the solution to the linear quadratic regulator problem in the continuous, infinite-horizon setting. <em>Handwavy parts are in italics</em>.</p>
+<p>References: Ch. 5 of <a href="https://math.berkeley.edu/~evans/control.course.pdf">course notes</a> and <a href="http://www.kybernetika.cz/content/1973/1/42/paper.pdf">Riccati equation paper</a>. Wikipedia on <a href="https://en.wikipedia.org/wiki/Linear%E2%80%93quadratic_regulator">LQR</a> and <a href="https://en.wikipedia.org/wiki/Algebraic_Riccati_equation">Riccati</a>.</p>
+<p>The problem:</p>
+<span class="math display">\[\begin{align}
+\dot x &amp; = Ax + Ba = f(x,a)\\
+r(x,a) &amp; = -c(x,a) = -\rc2 x^TQx - a^Ta\\
+\pat{Total reward} &amp;= \iiy r(x(t), a(t))\,dt.
+\end{align}\]</span>
+<p>Here <span class="math inline">\(Q\)</span> is positive definite. Write <span class="math inline">\(Q=C^TC\)</span>.</p>
+<h2 id="solve-the-hamiltonian">Solve the Hamiltonian</h2>
+We write down the corresponding Hamiltonian system and then solve it. (See <a href="control_theory.html">Control theory</a> Section 5.)
+<span class="math display">\[\begin{align}
+H(x,a) &amp;= f(x,a)^T p + r(x,a) = f(x,a)^T p - \rc2 x^TQx - a^Ta\\
+\dot x &amp;= \nb_p H(x(t),p(t),a(t)) = Ax + Ba \\
+\dot p &amp;= -\nb_x H(x(t),p(t),a(t)) = -A^T p + Qx\\
+a &amp;= \amax_a H(x(t),p(t),a(t))\\
+\iff 0 &amp;= \nb_a H(x(t),p(t),a(t))\\
+\iff B^T p - a &amp;=0\\
+\iff a &amp;= B^T p
+\end{align}\]</span>
+We get
+<span class="math display">\[\begin{align}
+\dot x &amp;= Ax + BB^Tp\\
+\dot p &amp;= -Qx + A^Tp\\
+\ddd t \coltwo xp &amp;= \matt{A}{BB^T}{-Q}{A^T} \coltwo xp.
+\end{align}\]</span>
+<h2 id="the-algebraic-riccati-equation">The algebraic Riccati equation</h2>
+<p><em>Look for a solution in the form <span class="math inline">\(p=-Px\)</span>.</em> (Note that in the finite-horizon setting, solving the Hamiltonian system with the appropriate boundary condition <span class="math inline">\(p(T)=0\)</span> gives that the solution is <span class="math inline">\(p=-P(t)x\)</span> where <span class="math inline">\(P(t)\)</span> satisfies a differential equation called the Matrix Riccati differential equation. In the infinite-horizon setting, <span class="math inline">\(P\)</span> doesn’t change with time and we get a single <span class="math inline">\(P\)</span>.)</p>
+Substituting <span class="math inline">\(p=-Px\)</span>, the system becomes
+<span class="math display">\[\begin{align}
+-(PA - PBB^TP) x &amp;= -P \dot x = \dot p = (Q+A^TP)x\\
+-PBB^TP + PA + A^TP + Q &amp;= 0 
+\end{align}\]</span>
+<p>This is called the <a href="https://en.wikipedia.org/wiki/Algebraic_Riccati_equation">algebraic Riccati equation</a>.</p>
+<h2 id="solve-the-riccati-equation">Solve the Riccati equation</h2>
+Write the Riccati equation as (set <span class="math inline">\(Q=C^TC\)</span>) <span class="math display">\[
+(-P\; I) \matt{A}{-BB^T}{-CC^T}{-A^T}\coltwo IP = 0
+\]</span> Let <span class="math inline">\(K=A-BB^TP\)</span>. This is <span class="math display">\[
+\ub{\matt{A}{-BB^T}{-C^TC}{-A^T}}M\coltwo IP = \coltwo K{PK} = \coltwo IP K.
+\]</span> <em>Assume <span class="math inline">\(K\)</span> is diagonalizable</em>. Write <span class="math inline">\(K=XDX^{-1}\)</span>.
+<span class="math display">\[\begin{align}
+M\coltwo IP &amp;= \coltwo X{PX} DX^{-1}\\
+M\coltwo{X}{PX} &amp;= \coltwo{X}{PX}D.
+\end{align}\]</span>
+<p>Hence the columns of <span class="math inline">\(\coltwo{X}{PX}\)</span> are eigenvalues of <span class="math inline">\(M\)</span>.</p>
+<p>So the <span class="math inline">\(P\)</span> that solve the algebraic Riccati equation are <span class="math inline">\(P=YX^{-1}\)</span> where the columns of <span class="math inline">\(\coltwo XY\)</span> are <span class="math inline">\(n\)</span> of the eigenvectors of <span class="math inline">\(M\)</span>.</p>
+<h2 id="choose-the-stable-solution">Choose the stable solution</h2>
+<p>First some definitions.</p>
+<ul>
+<li><span class="math inline">\(\la\)</span> is <strong>stable</strong> if <span class="math inline">\(\Re \la&lt;0\)</span>. <span class="math inline">\(A\)</span> is stable if all eigenvalues of <span class="math inline">\(A\)</span> are stable. (This means that any solution to <span class="math inline">\(\dot x = Ax\)</span> has <span class="math inline">\(x(t)\to 0\)</span>.)</li>
+<li><span class="math inline">\(\la\)</span> is a <strong>controllable</strong> eigenvalue for <span class="math inline">\((A,B)\)</span> if for all row eigenvectors of <span class="math inline">\(A\)</span> corresponding to <span class="math inline">\(\la\)</span> (<span class="math inline">\(wA=\la w, w\ne 0\)</span>), <span class="math inline">\(wB\ne 0\)</span>. <span class="math inline">\((A,B)\)</span> is controllable if all its eigenvalues are controllable. (Equivalently, <span class="math inline">\((A^T,B^T)\)</span> is observable.)</li>
+<li><span class="math inline">\((A,C)\)</span> is <strong>observable</strong> if for all (column) eigenvectors of <span class="math inline">\(A\)</span>, <span class="math inline">\(Cz\ne 0\)</span>.</li>
+<li><span class="math inline">\((A,B)\)</span> is <strong>stabilizable</strong> if every unstable eigenvalue is controllable. (This is true for e.g. random matrices, because w.p. 1 a random vector is not in the left nullspace of <span class="math inline">\(B\)</span>.) Equivalently, there exists <span class="math inline">\(L\)</span> (with real entries) such that <span class="math inline">\(A+BL\)</span> is stable.</li>
+</ul>
+<p><strong>Theorem</strong>. The following are equivalent.</p>
+<ol type="1">
+<li>There exists a stable solution <span class="math inline">\(P\)</span> to the algebraic Riccati equation, giving the solution <span class="math inline">\(p = -Px\)</span>, <span class="math inline">\(\boxed{a = B^Tp = -B^TPx}\)</span>.</li>
+<li>All eigenvalues satisfy <span class="math inline">\(\Re \la \ne 0\)</span> and <span class="math inline">\((A,B)\)</span> is stabilizable.</li>
+</ol>
+<p>The stable solution is unique.</p>
+<p><em>Proof</em>.</p>
+<p>From the previous section, a solution <span class="math inline">\(P\)</span> has to be in the form <span class="math inline">\(Y^{-1}X\)</span> where <span class="math inline">\(X, Y\)</span> are such that <span class="math inline">\(\coltwo XY\)</span> are the eigenvectors corresponding to the stable eigenvalues. Note that the eigenvectors come in <span class="math inline">\(\pm\)</span> pairs because letting <span class="math inline">\(J=\matt O{-I}{I}O\)</span>, <span class="math inline">\(M^T = J M J\)</span>, <span class="math inline">\(M^T \coltwo{-y}x = -JM\coltwo xy\)</span>. (<span class="math inline">\(M\)</span> is a <a href="https://en.wikipedia.org/wiki/Hamiltonian_matrix">Hamiltonian matrix</a>, i.e. <span class="math inline">\(JM\)</span> is symmetric.) So exactly <span class="math inline">\(n\)</span> of the <span class="math inline">\(2n\)</span> eigenvalues are stable, which is the unique choice for <span class="math inline">\(\coltwo XY\)</span> up to permutation.</p>
+<ol type="1">
+<li><span class="math inline">\(\Rightarrow\)</span>: Take <span class="math inline">\(L=-B^TP\)</span>. Then <span class="math inline">\(A+B(-B^TP)=K\)</span> is stable. (Its eigenvalues are exactly the eigenvalues of <span class="math inline">\(M\)</span>.)</li>
+<li><span class="math inline">\(\Leftarrow\)</span>: We just have to check that <span class="math inline">\(Y\)</span> is invertible, which is implied by the stabilizable condition. <em>Proof omitted</em>.</li>
+</ol>
+
+  </div>
+
+    
+
+    <!-- Extension : Sharing buttons @ www.sharethis.com -->
+    <span class="st_facebook_large" displayText="Facebook"></span>
+    <span class="st_twitter_large" displayText="Tweet"></span>
+    <span class="st_googleplus_large" displayText="Google +"></span>
+    <span class="st_reddit_large" displayText="Reddit"></span>
+    <span class="st__large" displayText></span>
+
+    <div id="disqus_thread"></div>
+    
+
+
+  
+    <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+  </div>
+  
+</div>
+
+
+<!-- Footer -->
+<div id="footer">
+  <div class="container">
+    Built with
+    <a href="http://jaspervdj.be/hakyll">Hakyll</a> 
+    using 
+    <a href="http://www.getbootstrap.com">Bootstrap</a>, 
+    <a href="http://www.disqus.com">Disqus</a>,
+    <a href="http://ignorethecode.net/blog/2010/04/20/footnotes/">Footnotes.js</a>,
+    <a href="http://highlightjs.org/">Highlight.js</a>, 
+    <a href="http://www.mathjax.org">MathJax</a>, 
+    and <a href="http://www.sharethis.com">ShareThis</a>.
+  </div>
+</div>
+</body>
+
+</html>
+
+<!-- SCRIPTS -->
+<!-- jQuery-->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+<script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
+
+<script src="../../../../bootstrap/js/bootstrap.min.js"></script>
+
+<!-- Extension : Highlight.js @ https://highlightjs.org/ -->
+<!-- Syntax highlighting tomorrow-night-bright, agate-->
+<link rel="stylesheet" href="../../../../highlight/css/tomorrow-night-bright.css">
+<script src="../../../../highlight/js/highlight.pack.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+
+<!-- Extension : MathJax @ https://docs.mathjax.org/en/v2.5-latest/tex.html -->
+<!-- MathJax/config/local/local.js contains macros. Need to provide entire URL-->
+<script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML,http://holdenlee.github.io/notebook/MathJax/config/local/local"></script>
+
+<!-- Extension : Footnotes @ http://ignorethecode.net/blog/2010/04/20/footnotes/ -->
+<script src="../../../../footnotes/js/footnotes.js"></script>
+
+<!-- Extension : Disqus @ http://disqus.com -->
+<!-- Extension : InlineDisqussions @ https://github.com/tsi/inlineDisqussions -->
+
+<script src="../../../../disqus/js/disqus.js"></script>
+
+
+
+<!-- Extension : Google Analytics -->
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-73261814-1', 'auto');
+  ga('send', 'pageview');
+
+</script>
+
