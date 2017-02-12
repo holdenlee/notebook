@@ -8,8 +8,314 @@
         <name>Holden Lee</name>
         <email>oldheneel@gmail.com</email>
     </author>
-    <updated>2017-02-08T00:00:00Z</updated>
+    <updated>2017-02-12T00:00:00Z</updated>
     <entry>
+    <title>The Blessing and the Curse of the Multiplicative Updates</title>
+    <link href="http://holdenlee.github.io/notebook/posts/tcs/machine_learning/optimization/multiplicative_update.html" />
+    <id>http://holdenlee.github.io/notebook/posts/tcs/machine_learning/optimization/multiplicative_update.html</id>
+    <published>2017-02-12T00:00:00Z</published>
+    <updated>2017-02-12T00:00:00Z</updated>
+    <summary type="html"><![CDATA[
+<div class="container">
+  <div id="content">
+    <div class="page header">
+      <h1>The Blessing and the Curse of the Multiplicative Updates</h1>
+    </div>
+    <div class="info">
+      
+       
+        <p>Posted: 2017-02-12 
+          , Modified: 2017-02-12 
+	</p>
+      
+       <p>Tags: <a href="/tags/multiplicative%20update.html">multiplicative update</a>, <a href="/tags/online%20learning.html">online learning</a>, <a href="/tags/biology.html">biology</a>, <a href="/tags/evolution.html">evolution</a></p> 
+    </div>
+    
+  </div>
+  <!--/div-->
+
+  <div class="toc"> <ul>
+ <li><a href="#dispelling-the-curse">Dispelling the curse</a></li>
+ <li><a href="#summary">Summary</a></li>
+ </ul> </div>
+
+  <div class="blog-main">
+    <p>(Chapter by Manfred Warmuth)</p>
+<p>Setting: online learning</p>
+<p>Maintain weights where <span class="math inline">\(w_i\)</span> is the belief that the <span class="math inline">\(i\)</span>th expert is best. Prediction: weighted average.</p>
+<p>Multiplicative updates motivated by minimum relative entropy principle. Simplest is Bayes’s rule for updating priors.</p>
+<blockquote>
+<p>The “blessing” of these updates is that they learn very fast in the short term because the good weights grow exponentially. However, their “curse” is that they learn too fast and wipe out other weights too quickly. This loss of variety can have a negative effect in the long term because adaptivity is required when there is a change in the process generating the data stream.</p>
+</blockquote>
+<blockquote>
+<p>Surprisingly, some of Nature’s methods parallel the ones developed in machine learning, but Nature also has some additional tricks.</p>
+</blockquote>
+<p>Evolution on 2 scales:</p>
+<ul>
+<li>Short-term: mutation and selection (multiplicative update)</li>
+<li>Long-term: stability - requires mechanism for preventing quick convergence to currently fittest strategy or gene.</li>
+</ul>
+<p><span class="math display">\[
+\wt s_i = \fc{s_ie^{-\eta \text{loss}_i}}{Z}
+= \amin_{r\in \R^n, \sum_i r_i=1} \sum_i KL(r||s) + \eta\sum_i r_il_i
+\]</span> Relative entropy keeps <span class="math inline">\(\wt s\)</span> close to <span class="math inline">\(s\)</span>. <span class="math inline">\(\eta\)</span> is tradeoff parameter. <span class="math inline">\(W_i = e^{-\eta l_i}\)</span> is the fitness of strategy <span class="math inline">\(i\)</span>. Bayes Rule: expected log loss, <span class="math inline">\(\eta=1\)</span>.</p>
+<p>(systematic way of deriving such updates by trading off a relative entropy between the new and old weight vector with a loss function that measures how well the weights did on the current instance vector)</p>
+<p>Why multiplicative, not additive update? Converge quickly when data stream generating process is static.</p>
+<p>Problem: data changes over time. MU loss of variety.</p>
+<p>Use of MU: separate good/bad RNA, reamplify good. Loop. Use PCR.</p>
+<p>Assumption: <span class="math inline">\(W_i\)</span> independent of share vector <span class="math inline">\(s\)</span>. (Otherwise: apostatic effects.) <span class="math inline">\(\wt s_i = \fc{w_iW_i}{\an{s,W}}\)</span>.</p>
+<p>In-vitro selection: iterate Bayes with same data likelihoods.</p>
+<blockquote>
+<p>“brittle” because the gradients of the losses appear in the exponents of the update factors. This is problematic when there is noise in the data and the data-generating process changes over time</p>
+</blockquote>
+<p>Compounded: weights have constant precision.</p>
+<p>Curse is extinctino in nature.</p>
+<h3 id="dispelling-the-curse">Dispelling the curse</h3>
+<p>Ex. Bacteria in nutriet solution separate into 3 niches, 3 species. Mixing kills all but one.</p>
+<blockquote>
+<p>three species of bacteria that play an RPS game. When started on a Petri dish, colonies of each species develop that slowly chase each other around the dish: R invades S’s colonies, S invades P, and P invades R</p>
+</blockquote>
+<ol type="1">
+<li>Niche boundaries help prevent the curse. (Human: multiplicative update of meme shares causes loss of variety.)
+<ul>
+<li>Key problem 1 (that cannot be solved by MU alone): There are three strands of RNA in a tube and the goal is to amplify the mixture while keeping the percentages of the strands unchanged. This is to be done without sequencing the strands and determining their concentrations.
+<ul>
+<li>Solution: Translate to (double stranded) DNA and using an enzyme, add a specific short “end strand” to both ends of all strands in the tube. These end strands function as connectors between strands and make it possible to randomly ligate many strands together into long strands. Now separate out one long strand. With the help of an enzyme, add “primer strands” to both ends of that long strand. Apply PCR iteratively starting with the long selected strand, always making complete copies of the same original long strand that is located between the primers. Stop when you have the target amount of DNA. Now divide the long strands into their constituents by cutting them at the specific end strand that functioned as the connector. Finally, remove all short primer and end strands and convert back to RNA.</li>
+<li>The long strand functions as a “chromosome.” Free floating genes in the nuclei of cells would compete.</li>
+</ul></li>
+</ul></li>
+<li>Coupling preserves diversity.
+<ul>
+<li>Genes on chromosome selected for together; genes “cooperate” for sake of efficient copying.</li>
+<li>What updates can be implemented with in-vitro selection/blind computation? Can you have negative weights?</li>
+<li><span class="math inline">\(EG^{\pm}\)</span> algorithm: maintain 2 weight vectors <span class="math inline">\(s^+,s^-\in \R^n\)</span>. Label <span class="math inline">\((s^+-s^-)\cdot x\)</span>, loss <span class="math inline">\(L((s^+-s^-)\cdot x,y) = ((s^+-s^-_)\cdot x-y)^2\)</span> so that fitness is inverse.</li>
+<li>Problem 2: find small set of RNA strands that can bind to <span class="math inline">\(q\)</span> different protein sheets. (Assume that among all strands in a 1-liter tube of RNA, there is a particular set of two strands such that for each of q proteins, at least one of the two has a high fraction of attachment. Can you use PCR to get <span class="math inline">\(\approx (0.5, 0.5, 0,\ldots)\)</span>?)
+<ul>
+<li>First idea: cycle through <span class="math inline">\(q\)</span> proteins and do in-vitro selection.</li>
+<li>Problem: overselecting can kill off one.</li>
+<li>ML problem: <span class="math inline">\(\exists u\)</span> with <span class="math inline">\(k\)</span> nonzeros of value <span class="math inline">\(\rc k\)</span>, <span class="math inline">\(u\cdot W_j\ge \rc k\)</span>. Find <span class="math inline">\(s\)</span> with <span class="math inline">\(s\cdot W_j \ge \rc{2k}\)</span>.</li>
+<li>Normalized winnow algorithm: If <span class="math inline">\(s\cdot W_j\ge \rc{2k}\)</span>, then <span class="math inline">\(\wt s=s\)</span> (conservative update), else apply MU.</li>
+</ul></li>
+<li>ML 1: Prevent over-training by making the update conservative.</li>
+<li>in the context of in-vitro selection this means that RNA strands that attached to the protein sheet are simply recombined into the tube without the PCR amplification step.</li>
+<li>the amplification step occurs at most <span class="math inline">\(O(k\log \fc Nk)\)</span> times if there is a consistent k-literal disjunction and this is information theoretically optimal. Grows logarithmically in <span class="math inline">\(n\)</span>.</li>
+<li>If select for <span class="math inline">\(\binom nk\)</span> combinations, not necessary to be conservative. But this is too large.</li>
+<li>Coupling can be replaced by thresholding.</li>
+<li>Cap shares/weight from above.</li>
+</ul></li>
+<li>Super (apex) predator.
+<ul>
+<li>Nibbles at the highest bar of the histogram of possible prey species. (Removing it causes this species to take over.) The more frequent a species, the more opportunity for a disease to spread and this can keep a species from taking over.</li>
+<li>ML2: Cap the weights from above for the purpose of learning a set of experts.</li>
+<li>After MU: all weights that exceed c are reduced to c and the total weight gained is redistributed among the remaining components that lie below c so that their ratios are preserved and the total weight still sums to one. (cf. exploration, <span class="math inline">\(\ep\)</span>-greedy.)</li>
+<li>capping solves a constrained optimization problem.</li>
+<li>Ex. constrain to be in convex hull of <span class="math inline">\(k\)</span>-corners. This still only needs <span class="math inline">\(n\)</span> weights.</li>
+<li>In matrix MU, share vectors are density matrices - prob vector of eigenvalues</li>
+<li>quantum relative entropy instead of the regular relative entropy</li>
+<li>MMU with capping on eigenvalues: PCA. <span class="math inline">\(k\)</span> experts become <span class="math inline">\(k\)</span>-dim subspace. Capped density matrices are convex combs of <span class="math inline">\(k\)</span>-dim subspaces.</li>
+<li>relating: lower bound shares.</li>
+<li>keep a batch of the initial mixture in reserve. When too uniform, add some!</li>
+<li>Disk spindown problem.</li>
+<li><span class="math inline">\(\wt s = (1-\al) s^m + \al \rc N\one\)</span>.</li>
+</ul></li>
+<li>Mutations keep a base variety.
+<ul>
+<li>Data shifts once in a while and some are a return back to data seen previously. Need:</li>
+<li>Capability to bring up shares quickly.</li>
+<li>Remember experts that did well in past. (Sleeping)</li>
+<li>ML4: Sleeping realizes long-term memory.</li>
+<li>Keep track of average share vector, mix in <span class="math inline">\(\al\)</span> of <span class="math inline">\(r\)</span>.</li>
+<li>Markov network with 2 tracks (tubes).</li>
+<li>It is reasonable to expect that Nature makes use of the sleeping mechanism as well. (Seed sprouting.)</li>
+</ul></li>
+</ol>
+<p>How is sleeping realized at genetic level. Junk DNA, sex?</p>
+<h2 id="summary">Summary</h2>
+<p>Machine Learning mechanisms:</p>
+<ol type="1">
+<li>conservative update for learning multiple goals</li>
+<li>upper bounding weights for learning multiple goals</li>
+<li>lower bounding weights for robustness against change</li>
+<li>sleeping for realizing a long-term memory.</li>
+</ol>
+<p>Nature’s mechanisms:</p>
+<ol type="1">
+<li>coupling for preserving variety</li>
+<li>boundaries for preserving variety</li>
+<li>super-predators for preserving variety</li>
+<li>mutations for keeping a base variety.</li>
+</ol>
+
+  </div>
+
+    
+
+    <!-- Extension : Sharing buttons @ www.sharethis.com -->
+    <span class='st_facebook_large' displayText='Facebook'></span>
+    <span class='st_twitter_large' displayText='Tweet'></span>
+    <span class='st_googleplus_large' displayText='Google +'></span>
+    <span class='st_reddit_large' displayText='Reddit'></span>
+    <span class='st__large' displayText=''></span>
+
+    <div id="disqus_thread"></div>
+    
+
+
+  
+    <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+  </div>
+  
+</div>
+]]></summary>
+</entry>
+<entry>
+    <title>Game theory and decision theory</title>
+    <link href="http://holdenlee.github.io/notebook/posts/cs/ai/control/game_theory.html" />
+    <id>http://holdenlee.github.io/notebook/posts/cs/ai/control/game_theory.html</id>
+    <published>2017-02-12T00:00:00Z</published>
+    <updated>2017-02-12T00:00:00Z</updated>
+    <summary type="html"><![CDATA[
+<div class="container">
+  <div id="content">
+    <div class="page header">
+      <h1>Game theory and decision theory</h1>
+    </div>
+    <div class="info">
+      
+       
+        <p>Posted: 2017-02-12 
+          , Modified: 2017-02-12 
+	</p>
+      
+       <p>Tags: <a href="/tags/ai%20safety.html">ai safety</a>, <a href="/tags/game%20theory.html">game theory</a>, <a href="/tags/decision%20theory.html">decision theory</a></p> 
+    </div>
+    
+  </div>
+  <!--/div-->
+
+  <div class="toc"> <ul>
+ <li><a href="#references">References</a><ul>
+ <li><a href="#online">Online</a></li>
+ <li><a href="#books">Books</a></li>
+ </ul></li>
+ <li><a href="#towards-idealized-decision-theory">Towards idealized decision theory</a><ul>
+ <li><a href="#problems-with-edt-cdt">Problems with EDT, CDT</a><ul>
+ <li><a href="#why-not-recursively-improve-from-edtcdt">Why not recursively improve from EDT/CDT?</a></li>
+ </ul></li>
+ <li><a href="#policy-selection">Policy selection</a></li>
+ <li><a href="#logical-counterfactuals">Logical counterfactuals</a><ul>
+ <li><a href="#graphical-udt.">Graphical UDT.</a></li>
+ <li><a href="#proof-based-udt">Proof-based UDT</a></li>
+ </ul></li>
+ </ul></li>
+ </ul> </div>
+
+  <div class="blog-main">
+    <h2 id="references">References</h2>
+<p>Papers on game theory/decision theory:</p>
+<ul>
+<li>Andrew Critch. 2017. “Toward Negotiable Reinforcement Learning: Shifting Priorities in Pareto Optimal Sequential Decision-Making.” <a href="https://arxiv.org/abs/1608.04112">arXiv:1701.01302</a> [cs.AI].</li>
+<li>Andrew Critch. 2016. “Parametric Bounded Lob’s Theorem and Robust Cooperation of Bounded Agents.” <a href="http://arxiv.org/abs/1602.04184">arXiv:1602.04184</a> [cs:GT].</li>
+<li>Jan Leike, Jessica Taylor, and Benya Fallenstein. 2016. “<a href="http://www.auai.org/uai2016/proceedings/papers/87.pdf">A Formal Solution to the Grain of Truth Problem</a>.” Paper presented at the 32nd Conference on Uncertainty in Artificial Intelligence.</li>
+<li>Benja Fallenstein, Jessica Taylor, and Paul Christiano. 2015. “Reflective Oracles: A Foundation for Classical Game Theory.” <a href="http://arxiv.org/abs/1508.04145">arXiv:1508.04145</a> [cs.AI]. Previously published as MIRI technical report 2015-7. Published in abridged form as “Reflective Oracles: A Foundation for Game Theory in Artificial Intelligence” in Proceedings of LORI 2015.</li>
+<li>Nate Soares and Benja Fallenstein. 2015. “Toward Idealized Decision Theory.” <a href="http://arxiv.org/abs/1507.01986">arXiv:1507.01986</a> [cs.AI]. Previously published as MIRI technical report 2014-7. Published in abridged form as “Two Attempts to Formalize Counterpossible Reasoning in Deterministic Settings” in Proceedings of AGI 2015.</li>
+<li>Mih’aly B’asr’asz, Paul Christiano, Benja Fallenstein, Marcello Herreshoff, Patrick LaVictoire, and Eliezer Yudkowsky. 2014. “Robust Cooperation on the Prisoner’s Dilemma: Program Equilibrium via Provability Logic.” <a href="http://arxiv.org/abs/1401.5577">arXiv:1401.5577</a> [cs.GT].</li>
+<li>Tsvi Benson-Tilsen. 2014. “UDT with Known Search Order.” <a href="https://intelligence.org/files/UDTSearchOrder.pdf">MIRI technical report 2014-4</a></li>
+<li>Patrick LaVictoire, Benja Fallenstein, Eliezer Yudkowsky, Mih’aly B’ar’asz, Paul Christiano and Marcello Herreshoff. 2014. “<a href="https://intelligence.org/files/ProgramEquilibrium.pdf">Program Equilibrium in the Prisoner’s Dilemma via Lob’s Theorem</a>.” Paper presented at the AAAI 2014 Multiagent Interaction without Prior Coordination Workshop.</li>
+<li>Benja Fallenstein. 2013. “<a href="https://intelligence.org/files/TilingAgents510.pdf">The 5-and-10 Problem and the Tiling Agents Formalism.</a>” MIRI technical report 2013-9.</li>
+<li><a href="https://intelligence.org/wp-content/uploads/2014/10/Hintze-Problem-Class-Dominance-In-Predictive-Dilemmas.pdf">Problem class dominance</a></li>
+</ul>
+<h3 id="online">Online</h3>
+<ul>
+<li>ADT</li>
+<li><a href="https://agentfoundations.org/item?id=1279">Entangled Equilibria and the Twin Prisoners’ Dilemma</a></li>
+<li><a href="http://lesswrong.com/lw/15m/towards_a_new_decision_theory/">UDT</a>
+<ul>
+<li><a href="https://dl.dropboxusercontent.com/u/34639481/Updateless_Decision_Theory.pdf">Formalization</a></li>
+</ul></li>
+<li><a href="https://intelligence.org/research-guide/#four">MIRI research guide</a></li>
+<li><a href="http://lesswrong.com/lw/gu1/decision_theory_faq/">Decision theory FAQ</a></li>
+<li><a href="http://lesswrong.com/lw/dbe/introduction_to_game_theory_sequence_guide/">Game thepory sequence</a></li>
+<li><a href="http://lesswrong.com/lw/eaa/a_model_of_udt_with_a_concrete_prior_over_logical/">UDT with concrete prior over logical statements</a></li>
+<li><a href="http://lesswrong.com/lw/b5t/an_example_of_selffulfilling_spurious_proofs_in/">Self-fulfilling spurious proofs</a></li>
+</ul>
+<h3 id="books">Books</h3>
+<ul>
+<li>Game theory, Steven Tadelis</li>
+<li>Algorithmic game theory, Tim Roughgarden <a href="http://theory.stanford.edu/~tim/books.html">page</a></li>
+</ul>
+<h2 id="towards-idealized-decision-theory">Towards idealized decision theory</h2>
+<p>But what are the available actions? And what are the counterfactual universes correspond- ing to what “would happen” if an action “were taken”?</p>
+<p>(A deterministic agent could only have taken one action.)</p>
+<p>To fully describe the problem faced by intelligent agents making decisions, it is necessary to provide an idealized procedure which takes a description of an environment and one of the agents within, and identifies the best action available to that agent</p>
+<h3 id="problems-with-edt-cdt">Problems with EDT, CDT</h3>
+<p>Evidential blackmail: AI researcher knows whether the AI will lose $150 mil from an investment (scandal). If either is true, the AI researcher sends the info and asks for $100 mil:</p>
+<ul>
+<li>No scandal, will pay</li>
+<li>Scandal, won’t pay</li>
+</ul>
+<p>Conditioned on refusing, loses $150 mil.</p>
+<p>Counterfactual blackmail: Developer has developed computer virus which would cause both to lose $150 mil. Once deployed, only way to prevent activation 1 day later is to wire $100 mil. Researcher would only deploy if quite sure agent will pay.</p>
+<h4 id="why-not-recursively-improve-from-edtcdt">Why not recursively improve from EDT/CDT?</h4>
+<p>CDT prescribes that an agent resist certain attempts to improve its decision procedures.</p>
+<p>Retro blackmail: AI researcher has access to original source code. Can self-modify after researcher acquires original source code but before researcher decides whether to deploy.</p>
+<p>Self-modify to not give in to demands.</p>
+<p>But CDT and any decision procedure to which CDT would self-modify would lose money.</p>
+<h3 id="policy-selection">Policy selection</h3>
+<p>CDT: Alas, the virus has been deployed. I would have preferred that the virus not be deployed, but since it has been, I must now decide whether or not to pay up. Paying up is bad, but refusing is worse, so I’ll pay up.</p>
+<p>Policy selection: The optimal policy is to refuse to pay up upon observing that the virus has been deployed. I now observe that the virus has been deployed. Therefore, I refuse to pay.</p>
+<h3 id="logical-counterfactuals">Logical counterfactuals</h3>
+<p>Consider Prisoner’s dilemma when</p>
+<ul>
+<li>opponent’s action guaranteed to match your own. (dependent)</li>
+<li>some probability <span class="math inline">\(p\)</span> opponent defects. (independent)</li>
+</ul>
+<p>However, CDT evaluates actions according to a physical counterfactual where the action is changed but everything causally separated from the action is held constant. It is not the physical output of the agent’s hardware which must be modified to construct a counterfactual, it is the logical output of the agent’s decision algorithm.</p>
+<p>Cf. <span class="math inline">\(10 \E a - a\)</span>.</p>
+<p>UDT chooses the best action according to a world-model which represents not only causal relationships in the world, but also the logical effects of algorithms upon the world.</p>
+<h4 id="graphical-udt.">Graphical UDT.</h4>
+<p>How to encode logical relations in graph? Underspecified: constructing graph is difficult. Graph for UDT further requires some ability to identify and separate “algorithms” from the physical processes that implement them. How is UDT supposed to recognize that the agent and its opponent implement the same algorithm?</p>
+<p>To illustrate, consider UDT identify- ing the best action available to an agent playing a Pris- oner’s Dilemma against an opponent that does exactly the same thing as the agent 80% of the time, and takes the opposite action otherwise.</p>
+<p>(Problem seems to be identifying what something is doing logically - it might be obfuscated. Also, graph loses info from algorithm.)</p>
+<h4 id="proof-based-udt">Proof-based UDT</h4>
+<p>Evaluate logical implications of the agent’s algorithm selecting the policy <span class="math inline">\(\pi\)</span>.</p>
+<p>Graph is unnecessary: the environment itself is an algorithm.</p>
+<p>evaluates policies by searching for formal proofs, using some mathematical theory such as Peano Arithmetic (PA), of how much utility is attained in the world-model if A() selects the policy <span class="math inline">\(\pi\)</span>.</p>
+<p>But: requires halting oracle. can only identify the best policy if there exists a proof that ex- ecuting that policy leads to a good outcome</p>
+<p>Problem in stochastic environments (? if can model prior, seems ok)</p>
+<p>Ex. agent uses UDT, play game with human. If numbers written sum to <span class="math inline">\(\$10\)</span>, each paid, else 0.</p>
+<p>UDT misidentifies best policy:</p>
+<p>Human: I don’t quite know how UDT works, but I remember hearing that it’s a very powerful predictor. So if I decide to write down 9, then it will predict this, and it will decide to write 1. Therefore, I can write down 9 without fear.</p>
+<p>But agent with superior predictive power loses to the dumber agent! Human’s lack of power to predict UDT gives an advantage!</p>
+<p>Problem: not guaranteed to work. As soon as proof-based UDT proves that an agent will not take a certain policy, it concludes that taking that policy leads to the best possible outcome (because from a contradiction, anything follows).</p>
+<p>(I don’t get this…) <span class="math display">\[
+A() = UDT(\ce{E()}, \ce{A()}).
+\]</span></p>
+<p>(What is an embedding of an agent?)</p>
+
+  </div>
+
+    
+
+    <!-- Extension : Sharing buttons @ www.sharethis.com -->
+    <span class='st_facebook_large' displayText='Facebook'></span>
+    <span class='st_twitter_large' displayText='Tweet'></span>
+    <span class='st_googleplus_large' displayText='Google +'></span>
+    <span class='st_reddit_large' displayText='Reddit'></span>
+    <span class='st__large' displayText=''></span>
+
+    <div id="disqus_thread"></div>
+    
+
+
+  
+    <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+  </div>
+  
+</div>
+]]></summary>
+</entry>
+<entry>
     <title>Boosting</title>
     <link href="http://holdenlee.github.io/notebook/posts/tcs/machine_learning/boosting.html" />
     <id>http://holdenlee.github.io/notebook/posts/tcs/machine_learning/boosting.html</id>
@@ -1104,309 +1410,6 @@ x_{n+1} = Ax_n+Ba_n + \ep_n.
 + \la\ve{r}^2.
 \]</span></p>
 <p>Robust optimization: <span class="math inline">\(K\)</span> features zeroed out at test time.</p>
-
-  </div>
-
-    
-
-    <!-- Extension : Sharing buttons @ www.sharethis.com -->
-    <span class='st_facebook_large' displayText='Facebook'></span>
-    <span class='st_twitter_large' displayText='Tweet'></span>
-    <span class='st_googleplus_large' displayText='Google +'></span>
-    <span class='st_reddit_large' displayText='Reddit'></span>
-    <span class='st__large' displayText=''></span>
-
-    <div id="disqus_thread"></div>
-    
-
-
-  
-    <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
-  </div>
-  
-</div>
-]]></summary>
-</entry>
-<entry>
-    <title>Kernels</title>
-    <link href="http://holdenlee.github.io/notebook/posts/tcs/machine_learning/kernels.html" />
-    <id>http://holdenlee.github.io/notebook/posts/tcs/machine_learning/kernels.html</id>
-    <published>2016-12-29T00:00:00Z</published>
-    <updated>2016-12-29T00:00:00Z</updated>
-    <summary type="html"><![CDATA[
-<div class="container">
-  <div id="content">
-    <div class="page header">
-      <h1>Kernels</h1>
-    </div>
-    <div class="info">
-      
-       
-        <p>Posted: 2016-12-29 
-          , Modified: 2016-12-29 
-	</p>
-      
-       <p>Tags: <a href="/tags/kernels.html">kernels</a>, <a href="/tags/RKHS.html">RKHS</a></p> 
-    </div>
-    
-  </div>
-  <!--/div-->
-
-  <div class="toc"> <ul>
- <li><a href="#kernels">Kernels</a></li>
- <li><a href="#equivalences">Equivalences</a></li>
- <li><a href="#rkhs">RKHS</a></li>
- <li><a href="#learning">Learning</a></li>
- <li><a href="#fourier-properties">Fourier properties</a></li>
- <li><a href="#efficient-computation">Efficient computation</a><ul>
- <li><a href="#random-features">Random features</a></li>
- <li><a href="#nystrom">Nystrom</a></li>
- </ul></li>
- <li><a href="#universality">Universality</a></li>
- <li><a href="#rkhs-embedding-of-probability-distributions">RKHS embedding of probability distributions</a></li>
- </ul> </div>
-
-  <div class="blog-main">
-    <p>Mostly from Percy Liang’s 229T notes.</p>
-<h2 id="kernels">Kernels</h2>
-<p>If <span class="math inline">\(w=\sumo in \al_i \phi(x^{(i)})\)</span> then <span class="math inline">\(\an{w,\phi(x)} = \sumo in \al_i \an{\phi(x^{(i)}), \phi(x)}\)</span>.</p>
-<h2 id="equivalences">Equivalences</h2>
-<p>The following are equivalent (although multiple feature maps can correspond to the same kernel/RKHS):</p>
-<ul>
-<li>Feature map <span class="math inline">\(\phi:X\to H\)</span>.</li>
-<li>Symmetric, positive (semi)definite kernel <span class="math inline">\(k:X\times X\to \R\)</span>. (for all <span class="math inline">\(S\)</span>, <span class="math inline">\((k(x_i,x_j))_{i,j\in S}\)</span> is PSD.)</li>
-<li>RKHS <span class="math inline">\(\{f:X\to \R\}, \ved_H\)</span>.</li>
-</ul>
-<p>Proof:</p>
-<ul>
-<li>Feature map to kernel: <span class="math inline">\(k(x,x') = \an{\phi(x), \phi(x')}\)</span>.</li>
-<li>RKHS to kernel: Riesz representation (see below). <span class="math inline">\(L_x(f) = \an{R_x,f}\)</span>.</li>
-<li>Kernel to RKHS: Moore-Aronszajn. <span class="math inline">\(f=\sumo in \al_i k(x_i,x)\)</span>, <span class="math inline">\(\an{f,g} - \sumo in \sumo j{n'} \al_i\be_j k(x_i,x_j')\)</span>. (See below.)</li>
-</ul>
-<h2 id="rkhs">RKHS</h2>
-<p>A <a href="https://en.wikipedia.org/wiki/Reproducing_kernel_Hilbert_space">reproducing kernel Hilbert space (RKHS)</a> is a Hilbert space of functions <span class="math inline">\(X\to \R\)</span> in which point evaluation <span class="math inline">\(L_x[f] = f(x)\)</span> is a continuous linear functional. (Equivalently, it is bounded: <span class="math inline">\(f(x)\le M_x\ve{f}_H\)</span>.)</p>
-<ul>
-<li><span class="math inline">\(L^2\)</span> is not a RKHS—it consists of equivalence classes of functions.</li>
-<li><span class="math inline">\(H=\set{f\in L_2(\R)}{\Supp(\wh f)\subeq [-a,a]}\)</span> is RKHS. Here <span class="math inline">\(K_x(y) = \fc{\sin(a(y-x))}{\pi(y-x)}\)</span> (bandlimited Dirac delta).</li>
-</ul>
-<p><strong>Theorem</strong> A Hilbert space of functions is a RKHS iff for every <span class="math inline">\(x\in X\)</span>, there exists <span class="math inline">\(K_x\)</span> such that <span class="math inline">\(g(x) = \an{g, K_x}\)</span>.<a href="#fn1" class="footnoteRef" id="fnref1"><sup>1</sup></a></p>
-<p><em>Proof</em>. <span class="math inline">\(\Leftarrow\)</span>: inner product is continuous. <span class="math inline">\(\Rightarrow\)</span>: Riesz representation.</p>
-<p>Note <span class="math inline">\(K_x(y) = \an{K_x,K_y}=:K(x,y)\)</span>. <span class="math inline">\(K\)</span> is symmetric and positive definite. (Think of <span class="math inline">\(K\)</span> as <span class="math inline">\(X_0^\R\times X_0^\R\to \R\)</span> where <span class="math inline">\(X_0^\R\)</span> is the set of functions <span class="math inline">\(X\to \R\)</span> nonzero only at a finite number of <span class="math inline">\(x\)</span>’s. I.e. formal span of <span class="math inline">\(X\)</span>.)</p>
-<p><strong>Theorem (Moore-Aronszajn)</strong>. Suppose <span class="math inline">\(K\)</span> is a symmetric, positive definite kernel on a set <span class="math inline">\(X\)</span>. Then there is a unique Hilbert space of functions on <span class="math inline">\(X\)</span> for which <span class="math inline">\(K\)</span> is a reproducing kernel.</p>
-<p><em>Proof</em>. Extend <span class="math inline">\(K\)</span> by bilinearity to <span class="math inline">\(\spn(X)\)</span>. Take the completion. (Extend to functions <span class="math inline">\(f=\sumo i{\iy} a_i K_{x_i}(x)\)</span> where <span class="math inline">\(\sumo i{\iy} a_i^2 K(x_i,x_i)\)</span>.)</p>
-<p>(Question: how to realize this inner product as an integral?)</p>
-<p>See also: Mercer’s theorem</p>
-<h2 id="learning">Learning</h2>
-<p><a href="https://en.wikipedia.org/wiki/Representer_theorem">Representer theorem</a> states that every function in an RKHS that minimises an empirical risk function can be written as a linear combination of the kernel function evaluated at the training points.</p>
-<p>If <span class="math display">\[
-f^*\in \amin_{f\in H} L(\{(x_i,y_i,f(x_i))\}) + Q(\ve{f}_H^2)
-\]</span> where <span class="math inline">\(Q:[0,\iy)\to \R\)</span> strictly increasing is a regularizer, then <span class="math display">\[
-f^*\in \spn(\set{k(x_i, \cdot)}{i\in [n]}).
-\]</span></p>
-<p>Example: kernel ridge regression <span class="math inline">\(\al = (K+\la I)^{-1}Y\)</span>.</p>
-<h2 id="fourier-properties">Fourier properties</h2>
-<p><span class="math inline">\(k:X\times X\to \R\)</span>, <span class="math inline">\(X\subeq \R^b\)</span> is shift-invariant if <span class="math inline">\(k(x,x') = h(x-x')\)</span>. Let <span class="math inline">\(t=x-x'\)</span>.</p>
-<p><strong>Bochner’s theorem</strong>. Let <span class="math inline">\(k(x,x') = h(x-x')\)</span> be a continuous shift-invariant kernel (<span class="math inline">\(x\in \R^b\)</span>). There exists a unique finite <em>nonnegative</em> measure <span class="math inline">\(\mu\)</span> (spectral measure) such that <span class="math display">\[
-h(t) = \int e^{-i\an{t,\om}}\mu(d\om).
-\]</span> (<span class="math inline">\(h\)</span> is the characteristic function of <span class="math inline">\(\mu\)</span>. For <span class="math inline">\(\mu(d\om)=s(\om)d\om\)</span>, call <span class="math inline">\(s\)</span> the spectral density.) (See probability notes.)</p>
-<h2 id="efficient-computation">Efficient computation</h2>
-<ul>
-<li>Random features: We will write the kernel function as an integral, and using Monte Carlo approximations of this integral. These approximations are of the kernel function and are data-independent.</li>
-<li>Nystrom method: We will sample a subset of the n points and use these points to approximate the kernel matrix. These approximations are of the kernel matrix and are data-dependent.</li>
-</ul>
-<p>Ex. when points are clustered into <span class="math inline">\(m\)</span> clusters, kernel matrix looks like block diagonal with <span class="math inline">\(m\)</span> blocks <span class="math inline">\(J\)</span>, so rank <span class="math inline">\(m\)</span> approximation is effective.</p>
-<h3 id="random-features">Random features</h3>
-<p>Draw <span class="math inline">\(\om_i\sim \mu\)</span>, and estimate <span class="math display">\[
-\wh k(x,x') = \rc m \sumo im \phi_{\om_i}(x)\ol{\phi_{\om_i}(x)}.
-\]</span></p>
-<strong>Theorem</strong>. Let
-<span class="math display">\[\begin{align}
-\mathcal F &amp;= \set{x\mapsto \int \al(\om)\phi_\om(x)\mu(d\om)}{\forall \om, |\al(\om)|\le C}\\
-\wh{\mathcal F} &amp;= \set{x\mapsto \rc m\sumo im \al(\om_i)\phi_{\om_i}(x)\mu(d\om)}{\forall \om, |\al(\om)|\le C}
-\end{align}\]</span>
-<p>where <span class="math inline">\(\om_i\sim \mu\)</span>. Let <span class="math inline">\(\an{f,g}=\EE_{x\sim p^*}[fg]\)</span>. Then <span class="math display">\[
-\Pj\pa{
-\exists \wh f\in \wh{\mathcal F},
-\ve{\wh f- f^*}\le \fc{C}{\sqrt m} 
-\pa{1+\sqrt{2\ln(1/\de)}}
-}.
-\]</span></p>
-<p><em>Proof</em>. McDiarmid and Jensen. (p. 133-5, omitted.)</p>
-<p>(Q: what about generalization guarantee? See p. 134)</p>
-<p>For other kernels, note <span class="math display">\[\an{x,x'}=\E[\an{\om, x}\an{\om,x'}].\]</span> For <span class="math inline">\(\an{x,x'}^p\)</span>, take <span class="math inline">\(p\)</span> independent draws and multiply together. For general <span class="math inline">\(f\)</span>, expand in Taylor series.</p>
-<p>Comparison to neural nets: “the random features view of kernels defines a function class where <span class="math inline">\(\om_{1:m}\)</span> is chosen randomly rather than optimized, while <span class="math inline">\(\alpha_{1:m}\)</span> are optimized. The fact that random features approximates a kernel suggests that even the random initialization is quite sensible starting point.”</p>
-For <span class="math inline">\(\phi_\om(x) = \one_{\om^Tx\ge 0}(\om^Tx)^q\)</span>, as <span class="math inline">\(m\to \iy\)</span>, get the kernel
-<span class="math display">\[\begin{align}
-k(x,x') &amp;= 2\int\phi_\om(x)\phi_\om(x')p(\om)d\om\\
-&amp;= \rc\pi \ve{x}^q\ve{x'}^q J_q\ub{\pf{\cos^{-1}\pf{x^Tx'}}{\ve{x}\ve{x'}}}{\te}\\
-J_0(\te) &amp;= \pi - \te\\
-J_1(\te) &amp;= \sin\te + (\pi - \te)\cos\te.
-\end{align}\]</span>
-<p>(Bessel function?) Decouples magnitude from angle. (Cho/Saul 2009)</p>
-<h3 id="nystrom">Nystrom</h3>
-<p>$$</p>
-<p><span class="math display">\[K \approx \matt{K_{II}}{K_{IJ}}{K_{JI}}{K_{JI}K_{II}^{+}K_{IJ}}.\]</span> <span class="math inline">\(K_{JJ} - K_{JI}K_{II}^{+}K_{IJ}\)</span> is the Schur complement.</p>
-<p>Drineas/Mahoney: Choose <span class="math inline">\(I\)</span> by sampling <span class="math inline">\(i\)</span> with probability <span class="math inline">\(\fc{K_{ii}}{\sumo jn K_{jj}}\)</span>. (p. 138)</p>
-<h2 id="universality">Universality</h2>
-<p>Let <span class="math inline">\(X\)</span> be locally compact Hausdorff. <span class="math inline">\(k\)</span> is a <span class="math inline">\(c_0\)</span>-universal kernel if <span class="math inline">\(H\)</span> with reproducing kernel <span class="math inline">\(k\)</span> is dense in <span class="math inline">\(C_0(X)\)</span> (continuous bounded functions wrt uniform (<span class="math inline">\(L^{\iy}\)</span>) norm).</p>
-<p>Carmeli2010: Let <span class="math inline">\(k\)</span> be shift-invariant with spectral measure <span class="math inline">\(\mu\)</span>. If <span class="math inline">\(\Supp(\mu) = \R^b\)</span>, then <span class="math inline">\(k\)</span> is universal.</p>
-<h2 id="rkhs-embedding-of-probability-distributions">RKHS embedding of probability distributions</h2>
-<p>Kernels can be used to represent and answer questions about probability distributions without having to explicitly estimate them.</p>
-<p><strong>Maximum mean discrepancy</strong> <span class="math display">\[
-D(P,Q,F) := \sup_{f\in\mathcal F}
-\pa{
-\EE_{x\sim P}[f(x)] - \EE_{x\sim Q}[f(x)]
-}.
-\]</span></p>
-<p>If <span class="math inline">\(\mathcal F=C_0(X)\)</span>, then <span class="math inline">\(D(P,Q,\mathcal F)=0\implies P=Q\)</span>. Better: Can let <span class="math inline">\(\mathcal F = \set{f\in H}{\ve{f}_H\le 1}\)</span> where <span class="math inline">\(k\)</span> is universal. (Check proof p. 140)</p>
-<section class="footnotes">
-<hr />
-<ol>
-<li id="fn1"><p>Letting <span class="math inline">\(f_x=\delta_x\)</span> is cheating—we want actual functions, not distributions.<a href="#fnref1">↩</a></p></li>
-</ol>
-</section>
-
-  </div>
-
-    
-
-    <!-- Extension : Sharing buttons @ www.sharethis.com -->
-    <span class='st_facebook_large' displayText='Facebook'></span>
-    <span class='st_twitter_large' displayText='Tweet'></span>
-    <span class='st_googleplus_large' displayText='Google +'></span>
-    <span class='st_reddit_large' displayText='Reddit'></span>
-    <span class='st__large' displayText=''></span>
-
-    <div id="disqus_thread"></div>
-    
-
-
-  
-    <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
-  </div>
-  
-</div>
-]]></summary>
-</entry>
-<entry>
-    <title>(R16) How to calculate partition functions using convex programming hierarchies - provable bounds for variational methods</title>
-    <link href="http://holdenlee.github.io/notebook/posts/tcs/machine_learning/probabilistic/R16.html" />
-    <id>http://holdenlee.github.io/notebook/posts/tcs/machine_learning/probabilistic/R16.html</id>
-    <published>2016-12-28T00:00:00Z</published>
-    <updated>2016-12-28T00:00:00Z</updated>
-    <summary type="html"><![CDATA[
-<div class="container">
-  <div id="content">
-    <div class="page header">
-      <h1>(R16) How to calculate partition functions using convex programming hierarchies - provable bounds for variational methods</h1>
-    </div>
-    <div class="info">
-      
-       
-        <p>Posted: 2016-12-28 
-          , Modified: 2016-12-28 
-	</p>
-      
-       <p>Tags: <a href="/tags/dynamical%20systems.html">dynamical systems</a>, <a href="/tags/quasi-convexity.html">quasi-convexity</a></p> 
-    </div>
-    
-  </div>
-  <!--/div-->
-
-  <div class="toc"> <ul>
- <li><a href="#introduction">Introduction</a></li>
- <li><a href="#definitions-and-setting">Definitions and setting</a></li>
- <li><a href="#result">Result</a></li>
- <li><a href="#method">Method</a><ul>
- <li><a href="#dense-graphs-sa">Dense graphs, SA</a></li>
- <li><a href="#low-threshold-rank-lasserre">Low threshold rank, Lasserre</a></li>
- </ul></li>
- <li><a href="#interpretation">Interpretation</a></li>
- </ul> </div>
-
-  <div class="blog-main">
-    <h2 id="introduction">Introduction</h2>
-<p>Two approaches for calculating partition functions</p>
-<ol type="1">
-<li>Markov chains to sample
-<ul>
-<li>(Jerrum04, JerrumSinclair1993) Certain Markov chains mix rapidly; used to approximate permanent with nonnegative entries and partition function for ferromagnetic Ising.</li>
-</ul></li>
-<li>Variational methods: partition function is the solution of a (intractable) optimization problem over the polytope of valid distributions.
-<ul>
-<li>Popular, faster, easier to parallelize</li>
-<li>Little theoretical understanding</li>
-<li>Another algorithm: Belief propagation (solving non-convex relaxation)
-<ul>
-<li>Regime of correlation decay and locally tree-like graphs.</li>
-</ul></li>
-</ul></li>
-</ol>
-<p>Use Sherali-Adams and Lasserre convex programming hierarchies to get the first provable, convex variational methods. They work <em>because</em> local correlations propagate to global correlations, the opposite of correlation decay.</p>
-<p>(See <a href="../optimization/hierarchies.html">hierarchies</a>.)</p>
-<h2 id="definitions-and-setting">Definitions and setting</h2>
-<p>Ising model <span class="math inline">\(p(x)\propto \exp\pa{\sum_{i,j} J_{i,j}x_ix_j}\)</span>, <span class="math inline">\(x\in \{-1,1\}^n\)</span> is <span class="math inline">\(\De\)</span>-dense if letting <span class="math inline">\(J_T=\sum_{i,j}|J_{i,j}|\)</span>, <span class="math display">\[
-\forall i,j\in [n], \De |J_{i,j}|\le \fc{J_T}{n^2},
-\]</span> (Ex. if the <span class="math inline">\(J_{i,j}\)</span> is 1 for an edge and 0 for a non-edge, and the graph has density <span class="math inline">\(cn^2\)</span>, then <span class="math inline">\(\De = \rc{c}\)</span>.)</p>
-<p><span class="math inline">\(p\)</span> is <strong>regular</strong> if <span class="math inline">\(\sum_j |J_{i,j}|=J'\)</span>. The adjacency matrix is <span class="math inline">\(A_{i,j} = \fc{|J_{i,j}|}{J'}\)</span>. Let <span class="math inline">\(\rank_\tau(A)\)</span> be the number of eigenvalues with <span class="math inline">\(\ad\ge\tau\)</span>.</p>
-<p>Why dense Ising models?</p>
-<ul>
-<li>There are PTAS for CSPs for dense constraint graphs.</li>
-<li>Mean-field ferromagnetic Ising model: each spin interacts with every other spin.</li>
-</ul>
-<h2 id="result">Result</h2>
-<ul>
-<li>Algorithm based on SA hierarchy achieving additive approximation of <span class="math inline">\(\ep J_T\)</span> to <span class="math inline">\(\ln Z\)</span> in time <span class="math inline">\(n^{O\prc{\De \ep^2}}\)</span>.</li>
-<li>Algorithm based on Lasserre hierarchy achieving additive approximation of <span class="math inline">\(\ep n J'\)</span> to <span class="math inline">\(\ln Z\)</span> in time <span class="math inline">\(n^{\rank_{\Om(\ep^2)}(A)/\Om(\ep^2)}\)</span>.</li>
-</ul>
-<h2 id="method">Method</h2>
-<h3 id="dense-graphs-sa">Dense graphs, SA</h3>
-<ul>
-<li>(Variational characterization of <span class="math inline">\(\ln Z\)</span>) <span class="math inline">\(\ln Z = \max_{\mu\in M} \sum_{i\sim j} J_{i,j} \E_\mu [x_ix_j] + H(\mu)\)</span> where <span class="math inline">\(M\)</span> is the polytope of distributions over <span class="math inline">\(\{-1,1\}^n\)</span>. (Maximum achieved at <span class="math inline">\(\mu=p\)</span>.)
-<ul>
-<li><em>Proof</em>. The KL divergence to <span class="math inline">\(p\)</span> is <span class="math inline">\(\ge 0\)</span>.</li>
-</ul></li>
-<li>Relax to <span class="math inline">\(M'\supeq M\)</span>.</li>
-<li>Need to design surrogates for <span class="math inline">\(H(\mu)\)</span>.
-<ul>
-<li>Popular choice: Bethe entropy. (But it is not an upper bound in general.)</li>
-<li>Instead, design <span class="math inline">\(\wt H(\mu) \ge H(\mu)\)</span> whenever <span class="math inline">\(\mu\in M\)</span>, then round to distributions.</li>
-</ul></li>
-<li>Define the <strong>augmented mean-field pseudo-entropy functional</strong> <span class="math display">\[
-H_{aMF,k}(\mu) = \min_{|S|\le k}H(\mu_S) + \sum_{i\nin S} H(\mu_i |\mu_S).
-\]</span>
-<ul>
-<li>By the chain rule and “conditioning reduces entropy”, <span class="math inline">\(H(\mu)\le H_{aMF,k}(\mu)\)</span>.</li>
-<li><span class="math inline">\(H(\mu_i|\mu_S)\)</span> is concave, so <span class="math inline">\(H_{aMF,k}(\mu)\)</span> is concave. (Proof omitted.)</li>
-</ul></li>
-<li>The relaxation is <span class="math display">\[
-\max_{\mu\in SA(O(1/(\De \ep^2)))} \bc{
-\sum_{i,j} J_{i,j} \E_\mu[x_ix_j] + H_{aMF,k}(\mu)
-}
-\]</span></li>
-<li>Correlation rounding: pick a seed set, condition on it, and round other variables independently. (YoshidaZhou2014) There is a set of size <span class="math inline">\(k=O\prc{\De \ep^2}\)</span> such that <span class="math display">\[
-\ab{\sum_{i,j} J_{i,j} \E_\mu[x_ix_j|x_S] - \sum_{i,j} J_{i,j} \E_\mu [x_i|x_S] \E_\mu[x_j|x_S]}\le \fc{100}{\De k}J_T.
-\]</span></li>
-<li>Letting <span class="math inline">\(\wt\mu(x) = \mu(x_S) \prod_{i\nin S} \mu(x_i|x_S)\)</span>, <span class="math inline">\(\E_{\wt\mu} [x_ix_j|x_S] = \E_\mu[x_i|x_S]\mu[x_j|x_S]\)</span>.Combine YZ14 with <span class="math inline">\(H\le H_{aMF,k}\)</span>.</li>
-</ul>
-<h3 id="low-threshold-rank-lasserre">Low threshold rank, Lasserre</h3>
-<ul>
-<li>The correlation rounding bound changes to: <span class="math inline">\(\exists |S|\le \rank_{\Om(\ep^2)}(A)\)</span>, <span class="math inline">\(...\le \ep J_T\)</span>. <!-- $$\max_{\mu\in LAS(k)} \ba{\sum_{i,j} \E_\mu [x_ix_j] + H_{aMF,k}(\mu)}.$$--></li>
-</ul>
-<h2 id="interpretation">Interpretation</h2>
-<ul>
-<li>High temperature <span class="math inline">\(|H| = O\prc{d}\)</span>
-<ul>
-<li>Dobrushin’s uniqueness criterion: correlation decay</li>
-<li>MC methods work and give <span class="math inline">\((1+\ep)\)</span> factor approximation, stronger.</li>
-</ul></li>
-<li>Transition threshold <span class="math inline">\(|J|=\Te\prc{d}\)</span>.
-<ul>
-<li>MC provide no nontrivial guarantee.</li>
-<li>We get <span class="math inline">\(\ep n\)</span> additive factor approximation.</li>
-</ul></li>
-<li>Low temperature <span class="math inline">\(|J|=\om\prc{d}\)</span>. :(</li>
-</ul>
 
   </div>
 

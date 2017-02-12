@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+
+  <meta name="description" content="Holden Lee's Research Notebook">
+  <meta name="author" content="Holden Lee">
+    
+  <title>Game theory and decision theory</title>
+
+  <!-- Bootstrap core CSS -->
+  <link href="../../../../bootstrap/css/bootstrap.min.css" rel="stylesheet">
+
+  <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+  <!-- <link href="../../assets/css/ie10-viewport-bug-workaround.css" rel="stylesheet"> -->
+
+  <!-- Custom styles for this template -->
+  <link href="../../../../css/blog.css" rel="stylesheet">
+  <link href="../../../../css/default.css" rel="stylesheet">
+
+  <!-- Extension : Footnotes -->
+  <link href="../../../../footnotes/css/footnotes.css" rel="stylesheet">
+
+  <!-- Extension : InlineDisqussions @ https://github.com/tsi/inlineDisqussions -->
+  
+
+  <!-- Extension : Collapsible lists @ http://code.stephenmorley.org/javascript/collapsible-lists/-->
+  <link href="../../../../collapsible_lists/css/collapsible.css" rel="stylesheet">
+  <script type="text/javascript" src="../../../../collapsible_lists/js/CollapsibleLists.js"></script>
+
+</head>
+
+<body>
+
+<!-- Navigation bar. navbar-inverse is black, navbar-default is white.-->
+<!-- To make a button active (pressed), use <li class="active"> -->
+<div id="header">
+  <nav class="navbar navbar-inverse navbar-fixed-top">
+    <div class="container">
+      <div class="navbar-header">
+        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+          <span class="sr-only">Toggle navigation</span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="../../../../">Notebook</a>
+      </div>
+      <div id="navbar" class="collapse navbar-collapse">
+        <ul class="nav navbar-nav">
+          <li><a href="../../../../">Home</a></li>
+          <li><a href="../../../../sitemap.html">Sitemap</a></li>
+<!-- TODO: Distinguish between PAPERS, RESEARCH QUESTIONS, BOOKS -->
+<!-- TODO: make this part a for loop over main pages -->
+        </ul>
+      </div><!--/.nav-collapse -->
+    </div>
+  </nav>
+</div>
+<!-- Content -->
+<!--div id="content">
+  <h1>Mental Wilderness</h1>-->
+
+
+
+<div class="container">
+  <div id="content">
+    <div class="page header">
+      <h1>Game theory and decision theory</h1>
+    </div>
+    <div class="info">
+      
+       
+        <p>Posted: 2017-02-12 
+          , Modified: 2017-02-12 
+	</p>
+      
+       <p>Tags: <a href="../../../../tags/ai%20safety.html">ai safety</a>, <a href="../../../../tags/game%20theory.html">game theory</a>, <a href="../../../../tags/decision%20theory.html">decision theory</a></p> 
+    </div>
+    
+  </div>
+  <!--/div-->
+
+  <div class="toc"> <ul>
+ <li><a href="#references">References</a><ul>
+ <li><a href="#online">Online</a></li>
+ <li><a href="#books">Books</a></li>
+ </ul></li>
+ <li><a href="#towards-idealized-decision-theory">Towards idealized decision theory</a><ul>
+ <li><a href="#problems-with-edt-cdt">Problems with EDT, CDT</a><ul>
+ <li><a href="#why-not-recursively-improve-from-edtcdt">Why not recursively improve from EDT/CDT?</a></li>
+ </ul></li>
+ <li><a href="#policy-selection">Policy selection</a></li>
+ <li><a href="#logical-counterfactuals">Logical counterfactuals</a><ul>
+ <li><a href="#graphical-udt.">Graphical UDT.</a></li>
+ <li><a href="#proof-based-udt">Proof-based UDT</a></li>
+ </ul></li>
+ </ul></li>
+ </ul> </div>
+
+  <div class="blog-main">
+    <h2 id="references">References</h2>
+<p>Papers on game theory/decision theory:</p>
+<ul>
+<li>Andrew Critch. 2017. “Toward Negotiable Reinforcement Learning: Shifting Priorities in Pareto Optimal Sequential Decision-Making.” <a href="https://arxiv.org/abs/1608.04112">arXiv:1701.01302</a> [cs.AI].</li>
+<li>Andrew Critch. 2016. “Parametric Bounded Lob’s Theorem and Robust Cooperation of Bounded Agents.” <a href="http://arxiv.org/abs/1602.04184">arXiv:1602.04184</a> [cs:GT].</li>
+<li>Jan Leike, Jessica Taylor, and Benya Fallenstein. 2016. “<a href="http://www.auai.org/uai2016/proceedings/papers/87.pdf">A Formal Solution to the Grain of Truth Problem</a>.” Paper presented at the 32nd Conference on Uncertainty in Artificial Intelligence.</li>
+<li>Benja Fallenstein, Jessica Taylor, and Paul Christiano. 2015. “Reflective Oracles: A Foundation for Classical Game Theory.” <a href="http://arxiv.org/abs/1508.04145">arXiv:1508.04145</a> [cs.AI]. Previously published as MIRI technical report 2015-7. Published in abridged form as “Reflective Oracles: A Foundation for Game Theory in Artificial Intelligence” in Proceedings of LORI 2015.</li>
+<li>Nate Soares and Benja Fallenstein. 2015. “Toward Idealized Decision Theory.” <a href="http://arxiv.org/abs/1507.01986">arXiv:1507.01986</a> [cs.AI]. Previously published as MIRI technical report 2014-7. Published in abridged form as “Two Attempts to Formalize Counterpossible Reasoning in Deterministic Settings” in Proceedings of AGI 2015.</li>
+<li>Mih’aly B’asr’asz, Paul Christiano, Benja Fallenstein, Marcello Herreshoff, Patrick LaVictoire, and Eliezer Yudkowsky. 2014. “Robust Cooperation on the Prisoner’s Dilemma: Program Equilibrium via Provability Logic.” <a href="http://arxiv.org/abs/1401.5577">arXiv:1401.5577</a> [cs.GT].</li>
+<li>Tsvi Benson-Tilsen. 2014. “UDT with Known Search Order.” <a href="https://intelligence.org/files/UDTSearchOrder.pdf">MIRI technical report 2014-4</a></li>
+<li>Patrick LaVictoire, Benja Fallenstein, Eliezer Yudkowsky, Mih’aly B’ar’asz, Paul Christiano and Marcello Herreshoff. 2014. “<a href="https://intelligence.org/files/ProgramEquilibrium.pdf">Program Equilibrium in the Prisoner’s Dilemma via Lob’s Theorem</a>.” Paper presented at the AAAI 2014 Multiagent Interaction without Prior Coordination Workshop.</li>
+<li>Benja Fallenstein. 2013. “<a href="https://intelligence.org/files/TilingAgents510.pdf">The 5-and-10 Problem and the Tiling Agents Formalism.</a>” MIRI technical report 2013-9.</li>
+<li><a href="https://intelligence.org/wp-content/uploads/2014/10/Hintze-Problem-Class-Dominance-In-Predictive-Dilemmas.pdf">Problem class dominance</a></li>
+</ul>
+<h3 id="online">Online</h3>
+<ul>
+<li>ADT</li>
+<li><a href="https://agentfoundations.org/item?id=1279">Entangled Equilibria and the Twin Prisoners’ Dilemma</a></li>
+<li><a href="http://lesswrong.com/lw/15m/towards_a_new_decision_theory/">UDT</a>
+<ul>
+<li><a href="https://dl.dropboxusercontent.com/u/34639481/Updateless_Decision_Theory.pdf">Formalization</a></li>
+</ul></li>
+<li><a href="https://intelligence.org/research-guide/#four">MIRI research guide</a></li>
+<li><a href="http://lesswrong.com/lw/gu1/decision_theory_faq/">Decision theory FAQ</a></li>
+<li><a href="http://lesswrong.com/lw/dbe/introduction_to_game_theory_sequence_guide/">Game thepory sequence</a></li>
+<li><a href="http://lesswrong.com/lw/eaa/a_model_of_udt_with_a_concrete_prior_over_logical/">UDT with concrete prior over logical statements</a></li>
+<li><a href="http://lesswrong.com/lw/b5t/an_example_of_selffulfilling_spurious_proofs_in/">Self-fulfilling spurious proofs</a></li>
+</ul>
+<h3 id="books">Books</h3>
+<ul>
+<li>Game theory, Steven Tadelis</li>
+<li>Algorithmic game theory, Tim Roughgarden <a href="http://theory.stanford.edu/~tim/books.html">page</a></li>
+</ul>
+<h2 id="towards-idealized-decision-theory">Towards idealized decision theory</h2>
+<p>But what are the available actions? And what are the counterfactual universes correspond- ing to what “would happen” if an action “were taken”?</p>
+<p>(A deterministic agent could only have taken one action.)</p>
+<p>To fully describe the problem faced by intelligent agents making decisions, it is necessary to provide an idealized procedure which takes a description of an environment and one of the agents within, and identifies the best action available to that agent</p>
+<h3 id="problems-with-edt-cdt">Problems with EDT, CDT</h3>
+<p>Evidential blackmail: AI researcher knows whether the AI will lose $150 mil from an investment (scandal). If either is true, the AI researcher sends the info and asks for $100 mil:</p>
+<ul>
+<li>No scandal, will pay</li>
+<li>Scandal, won’t pay</li>
+</ul>
+<p>Conditioned on refusing, loses $150 mil.</p>
+<p>Counterfactual blackmail: Developer has developed computer virus which would cause both to lose $150 mil. Once deployed, only way to prevent activation 1 day later is to wire $100 mil. Researcher would only deploy if quite sure agent will pay.</p>
+<h4 id="why-not-recursively-improve-from-edtcdt">Why not recursively improve from EDT/CDT?</h4>
+<p>CDT prescribes that an agent resist certain attempts to improve its decision procedures.</p>
+<p>Retro blackmail: AI researcher has access to original source code. Can self-modify after researcher acquires original source code but before researcher decides whether to deploy.</p>
+<p>Self-modify to not give in to demands.</p>
+<p>But CDT and any decision procedure to which CDT would self-modify would lose money.</p>
+<h3 id="policy-selection">Policy selection</h3>
+<p>CDT: Alas, the virus has been deployed. I would have preferred that the virus not be deployed, but since it has been, I must now decide whether or not to pay up. Paying up is bad, but refusing is worse, so I’ll pay up.</p>
+<p>Policy selection: The optimal policy is to refuse to pay up upon observing that the virus has been deployed. I now observe that the virus has been deployed. Therefore, I refuse to pay.</p>
+<h3 id="logical-counterfactuals">Logical counterfactuals</h3>
+<p>Consider Prisoner’s dilemma when</p>
+<ul>
+<li>opponent’s action guaranteed to match your own. (dependent)</li>
+<li>some probability <span class="math inline">\(p\)</span> opponent defects. (independent)</li>
+</ul>
+<p>However, CDT evaluates actions according to a physical counterfactual where the action is changed but everything causally separated from the action is held constant. It is not the physical output of the agent’s hardware which must be modified to construct a counterfactual, it is the logical output of the agent’s decision algorithm.</p>
+<p>Cf. <span class="math inline">\(10 \E a - a\)</span>.</p>
+<p>UDT chooses the best action according to a world-model which represents not only causal relationships in the world, but also the logical effects of algorithms upon the world.</p>
+<h4 id="graphical-udt.">Graphical UDT.</h4>
+<p>How to encode logical relations in graph? Underspecified: constructing graph is difficult. Graph for UDT further requires some ability to identify and separate “algorithms” from the physical processes that implement them. How is UDT supposed to recognize that the agent and its opponent implement the same algorithm?</p>
+<p>To illustrate, consider UDT identify- ing the best action available to an agent playing a Pris- oner’s Dilemma against an opponent that does exactly the same thing as the agent 80% of the time, and takes the opposite action otherwise.</p>
+<p>(Problem seems to be identifying what something is doing logically - it might be obfuscated. Also, graph loses info from algorithm.)</p>
+<h4 id="proof-based-udt">Proof-based UDT</h4>
+<p>Evaluate logical implications of the agent’s algorithm selecting the policy <span class="math inline">\(\pi\)</span>.</p>
+<p>Graph is unnecessary: the environment itself is an algorithm.</p>
+<p>evaluates policies by searching for formal proofs, using some mathematical theory such as Peano Arithmetic (PA), of how much utility is attained in the world-model if A() selects the policy <span class="math inline">\(\pi\)</span>.</p>
+<p>But: requires halting oracle. can only identify the best policy if there exists a proof that ex- ecuting that policy leads to a good outcome</p>
+<p>Problem in stochastic environments (? if can model prior, seems ok)</p>
+<p>Ex. agent uses UDT, play game with human. If numbers written sum to <span class="math inline">\(\$10\)</span>, each paid, else 0.</p>
+<p>UDT misidentifies best policy:</p>
+<p>Human: I don’t quite know how UDT works, but I remember hearing that it’s a very powerful predictor. So if I decide to write down 9, then it will predict this, and it will decide to write 1. Therefore, I can write down 9 without fear.</p>
+<p>But agent with superior predictive power loses to the dumber agent! Human’s lack of power to predict UDT gives an advantage!</p>
+<p>Problem: not guaranteed to work. As soon as proof-based UDT proves that an agent will not take a certain policy, it concludes that taking that policy leads to the best possible outcome (because from a contradiction, anything follows).</p>
+<p>(I don’t get this…) <span class="math display">\[
+A() = UDT(\ce{E()}, \ce{A()}).
+\]</span></p>
+<p>(What is an embedding of an agent?)</p>
+
+  </div>
+
+    
+
+    <!-- Extension : Sharing buttons @ www.sharethis.com -->
+    <span class="st_facebook_large" displayText="Facebook"></span>
+    <span class="st_twitter_large" displayText="Tweet"></span>
+    <span class="st_googleplus_large" displayText="Google +"></span>
+    <span class="st_reddit_large" displayText="Reddit"></span>
+    <span class="st__large" displayText></span>
+
+    <div id="disqus_thread"></div>
+    
+
+
+  
+    <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+  </div>
+  
+</div>
+
+
+<!-- Footer -->
+<div id="footer">
+  <div class="container">
+    Built with
+    <a href="http://jaspervdj.be/hakyll">Hakyll</a> 
+    using 
+    <a href="http://www.getbootstrap.com">Bootstrap</a>, 
+    <a href="http://www.disqus.com">Disqus</a>,
+    <a href="http://ignorethecode.net/blog/2010/04/20/footnotes/">Footnotes.js</a>,
+    <a href="http://highlightjs.org/">Highlight.js</a>, 
+    <a href="http://www.mathjax.org">MathJax</a>, 
+    and <a href="http://www.sharethis.com">ShareThis</a>.
+  </div>
+</div>
+</body>
+
+</html>
+
+<!-- SCRIPTS -->
+<!-- jQuery-->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+<script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
+
+<script src="../../../../bootstrap/js/bootstrap.min.js"></script>
+
+<!-- Extension : Highlight.js @ https://highlightjs.org/ -->
+<!-- Syntax highlighting tomorrow-night-bright, agate-->
+<link rel="stylesheet" href="../../../../highlight/css/tomorrow-night-bright.css">
+<script src="../../../../highlight/js/highlight.pack.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+
+<!-- Extension : MathJax @ https://docs.mathjax.org/en/v2.5-latest/tex.html -->
+<!-- MathJax/config/local/local.js contains macros. Need to provide entire URL-->
+<script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML,http://holdenlee.github.io/notebook/MathJax/config/local/local"></script>
+
+<!-- Extension : Footnotes @ http://ignorethecode.net/blog/2010/04/20/footnotes/ -->
+<script src="../../../../footnotes/js/footnotes.js"></script>
+
+<!-- Extension : Disqus @ http://disqus.com -->
+<!-- Extension : InlineDisqussions @ https://github.com/tsi/inlineDisqussions -->
+
+<script src="../../../../disqus/js/disqus.js"></script>
+
+
+
+<!-- Extension : Google Analytics -->
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-73261814-1', 'auto');
+  ga('send', 'pageview');
+
+</script>
+
