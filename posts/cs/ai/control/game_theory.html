@@ -100,6 +100,18 @@
  <li><a href="#proof-based-udt">Proof-based UDT</a></li>
  </ul></li>
  </ul></li>
+ <li><a href="#lobs-theorem-in-miri-research">Lob’s Theorem in MIRI Research</a><ul>
+ <li><a href="#lob">Lob</a></li>
+ <li><a href="#applications">Applications</a><ul>
+ <li><a href="#lobstacle">Lobstacle</a></li>
+ <li><a href="#lobian-cooperation">Lobian cooperation</a></li>
+ <li><a href="#spurious-counterfactuals">3.3 Spurious counterfactuals</a></li>
+ </ul></li>
+ <li><a href="#model-theory">Model theory</a></li>
+ <li><a href="#godel-lob-modal-logic">Godel-Lob Modal Logic</a></li>
+ <li><a href="#fixed-points-of-modal-statements">Fixed points of modal statements</a></li>
+ <li><a href="#applications-of-gl-modal-logic">Applications of GL modal logic</a></li>
+ </ul></li>
  </ul> </div>
 
   <div class="blog-main">
@@ -130,11 +142,13 @@
 <li><a href="http://lesswrong.com/lw/dbe/introduction_to_game_theory_sequence_guide/">Game thepory sequence</a></li>
 <li><a href="http://lesswrong.com/lw/eaa/a_model_of_udt_with_a_concrete_prior_over_logical/">UDT with concrete prior over logical statements</a></li>
 <li><a href="http://lesswrong.com/lw/b5t/an_example_of_selffulfilling_spurious_proofs_in/">Self-fulfilling spurious proofs</a></li>
+<li><a href="https://agentfoundations.org/item?id=160">Forum digest</a></li>
 </ul>
 <h3 id="books">Books</h3>
 <ul>
 <li>Game theory, Steven Tadelis</li>
 <li>Algorithmic game theory, Tim Roughgarden <a href="http://theory.stanford.edu/~tim/books.html">page</a></li>
+<li>Computability and Logic by Boolos, Burgess, and Jeffrey</li>
 </ul>
 <h2 id="towards-idealized-decision-theory">Towards idealized decision theory</h2>
 <p>But what are the available actions? And what are the counterfactual universes correspond- ing to what “would happen” if an action “were taken”?</p>
@@ -184,6 +198,86 @@
 A() = UDT(\ce{E()}, \ce{A()}).
 \]</span></p>
 <p>(What is an embedding of an agent?)</p>
+<h2 id="lobs-theorem-in-miri-research">Lob’s Theorem in MIRI Research</h2>
+<p>Why Lob? The short answer is that this theorem illustrates the basickind of self-reference involved when an algorithm considers its own output as part of theuniverse, and it is thus germane to many kinds of research involving self-modifying agents,especially when formal verification is involved or when we want to cleanly prove things inmodel problems.</p>
+<p>Problem: How can Deep Thought 1.0 build Deep Thought 2.0 with guarantee of good consequences?</p>
+<p>DT1 can’t actually figure out what actions DT2 is going to take. Naively, it seems as if it should be enough for DT1 toknow that DT2 has the same goals as DT1, that DT2’s deductions are reliable, and that DT2 only takes actions that it deduces to have good consequences on balance.</p>
+<p>If we tryand model DT1 and DT2 as proving statements in two formal systems (one stronger thanthe other), then the only way that DT1 can make such a statement about DT2’s reliability is if DT1 (and thus both) are in fact unreliable!</p>
+<h3 id="lob">Lob</h3>
+<p>One (anachronistic) way of stating Godel’s key insight is that you can use computer pro-grams to search for proofs, and you can prove statements about computer programs</p>
+<p>This makes it more intuitive that we can embed self-reference in mathematics, because we can embed self-reference in computer code!</p>
+<p>Quines: programs can be made which perform arbitrary tasks using their own source code we can have a program G which refers to itself in this way, and searches for proofs inarithmetic related to its own source code.</p>
+<p>G searches for a proof of “G runs forever”. G never finds a proof, but we can never prove that G runs forever.</p>
+<p>We can add “G never halts” or “G halts” as a new axiom.</p>
+<p><strong>First incompleteness</strong>. If the theory of arithmetic is consistent, then there exist undecidable statements in the theory of arithmetic.</p>
+<p>Lob’s Theorem:</p>
+<ul>
+<li><span class="math inline">\(X\)</span> logical statement</li>
+<li>ProofSeeker(X) searches for proofs of <span class="math inline">\(X\)</span>.</li>
+<li><span class="math inline">\(L(X)=\)</span>“if ProofSeeker(X) halts, then X”</li>
+</ul>
+<p>Intuition: if <span class="math inline">\(L(X)\)</span> were provable for every <span class="math inline">\(X\)</span>, you can prove consistency.</p>
+<ol type="1">
+<li>If <span class="math inline">\(X\)</span> is provable, ProofSeeker(X) halts, and <span class="math inline">\(L(X)\)</span> is true.</li>
+<li>If <span class="math inline">\(X\)</span> is disprovable, then ProofSeeker(X) does not halt, but you can’t prove it—because that would be like proving consistency! (cf. second inconsistency. Lob implies 2nd inconsistency.)</li>
+<li>If <span class="math inline">\(X\)</span> is neither provable nor disprovable, then does not halt. (Also can’t prove it.)</li>
+</ol>
+<p>Also a finite version of Lob’s theorem, controls length of proof of <span class="math inline">\(\phi\)</span> in terms of <span class="math inline">\(\square \phi\to \phi\)</span>.</p>
+<h3 id="applications">Applications</h3>
+<h4 id="lobstacle">Lobstacle</h4>
+<p>DT1 trusts DT2: if the action is deduced to be good, then it must actually be good.</p>
+<p>(It can’t even trust itself?)</p>
+<p>a simple agent with a utility function will only create successors whose formal systems are strictly weaker thanits own, since only those are fully trusted by the current system.</p>
+<p>References: Tiling Agents for Self-Modifying AI, and the Lobian Obstacle [18] and Problems of self-reference in self-improving space-time embedded intelligence [9].</p>
+<h4 id="lobian-cooperation">Lobian cooperation</h4>
+<p>algorithm and theirs get to read the opponent’s source code, calculate for as long as they like, and then play only once.</p>
+<p>Cooperate iff source code identical: fragile.</p>
+<p>FairBot: search through all proofs of length <span class="math inline">\(\le N\)</span> to see if valid proofs of <span class="math inline">\(X(FairBot)=C\)</span>. If yes, output <span class="math inline">\(C\)</span>.</p>
+<p>Intuitively, it seems like both mutual cooperation and mutual defection are stable fixed points of the situation. However, a Lobian statement breaks the deadlock in favor of cooperation!</p>
+<p>Proof: L(“FairBot(FairBot)=C”) follows. By Lob, there must be a proof of FairBot(FairBot=C). (! This is a case where Lob actually helps prove something!)</p>
+<p>See Program Equilibrium in the Prisoner’s Dilemma via Lob’s Theorem.</p>
+<h4 id="spurious-counterfactuals">3.3 Spurious counterfactuals</h4>
+<p>Note on model:</p>
+<ul>
+<li>If universe was computable (with agent’s resources) and extensionally fair, then the problem is simple: A simply selects the function that maximizes its expected utility. (Suppose A has a time limit it must halt by.)</li>
+<li>Problem: Nesting - what if they keep calling one another? (I think this is not an issue if you enforce time limit.)</li>
+<li>Problem: It doesn’t make sense for agent to have enough computing power to simulate the universe. In general we want to allow the universe to have more computing power. “Agent simulates universe” is not the shape of things we want.</li>
+<li>Problem: May examine source code.</li>
+</ul>
+<p>When agent and universe are quined, you can’t “run the universe” on <span class="math inline">\(A\)</span> or <span class="math inline">\(A'\)</span>. You search for proofs of <span class="math inline">\(A()=x\to U()=c\)</span>. Problem: ordering matters. If you prove <span class="math inline">\(x\)</span> is better you choose <span class="math inline">\(x\)</span>, even though it could be worse, because <span class="math inline">\(A()=\neg x\to U()=c\)</span> is true for any <span class="math inline">\(c\)</span>.</p>
+<p>(Why can’t extensional work? Search for proofs in universe quined with <span class="math inline">\(A'\)</span>, then choose <span class="math inline">\(A'\)</span>.)</p>
+<p>careful ordering of which proofs it pays attention to, and that agent can be shown to make thecorrect decisions (given enough deductive power). The idea was originally due to Benja Fal-lenstein; Tsvi Benson-Tilson’s paper UDT with Known Search Order</p>
+<h3 id="model-theory">Model theory</h3>
+<p>the same theory can have many models, some of them not at all what you were thinking of when you made the axioms. Notes: to get Peano Arithmetic need</p>
+<ul>
+<li><span class="math inline">\(\forall x\in \N, Sx\ne O\)</span> to avoid mod <span class="math inline">\(n\)</span>.</li>
+<li>But what about <span class="math inline">\(\N\cup \{\text{Bob}\}\)</span>? In order to express induction in the language (which doesn’t have variables for properties, only for numbers), we must resort to an infinite family of new axioms.</li>
+</ul>
+<p>There are models of Peano arithmetic where G holds, and other models where G fails to hold. In Robinson arithmetic “Bob” might satisfy the formula G is checking. In PA nonstandard models are weirder.</p>
+<p>The key to understanding these is that G never halts at any finite number, but we can’t actually define in our formal language what “finite” means. Thenonstandard models of Peano Arithmetic are those which have all the usual numbers butalso lots of extra numbers that are “too large” to ever be written as lots of S’s followed by an O, but which nonetheless are swept along in any inductive statement.</p>
+<p>Remark: nonstandard analysis</p>
+<p>Ponder for a moment the formal system which has all the axioms of PA, plus the axiom that PA is consistent, plus the axiom that “the systemwhich has all the axioms of PA, plus the axiom that PA is consistent” is inconsistent. As it turns out, this is a perfectly consistent system (What happens if you take the recursively axiomatizable “consistency<span class="math inline">\({}^n\)</span>, <span class="math inline">\(n\in \N\)</span>?)</p>
+<p>We might want to endorse some particular model as the “true” one (for instance, our standard model of the natural numbers, without all of those weird nonstandard numbers), and say that logical statements are true if they hold in that model and false if they don’t. This truth predicate exists outside the language, and so the logical statements can’t talk about the truth predicate, only about weaker notions like provability.</p>
+<p>The trouble comes when we try to construct a language that contains its own truth predicate such that <span class="math inline">\(T(\phi)\lra \phi\)</span>. <span class="math inline">\(T(X)\lra T(\neg X)\)</span>.</p>
+<p>if P isn’t allowed to make exact statements about its own values, but only arbitrarily precise approximations, then everything can work out consistently.</p>
+<p>P can’t rule out the possibility that reciprocals of nonstandard natural numbers (infinitesimals) exist.</p>
+<p>followup paper by Christiano on computationally tractable approxima-tions of probabilistic logic: Non-Omniscience, Probabilistic Inference, and Metamathematics</p>
+<h3 id="godel-lob-modal-logic">Godel-Lob Modal Logic</h3>
+<p>We’re interested in a particular modal logic that constitutes a reflection of Lobian phenomena in PA, etc.</p>
+<p>GL axiom: <span class="math inline">\(\square (\square A \to A)\to \square A\)</span>.</p>
+<p>(What about things like <span class="math inline">\(\forall x, \square P(x)\)</span>?)</p>
+<p>some special cases where there are efficient algorithms for deducing provability in GL.</p>
+<h3 id="fixed-points-of-modal-statements">Fixed points of modal statements</h3>
+<p>All sorts of formulas that refer to themselves and each other by quining. Formulas <span class="math inline">\(p\lra \phi(p,q_1,\ldots, q_k)\)</span> modalized in <span class="math inline">\(p\)</span>: every <span class="math inline">\(p\)</span> in <span class="math inline">\(\phi\)</span> is in scope of some <span class="math inline">\(\square\)</span>.</p>
+<p>When <span class="math inline">\(p\)</span> equivalent to formula modalized in <span class="math inline">\(p\)</span>, then <span class="math inline">\(p\)</span> is equivalent to something which doesn’t use <span class="math inline">\(p\)</span>. Godel statement <span class="math inline">\(\lra\)</span> inconsistency of arithmetic <span class="math inline">\(\square (p\lra \square \neg p) \lra \square (p\lra \square \perp)\)</span>.</p>
+<p>formula is provable in the modal logic if and only if a corresponding property holds for every Kripke frame in that class.</p>
+<h3 id="applications-of-gl-modal-logic">Applications of GL modal logic</h3>
+<p>Robust Cooperation in the Prisoner’s Dilemma: Program Equilibrium via Provability Logic.</p>
+<p>One embarrassing thing about FairBot is that it doesn’t check whether its potential cooperation would actually make any difference. (ex. it cooperates against a rock.)</p>
+<p>Ex. PrudentBot</p>
+<p>if we assume infinite computational power (i.e. the ability to consult a halting oracle about proof searches in Peano Arithmetic), then they can be written out as simple statements in modal logic</p>
+<p>Find what happens using efficient algorithm!</p>
+<p>Modal agents of rank 0: <span class="math inline">\(p\lra \phi(p,q)\)</span>, modalized in both <span class="math inline">\(p\)</span> and <span class="math inline">\(q\)</span> (don’t run, only prove). Equivalent to something <span class="math inline">\(p\lra \phi(q)\)</span>.</p>
 
   </div>
 
