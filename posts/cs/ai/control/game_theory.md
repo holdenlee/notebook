@@ -33,11 +33,13 @@ Papers on game theory/decision theory:
 * [Game thepory sequence](http://lesswrong.com/lw/dbe/introduction_to_game_theory_sequence_guide/)
 * [UDT with concrete prior over logical statements](http://lesswrong.com/lw/eaa/a_model_of_udt_with_a_concrete_prior_over_logical/)
 * [Self-fulfilling spurious proofs](http://lesswrong.com/lw/b5t/an_example_of_selffulfilling_spurious_proofs_in/)
+* [Forum digest](https://agentfoundations.org/item?id=160)
 
 ## Books
 
 * Game theory, Steven Tadelis
 * Algorithmic game theory, Tim Roughgarden [page](http://theory.stanford.edu/~tim/books.html)
+*  Computability and Logic by Boolos, Burgess, and Jeffrey
 
 # Towards idealized decision theory
 
@@ -153,3 +155,139 @@ A() = UDT(\ce{E()}, \ce{A()}).
 $$
 
 (What is an embedding of an agent?)
+
+# Lob's Theorem in MIRI Research
+
+Why Lob? The short answer is that this theorem illustrates the basickind of self-reference involved when an algorithm considers its own output as part of theuniverse, and it is thus germane to many kinds of research involving self-modifying agents,especially when formal verification is involved or when we want to cleanly prove things inmodel problems.
+
+Problem: How can Deep Thought 1.0 build Deep Thought 2.0 with guarantee of good consequences?
+
+ DT1 can't actually figure out what actions DT2 is going to take. Naively, it seems as if it should be enough for DT1 toknow that DT2 has the same goals as DT1, that DT2's deductions are reliable, and that DT2 only takes actions that it deduces to have good consequences on balance.
+
+If we tryand model DT1 and DT2 as proving statements in two formal systems (one stronger thanthe other), then the only way that DT1 can make such a statement about DT2's reliability is if DT1 (and thus both) are in fact unreliable!
+
+## Lob
+
+One (anachronistic) way of stating Godel's key insight is that you can use computer pro-grams to search for proofs, and you can prove statements about computer programs
+
+This makes it more intuitive that we can embed self-reference in mathematics, because we can embed self-reference in computer code!
+
+Quines: programs can be made which perform arbitrary tasks using their own source code we can have a program G which refers to itself in this way, and searches for proofs inarithmetic related to its own source code.
+
+G searches for a proof of "G runs forever". G never finds a proof, but we can never prove that G runs forever.
+
+We can add "G never halts" or "G halts" as a new axiom.
+
+**First incompleteness**.  If the theory of arithmetic is consistent, then there exist undecidable statements in the theory of arithmetic.
+
+Lob's Theorem:
+
+* $X$ logical statement
+* ProofSeeker(X) searches for proofs of $X$.
+* $L(X)=$"if ProofSeeker(X) halts, then X"
+
+Intuition: if $L(X)$ were provable for every $X$, you can prove consistency.
+
+1. If $X$ is provable, ProofSeeker(X) halts, and $L(X)$ is true.
+2. If $X$ is disprovable, then ProofSeeker(X) does not halt, but you can't prove it---because that would be like proving consistency! (cf. second inconsistency. Lob implies 2nd inconsistency.)
+3. If $X$ is neither provable nor disprovable, then does not halt. (Also can't prove it.)
+
+Also a finite version of Lob's theorem, controls length of proof of $\phi$ in terms of $\square \phi\to \phi$.
+
+## Applications
+
+### Lobstacle
+
+DT1 trusts DT2: if the action is deduced to be good, then it must actually be good.
+
+(It can't even trust itself?)
+
+a simple agent with a utility function will only create successors whose formal systems are strictly weaker thanits own, since only those are fully trusted by the current system.
+
+References:  Tiling Agents for Self-Modifying AI, and the Lobian Obstacle [18] and Problems of self-reference in self-improving space-time embedded intelligence [9].
+
+### Lobian cooperation
+
+algorithm and theirs get to read the opponent's source code, calculate for as long as they like, and then play only once.
+
+Cooperate iff source code identical: fragile.
+
+FairBot: search through all proofs of length $\le N$ to see if valid proofs of $X(FairBot)=C$. If yes, output $C$.
+
+Intuitively, it seems like both mutual cooperation and mutual defection are stable fixed points of the situation. However, a Lobian statement breaks the deadlock in favor of cooperation!
+
+Proof: L("FairBot(FairBot)=C") follows. By Lob, there must be a proof of FairBot(FairBot=C). (! This is a case where Lob actually helps prove something!)
+
+See Program Equilibrium in the Prisoner's Dilemma via Lob's Theorem.
+
+### 3.3 Spurious counterfactuals
+
+Note on model:
+
+* If universe was computable (with agent's resources) and extensionally fair, then the problem is simple: A simply selects the function that maximizes its expected utility. (Suppose A has a time limit it must halt by.)
+* Problem: Nesting - what if they keep calling one another? (I think this is not an issue if you enforce time limit.)
+* Problem: It doesn't make sense for agent to have enough computing power to simulate the universe. In general we want to allow the universe to have more computing power. "Agent simulates universe" is not the shape of things we want.
+* Problem: May examine source code.
+
+When agent and universe are quined, you can't "run the universe" on $A$ or $A'$. You search for proofs of $A()=x\to U()=c$. Problem: ordering matters. If you prove $x$ is better you choose $x$, even though it could be worse, because $A()=\neg x\to U()=c$ is true for any $c$.
+
+(Why can't extensional work? Search for proofs in universe quined with $A'$, then choose $A'$.)
+
+careful ordering of which proofs it pays attention to, and that agent can be shown to make thecorrect decisions (given enough deductive power). The idea was originally due to Benja Fal-lenstein; Tsvi Benson-Tilson's paper UDT with Known Search Order 
+
+## Model theory
+
+the same theory can have many models, some of them not at all what you were thinking of when you made the axioms. Notes: to get Peano Arithmetic need
+
+* $\forall x\in \N, Sx\ne O$ to avoid mod $n$.
+* But what about $\N\cup \{\text{Bob}\}$? In order to express induction in the language (which doesn't have variables for properties, only for numbers), we must resort to an infinite family of new axioms. 
+
+ There are models of Peano arithmetic where G holds, and other models where G fails to hold. In Robinson arithmetic "Bob" might satisfy the formula G is checking. In PA nonstandard models are weirder.
+ 
+The key to understanding these is that G never halts at any finite number, but we can't actually define in our formal language what "finite" means. Thenonstandard models of Peano Arithmetic are those which have all the usual numbers butalso lots of extra numbers that are "too large" to ever be written as lots of S's followed by an O, but which nonetheless are swept along in any inductive statement.
+
+Remark: nonstandard analysis
+
+Ponder for a moment the formal system which has all the axioms of PA, plus the axiom that PA is consistent, plus the axiom that "the systemwhich has all the axioms of PA, plus the axiom that PA is consistent" is inconsistent. As it turns out, this is a perfectly consistent system (What happens if you take the recursively axiomatizable "consistency${}^n$, $n\in \N$?)
+
+We might want to endorse some particular model as the "true" one (for instance, our standard model of the natural numbers, without all of those weird nonstandard numbers), and say that logical statements are true if they hold in that model and false if they don't. This truth predicate exists outside the language, and so the logical statements can't talk about the truth predicate, only about weaker notions like provability.
+
+The trouble comes when we try to construct a language that contains its own truth predicate such that $T(\phi)\lra \phi$. $T(X)\lra T(\neg X)$.
+
+if P isn't allowed to make exact statements about its own values, but only arbitrarily precise approximations, then everything can work out consistently.
+
+P can't rule out the possibility that reciprocals of nonstandard natural numbers (infinitesimals) exist.
+
+followup paper by Christiano on computationally tractable approxima-tions of probabilistic logic: Non-Omniscience, Probabilistic Inference, and Metamathematics
+
+## Godel-Lob Modal Logic
+
+We're interested in a particular modal logic that constitutes a reflection of Lobian phenomena in PA, etc.
+
+GL axiom: $\square (\square A \to A)\to \square A$.
+
+(What about things like $\forall x, \square P(x)$?)
+
+some special cases where there are efficient algorithms for deducing provability in GL.
+
+## Fixed points of modal statements
+
+All sorts of formulas that refer to themselves and each other by quining. Formulas $p\lra \phi(p,q_1,\ldots, q_k)$ modalized in $p$: every $p$ in $\phi$ is in scope of some $\square$.
+
+When $p$ equivalent to formula modalized in $p$, then $p$ is equivalent to something which doesn't use $p$. Godel statement $\lra$ inconsistency of arithmetic $\square (p\lra \square \neg p) \lra \square (p\lra \square \perp)$.
+
+ formula is provable in the modal logic if and only if a corresponding property holds for every Kripke frame in that class.
+
+## Applications of GL modal logic
+
+ Robust Cooperation in the Prisoner's Dilemma: Program Equilibrium via Provability Logic.
+ 
+ One embarrassing thing about FairBot is that it doesn't check whether its potential cooperation would actually make any difference. (ex. it cooperates against a rock.)
+ 
+ Ex. PrudentBot
+ 
+ if we assume infinite computational power (i.e. the ability to consult a halting oracle about proof searches in Peano Arithmetic), then they can be written out as simple statements in modal logic
+
+Find what happens using efficient algorithm!
+
+Modal agents of rank 0: $p\lra \phi(p,q)$, modalized in both $p$ and $q$ (don't run, only prove). Equivalent to something $p\lra \phi(q)$.
