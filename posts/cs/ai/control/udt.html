@@ -10,7 +10,7 @@
   <meta name="description" content="Holden Lee's Research Notebook">
   <meta name="author" content="Holden Lee">
     
-  <title>Posts in category "cs/ai/control"</title>
+  <title>UDT</title>
 
   <!-- Bootstrap core CSS -->
   <link href="../../../../bootstrap/css/bootstrap.min.css" rel="stylesheet">
@@ -70,71 +70,65 @@
 <div class="container">
   <div id="content">
     <div class="page header">
-      <h1>Posts in category "cs/ai/control"</h1>
+      <h1>UDT</h1>
     </div>
     <div class="info">
       
+       
+        <p>Posted: 2017-02-19 
+          , Modified: 2017-02-19 
+	</p>
       
-      
+       <p>Tags: <a href="../../../../tags/ai%20safety.html">ai safety</a>, <a href="../../../../tags/game%20theory.html">game theory</a>, <a href="../../../../tags/decision%20theory.html">decision theory</a></p> 
     </div>
     
   </div>
   <!--/div-->
 
-  
+  <div class="toc"></div>
 
   <div class="blog-main">
-    <ul>
-    
-        <li>
-            <a href="../../../../posts/cs/ai/control/udt.html">UDT</a> (2017-02-19)
-        </li>
-    
-        <li>
-            <a href="../../../../posts/cs/ai/control/game_theory.html">Game theory and decision theory</a> (2017-02-12)
-        </li>
-    
-        <li>
-            <a href="../../../../posts/cs/ai/control/logical_induction.html">Logical induction</a> (2017-02-01)
-        </li>
-    
-        <li>
-            <a href="../../../../posts/cs/ai/control/concrete.html">Concrete problems in AI safety</a> (2017-02-01)
-        </li>
-    
-        <li>
-            <a href="../../../../posts/cs/ai/control/alignment_ml.html">Alignment for advanced machine learning systems</a> (2017-02-01)
-        </li>
-    
-        <li>
-            <a href="../../../../posts/cs/ai/control/truth_in_prob_logic.html">(CYHB13) Definability of Truth in Probabilistic Logic</a> (2016-08-19)
-        </li>
-    
-        <li>
-            <a href="../../../../posts/cs/ai/control/technical_agenda.html">Technical agenda</a> (2016-08-19)
-        </li>
-    
-        <li>
-            <a href="../../../../posts/cs/ai/control/logical_uncertainty.html">(SF15) Questions of reasoning under logical uncertainty</a> (2016-08-19)
-        </li>
-    
-        <li>
-            <a href="../../../../posts/cs/ai/control/lobs_theorem.html">Lob's Theorem</a> (2016-08-19)
-        </li>
-    
-        <li>
-            <a href="../../../../posts/cs/ai/control/refs.html">AI Control References</a> (2016-02-27)
-        </li>
-    
+    <p>Main notes <a href="game_theory.html">here</a>.</p>
+<ul>
+<li>It seems we don’t need to quine - we can just view A, U as functions of each other’s source codes. Just impose some halting criterion. Then just evaluate <span class="math inline">\(U(\ce{A})\)</span>… Oh, but how does U give A its own code?
+<ul>
+<li>External program runs them? I don’t like this.</li>
+<li>I don’t like co-quining them because then I feel I lose the algorithmic interpretability - now I don’t feel like they’re programs anymore. For some reason I’m having trouble thinking about quines in terms of programs, I can think about them in terms of logic statements.</li>
+<li>I think the programs should handle the quining themselves. Ah. If U doesn’t quine itself, it has no way of running A with its own source code. So U is a quine in the sense that it can give A its own source code. This solves things. Otherwise, U would not be able to run A. A also has incentive to quine itself, otherwise it cannot simulate U on A, or prove statements about itself.</li>
+<li>Can a non-quined program be taken advantage of?</li>
+<li>Wait, but writing the code I didn’t do any quining!</li>
+<li>Oh, you can just assume U, A can run themselves. You assume they’re quined for convenience in reasoning about them, but you don’t actually need them to be quined themselves.</li>
+<li>Quining is just the way in logic to get access to own source code - in programming you don’t need to do it explicitly because the source code is in the file.</li>
+<li>Do you need to quine for corecursion?</li>
+<li>I don’t think any of this is important–they’re all basically taken care of by the programming language.</li>
+<li>! You can’t separate what the agent does from who it is: ex. why you can’t just feed all possible functions into something else, then let yourself be the best function. The other agent would act differently against that function vs. against you. Ex. playing against PrudentBot, PrudentBot defects against both <code>const c</code> and <code>const d</code>, if these are the only things you’re trying, you’ll just defect!</li>
+<li>For U/A say the agent has fixed runtime, the universe has finite runtime (alternatively it can rely on the truth of logical statements). For A/A say both have fixed (large) runtime.</li>
+</ul></li>
+<li>What if we want U to have access to some oracle? How can we ensure that we can actually prove the output of U? Can this be made equivalent to the condition that U halts?</li>
+<li>Is there a way to implement these agents without having them search for proofs? Ex. do “lazy evaluation?” I don’t see a way to do this.</li>
+<li>If <code>fairBot x = (if x coopBot == c then c else d)</code> then</li>
+<li>I want to say something like, there’s a sequence Bot1, Bot2,… with longer lookbacks, and Bot-k outperforms Bot-(k-1) by “pretending” to be something that Bot-(k-1) will cooperate with and then stabbing it in the back… this seems to be going the other way.</li>
+<li>Why do we keep talking about “embedded” agents?</li>
 </ul>
-
-
 
   </div>
 
     
 
+    <!-- Extension : Sharing buttons @ www.sharethis.com -->
+    <span class="st_facebook_large" displayText="Facebook"></span>
+    <span class="st_twitter_large" displayText="Tweet"></span>
+    <span class="st_googleplus_large" displayText="Google +"></span>
+    <span class="st_reddit_large" displayText="Reddit"></span>
+    <span class="st__large" displayText></span>
 
+    <div id="disqus_thread"></div>
+    
+
+
+  
+    <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+  </div>
   
 </div>
 
@@ -179,6 +173,9 @@
 
 <!-- Extension : Disqus @ http://disqus.com -->
 <!-- Extension : InlineDisqussions @ https://github.com/tsi/inlineDisqussions -->
+
+<script src="../../../../disqus/js/disqus.js"></script>
+
 
 
 <!-- Extension : Google Analytics -->
