@@ -34,6 +34,10 @@ Papers on game theory/decision theory:
 * [UDT with concrete prior over logical statements](http://lesswrong.com/lw/eaa/a_model_of_udt_with_a_concrete_prior_over_logical/)
 * [Self-fulfilling spurious proofs](http://lesswrong.com/lw/b5t/an_example_of_selffulfilling_spurious_proofs_in/)
 * [Forum digest](https://agentfoundations.org/item?id=160)
+* [UDT in the land of probabilistic oracles](https://agentfoundations.org/item?id=117)
+* [Using modal fixed points to formalize logical causality](https://agentfoundations.org/item?id=4) [h](http://scrible.com/s/2DR66)
+* [Evil decision problems](https://agentfoundations.org/item?id=47) [h](http://scrible.com/s/2LB66)
+* [Are daemons a problem for ideal agents?](https://agentfoundations.org/item?id=1281) (a.k.a. the rocket problem)
 
 ## Books
 
@@ -291,3 +295,9 @@ When $p$ equivalent to formula modalized in $p$, then $p$ is equivalent to somet
 Find what happens using efficient algorithm!
 
 Modal agents of rank 0: $p\lra \phi(p,q)$, modalized in both $p$ and $q$ (don't run, only prove). Equivalent to something $p\lra \phi(q)$.
+
+# Reflective oracles as foundation
+
+# Reflective oracles and Solomonoff induction
+
+[AIXI](https://en.wikipedia.org/wiki/AIXI)

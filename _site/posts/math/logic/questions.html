@@ -10,27 +10,27 @@
   <meta name="description" content="Holden Lee's Research Notebook">
   <meta name="author" content="Holden Lee">
     
-  <title>Posts tagged "ai safety"</title>
+  <title>Questions</title>
 
   <!-- Bootstrap core CSS -->
-  <link href="../bootstrap/css/bootstrap.min.css" rel="stylesheet">
+  <link href="../../../bootstrap/css/bootstrap.min.css" rel="stylesheet">
 
   <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
   <!-- <link href="../../assets/css/ie10-viewport-bug-workaround.css" rel="stylesheet"> -->
 
   <!-- Custom styles for this template -->
-  <link href="../css/blog.css" rel="stylesheet">
-  <link href="../css/default.css" rel="stylesheet">
+  <link href="../../../css/blog.css" rel="stylesheet">
+  <link href="../../../css/default.css" rel="stylesheet">
 
   <!-- Extension : Footnotes -->
-  <link href="../footnotes/css/footnotes.css" rel="stylesheet">
+  <link href="../../../footnotes/css/footnotes.css" rel="stylesheet">
 
   <!-- Extension : InlineDisqussions @ https://github.com/tsi/inlineDisqussions -->
   
 
   <!-- Extension : Collapsible lists @ http://code.stephenmorley.org/javascript/collapsible-lists/-->
-  <link href="../collapsible_lists/css/collapsible.css" rel="stylesheet">
-  <script type="text/javascript" src="../collapsible_lists/js/CollapsibleLists.js"></script>
+  <link href="../../../collapsible_lists/css/collapsible.css" rel="stylesheet">
+  <script type="text/javascript" src="../../../collapsible_lists/js/CollapsibleLists.js"></script>
 
 </head>
 
@@ -48,12 +48,12 @@
           <span class="icon-bar"></span>
           <span class="icon-bar"></span>
         </button>
-        <a class="navbar-brand" href="../">Notebook</a>
+        <a class="navbar-brand" href="../../../">Notebook</a>
       </div>
       <div id="navbar" class="collapse navbar-collapse">
         <ul class="nav navbar-nav">
-          <li><a href="../">Home</a></li>
-          <li><a href="../sitemap.html">Sitemap</a></li>
+          <li><a href="../../../">Home</a></li>
+          <li><a href="../../../sitemap.html">Sitemap</a></li>
 <!-- TODO: Distinguish between PAPERS, RESEARCH QUESTIONS, BOOKS -->
 <!-- TODO: make this part a for loop over main pages -->
         </ul>
@@ -70,67 +70,56 @@
 <div class="container">
   <div id="content">
     <div class="page header">
-      <h1>Posts tagged "ai safety"</h1>
+      <h1>Questions</h1>
     </div>
     <div class="info">
       
+       
+        <p>Posted: 2017-02-19 
+          , Modified: 2017-02-19 
+	</p>
       
-      
+       <p>Tags: <a href="../../../tags/logic.html">logic</a></p> 
     </div>
     
   </div>
   <!--/div-->
 
-  
+  <div class="toc"></div>
 
   <div class="blog-main">
-    <ul>
-    
-        <li>
-            <a href="../posts/cs/ai/control/udt.html">UDT</a> (2017-02-19)
-        </li>
-    
-        <li>
-            <a href="../posts/cs/ai/control/game_theory.html">Game theory and decision theory</a> (2017-02-12)
-        </li>
-    
-        <li>
-            <a href="../posts/cs/ai/control/logical_induction.html">Logical induction</a> (2017-02-01)
-        </li>
-    
-        <li>
-            <a href="../posts/cs/ai/control/concrete.html">Concrete problems in AI safety</a> (2017-02-01)
-        </li>
-    
-        <li>
-            <a href="../posts/cs/ai/control/alignment_ml.html">Alignment for advanced machine learning systems</a> (2017-02-01)
-        </li>
-    
-        <li>
-            <a href="../posts/cs/ai/control/truth_in_prob_logic.html">(CYHB13) Definability of Truth in Probabilistic Logic</a> (2016-08-19)
-        </li>
-    
-        <li>
-            <a href="../posts/cs/ai/control/technical_agenda.html">Technical agenda</a> (2016-08-19)
-        </li>
-    
-        <li>
-            <a href="../posts/cs/ai/control/logical_uncertainty.html">(SF15) Questions of reasoning under logical uncertainty</a> (2016-08-19)
-        </li>
-    
-        <li>
-            <a href="../posts/cs/ai/control/lobs_theorem.html">Lob's Theorem</a> (2016-08-19)
-        </li>
-    
+    <p>Things I’m confused about.</p>
+<ul>
+<li>I’m uncomfortable with theorems in the meta-logic. How do you define the meta-logic without infinite recursion (meta-meta, etc.)? Godel incompleteness, etc. are NOT theorems in the logic, but the meta-logic—if you want them as theorems in the logic then you have to define the logic inside the logic—there’s no reflection, right? Because that would be <span class="math inline">\(\square A to A\)</span>.</li>
+<li>What did I mean by reflection?</li>
+<li>Nesting is unsatisfactory…</li>
+<li>Is <span class="math inline">\(PA\vdash A\implies PA\vdash B \iff PA\vdash \square A \to \square B\)</span> a theorem in the meta-logic?</li>
+<li>Is <span class="math inline">\(PA\vdash \square A\implies PA\vdash A\)</span> a theorem in the meta-logic? An axiom?</li>
+<li>How do you define “truth” in the meta-logic?</li>
+<li>Is <span class="math inline">\(\square \square A \to \square A\)</span> a theorem?</li>
+<li>Is <span class="math inline">\(PA\vdash \square A \to \square B, PA\vdash A \implies PA\vdash B\)</span>? How about <span class="math inline">\(PA\vdash \square (\square A \to \square B)\wedge \square A \to \square B\)</span>?</li>
+<li>Can you add quantifiers? Is it true that <span class="math inline">\(\forall x, \square P(x) \imples \square \forall x, P(x)\)</span>? My guess is not (at least, it can’t be proved). Should <span class="math inline">\(\square\)</span> be Bew here? I think you’re not allowed to use <span class="math inline">\(\square\)</span> here, but that’s ok, you can state it with Bew. <span class="math inline">\(\square\)</span> is interpreted as <span class="math inline">\(Bew(\ce{})\)</span> in PA, right?</li>
+<li>Is <span class="math inline">\((\square A \to \square B) \to \square (A\to B)\)</span> a theorem?</li>
 </ul>
-
-
 
   </div>
 
     
 
+    <!-- Extension : Sharing buttons @ www.sharethis.com -->
+    <span class="st_facebook_large" displayText="Facebook"></span>
+    <span class="st_twitter_large" displayText="Tweet"></span>
+    <span class="st_googleplus_large" displayText="Google +"></span>
+    <span class="st_reddit_large" displayText="Reddit"></span>
+    <span class="st__large" displayText></span>
 
+    <div id="disqus_thread"></div>
+    
+
+
+  
+    <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+  </div>
   
 </div>
 
@@ -158,12 +147,12 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
 <script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
 
-<script src="../bootstrap/js/bootstrap.min.js"></script>
+<script src="../../../bootstrap/js/bootstrap.min.js"></script>
 
 <!-- Extension : Highlight.js @ https://highlightjs.org/ -->
 <!-- Syntax highlighting tomorrow-night-bright, agate-->
-<link rel="stylesheet" href="../highlight/css/tomorrow-night-bright.css">
-<script src="../highlight/js/highlight.pack.js"></script>
+<link rel="stylesheet" href="../../../highlight/css/tomorrow-night-bright.css">
+<script src="../../../highlight/js/highlight.pack.js"></script>
 <script>hljs.initHighlightingOnLoad();</script>
 
 <!-- Extension : MathJax @ https://docs.mathjax.org/en/v2.5-latest/tex.html -->
@@ -171,10 +160,13 @@
 <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML,http://holdenlee.github.io/notebook/MathJax/config/local/local"></script>
 
 <!-- Extension : Footnotes @ http://ignorethecode.net/blog/2010/04/20/footnotes/ -->
-<script src="../footnotes/js/footnotes.js"></script>
+<script src="../../../footnotes/js/footnotes.js"></script>
 
 <!-- Extension : Disqus @ http://disqus.com -->
 <!-- Extension : InlineDisqussions @ https://github.com/tsi/inlineDisqussions -->
+
+<script src="../../../disqus/js/disqus.js"></script>
+
 
 
 <!-- Extension : Google Analytics -->
