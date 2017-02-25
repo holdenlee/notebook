@@ -20,7 +20,7 @@ Ideas:
 * Use uncertainty quantification from statistics: Fisher information. See personal communication with Jacob.
 * Use an ensemble of neural nets. Train an ensemble in parallel, vs. train together against a discriminator.
 * Sleeping in NN
-* Use some kind of calibration
+* Use some kind of calibration. I have a suspicion that cross-entropy simply doesn't generalize because losses are unbounded.
 * Active learning
 * Make Lipschitz/other regularization. Give noisy example with the kind of noise you want to be resistant against.
 * Boosting

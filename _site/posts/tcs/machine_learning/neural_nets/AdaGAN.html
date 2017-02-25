@@ -10,7 +10,7 @@
   <meta name="description" content="Holden Lee's Research Notebook">
   <meta name="author" content="Holden Lee">
     
-  <title>Neural net separation</title>
+  <title>AdaGAN</title>
 
   <!-- Bootstrap core CSS -->
   <link href="../../../../bootstrap/css/bootstrap.min.css" rel="stylesheet">
@@ -70,52 +70,84 @@
 <div class="container">
   <div id="content">
     <div class="page header">
-      <h1>Neural net separation</h1>
+      <h1>AdaGAN</h1>
     </div>
     <div class="info">
       
        
-        <p>Posted: 2017-02-09 
-          , Modified: 2017-02-09 
+        <p>Posted: 2017-02-24 
+          , Modified: 2017-02-24 
 	</p>
       
-       <p>Tags: <a href="../../../../tags/neural%20nets.html">neural nets</a>, <a href="../../../../tags/circuit%20complexity.html">circuit complexity</a></p> 
+       <p>Tags: <a href="../../../../tags/neural%20nets.html">neural nets</a>, <a href="../../../../tags/GAN.html">GAN</a></p> 
     </div>
     
   </div>
   <!--/div-->
 
   <div class="toc"> <ul>
- <li><a href="#k-vs.k1">k vs. k+1</a><ul>
- <li><a href="#relate-to-arithmetic-circuits">Relate to arithmetic circuits</a><ul>
- <li><a href="#problem-1-approximation">Problem 1: Approximation</a></li>
- <li><a href="#problem-2-arithmetic-question">Problem 2: Arithmetic question</a></li>
- </ul></li>
- </ul></li>
+ <li><a href="#adagan-algorithm">AdaGAN algorithm</a></li>
+ <li><a href="#question">Question</a></li>
+ <li><a href="#ideas">Ideas</a></li>
+ <li><a href="#concreter-questions">Concreter questions</a></li>
+ <li><a href="#ideas-2">Ideas 2</a></li>
  </ul> </div>
 
   <div class="blog-main">
-    <p><a href="https://www.dropbox.com/s/d68tepx2x5h13at/representation.pdf?dl=0">Notes</a> (See section 2.)</p>
-<h2 id="k-vs.k1">k vs. k+1</h2>
-<p>One idea:</p>
-<h3 id="relate-to-arithmetic-circuits">Relate to arithmetic circuits</h3>
-<p>Cf. CSS16.</p>
-<p>Idea: write out everything as power series. Perhaps fix a probability measure such as Gaussian.</p>
-<p>The circuit model is <span class="math inline">\(\sum P \sum P...\)</span> where <span class="math inline">\(P\)</span> is any univariate power series. We hope that it can be approximated by its first few terms, so that we get a polynomial.</p>
-<p>Restrict the <span class="math inline">\(k+1\)</span>-depth circuits to be somewhat smooth, so they can be approximated by the first few terms of the power series.</p>
-<h4 id="problem-1-approximation">Problem 1: Approximation</h4>
-<p>We can find pairs of functions which differ very much on the first few terms of their power series but that are arbitrarily close on <span class="math inline">\(L^2(\mu)\)</span>.</p>
-<p>The natural thing to do is to look at families of orthogonal polynomials on <span class="math inline">\(\mu\)</span>. But these</p>
+    <p>See <a href="GANs.html#adagan-boosting-generative-models">GANs</a>.</p>
+<h2 id="adagan-algorithm">AdaGAN algorithm</h2>
+<p>Loop:</p>
 <ul>
-<li>don’t distribute nicely (ex. we can write <span class="math inline">\((x+y)^n\)</span> as a sum of <span class="math inline">\(n+1\)</span> terms, but not <span class="math inline">\(He_n(x+y)\)</span>) - I don’t think this is such a big deal though.</li>
-<li>letting <span class="math inline">\(\Pi_d\)</span> be projection to degree <span class="math inline">\(\le d\)</span> part, we don’t have <span class="math inline">\(\Pi_d\circ P \circ \Pi_d = \Pi_d \circ P\)</span>. So it’s very hard to argue composition.</li>
+<li><span class="math inline">\(D\leftarrow DGAN(S_N,G_{t-1})\)</span>, <span class="math inline">\(S_N\)</span> is unweighted sample</li>
+<li><span class="math inline">\(\la^*\leftarrow \la(\be_t,D)\)</span></li>
+<li><span class="math inline">\(W_t^i \leftarrow ...\)</span> update weights</li>
+<li><span class="math inline">\(G_t^c=GAN(S_N,W_t)\)</span></li>
+<li><span class="math inline">\(G_t = (1-\be_t)G_{t-1} + \be_t G_t^c\)</span>.</li>
 </ul>
-<p>Can we require our approximating function to also be somewhat smooth? Then e.g. we can use compactness (Arzela-Ascoli) - arbitrarily close approximation means expressible, otherwise you can’t get closer than <span class="math inline">\(\ep\)</span>. But <span class="math inline">\(\ep\)</span> might depend on <span class="math inline">\(n\)</span>… (Ex. with certain bounds on coefficients, and a requirement that your power series starts with <span class="math inline">\(p(x)\)</span>, what is the minimial <span class="math inline">\(L^2(\mu)\)</span> norm it has?)</p>
-<p>Order of quantifiers?</p>
-<h4 id="problem-2-arithmetic-question">Problem 2: Arithmetic question</h4>
-<p>The circuit model is <span class="math inline">\(\sum P \sum P...\)</span> where <span class="math inline">\(P\)</span> is any univariate power series/polynomial. Find a polynomial that is attainable by the degree <span class="math inline">\(\le d\)</span> portion of a depth <span class="math inline">\(k+1\)</span> circuit (depth <span class="math inline">\(k+1\)</span> means <span class="math inline">\(\sum (P\sum)^{k}\)</span>) that is not attainable by the degree <span class="math inline">\(\le d\)</span> portion of any depth <span class="math inline">\(k\)</span> circuit of subexponential size.</p>
-<p><strong>What are separation results for normal arithmetic circuits?</strong></p>
-<p>Look at constant-depth circuits: keep <span class="math inline">\(k\)</span> fixed; you’re allowed to take <span class="math inline">\(n\to \iy\)</span>.</p>
+<p>Here, assume the discriminator is good enough to force to get some multiple closer to distribution.</p>
+<h2 id="question">Question</h2>
+<p>Can you reanalyze this with a more stable version of GAN, not based on KL divergence, but</p>
+<ul>
+<li>Wasserstein distance?</li>
+<li>Neural net MMD?</li>
+</ul>
+<h2 id="ideas">Ideas</h2>
+<p>From known results: (see <a href="../multiplicative_weights.html">MW</a>)</p>
+<ul>
+<li>MU for game theory: maintain probability distribution, get best column response.
+<ul>
+<li>This means maintaining the probability distribution generated by G and doing MU on it. No!</li>
+</ul></li>
+<li>MU for boosting: keep weights on data points, response is weak learner.
+<ul>
+<li>Here, response is generator. At end, take mixture of generators, cf. weighted majority of experts.</li>
+<li>How to compute the loss? Before, it was: just the probability of WL being wrong. Now: loss is itself a maximization over discriminator. (not some linear function!)</li>
+<li>Weird because in the table, it isn’t that the row/columns are the player, but rather data and 1 player; other player is missing.</li>
+<li>You can’t fix the discriminator for this step—ex. the part of the data that doesn’t seem to fool this discriminator, there might be another discriminator that isn’t fooled. (You might not want to include the first generator at all???)</li>
+</ul></li>
+<li>Dense model theorem, regularity theorems
+<ul>
+<li>Label with <span class="math inline">\((0,x\sim X)\)</span>, <span class="math inline">\((1,x\sim G)\)</span>. But this is the formulation for boosting the discriminator, not the generator.</li>
+</ul></li>
+</ul>
+<p>Can you do better than simply mixture: ex. decide whether to regenerate according to some criterion, like <span class="math inline">\(\mathcal F_k \mathcal T\)</span> for a different class <span class="math inline">\(\mathcal F\)</span>?</p>
+<p>Note MU/boosting doesn’t run into RPS problem if you mix/average.</p>
+<h2 id="concreter-questions">Concreter questions</h2>
+<ol type="1">
+<li>Suppose you want to match <span class="math inline">\(f\)</span> using combination of functions in <span class="math inline">\(\mathcal H\)</span>. What is the right formulation of boosting here?
+<ul>
+<li>Convex combination - this is just projection to a polytope in a subspace.</li>
+<li>What are interesting <span class="math inline">\(\mathcal F\)</span> here?</li>
+</ul></li>
+<li>In MU for GT: if column only plays <span class="math inline">\(\rc2+\ep\)</span> good strategy, do you get anything?</li>
+<li>What is the guarantee of mixture of generators?</li>
+</ol>
+<p>We’re actually training to completion at each step… What does “good” mean? Analogue of “over half can’t be distinguished”? MMD is bounded away from 0.</p>
+<h2 id="ideas-2">Ideas 2</h2>
+<ol type="1">
+<li>Simpler, boolean formulation. At step <span class="math inline">\(t\)</span>, have weights on data points, increase weight if it was successfully separated. (How did they calculate weights in AdaGAN?) At end, let <span class="math inline">\(D\)</span> be best discriminator against uniform. What’s <span class="math inline">\(\E D - \sumo tT \al_t \E D(G_t)\)</span>?</li>
+<li>Is there something more sophisticated/suitable than simple mixture? Ex. pick a data point and then try to generate something close to it? (not this actually…) Something like, run generators together and pick the best point from them?</li>
+</ol>
 
   </div>
 

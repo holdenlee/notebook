@@ -1,7 +1,7 @@
 ---
 title: Neural net separation
-published: 2016-02-09
-modified: 2016-02-09
+published: 2017-02-09
+modified: 2017-02-09
 tags: neural nets, circuit complexity
 type: research
 showTOC: True
