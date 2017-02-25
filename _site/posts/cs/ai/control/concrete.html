@@ -85,12 +85,252 @@
   </div>
   <!--/div-->
 
-  <div class="toc"></div>
+  <div class="toc"> <ul>
+ <li><a href="#wrong-objective">Wrong objective</a><ul>
+ <li><a href="#avoid-negative-side-effects">Avoid negative side effects</a></li>
+ <li><a href="#avoid-reward-hacking">Avoid reward hacking</a></li>
+ </ul></li>
+ <li><a href="#expensive-objective-function">Expensive objective function</a><ul>
+ <li><a href="#scalable-supervision">Scalable supervision</a></li>
+ </ul></li>
+ <li><a href="#undesirable-behavior">Undesirable behavior</a><ul>
+ <li><a href="#safe-exploration">Safe exploration</a></li>
+ <li><a href="#distributional-shift">Distributional shift</a></li>
+ </ul></li>
+ </ul> </div>
 
   <div class="blog-main">
     <blockquote>
-<p>Focus is on the empirical study of practical safety problems in modern machine learning systems, which we believe is likely to be robustly useful across a broad variety of potential risks, both short-and long-term</p>
+<p>Focus is on the empirical study of practical safety problems in modern machine learning systems, which we believe is likely to be robustly useful across a broad variety of potential risks, both short-and long-term.</p>
 </blockquote>
+<p>Don’t need to invoke extreme scenarios - which can be speculative and imprecise.</p>
+<ul>
+<li>Ready for experiment today, relevant to cutting edge AI</li>
+<li>Mitigating accident risk in terms of classic ML methods</li>
+<li>RL, broader environments suggest relevance of research
+<ol type="1">
+<li>RL</li>
+<li>Side effects more likely in complex environment; agent needs to be sophisticated to hack reward function dangerously.</li>
+<li>General trend towards autonomy. (ex. industrial processes)</li>
+</ol></li>
+</ul>
+<p>Ex. cleaning robot</p>
+<ul>
+<li>Knock over vase to clean faster</li>
+<li>Disable vision, cover messes</li>
+<li>Throw out things unlikely to belong to anyone, put aside things that might belong to someone.</li>
+<li>Wet mop in outlet.</li>
+<li>Office vs. factory</li>
+</ul>
+<h2 id="wrong-objective">Wrong objective</h2>
+<ul>
+<li>Bad even in presence of perfect learning and infinite data.</li>
+</ul>
+<h3 id="avoid-negative-side-effects">Avoid negative side effects</h3>
+<ul>
+<li>Specify an objective function that focuses on some task but ignores other aspects. Robot could engage in major disruptions for tiny advantage.</li>
+<li>“Perform X subject to common-sense constraints/avoiding side effects.”</li>
+<li>Expect to be negative on average because disrupt from status quo.</li>
+<li>Side effects conceptually similar - ex. knock over furniture</li>
+</ul>
+<p>Approaches</p>
+<ul>
+<li>Impact regularizer.
+<ul>
+<li>Compare future state under current policy to passive policy (not straightforward to define).</li>
+<li>Known safe but suboptimal policy</li>
+<li>cf. reachability analysis, robust policy improvement</li>
+<li>Sensitive to representation and metric (ex. spinning fan is constant?)</li>
+</ul></li>
+<li>Learn impact regularizer (over many tasks)
+<ul>
+<li>ex. of transfer learning</li>
+<li>ex. avoid knocking over furniture.</li>
+<li>cf. in model-based RL, transfer learned dynamics, not value function. Here, learn side effects, not dynamics.</li>
+</ul></li>
+<li>Penalize influence
+<ul>
+<li>Not get into positions to do things with side effects. (Ex. water into roomfull of sensitive electronics)</li>
+<li>Info-theoretic measures. Empowerment: max <span class="math inline">\(I\)</span> between potential future actions and potential future state. Often maximized for reward (ex. pick up keys).</li>
+<li>Empowerment measures precision of control more than total impact. Ex. cut electrical power. Someone scribbling down actions.
+<ul>
+<li>Perverse incentives: destroy vase to remove option to break.</li>
+</ul></li>
+</ul></li>
+<li>Multi-agent approaches.
+<ul>
+<li>We care about avoiding negative externalities.</li>
+<li>Make sure actions don’t harm other humans’ interests.</li>
+<li>CIRL: work together to achieve human’s goals.</li>
+<li>Reward autoencoder: goal transparency—infer what agent is trying to do.</li>
+</ul></li>
+<li>Reward uncertainty.
+<ul>
+<li>Environment is already good according to preferences; random change more likely to be bad.</li>
+<li>Prior probability distribution reflects property that random changes more likely to be bad.</li>
+<li>Baseline: conservative reliable policy.</li>
+</ul></li>
+</ul>
+<p>Experiments</p>
+<ul>
+<li>Toy environment with simple goal (move block) and obstacles (vases). Can it avoid obstacles?</li>
+</ul>
+<h3 id="avoid-reward-hacking">Avoid reward hacking</h3>
+<ul>
+<li>Admits clever easy (gamed) solution.
+<ul>
+<li>Ex. discover buffer overflow.</li>
+<li>Ex. circuit keeping time pick up RF emissions of nearby PC. [157, 23]</li>
+<li>Avoiding wireheading</li>
+<li>Feedback in ML: ad placement based on counterfactual learning, contextual bandits</li>
+</ul></li>
+<li>Partially observed goals
+<ul>
+<li>Ex. imperfect view of cleanliness of office.</li>
+<li>Rewards that represent partial or imperfect measure.</li>
+</ul></li>
+<li>Complicated systems
+<ul>
+<li>Probability of viable hack increases with complexity of agent.</li>
+</ul></li>
+<li>Abstract rewards
+<ul>
+<li>Neural nets vulnerable to adversarial examples.</li>
+</ul></li>
+<li>Goodhart’s law
+<ul>
+<li>Correlation breaks down when objective function strongly optimized. (Learning causality?)</li>
+</ul></li>
+<li>Feedback loops
+<ul>
+<li>Component reinforces itself, distorts intention. Ex. enlarge ads.</li>
+</ul></li>
+<li>Environment embedding
+<ul>
+<li>Tamper with reward implementations.</li>
+<li>(I’m not convinced this is a thing. Ex. I know that I could make myself eternally happy by wireheading, but I choose not to do it, because what I’m optimizing for is not the value in my happiness register.)</li>
+<li>Concerning when human in reward loop.</li>
+</ul></li>
+</ul>
+<p>Note:</p>
+<ul>
+<li>In today’s systems don’t occur or can be corrected easily.</li>
+<li>Modern RL agents discover bugs. (Example?)</li>
+<li>Can be undetected.</li>
+<li>Once start hacking, hard to stop.</li>
+<li>Is remedy just to avoid choosing wrong objective? Fragile, wrong objective comes from general causes.</li>
+</ul>
+<p>ML approaches</p>
+<ul>
+<li>Adversarial reward functions.
+<ul>
+<li>Reward function is own agent. Ex. find scenarios ML system claimed were high reward but human labels as low reward.</li>
+</ul></li>
+<li>Model lookahead
+<ul>
+<li>Reward on anticipated future states. (Ex. negative reward for replacing reward function.) (cf. my wireheading comment)</li>
+</ul></li>
+<li>Adversarial blinding
+<ul>
+<li>Ex. prevent from understand how reward is generated.</li>
+<li>“Cross-validation for agents” [Ex. train without access to all info to get policy]</li>
+</ul></li>
+<li>Careful engineering
+<ul>
+<li>formal verification.</li>
+</ul></li>
+<li>Reward capping.</li>
+<li>Counterexample resistance: adversarial training.</li>
+<li>Multiple rewards. [cf. boosting, ensemble]</li>
+<li>Reward pretraining
+<ul>
+<li>Train fixed reward as supervised learning process divorced from interaction.</li>
+</ul></li>
+<li>Variable indifference
+<ul>
+<li>Route optimization pressure around parts of environment</li>
+<li>Ex. w/o try to manipulate.</li>
+</ul></li>
+<li>Trip wires.
+<ul>
+<li>Introduce plausible vulnerabilities and monitor them.</li>
+</ul></li>
+</ul>
+<p>Experiments</p>
+<ul>
+<li>Delusion box environments: distort perception to appear to receive high reward.</li>
+</ul>
+<h2 id="expensive-objective-function">Expensive objective function</h2>
+<ul>
+<li>Ex. consult a human.</li>
+</ul>
+<h3 id="scalable-supervision">Scalable supervision</h3>
+<ul>
+<li>Bad extrapolations from limited samples.</li>
+<li>If user spent a few hours, how happy would they be?</li>
+<li>Actually use cheap approx: user happy when see office? Visible dirt?</li>
+<li>Limited calls to true objective with frequent calls to imperfect proxy. [When to call true objective?]</li>
+<li>Semi-supervised reinforcement learning</li>
+<li>Reward visible on random subset of timesteps.</li>
+<li>Incentivize communication and transparency. Ex. hiding mess breaks user reaction and real reward signal, so avoid it.</li>
+</ul>
+<p>[Also explanations?]</p>
+<p>Approaches</p>
+<ul>
+<li>Supervised reward learning: predict reward, with uncertainty estimate.
+<ul>
+<li>Many RL approaches fit estimators that resemble reward predictors.</li>
+</ul></li>
+<li>Semi-supervised or active reward learning:
+<ul>
+<li>Combine with traditional</li>
+</ul></li>
+<li>Unsupervised value iteration (use observed transitions of unlabeled epsiodes to make Bellman updates)</li>
+<li>Unsupervised model learning</li>
+</ul>
+<p>Ex.</p>
+<ul>
+<li>play Atari with small number of direct reward signals (rely on visual display of score).</li>
+<li>ability to modify score</li>
+<li>take action to see score (pause)</li>
+<li>approximations (certain sounds)</li>
+<li>explicit reward requests.</li>
+</ul>
+<p>More</p>
+<ul>
+<li>Distant supervision
+<ul>
+<li>Generalized expectation criteria (population-level statistics) [if you game, your statistics deviate?]</li>
+<li>DeepDive: rules that generate weak labels [139]</li>
+<li>see NLP</li>
+</ul></li>
+<li>Hierarchical reinforcement learning.
+<ul>
+<li>Subagents</li>
+<li>Top-level learn from sparse rewards.</li>
+<li>Subagents dense reward signal.</li>
+</ul></li>
+</ul>
+<p>Experiments</p>
+<ul>
+<li>Semisupervised in control environment: provide reward on 10% episodes.</li>
+<li>Atari games</li>
+</ul>
+<h2 id="undesirable-behavior">Undesirable behavior</h2>
+<ul>
+<li>Make decisions from insufficient, poorly curated training data or insufficiently expressive model.</li>
+</ul>
+<h3 id="safe-exploration">Safe exploration</h3>
+<ul>
+<li>Exploratory actions don’t lead to negative/irrecoverable consequences.</li>
+<li>Common exploration policies make no attempt to avoid danger.</li>
+<li>In practice, hard-code, ex. collision avoidance sequence.</li>
+<li>Most well-studied.</li>
+</ul>
+<h3 id="distributional-shift">Distributional shift</h3>
+<ul>
+<li>Make bad decisions when given inputs very different.</li>
+</ul>
 
   </div>
 
