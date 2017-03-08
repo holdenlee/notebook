@@ -1,5 +1,5 @@
 ---
-title: Convex geometry
+title: Geometric functional analysis
 published: 2016-04-20
 modified: 2016-04-20
 tags: none

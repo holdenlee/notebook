@@ -7,6 +7,8 @@ type: research
 showTOC: True
 ---
 
+See [my experiments](adversarial_experiments.html).
+
 # Introduction
 
 ## Statement
@@ -17,7 +19,7 @@ Related to making NN's resistant: Have NN's give a confidence bound.
 
 Ideas:
 
-* Use uncertainty quantification from statistics: Fisher information. See personal communication with Jacob.
+* Use uncertainty quantification from statistics: Fisher information. See personal communication with Jacob S.
 * Use an ensemble of neural nets. Train an ensemble in parallel, vs. train together against a discriminator.
 * Sleeping in NN
 * Use some kind of calibration. I have a suspicion that cross-entropy simply doesn't generalize because losses are unbounded.
@@ -25,10 +27,17 @@ Ideas:
 * Make Lipschitz/other regularization. Give noisy example with the kind of noise you want to be resistant against.
 * Boosting
 
+## Blog posts
+
+* [breaking linear classifiers](http://karpathy.github.io/2015/03/30/breaking-convnets/) [h](http://scrible.com/s/6wE0Q)
+* [myths](http://www.kdnuggets.com/2015/07/deep-learning-adversarial-examples-misconceptions.html) [h](http://scrible.com/s/4wU0Q)
+* [OpenAI blog post](https://openai.com/blog/adversarial-example-research/)
+
 ## Literature
 
 * [SZSB14] Intriguing properties of neural networks [paper](https://arxiv.org/pdf/1312.6199.pdf?not-changed)
 * Ian J Goodfellow, Jonathon Shlens, and Christian Szegedy. Explaining and harnessing adversarial examples. arXiv preprint arXiv:1412.6572, 2014.
+* [NYC15] Deep Neural Networks are Easily Fooled - High Confidence Predictions for Unrecognizable Images
 * [Papernot 2016]: construct substitute model. Synthesizes training set.
 * [Moosavi-Dezfooli 2016]: universal perturbation that transfers
 * [LCLS17] Delving into Transferable Adversarial Examples and Black-box Attacks

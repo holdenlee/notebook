@@ -8,8 +8,736 @@
         <name>Holden Lee</name>
         <email>oldheneel@gmail.com</email>
     </author>
-    <updated>2017-02-24T00:00:00Z</updated>
+    <updated>2017-03-07T00:00:00Z</updated>
     <entry>
+    <title>Weekly summary 2017-03-11</title>
+    <link href="http://holdenlee.github.io/notebook/posts/summaries/2017-03-11.html" />
+    <id>http://holdenlee.github.io/notebook/posts/summaries/2017-03-11.html</id>
+    <published>2017-03-07T00:00:00Z</published>
+    <updated>2017-03-07T00:00:00Z</updated>
+    <summary type="html"><![CDATA[
+<div class="container">
+  <div id="content">
+    <div class="page header">
+      <h1>Weekly summary 2017-03-11</h1>
+    </div>
+    <div class="info">
+      
+       
+        <p>Posted: 2017-03-07 
+          , Modified: 2017-03-07 
+	</p>
+      
+       <p>Tags: <a href="/tags/none.html">none</a></p> 
+    </div>
+    
+  </div>
+  <!--/div-->
+
+  <div class="toc"> <ul>
+ <li><a href="#adversarial-training">Adversarial training</a></li>
+ <li><a href="#langevin-monte-carlo">Langevin Monte Carlo</a></li>
+ <li><a href="#boosting-etc.">Boosting, etc.</a></li>
+ </ul> </div>
+
+  <div class="blog-main">
+    <h2 id="adversarial-training">Adversarial training</h2>
+<h2 id="langevin-monte-carlo">Langevin Monte Carlo</h2>
+<p>Background</p>
+<ul>
+<li>Brownian motion (and other probability prerequisites)</li>
+<li>Stochastic calculus</li>
+<li>High-dimensional probability (LSI, etc.)</li>
+<li>Langevin papers</li>
+</ul>
+<h2 id="boosting-etc.">Boosting, etc.</h2>
+<p>Fix notes!</p>
+
+  </div>
+
+    
+
+    <!-- Extension : Sharing buttons @ www.sharethis.com -->
+    <span class='st_facebook_large' displayText='Facebook'></span>
+    <span class='st_twitter_large' displayText='Tweet'></span>
+    <span class='st_googleplus_large' displayText='Google +'></span>
+    <span class='st_reddit_large' displayText='Reddit'></span>
+    <span class='st__large' displayText=''></span>
+
+    <div id="disqus_thread"></div>
+    
+
+
+  
+    <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+  </div>
+  
+</div>
+]]></summary>
+</entry>
+<entry>
+    <title>Brownian Motion</title>
+    <link href="http://holdenlee.github.io/notebook/posts/math/probability/brownian_motion.html" />
+    <id>http://holdenlee.github.io/notebook/posts/math/probability/brownian_motion.html</id>
+    <published>2017-03-07T00:00:00Z</published>
+    <updated>2017-03-07T00:00:00Z</updated>
+    <summary type="html"><![CDATA[
+<div class="container">
+  <div id="content">
+    <div class="page header">
+      <h1>Brownian Motion</h1>
+    </div>
+    <div class="info">
+      
+       
+        <p>Posted: 2017-03-07 
+          , Modified: 2017-03-07 
+	</p>
+      
+       <p>Tags: <a href="/tags/brownian%20motion.html">brownian motion</a></p> 
+    </div>
+    
+  </div>
+  <!--/div-->
+
+  <div class="toc"> <ul>
+ <li><a href="#robert-browns-new-thing">Robert Brown’s new thing</a></li>
+ <li><a href="#brownian-motion-as-a-gaussian-process">Brownian motion as a Gaussian process</a><ul>
+ <li><a href="#invariance-properties">2.2 Invariance properties</a></li>
+ <li><a href="#rd">2.3 <span class="math inline">$\R^d$</span></a></li>
+ </ul></li>
+ <li><a href="#constructions-of-brownian-motion">3 Constructions of Brownian motion</a><ul>
+ <li><a href="#levy-ciesielski">3.1 Levy-Ciesielski</a></li>
+ <li><a href="#levys-original-argument">3.2 Levy’s original argument</a></li>
+ </ul></li>
+ <li><a href="#the-canonical-model">4 The canonical model</a><ul>
+ <li><a href="#kolmogorovs-theorem">4.2 Kolmogorov’s Theorem</a></li>
+ </ul></li>
+ <li><a href="#brownian-motion-as-a-markov-process">6 Brownian motion as a Markov process</a></li>
+ <li><a href="#brownian-motion-and-transition-semigroups">7 Brownian motion and transition semigroups</a><ul>
+ <li><a href="#the-generator">7.2 The generator</a></li>
+ </ul></li>
+ <li><a href="#the-pde-connection">8 The PDE connection</a></li>
+ </ul> </div>
+
+  <div class="blog-main">
+    <p>Notes from Schilling, Partzsch.</p>
+<h2 id="robert-browns-new-thing">Robert Brown’s new thing</h2>
+<p>A particle</p>
+<ul>
+<li>starts at <span class="math inline">\(x=0\)</span>.</li>
+<li>at times <span class="math inline">\(k\De t\)</span>, move <span class="math inline">\(\De x\)</span> units to L or R with equal probability.</li>
+</ul>
+<p>Let <span class="math inline">\(X_t\)</span> be position at time <span class="math inline">\(t\in [0,T]\)</span>.</p>
+<ul>
+<li><span class="math inline">\(\Var(X_t)=\si^2 T\)</span> where <span class="math inline">\(\fc{(\De x)^2}{\De t}=\si^2\)</span>.</li>
+<li>CLT: <span class="math inline">\(X_T \to \sqrt T \si N(0,1)\)</span>.</li>
+</ul>
+<strong>Definition</strong>. A <span class="math inline">\(d\)</span>-dimensional Brownian motion <span class="math inline">\(B=(B_t)_{t\ge 0}\)</span> is a stochastic process indexed by <span class="math inline">\([0,\iy)\)</span>,
+<span class="math display">\[\begin{align}
+B_0(\om)&amp;=0\\
+B_{t_n}-B_{t_{n-1}},\ldots, B_{t_1}-B_{t_0} &amp; \text{ independent}, 0=t_0\le t_1&lt;\cdots &lt; t_n\\
+B_t - B_s &amp;\sim B_{t+h} - B_{s+h}\\
+B_t &amp;= N(0,t)^{\ot d}\\
+t&amp;\mapsto B_t(\om) \text{ continuous.}
+\end{align}\]</span>
+<p>Note the last property is implied by the previous.</p>
+<h2 id="brownian-motion-as-a-gaussian-process">Brownian motion as a Gaussian process</h2>
+<p>Characteristic function of Gaussian: <span class="math display">\[
+\E e^{i\an{\xi,\Ga}} = e^{i \E\an{\xi, \Ga} - \rc \Var\an{\xi, \Ga}} = e^{i\an{\xi, \Ga}} = e^{i\an{\xi, m} - \rc 2\an{\xi, \Si\xi}}.
+\]</span></p>
+<ul>
+<li><span class="math inline">\(B_t\)</span> is Gaussian with mean 0, variance <span class="math inline">\(t\)</span>. <span class="math inline">\(\E e^{\ze B_t} = e^{t\ze^2/2}\)</span>.</li>
+<li><span class="math inline">\(\E (B_t^{2k}) = t^k \fc{2^k \Ga(k+\rc 2)}{\sqrt \pi}\)</span>.</li>
+<li><span class="math inline">\(\Cov(B_s,B_t) = \min(s,t)\)</span>.</li>
+</ul>
+<p><span class="math inline">\((X_t)_{t\ge 0}\)</span> is a Gaussian process if for all <span class="math inline">\(0\le t_1&lt;t_2&lt;\cdots\)</span>, <span class="math inline">\((X_{t_1},\ldots, X_{t_n})\)</span> is a Gaussian random vector.</p>
+<p><strong>Theorem</strong>. <span class="math inline">\((B_t)_{t\ge 0}\)</span> is a Gaussian process. The covariance of <span class="math inline">\((B_{t_1},\ldots, B_{t_n})\)</span> is <span class="math inline">\(C = (\min(t_j,t_k))_{j,k}\)</span>.</p>
+<p><em>Proof</em>. Linearly transform <span class="math inline">\((t_1-t_0,t_2-t_1,\ldots)\)</span>.</p>
+<p>Converse: If the covariance matrices are given by the above and <span class="math inline">\((X_t)_{t\ge 0}\)</span> has continuous sample paths, then <span class="math inline">\((X_t)_{t\ge 0}\)</span> is 1-D Brownian.</p>
+<h3 id="invariance-properties">2.2 Invariance properties</h3>
+<ul>
+<li>Reflection <span class="math inline">\(-B_t\)</span></li>
+<li>Renewal <span class="math inline">\(W(t) = B(t+a)-B(a)\)</span>.</li>
+<li>Markov property: <span class="math inline">\(B(t):0\le t\le a\)</span> independent to <span class="math inline">\(W(t), t\ge 0\)</span>.</li>
+<li>Time inversion <span class="math inline">\(W_t=B_{a-t}-B_a\)</span>.</li>
+<li>Scaling <span class="math inline">\(B_{ct}\sim c^{\rc 2}B_t\)</span>.</li>
+<li>Projective reflection <span class="math inline">\(W(t) = tB(\rc t)\)</span></li>
+</ul>
+<h3 id="rd">2.3 <span class="math inline">\(\R^d\)</span></h3>
+<p><span class="math inline">\(B_t\)</span> is <span class="math inline">\(BM^d\)</span> iff its coordinates are <span class="math inline">\(BM^1\)</span>.</p>
+<p><em>Proof</em>. Forward: Show increments are independent—characteristic function factorizes.</p>
+<p><span class="math inline">\(Q\)</span>-Brownian motion: <span class="math inline">\(X_t-X_s\sim N(0,(t-s)Q)\)</span>, <span class="math inline">\(s&lt;t\)</span>.</p>
+<h2 id="constructions-of-brownian-motion">3 Constructions of Brownian motion</h2>
+<h3 id="levy-ciesielski">3.1 Levy-Ciesielski</h3>
+<p>Write paths as random series wrt complete orthonormal system of <span class="math inline">\(L^2([0,1],dt)\)</span>. Let <span class="math inline">\((G_n)_{n\ge 0}\)</span> be sequence of <span class="math inline">\(N(0,1)\)</span> variables. <span class="math display">\[
+W_N(t):=\sumz n{N-1} G_n\an{\one_{[0,t)}, \phi_n}_{L^2}.
+\]</span></p>
+<p><strong>Theorem</strong>. <span class="math inline">\(\lim_{N\to \iy} W_N(t)\)</span> is Brownian motion.</p>
+<p><em>Proof</em>.</p>
+<ul>
+<li>Convergence: <span class="math inline">\(\E [W_N(t)^2] \to t\)</span>.</li>
+<li>Covariances correct: <span class="math inline">\(\E[(W(t)-W(s))(W(v)-W(u))] = \an{\one_{[s,t)}, \one_{[u,v)}}\)</span>.</li>
+<li>Continuity of <span class="math inline">\(t\mapsto W(t,\om)\)</span>: Proof for a specific system: Haar functions <span class="math inline">\(H_n\)</span>.
+<ul>
+<li>(? Uniform convergence <span class="math inline">\(\liminf_{n,N\to \iy} \ve{W_{2^N}-W_{2^n}}_{L^{\iy}(t)}=0\)</span>. By Arzela-Ascoli (?) there is convergent subsequence.</li>
+</ul></li>
+</ul>
+<!-- * (Invariance - translation is orthonormal transformation?) (not necessary)-->
+<h3 id="levys-original-argument">3.2 Levy’s original argument</h3>
+<h2 id="the-canonical-model">4 The canonical model</h2>
+<p>Identify <span class="math inline">\(\Om\)</span> (in <span class="math inline">\((\Om, A, \Pj)\)</span>) as a subset of <span class="math inline">\((\R^d)^I\)</span>, actually <span class="math inline">\(C_{(0)}\)</span> consisting of continuous <span class="math inline">\(w:[0,\iy)\to \R^d\)</span>, <span class="math inline">\(w(0)=0\)</span>.</p>
+<p>Consider the product <span class="math inline">\(\si\)</span>-algebra <span class="math display">\[
+B^I(\R^d) = \si\set{\pi_t^{-1}(B)}{B\in B(\R^d), t\in I} = \si\set{\pi_t}{t\in I}.
+\]</span> Consider the intersection with <span class="math inline">\(C_{(0)}\)</span>, <span class="math display">\[
+C_{(0)}\cap B^T(\R^d) = \si(\pi_t|_{C_{(0)}}:t\in I).
+\]</span> <span class="math inline">\(C_{(0)}\)</span> is complete separable metric space with metric of locally uniform convergence <span class="math inline">\(\rh(w,v)=\sumo n{\iy} (1\wedge \sup_{0\le t\le n} |w(t)-v(t)|)2^{-n}\)</span>.</p>
+<p>The finite-dimensional distributions uniquely determine <span class="math inline">\(\mu\)</span> (cylinder sets generate). <span class="math inline">\(\mu\)</span> is <strong>Wiener measure</strong>, the space is the <strong>path space</strong>.</p>
+<p><strong>Theorem</strong> <span class="math inline">\((C_{(0)}, B(C_{(0)}), \mu)\)</span>: <span class="math inline">\((\pi_t)_{t\ge 0}\)</span> is Brownian motion (<strong>canonical model of Brownian motion</strong>). <!-- *-stable generator? --></p>
+<p>Some properties</p>
+<ul>
+<li><span class="math inline">\(\Ga\in B^I(\R^d)\)</span> is determined by countably many indices: for every <span class="math inline">\(\Ga\in B^I(\R^d)\)</span> there exists countable <span class="math inline">\(S\sub I\)</span>, such that <span class="math inline">\(f\in (\R^d)^I, w\in \Ga, f|_S=w|_S \implies f\in \Ga\)</span>. <em>Proof</em>. <span class="math inline">\(\set{\Ga \subeq (\R^d)^I}{\pat{holds for some countable }S}\)</span> is a <span class="math inline">\(\si\)</span>-algebra.</li>
+<li><span class="math inline">\(C_{(0)}\nin B^{[0,\iy)}\nin B^I (\R^d)\)</span>. Proof: can’t enforce continuity using values at countably many points. (What is the point of this? Saying we can’t work in <span class="math inline">\(B^I(\R^d)\)</span>, have to work in <span class="math inline">\(\cap C_{(0)}\)</span>?)</li>
+</ul>
+<h3 id="kolmogorovs-theorem">4.2 Kolmogorov’s Theorem</h3>
+<p><strong>Theorem</strong>. Let <span class="math inline">\(I\subeq [0,\iy)\)</span>, <span class="math inline">\(p_{t_1,\ldots, t_n}\)</span> be probability measures defined on <span class="math inline">\((\R^d)^n\)</span>. If the family is consistent (<span class="math inline">\(p_t(C) = p_{t_{\si}} (C_\si)\)</span> and <span class="math inline">\(p_{t_{1:n-1},t_n}(C_{1:n-1}\times \R^d) = p_{t_{1:n-1}} (C_{1:n-1})\)</span>), then there exists <span class="math inline">\(\mu\)</span> on <span class="math inline">\(((\R^d)^I, B^I(\R^d))\)</span>, <span class="math inline">\(p_{t_{1:n}}(C) = \mu(\pi_{t_{1:n}}^{-1}(C))\)</span>.</p>
+<p>Corollary: can construct canonical process for any family of consistent finite dimensional probability distributions.</p>
+<p>(Still not too clear on it sufficing to consider finite-dim projections…)</p>
+<p>Can use this theorem to construct BM. Continuity follows from Theorem 4.11.</p>
+<h2 id="brownian-motion-as-a-markov-process">6 Brownian motion as a Markov process</h2>
+<p>(I’m confused about what more 6.1 says. Is this related to stopping times? <span class="math inline">\(F_t\)</span> is info up to time <span class="math inline">\(t\)</span>?)</p>
+<p>Let <span class="math display">\[
+\Pj^x(B_{t_i}\in A_i:1\le i\le n) = \Pj(B_{t_i}+x\in A_i:1\le i\le n).
+\]</span></p>
+<h2 id="brownian-motion-and-transition-semigroups">7 Brownian motion and transition semigroups</h2>
+Linear operators: transition semigroup and resolvent
+<span class="math display">\[\begin{align}
+P_t u(x) &amp;= \E^x u(B_t)\\
+U_\al u(x) &amp;= \E^x \ba{\iiy u(B_t)e^{-\al t}\,dt}
+\end{align}\]</span>
+<p>A semigroup <span class="math inline">\((P_t)_{t\ge 0}\)</span> on a Banach space is family of linear operators <span class="math inline">\(P_t:B\to B, t\ge 0\)</span>, satisfying <span class="math inline">\(P_tP_s=P_{t+s}\)</span>, <span class="math inline">\(P_0=\id\)</span>.</p>
+<p>Banach spaces:</p>
+<ul>
+<li><span class="math inline">\(B_b\)</span>: Borel measurable <span class="math inline">\(\R^d\to \R\)</span> with uniform norm <span class="math inline">\(\ved_{\iy}\)</span>.</li>
+<li><span class="math inline">\(C_\iy\)</span>: continuous functions vanishing at infinity with uniform norm <span class="math inline">\(\ved_{\iy}\)</span>.</li>
+</ul>
+<p>Lemma 7.2. <span class="math inline">\((B_t)_{t\ge 0}\)</span> is uniformly stochastically continuous, <span class="math display">\[ \lim_{t\to 0}\sup_{x\in \R^d} \Pj^x (|B_t-x|&gt;\de)=0\]</span> for all <span class="math inline">\(\de&gt;0\)</span>.</p>
+<p>Properties</p>
+<ol type="1">
+<li>Conservative <span class="math inline">\(P_t1=1\)</span>.</li>
+<li>Contraction on <span class="math inline">\(B_b\)</span>: <span class="math inline">\(\ve{P_t u}_\iy \le \ve{u}_{\iy}\)</span>, <span class="math inline">\(u\in B_b\)</span></li>
+<li>Positive preserving: <span class="math inline">\(u\ge 0\implies P_tu\ge 0\)</span>, <span class="math inline">\(u\in B_b\)</span>.</li>
+<li>Sub-Markovian: <span class="math inline">\(0\le u\le 1\)</span>, <span class="math inline">\(u\in B_b\implies 0\le P_tu\le 1\)</span>.</li>
+<li>Feller: <span class="math inline">\(u\in C_\iy\implies P_t u\in C_\iy\)</span>.</li>
+<li>Strongly continuous on <span class="math inline">\(C_\iy\)</span>: <span class="math inline">\(u\in C_\iy\implies \lim_{t\to 0}\ve{P_tu-u}_\iy = 0\)</span>.</li>
+<li>Strong Feller: <span class="math inline">\(u\in B_b\implies P_tu\in C_b\)</span>.</li>
+</ol>
+<p>(1-4 is Markov, 2-4 is sub-Markov, 2-6 is Feller, 2-4+7 is strong Feller.)</p>
+<p>7.5: <span class="math display">\[\Pj^x(B_{t_i}\in C_i:1\le i\le n) = P_{t_1}[\one_{C_1} P_{t_2-t_1}[\one_{C_2}\cdots ]].\]</span></p>
+<p>This gives a way to construct a Markov process from a semigroup of operators. (Apply to indicator functions.) A Feller semigroup has a corresponding Feller process.</p>
+<h3 id="the-generator">7.2 The generator</h3>
+<p>Motivation: If <span class="math inline">\(\phi:[0,\iy)\to \R\)</span>, additive, <span class="math inline">\(\phi(0)=1\)</span>, then <span class="math inline">\(\phi(t) = e^{at}\)</span>, <span class="math inline">\(a=\ddd t^{+}\phi(t)|_{t=0}\)</span>.</p>
+<strong>Definition</strong>. Let <span class="math inline">\((P_t)_{t\ge 0}\)</span> be Feller semigroup on <span class="math inline">\(C_\iy(\R^d)\)</span>. Then
+<span class="math display">\[\begin{align}
+Au :&amp;= \lim_{t\to 0} \fc{P_t u-u}t\\
+D(A) :&amp;= \set{u\in C_\iy(\R^d)}{\exists g\in C_\iy(\R^d), \lim_{t\to 0} \ve{\fc{P_tu-u}t-g}_{\iy}=0}
+\end{align}\]</span>
+<p>is the infinitesimal generator of <span class="math inline">\((P_t)_{t\ge 0}\)</span>. <span class="math inline">\(A\)</span> is a function <span class="math inline">\(A:D(A)\to C_\iy(\R^d)\)</span>.</p>
+<p>Ex. for <span class="math inline">\(BM^d\)</span>, <span class="math inline">\(P_tu(x) = \E^xu(B_t)\)</span>, <span class="math inline">\(A=\rc 2 \De\)</span> on <span class="math inline">\(C_\iy^2(\R^d)\)</span>. Proof: Taylor expansion.</p>
+Lemma 7.10. Let <span class="math inline">\(P_t\)</span> be Feller semigroup with generator <span class="math inline">\(A\)</span>. <span class="math inline">\(P_t\)</span> and <span class="math inline">\(\int_0^t P_s\cdot\,ds\)</span> are <span class="math inline">\(D(A)\to D(A)\)</span>.
+<span class="math display">\[\begin{align}
+\ddd tP_tu &amp;= AP_tu = P_tAu\\
+P_t u - u &amp;= A\int_0^t P_su\,ds.
+\end{align}\]</span>
+<p><em>Proof.</em> Use: <span class="math inline">\(P_t\)</span> is contraction to get <span class="math inline">\(\ddd t^+\)</span>. Use this and strong continuity to get <span class="math inline">\(\ddd t^-\)</span>. Fubini’s Theorem for part 2.</p>
+<p>Corollary 7.11. Let <span class="math inline">\((P_t)_{t\ge 0}\)</span> be Feller semigroup with generator <span class="math inline">\(A\)</span>.</p>
+<ol type="1">
+<li><span class="math inline">\(D(A)\)</span> is dense in <span class="math inline">\(C_\iy(\R^d)\)</span>.</li>
+<li><span class="math inline">\(A\)</span> is a closed operator.</li>
+<li>If <span class="math inline">\((T_t)_{t\ge 0}\)</span> is also Feller with generator <span class="math inline">\(A\)</span>, <span class="math inline">\(P_t=T_t\)</span>.</li>
+</ol>
+<p><em>Proof</em>.</p>
+<ol type="1">
+<li><span class="math inline">\(\ep^{-1}\int_0^\ep P_su\,ds\to u\)</span>. (Decay it a little!)</li>
+<li>If <span class="math inline">\(u_n\to u\)</span>, <span class="math inline">\(Au_n\to w\)</span>, then <span class="math inline">\(Au=w\)</span>.</li>
+<li><span class="math inline">\(\ddd sP_{t-s} T_su = 0\)</span>.</li>
+</ol>
+<p><strong>Proposition 7.13</strong>. Let <span class="math inline">\(P_t\)</span> be Feller. Then <span class="math inline">\(\al U_\al\)</span> is conservative, contraction on <span class="math inline">\(B_b\)</span>, positivity preserving, Feller, strongly continuous on <span class="math inline">\(C_\iy\)</span>. Moreover</p>
+<ol type="1">
+<li><span class="math inline">\((U_\al)_{\al&gt;0}\)</span> is resolvent: <span class="math inline">\(U_\al = (\al \id -A)^{-1}\)</span>.</li>
+<li>Resolvent equation <span class="math inline">\(U_\al u - U_\be u = (\be-\al) U_\be U_\al u\)</span>, <span class="math inline">\(u\in B_b\)</span>.</li>
+<li>There is 1-to-1 relationship between <span class="math inline">\((P_t)\)</span> and <span class="math inline">\((U_\al)\)</span>.</li>
+<li><span class="math inline">\((U_\al)\)</span> is sub-Markovian iff <span class="math inline">\((P_t)\)</span> is sub-Markovian.</li>
+</ol>
+<p>(Intuition for (1). <span class="math inline">\(\iiy e^{(A-\al I) t}u\,dt = (A-\al I)^{-1}\)</span>.)</p>
+<p>Example 7.14. For Brownian motion <span class="math display">\[
+U_\al u(x) = \begin{cases}
+\int \fc{e^{-\sqrt{2\al}y}{\sqrt{2\al}}u(x+y)\dy,&amp;d=1\\
+\int \rc{\pi^{\fc d2}}\pf{\al}{2y^2}^{\fc d4-\rc2} K_{\fc d2-1}(\sqrt{2\al}y) u(x+y)\dy,&amp;d\ge 2.
+\end{cases}
+\]</span></p>
+<p>Determining domain of generator:</p>
+<p><strong>Theorem</strong>. If <span class="math inline">\((A', D(A'))\)</span> extends <span class="math inline">\((A,D(A))\)</span>, and for any <span class="math inline">\(u\in D(A)\)</span>, <span class="math inline">\(A'u=u\implies u=0\)</span>&lt; then <span class="math inline">\((A,D(A))=(A', D(A'))\)</span>. (? I don’t get this.)</p>
+<h2 id="the-pde-connection">8 The PDE connection</h2>
+<blockquote>
+<p>For many classical PDE problems probability theory yields concrete representation formulae for the solutions in the form of expected values of a Brownian functional. These formulae can be used to get generalized solutions of PDEs (which require less smoothness of the initial/boundary data or the boundary itself) and they are amenable to Monte-Carlo simulations</p>
+</blockquote>
+<p><strong>Lemma</strong> 8.1. <span class="math inline">\(f\in D(\De)\)</span>, <span class="math inline">\(u(t,x):=\E^x f(B_t)\)</span>. <span class="math inline">\(u\)</span> is unique bounded solution of heat equation with initial value <span class="math inline">\(f\)</span>.</p>
+<p><em>Proof</em>. Laplace transform and IbP. Use uniqueness of resolvent operator.</p>
+
+  </div>
+
+    
+
+    <!-- Extension : Sharing buttons @ www.sharethis.com -->
+    <span class='st_facebook_large' displayText='Facebook'></span>
+    <span class='st_twitter_large' displayText='Tweet'></span>
+    <span class='st_googleplus_large' displayText='Google +'></span>
+    <span class='st_reddit_large' displayText='Reddit'></span>
+    <span class='st__large' displayText=''></span>
+
+    <div id="disqus_thread"></div>
+    
+
+
+  
+    <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+  </div>
+  
+</div>
+]]></summary>
+</entry>
+<entry>
+    <title>Tensorflow setup</title>
+    <link href="http://holdenlee.github.io/notebook/posts/tcs/machine_learning/neural_nets/tensorflow.html" />
+    <id>http://holdenlee.github.io/notebook/posts/tcs/machine_learning/neural_nets/tensorflow.html</id>
+    <published>2017-03-03T00:00:00Z</published>
+    <updated>2017-03-03T00:00:00Z</updated>
+    <summary type="html"><![CDATA[
+<div class="container">
+  <div id="content">
+    <div class="page header">
+      <h1>Tensorflow setup</h1>
+    </div>
+    <div class="info">
+      
+       
+        <p>Posted: 2017-03-03 
+          , Modified: 2017-03-03 
+	</p>
+      
+       <p>Tags: <a href="/tags/neural%20nets.html">neural nets</a>, <a href="/tags/programming.html">programming</a>, <a href="/tags/tensorflow.html">tensorflow</a></p> 
+    </div>
+    
+  </div>
+  <!--/div-->
+
+  <div class="toc"> <ul>
+ <li><a href="#setting-up-tensorflow-project">Setting up tensorflow project</a></li>
+ <li><a href="#tensorboard">Tensorboard</a></li>
+ <li><a href="#restoring">Restoring</a></li>
+ <li><a href="#sessions-and-graphs">Sessions and graphs</a></li>
+ <li><a href="#scopes">Scopes</a></li>
+ <li><a href="#questions-to-figure-out">Questions to figure out</a></li>
+ </ul> </div>
+
+  <div class="blog-main">
+    <h2 id="setting-up-tensorflow-project">Setting up tensorflow project</h2>
+<pre><code>sudo apt-get install python-pip python-dev python-virtualenv 
+virtualenv --system-site-packages ~/tensorflow
+source ~/tensorflow/bin/activate # do every time
+pip3 install --upgrade tensorflow-gpu</code></pre>
+<p>With keras (<a href="http://www.pyimagesearch.com/2016/11/14/installing-keras-with-tensorflow-backend/">tutorial</a>)</p>
+<pre><code>virtualenv --system-site-packages ~/keras_tf
+source ~/keras_tf/bin/activate # do every time
+#mkvirtualenv keras_tf
+#workon keras_tf
+pip install --upgrade tensorflow-gpu
+pip install numpy scipy
+pip install scikit-learn
+pip install pillow
+pip install h5py
+pip install keras</code></pre>
+<p>To exit, <code>deactivate</code>.</p>
+<p>Cleverhans: at <code>holdenl</code></p>
+<pre><code>git clone https://github.com/openai/cleverhans
+export PYTHONPATH=&quot;/home/optml/holdenl/cleverhans&quot;:$PYTHONPATH # do every time
+pip install matplotlib</code></pre>
+<p>For cycles, <code>export PYTHONPATH=&quot;/u/holdenl/code/cleverhans&quot;:$PYTHONPATH # do every time</code></p>
+<p>Cycles: do every time</p>
+<pre><code>export PYTHONPATH=&quot;/u/holdenl/code/cleverhans&quot;:$PYTHONPATH # do every time
+source ~/keras_tf/bin/activate # do every time</code></pre>
+<h2 id="tensorboard">Tensorboard</h2>
+<p>Do <code>ssh</code> linking port 6006:</p>
+<pre><code>ssh -t -t -L 6006:localhost:6006 holdenl@portal.cs.princeton.edu &quot;ssh -L 6006:localhost:6006 optml@optml.cs.princeton.edu&quot;</code></pre>
+<p>Run tensorboard.</p>
+<pre><code>tensorboard --logdir=tf-slim/train/</code></pre>
+<h2 id="restoring">Restoring</h2>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">restorer <span class="op">=</span> tf.train.Saver()
+<span class="cf">with</span> tf.Session() <span class="im">as</span> sess:
+	<span class="co"># Restore variables from disk. #tf-slim/</span>
+	restorer.restore(sess, <span class="st">&quot;./tf-slim/train/model.ckpt-20000&quot;</span>)
+	<span class="bu">print</span>(<span class="st">&quot;Model restored.&quot;</span>)
+	<span class="bu">print</span>(<span class="st">&quot;test accuracy </span><span class="sc">%g</span><span class="st">&quot;</span><span class="op">%</span>accuracy.<span class="bu">eval</span>(feed_dict<span class="op">=</span>{
+            x: mnist.test.images, y_: mnist.test.labels, keep_prob: <span class="fl">1.0</span>}, session<span class="op">=</span>sess))</code></pre></div>
+<h2 id="sessions-and-graphs">Sessions and graphs</h2>
+<p>A graph is just the skeleton. A session is when the graph is actually run.</p>
+<p>Two ways to run a session:</p>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">sess <span class="op">=</span> tf.Session()
+sess.run(tf.global_variables_initializer())
+accuracy.<span class="bu">eval</span>(feed_dict<span class="op">=</span>{
+	x:batch[<span class="dv">0</span>], y_: batch[<span class="dv">1</span>], keep_prob: <span class="fl">1.0</span>}, session<span class="op">=</span>sess)</code></pre></div>
+<p>Second way: (Probably this is preferred because “with” invokes some magic.)</p>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">sess <span class="op">=</span> tf.Session()
+<span class="cf">with</span> tf.Session() <span class="im">as</span> sess:
+	...</code></pre></div>
+<h2 id="scopes">Scopes</h2>
+<pre><code>with tf.variable_scope(&quot;conv1&quot;):</code></pre>
+<h2 id="questions-to-figure-out">Questions to figure out</h2>
+<ul>
+<li>What CPU/GPU is actually used?</li>
+<li>How do virtual environments work?</li>
+</ul>
+
+  </div>
+
+    
+
+    <!-- Extension : Sharing buttons @ www.sharethis.com -->
+    <span class='st_facebook_large' displayText='Facebook'></span>
+    <span class='st_twitter_large' displayText='Tweet'></span>
+    <span class='st_googleplus_large' displayText='Google +'></span>
+    <span class='st_reddit_large' displayText='Reddit'></span>
+    <span class='st__large' displayText=''></span>
+
+    <div id="disqus_thread"></div>
+    
+
+
+  
+    <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+  </div>
+  
+</div>
+]]></summary>
+</entry>
+<entry>
+    <title>Adversarial experiments</title>
+    <link href="http://holdenlee.github.io/notebook/posts/tcs/machine_learning/neural_nets/adversarial_experiments.html" />
+    <id>http://holdenlee.github.io/notebook/posts/tcs/machine_learning/neural_nets/adversarial_experiments.html</id>
+    <published>2017-03-02T00:00:00Z</published>
+    <updated>2017-03-02T00:00:00Z</updated>
+    <summary type="html"><![CDATA[
+<div class="container">
+  <div id="content">
+    <div class="page header">
+      <h1>Adversarial experiments</h1>
+    </div>
+    <div class="info">
+      
+       
+        <p>Posted: 2017-03-02 
+          , Modified: 2017-03-02 
+	</p>
+      
+       <p>Tags: <a href="/tags/neural%20nets.html">neural nets</a>, <a href="/tags/uncertainty.html">uncertainty</a>, <a href="/tags/aaml.html">aaml</a></p> 
+    </div>
+    
+  </div>
+  <!--/div-->
+
+  <div class="toc"></div>
+
+  <div class="blog-main">
+    <ul>
+<li>Control: MNIST, default network, generate adversarial examples</li>
+<li></li>
+</ul>
+
+  </div>
+
+    
+
+    <!-- Extension : Sharing buttons @ www.sharethis.com -->
+    <span class='st_facebook_large' displayText='Facebook'></span>
+    <span class='st_twitter_large' displayText='Tweet'></span>
+    <span class='st_googleplus_large' displayText='Google +'></span>
+    <span class='st_reddit_large' displayText='Reddit'></span>
+    <span class='st__large' displayText=''></span>
+
+    <div id="disqus_thread"></div>
+    
+
+
+  
+    <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+  </div>
+  
+</div>
+]]></summary>
+</entry>
+<entry>
+    <title>Neural net learning, Anthony and Bartlett</title>
+    <link href="http://holdenlee.github.io/notebook/posts/tcs/machine_learning/neural_nets/nn_learning.html" />
+    <id>http://holdenlee.github.io/notebook/posts/tcs/machine_learning/neural_nets/nn_learning.html</id>
+    <published>2017-02-28T00:00:00Z</published>
+    <updated>2017-02-28T00:00:00Z</updated>
+    <summary type="html"><![CDATA[
+<div class="container">
+  <div id="content">
+    <div class="page header">
+      <h1>Neural net learning, Anthony and Bartlett</h1>
+    </div>
+    <div class="info">
+      
+       
+        <p>Posted: 2017-02-28 
+          , Modified: 2017-02-28 
+	</p>
+      
+       <p>Tags: <a href="/tags/neural%20nets.html">neural nets</a></p> 
+    </div>
+    
+  </div>
+  <!--/div-->
+
+  <div class="toc"> <ul>
+ <li><a href="#classification-with-real-valued-functions">9 Classification with real-valued functions</a><ul>
+ <li><a href="#intro">9.1 Intro</a></li>
+ <li><a href="#large-margin-classifiers">9.2 Large margin classifiers</a></li>
+ </ul></li>
+ <li><a href="#covering-numbers-and-uniform-convergence">10 Covering numbers and uniform convergence</a><ul>
+ <li><a href="#uniform-convergence">10.3 Uniform convergence</a></li>
+ </ul></li>
+ <li><a href="#pseudo-dimension-and-fat-shattering-dimension">11 Pseudo-dimension and fat-shattering dimension</a><ul>
+ <li><a href="#pseudo-dimension">11.2 Pseudo-dimension</a></li>
+ <li><a href="#fat-shattering-dimension">11.3 Fat-shattering dimension</a></li>
+ </ul></li>
+ <li><a href="#bounding-covering-numbers-with-dimensions">12 Bounding covering numbers with dimensions</a></li>
+ <li><a href="#section">13</a></li>
+ <li><a href="#dimensions-of-neural-networks">14 Dimensions of neural networks</a><ul>
+ <li><a href="#in-terms-of-number-of-parameters">14.3 In terms of number of parameters</a></li>
+ <li><a href="#on-fat-shattering-dimensions-independent-of-number-of-parameters">14.4 On Fat-shattering dimensions, independent of number of parameters</a></li>
+ </ul></li>
+ </ul> </div>
+
+  <div class="blog-main">
+    <h2 id="classification-with-real-valued-functions">9 Classification with real-valued functions</h2>
+<h3 id="intro">9.1 Intro</h3>
+<ul>
+<li>VC dim grows with number of parameters</li>
+<li>Training set <span class="math inline">\(\ll\)</span> number of parameters, but still avoids overfitting.</li>
+<li>7.1: arbitrarily small modification to activation makes VC-dimension infinite</li>
+<li>In theo theory model, learning algorithm is required to perform well for any probability distribution.</li>
+<li>Learning model not appropriate for NN learning algorithms. Many learning algorithms take into account the real output.</li>
+<li>Take into account the margin</li>
+<li>Get bounds on misclassification <span class="math inline">\(\pat{error}\le \pat{estimate of error} + \pat{complexity penalty}\)</span>. Complexity parameter depends on size of parameters in the network.</li>
+<li>Interpret: value of the function as an estimate of the probability that the correct label is 1</li>
+</ul>
+<h3 id="large-margin-classifiers">9.2 Large margin classifiers</h3>
+<ul>
+<li><span class="math inline">\(Z=X\times \{0,1\}\)</span>. Margin of <span class="math inline">\(f\)</span> on <span class="math inline">\((x,y)\in Z\)</span> is <span class="math inline">\(\sign(y) (f(x)-\rc 2)\)</span>.</li>
+<li>Error <span class="math inline">\(err_P^\ga(f) = \Pj(\text{margin}(f(x),y)&lt;\ga)\)</span>.</li>
+<li>Classification learning algorithm for real-valued functions: <span class="math inline">\(err_P(L(\ga,z)) &lt; \inf_{g\in F}err_P^\ga(g)+\ep\)</span>.</li>
+<li><span class="math inline">\(\wh{err}_z^\ga(f) = \rc m |\set{i}{\text{margin}(f(x_i),y_i)&lt;\ga}|\)</span>.</li>
+<li>Chebyshev: if <span class="math inline">\(\ep\)</span> is <span class="math inline">\(L_2\)</span> error, <span class="math inline">\(\wh{err}_z^\ga (f) &lt; \fc{\ep}{(\rc2-\ga)^2}\)</span>.</li>
+</ul>
+<h2 id="covering-numbers-and-uniform-convergence">10 Covering numbers and uniform convergence</h2>
+<ul>
+<li><span class="math inline">\(N(\ep, W, d_\iy)\)</span> is the minimum cardinality of a cover of <span class="math inline">\(W\)</span> by <span class="math inline">\(\ep\)</span>-balls in <span class="math inline">\(L^{\iy}\)</span>.</li>
+<li>Ex. if <span class="math inline">\(F|_{x_{1:k}}\)</span> is contained in a linear subspace of dimension <span class="math inline">\(d\)</span>, then grows as <span class="math inline">\(\pf k\ep^d\)</span>.</li>
+<li><span class="math inline">\(N_\iy(\ep, F, k) =\max_{x\in X^k} N(\ep, F|_x, d_\iy)\)</span>.</li>
+</ul>
+<h3 id="uniform-convergence">10.3 Uniform convergence</h3>
+<p><span class="math display">\[
+\Pj^m [\exists f\in F, err_P(f) \ge \wh{err}_z^\ga (f) + \ep] \le 2N_\iy(\fc \ga2, F, 2m) e^{-\fc{\ep^2m}{8}}.
+\]</span> (<span class="math inline">\(\max\)</span> here signals that <span class="math inline">\(L^\iy\)</span> is the right covering.)</p>
+<p>If covering number grows as <span class="math inline">\(\poly(m)\)</span>, then this approaches 0 exponentially.</p>
+<h2 id="pseudo-dimension-and-fat-shattering-dimension">11 Pseudo-dimension and fat-shattering dimension</h2>
+<p>Is there a combo measure like the VC dimension to bound covering numbers?</p>
+<h3 id="pseudo-dimension">11.2 Pseudo-dimension</h3>
+<ul>
+<li><span class="math inline">\(F\)</span> is a set of functions <span class="math inline">\(X\to \R\)</span>, <span class="math inline">\(S=\{x_1,\ldots, x_m\}\subeq X\)</span>. <span class="math inline">\(S\)</span> is <strong>pseudoshattered</strong> by <span class="math inline">\(F\)</span> if there are <span class="math inline">\(r_i\)</span>, s.t. for all <span class="math inline">\(b\in \{0,1\}^m\)</span>, there is <span class="math inline">\(f_b\in F\)</span>, <span class="math inline">\(\sign(f_b(x_i)-r_i)=b_i\)</span>. (Achieve all possible above/below combinations.)</li>
+<li><strong>Pseudo-dimension</strong> is maximum <span class="math inline">\(|S|\)</span> pseudo-shattered by <span class="math inline">\(F\)</span>.</li>
+<li>The pseudodimension of <span class="math inline">\(F\)</span> is the VC dimension of <span class="math inline">\(\set{\sign(f(x)-y)}{f\in F}\)</span>.</li>
+<li>Pseudoshattered iff some translate of <span class="math inline">\(F|_x\)</span> intersects all orthants.</li>
+<li>Composing with nondecreasing function doesn’t increase.</li>
+<li>If <span class="math inline">\(F\)</span> is vector space, <span class="math inline">\(Pdim(F)=\dim(F)\)</span>.</li>
+<li><span class="math inline">\(F=\set{w_0+w^Tx}{w\in \R^n}\)</span>: <span class="math inline">\(P\dim(F)=n+1\)</span>.</li>
+<li>Poly transformations of degree <span class="math inline">\(\le k\)</span>: <span class="math inline">\(P\dim(F) = \binom{n+k}k\)</span>.</li>
+<li>Poly transformations on <span class="math inline">\(\{0,1\}^k\)</span> of degree <span class="math inline">\(\le k\)</span>: <span class="math inline">\(\sumz ik \binom ni\)</span>.</li>
+</ul>
+<h3 id="fat-shattering-dimension">11.3 Fat-shattering dimension</h3>
+<ul>
+<li><span class="math inline">\(S\)</span> is <span class="math inline">\(\ga\)</span>-shattered by <span class="math inline">\(F\)</span> if there are <span class="math inline">\(r_i\)</span> such that for each <span class="math inline">\(b\in \{0,1\}^m\)</span>, there is <span class="math inline">\(f_b\in F\)</span>,
+<span class="math display">\[\begin{align}
+f_b(x_i) &amp; \ge r_i+\ga,&amp;b_i=1\\
+f_b(x_i) &amp;\le r_i - \ga,&amp;b_i=0.
+\end{align}\]</span></li>
+<li><span class="math inline">\(\ga\)</span>-dimension is max cardinality of <span class="math inline">\(S\)</span> that is <span class="math inline">\(\ga\)</span>-shattered by <span class="math inline">\(F\)</span>, <span class="math inline">\(fat_F(\ga)\)</span>.</li>
+<li>This is a scale-sensitive dimension.</li>
+<li>Ex. <span class="math inline">\(F\)</span> set of functions <span class="math inline">\([0,1]\to [0,1]\)</span> with total variation <span class="math inline">\(\le V\)</span>. <span class="math inline">\(fat_F(\ga) = 1+\ff{V}{2\ga}\)</span>.</li>
+<li><span class="math inline">\(fat_F(\ga)\le P\dim(F)\)</span>. <span class="math inline">\(P\dim(F) = \lim_{\ga\to 0} fat_F(\ga)\)</span>.</li>
+<li>If closed under scalar multiplication, <span class="math inline">\(fat_F(\ga) = Pdim(F)\)</span>.</li>
+</ul>
+<h2 id="bounding-covering-numbers-with-dimensions">12 Bounding covering numbers with dimensions</h2>
+<ul>
+<li><span class="math inline">\(W\subeq A\)</span> is <span class="math inline">\(\ep\)</span>-separated/packing if <span class="math inline">\(\forall x,y\in P\)</span> distinct, <span class="math inline">\(d(x,y)\ge \ep\)</span>.</li>
+<li><span class="math inline">\(\ep\)</span>-packing number <span class="math inline">\(M(\ep,W,d)\)</span> max cardinality of <span class="math inline">\(\ep\)</span>-separated subset.</li>
+<li>Uniform packing number <span class="math inline">\(M_p(\ep, H, k) = \max_{x\in X^k} M(\ep, H|_x, d_p)\)</span>.</li>
+<li><span class="math inline">\(M(2\ep, W, d)\le N(\ep, W, d)\le M(\ep, W,d)\)</span>.</li>
+<li>If <span class="math inline">\(F:\{X\to [0,B]\}\)</span>, <span class="math inline">\(N_\iy(\ep, F, m)\le \sumo id \binom mi \pf B\ep^i\le \pf{emB}{\ep d}^d\)</span>.</li>
+<li>(Bound covering number by fat-shattering dimension)
+<span class="math display">\[\begin{align}
+M_\iy(\ep, F, m) &amp;&lt; 2(mb^2)^{\ce{\lg y}}\\
+b&amp;=\ff{2B}{\ep}\\
+d&amp;=fat_F\pf{\ep}4\\
+y&amp;=\sumo id \binom mi b^i.
+\end{align}\]</span></li>
+<li>Fat-shattering dimension determines in a fairly precise manner the covering numbers of a function class: <span class="math inline">\(F:\{X\to [0,B]\}\)</span>. <span class="math inline">\(m\ge fat_F\pf{\ep}4\ge 1\)</span>.
+<span class="math display">\[\begin{align}
+\fc{\lg e}8 fat_F(16\ep) \le \lg N_1(\ep, F, m) \le \lg N_\iy(\ep, F, m) \le 3fat_F\pf{\ep}4 \lg\pf{4e Bm}{\ep}^2.
+\end{align}\]</span></li>
+</ul>
+<h2 id="section">13</h2>
+<p>Large margin SEM algorithm: gives <span class="math inline">\(\wh{err}_z^\ga (L(\ga, z)) = \min_{f\in F}\wh{err}_z^\ga (f)\)</span>.</p>
+<h2 id="dimensions-of-neural-networks">14 Dimensions of neural networks</h2>
+<p>We bound the covering numbers and fat-shattering dimensions for net- works that are fully connected between adjacent layers, that have units with a bounded activation function satisfying a Lipschitz constraint, and that have all weights (or all weights in certain layers) constrained to be small.</p>
+<p>Two types of bounds. Two notions of complexity: parameters and size of parameters</p>
+<h3 id="in-terms-of-number-of-parameters">14.3 In terms of number of parameters</h3>
+<ul>
+<li><span class="math inline">\(F:\{X\to Y_1\}\)</span>, <span class="math inline">\(G:\{Y_1\to \R\}\)</span>, <span class="math inline">\(G\)</span> is <span class="math inline">\(L\)</span>-lipschitz. Let <span class="math inline">\(d_\iy^\rh(y,z) = \max_{1\le i\le m}\rh(y_i,z_i)\)</span>. Then <span class="math display">\[N_\iy(\ep, G\circ F_1, m)\le \max_{x\in X^m} N\pa{\fc{\ep}{2L}, F_1|_x, d_\iy^\rh} N(\pf \ep2, G, d_{L_\iy}).\]</span></li>
+<li>Note finite <span class="math inline">\(L_\iy\)</span> cover is very strong.</li>
+<li>Neural network
+<ul>
+<li><span class="math inline">\(l\)</span> layers</li>
+<li><span class="math inline">\(W\)</span> weights</li>
+<li>Computaion maps into <span class="math inline">\([-b,b]\)</span></li>
+<li>For each unit, <span class="math inline">\(\ve{w}_1\le V\)</span>.</li>
+<li>Activation functions <span class="math inline">\(L\)</span>-Lipschitz</li>
+</ul></li>
+<li><span class="math inline">\(N_\iy (\ep, F, m) \le \pf{4embW(LV)^l}{\ep(LV-1)}^W\)</span>.</li>
+</ul>
+<h3 id="on-fat-shattering-dimensions-independent-of-number-of-parameters">14.4 On Fat-shattering dimensions, independent of number of parameters</h3>
+<p><span class="math inline">\(fat_F(\ga)\)</span> increases with <span class="math inline">\(\rc{\ga}\)</span>, weight bound, and number of layers.</p>
+<ul>
+<li>Neural network
+<ul>
+<li><span class="math inline">\(B=b\)</span> bound on magnitude of input values and activation function</li>
+<li><span class="math inline">\(l\)</span>-layer</li>
+<li><span class="math inline">\(\ve{w}_1\le V\)</span>.</li>
+<li><span class="math inline">\(s\)</span> is <span class="math inline">\(L\)</span>-Lipschitz</li>
+</ul></li>
+<li><span class="math inline">\(l\ge 1, b\ge 1, V\ge \rc{2L}, \ep\le VbL\)</span>. Then <span class="math inline">\(\lg N_2(\ep, F_l,m) \le \rc2 \pf{2b}{\ep}^{2l} (2VL)^{l(l+1)} \lg (2n+2)\)</span>.</li>
+<li><span class="math inline">\(fat_{F_l}(\ep) \le 4 \pf{32b}{\ep}^{2l} (2VL)^{l(l+1)} \ln (2n+2)\)</span>.</li>
+</ul>
+
+  </div>
+
+    
+
+    <!-- Extension : Sharing buttons @ www.sharethis.com -->
+    <span class='st_facebook_large' displayText='Facebook'></span>
+    <span class='st_twitter_large' displayText='Tweet'></span>
+    <span class='st_googleplus_large' displayText='Google +'></span>
+    <span class='st_reddit_large' displayText='Reddit'></span>
+    <span class='st__large' displayText=''></span>
+
+    <div id="disqus_thread"></div>
+    
+
+
+  
+    <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+  </div>
+  
+</div>
+]]></summary>
+</entry>
+<entry>
+    <title>Conversation with Paul Christiano</title>
+    <link href="http://holdenlee.github.io/notebook/posts/cs/ai/control/paul.html" />
+    <id>http://holdenlee.github.io/notebook/posts/cs/ai/control/paul.html</id>
+    <published>2017-02-28T00:00:00Z</published>
+    <updated>2017-02-28T00:00:00Z</updated>
+    <summary type="html"><![CDATA[
+<div class="container">
+  <div id="content">
+    <div class="page header">
+      <h1>Conversation with Paul Christiano</h1>
+    </div>
+    <div class="info">
+      
+       
+        <p>Posted: 2017-02-28 
+          , Modified: 2017-02-28 
+	</p>
+      
+       <p>Tags: <a href="/tags/ai%20safety.html">ai safety</a>, <a href="/tags/machine%20learning.html">machine learning</a></p> 
+    </div>
+    
+  </div>
+  <!--/div-->
+
+  <div class="toc"></div>
+
+  <div class="blog-main">
+    <p>See <a href="alignment_ml.html">alignment</a> and <a href="concrete.html">Concrete</a></p>
+<ol type="1">
+<li>Overseeing RL systems
+<ul>
+<li>What to do when verification is hard, ex. plagiarism?
+<ul>
+<li>Ex. Have an adversarial system which gives you information that would help you discriminate. How do you make sure the optimization is on the same footing?</li>
+<li>Concrete problem: GAN where discriminator recognizes and penalizes perfect memorization.
+<ul>
+<li>Step 1. Give discriminator access to images. Ex. train the discriminator with an attention model over the images.</li>
+<li>Step 2. Give discriminator access to generator’s insides. If the generator has a pointer to the image, the generator discovers that.</li>
+</ul></li>
+</ul></li>
+<li>Suppose an AI comes up with a plan to execute in the real world. You lack physical control. How do you make sure the AI doesn’t trick you?</li>
+</ul></li>
+<li>Semi-supervised learning
+<ul>
+<li>Find algorithms that work in this setting.</li>
+<li>What is the sample complexity? Info-theoretic vs. for efficient algorithms?</li>
+<li>Learning human values</li>
+</ul></li>
+<li>Learning by imitation
+<ul>
+<li>Inverse reinforcement learning</li>
+<li>ELBA:
+<ul>
+<li>How can level <span class="math inline">\(n\)</span>-agents meditate a dispute among <span class="math inline">\(n+1\)</span>-level agents, possibly given more time? (<span class="math inline">\(n+1\)</span>-level agents have to “make their case”)</li>
+<li>Even if <span class="math inline">\(n+1\)</span>-level agents are opaque. (ML method. The logic method is to bake safety into it.)</li>
+<li>Presupposes diversity</li>
+</ul></li>
+</ul></li>
+</ol>
+
+  </div>
+
+    
+
+    <!-- Extension : Sharing buttons @ www.sharethis.com -->
+    <span class='st_facebook_large' displayText='Facebook'></span>
+    <span class='st_twitter_large' displayText='Tweet'></span>
+    <span class='st_googleplus_large' displayText='Google +'></span>
+    <span class='st_reddit_large' displayText='Reddit'></span>
+    <span class='st__large' displayText=''></span>
+
+    <div id="disqus_thread"></div>
+    
+
+
+  
+    <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+  </div>
+  
+</div>
+]]></summary>
+</entry>
+<entry>
     <title>AdaGAN</title>
     <link href="http://holdenlee.github.io/notebook/posts/tcs/machine_learning/neural_nets/AdaGAN.html" />
     <id>http://holdenlee.github.io/notebook/posts/tcs/machine_learning/neural_nets/AdaGAN.html</id>
@@ -343,6 +1071,7 @@ For all distributions <span class="math inline">\(p\)</span>,
   <div class="toc"> <ul>
  <li><a href="#introduction">Introduction</a><ul>
  <li><a href="#statement">Statement</a></li>
+ <li><a href="#blog-posts">Blog posts</a></li>
  <li><a href="#literature">Literature</a></li>
  <li><a href="#experiments">Experiments</a></li>
  <li><a href="#theory">Theory</a></li>
@@ -356,13 +1085,14 @@ For all distributions <span class="math inline">\(p\)</span>,
  </ul> </div>
 
   <div class="blog-main">
-    <h2 id="introduction">Introduction</h2>
+    <p>See <a href="adversarial_experiments.html">my experiments</a>.</p>
+<h2 id="introduction">Introduction</h2>
 <h3 id="statement">Statement</h3>
 <p>Neural networks can be easily fooled—ex. an adversary adding a small amount of noise can change the classification from “dog” to “cat” with high confidence. It can be fooled even by a weak adversary with just black-box access!</p>
 <p>Related to making NN’s resistant: Have NN’s give a confidence bound.</p>
 <p>Ideas:</p>
 <ul>
-<li>Use uncertainty quantification from statistics: Fisher information. See personal communication with Jacob.</li>
+<li>Use uncertainty quantification from statistics: Fisher information. See personal communication with Jacob S.</li>
 <li>Use an ensemble of neural nets. Train an ensemble in parallel, vs. train together against a discriminator.</li>
 <li>Sleeping in NN</li>
 <li>Use some kind of calibration. I have a suspicion that cross-entropy simply doesn’t generalize because losses are unbounded.</li>
@@ -370,10 +1100,17 @@ For all distributions <span class="math inline">\(p\)</span>,
 <li>Make Lipschitz/other regularization. Give noisy example with the kind of noise you want to be resistant against.</li>
 <li>Boosting</li>
 </ul>
+<h3 id="blog-posts">Blog posts</h3>
+<ul>
+<li><a href="http://karpathy.github.io/2015/03/30/breaking-convnets/">breaking linear classifiers</a> <a href="http://scrible.com/s/6wE0Q">h</a></li>
+<li><a href="http://www.kdnuggets.com/2015/07/deep-learning-adversarial-examples-misconceptions.html">myths</a> <a href="http://scrible.com/s/4wU0Q">h</a></li>
+<li><a href="https://openai.com/blog/adversarial-example-research/">OpenAI blog post</a></li>
+</ul>
 <h3 id="literature">Literature</h3>
 <ul>
 <li>[SZSB14] Intriguing properties of neural networks <a href="https://arxiv.org/pdf/1312.6199.pdf?not-changed">paper</a></li>
 <li>Ian J Goodfellow, Jonathon Shlens, and Christian Szegedy. Explaining and harnessing adversarial examples. arXiv preprint arXiv:1412.6572, 2014.</li>
+<li>[NYC15] Deep Neural Networks are Easily Fooled - High Confidence Predictions for Unrecognizable Images</li>
 <li></li>
 <li></li>
 <li>[LCLS17] Delving into Transferable Adversarial Examples and Black-box Attacks</li>
@@ -601,733 +1338,6 @@ For all distributions <span class="math inline">\(p\)</span>,
 <li>RL</li>
 <li>TF in Haskell!</li>
 </ul>
-
-  </div>
-
-    
-
-    <!-- Extension : Sharing buttons @ www.sharethis.com -->
-    <span class='st_facebook_large' displayText='Facebook'></span>
-    <span class='st_twitter_large' displayText='Tweet'></span>
-    <span class='st_googleplus_large' displayText='Google +'></span>
-    <span class='st_reddit_large' displayText='Reddit'></span>
-    <span class='st__large' displayText=''></span>
-
-    <div id="disqus_thread"></div>
-    
-
-
-  
-    <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
-  </div>
-  
-</div>
-]]></summary>
-</entry>
-<entry>
-    <title>Questions</title>
-    <link href="http://holdenlee.github.io/notebook/posts/math/logic/questions.html" />
-    <id>http://holdenlee.github.io/notebook/posts/math/logic/questions.html</id>
-    <published>2017-02-19T00:00:00Z</published>
-    <updated>2017-02-19T00:00:00Z</updated>
-    <summary type="html"><![CDATA[
-<div class="container">
-  <div id="content">
-    <div class="page header">
-      <h1>Questions</h1>
-    </div>
-    <div class="info">
-      
-       
-        <p>Posted: 2017-02-19 
-          , Modified: 2017-02-19 
-	</p>
-      
-       <p>Tags: <a href="/tags/logic.html">logic</a></p> 
-    </div>
-    
-  </div>
-  <!--/div-->
-
-  <div class="toc"></div>
-
-  <div class="blog-main">
-    <p>Things I’m confused about.</p>
-<ul>
-<li>I’m uncomfortable with theorems in the meta-logic. How do you define the meta-logic without infinite recursion (meta-meta, etc.)? Godel incompleteness, etc. are NOT theorems in the logic, but the meta-logic—if you want them as theorems in the logic then you have to define the logic inside the logic—there’s no reflection, right? Because that would be <span class="math inline">\(\square A to A\)</span>.</li>
-<li>What did I mean by reflection?</li>
-<li>Nesting is unsatisfactory…</li>
-<li>Is <span class="math inline">\(PA\vdash A\implies PA\vdash B \iff PA\vdash \square A \to \square B\)</span> a theorem in the meta-logic?</li>
-<li>Is <span class="math inline">\(PA\vdash \square A\implies PA\vdash A\)</span> a theorem in the meta-logic? An axiom?</li>
-<li>How do you define “truth” in the meta-logic?</li>
-<li>Is <span class="math inline">\(\square \square A \to \square A\)</span> a theorem?</li>
-<li>Is <span class="math inline">\(PA\vdash \square A \to \square B, PA\vdash A \implies PA\vdash B\)</span>? How about <span class="math inline">\(PA\vdash \square (\square A \to \square B)\wedge \square A \to \square B\)</span>?</li>
-<li>Can you add quantifiers? Is it true that <span class="math inline">\(\forall x, \square P(x) \imples \square \forall x, P(x)\)</span>? My guess is not (at least, it can’t be proved). Should <span class="math inline">\(\square\)</span> be Bew here? I think you’re not allowed to use <span class="math inline">\(\square\)</span> here, but that’s ok, you can state it with Bew. <span class="math inline">\(\square\)</span> is interpreted as <span class="math inline">\(Bew(\ce{})\)</span> in PA, right?</li>
-<li>Is <span class="math inline">\((\square A \to \square B) \to \square (A\to B)\)</span> a theorem?</li>
-</ul>
-
-  </div>
-
-    
-
-    <!-- Extension : Sharing buttons @ www.sharethis.com -->
-    <span class='st_facebook_large' displayText='Facebook'></span>
-    <span class='st_twitter_large' displayText='Tweet'></span>
-    <span class='st_googleplus_large' displayText='Google +'></span>
-    <span class='st_reddit_large' displayText='Reddit'></span>
-    <span class='st__large' displayText=''></span>
-
-    <div id="disqus_thread"></div>
-    
-
-
-  
-    <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
-  </div>
-  
-</div>
-]]></summary>
-</entry>
-<entry>
-    <title>UDT</title>
-    <link href="http://holdenlee.github.io/notebook/posts/cs/ai/control/udt.html" />
-    <id>http://holdenlee.github.io/notebook/posts/cs/ai/control/udt.html</id>
-    <published>2017-02-19T00:00:00Z</published>
-    <updated>2017-02-19T00:00:00Z</updated>
-    <summary type="html"><![CDATA[
-<div class="container">
-  <div id="content">
-    <div class="page header">
-      <h1>UDT</h1>
-    </div>
-    <div class="info">
-      
-       
-        <p>Posted: 2017-02-19 
-          , Modified: 2017-02-19 
-	</p>
-      
-       <p>Tags: <a href="/tags/ai%20safety.html">ai safety</a>, <a href="/tags/game%20theory.html">game theory</a>, <a href="/tags/decision%20theory.html">decision theory</a></p> 
-    </div>
-    
-  </div>
-  <!--/div-->
-
-  <div class="toc"></div>
-
-  <div class="blog-main">
-    <p>Main notes <a href="game_theory.html">here</a>.</p>
-<ul>
-<li>It seems we don’t need to quine - we can just view A, U as functions of each other’s source codes. Just impose some halting criterion. Then just evaluate <span class="math inline">\(U(\ce{A})\)</span>… Oh, but how does U give A its own code?
-<ul>
-<li>External program runs them? I don’t like this.</li>
-<li>I don’t like co-quining them because then I feel I lose the algorithmic interpretability - now I don’t feel like they’re programs anymore. For some reason I’m having trouble thinking about quines in terms of programs, I can think about them in terms of logic statements.</li>
-<li>I think the programs should handle the quining themselves. Ah. If U doesn’t quine itself, it has no way of running A with its own source code. So U is a quine in the sense that it can give A its own source code. This solves things. Otherwise, U would not be able to run A. A also has incentive to quine itself, otherwise it cannot simulate U on A, or prove statements about itself.</li>
-<li>Can a non-quined program be taken advantage of?</li>
-<li>Wait, but writing the code I didn’t do any quining!</li>
-<li>Oh, you can just assume U, A can run themselves. You assume they’re quined for convenience in reasoning about them, but you don’t actually need them to be quined themselves.</li>
-<li>Quining is just the way in logic to get access to own source code - in programming you don’t need to do it explicitly because the source code is in the file.</li>
-<li>Do you need to quine for corecursion?</li>
-<li>I don’t think any of this is important–they’re all basically taken care of by the programming language.</li>
-<li>! You can’t separate what the agent does from who it is: ex. why you can’t just feed all possible functions into something else, then let yourself be the best function. The other agent would act differently against that function vs. against you. Ex. playing against PrudentBot, PrudentBot defects against both <code>const c</code> and <code>const d</code>, if these are the only things you’re trying, you’ll just defect!</li>
-<li>For U/A say the agent has fixed runtime, the universe has finite runtime (alternatively it can rely on the truth of logical statements). For A/A say both have fixed (large) runtime.</li>
-</ul></li>
-<li>What if we want U to have access to some oracle? How can we ensure that we can actually prove the output of U? Can this be made equivalent to the condition that U halts?</li>
-<li>Is there a way to implement these agents without having them search for proofs? Ex. do “lazy evaluation?” I don’t see a way to do this.</li>
-<li>If <code>fairBot x = (if x coopBot == c then c else d)</code> then</li>
-<li>I want to say something like, there’s a sequence Bot1, Bot2,… with longer lookbacks, and Bot-k outperforms Bot-(k-1) by “pretending” to be something that Bot-(k-1) will cooperate with and then stabbing it in the back… this seems to be going the other way.</li>
-<li>Why do we keep talking about “embedded” agents?</li>
-</ul>
-
-  </div>
-
-    
-
-    <!-- Extension : Sharing buttons @ www.sharethis.com -->
-    <span class='st_facebook_large' displayText='Facebook'></span>
-    <span class='st_twitter_large' displayText='Tweet'></span>
-    <span class='st_googleplus_large' displayText='Google +'></span>
-    <span class='st_reddit_large' displayText='Reddit'></span>
-    <span class='st__large' displayText=''></span>
-
-    <div id="disqus_thread"></div>
-    
-
-
-  
-    <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
-  </div>
-  
-</div>
-]]></summary>
-</entry>
-<entry>
-    <title>The Blessing and the Curse of the Multiplicative Updates</title>
-    <link href="http://holdenlee.github.io/notebook/posts/tcs/machine_learning/optimization/multiplicative_update.html" />
-    <id>http://holdenlee.github.io/notebook/posts/tcs/machine_learning/optimization/multiplicative_update.html</id>
-    <published>2017-02-12T00:00:00Z</published>
-    <updated>2017-02-12T00:00:00Z</updated>
-    <summary type="html"><![CDATA[
-<div class="container">
-  <div id="content">
-    <div class="page header">
-      <h1>The Blessing and the Curse of the Multiplicative Updates</h1>
-    </div>
-    <div class="info">
-      
-       
-        <p>Posted: 2017-02-12 
-          , Modified: 2017-02-12 
-	</p>
-      
-       <p>Tags: <a href="/tags/multiplicative%20update.html">multiplicative update</a>, <a href="/tags/online%20learning.html">online learning</a>, <a href="/tags/biology.html">biology</a>, <a href="/tags/evolution.html">evolution</a></p> 
-    </div>
-    
-  </div>
-  <!--/div-->
-
-  <div class="toc"> <ul>
- <li><a href="#dispelling-the-curse">Dispelling the curse</a></li>
- <li><a href="#summary">Summary</a></li>
- </ul> </div>
-
-  <div class="blog-main">
-    <p>(Chapter by Manfred Warmuth)</p>
-<p>Setting: online learning</p>
-<p>Maintain weights where <span class="math inline">\(w_i\)</span> is the belief that the <span class="math inline">\(i\)</span>th expert is best. Prediction: weighted average.</p>
-<p>Multiplicative updates motivated by minimum relative entropy principle. Simplest is Bayes’s rule for updating priors.</p>
-<blockquote>
-<p>The “blessing” of these updates is that they learn very fast in the short term because the good weights grow exponentially. However, their “curse” is that they learn too fast and wipe out other weights too quickly. This loss of variety can have a negative effect in the long term because adaptivity is required when there is a change in the process generating the data stream.</p>
-</blockquote>
-<blockquote>
-<p>Surprisingly, some of Nature’s methods parallel the ones developed in machine learning, but Nature also has some additional tricks.</p>
-</blockquote>
-<p>Evolution on 2 scales:</p>
-<ul>
-<li>Short-term: mutation and selection (multiplicative update)</li>
-<li>Long-term: stability - requires mechanism for preventing quick convergence to currently fittest strategy or gene.</li>
-</ul>
-<p><span class="math display">\[
-\wt s_i = \fc{s_ie^{-\eta \text{loss}_i}}{Z}
-= \amin_{r\in \R^n, \sum_i r_i=1} \sum_i KL(r||s) + \eta\sum_i r_il_i
-\]</span> Relative entropy keeps <span class="math inline">\(\wt s\)</span> close to <span class="math inline">\(s\)</span>. <span class="math inline">\(\eta\)</span> is tradeoff parameter. <span class="math inline">\(W_i = e^{-\eta l_i}\)</span> is the fitness of strategy <span class="math inline">\(i\)</span>. Bayes Rule: expected log loss, <span class="math inline">\(\eta=1\)</span>.</p>
-<p>(systematic way of deriving such updates by trading off a relative entropy between the new and old weight vector with a loss function that measures how well the weights did on the current instance vector)</p>
-<p>Why multiplicative, not additive update? Converge quickly when data stream generating process is static.</p>
-<p>Problem: data changes over time. MU loss of variety.</p>
-<p>Use of MU: separate good/bad RNA, reamplify good. Loop. Use PCR.</p>
-<p>Assumption: <span class="math inline">\(W_i\)</span> independent of share vector <span class="math inline">\(s\)</span>. (Otherwise: apostatic effects.) <span class="math inline">\(\wt s_i = \fc{w_iW_i}{\an{s,W}}\)</span>.</p>
-<p>In-vitro selection: iterate Bayes with same data likelihoods.</p>
-<blockquote>
-<p>“brittle” because the gradients of the losses appear in the exponents of the update factors. This is problematic when there is noise in the data and the data-generating process changes over time</p>
-</blockquote>
-<p>Compounded: weights have constant precision.</p>
-<p>Curse is extinctino in nature.</p>
-<h3 id="dispelling-the-curse">Dispelling the curse</h3>
-<p>Ex. Bacteria in nutriet solution separate into 3 niches, 3 species. Mixing kills all but one.</p>
-<blockquote>
-<p>three species of bacteria that play an RPS game. When started on a Petri dish, colonies of each species develop that slowly chase each other around the dish: R invades S’s colonies, S invades P, and P invades R</p>
-</blockquote>
-<ol type="1">
-<li>Niche boundaries help prevent the curse. (Human: multiplicative update of meme shares causes loss of variety.)
-<ul>
-<li>Key problem 1 (that cannot be solved by MU alone): There are three strands of RNA in a tube and the goal is to amplify the mixture while keeping the percentages of the strands unchanged. This is to be done without sequencing the strands and determining their concentrations.
-<ul>
-<li>Solution: Translate to (double stranded) DNA and using an enzyme, add a specific short “end strand” to both ends of all strands in the tube. These end strands function as connectors between strands and make it possible to randomly ligate many strands together into long strands. Now separate out one long strand. With the help of an enzyme, add “primer strands” to both ends of that long strand. Apply PCR iteratively starting with the long selected strand, always making complete copies of the same original long strand that is located between the primers. Stop when you have the target amount of DNA. Now divide the long strands into their constituents by cutting them at the specific end strand that functioned as the connector. Finally, remove all short primer and end strands and convert back to RNA.</li>
-<li>The long strand functions as a “chromosome.” Free floating genes in the nuclei of cells would compete.</li>
-</ul></li>
-</ul></li>
-<li>Coupling preserves diversity.
-<ul>
-<li>Genes on chromosome selected for together; genes “cooperate” for sake of efficient copying.</li>
-<li>What updates can be implemented with in-vitro selection/blind computation? Can you have negative weights?</li>
-<li><span class="math inline">\(EG^{\pm}\)</span> algorithm: maintain 2 weight vectors <span class="math inline">\(s^+,s^-\in \R^n\)</span>. Label <span class="math inline">\((s^+-s^-)\cdot x\)</span>, loss <span class="math inline">\(L((s^+-s^-)\cdot x,y) = ((s^+-s^-_)\cdot x-y)^2\)</span> so that fitness is inverse.</li>
-<li>Problem 2: find small set of RNA strands that can bind to <span class="math inline">\(q\)</span> different protein sheets. (Assume that among all strands in a 1-liter tube of RNA, there is a particular set of two strands such that for each of q proteins, at least one of the two has a high fraction of attachment. Can you use PCR to get <span class="math inline">\(\approx (0.5, 0.5, 0,\ldots)\)</span>?)
-<ul>
-<li>First idea: cycle through <span class="math inline">\(q\)</span> proteins and do in-vitro selection.</li>
-<li>Problem: overselecting can kill off one.</li>
-<li>ML problem: <span class="math inline">\(\exists u\)</span> with <span class="math inline">\(k\)</span> nonzeros of value <span class="math inline">\(\rc k\)</span>, <span class="math inline">\(u\cdot W_j\ge \rc k\)</span>. Find <span class="math inline">\(s\)</span> with <span class="math inline">\(s\cdot W_j \ge \rc{2k}\)</span>.</li>
-<li>Normalized winnow algorithm: If <span class="math inline">\(s\cdot W_j\ge \rc{2k}\)</span>, then <span class="math inline">\(\wt s=s\)</span> (conservative update), else apply MU.</li>
-</ul></li>
-<li>ML 1: Prevent over-training by making the update conservative.</li>
-<li>in the context of in-vitro selection this means that RNA strands that attached to the protein sheet are simply recombined into the tube without the PCR amplification step.</li>
-<li>the amplification step occurs at most <span class="math inline">\(O(k\log \fc Nk)\)</span> times if there is a consistent k-literal disjunction and this is information theoretically optimal. Grows logarithmically in <span class="math inline">\(n\)</span>.</li>
-<li>If select for <span class="math inline">\(\binom nk\)</span> combinations, not necessary to be conservative. But this is too large.</li>
-<li>Coupling can be replaced by thresholding.</li>
-<li>Cap shares/weight from above.</li>
-</ul></li>
-<li>Super (apex) predator.
-<ul>
-<li>Nibbles at the highest bar of the histogram of possible prey species. (Removing it causes this species to take over.) The more frequent a species, the more opportunity for a disease to spread and this can keep a species from taking over.</li>
-<li>ML2: Cap the weights from above for the purpose of learning a set of experts.</li>
-<li>After MU: all weights that exceed c are reduced to c and the total weight gained is redistributed among the remaining components that lie below c so that their ratios are preserved and the total weight still sums to one. (cf. exploration, <span class="math inline">\(\ep\)</span>-greedy.)</li>
-<li>capping solves a constrained optimization problem.</li>
-<li>Ex. constrain to be in convex hull of <span class="math inline">\(k\)</span>-corners. This still only needs <span class="math inline">\(n\)</span> weights.</li>
-<li>In matrix MU, share vectors are density matrices - prob vector of eigenvalues</li>
-<li>quantum relative entropy instead of the regular relative entropy</li>
-<li>MMU with capping on eigenvalues: PCA. <span class="math inline">\(k\)</span> experts become <span class="math inline">\(k\)</span>-dim subspace. Capped density matrices are convex combs of <span class="math inline">\(k\)</span>-dim subspaces.</li>
-<li>relating: lower bound shares.</li>
-<li>keep a batch of the initial mixture in reserve. When too uniform, add some!</li>
-<li>Disk spindown problem.</li>
-<li><span class="math inline">\(\wt s = (1-\al) s^m + \al \rc N\one\)</span>.</li>
-</ul></li>
-<li>Mutations keep a base variety.
-<ul>
-<li>Data shifts once in a while and some are a return back to data seen previously. Need:</li>
-<li>Capability to bring up shares quickly.</li>
-<li>Remember experts that did well in past. (Sleeping)</li>
-<li>ML4: Sleeping realizes long-term memory.</li>
-<li>Keep track of average share vector, mix in <span class="math inline">\(\al\)</span> of <span class="math inline">\(r\)</span>.</li>
-<li>Markov network with 2 tracks (tubes).</li>
-<li>It is reasonable to expect that Nature makes use of the sleeping mechanism as well. (Seed sprouting.)</li>
-</ul></li>
-</ol>
-<p>How is sleeping realized at genetic level. Junk DNA, sex?</p>
-<h2 id="summary">Summary</h2>
-<p>Machine Learning mechanisms:</p>
-<ol type="1">
-<li>conservative update for learning multiple goals</li>
-<li>upper bounding weights for learning multiple goals</li>
-<li>lower bounding weights for robustness against change</li>
-<li>sleeping for realizing a long-term memory.</li>
-</ol>
-<p>Nature’s mechanisms:</p>
-<ol type="1">
-<li>coupling for preserving variety</li>
-<li>boundaries for preserving variety</li>
-<li>super-predators for preserving variety</li>
-<li>mutations for keeping a base variety.</li>
-</ol>
-
-  </div>
-
-    
-
-    <!-- Extension : Sharing buttons @ www.sharethis.com -->
-    <span class='st_facebook_large' displayText='Facebook'></span>
-    <span class='st_twitter_large' displayText='Tweet'></span>
-    <span class='st_googleplus_large' displayText='Google +'></span>
-    <span class='st_reddit_large' displayText='Reddit'></span>
-    <span class='st__large' displayText=''></span>
-
-    <div id="disqus_thread"></div>
-    
-
-
-  
-    <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
-  </div>
-  
-</div>
-]]></summary>
-</entry>
-<entry>
-    <title>Game theory and decision theory</title>
-    <link href="http://holdenlee.github.io/notebook/posts/cs/ai/control/game_theory.html" />
-    <id>http://holdenlee.github.io/notebook/posts/cs/ai/control/game_theory.html</id>
-    <published>2017-02-12T00:00:00Z</published>
-    <updated>2017-02-12T00:00:00Z</updated>
-    <summary type="html"><![CDATA[
-<div class="container">
-  <div id="content">
-    <div class="page header">
-      <h1>Game theory and decision theory</h1>
-    </div>
-    <div class="info">
-      
-       
-        <p>Posted: 2017-02-12 
-          , Modified: 2017-02-12 
-	</p>
-      
-       <p>Tags: <a href="/tags/ai%20safety.html">ai safety</a>, <a href="/tags/game%20theory.html">game theory</a>, <a href="/tags/decision%20theory.html">decision theory</a></p> 
-    </div>
-    
-  </div>
-  <!--/div-->
-
-  <div class="toc"> <ul>
- <li><a href="#references">References</a><ul>
- <li><a href="#online">Online</a></li>
- <li><a href="#books">Books</a></li>
- </ul></li>
- <li><a href="#towards-idealized-decision-theory">Towards idealized decision theory</a><ul>
- <li><a href="#problems-with-edt-cdt">Problems with EDT, CDT</a><ul>
- <li><a href="#why-not-recursively-improve-from-edtcdt">Why not recursively improve from EDT/CDT?</a></li>
- </ul></li>
- <li><a href="#policy-selection">Policy selection</a></li>
- <li><a href="#logical-counterfactuals">Logical counterfactuals</a><ul>
- <li><a href="#graphical-udt.">Graphical UDT.</a></li>
- <li><a href="#proof-based-udt">Proof-based UDT</a></li>
- </ul></li>
- </ul></li>
- <li><a href="#lobs-theorem-in-miri-research">Lob’s Theorem in MIRI Research</a><ul>
- <li><a href="#lob">Lob</a></li>
- <li><a href="#applications">Applications</a><ul>
- <li><a href="#lobstacle">Lobstacle</a></li>
- <li><a href="#lobian-cooperation">Lobian cooperation</a></li>
- <li><a href="#spurious-counterfactuals">3.3 Spurious counterfactuals</a></li>
- </ul></li>
- <li><a href="#model-theory">Model theory</a></li>
- <li><a href="#godel-lob-modal-logic">Godel-Lob Modal Logic</a></li>
- <li><a href="#fixed-points-of-modal-statements">Fixed points of modal statements</a></li>
- <li><a href="#applications-of-gl-modal-logic">Applications of GL modal logic</a></li>
- </ul></li>
- <li><a href="#reflective-oracles-as-foundation">Reflective oracles as foundation</a></li>
- <li><a href="#reflective-oracles-and-solomonoff-induction">Reflective oracles and Solomonoff induction</a></li>
- </ul> </div>
-
-  <div class="blog-main">
-    <h2 id="references">References</h2>
-<p>Papers on game theory/decision theory:</p>
-<ul>
-<li>Andrew Critch. 2017. “Toward Negotiable Reinforcement Learning: Shifting Priorities in Pareto Optimal Sequential Decision-Making.” <a href="https://arxiv.org/abs/1608.04112">arXiv:1701.01302</a> [cs.AI].</li>
-<li>Andrew Critch. 2016. “Parametric Bounded Lob’s Theorem and Robust Cooperation of Bounded Agents.” <a href="http://arxiv.org/abs/1602.04184">arXiv:1602.04184</a> [cs:GT].</li>
-<li>Jan Leike, Jessica Taylor, and Benya Fallenstein. 2016. “<a href="http://www.auai.org/uai2016/proceedings/papers/87.pdf">A Formal Solution to the Grain of Truth Problem</a>.” Paper presented at the 32nd Conference on Uncertainty in Artificial Intelligence.</li>
-<li>Benja Fallenstein, Jessica Taylor, and Paul Christiano. 2015. “Reflective Oracles: A Foundation for Classical Game Theory.” <a href="http://arxiv.org/abs/1508.04145">arXiv:1508.04145</a> [cs.AI]. Previously published as MIRI technical report 2015-7. Published in abridged form as “Reflective Oracles: A Foundation for Game Theory in Artificial Intelligence” in Proceedings of LORI 2015.</li>
-<li>Nate Soares and Benja Fallenstein. 2015. “Toward Idealized Decision Theory.” <a href="http://arxiv.org/abs/1507.01986">arXiv:1507.01986</a> [cs.AI]. Previously published as MIRI technical report 2014-7. Published in abridged form as “Two Attempts to Formalize Counterpossible Reasoning in Deterministic Settings” in Proceedings of AGI 2015.</li>
-<li>Mih’aly B’asr’asz, Paul Christiano, Benja Fallenstein, Marcello Herreshoff, Patrick LaVictoire, and Eliezer Yudkowsky. 2014. “Robust Cooperation on the Prisoner’s Dilemma: Program Equilibrium via Provability Logic.” <a href="http://arxiv.org/abs/1401.5577">arXiv:1401.5577</a> [cs.GT].</li>
-<li>Tsvi Benson-Tilsen. 2014. “UDT with Known Search Order.” <a href="https://intelligence.org/files/UDTSearchOrder.pdf">MIRI technical report 2014-4</a></li>
-<li>Patrick LaVictoire, Benja Fallenstein, Eliezer Yudkowsky, Mih’aly B’ar’asz, Paul Christiano and Marcello Herreshoff. 2014. “<a href="https://intelligence.org/files/ProgramEquilibrium.pdf">Program Equilibrium in the Prisoner’s Dilemma via Lob’s Theorem</a>.” Paper presented at the AAAI 2014 Multiagent Interaction without Prior Coordination Workshop.</li>
-<li>Benja Fallenstein. 2013. “<a href="https://intelligence.org/files/TilingAgents510.pdf">The 5-and-10 Problem and the Tiling Agents Formalism.</a>” MIRI technical report 2013-9.</li>
-<li><a href="https://intelligence.org/wp-content/uploads/2014/10/Hintze-Problem-Class-Dominance-In-Predictive-Dilemmas.pdf">Problem class dominance</a></li>
-</ul>
-<h3 id="online">Online</h3>
-<ul>
-<li>ADT</li>
-<li><a href="https://agentfoundations.org/item?id=1279">Entangled Equilibria and the Twin Prisoners’ Dilemma</a></li>
-<li><a href="http://lesswrong.com/lw/15m/towards_a_new_decision_theory/">UDT</a>
-<ul>
-<li><a href="https://dl.dropboxusercontent.com/u/34639481/Updateless_Decision_Theory.pdf">Formalization</a></li>
-</ul></li>
-<li><a href="https://intelligence.org/research-guide/#four">MIRI research guide</a></li>
-<li><a href="http://lesswrong.com/lw/gu1/decision_theory_faq/">Decision theory FAQ</a></li>
-<li><a href="http://lesswrong.com/lw/dbe/introduction_to_game_theory_sequence_guide/">Game thepory sequence</a></li>
-<li><a href="http://lesswrong.com/lw/eaa/a_model_of_udt_with_a_concrete_prior_over_logical/">UDT with concrete prior over logical statements</a></li>
-<li><a href="http://lesswrong.com/lw/b5t/an_example_of_selffulfilling_spurious_proofs_in/">Self-fulfilling spurious proofs</a></li>
-<li><a href="https://agentfoundations.org/item?id=160">Forum digest</a></li>
-<li><a href="https://agentfoundations.org/item?id=117">UDT in the land of probabilistic oracles</a></li>
-<li><a href="https://agentfoundations.org/item?id=4">Using modal fixed points to formalize logical causality</a> <a href="http://scrible.com/s/2DR66">h</a></li>
-<li><a href="https://agentfoundations.org/item?id=47">Evil decision problems</a> <a href="http://scrible.com/s/2LB66">h</a></li>
-<li><a href="https://agentfoundations.org/item?id=1281">Are daemons a problem for ideal agents?</a> (a.k.a. the rocket problem)</li>
-</ul>
-<h3 id="books">Books</h3>
-<ul>
-<li>Game theory, Steven Tadelis</li>
-<li>Algorithmic game theory, Tim Roughgarden <a href="http://theory.stanford.edu/~tim/books.html">page</a></li>
-<li>Computability and Logic by Boolos, Burgess, and Jeffrey</li>
-</ul>
-<h2 id="towards-idealized-decision-theory">Towards idealized decision theory</h2>
-<p>But what are the available actions? And what are the counterfactual universes correspond- ing to what “would happen” if an action “were taken”?</p>
-<p>(A deterministic agent could only have taken one action.)</p>
-<p>To fully describe the problem faced by intelligent agents making decisions, it is necessary to provide an idealized procedure which takes a description of an environment and one of the agents within, and identifies the best action available to that agent</p>
-<h3 id="problems-with-edt-cdt">Problems with EDT, CDT</h3>
-<p>Evidential blackmail: AI researcher knows whether the AI will lose $150 mil from an investment (scandal). If either is true, the AI researcher sends the info and asks for $100 mil:</p>
-<ul>
-<li>No scandal, will pay</li>
-<li>Scandal, won’t pay</li>
-</ul>
-<p>Conditioned on refusing, loses $150 mil.</p>
-<p>Counterfactual blackmail: Developer has developed computer virus which would cause both to lose $150 mil. Once deployed, only way to prevent activation 1 day later is to wire $100 mil. Researcher would only deploy if quite sure agent will pay.</p>
-<h4 id="why-not-recursively-improve-from-edtcdt">Why not recursively improve from EDT/CDT?</h4>
-<p>CDT prescribes that an agent resist certain attempts to improve its decision procedures.</p>
-<p>Retro blackmail: AI researcher has access to original source code. Can self-modify after researcher acquires original source code but before researcher decides whether to deploy.</p>
-<p>Self-modify to not give in to demands.</p>
-<p>But CDT and any decision procedure to which CDT would self-modify would lose money.</p>
-<h3 id="policy-selection">Policy selection</h3>
-<p>CDT: Alas, the virus has been deployed. I would have preferred that the virus not be deployed, but since it has been, I must now decide whether or not to pay up. Paying up is bad, but refusing is worse, so I’ll pay up.</p>
-<p>Policy selection: The optimal policy is to refuse to pay up upon observing that the virus has been deployed. I now observe that the virus has been deployed. Therefore, I refuse to pay.</p>
-<h3 id="logical-counterfactuals">Logical counterfactuals</h3>
-<p>Consider Prisoner’s dilemma when</p>
-<ul>
-<li>opponent’s action guaranteed to match your own. (dependent)</li>
-<li>some probability <span class="math inline">\(p\)</span> opponent defects. (independent)</li>
-</ul>
-<p>However, CDT evaluates actions according to a physical counterfactual where the action is changed but everything causally separated from the action is held constant. It is not the physical output of the agent’s hardware which must be modified to construct a counterfactual, it is the logical output of the agent’s decision algorithm.</p>
-<p>Cf. <span class="math inline">\(10 \E a - a\)</span>.</p>
-<p>UDT chooses the best action according to a world-model which represents not only causal relationships in the world, but also the logical effects of algorithms upon the world.</p>
-<h4 id="graphical-udt.">Graphical UDT.</h4>
-<p>How to encode logical relations in graph? Underspecified: constructing graph is difficult. Graph for UDT further requires some ability to identify and separate “algorithms” from the physical processes that implement them. How is UDT supposed to recognize that the agent and its opponent implement the same algorithm?</p>
-<p>To illustrate, consider UDT identify- ing the best action available to an agent playing a Pris- oner’s Dilemma against an opponent that does exactly the same thing as the agent 80% of the time, and takes the opposite action otherwise.</p>
-<p>(Problem seems to be identifying what something is doing logically - it might be obfuscated. Also, graph loses info from algorithm.)</p>
-<h4 id="proof-based-udt">Proof-based UDT</h4>
-<p>Evaluate logical implications of the agent’s algorithm selecting the policy <span class="math inline">\(\pi\)</span>.</p>
-<p>Graph is unnecessary: the environment itself is an algorithm.</p>
-<p>evaluates policies by searching for formal proofs, using some mathematical theory such as Peano Arithmetic (PA), of how much utility is attained in the world-model if A() selects the policy <span class="math inline">\(\pi\)</span>.</p>
-<p>But: requires halting oracle. can only identify the best policy if there exists a proof that ex- ecuting that policy leads to a good outcome</p>
-<p>Problem in stochastic environments (? if can model prior, seems ok)</p>
-<p>Ex. agent uses UDT, play game with human. If numbers written sum to <span class="math inline">\(\$10\)</span>, each paid, else 0.</p>
-<p>UDT misidentifies best policy:</p>
-<p>Human: I don’t quite know how UDT works, but I remember hearing that it’s a very powerful predictor. So if I decide to write down 9, then it will predict this, and it will decide to write 1. Therefore, I can write down 9 without fear.</p>
-<p>But agent with superior predictive power loses to the dumber agent! Human’s lack of power to predict UDT gives an advantage!</p>
-<p>Problem: not guaranteed to work. As soon as proof-based UDT proves that an agent will not take a certain policy, it concludes that taking that policy leads to the best possible outcome (because from a contradiction, anything follows).</p>
-<p>(I don’t get this…) <span class="math display">\[
-A() = UDT(\ce{E()}, \ce{A()}).
-\]</span></p>
-<p>(What is an embedding of an agent?)</p>
-<h2 id="lobs-theorem-in-miri-research">Lob’s Theorem in MIRI Research</h2>
-<p>Why Lob? The short answer is that this theorem illustrates the basickind of self-reference involved when an algorithm considers its own output as part of theuniverse, and it is thus germane to many kinds of research involving self-modifying agents,especially when formal verification is involved or when we want to cleanly prove things inmodel problems.</p>
-<p>Problem: How can Deep Thought 1.0 build Deep Thought 2.0 with guarantee of good consequences?</p>
-<p>DT1 can’t actually figure out what actions DT2 is going to take. Naively, it seems as if it should be enough for DT1 toknow that DT2 has the same goals as DT1, that DT2’s deductions are reliable, and that DT2 only takes actions that it deduces to have good consequences on balance.</p>
-<p>If we tryand model DT1 and DT2 as proving statements in two formal systems (one stronger thanthe other), then the only way that DT1 can make such a statement about DT2’s reliability is if DT1 (and thus both) are in fact unreliable!</p>
-<h3 id="lob">Lob</h3>
-<p>One (anachronistic) way of stating Godel’s key insight is that you can use computer pro-grams to search for proofs, and you can prove statements about computer programs</p>
-<p>This makes it more intuitive that we can embed self-reference in mathematics, because we can embed self-reference in computer code!</p>
-<p>Quines: programs can be made which perform arbitrary tasks using their own source code we can have a program G which refers to itself in this way, and searches for proofs inarithmetic related to its own source code.</p>
-<p>G searches for a proof of “G runs forever”. G never finds a proof, but we can never prove that G runs forever.</p>
-<p>We can add “G never halts” or “G halts” as a new axiom.</p>
-<p><strong>First incompleteness</strong>. If the theory of arithmetic is consistent, then there exist undecidable statements in the theory of arithmetic.</p>
-<p>Lob’s Theorem:</p>
-<ul>
-<li><span class="math inline">\(X\)</span> logical statement</li>
-<li>ProofSeeker(X) searches for proofs of <span class="math inline">\(X\)</span>.</li>
-<li><span class="math inline">\(L(X)=\)</span>“if ProofSeeker(X) halts, then X”</li>
-</ul>
-<p>Intuition: if <span class="math inline">\(L(X)\)</span> were provable for every <span class="math inline">\(X\)</span>, you can prove consistency.</p>
-<ol type="1">
-<li>If <span class="math inline">\(X\)</span> is provable, ProofSeeker(X) halts, and <span class="math inline">\(L(X)\)</span> is true.</li>
-<li>If <span class="math inline">\(X\)</span> is disprovable, then ProofSeeker(X) does not halt, but you can’t prove it—because that would be like proving consistency! (cf. second inconsistency. Lob implies 2nd inconsistency.)</li>
-<li>If <span class="math inline">\(X\)</span> is neither provable nor disprovable, then does not halt. (Also can’t prove it.)</li>
-</ol>
-<p>Also a finite version of Lob’s theorem, controls length of proof of <span class="math inline">\(\phi\)</span> in terms of <span class="math inline">\(\square \phi\to \phi\)</span>.</p>
-<h3 id="applications">Applications</h3>
-<h4 id="lobstacle">Lobstacle</h4>
-<p>DT1 trusts DT2: if the action is deduced to be good, then it must actually be good.</p>
-<p>(It can’t even trust itself?)</p>
-<p>a simple agent with a utility function will only create successors whose formal systems are strictly weaker thanits own, since only those are fully trusted by the current system.</p>
-<p>References: Tiling Agents for Self-Modifying AI, and the Lobian Obstacle [18] and Problems of self-reference in self-improving space-time embedded intelligence [9].</p>
-<h4 id="lobian-cooperation">Lobian cooperation</h4>
-<p>algorithm and theirs get to read the opponent’s source code, calculate for as long as they like, and then play only once.</p>
-<p>Cooperate iff source code identical: fragile.</p>
-<p>FairBot: search through all proofs of length <span class="math inline">\(\le N\)</span> to see if valid proofs of <span class="math inline">\(X(FairBot)=C\)</span>. If yes, output <span class="math inline">\(C\)</span>.</p>
-<p>Intuitively, it seems like both mutual cooperation and mutual defection are stable fixed points of the situation. However, a Lobian statement breaks the deadlock in favor of cooperation!</p>
-<p>Proof: L(“FairBot(FairBot)=C”) follows. By Lob, there must be a proof of FairBot(FairBot=C). (! This is a case where Lob actually helps prove something!)</p>
-<p>See Program Equilibrium in the Prisoner’s Dilemma via Lob’s Theorem.</p>
-<h4 id="spurious-counterfactuals">3.3 Spurious counterfactuals</h4>
-<p>Note on model:</p>
-<ul>
-<li>If universe was computable (with agent’s resources) and extensionally fair, then the problem is simple: A simply selects the function that maximizes its expected utility. (Suppose A has a time limit it must halt by.)</li>
-<li>Problem: Nesting - what if they keep calling one another? (I think this is not an issue if you enforce time limit.)</li>
-<li>Problem: It doesn’t make sense for agent to have enough computing power to simulate the universe. In general we want to allow the universe to have more computing power. “Agent simulates universe” is not the shape of things we want.</li>
-<li>Problem: May examine source code.</li>
-</ul>
-<p>When agent and universe are quined, you can’t “run the universe” on <span class="math inline">\(A\)</span> or <span class="math inline">\(A'\)</span>. You search for proofs of <span class="math inline">\(A()=x\to U()=c\)</span>. Problem: ordering matters. If you prove <span class="math inline">\(x\)</span> is better you choose <span class="math inline">\(x\)</span>, even though it could be worse, because <span class="math inline">\(A()=\neg x\to U()=c\)</span> is true for any <span class="math inline">\(c\)</span>.</p>
-<p>(Why can’t extensional work? Search for proofs in universe quined with <span class="math inline">\(A'\)</span>, then choose <span class="math inline">\(A'\)</span>.)</p>
-<p>careful ordering of which proofs it pays attention to, and that agent can be shown to make thecorrect decisions (given enough deductive power). The idea was originally due to Benja Fal-lenstein; Tsvi Benson-Tilson’s paper UDT with Known Search Order</p>
-<h3 id="model-theory">Model theory</h3>
-<p>the same theory can have many models, some of them not at all what you were thinking of when you made the axioms. Notes: to get Peano Arithmetic need</p>
-<ul>
-<li><span class="math inline">\(\forall x\in \N, Sx\ne O\)</span> to avoid mod <span class="math inline">\(n\)</span>.</li>
-<li>But what about <span class="math inline">\(\N\cup \{\text{Bob}\}\)</span>? In order to express induction in the language (which doesn’t have variables for properties, only for numbers), we must resort to an infinite family of new axioms.</li>
-</ul>
-<p>There are models of Peano arithmetic where G holds, and other models where G fails to hold. In Robinson arithmetic “Bob” might satisfy the formula G is checking. In PA nonstandard models are weirder.</p>
-<p>The key to understanding these is that G never halts at any finite number, but we can’t actually define in our formal language what “finite” means. Thenonstandard models of Peano Arithmetic are those which have all the usual numbers butalso lots of extra numbers that are “too large” to ever be written as lots of S’s followed by an O, but which nonetheless are swept along in any inductive statement.</p>
-<p>Remark: nonstandard analysis</p>
-<p>Ponder for a moment the formal system which has all the axioms of PA, plus the axiom that PA is consistent, plus the axiom that “the systemwhich has all the axioms of PA, plus the axiom that PA is consistent” is inconsistent. As it turns out, this is a perfectly consistent system (What happens if you take the recursively axiomatizable “consistency<span class="math inline">\({}^n\)</span>, <span class="math inline">\(n\in \N\)</span>?)</p>
-<p>We might want to endorse some particular model as the “true” one (for instance, our standard model of the natural numbers, without all of those weird nonstandard numbers), and say that logical statements are true if they hold in that model and false if they don’t. This truth predicate exists outside the language, and so the logical statements can’t talk about the truth predicate, only about weaker notions like provability.</p>
-<p>The trouble comes when we try to construct a language that contains its own truth predicate such that <span class="math inline">\(T(\phi)\lra \phi\)</span>. <span class="math inline">\(T(X)\lra T(\neg X)\)</span>.</p>
-<p>if P isn’t allowed to make exact statements about its own values, but only arbitrarily precise approximations, then everything can work out consistently.</p>
-<p>P can’t rule out the possibility that reciprocals of nonstandard natural numbers (infinitesimals) exist.</p>
-<p>followup paper by Christiano on computationally tractable approxima-tions of probabilistic logic: Non-Omniscience, Probabilistic Inference, and Metamathematics</p>
-<h3 id="godel-lob-modal-logic">Godel-Lob Modal Logic</h3>
-<p>We’re interested in a particular modal logic that constitutes a reflection of Lobian phenomena in PA, etc.</p>
-<p>GL axiom: <span class="math inline">\(\square (\square A \to A)\to \square A\)</span>.</p>
-<p>(What about things like <span class="math inline">\(\forall x, \square P(x)\)</span>?)</p>
-<p>some special cases where there are efficient algorithms for deducing provability in GL.</p>
-<h3 id="fixed-points-of-modal-statements">Fixed points of modal statements</h3>
-<p>All sorts of formulas that refer to themselves and each other by quining. Formulas <span class="math inline">\(p\lra \phi(p,q_1,\ldots, q_k)\)</span> modalized in <span class="math inline">\(p\)</span>: every <span class="math inline">\(p\)</span> in <span class="math inline">\(\phi\)</span> is in scope of some <span class="math inline">\(\square\)</span>.</p>
-<p>When <span class="math inline">\(p\)</span> equivalent to formula modalized in <span class="math inline">\(p\)</span>, then <span class="math inline">\(p\)</span> is equivalent to something which doesn’t use <span class="math inline">\(p\)</span>. Godel statement <span class="math inline">\(\lra\)</span> inconsistency of arithmetic <span class="math inline">\(\square (p\lra \square \neg p) \lra \square (p\lra \square \perp)\)</span>.</p>
-<p>formula is provable in the modal logic if and only if a corresponding property holds for every Kripke frame in that class.</p>
-<h3 id="applications-of-gl-modal-logic">Applications of GL modal logic</h3>
-<p>Robust Cooperation in the Prisoner’s Dilemma: Program Equilibrium via Provability Logic.</p>
-<p>One embarrassing thing about FairBot is that it doesn’t check whether its potential cooperation would actually make any difference. (ex. it cooperates against a rock.)</p>
-<p>Ex. PrudentBot</p>
-<p>if we assume infinite computational power (i.e. the ability to consult a halting oracle about proof searches in Peano Arithmetic), then they can be written out as simple statements in modal logic</p>
-<p>Find what happens using efficient algorithm!</p>
-<p>Modal agents of rank 0: <span class="math inline">\(p\lra \phi(p,q)\)</span>, modalized in both <span class="math inline">\(p\)</span> and <span class="math inline">\(q\)</span> (don’t run, only prove). Equivalent to something <span class="math inline">\(p\lra \phi(q)\)</span>.</p>
-<h2 id="reflective-oracles-as-foundation">Reflective oracles as foundation</h2>
-<h2 id="reflective-oracles-and-solomonoff-induction">Reflective oracles and Solomonoff induction</h2>
-<p><a href="https://en.wikipedia.org/wiki/AIXI">AIXI</a></p>
-
-  </div>
-
-    
-
-    <!-- Extension : Sharing buttons @ www.sharethis.com -->
-    <span class='st_facebook_large' displayText='Facebook'></span>
-    <span class='st_twitter_large' displayText='Tweet'></span>
-    <span class='st_googleplus_large' displayText='Google +'></span>
-    <span class='st_reddit_large' displayText='Reddit'></span>
-    <span class='st__large' displayText=''></span>
-
-    <div id="disqus_thread"></div>
-    
-
-
-  
-    <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
-  </div>
-  
-</div>
-]]></summary>
-</entry>
-<entry>
-    <title>Neural net separation</title>
-    <link href="http://holdenlee.github.io/notebook/posts/tcs/machine_learning/neural_nets/separation.html" />
-    <id>http://holdenlee.github.io/notebook/posts/tcs/machine_learning/neural_nets/separation.html</id>
-    <published>2017-02-09T00:00:00Z</published>
-    <updated>2017-02-09T00:00:00Z</updated>
-    <summary type="html"><![CDATA[
-<div class="container">
-  <div id="content">
-    <div class="page header">
-      <h1>Neural net separation</h1>
-    </div>
-    <div class="info">
-      
-       
-        <p>Posted: 2017-02-09 
-          , Modified: 2017-02-09 
-	</p>
-      
-       <p>Tags: <a href="/tags/neural%20nets.html">neural nets</a>, <a href="/tags/circuit%20complexity.html">circuit complexity</a></p> 
-    </div>
-    
-  </div>
-  <!--/div-->
-
-  <div class="toc"> <ul>
- <li><a href="#k-vs.k1">k vs. k+1</a><ul>
- <li><a href="#relate-to-arithmetic-circuits">Relate to arithmetic circuits</a><ul>
- <li><a href="#problem-1-approximation">Problem 1: Approximation</a></li>
- <li><a href="#problem-2-arithmetic-question">Problem 2: Arithmetic question</a></li>
- </ul></li>
- </ul></li>
- </ul> </div>
-
-  <div class="blog-main">
-    <p><a href="https://www.dropbox.com/s/d68tepx2x5h13at/representation.pdf?dl=0">Notes</a> (See section 2.)</p>
-<h2 id="k-vs.k1">k vs. k+1</h2>
-<p>One idea:</p>
-<h3 id="relate-to-arithmetic-circuits">Relate to arithmetic circuits</h3>
-<p>Cf. CSS16.</p>
-<p>Idea: write out everything as power series. Perhaps fix a probability measure such as Gaussian.</p>
-<p>The circuit model is <span class="math inline">\(\sum P \sum P...\)</span> where <span class="math inline">\(P\)</span> is any univariate power series. We hope that it can be approximated by its first few terms, so that we get a polynomial.</p>
-<p>Restrict the <span class="math inline">\(k+1\)</span>-depth circuits to be somewhat smooth, so they can be approximated by the first few terms of the power series.</p>
-<h4 id="problem-1-approximation">Problem 1: Approximation</h4>
-<p>We can find pairs of functions which differ very much on the first few terms of their power series but that are arbitrarily close on <span class="math inline">\(L^2(\mu)\)</span>.</p>
-<p>The natural thing to do is to look at families of orthogonal polynomials on <span class="math inline">\(\mu\)</span>. But these</p>
-<ul>
-<li>don’t distribute nicely (ex. we can write <span class="math inline">\((x+y)^n\)</span> as a sum of <span class="math inline">\(n+1\)</span> terms, but not <span class="math inline">\(He_n(x+y)\)</span>) - I don’t think this is such a big deal though.</li>
-<li>letting <span class="math inline">\(\Pi_d\)</span> be projection to degree <span class="math inline">\(\le d\)</span> part, we don’t have <span class="math inline">\(\Pi_d\circ P \circ \Pi_d = \Pi_d \circ P\)</span>. So it’s very hard to argue composition.</li>
-</ul>
-<p>Can we require our approximating function to also be somewhat smooth? Then e.g. we can use compactness (Arzela-Ascoli) - arbitrarily close approximation means expressible, otherwise you can’t get closer than <span class="math inline">\(\ep\)</span>. But <span class="math inline">\(\ep\)</span> might depend on <span class="math inline">\(n\)</span>… (Ex. with certain bounds on coefficients, and a requirement that your power series starts with <span class="math inline">\(p(x)\)</span>, what is the minimial <span class="math inline">\(L^2(\mu)\)</span> norm it has?)</p>
-<p>Order of quantifiers?</p>
-<h4 id="problem-2-arithmetic-question">Problem 2: Arithmetic question</h4>
-<p>The circuit model is <span class="math inline">\(\sum P \sum P...\)</span> where <span class="math inline">\(P\)</span> is any univariate power series/polynomial. Find a polynomial that is attainable by the degree <span class="math inline">\(\le d\)</span> portion of a depth <span class="math inline">\(k+1\)</span> circuit (depth <span class="math inline">\(k+1\)</span> means <span class="math inline">\(\sum (P\sum)^{k}\)</span>) that is not attainable by the degree <span class="math inline">\(\le d\)</span> portion of any depth <span class="math inline">\(k\)</span> circuit of subexponential size.</p>
-<p><strong>What are separation results for normal arithmetic circuits?</strong></p>
-<p>Look at constant-depth circuits: keep <span class="math inline">\(k\)</span> fixed; you’re allowed to take <span class="math inline">\(n\to \iy\)</span>.</p>
-
-  </div>
-
-    
-
-    <!-- Extension : Sharing buttons @ www.sharethis.com -->
-    <span class='st_facebook_large' displayText='Facebook'></span>
-    <span class='st_twitter_large' displayText='Tweet'></span>
-    <span class='st_googleplus_large' displayText='Google +'></span>
-    <span class='st_reddit_large' displayText='Reddit'></span>
-    <span class='st__large' displayText=''></span>
-
-    <div id="disqus_thread"></div>
-    
-
-
-  
-    <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
-  </div>
-  
-</div>
-]]></summary>
-</entry>
-<entry>
-    <title>Boosting</title>
-    <link href="http://holdenlee.github.io/notebook/posts/tcs/machine_learning/boosting.html" />
-    <id>http://holdenlee.github.io/notebook/posts/tcs/machine_learning/boosting.html</id>
-    <published>2017-02-08T00:00:00Z</published>
-    <updated>2017-02-08T00:00:00Z</updated>
-    <summary type="html"><![CDATA[
-<div class="container">
-  <div id="content">
-    <div class="page header">
-      <h1>Boosting</h1>
-    </div>
-    <div class="info">
-      
-       
-        <p>Posted: 2017-02-08 
-          , Modified: 2017-02-08 
-	</p>
-      
-       <p>Tags: <a href="/tags/Boosting.html">Boosting</a></p> 
-    </div>
-    
-  </div>
-  <!--/div-->
-
-  <div class="toc"> <ul>
- <li><a href="#weak-learnability">Weak learnability</a></li>
- <li><a href="#boosting-problem">Boosting problem</a></li>
- <li><a href="#adaboost">AdaBoost</a></li>
- </ul> </div>
-
-  <div class="blog-main">
-    <p>Ref:</p>
-<ul>
-<li>Ch. 10 of <a href="http://www.cs.huji.ac.il/~shais/UnderstandingMachineLearning">Machine learning theory and algorithms</a></li>
-<li><a href="http://cseweb.ucsd.edu/~yfreund/papers/IntroToBoosting.pdf">notes</a></li>
-<li>0306 and 0311 in COS511 lectures</li>
-</ul>
-<p>Generalization of linear predictors to address 2 issues</p>
-<ul>
-<li>bias-complexity tradeoff (smooth control)</li>
-<li>computational complexity of learning (amplify accuracy of weak learner - ERM can be hard)</li>
-</ul>
-<p>AdaBoost relies on the family of hypothesis classes obtained by composing a linear predictor on top of simple classes.</p>
-<h2 id="weak-learnability">Weak learnability</h2>
-<p><span class="math inline">\(C\)</span> is strongly PAC-learnable by <span class="math inline">\(A\)</span> if:</p>
-<ul>
-<li><span class="math inline">\(\forall\)</span> distribution <span class="math inline">\(D\)</span> over <span class="math inline">\(X\)</span>,</li>
-<li><span class="math inline">\(\forall c\in C\)</span></li>
-<li><span class="math inline">\(\forall \ep&gt;0\)</span></li>
-<li><span class="math inline">\(\forall \de&gt;0\)</span>,</li>
-<li><span class="math inline">\(A\)</span>, given <span class="math inline">\(m=\poly(\rc\ep,\rc \de)\)</span> examples, computes <span class="math inline">\(h\)</span> with <span class="math inline">\(\Pj[err(h)\le \ep] \ge 1-\de\)</span>.</li>
-</ul>
-<p><span class="math inline">\(C\)</span> is weakly PAC-learnable by <span class="math inline">\(A\)</span> if:</p>
-<ul>
-<li><span class="math inline">\(\exists \ga &gt;0\)</span></li>
-<li><span class="math inline">\(\forall\)</span> distribution <span class="math inline">\(D\)</span> over <span class="math inline">\(X\)</span>,</li>
-<li><span class="math inline">\(\forall c\in C\)</span></li>
-<li><span class="math inline">\(\forall \de&gt;0\)</span></li>
-<li><span class="math inline">\(A\)</span>, given <span class="math inline">\(m=\poly(\rc\de)\)</span> examples, computes <span class="math inline">\(h\)</span> with <span class="math inline">\(\Pj[err(h)\le \rc2-\ga] \ge 1-\de\)</span>.</li>
-</ul>
-<p>[Q: what is an explicit example of a provable weak learner?]</p>
-<p>Q: Is weak learning equivalent to strong learning?</p>
-<p>A: Yes if you increase the hypothesis class.</p>
-<h2 id="boosting-problem">Boosting problem</h2>
-<p>Given <span class="math inline">\((x_i,y_i)\)</span> with <span class="math inline">\(y_i\in \{-1,+1\}\)</span> and access to a weak learner <span class="math inline">\(A\)</span>, find <span class="math inline">\(H\)</span> such <span class="math inline">\(\Pj(err_D(H)\le \ep)\ge 1-\de\)</span> (learn strongly).</p>
-<h2 id="adaboost">AdaBoost</h2>
-<p>Idea: produce different distributions <span class="math inline">\(D\)</span> from <span class="math inline">\(\mathcal D\)</span>. Pick distributions at each round that provide info about points that are hard to learn.</p>
-<ul>
-<li>At each step, run weak learner on <span class="math inline">\(D_t\)</span>. Suppose error is <span class="math display">\[err_{D_t}(h_t) = \rc2-\ga_t=\ep_t.\]</span></li>
-<li>Set <span class="math inline">\(\al_t=\ln \pf{1-\ep_t}{\ep_t}\)</span>. (If error is close to <span class="math inline">\(\rc2\)</span>, this is small.)</li>
-<li>Update distribution:
-<span class="math display">\[\begin{align}
-D_1(i) &amp;=\rc m\\
-D_{t+1}(i) &amp;= \fc{D_t(i)}{Z_t}e^{\one_{h_t(x_i)=y_i}\al_t}
-\end{align}\]</span></li>
-<li>Return <span class="math inline">\(H(x) = \sgn \pa{\sumo tT \al_t h_t(x)}\)</span>.</li>
-</ul>
-<p>Q: Can we unify this with multiplicative weights? This seems like some kind of dual. (Check multiplicative weights paper?)</p>
 
   </div>
 
