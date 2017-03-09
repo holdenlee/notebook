@@ -85,13 +85,97 @@
   </div>
   <!--/div-->
 
-  <div class="toc"></div>
+  <div class="toc"> <ul>
+ <li><a href="#results">Results</a></li>
+ <li><a href="#todo">Todo</a><ul>
+ <li><a href="#nice-things">Nice things</a></li>
+ </ul></li>
+ <li><a href="#code-to-run">Code to run</a></li>
+ </ul> </div>
 
   <div class="blog-main">
-    <ul>
-<li>Control: MNIST, default network, generate adversarial examples</li>
-<li></li>
+    <h2 id="results">Results</h2>
+<p>Trained for 100 epochs. Accuracy (out of 1)</p>
+<table>
+<thead>
+<tr class="header">
+<th>Mixture\Attack</th>
+<th>0.3 fgs</th>
+<th>0.5 fgs</th>
+<th>1.0 fgs (sanity check)</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>1</td>
+<td>0.9133</td>
+<td>0.8890</td>
+<td>0.9862</td>
+</tr>
+<tr class="even">
+<td>100</td>
+<td>0.9933</td>
+<td>0.9932</td>
+<td>0.9922</td>
+</tr>
+</tbody>
+</table>
+<h2 id="todo">Todo</h2>
+<ul>
+<li>Look at which samples are misclassified by which networks: are they the same or different?
+<ul>
+<li>Jaccard similarity</li>
+<li>How about if you train an ensemble together on regular examples?</li>
+</ul></li>
+<li>Baselines
+<ul>
+<li>How transferable are adversarial examples between the 100 networks?</li>
+<li>How well does majority do against adversarial example against the mixture?</li>
+</ul></li>
+<li>Does clamping help?</li>
+<li>Examine activations of adversarial examples in hidden layer. Do they look different for adversarial examples?</li>
+<li>What are the weights given to the networks in the mixture? How does this change over time?</li>
+<li>Try training with independent updates, multiplicative weights.
+<ul>
+<li>(Check YZ’s code.)</li>
+<li>Try sleeping, etc. - regularize more strongly so that weights don’t become too small/large.</li>
+</ul></li>
+<li>Hyperparameter search</li>
+<li>Autoencoder idea</li>
+<li>Regularization/Lipschitz/wavelet idea</li>
+<li>Is pretraining necessary?</li>
+<li>Compare 100 networks to 1 network with 100x size. Which does better?</li>
 </ul>
+<h3 id="nice-things">Nice things</h3>
+<ul>
+<li>Set up tensorboard to show histograms, real and adversarial images, etc.</li>
+<li>Run with many different settings.</li>
+<li>Port over to own training loop.</li>
+<li>Output accuracies, etc. over time as list.</li>
+</ul>
+<h2 id="code-to-run">Code to run</h2>
+<p>In <code>adversarial/</code>,</p>
+<pre><code>. start # do every time to set up virtualenv
+# pretrain 100  nets
+mkdir pretrain
+nohup python train_many_run.py --t=100 &gt; pretrain/log.txt 2&gt;&amp;1 &amp;
+# control
+mkdir baseline_epochs100_ep0.3 
+nohup python mnist_tutorial_tf.py --nb_epochs=100 &gt; baseline_epochs100_ep0.3/log.txt 2&gt;&amp;1 &amp;
+# train mixture of 100
+mkdir train_mix100_pretrain1_epochs100_ep0.3_reg1
+nohup python train_mix.py --t=100 --nb_epochs=100 &gt; train_mix100_pretrain1_epochs100_ep0.3_reg1/log.txt 2&gt;&amp;1 &amp;
+# control 0.5
+mkdir baseline_epochs100_ep0.5
+nohup python mnist_tutorial_tf.py --nb_epochs=100 --epsilon=0.5 &gt; baseline_epochs100_ep0.5/log.txt 2&gt;&amp;1 &amp;
+# train mixture of 100 @ 0.5
+mkdir train_mix100_pretrain1_epochs100_ep0.5_reg1
+nohup python train_mix.py --t=100 --nb_epochs=100 --epsilon=0.5 &gt; train_mix100_pretrain1_epochs100_ep0.5_reg1/log.txt 2&gt;&amp;1 &amp;
+# Sanity check
+mkdir baseline_epochs100_ep1
+nohup python mnist_tutorial_tf.py --nb_epochs=100 --epsilon=1.0 --train_dir=baseline_epochs100_ep1/ &gt; baseline_epochs100_ep1/log.txt 2&gt;&amp;1 &amp;
+mkdir train_mix100_pretrain1_epochs100_ep1_reg1
+nohup python train_mix.py --t=100 --nb_epochs=100 --epsilon=1.0 &gt; train_mix100_pretrain1_epochs100_ep1_reg1/log.txt 2&gt;&amp;1 &amp;</code></pre>
 
   </div>
 
