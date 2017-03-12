@@ -8,8 +8,106 @@
         <name>Holden Lee</name>
         <email>oldheneel@gmail.com</email>
     </author>
-    <updated>2017-03-08T00:00:00Z</updated>
+    <updated>2017-03-12T00:00:00Z</updated>
     <entry>
+    <title>Learning to model structures and data</title>
+    <link href="http://holdenlee.github.io/notebook/posts/tcs/complexity/model.html" />
+    <id>http://holdenlee.github.io/notebook/posts/tcs/complexity/model.html</id>
+    <published>2017-03-12T00:00:00Z</published>
+    <updated>2017-03-12T00:00:00Z</updated>
+    <summary type="html"><![CDATA[
+<div class="container">
+  <div id="content">
+    <div class="page header">
+      <h1>Learning to model structures and data</h1>
+    </div>
+    <div class="info">
+      
+       
+        <p>Posted: 2017-03-12 
+          , Modified: 2016-03-12 
+	</p>
+      
+       <p>Tags: <a href="/tags/pseudorandomness.html">pseudorandomness</a>, <a href="/tags/structure.html">structure</a></p> 
+    </div>
+    
+  </div>
+  <!--/div-->
+
+  <div class="toc"> <ul>
+ <li><a href="#miscellaneous-notes">Miscellaneous notes</a></li>
+ <li><a href="#what-does-this-say-for-learning">What does this say for learning?</a></li>
+ </ul> </div>
+
+  <div class="blog-main">
+    <h2 id="miscellaneous-notes">Miscellaneous notes</h2>
+<ul>
+<li>Boosting:
+<ul>
+<li>Generic boosting theorem</li>
+<li>Easiest to state when assume access to whole distribution. Otherwise, have to sample and assume something about VC dimension to generalize. (See old 511 notes. Actual argument works with <span class="math inline">\(\Pi_H(m)\)</span>, is there some reason we need to do that?)</li>
+<li>Hardcore lemma</li>
+<li>Strong version: Either allow real-number predictions, or think of real-number output as flipping a coin with that probability. This can save the vital factor of 2 compared to worst-case.</li>
+<li>I don’t get the potential argument.</li>
+<li>I do get the multiplicative weights argument of BHK, but there are some things to be careful about.
+<ul>
+<li>Familiar with MW with divergence applied to it.</li>
+<li>How to make non-worst case? Is this already covered?</li>
+<li>What about the AdaBoost improvement - algorithmically speaking, it makes sense to adapt weight based on number correct/wrong. Can you not redo the analysis here?</li>
+<li>Important: need to keep track of density of <span class="math inline">\(\de\)</span>.</li>
+<li>Do we need to cap the weights at 1? What problem is this trying to solve? What happens if we don’t?</li>
+</ul></li>
+</ul></li>
+<li>Dense model theorem
+<ul>
+<li>Got <span class="math inline">\(\de''\)</span> (<span class="math inline">\(\wh \de\)</span>) part</li>
+<li>Lots of algebra/<span class="math inline">\(\ep\)</span>’s and <span class="math inline">\(\de\)</span>’s here. I’m missing an additive factor of <span class="math inline">\(\de^2\)</span> (<span class="math inline">\(\fc{\de}{1+\de}\)</span> instead of <span class="math inline">\(\de\)</span>)…</li>
+<li>Todo: Understand example that shows optimality</li>
+</ul></li>
+<li>Weak regularity
+<ul>
+<li>Why do we need the condition on no cut having too many edges? Counterexample if this is not satisfied? Is there a statement that’s not “X or Y”?</li>
+<li>What subroutines are required for the algorithmic version?</li>
+<li>Note that the points are <span class="math inline">\(V\times V\)</span>, or edges in the complete graph. Tests are <span class="math inline">\(A\not\cap B\)</span>. (These are not the points.)</li>
+<li>Get directly from algorithmic DMT?</li>
+</ul></li>
+<li>Other things
+<ul>
+<li>Low-complexity approximation</li>
+<li>Computational entropy</li>
+<li>Structure theorem (my understanding is that the dense model theorem gives up if it finds a hot spot, while structure attempts to find all the hot spots because it’s iterative).</li>
+</ul></li>
+</ul>
+<h2 id="what-does-this-say-for-learning">What does this say for learning?</h2>
+<ul>
+<li>Relax “tests” to “functions”, perhaps <span class="math inline">\([0,1]\)</span>-functions. Does everything still go through?</li>
+<li>Does this give a GAN formulation? Note that the dense model/structure theorem breaks into regions of constant density, and you get handle on the probability distribution, while in GAN, you have a generative model, not an assignment of probabilities. Can you make a GAN which knows about its probabilities? Is this a Bayesian NN?</li>
+<li>Does this jibe with the greedy algorithmic version of Barron’s Theorem? Is the process of finding the best <span class="math inline">\(h\)</span> (if <span class="math inline">\(H\)</span> is linear thresholds/sigmoids/1-dimensional functions) correspond to finding the best new node? Can we make this convex? What if we just want weak learning here?</li>
+</ul>
+
+  </div>
+
+    
+
+    <!-- Extension : Sharing buttons @ www.sharethis.com -->
+    <span class='st_facebook_large' displayText='Facebook'></span>
+    <span class='st_twitter_large' displayText='Tweet'></span>
+    <span class='st_googleplus_large' displayText='Google +'></span>
+    <span class='st_reddit_large' displayText='Reddit'></span>
+    <span class='st__large' displayText=''></span>
+
+    <div id="disqus_thread"></div>
+    
+
+
+  
+    <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+  </div>
+  
+</div>
+]]></summary>
+</entry>
+<entry>
     <title>Stochastic calculus</title>
     <link href="http://holdenlee.github.io/notebook/posts/math/probability/stochastic_calculus.html" />
     <id>http://holdenlee.github.io/notebook/posts/math/probability/stochastic_calculus.html</id>
@@ -262,6 +360,7 @@ u_t=\mathcal L u, \quad u(0,x)=f(x)
  <li><a href="#adversarial-training">Adversarial training</a></li>
  <li><a href="#langevin-monte-carlo">Langevin Monte Carlo</a></li>
  <li><a href="#boosting-etc.">Boosting, etc.</a></li>
+ <li><a href="#speculative-thoughts">Speculative thoughts</a></li>
  </ul> </div>
 
   <div class="blog-main">
@@ -276,6 +375,24 @@ u_t=\mathcal L u, \quad u(0,x)=f(x)
 </ul>
 <h2 id="boosting-etc.">Boosting, etc.</h2>
 <p>Fix notes!</p>
+<h2 id="speculative-thoughts">Speculative thoughts</h2>
+<ul>
+<li>Relationship between Rademacher width and size of <span class="math inline">\(\ep\)</span>-net?</li>
+<li>Can we rephrase Frieze-Kannan regularity lemma as follows: there exists a small neural net that approximately computes cuts? Number of hidden nodes independennt of size of graph?
+<ul>
+<li>FK as: set of graphs is “small” in cut metric, so has a small <span class="math inline">\(\ep\)</span>-net. Rademacher?</li>
+</ul></li>
+<li>Can we show that certain solutions to problems are approximable by 2-layer neural nets, by showing that their Barron norm is small?
+<ul>
+<li>Ex. Reinforcment learning value function. Must assume some kind of geometry on state space. (For arbitrary partitions, trivial as all value vectors in <span class="math inline">\(\R^A\)</span>.)</li>
+<li>On policy side: it’s clear that graph can be partitioned.</li>
+<li>Convolution - what’s the analogue here? It’s very weird because functions form infinite-dimensional space, nonlinear functions on functions is weird.</li>
+<li>Something about looking at <span class="math inline">\(\ep^{-\lg |S|}\)</span> nodes, depth <span class="math inline">\(-\lg \ep\)</span>?</li>
+<li>Would be nice to study niceness of value, optimal policy in belief space.</li>
+<li>Barron is a stronger condition than Lipschitz - says there aren’t many directions of variation.</li>
+<li>If e.g. something radial, out of luck!</li>
+</ul></li>
+</ul>
 
   </div>
 
@@ -1132,6 +1249,7 @@ y&amp;=\sumo id \binom mi b^i.
 <ol type="1">
 <li>Simpler, boolean formulation. At step <span class="math inline">\(t\)</span>, have weights on data points, increase weight if it was successfully separated. (How did they calculate weights in AdaGAN?) At end, let <span class="math inline">\(D\)</span> be best discriminator against uniform. What’s <span class="math inline">\(\E D - \sumo tT \al_t \E D(G_t)\)</span>?</li>
 <li>Is there something more sophisticated/suitable than simple mixture? Ex. pick a data point and then try to generate something close to it? (not this actually…) Something like, run generators together and pick the best point from them?</li>
+<li>If you take 2 samples from the same distribution, the discriminator has the ability to distinguish between them (at least, without regularization). So you have to choose your discriminator to be less powerful than this, or otherwise you will end up memorizing. Is there an architecture/regularization for discriminator such that it will NEVER learn to discriminate between 2 samples from the same distribution?</li>
 </ol>
 
   </div>
@@ -1328,168 +1446,6 @@ For all distributions <span class="math inline">\(p\)</span>,
 \]</span> Note that it’s key that we get a ratio <span class="math inline">\(\fc{n}{|E|}\)</span>. We have <span class="math inline">\(\fc{|E|}{n}\le \ep\)</span>. We get <span class="math inline">\(T&lt; \fc{2}{\ga^2} \ln \prc{\ep}\)</span>, so for larger <span class="math inline">\(T\)</span>, we can’t find such a <span class="math inline">\(E\)</span>. The “majority vote” comes from <span class="math inline">\(\fc T2\)</span>.</p>
 <p>(You can also probably penalize differently depending on how the weak learner does, getting different weights, and probably improved bounds depending on performance of weak learners.)</p>
 <h2 id="bayesian-interpretation">Bayesian interpretation</h2>
-
-  </div>
-
-    
-
-    <!-- Extension : Sharing buttons @ www.sharethis.com -->
-    <span class='st_facebook_large' displayText='Facebook'></span>
-    <span class='st_twitter_large' displayText='Tweet'></span>
-    <span class='st_googleplus_large' displayText='Google +'></span>
-    <span class='st_reddit_large' displayText='Reddit'></span>
-    <span class='st__large' displayText=''></span>
-
-    <div id="disqus_thread"></div>
-    
-
-
-  
-    <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
-  </div>
-  
-</div>
-]]></summary>
-</entry>
-<entry>
-    <title>Adversarial examples in neural networks</title>
-    <link href="http://holdenlee.github.io/notebook/posts/tcs/machine_learning/neural_nets/adversarial.html" />
-    <id>http://holdenlee.github.io/notebook/posts/tcs/machine_learning/neural_nets/adversarial.html</id>
-    <published>2017-02-21T00:00:00Z</published>
-    <updated>2017-02-21T00:00:00Z</updated>
-    <summary type="html"><![CDATA[
-<div class="container">
-  <div id="content">
-    <div class="page header">
-      <h1>Adversarial examples in neural networks</h1>
-    </div>
-    <div class="info">
-      
-       
-        <p>Posted: 2017-02-21 
-          , Modified: 2017-02-21 
-	</p>
-      
-       <p>Tags: <a href="/tags/neural%20nets.html">neural nets</a>, <a href="/tags/uncertainty.html">uncertainty</a>, <a href="/tags/aaml.html">aaml</a></p> 
-    </div>
-    
-  </div>
-  <!--/div-->
-
-  <div class="toc"> <ul>
- <li><a href="#introduction">Introduction</a><ul>
- <li><a href="#statement">Statement</a></li>
- <li><a href="#blog-posts">Blog posts</a></li>
- <li><a href="#literature">Literature</a></li>
- <li><a href="#experiments">Experiments</a></li>
- <li><a href="#theory">Theory</a></li>
- </ul></li>
- <li><a href="#lcls17-delving-into-transferable-adversarial-examples">[LCLS17] Delving into Transferable Adversarial Examples</a><ul>
- <li><a href="#experiments-1">Experiments</a></li>
- <li><a href="#ensemble-based-approaches">Ensemble-based approaches</a></li>
- <li><a href="#geometry">Geometry</a></li>
- </ul></li>
- <li><a href="#questions">Questions</a></li>
- </ul> </div>
-
-  <div class="blog-main">
-    <p>See <a href="adversarial_experiments.html">my experiments</a>.</p>
-<h2 id="introduction">Introduction</h2>
-<h3 id="statement">Statement</h3>
-<p>Neural networks can be easily fooled—ex. an adversary adding a small amount of noise can change the classification from “dog” to “cat” with high confidence. It can be fooled even by a weak adversary with just black-box access!</p>
-<p>Related to making NN’s resistant: Have NN’s give a confidence bound.</p>
-<p>Ideas:</p>
-<ul>
-<li>Use uncertainty quantification from statistics: Fisher information. See personal communication with Jacob S.</li>
-<li>Use an ensemble of neural nets. Train an ensemble in parallel, vs. train together against a discriminator.</li>
-<li>Sleeping in NN</li>
-<li>Use some kind of calibration. I have a suspicion that cross-entropy simply doesn’t generalize because losses are unbounded.</li>
-<li>Active learning</li>
-<li>Make Lipschitz/other regularization. Give noisy example with the kind of noise you want to be resistant against.</li>
-<li>Boosting</li>
-</ul>
-<h3 id="blog-posts">Blog posts</h3>
-<ul>
-<li><a href="http://karpathy.github.io/2015/03/30/breaking-convnets/">breaking linear classifiers</a> <a href="http://scrible.com/s/6wE0Q">h</a></li>
-<li><a href="http://www.kdnuggets.com/2015/07/deep-learning-adversarial-examples-misconceptions.html">myths</a> <a href="http://scrible.com/s/4wU0Q">h</a></li>
-<li><a href="https://openai.com/blog/adversarial-example-research/">OpenAI blog post</a></li>
-</ul>
-<h3 id="literature">Literature</h3>
-<ul>
-<li>[SZSB14] Intriguing properties of neural networks <a href="https://arxiv.org/pdf/1312.6199.pdf?not-changed">paper</a></li>
-<li>Ian J Goodfellow, Jonathon Shlens, and Christian Szegedy. Explaining and harnessing adversarial examples. arXiv preprint arXiv:1412.6572, 2014.</li>
-<li>[NYC15] Deep Neural Networks are Easily Fooled - High Confidence Predictions for Unrecognizable Images</li>
-<li></li>
-<li></li>
-<li>[LCLS17] Delving into Transferable Adversarial Examples and Black-box Attacks</li>
-</ul>
-<h3 id="experiments">Experiments</h3>
-<ul>
-<li>Reproduce adversarial examples result on a simple dataset, e.g. MNIST.</li>
-<li>Try training an ensemble of NN in parallel and compare to predictions of a single one.</li>
-</ul>
-<h3 id="theory">Theory</h3>
-<ul>
-<li>Think in terms of learning theory, VC dimension…</li>
-</ul>
-<h2 id="lcls17-delving-into-transferable-adversarial-examples">[LCLS17] Delving into Transferable Adversarial Examples</h2>
-<ol type="1">
-<li>Model, training data, training process, test label set unknown to attacker.</li>
-<li>Large dataset (ImageNet)</li>
-<li>Do not construct substitute model</li>
-</ol>
-<p>What is the difference between targeted and non-targeted transferability?</p>
-<ol type="1">
-<li>Non-targeted: <span class="math inline">\(x^*\approx x\)</span>, <span class="math inline">\(f_\te(x^*)\ne f_\te(x) = y\)</span>. (Constrain <span class="math inline">\(d(x,x^*)\le B\)</span>.)</li>
-<li>Targeted: <span class="math inline">\(x^*\approx x\)</span>, <span class="math inline">\(f_\te(x^*)=y^*\)</span>.</li>
-</ol>
-<p>3 approaches: Suppose <span class="math inline">\(f = \max_i J_\te(x)_i\)</span>, where <span class="math inline">\(J_\te(x)\)</span> is vector of probabilities.</p>
-<ol type="1">
-<li>Optimization <span class="math inline">\(\amin_{x^*} \la d(x,x^*) - \ell(\one_y, J_\te(x^*))\)</span>. Ex. <span class="math inline">\(\ell(u,v) = \ln (1-u\cdot v)\)</span>.</li>
-<li>Fast gradient <span class="math inline">\(x^* \leftarrow \text{clamp}(x+B\sign (\nb_x \ell(\one_y, J_\te(x))))\)</span>.</li>
-<li>Fast gradient sign <span class="math inline">\(x^* \leftarrow \text{clamp}\pa{x+B\nv{\nb_x\ell(\one_y, J_\te(x))}}\)</span>.</li>
-</ol>
-<p>Approaches for targeted: Replace constraint with <span class="math inline">\(f_\te(x^*)=y^*\)</span></p>
-<ol type="1">
-<li>Optimization <span class="math inline">\(\amin_{x^*} \la d(x,x^*) \redd{+} \redd{\ell'(\one_{y^*}}, J_\te(x^*))\)</span>. Ex. <span class="math inline">\(\ell'(u,v) = \redd{-\sum_i u_i \lg v_i}\)</span>.</li>
-<li>Fast gradient <span class="math inline">\(x^* \leftarrow \text{clamp}(x\redd{-}B\sign (\nb_x \redd{\ell'(\one_{y^*}}, J_\te(x))))\)</span>.</li>
-<li>Fast gradient sign <span class="math inline">\(x^* \leftarrow \text{clamp}\pa{x\redd{-}B\nv{\nb_x\redd{\ell'(\one_y}, J_\te(x))}}\)</span>.</li>
-</ol>
-<h3 id="experiments-1">Experiments</h3>
-<p>Choose 100 images (ILSVRC2012 dataset) which can be correctly classified by all 5 models.</p>
-<p>Non-target transferability: accuracy = percentage of adversarial examples for one model correctly classified for the other. (For NN to be good, want this to be high)</p>
-<p>Targeted transferability: matching rate = percentage of adversarial examples classified as target label by other model. (Want this to be low)</p>
-<p>Root mean square deviation <span class="math inline">\(d(x^*,x) = \sfc{\sum_i (x_i^*-x_i^2)}{N}\)</span>.</p>
-<p>Q: isn’t the optimizer using gradient information? (We can estimate it by sampling though!)</p>
-<p>Use small learning rate to generate images with RMSD&lt;2. Actually can set <span class="math inline">\(\la=0\)</span>.</p>
-<p>(Accuracy is low. But what is the confidence?)</p>
-<ul>
-<li>Optimization can mislead the models.</li>
-<li>FG cannot fully mislead the models. A potential reason is that, FG can be viewed as approximating the optimization, but is tailored for speed over accuracy.</li>
-</ul>
-<p>Find the minimal transferable RMSD by linear search.</p>
-<p>Note FGS minimizes distortion’s <span class="math inline">\(L_\iy\)</span> norm while FG minimizes <span class="math inline">\(L_2\)</span> norm.</p>
-<p>Target labels do not transfer. Fast gradient-based approaches don’t do well because they only search in 1-D subspace.</p>
-<h3 id="ensemble-based-approaches">Ensemble-based approaches</h3>
-<p>These do better! If an adversarial image remains adversarial for multiple models, it is more likely to transfer to other models. <span class="math display">\[
-\amin_{x^*} -\ln \pa{\pa{\sumo ik \al_i J_i(x^*)}\cdot \one_{y^*}} + \la d(x,x^*)
-\]</span> For each of the five models, we treat it as the black-box model to attack, and generate adversarial images for the ensemble of the rest four, which is considered as white-box. This attack does well!</p>
-<p>Non-targeted adversarial images have almost perfect transferability!</p>
-<p>Fast gradient doesn’t work with ensemble.</p>
-<h3 id="geometry">Geometry</h3>
-<ul>
-<li>The gradient directions of different models in our evaluation are almost orthogonal to each other. - this makes sense</li>
-<li>Choose 2 orthogonal directions, one being a gradient direction. There are up to 21 different regions
-<ul>
-<li>Boundaries align well.</li>
-<li>Boundary diameter along gradient direction smaller. (Even in the direction of increasing the prediction probability!)</li>
-</ul></li>
-</ul>
-<h2 id="questions">Questions</h2>
-<ul>
-<li>Can you use adversarial examples to improve training?</li>
-<li>What if you try denoising first?</li>
-</ul>
 
   </div>
 

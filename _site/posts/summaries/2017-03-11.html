@@ -89,6 +89,7 @@
  <li><a href="#adversarial-training">Adversarial training</a></li>
  <li><a href="#langevin-monte-carlo">Langevin Monte Carlo</a></li>
  <li><a href="#boosting-etc.">Boosting, etc.</a></li>
+ <li><a href="#speculative-thoughts">Speculative thoughts</a></li>
  </ul> </div>
 
   <div class="blog-main">
@@ -103,6 +104,24 @@
 </ul>
 <h2 id="boosting-etc.">Boosting, etc.</h2>
 <p>Fix notes!</p>
+<h2 id="speculative-thoughts">Speculative thoughts</h2>
+<ul>
+<li>Relationship between Rademacher width and size of <span class="math inline">\(\ep\)</span>-net?</li>
+<li>Can we rephrase Frieze-Kannan regularity lemma as follows: there exists a small neural net that approximately computes cuts? Number of hidden nodes independennt of size of graph?
+<ul>
+<li>FK as: set of graphs is “small” in cut metric, so has a small <span class="math inline">\(\ep\)</span>-net. Rademacher?</li>
+</ul></li>
+<li>Can we show that certain solutions to problems are approximable by 2-layer neural nets, by showing that their Barron norm is small?
+<ul>
+<li>Ex. Reinforcment learning value function. Must assume some kind of geometry on state space. (For arbitrary partitions, trivial as all value vectors in <span class="math inline">\(\R^A\)</span>.)</li>
+<li>On policy side: it’s clear that graph can be partitioned.</li>
+<li>Convolution - what’s the analogue here? It’s very weird because functions form infinite-dimensional space, nonlinear functions on functions is weird.</li>
+<li>Something about looking at <span class="math inline">\(\ep^{-\lg |S|}\)</span> nodes, depth <span class="math inline">\(-\lg \ep\)</span>?</li>
+<li>Would be nice to study niceness of value, optimal policy in belief space.</li>
+<li>Barron is a stronger condition than Lipschitz - says there aren’t many directions of variation.</li>
+<li>If e.g. something radial, out of luck!</li>
+</ul></li>
+</ul>
 
   </div>
 

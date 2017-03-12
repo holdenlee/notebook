@@ -10,7 +10,7 @@
   <meta name="description" content="Holden Lee's Research Notebook">
   <meta name="author" content="Holden Lee">
     
-  <title>Posts in category "tcs/complexity"</title>
+  <title>Learning to model structures and data</title>
 
   <!-- Bootstrap core CSS -->
   <link href="../../../bootstrap/css/bootstrap.min.css" rel="stylesheet">
@@ -70,51 +70,90 @@
 <div class="container">
   <div id="content">
     <div class="page header">
-      <h1>Posts in category "tcs/complexity"</h1>
+      <h1>Learning to model structures and data</h1>
     </div>
     <div class="info">
       
+       
+        <p>Posted: 2017-03-12 
+          , Modified: 2016-03-12 
+	</p>
       
-      
+       <p>Tags: <a href="../../../tags/pseudorandomness.html">pseudorandomness</a>, <a href="../../../tags/structure.html">structure</a></p> 
     </div>
     
   </div>
   <!--/div-->
 
-  
+  <div class="toc"> <ul>
+ <li><a href="#miscellaneous-notes">Miscellaneous notes</a></li>
+ <li><a href="#what-does-this-say-for-learning">What does this say for learning?</a></li>
+ </ul> </div>
 
   <div class="blog-main">
-    <ul>
-    
-        <li>
-            <a href="../../../posts/tcs/complexity/model.html">Learning to model structures and data</a> (2017-03-12)
-        </li>
-    
-        <li>
-            <a href="../../../posts/tcs/complexity/sos.html">Sum of squares</a> (2016-03-24)
-        </li>
-    
-        <li>
-            <a href="../../../posts/tcs/complexity/scraps.html">Scraps</a> (2016-02-29)
-        </li>
-    
-        <li>
-            <a href="../../../posts/tcs/complexity/Rem16.html">(Rem16) The Hilbert Function, Algebraic Extractors, and Recursive Fourier Sampling</a> (2016-02-29)
-        </li>
-    
-        <li>
-            <a href="../../../posts/tcs/complexity/RFS.html">Recursive Fourier Sampling</a> (2016-02-29)
-        </li>
-    
+    <h2 id="miscellaneous-notes">Miscellaneous notes</h2>
+<ul>
+<li>Boosting:
+<ul>
+<li>Generic boosting theorem</li>
+<li>Easiest to state when assume access to whole distribution. Otherwise, have to sample and assume something about VC dimension to generalize. (See old 511 notes. Actual argument works with <span class="math inline">\(\Pi_H(m)\)</span>, is there some reason we need to do that?)</li>
+<li>Hardcore lemma</li>
+<li>Strong version: Either allow real-number predictions, or think of real-number output as flipping a coin with that probability. This can save the vital factor of 2 compared to worst-case.</li>
+<li>I don’t get the potential argument.</li>
+<li>I do get the multiplicative weights argument of BHK, but there are some things to be careful about.
+<ul>
+<li>Familiar with MW with divergence applied to it.</li>
+<li>How to make non-worst case? Is this already covered?</li>
+<li>What about the AdaBoost improvement - algorithmically speaking, it makes sense to adapt weight based on number correct/wrong. Can you not redo the analysis here?</li>
+<li>Important: need to keep track of density of <span class="math inline">\(\de\)</span>.</li>
+<li>Do we need to cap the weights at 1? What problem is this trying to solve? What happens if we don’t?</li>
+</ul></li>
+</ul></li>
+<li>Dense model theorem
+<ul>
+<li>Got <span class="math inline">\(\de''\)</span> (<span class="math inline">\(\wh \de\)</span>) part</li>
+<li>Lots of algebra/<span class="math inline">\(\ep\)</span>’s and <span class="math inline">\(\de\)</span>’s here. I’m missing an additive factor of <span class="math inline">\(\de^2\)</span> (<span class="math inline">\(\fc{\de}{1+\de}\)</span> instead of <span class="math inline">\(\de\)</span>)…</li>
+<li>Todo: Understand example that shows optimality</li>
+</ul></li>
+<li>Weak regularity
+<ul>
+<li>Why do we need the condition on no cut having too many edges? Counterexample if this is not satisfied? Is there a statement that’s not “X or Y”?</li>
+<li>What subroutines are required for the algorithmic version?</li>
+<li>Note that the points are <span class="math inline">\(V\times V\)</span>, or edges in the complete graph. Tests are <span class="math inline">\(A\not\cap B\)</span>. (These are not the points.)</li>
+<li>Get directly from algorithmic DMT?</li>
+</ul></li>
+<li>Other things
+<ul>
+<li>Low-complexity approximation</li>
+<li>Computational entropy</li>
+<li>Structure theorem (my understanding is that the dense model theorem gives up if it finds a hot spot, while structure attempts to find all the hot spots because it’s iterative).</li>
+</ul></li>
 </ul>
-
-
+<h2 id="what-does-this-say-for-learning">What does this say for learning?</h2>
+<ul>
+<li>Relax “tests” to “functions”, perhaps <span class="math inline">\([0,1]\)</span>-functions. Does everything still go through?</li>
+<li>Does this give a GAN formulation? Note that the dense model/structure theorem breaks into regions of constant density, and you get handle on the probability distribution, while in GAN, you have a generative model, not an assignment of probabilities. Can you make a GAN which knows about its probabilities? Is this a Bayesian NN?</li>
+<li>Does this jibe with the greedy algorithmic version of Barron’s Theorem? Is the process of finding the best <span class="math inline">\(h\)</span> (if <span class="math inline">\(H\)</span> is linear thresholds/sigmoids/1-dimensional functions) correspond to finding the best new node? Can we make this convex? What if we just want weak learning here?</li>
+</ul>
 
   </div>
 
     
 
+    <!-- Extension : Sharing buttons @ www.sharethis.com -->
+    <span class="st_facebook_large" displayText="Facebook"></span>
+    <span class="st_twitter_large" displayText="Tweet"></span>
+    <span class="st_googleplus_large" displayText="Google +"></span>
+    <span class="st_reddit_large" displayText="Reddit"></span>
+    <span class="st__large" displayText></span>
 
+    <div id="disqus_thread"></div>
+    
+
+
+  
+    <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+  </div>
   
 </div>
 
@@ -159,6 +198,9 @@
 
 <!-- Extension : Disqus @ http://disqus.com -->
 <!-- Extension : InlineDisqussions @ https://github.com/tsi/inlineDisqussions -->
+
+<script src="../../../disqus/js/disqus.js"></script>
+
 
 
 <!-- Extension : Google Analytics -->
