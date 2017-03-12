@@ -147,6 +147,7 @@
 <ol type="1">
 <li>Simpler, boolean formulation. At step <span class="math inline">\(t\)</span>, have weights on data points, increase weight if it was successfully separated. (How did they calculate weights in AdaGAN?) At end, let <span class="math inline">\(D\)</span> be best discriminator against uniform. What’s <span class="math inline">\(\E D - \sumo tT \al_t \E D(G_t)\)</span>?</li>
 <li>Is there something more sophisticated/suitable than simple mixture? Ex. pick a data point and then try to generate something close to it? (not this actually…) Something like, run generators together and pick the best point from them?</li>
+<li>If you take 2 samples from the same distribution, the discriminator has the ability to distinguish between them (at least, without regularization). So you have to choose your discriminator to be less powerful than this, or otherwise you will end up memorizing. Is there an architecture/regularization for discriminator such that it will NEVER learn to discriminate between 2 samples from the same distribution?</li>
 </ol>
 
   </div>
