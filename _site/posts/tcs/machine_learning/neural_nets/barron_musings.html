@@ -76,7 +76,7 @@
       
        
         <p>Posted: 2016-12-22 
-          , Modified: 2016-12-22 
+          , Modified: 2017-03-15 
 	</p>
       
        <p>Tags: <a href="../../../../tags/neural%20net.html">neural net</a></p> 
@@ -88,6 +88,9 @@
   <div class="toc"> <ul>
  <li><a href="#directions-1222">Directions 12/22</a></li>
  <li><a href="#generalization-bounds">Generalization bounds</a></li>
+ <li><a href="#kernel-methods">Kernel methods</a><ul>
+ <li><a href="#from-email">From email</a></li>
+ </ul></li>
  </ul> </div>
 
   <div class="blog-main">
@@ -118,6 +121,52 @@ R_n(\mathcal F)&amp;\le \fc{2B_2B_2'C_2\sqrt m}{\sqrt n}
 <li>Optimization?</li>
 </ul>
 <p>[Andoni, Panigrahy, Valiant, Zhang] Neural networks approximate bounded-degree polynomials.</p>
+<h2 id="kernel-methods">Kernel methods</h2>
+<ul>
+<li>[GKKT16] Reliably Learning the ReLU in Polynomial Time</li>
+<li>[ZLJ16] l1-regularized Neural Networks are Improperly Learnable in Polynomial Time</li>
+</ul>
+<h3 id="from-email">From email</h3>
+<ul>
+<li>We can bound the Barron norm of a 1-hidden layer NN if we bound the size of the the vectors: <span class="math inline">\(c \sigma (a^Tx + b)\)</span> has Barron norm <span class="math inline">\(O(c||a||_2)\)</span>. We can bound Barron norm <span class="math inline">\(\int||\omega|||\hat f|\)</span> by
+<ul>
+<li><span class="math inline">\(\sqrt{(\int||\omega||^{2s}|\hat f|^2)(\int ||\omega||^{2-2s})}\)</span> (but this requires <span class="math inline">\(s&gt;n/2\)</span> for the second integral to converge, and I suspect the first integral might be undesirably large)</li>
+<li><span class="math inline">\(\sqrt{(\int||\omega||^{2}|\hat f|^2)(\int_S 1)}\)</span> if we somehow “band-limit” <span class="math inline">\(f\)</span> by zeroing out its Fourier transform outside <span class="math inline">\(S\)</span>.</li>
+</ul></li>
+<li>I need to compare bound <span class="math inline">\(f(x)\)</span> by a norm in a Hilbert space and the Barron norm is not a norm in a Hilbert space.</li>
+</ul>
+<p>Some things:</p>
+<ul>
+<li>I’m confused about <span class="math inline">\(n\)</span> dimensions. There’s the weird thing that even though <span class="math inline">\(\si=1\)</span> in <span class="math inline">\(e^{-\fc{\ve{x}^2}{2}}\)</span>, the standard deviation is <span class="math inline">\(\sqrt n\)</span>. cf. Mass of sphere is mostly near boundary.</li>
+<li>Why aren’t most reasonable functions approximable by band-limited functions? If you can approximate with <span class="math inline">\(\ve{\om}\)</span>’s <span class="math inline">\(\le C_n\sqrt n\)</span>, then Barron’s Theorem applies trivially, because you don’t have an exponentially large volume!</li>
+<li>Another problem: for <span class="math inline">\(\si(a^Tx+b)\)</span>, <span class="math inline">\(L^1\)</span> norm is bounded so Barron is OK, but <span class="math inline">\(L^2\)</span> norm is infinite. In order to get a Hilbert space bound, you have to smooth, and you don’t get finite <span class="math inline">\(L^2\)</span> until you smooth by <span class="math inline">\(e^{-O(x^2)}\)</span>.</li>
+<li>Bandlimiting at <span class="math inline">\(\sqrt n\)</span> is like convolving with something that is <span class="math inline">\(e^{-O(x^2)}\)</span>—this is bad because it smooths everything out! ? Not really, you want a bump function, not a Gaussian, this is incorrect intuition?</li>
+</ul>
+<p>Conclusion:</p>
+<ul>
+<li>Hilbert space bound seems useless for <span class="math inline">\(\si(a^Tx+b)\)</span> because the amount of smoothing needed for bounded <span class="math inline">\(L^2\)</span> seems like it kills the function.</li>
+<li>Even if we only care about a Barron constant bound, I have a problem: why aren’t bandlimited functions good enough to approximate NN’s? (Additive <span class="math inline">\(L^\iy\)</span> error OK? I.e., get signs? Don’t care about total <span class="math inline">\(L^2\)</span> error?)
+<ul>
+<li>Suppose measure is in unit sphere. (Is this silly, should I consider the box instead?) It seems like there is additive error <span class="math inline">\(k_n\to 0\)</span> in <span class="math inline">\(\si(a^Tx+b)\)</span> approximation as <span class="math inline">\(n\to \iy\)</span>. (I’m looking at Barron converse.)</li>
+<li>Actual function approximation doesn’t get better as <span class="math inline">\(n\to \iy\)</span> (otherwise it would be a paradox). If we consider point/line masses in Fourier space, there is no contradiction.</li>
+<li>Radial functions without too much oscillation are also good. (This actually seems counterintuitive to me.)</li>
+<li>What’s an example of a function that is Lipschitz and not easily expressible? Consider a grid of triangle functions. What does this look like when bandlimited? I guess it gets killed by the convolution, while a few faraway directions do not? So instead of looking at Barron directly look at: ability to approximate with convolved/decayed function? (Although bounds are probably not too good.) Check how convolution plays out in the Hankel transform? ! For 1-D things, we only care about the projection onto that dimension—so the convolution doesn’t kill it. Formalize: something with low <span class="math inline">\(L^0\)</span> (sparsity) isn’t too affected (in <span class="math inline">\(L^\iy\)</span>) by convolution? And this is NOT true (directly) for <span class="math inline">\(L^1\)</span>? Although Barron says that things small in <span class="math inline">\(L^1\)</span> can be approximated by things small in <span class="math inline">\(L^0\)</span>—so we can always use that as a first step. (norm different though?) Conclusion/steps:
+<ul>
+<li>Show that every NN can be approximated in <span class="math inline">\(L^\iy\)</span> by bandlimited function. Possibly restrict to NN’s with some incoherence condition (so we lose a chunk, although possibly an unimportant chunk, of the Barron functions).</li>
+<li>Simply use RKHS with norm <span class="math inline">\(\pa{\int\ve{\om}^2|\wh f(\om)|^2}^{\rc 2}\)</span>. (Proof of boundedness by this norm goes through Barron norm, but there is no use of Barron’s theorem.)</li>
+<li>Find the kernel for this! I’m having trouble doing this. I’m not dealing with the <span class="math inline">\(f(0)\)</span> properly so am getting divergence. <span class="math inline">\(\wh k_y(\om) = \fc{e^{-i\an{\om,y}}}{\ve{\om}^2}\)</span>. If use <span class="math inline">\(1+\ve{\om}^2\)</span> I get <span class="math inline">\(\wh k_y(\om) = \fc{e^{-i\an{\om,y}}}{1+\ve{\om}^2}\)</span>.</li>
+<li>Write an <span class="math inline">\(f\)</span> you’re trying to approximate as <span class="math inline">\(\sum a_xk_x\)</span> where <span class="math inline">\((x,y)\)</span> are training pairs.</li>
+<li>Careful with either compact support or <span class="math inline">\(f(0)=0\)</span> condition.</li>
+</ul></li>
+<li>What’s transform of a sphere (surface)?</li>
+<li>What’s difference with using Sobolev norm <span class="math inline">\(s&gt;\fc n2\)</span>? For that you have to bandwidth to 1, not <span class="math inline">\(\Te(\sqrt n)\)</span>.</li>
+</ul></li>
+<li>Fundamental solution <span class="math inline">\(\rc{(4Dt)^{\fc n2}} e^{-\fc{\ve{x}^2}{4Dt}}\)</span>.</li>
+</ul>
+<p>Other musings:</p>
+<ul>
+<li>For convolutional? Lipschitz control? Translation invariance? Think about torus case?</li>
+</ul>
 
   </div>
 

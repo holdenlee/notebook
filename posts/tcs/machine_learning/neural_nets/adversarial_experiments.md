@@ -16,6 +16,18 @@ Trained for 100 epochs. Accuracy (out of 1)
 | 1 | 0.9133 | 0.8890 | 0.9862 |
 | 100 | 0.9933 | 0.9932 | 0.9922 |
 
+Folders and notes
+
+* Baseline
+    * train_mix100_pretrain1_epochs100_ep0.3_reg1
+	* train_mix100_pretrain1_epochs100_ep0.5_reg1
+	* train_mix100_pretrain1_epochs100_ep1_reg1
+* Mixture
+	* train_mix100_pretrain1_epochs100_ep0.3_reg1
+	* train_mix100_pretrain1_epochs100_ep0.5_reg1
+	* train_mix100_pretrain1_epochs100_ep1_reg1
+
+
 # Todo
 
 * Look at which samples are misclassified by which networks: are they the same or different?
@@ -40,8 +52,12 @@ Trained for 100 epochs. Accuracy (out of 1)
 
 * Set up tensorboard to show histograms, real and adversarial images, etc.
 * Run with many different settings.
-* Port over to own training loop.
+* End - save
 * Output accuracies, etc. over time as list.
+
+## Done
+
+* Port over to own training loop. 
 
 # Code to run
 

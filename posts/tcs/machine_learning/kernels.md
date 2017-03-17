@@ -117,7 +117,7 @@ Comparison to neural nets: "the random features view of kernels defines a functi
 For $\phi_\om(x) = \one_{\om^Tx\ge 0}(\om^Tx)^q$, as $m\to \iy$, get the kernel
 \begin{align}
 k(x,x') &= 2\int\phi_\om(x)\phi_\om(x')p(\om)d\om\\
-&= \rc\pi \ve{x}^q\ve{x'}^q J_q\ub{\pf{\cos^{-1}\pf{x^Tx'}}{\ve{x}\ve{x'}}}{\te}\\
+&= \rc\pi \ve{x}^q\ve{x'}^q J_q\ub{\pa{\cos^{-1}\pf{x^Tx'}{\ve{x}\ve{x'}}}}{\te}\\
 J_0(\te) &= \pi - \te\\
 J_1(\te) &= \sin\te + (\pi - \te)\cos\te.
 \end{align}
@@ -126,9 +126,9 @@ J_1(\te) &= \sin\te + (\pi - \te)\cos\te.
 
 ## Nystrom
 
-$$
 
 $$K \approx \matt{K_{II}}{K_{IJ}}{K_{JI}}{K_{JI}K_{II}^{+}K_{IJ}}.$$
+
 $K_{JJ} - K_{JI}K_{II}^{+}K_{IJ}$ is the Schur complement.
 
 Drineas/Mahoney: Choose $I$ by sampling $i$ with probability $\fc{K_{ii}}{\sumo jn K_{jj}}$. (p. 138)
