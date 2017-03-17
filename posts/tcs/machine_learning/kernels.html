@@ -171,14 +171,14 @@ h(t) = \int e^{-i\an{t,\om}}\mu(d\om).
 For <span class="math inline">\(\phi_\om(x) = \one_{\om^Tx\ge 0}(\om^Tx)^q\)</span>, as <span class="math inline">\(m\to \iy\)</span>, get the kernel
 <span class="math display">\[\begin{align}
 k(x,x') &amp;= 2\int\phi_\om(x)\phi_\om(x')p(\om)d\om\\
-&amp;= \rc\pi \ve{x}^q\ve{x'}^q J_q\ub{\pf{\cos^{-1}\pf{x^Tx'}}{\ve{x}\ve{x'}}}{\te}\\
+&amp;= \rc\pi \ve{x}^q\ve{x'}^q J_q\ub{\pa{\cos^{-1}\pf{x^Tx'}{\ve{x}\ve{x'}}}}{\te}\\
 J_0(\te) &amp;= \pi - \te\\
 J_1(\te) &amp;= \sin\te + (\pi - \te)\cos\te.
 \end{align}\]</span>
 <p>(Bessel function?) Decouples magnitude from angle. (Cho/Saul 2009)</p>
 <h3 id="nystrom">Nystrom</h3>
-<p>$$</p>
-<p><span class="math display">\[K \approx \matt{K_{II}}{K_{IJ}}{K_{JI}}{K_{JI}K_{II}^{+}K_{IJ}}.\]</span> <span class="math inline">\(K_{JJ} - K_{JI}K_{II}^{+}K_{IJ}\)</span> is the Schur complement.</p>
+<p><span class="math display">\[K \approx \matt{K_{II}}{K_{IJ}}{K_{JI}}{K_{JI}K_{II}^{+}K_{IJ}}.\]</span></p>
+<p><span class="math inline">\(K_{JJ} - K_{JI}K_{II}^{+}K_{IJ}\)</span> is the Schur complement.</p>
 <p>Drineas/Mahoney: Choose <span class="math inline">\(I\)</span> by sampling <span class="math inline">\(i\)</span> with probability <span class="math inline">\(\fc{K_{ii}}{\sumo jn K_{jj}}\)</span>. (p. 138)</p>
 <h2 id="universality">Universality</h2>
 <p>Let <span class="math inline">\(X\)</span> be locally compact Hausdorff. <span class="math inline">\(k\)</span> is a <span class="math inline">\(c_0\)</span>-universal kernel if <span class="math inline">\(H\)</span> with reproducing kernel <span class="math inline">\(k\)</span> is dense in <span class="math inline">\(C_0(X)\)</span> (continuous bounded functions wrt uniform (<span class="math inline">\(L^{\iy}\)</span>) norm).</p>
