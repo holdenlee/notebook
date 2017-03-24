@@ -8,8 +8,91 @@
         <name>Holden Lee</name>
         <email>oldheneel@gmail.com</email>
     </author>
-    <updated>2017-03-15T00:00:00Z</updated>
+    <updated>2017-03-23T00:00:00Z</updated>
     <entry>
+    <title>Neural nets as kernel space</title>
+    <link href="http://holdenlee.github.io/notebook/posts/tcs/machine_learning/neural_nets/nn_kernel.html" />
+    <id>http://holdenlee.github.io/notebook/posts/tcs/machine_learning/neural_nets/nn_kernel.html</id>
+    <published>2017-03-23T00:00:00Z</published>
+    <updated>2017-03-23T00:00:00Z</updated>
+    <summary type="html"><![CDATA[
+<div class="container">
+  <div id="content">
+    <div class="page header">
+      <h1>Neural nets as kernel space</h1>
+    </div>
+    <div class="info">
+      
+       
+        <p>Posted: 2017-03-23 
+          , Modified: 2017-03-23 
+	</p>
+      
+       <p>Tags: <a href="/tags/neural%20net.html">neural net</a></p> 
+    </div>
+    
+  </div>
+  <!--/div-->
+
+  <div class="toc"> <ul>
+ <li><a href="#things-this-could-explain">Things this could explain</a></li>
+ <li><a href="#for-neural-nets">For neural nets</a></li>
+ <li><a href="#followup">Followup</a></li>
+ </ul> </div>
+
+  <div class="blog-main">
+    <p>I think that I can place neural networks with non-steep and well-separated sigmoids as low-norm elements of a RKHS, and that this will explain and unify some learning results.</p>
+<p>Precise details to be ironed out. First, choice of RKHS:</p>
+<ul>
+<li>Sobolev space <span class="math inline">\(H^{\fc n2}(\R^n)\)</span>, or</li>
+<li><span class="math inline">\(L^2(\R^n)\)</span> or <span class="math inline">\(H^1(\R^n)\)</span> with bandlimited constraint.</li>
+<li>Quotient out by constant functions? Allow a sigmoid <span class="math inline">\(\to 1\)</span> at infinity as kernel?</li>
+</ul>
+<p>For the bandlimiting, there are 2 technical steps, with parameters to vary.</p>
+<ul>
+<li>Convolve by Gaussian (or ball indicator) in Fourier space, or multiplying by Gaussian (or FT of ball indicator) in ordinary space.</li>
+<li>cutting off Fourier spectrum - how does this influence? I.e. what is Fourier decay? Expect exponential - so get <span class="math inline">\(\ln \prc{\ep}\)</span> in exponent.</li>
+</ul>
+<p>Expect exponential dependence on steepness.</p>
+<h2 id="things-this-could-explain">Things this could explain</h2>
+<ul>
+<li>Kalai’s result on learning smooth NN.</li>
+<li>Learning linear separator with margin.</li>
+<li>Exponential dependence on dimension or <span class="math inline">\(\rc{\ep}\)</span> (what exactly?) for agnostically learning halfspace, etc.</li>
+</ul>
+<h2 id="for-neural-nets">For neural nets</h2>
+<ul>
+<li>Learn 2-NN with linear output, under some conditions (ex. incoherence)</li>
+<li>Maybe can learn 2-NN with sigmoid/majority output, by boosting (cf. majority of majorities).</li>
+</ul>
+<h2 id="followup">Followup</h2>
+<ul>
+<li>What is relationship to gradient descent?</li>
+</ul>
+
+  </div>
+
+    
+
+    <!-- Extension : Sharing buttons @ www.sharethis.com -->
+    <span class='st_facebook_large' displayText='Facebook'></span>
+    <span class='st_twitter_large' displayText='Tweet'></span>
+    <span class='st_googleplus_large' displayText='Google +'></span>
+    <span class='st_reddit_large' displayText='Reddit'></span>
+    <span class='st__large' displayText=''></span>
+
+    <div id="disqus_thread"></div>
+    
+
+
+  
+    <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+  </div>
+  
+</div>
+]]></summary>
+</entry>
+<entry>
     <title>Langevin dynamics</title>
     <link href="http://holdenlee.github.io/notebook/posts/tcs/machine_learning/probabilistic/langevin.html" />
     <id>http://holdenlee.github.io/notebook/posts/tcs/machine_learning/probabilistic/langevin.html</id>
@@ -936,13 +1019,13 @@ accuracy.<span class="bu">eval</span>(feed_dict<span class="op">=</span>{
  <li><a href="#results">Results</a></li>
  <li><a href="#todo">Todo</a><ul>
  <li><a href="#nice-things">Nice things</a></li>
- <li><a href="#done">Done</a></li>
  </ul></li>
- <li><a href="#code-to-run">Code to run</a></li>
+ <li><a href="#done">Done</a></li>
  </ul> </div>
 
   <div class="blog-main">
-    <h2 id="results">Results</h2>
+    <p>See <a href="https://github.com/holdenlee/adversarial">github</a>.</p>
+<h2 id="results">Results</h2>
 <p>Trained for 100 epochs. Accuracy (out of 1)</p>
 <table>
 <thead>
@@ -956,33 +1039,24 @@ accuracy.<span class="bu">eval</span>(feed_dict<span class="op">=</span>{
 <tbody>
 <tr class="odd">
 <td>1</td>
-<td>0.9133</td>
-<td>0.8890</td>
-<td>0.9862</td>
+<td>?</td>
+<td>?</td>
+<td>?</td>
 </tr>
 <tr class="even">
+<td>10</td>
+<td>?</td>
+<td>?</td>
+<td>?</td>
+</tr>
+<tr class="odd">
 <td>100</td>
-<td>0.9933</td>
-<td>0.9932</td>
-<td>0.9922</td>
+<td>?</td>
+<td>?</td>
+<td>?</td>
 </tr>
 </tbody>
 </table>
-<p>Folders and notes</p>
-<ul>
-<li>Baseline
-<ul>
-<li>train_mix100_pretrain1_epochs100_ep0.3_reg1</li>
-<li>train_mix100_pretrain1_epochs100_ep0.5_reg1</li>
-<li>train_mix100_pretrain1_epochs100_ep1_reg1</li>
-</ul></li>
-<li>Mixture
-<ul>
-<li>train_mix100_pretrain1_epochs100_ep0.3_reg1</li>
-<li>train_mix100_pretrain1_epochs100_ep0.5_reg1</li>
-<li>train_mix100_pretrain1_epochs100_ep1_reg1</li>
-</ul></li>
-</ul>
 <h2 id="todo">Todo</h2>
 <ul>
 <li>Look at which samples are misclassified by which networks: are they the same or different?
@@ -1013,36 +1087,14 @@ accuracy.<span class="bu">eval</span>(feed_dict<span class="op">=</span>{
 <ul>
 <li>Set up tensorboard to show histograms, real and adversarial images, etc.</li>
 <li>Run with many different settings.</li>
-<li>End - save</li>
-<li>Output accuracies, etc. over time as list.</li>
 </ul>
-<h3 id="done">Done</h3>
+<h2 id="done">Done</h2>
 <ul>
 <li>Port over to own training loop.</li>
+<li>End - save</li>
+<li>Output accuracies, etc. over time as list.</li>
+<li>Plotting!</li>
 </ul>
-<h2 id="code-to-run">Code to run</h2>
-<p>In <code>adversarial/</code>,</p>
-<pre><code>. start # do every time to set up virtualenv
-# pretrain 100  nets
-mkdir pretrain
-nohup python train_many_run.py --t=100 &gt; pretrain/log.txt 2&gt;&amp;1 &amp;
-# control
-mkdir baseline_epochs100_ep0.3 
-nohup python mnist_tutorial_tf.py --nb_epochs=100 &gt; baseline_epochs100_ep0.3/log.txt 2&gt;&amp;1 &amp;
-# train mixture of 100
-mkdir train_mix100_pretrain1_epochs100_ep0.3_reg1
-nohup python train_mix.py --t=100 --nb_epochs=100 &gt; train_mix100_pretrain1_epochs100_ep0.3_reg1/log.txt 2&gt;&amp;1 &amp;
-# control 0.5
-mkdir baseline_epochs100_ep0.5
-nohup python mnist_tutorial_tf.py --nb_epochs=100 --epsilon=0.5 &gt; baseline_epochs100_ep0.5/log.txt 2&gt;&amp;1 &amp;
-# train mixture of 100 @ 0.5
-mkdir train_mix100_pretrain1_epochs100_ep0.5_reg1
-nohup python train_mix.py --t=100 --nb_epochs=100 --epsilon=0.5 &gt; train_mix100_pretrain1_epochs100_ep0.5_reg1/log.txt 2&gt;&amp;1 &amp;
-# Sanity check
-mkdir baseline_epochs100_ep1
-nohup python mnist_tutorial_tf.py --nb_epochs=100 --epsilon=1.0 --train_dir=baseline_epochs100_ep1/ &gt; baseline_epochs100_ep1/log.txt 2&gt;&amp;1 &amp;
-mkdir train_mix100_pretrain1_epochs100_ep1_reg1
-nohup python train_mix.py --t=100 --nb_epochs=100 --epsilon=1.0 &gt; train_mix100_pretrain1_epochs100_ep1_reg1/log.txt 2&gt;&amp;1 &amp;</code></pre>
 
   </div>
 
@@ -1221,89 +1273,6 @@ y&amp;=\sumo id \binom mi b^i.
 <li><span class="math inline">\(l\ge 1, b\ge 1, V\ge \rc{2L}, \ep\le VbL\)</span>. Then <span class="math inline">\(\lg N_2(\ep, F_l,m) \le \rc2 \pf{2b}{\ep}^{2l} (2VL)^{l(l+1)} \lg (2n+2)\)</span>.</li>
 <li><span class="math inline">\(fat_{F_l}(\ep) \le 4 \pf{32b}{\ep}^{2l} (2VL)^{l(l+1)} \ln (2n+2)\)</span>.</li>
 </ul>
-
-  </div>
-
-    
-
-    <!-- Extension : Sharing buttons @ www.sharethis.com -->
-    <span class='st_facebook_large' displayText='Facebook'></span>
-    <span class='st_twitter_large' displayText='Tweet'></span>
-    <span class='st_googleplus_large' displayText='Google +'></span>
-    <span class='st_reddit_large' displayText='Reddit'></span>
-    <span class='st__large' displayText=''></span>
-
-    <div id="disqus_thread"></div>
-    
-
-
-  
-    <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
-  </div>
-  
-</div>
-]]></summary>
-</entry>
-<entry>
-    <title>Conversation with Paul Christiano</title>
-    <link href="http://holdenlee.github.io/notebook/posts/cs/ai/control/paul.html" />
-    <id>http://holdenlee.github.io/notebook/posts/cs/ai/control/paul.html</id>
-    <published>2017-02-28T00:00:00Z</published>
-    <updated>2017-02-28T00:00:00Z</updated>
-    <summary type="html"><![CDATA[
-<div class="container">
-  <div id="content">
-    <div class="page header">
-      <h1>Conversation with Paul Christiano</h1>
-    </div>
-    <div class="info">
-      
-       
-        <p>Posted: 2017-02-28 
-          , Modified: 2017-02-28 
-	</p>
-      
-       <p>Tags: <a href="/tags/ai%20safety.html">ai safety</a>, <a href="/tags/machine%20learning.html">machine learning</a></p> 
-    </div>
-    
-  </div>
-  <!--/div-->
-
-  <div class="toc"></div>
-
-  <div class="blog-main">
-    <p>See <a href="alignment_ml.html">alignment</a> and <a href="concrete.html">Concrete</a></p>
-<ol type="1">
-<li>Overseeing RL systems
-<ul>
-<li>What to do when verification is hard, ex. plagiarism?
-<ul>
-<li>Ex. Have an adversarial system which gives you information that would help you discriminate. How do you make sure the optimization is on the same footing?</li>
-<li>Concrete problem: GAN where discriminator recognizes and penalizes perfect memorization.
-<ul>
-<li>Step 1. Give discriminator access to images. Ex. train the discriminator with an attention model over the images.</li>
-<li>Step 2. Give discriminator access to generator’s insides. If the generator has a pointer to the image, the generator discovers that.</li>
-</ul></li>
-</ul></li>
-<li>Suppose an AI comes up with a plan to execute in the real world. You lack physical control. How do you make sure the AI doesn’t trick you?</li>
-</ul></li>
-<li>Semi-supervised learning
-<ul>
-<li>Find algorithms that work in this setting.</li>
-<li>What is the sample complexity? Info-theoretic vs. for efficient algorithms?</li>
-<li>Learning human values</li>
-</ul></li>
-<li>Learning by imitation
-<ul>
-<li>Inverse reinforcement learning</li>
-<li>ELBA:
-<ul>
-<li>How can level <span class="math inline">\(n\)</span>-agents meditate a dispute among <span class="math inline">\(n+1\)</span>-level agents, possibly given more time? (<span class="math inline">\(n+1\)</span>-level agents have to “make their case”)</li>
-<li>Even if <span class="math inline">\(n+1\)</span>-level agents are opaque. (ML method. The logic method is to bake safety into it.)</li>
-<li>Presupposes diversity</li>
-</ul></li>
-</ul></li>
-</ol>
 
   </div>
 
