@@ -88,6 +88,12 @@
   <div class="toc"> <ul>
  <li><a href="#increasing-safety-by-reducing-autonomy">Increasing safety by reducing autonomy</a></li>
  <li><a href="#increasing-safety-without-reducing-autonomy">Increasing safety without reducing autonomy</a></li>
+ <li><a href="#paper">Paper</a></li>
+ <li><a href="#presentation">Presentation</a><ul>
+ <li><a href="#problems">6 problems</a></li>
+ <li><a href="#inductive-ambiguity-identification">Inductive ambiguity identification</a></li>
+ <li><a href="#other-research-agenda">Other research agenda</a></li>
+ </ul></li>
  </ul> </div>
 
   <div class="blog-main">
@@ -124,6 +130,187 @@
 <p>ambiguity-identifying learners are designed to predict potential ways they might run into edge cases and defer to human operators in those cases, conservative learners are designed to err in a safe direction in edge cases.</p>
 </blockquote>
 <p>Ex. cooking the cat.</p>
+<h2 id="paper">Paper</h2>
+<p>Right kind of objective function (value specification), vs. avoid unintended consequences even with imperfect objective function (error tolerance)</p>
+<p>Codify “without doing anything drastic.”</p>
+<p>Obstacles: values of humans hard to pin down, and intelligent system wants to ensure continued existence</p>
+<p>Solutions must be applicable to advanced AI systems. Ignorance is an unsatisfactory solution.</p>
+<p>Extreme guarantees: “after time t, make 0 significant mistakes.”</p>
+<p>Improving a system’s capability may make it exploit loopholes and do less well in the sense we care about. (And hide it from the creator)</p>
+<ol type="1">
+<li>Know when past experience provides insufficient evidence to make a decision.
+<ul>
+<li>Ex. distinguish between Soviet and US tanks - Soviet tanks were taken on sunny day.</li>
+<li>Recognize underspecificity and query user</li>
+<li>Cf. robustness to distributional change.</li>
+<li>Bayesian approaches need the right variables (features).</li>
+<li>Non-Bayesian approaches do not identify ambiguities.</li>
+<li>Active learning: maintain plausible hypotheses, query to rule out</li>
+<li>Disagreement coefficient: overall probability of disagreement in local ball</li>
+<li>Active learning usually requires simple hypothesis class, or iid test samples.</li>
+<li>Ex. Soviets respond by making tanks to fool algorithm</li>
+<li>Conformal predictor: give set of plasuible classifications, contain true one about 95% of time.</li>
+<li>KWIK (knows what it knows): query human finitely many times and makes 0 critical errors. Make classification only when all remaining plausible hypotheses agree.</li>
+<li>Only known for simple hypothesis classes</li>
+<li>Directions
+<ul>
+<li>Bayesian</li>
+<li>Extend active learning beyond iid, and more complex hypothesis classes (NN)</li>
+<li>Relax realizability</li>
+<li>More efficient way to represent ambiguity than set of hypotheses</li>
+</ul></li>
+</ul></li>
+<li>Robust Human Interaction
+<ul>
+<li>Ambiguity identification can help by limiting autonomy</li>
+<li>Do what a trusted human would do.</li>
+<li>How to define objective?</li>
+<li>Related
+<ul>
+<li>Inverse RL.</li>
+<li>Max entropy criterion to convert to opt problem</li>
+<li>May not scale because human demonstrators may not be optimizing value function (irrational).</li>
+</ul></li>
+<li>Directions
+<ul>
+<li>Imitate human answers to questions (NLP).</li>
+<li>GAN</li>
+<li>VAE - can only imitate reversible algorithms</li>
+</ul></li>
+</ul></li>
+<li>Informed oversight
+<ul>
+<li>do what a trusted human would approve given time to consider (approval directed)</li>
+<li>But a human may have a hard time assessing behavior of even a simpler agent (ex. plagiarism easier to execute than detect)</li>
+<li>Related
+<ul>
+<li>Active learning component</li>
+<li>CIRL</li>
+<li>cf. scalable oversight (when possibly deceptive)</li>
+<li>Making more transparent: sparsity, gradients, influence…</li>
+<li>Transparency by construction</li>
+<li>Make robotics systems more transparent</li>
+</ul></li>
+<li>Directions
+<ul>
+<li>Output action a and report r to help overseer evaluate. Ex. a is story</li>
+</ul></li>
+</ul></li>
+<li>Generalizable environment goals
+<ul>
+<li>How to not incentivize self-fooling sensors?</li>
+<li>Designing more elaborate sensors doesn’t scale.</li>
+<li>Instead learn environment goal</li>
+<li>Related
+<ul>
+<li>Learn utility over world-states. Requires specifying (1) type of world-state, (2) prior over utilities, (3) Value-learning model relating utility functions, state transitions, and observations</li>
+<li>Use reward perceptions as evidence of utility function rather than direct measure.</li>
+<li>Reward hacking</li>
+<li>Ex. (A) make sandwich vs. (B) print photo of one. (B): if move paper, then fails.</li>
+<li>Delusion box
+<ul>
+<li>Take into account past leading up to state</li>
+<li>Avoid large jumps in feature space?</li>
+</ul></li>
+</ul></li>
+</ul></li>
+<li>Conservative concepts
+<ul>
+<li>AI system finds strange, undesirable edge case</li>
+<li>Adversarial examples</li>
+<li>Inverse RL</li>
+<li>Generative adversarial modeling</li>
+<li>Directions
+<ul>
+<li>Dimensionality reduction</li>
+<li>Anomaly detection</li>
+<li>What is a “conservative concept”?</li>
+</ul></li>
+</ul></li>
+<li>Impact
+<ul>
+<li>Regularizer penalizing unnecessary large scale side effects but not intended side effects.</li>
+<li>Related
+<ul>
+<li>Impact measure</li>
+<li>Define null policy and state of world</li>
+<li>Divergence between distribution and distribution of null policy. Use model-based RL</li>
+<li>How to separate follow-on and unintended side effects?</li>
+</ul></li>
+<li>Directions
+<ul>
+<li>Causal counterfactual: follow-on effects are causally downstream of goal</li>
+<li>Query the operator</li>
+</ul></li>
+</ul></li>
+<li>Mild
+<ul>
+<li>Related
+<ul>
+<li>Regularization</li>
+<li>How to measure optimization?</li>
+<li>Universal intelligence metrics</li>
+<li>Empowerment metric</li>
+<li>Early stopping is ad-hoc mild optimization</li>
+<li>Satisfice reward rather than maximize. OK if find easy strategies before extreme ones.</li>
+<li>Quantilization: select action randomly from top 1%. Justified by adversarial assumptions.
+<ul>
+<li>How to define measure over actions?</li>
+</ul></li>
+</ul></li>
+<li>Directions
+<ul>
+<li>regularizer for intelligence</li>
+<li>design environments with exploitable glitches</li>
+<li>do not self-modify or outsource computation</li>
+</ul></li>
+</ul></li>
+<li>Instrumental
+<ul>
+<li>Convergent instrumental objectives</li>
+<li>Difficulty: “shut down if human wants it to shut down”. Then make human not want to shut it down.</li>
+<li>Uncertainty about goal</li>
+<li>But if confidently wrong, would have instrumental incentives</li>
+<li>Related
+<ul>
+<li>Specific designs vs. general solution?</li>
+</ul></li>
+<li>Directions
+<ul>
+<li>Way of combine objective functions
+<ul>
+<li>No incentive to cause/prevent shift in objective function</li>
+<li>Incentivized to preserve ability to update objective function</li>
+<li>Reasonable beliefs about relation between actions and mechanism that causes objective function shifts.</li>
+</ul></li>
+<li>Systems that know they are flawed.</li>
+</ul></li>
+</ul></li>
+</ol>
+<!--bit.ly/miri-ml-agenda-->
+<h2 id="presentation">Presentation</h2>
+<p><a href="https://www.youtube.com/watch?v=TSe3p1zIvVI">Video</a></p>
+<h3 id="problems">6 problems</h3>
+<ol type="1">
+<li>Actions hard to evaluate. Ex. plagiarize, steganography. Informed insight</li>
+<li>Ambiguous test examples. Ex. train on domestic cats. Wild cats?</li>
+<li>Imitate human behavior. Produce kind of picture a human would draw. GAN. Imitator vs. distinguisher. Does distinguisher have to be smarter than imitator? How to effectively imitate humans in complex/difficult tasks.</li>
+<li>Difficulty specifying goals: make a sandwich. Reward hacking.</li>
+<li>Negative side effect. 99.99999% chance. Avoid plans with high estimated impact, mild optimization, avert instrumental incentives (manipulate operators, compete for scarce resources).</li>
+<li>Edge cases that still satisfy the goal</li>
+</ol>
+<h3 id="inductive-ambiguity-identification">Inductive ambiguity identification</h3>
+<ul>
+<li>Draw many consistent models with data</li>
+<li>KWIK learning. At each step output w/i epsilon, or .</li>
+<li>Problem: realizability, only for simple hyp classes</li>
+<li>Bayesian: Prior Q over mappings. P unknown ture prior. Perform some classification almost as well as if we already knew P. Assumption: <span class="math inline">\(\forall f, Q(f)\ge \rc k P(f)\)</span>.</li>
+</ul>
+<h3 id="other-research-agenda">Other research agenda</h3>
+<ul>
+<li>Agent foundations: theoretical foundations, agnostic about specific form, logical induction</li>
+<li>Concrete problems in AI safety: empirically study as ML problems. Ex. RL act safely as explore environment.</li>
+</ul>
 
   </div>
 
