@@ -1,7 +1,7 @@
 ---
 title: Concrete problems in AI safety
 published: 2017-02-01
-modified: 2017-02-01
+modified: 2017-04-01
 tags: ai safety, machine learning
 type: paper
 showTOC: True
@@ -185,7 +185,63 @@ Experiments
 * In practice, hard-code, ex. collision avoidance sequence.
 * Most well-studied.
 
+Approaches
+
+* Risk-sensitive performance criteria: change objective to include catastrophic events.
+* Use demonstrations: inverse RL, apprenticeship learning
+    * Reduce need for exploration by relying on small set of demonstrations
+	* Baseline policy to default to, compare to.
+* Simulated exploration
+	* Explore in simulated environment to reduce opportunity for catastrophe.
+	* Do safer things in real world than in catastrophe.
+* Bounded exploration
+	* Explore in space certified to be safe. Ex. reversible.
+	* Ask whether action will take outside.
+* Trusted policy oversight
+	* Limit to actions the trusted policy believes we can recover from.
+* Human oversight
+	* Check potentially unsafe actions with human.
+	* Requires scalable oversight.
+	
+Experiments 
+
+Risk of catastrophes being idiosyncratic, overfit to. Need broad set of conceptually distinct pitfalls.
 
 ## Distributional shift
 
 * Make bad decisions when given inputs very different.
+* Key skill is recognizing own ignorance
+* When testing differs from training distribution, ML systems may perform badly and assume their performance is good.
+
+Approaches
+
+* Well-specified models: covariate shift and marginal likelihood. Assume $p_0(y|x)=p^*(y|x)$. Use importance sampling; reweight $\fc{p^*(x)}{p_0(x)}$.
+    * Alternative: assume well-specified model family - single optimal model predict under both $p_0,p^*$.
+	* Generative model of distribution
+	    * Fragile under model mis-specification.
+* Partially specified models: method of moments, unsupervised risk estimation, causal identification, limited-information ML
+	* Make assumptions on only some aspects of distribution.
+	* Method of moments in econometrics, latent variable estimation
+	* Model distribution of errors of a model. Unsupervised risk estimation.
+* Train on multiple distributions
+* How to respond when out-of-distribution
+	* Ask humans for info.
+	* Pinpoint aspects of uncertainty in model to ask about
+	* In rich environments...
+		* gather clarifying info (move closer to speaker)
+		* engage in low-stakes experimentation when uncertainty high
+		* Seek experiences that help expose to relevant distribution (ex. accents)
+* Counterfactual reasoning and ML with contracts
+	* Brittle contract in ML systems: only necessarily perform well if training=test.
+	* Reachability analysis, model repair
+
+Experiments
+
+* System that knows when it is uncertain (calibrated)
+
+# Related efforts
+
+* Cyber-physical systems
+* Futurist
+* Open Letter
+* Privacy, fairness, security, abuse, transparency, policy

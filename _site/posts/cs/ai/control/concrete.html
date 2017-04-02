@@ -76,7 +76,7 @@
       
        
         <p>Posted: 2017-02-01 
-          , Modified: 2017-02-01 
+          , Modified: 2017-04-01 
 	</p>
       
        <p>Tags: <a href="../../../../tags/ai%20safety.html">ai safety</a>, <a href="../../../../tags/machine%20learning.html">machine learning</a></p> 
@@ -97,6 +97,7 @@
  <li><a href="#safe-exploration">Safe exploration</a></li>
  <li><a href="#distributional-shift">Distributional shift</a></li>
  </ul></li>
+ <li><a href="#related-efforts">Related efforts</a></li>
  </ul> </div>
 
   <div class="blog-main">
@@ -327,9 +328,86 @@
 <li>In practice, hard-code, ex. collision avoidance sequence.</li>
 <li>Most well-studied.</li>
 </ul>
+<p>Approaches</p>
+<ul>
+<li>Risk-sensitive performance criteria: change objective to include catastrophic events.</li>
+<li>Use demonstrations: inverse RL, apprenticeship learning
+<ul>
+<li>Reduce need for exploration by relying on small set of demonstrations</li>
+<li>Baseline policy to default to, compare to.</li>
+</ul></li>
+<li>Simulated exploration
+<ul>
+<li>Explore in simulated environment to reduce opportunity for catastrophe.</li>
+<li>Do safer things in real world than in catastrophe.</li>
+</ul></li>
+<li>Bounded exploration
+<ul>
+<li>Explore in space certified to be safe. Ex. reversible.</li>
+<li>Ask whether action will take outside.</li>
+</ul></li>
+<li>Trusted policy oversight
+<ul>
+<li>Limit to actions the trusted policy believes we can recover from.</li>
+</ul></li>
+<li>Human oversight
+<ul>
+<li>Check potentially unsafe actions with human.</li>
+<li>Requires scalable oversight.</li>
+</ul></li>
+</ul>
+<p>Experiments</p>
+<p>Risk of catastrophes being idiosyncratic, overfit to. Need broad set of conceptually distinct pitfalls.</p>
 <h3 id="distributional-shift">Distributional shift</h3>
 <ul>
 <li>Make bad decisions when given inputs very different.</li>
+<li>Key skill is recognizing own ignorance</li>
+<li>When testing differs from training distribution, ML systems may perform badly and assume their performance is good.</li>
+</ul>
+<p>Approaches</p>
+<ul>
+<li>Well-specified models: covariate shift and marginal likelihood. Assume <span class="math inline">\(p_0(y|x)=p^*(y|x)\)</span>. Use importance sampling; reweight <span class="math inline">\(\fc{p^*(x)}{p_0(x)}\)</span>.
+<ul>
+<li>Alternative: assume well-specified model family - single optimal model predict under both <span class="math inline">\(p_0,p^*\)</span>.</li>
+<li>Generative model of distribution
+<ul>
+<li>Fragile under model mis-specification.</li>
+</ul></li>
+</ul></li>
+<li>Partially specified models: method of moments, unsupervised risk estimation, causal identification, limited-information ML
+<ul>
+<li>Make assumptions on only some aspects of distribution.</li>
+<li>Method of moments in econometrics, latent variable estimation</li>
+<li>Model distribution of errors of a model. Unsupervised risk estimation.</li>
+</ul></li>
+<li>Train on multiple distributions</li>
+<li>How to respond when out-of-distribution
+<ul>
+<li>Ask humans for info.</li>
+<li>Pinpoint aspects of uncertainty in model to ask about</li>
+<li>In rich environments…
+<ul>
+<li>gather clarifying info (move closer to speaker)</li>
+<li>engage in low-stakes experimentation when uncertainty high</li>
+<li>Seek experiences that help expose to relevant distribution (ex. accents)</li>
+</ul></li>
+</ul></li>
+<li>Counterfactual reasoning and ML with contracts
+<ul>
+<li>Brittle contract in ML systems: only necessarily perform well if training=test.</li>
+<li>Reachability analysis, model repair</li>
+</ul></li>
+</ul>
+<p>Experiments</p>
+<ul>
+<li>System that knows when it is uncertain (calibrated)</li>
+</ul>
+<h2 id="related-efforts">Related efforts</h2>
+<ul>
+<li>Cyber-physical systems</li>
+<li>Futurist</li>
+<li>Open Letter</li>
+<li>Privacy, fairness, security, abuse, transparency, policy</li>
 </ul>
 
   </div>
