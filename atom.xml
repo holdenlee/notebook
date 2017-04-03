@@ -43,6 +43,8 @@
  <li><a href="#level-2">Level 2</a></li>
  <li><a href="#philosophy-view">Philosophy view</a></li>
  </ul></li>
+ <li><a href="#impact-measure">Impact measure</a></li>
+ <li><a href="#learning-utility-function">Learning utility function</a></li>
  </ul> </div>
 
   <div class="blog-main">
@@ -100,6 +102,19 @@
 <p>It is impossible to refer to the physical world. Our mapping from physical actions to mental representations is many-to-one; many ways of moving our arm all get translated into a mental story of “picking up the strawberry.” There are many ways to execute this task.</p>
 <p>We only live in our own conceptual space. This space is highly bound/coupled to actual physics. (There’s no glitch in the universe that if I move my arm in a specific way, Konami code, I shut down the universe.) Any way I move my arm is roughly the same.</p>
 <p>The AI solves tasks within its own conceptual space. We can evaluate that the AI is doing the right thing insofar as it is transparent, we can look at its world model, point at the concept of “strawberry” and see that it’s close enough to our own. We can solve “environmental goals” if the intersection of ontologies is nonempty, and the goal is within that intersection.</p>
+<h2 id="impact-measure">Impact measure</h2>
+<p>Measure 1: get back to what would have happened under null. <span class="math display">\[
+I(s) = \min_{\pi} D_{KL}(P_{t_1}^{\phi}(\bullet | s)|| P_{t_2}^\pi(\bullet | s'))
+\]</span></p>
+<p>Measure 2: stay similar to trusted region <span class="math inline">\(R\)</span>. Let <span class="math inline">\(f:X\to Y\)</span> be mapping to feature space. <span class="math display">\[
+I(s) = d(R, f(s)).
+\]</span> For example, <span class="math inline">\(R=\{f(s_0)\}\)</span> and <span class="math inline">\(d=\ved_2\)</span>.</p>
+<p>Measure 3: train <span class="math inline">\(I\)</span> on examples, conservatively (ex. RBF) on good examples <span class="math inline">\((s_i,0)\)</span>, and bad examples, <span class="math inline">\((s_j,&gt;0)\)</span>. Also can encode prior information, e.g. about things that are neutral.</p>
+<h2 id="learning-utility-function">Learning utility function</h2>
+<p>Probability of <span class="math inline">\((x_i,y_i)\)</span> under <span class="math inline">\(p_{\te_1}\)</span> and <span class="math inline">\(p_{\te_2}\)</span>, where <span class="math inline">\(p_i=1\)</span> if <span class="math inline">\((x_i,y_i)\sim D_1\)</span> and 0 if <span class="math inline">\(\sim D_2\)</span>. <span class="math display">\[
+\sumo in p_i p_{\te_1}(y_i|x_i) + \sumo in (1-p_i) p_{\te_2}p(y_i|x_i).
+\]</span> Max log likelihood. Do EM with <span class="math inline">\(p\)</span>’s and <span class="math inline">\((x,y)\)</span>’s.</p>
+<p>Version 2: Use IRL: keep track of best guess nets, or sets of valid hypotheses. Keep track of posterior probabilities of each net. (Update in online fashion.) Update posterior probabilities assuming Markovian switching (cf. DP in HMM, sleeping experts), and gradient descent on parameters.</p>
 
   </div>
 
