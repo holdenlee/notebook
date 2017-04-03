@@ -82,4 +82,29 @@ We only live in our own conceptual space. This space is highly bound/coupled to 
 
 The AI solves tasks within its own conceptual space. We can evaluate that the AI is doing the right thing insofar as it is transparent, we can look at its world model, point at the concept of "strawberry" and see that it's close enough to our own. We can solve "environmental goals" if the intersection of ontologies is nonempty, and the goal is within that intersection.
 
+# Impact measure
+
+Measure 1: get back to what would have happened under null.
+$$
+I(s) = \min_{\pi} D_{KL}(P_{t_1}^{\phi}(\bullet | s)|| P_{t_2}^\pi(\bullet | s'))
+$$
+
+Measure 2: stay similar to trusted region $R$. Let $f:X\to Y$ be mapping to feature space.
+$$
+I(s) = d(R, f(s)).
+$$
+For example, $R=\{f(s_0)\}$ and $d=\ved_2$.
+
+Measure 3: train $I$ on examples, conservatively (ex. RBF) on good examples $(s_i,0)$, and bad examples, $(s_j,>0)$. Also can encode prior information, e.g. about things that are neutral.
+
+# Learning utility function
+
+Probability of $(x_i,y_i)$ under $p_{\te_1}$ and $p_{\te_2}$, where $p_i=1$ if $(x_i,y_i)\sim D_1$ and 0 if $\sim D_2$. 
+$$
+\sumo in p_i p_{\te_1}(y_i|x_i) + \sumo in (1-p_i) p_{\te_2}p(y_i|x_i).
+$$
+Max log likelihood. Do EM with $p$'s and $(x,y)$'s.
+
+Version 2: Use IRL: keep track of best guess nets, or sets of valid hypotheses. Keep track of posterior probabilities of each net. (Update in online fashion.) Update posterior probabilities assuming Markovian switching (cf. DP in HMM, sleeping experts), and gradient descent on parameters.
+
 
