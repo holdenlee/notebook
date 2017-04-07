@@ -10,7 +10,7 @@
   <meta name="description" content="Holden Lee's Research Notebook">
   <meta name="author" content="Holden Lee">
     
-  <title>Adversarial experiments</title>
+  <title>Inverse RL</title>
 
   <!-- Bootstrap core CSS -->
   <link href="../../../../bootstrap/css/bootstrap.min.css" rel="stylesheet">
@@ -70,107 +70,81 @@
 <div class="container">
   <div id="content">
     <div class="page header">
-      <h1>Adversarial experiments</h1>
+      <h1>Inverse RL</h1>
     </div>
     <div class="info">
       
        
-        <p>Posted: 2017-03-02 
-          , Modified: 2017-03-02 
+        <p>Posted: 2017-04-03 
+          , Modified: 2017-04-03 
 	</p>
       
-       <p>Tags: <a href="../../../../tags/neural%20nets.html">neural nets</a>, <a href="../../../../tags/uncertainty.html">uncertainty</a>, <a href="../../../../tags/aaml.html">aaml</a></p> 
+       <p>Tags: <a href="../../../../tags/reinforcement%20learning.html">reinforcement learning</a></p> 
     </div>
     
   </div>
   <!--/div-->
 
   <div class="toc"> <ul>
- <li><a href="#results">Results</a></li>
- <li><a href="#todo">Todo</a><ul>
- <li><a href="#nice-things">Nice things</a></li>
+ <li><a href="#nr00-inverse-reinforcement-learning">[NR00] Inverse reinforcement learning</a></li>
+ <li><a href="#hdar16-cooperative-inverse-reinforcement-learning">[HDAR16] Cooperative inverse reinforcement learning</a><ul>
+ <li><a href="#formalism">Formalism</a></li>
+ <li><a href="#simple-approximation-scheme">Simple approximation scheme</a></li>
+ <li><a href="#future-work">Future work</a></li>
  </ul></li>
- <li><a href="#done">Done</a></li>
- <li><a href="#experiments-4517">Experiments 4/5/17</a></li>
+ <li><a href="#other-papers">Other papers</a></li>
  </ul> </div>
 
   <div class="blog-main">
-    <p>See <a href="https://github.com/holdenlee/adversarial">github</a>.</p>
-<h2 id="results">Results</h2>
-<p>Trained for 100 epochs. Accuracy (out of 1)</p>
-<table>
-<thead>
-<tr class="header">
-<th>Mixture\Attack</th>
-<th>0.3 fgs</th>
-<th>0.5 fgs</th>
-<th>1.0 fgs (sanity check)</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>1</td>
-<td>?</td>
-<td>?</td>
-<td>?</td>
-</tr>
-<tr class="even">
-<td>10</td>
-<td>?</td>
-<td>?</td>
-<td>?</td>
-</tr>
-<tr class="odd">
-<td>100</td>
-<td>?</td>
-<td>?</td>
-<td>?</td>
-</tr>
-</tbody>
-</table>
-<h2 id="todo">Todo</h2>
+    <h2 id="nr00-inverse-reinforcement-learning">[NR00] Inverse reinforcement learning</h2>
+<p>Compute constraints that characterize set of reward functions so observed behavior maximizes reward. Use max-margin heuristic.</p>
+<h2 id="hdar16-cooperative-inverse-reinforcement-learning">[HDAR16] Cooperative inverse reinforcement learning</h2>
+<p>Human knows reward function. Robot does not. Robot payoff is human reward.</p>
+<p>IRL: <span class="math inline">\(\Pj(u|\te, x_0) \propto e^{U_\te(x_0,u)}\)</span>.</p>
 <ul>
-<li>Look at which samples are misclassified by which networks: are they the same or different?
-<ul>
-<li>Jaccard similarity</li>
-<li>How about if you train an ensemble together on regular examples?</li>
-</ul></li>
-<li>Baselines
-<ul>
-<li>How transferable are adversarial examples between the 100 networks?</li>
-<li>How well does majority do against adversarial example against the mixture?</li>
-</ul></li>
-<li>Does clamping help?</li>
-<li>Examine activations of adversarial examples in hidden layer. Do they look different for adversarial examples? (cf. Dan: max softmax)</li>
-<li>What are the weights given to the networks in the mixture? How does this change over time?</li>
-<li>Try training with independent updates, multiplicative weights.
-<ul>
-<li>(Check YZ’s code.)</li>
-<li>Try sleeping, etc. - regularize more strongly so that weights don’t become too small/large.</li>
-</ul></li>
-<li>Autoencoder idea</li>
-<li>Regularization/Lipschitz/wavelet idea</li>
-<li>Is pretraining necessary?</li>
-<li>Compare 100 networks to 1 network with 100x size. Which does better?</li>
-<li>Correlation between correct classifications for independent networks</li>
-<li>Correlation between gradients for different networks</li>
-<li>Adversarial examples for autoencoders?</li>
+<li>Reduction to POMDP and sufficient statistics</li>
+<li>Apprenticeship learning and suboptimality of IRL-like solutions (because H can use a suboptimal action to convey more information to R).</li>
 </ul>
-<h3 id="nice-things">Nice things</h3>
+<p>Desiderata:</p>
+<ol type="1">
+<li>Leverage action to improve learning.</li>
+<li>Human is not uninterested expert, but cooperative teacher.</li>
+</ol>
+<h3 id="formalism">Formalism</h3>
 <ul>
-<li>Set up tensorboard to show histograms, real and adversarial images, etc.</li>
-<li>Run with many different settings.</li>
+<li><span class="math inline">\(\Te\)</span>: static reward parameters observed by <span class="math inline">\(H\)</span>.</li>
+<li><span class="math inline">\(R: S\times A^H\times A^R\times \Te \to \R\)</span>, reward.</li>
+<li><span class="math inline">\(\ga\)</span>: discount</li>
 </ul>
-<h2 id="done">Done</h2>
+<p>At time <span class="math inline">\(t\)</span>, observe <span class="math inline">\(s_t\)</span> and select action <span class="math inline">\(a_t^H, a_t^R\)</span>. Both achieve reward <span class="math inline">\(r_t=R(s_t,a_t^H, a_t^R;\te)\)</span>.</p>
+<p>Note: decentralized POMDP - compute optimal joint policy is NEXP-complete.</p>
+<p>Here, private info is restricted to <span class="math inline">\(\te\)</span>, so reduction to coordination-POMDP does not blow up state space. (<span class="math inline">\(|S_C|=|S||\Te|\)</span>). (State is tuple or world state, reward parameters, and R’s belief.)</p>
+<p>Belief about <span class="math inline">\(\te\)</span> is sufficient statistic for optimal behavior. <span class="math inline">\((\pi^{H*},\pi^{R*})\)</span> depends only on current state and R’s belief.</p>
+<p>Apprenticeship learning: imitate demonstrations.</p>
+<p>ACIRL: 2 phases, human and robot takes turns; then robot acts independently (deployment).</p>
+<p>Ex. With linear dependence on <span class="math inline">\(\te\)</span>, in deployment, optimal policy is to maximize reward induced by mean.</p>
+<p>DBE (demonstration by expert): greedily maximizes immediate reward. Best response is to compute posterior over <span class="math inline">\(\te\)</span>.</p>
+<p>There exist ACIRL games where <span class="math inline">\(br(br(\pi^E))\ne \pi^E\)</span>.</p>
+<!--Human objective $U_\te(x_0,u_R,u_H)$.-->
 <ul>
-<li>Port over to own training loop.</li>
-<li>End - save</li>
-<li>Output accuracies, etc. over time as list.</li>
-<li>Plotting!</li>
-<li>Hyperparameter search</li>
-<li>Correlation between correct classifications</li>
+<li>? Seems to require human knowing how robot learns. Unrealistic teaching assumption.</li>
+<li>? Is reward observed by robot? No.</li>
 </ul>
-<h2 id="experiments-4517">Experiments 4/5/17</h2>
+<h3 id="simple-approximation-scheme">Simple approximation scheme</h3>
+<p>Suppose reward is <span class="math inline">\(\phi(s)^T\te\)</span>.</p>
+<p><span class="math display">\[\tau^H = \amax_\tau \phi(\tau)^T \te - \eta\ve{\phi_\te-\phi(\tau)}^2.\]</span></p>
+<p>Optimal <span class="math inline">\(\pi^R\)</span> under DBE tries to match observed feature counts. (<strong>I don’t get this.</strong>.)</p>
+<h3 id="future-work">Future work</h3>
+<p>Coordination problem.</p>
+<h2 id="other-papers">Other papers</h2>
+<ul>
+<li>[RA07], [Z…08]: <span class="math inline">\(\pi^H\)</span> is noisy expert. Bayesian approach: prior on rewards, vs. prior on reward functions.</li>
+<li>[Nat…10] observe cooperating multiple actors.</li>
+<li>[Wau…11], [KS15]: infer payoffs from observed behavior in general.</li>
+<li>[Fer…14], hidden-goal MDP, goal unobserved. Human as part of environment</li>
+<li>[CL12] Teach learner reward for MDP.</li>
+<li>[DS13] Motion best communicating agent’s intention.</li>
+</ul>
 
   </div>
 

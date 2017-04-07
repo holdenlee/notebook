@@ -8,9 +8,301 @@
         <name>Holden Lee</name>
         <email>oldheneel@gmail.com</email>
     </author>
-    <updated>2017-04-01T00:00:00Z</updated>
+    <updated>2017-04-03T00:00:00Z</updated>
     <entry>
-    <title>Alignment for advanced machine learning systems</title>
+    <title>Inverse RL</title>
+    <link href="http://holdenlee.github.io/notebook/posts/tcs/machine_learning/reinforcement_learning/inverse_rl.html" />
+    <id>http://holdenlee.github.io/notebook/posts/tcs/machine_learning/reinforcement_learning/inverse_rl.html</id>
+    <published>2017-04-03T00:00:00Z</published>
+    <updated>2017-04-03T00:00:00Z</updated>
+    <summary type="html"><![CDATA[
+<div class="container">
+  <div id="content">
+    <div class="page header">
+      <h1>Inverse RL</h1>
+    </div>
+    <div class="info">
+      
+       
+        <p>Posted: 2017-04-03 
+          , Modified: 2017-04-03 
+	</p>
+      
+       <p>Tags: <a href="/tags/reinforcement%20learning.html">reinforcement learning</a></p> 
+    </div>
+    
+  </div>
+  <!--/div-->
+
+  <div class="toc"> <ul>
+ <li><a href="#nr00-inverse-reinforcement-learning">[NR00] Inverse reinforcement learning</a></li>
+ <li><a href="#hdar16-cooperative-inverse-reinforcement-learning">[HDAR16] Cooperative inverse reinforcement learning</a><ul>
+ <li><a href="#formalism">Formalism</a></li>
+ <li><a href="#simple-approximation-scheme">Simple approximation scheme</a></li>
+ <li><a href="#future-work">Future work</a></li>
+ </ul></li>
+ <li><a href="#other-papers">Other papers</a></li>
+ </ul> </div>
+
+  <div class="blog-main">
+    <h2 id="nr00-inverse-reinforcement-learning">[NR00] Inverse reinforcement learning</h2>
+<p>Compute constraints that characterize set of reward functions so observed behavior maximizes reward. Use max-margin heuristic.</p>
+<h2 id="hdar16-cooperative-inverse-reinforcement-learning">[HDAR16] Cooperative inverse reinforcement learning</h2>
+<p>Human knows reward function. Robot does not. Robot payoff is human reward.</p>
+<p>IRL: <span class="math inline">\(\Pj(u|\te, x_0) \propto e^{U_\te(x_0,u)}\)</span>.</p>
+<ul>
+<li>Reduction to POMDP and sufficient statistics</li>
+<li>Apprenticeship learning and suboptimality of IRL-like solutions (because H can use a suboptimal action to convey more information to R).</li>
+</ul>
+<p>Desiderata:</p>
+<ol type="1">
+<li>Leverage action to improve learning.</li>
+<li>Human is not uninterested expert, but cooperative teacher.</li>
+</ol>
+<h3 id="formalism">Formalism</h3>
+<ul>
+<li><span class="math inline">\(\Te\)</span>: static reward parameters observed by <span class="math inline">\(H\)</span>.</li>
+<li><span class="math inline">\(R: S\times A^H\times A^R\times \Te \to \R\)</span>, reward.</li>
+<li><span class="math inline">\(\ga\)</span>: discount</li>
+</ul>
+<p>At time <span class="math inline">\(t\)</span>, observe <span class="math inline">\(s_t\)</span> and select action <span class="math inline">\(a_t^H, a_t^R\)</span>. Both achieve reward <span class="math inline">\(r_t=R(s_t,a_t^H, a_t^R;\te)\)</span>.</p>
+<p>Note: decentralized POMDP - compute optimal joint policy is NEXP-complete.</p>
+<p>Here, private info is restricted to <span class="math inline">\(\te\)</span>, so reduction to coordination-POMDP does not blow up state space. (<span class="math inline">\(|S_C|=|S||\Te|\)</span>). (State is tuple or world state, reward parameters, and R’s belief.)</p>
+<p>Belief about <span class="math inline">\(\te\)</span> is sufficient statistic for optimal behavior. <span class="math inline">\((\pi^{H*},\pi^{R*})\)</span> depends only on current state and R’s belief.</p>
+<p>Apprenticeship learning: imitate demonstrations.</p>
+<p>ACIRL: 2 phases, human and robot takes turns; then robot acts independently (deployment).</p>
+<p>Ex. With linear dependence on <span class="math inline">\(\te\)</span>, in deployment, optimal policy is to maximize reward induced by mean.</p>
+<p>DBE (demonstration by expert): greedily maximizes immediate reward. Best response is to compute posterior over <span class="math inline">\(\te\)</span>.</p>
+<p>There exist ACIRL games where <span class="math inline">\(br(br(\pi^E))\ne \pi^E\)</span>.</p>
+<!--Human objective $U_\te(x_0,u_R,u_H)$.-->
+<ul>
+<li>? Seems to require human knowing how robot learns. Unrealistic teaching assumption.</li>
+<li>? Is reward observed by robot? No.</li>
+</ul>
+<h3 id="simple-approximation-scheme">Simple approximation scheme</h3>
+<p>Suppose reward is <span class="math inline">\(\phi(s)^T\te\)</span>.</p>
+<p><span class="math display">\[\tau^H = \amax_\tau \phi(\tau)^T \te - \eta\ve{\phi_\te-\phi(\tau)}^2.\]</span></p>
+<p>Optimal <span class="math inline">\(\pi^R\)</span> under DBE tries to match observed feature counts. (<strong>I don’t get this.</strong>.)</p>
+<h3 id="future-work">Future work</h3>
+<p>Coordination problem.</p>
+<h2 id="other-papers">Other papers</h2>
+<ul>
+<li>[RA07], [Z…08]: <span class="math inline">\(\pi^H\)</span> is noisy expert. Bayesian approach: prior on rewards, vs. prior on reward functions.</li>
+<li>[Nat…10] observe cooperating multiple actors.</li>
+<li>[Wau…11], [KS15]: infer payoffs from observed behavior in general.</li>
+<li>[Fer…14], hidden-goal MDP, goal unobserved. Human as part of environment</li>
+<li>[CL12] Teach learner reward for MDP.</li>
+<li>[DS13] Motion best communicating agent’s intention.</li>
+</ul>
+
+  </div>
+
+    
+
+    <!-- Extension : Sharing buttons @ www.sharethis.com -->
+    <span class='st_facebook_large' displayText='Facebook'></span>
+    <span class='st_twitter_large' displayText='Tweet'></span>
+    <span class='st_googleplus_large' displayText='Google +'></span>
+    <span class='st_reddit_large' displayText='Reddit'></span>
+    <span class='st__large' displayText=''></span>
+
+    <div id="disqus_thread"></div>
+    
+
+
+  
+    <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+  </div>
+  
+</div>
+]]></summary>
+</entry>
+<entry>
+    <title>Confidence in neural nets</title>
+    <link href="http://holdenlee.github.io/notebook/posts/tcs/machine_learning/neural_nets/confidence.html" />
+    <id>http://holdenlee.github.io/notebook/posts/tcs/machine_learning/neural_nets/confidence.html</id>
+    <published>2017-04-03T00:00:00Z</published>
+    <updated>2017-04-03T00:00:00Z</updated>
+    <summary type="html"><![CDATA[
+<div class="container">
+  <div id="content">
+    <div class="page header">
+      <h1>Confidence in neural nets</h1>
+    </div>
+    <div class="info">
+      
+       
+        <p>Posted: 2017-04-03 
+          , Modified: 2017-04-03 
+	</p>
+      
+       <p>Tags: <a href="/tags/neural%20net.html">neural net</a></p> 
+    </div>
+    
+  </div>
+  <!--/div-->
+
+  <div class="toc"> <ul>
+ <li><a href="#hg17-baseline-for-detecting-misclassified-and-out-of-distribution-examples">[HG17] Baseline for detecting misclassified and out-of-distribution examples</a><ul>
+ <li><a href="#abnormality-detection-with-auxiliary-decoders">Abnormality detection with auxiliary decoders</a></li>
+ <li><a href="#discussion">Discussion</a></li>
+ </ul></li>
+ <li><a href="#hg17-early-methods-for-detecting-adversarial-images">[HG17] EARLY METHODS FOR DETECTING ADVERSARIAL IMAGES</a></li>
+ </ul> </div>
+
+  <div class="blog-main">
+    <p>Related: <a href="adversarial.html">adversarial examples</a>.</p>
+<p>From AAML: RBF/conservative classifier for in vs. out-of-distribution examples. <a href="/posts/cs/ai/control/aaml_workshop.html">AAML workshop notes</a></p>
+<p>Q: how go get a neural net to keep a confidence bound?</p>
+<h2 id="hg17-baseline-for-detecting-misclassified-and-out-of-distribution-examples">[HG17] Baseline for detecting misclassified and out-of-distribution examples</h2>
+<p>High-confidence predictions frequently produced by softmaxes. Ex. random Gaussian noise gives 90+% confidence. (Q: what if you do before softmaxes?)</p>
+<p>Prediction probability of incorrect/ood examples are lower.</p>
+<p>Give tasks to evaluate.</p>
+<p>2 problems</p>
+<ol type="1">
+<li>error and success prediction: Can we predict whether a classifier will make an error on a held-out test example? (Use this to output <span class="math inline">\(\perp\)</span>.) Tradeoff between false negatives and positives.</li>
+<li>In/out-of-distribution detection: Predict whether test example is from different distribution.</li>
+</ol>
+<p>ROC (receiver operating characteristic) shows <span class="math display">\[
+\pa{tpr = \fc{tp}{tp+fn}, fpr = \fc{fp}{fp+tn}}.
+\]</span> PR (precision-recall) shows <span class="math display">\[
+\pa{\text{precision} = \fc{tp}{tp+fp}, \text{recall} = \fc{tp}{tp+fn}}.
+\]</span></p>
+<ul>
+<li>AUROC is prob that a positive example has greater score than negative example. Not great when different base rates.</li>
+<li>AUPR (precision-recall)</li>
+</ul>
+<h3 id="abnormality-detection-with-auxiliary-decoders">Abnormality detection with auxiliary decoders</h3>
+<ul>
+<li>Train normal classifier and append auxiliary decoder which reconstructs input. (Blue layers)</li>
+<li>Train jointly on in-distribution examples. Freeze blue layers. Train red layers (on top) with clean and noised training examples. (Noised are abnormal.)</li>
+</ul>
+<p>Improves detection.</p>
+<h3 id="discussion">Discussion</h3>
+<ul>
+<li>Baseline beaten by exploiting representations.</li>
+<li>Intra-class variance: if distance from example to another is abnormally high, may be out of distribution.</li>
+<li>known-unknown vs. unknown-unknown.</li>
+</ul>
+<h2 id="hg17-early-methods-for-detecting-adversarial-images">[HG17] EARLY METHODS FOR DETECTING ADVERSARIAL IMAGES</h2>
+<p>Adversarial images place abnormal emphasis on lower-ranked principal components from PCA.</p>
+<p>(Q: can you do this even independent of PCA - just by looking at e.g. wavelet/Fourier coefficients? Also, what if you adversarially keep PCA components low, incorporate weighted norm into adversarial optimization?)</p>
+<p>Use variance of PCA coefficients of whitened images to detect. (What is whitening again?)</p>
+
+  </div>
+
+    
+
+    <!-- Extension : Sharing buttons @ www.sharethis.com -->
+    <span class='st_facebook_large' displayText='Facebook'></span>
+    <span class='st_twitter_large' displayText='Tweet'></span>
+    <span class='st_googleplus_large' displayText='Google +'></span>
+    <span class='st_reddit_large' displayText='Reddit'></span>
+    <span class='st__large' displayText=''></span>
+
+    <div id="disqus_thread"></div>
+    
+
+
+  
+    <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+  </div>
+  
+</div>
+]]></summary>
+</entry>
+<entry>
+    <title>Weekly summary 2017-04-08</title>
+    <link href="http://holdenlee.github.io/notebook/posts/summaries/2017-04-08.html" />
+    <id>http://holdenlee.github.io/notebook/posts/summaries/2017-04-08.html</id>
+    <published>2017-04-03T00:00:00Z</published>
+    <updated>2017-04-03T00:00:00Z</updated>
+    <summary type="html"><![CDATA[
+<div class="container">
+  <div id="content">
+    <div class="page header">
+      <h1>Weekly summary 2017-04-08</h1>
+    </div>
+    <div class="info">
+      
+       
+        <p>Posted: 2017-04-03 
+          , Modified: 2017-04-03 
+	</p>
+      
+       <p>Tags: <a href="/tags/none.html">none</a></p> 
+    </div>
+    
+  </div>
+  <!--/div-->
+
+  <div class="toc"> <ul>
+ <li><a href="#adversarial-training-and-anomaly-detection">Adversarial training and anomaly detection</a></li>
+ <li><a href="#langevin-monte-carlo">Langevin Monte Carlo</a></li>
+ <li><a href="#nn-and-kernels">NN and kernels</a></li>
+ <li><a href="#other-topics">Other topics</a></li>
+ <li><a href="#rl">RL</a></li>
+ </ul> </div>
+
+  <div class="blog-main">
+    <h2 id="adversarial-training-and-anomaly-detection">Adversarial training and anomaly detection</h2>
+<ul>
+<li><a href="../tcs/machine_learning/neural_nets/adversarial_experiments.html">Experiments</a></li>
+<li>OOD detection - papers</li>
+<li>ICLR paper</li>
+<li>Correlation between gradients?</li>
+<li>Look at hidden activations.</li>
+</ul>
+<h2 id="langevin-monte-carlo">Langevin Monte Carlo</h2>
+<ul>
+<li>Graph algorithms.</li>
+<li>Learn background. (OV14, Villani book, Ledoux book.)</li>
+<li>Langevin papers.</li>
+<li>Extending [AH16].</li>
+</ul>
+<h2 id="nn-and-kernels">NN and kernels</h2>
+<p>See <a href="../tcs/machine_learning/neural_nets/barron_musings.html">musings</a>.</p>
+<ul>
+<li>Write up summary of NN and kernels.</li>
+<li><span class="citation" data-cites="Jason">@Jason</span></li>
+<li><span class="citation" data-cites="Manfred">@Manfred</span></li>
+</ul>
+<h2 id="other-topics">Other topics</h2>
+<ul>
+<li>Entropy regularizer for SVM</li>
+</ul>
+<h2 id="rl">RL</h2>
+<p>Come up with project. Concrete problems in AI safety?</p>
+<ul>
+<li>Read CIRL.</li>
+<li>Experiment with mixture. (cf. sleeping in NN)</li>
+<li>Impact measure ideas/experiment.</li>
+</ul>
+
+  </div>
+
+    
+
+    <!-- Extension : Sharing buttons @ www.sharethis.com -->
+    <span class='st_facebook_large' displayText='Facebook'></span>
+    <span class='st_twitter_large' displayText='Tweet'></span>
+    <span class='st_googleplus_large' displayText='Google +'></span>
+    <span class='st_reddit_large' displayText='Reddit'></span>
+    <span class='st__large' displayText=''></span>
+
+    <div id="disqus_thread"></div>
+    
+
+
+  
+    <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+  </div>
+  
+</div>
+]]></summary>
+</entry>
+<entry>
+    <title>AAML workshop</title>
     <link href="http://holdenlee.github.io/notebook/posts/cs/ai/control/aaml_workshop.html" />
     <id>http://holdenlee.github.io/notebook/posts/cs/ai/control/aaml_workshop.html</id>
     <published>2017-04-01T00:00:00Z</published>
@@ -19,7 +311,7 @@
 <div class="container">
   <div id="content">
     <div class="page header">
-      <h1>Alignment for advanced machine learning systems</h1>
+      <h1>AAML workshop</h1>
     </div>
     <div class="info">
       
@@ -236,6 +528,80 @@ I(s) = d(R, f(s)).
 <li>Can you cut down representation (after using representor theorem) by sampling? Keep norm, but be cruder? (Pick some elements and rescale.)</li>
 <li>Using kernel representation at first level of neural network? Do some kind of AM? How to mix nonparametric and parametric? Power and limit of kernel coming from its nonparametricity.</li>
 </ul>
+
+  </div>
+
+    
+
+    <!-- Extension : Sharing buttons @ www.sharethis.com -->
+    <span class='st_facebook_large' displayText='Facebook'></span>
+    <span class='st_twitter_large' displayText='Tweet'></span>
+    <span class='st_googleplus_large' displayText='Google +'></span>
+    <span class='st_reddit_large' displayText='Reddit'></span>
+    <span class='st__large' displayText=''></span>
+
+    <div id="disqus_thread"></div>
+    
+
+
+  
+    <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+  </div>
+  
+</div>
+]]></summary>
+</entry>
+<entry>
+    <title>Weekly summary 2017-03-18</title>
+    <link href="http://holdenlee.github.io/notebook/posts/summaries/2017-03-18.html" />
+    <id>http://holdenlee.github.io/notebook/posts/summaries/2017-03-18.html</id>
+    <published>2017-03-18T00:00:00Z</published>
+    <updated>2017-03-18T00:00:00Z</updated>
+    <summary type="html"><![CDATA[
+<div class="container">
+  <div id="content">
+    <div class="page header">
+      <h1>Weekly summary 2017-03-18</h1>
+    </div>
+    <div class="info">
+      
+       
+        <p>Posted: 2017-03-18 
+          , Modified: 2017-03-18 
+	</p>
+      
+       <p>Tags: <a href="/tags/none.html">none</a></p> 
+    </div>
+    
+  </div>
+  <!--/div-->
+
+  <div class="toc"> <ul>
+ <li><a href="#adversarial-training">Adversarial training</a></li>
+ <li><a href="#langevin-monte-carlo">Langevin Monte Carlo</a></li>
+ <li><a href="#using-barrons-theorem">Using Barron’s Theorem</a></li>
+ <li><a href="#entropy-regularizer-for-svm">Entropy regularizer for SVM</a></li>
+ <li><a href="#generalization">Generalization</a></li>
+ <li><a href="#rl">RL</a></li>
+ </ul> </div>
+
+  <div class="blog-main">
+    <h2 id="adversarial-training">Adversarial training</h2>
+<ul>
+<li><a href="../tcs/machine_learning/neural_nets/adversarial_experiments.html">Experiments</a></li>
+</ul>
+<h2 id="langevin-monte-carlo">Langevin Monte Carlo</h2>
+<ul>
+<li>Learn background. (OV14, Villani book, Ledoux book.)</li>
+<li>Langevin papers.</li>
+<li>Extending [AH16].</li>
+</ul>
+<h2 id="using-barrons-theorem">Using Barron’s Theorem</h2>
+<p>See <a href="../tcs/machine_learning/neural_nets/barron_musings.html">musings</a>.</p>
+<h2 id="entropy-regularizer-for-svm">Entropy regularizer for SVM</h2>
+<h2 id="generalization">Generalization</h2>
+<h2 id="rl">RL</h2>
+<p>Come up with project. Concrete problems in AI safety?</p>
 
   </div>
 
@@ -654,80 +1020,6 @@ u_t=\mathcal L u, \quad u(0,x)=f(x)
 </entry>
 <entry>
     <title>Weekly summary 2017-03-11</title>
-    <link href="http://holdenlee.github.io/notebook/posts/summaries/2017-03-18.html" />
-    <id>http://holdenlee.github.io/notebook/posts/summaries/2017-03-18.html</id>
-    <published>2017-03-07T00:00:00Z</published>
-    <updated>2017-03-07T00:00:00Z</updated>
-    <summary type="html"><![CDATA[
-<div class="container">
-  <div id="content">
-    <div class="page header">
-      <h1>Weekly summary 2017-03-11</h1>
-    </div>
-    <div class="info">
-      
-       
-        <p>Posted: 2017-03-07 
-          , Modified: 2017-03-07 
-	</p>
-      
-       <p>Tags: <a href="/tags/none.html">none</a></p> 
-    </div>
-    
-  </div>
-  <!--/div-->
-
-  <div class="toc"> <ul>
- <li><a href="#adversarial-training">Adversarial training</a></li>
- <li><a href="#langevin-monte-carlo">Langevin Monte Carlo</a></li>
- <li><a href="#using-barrons-theorem">Using Barron’s Theorem</a></li>
- <li><a href="#entropy-regularizer-for-svm">Entropy regularizer for SVM</a></li>
- <li><a href="#generalization">Generalization</a></li>
- <li><a href="#rl">RL</a></li>
- </ul> </div>
-
-  <div class="blog-main">
-    <h2 id="adversarial-training">Adversarial training</h2>
-<ul>
-<li><a href="../tcs/machine_learning/neural_nets/adversarial_experiments.html">Experiments</a></li>
-</ul>
-<h2 id="langevin-monte-carlo">Langevin Monte Carlo</h2>
-<ul>
-<li>Learn background. (OV14, Villani book, Ledoux book.)</li>
-<li>Langevin papers.</li>
-<li>Extending [AH16].</li>
-</ul>
-<h2 id="using-barrons-theorem">Using Barron’s Theorem</h2>
-<p>See <a href="../tcs/machine_learning/neural_nets/barron_musings.html">musings</a>.</p>
-<h2 id="entropy-regularizer-for-svm">Entropy regularizer for SVM</h2>
-<h2 id="generalization">Generalization</h2>
-<h2 id="rl">RL</h2>
-<p>Come up with project. Concrete problems in AI safety?</p>
-
-  </div>
-
-    
-
-    <!-- Extension : Sharing buttons @ www.sharethis.com -->
-    <span class='st_facebook_large' displayText='Facebook'></span>
-    <span class='st_twitter_large' displayText='Tweet'></span>
-    <span class='st_googleplus_large' displayText='Google +'></span>
-    <span class='st_reddit_large' displayText='Reddit'></span>
-    <span class='st__large' displayText=''></span>
-
-    <div id="disqus_thread"></div>
-    
-
-
-  
-    <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
-  </div>
-  
-</div>
-]]></summary>
-</entry>
-<entry>
-    <title>Weekly summary 2017-03-11</title>
     <link href="http://holdenlee.github.io/notebook/posts/summaries/2017-03-11.html" />
     <id>http://holdenlee.github.io/notebook/posts/summaries/2017-03-11.html</id>
     <published>2017-03-07T00:00:00Z</published>
@@ -787,480 +1079,6 @@ u_t=\mathcal L u, \quad u(0,x)=f(x)
 <li>Barron is a stronger condition than Lipschitz - says there aren’t many directions of variation.</li>
 <li>If e.g. something radial, out of luck!</li>
 </ul></li>
-</ul>
-
-  </div>
-
-    
-
-    <!-- Extension : Sharing buttons @ www.sharethis.com -->
-    <span class='st_facebook_large' displayText='Facebook'></span>
-    <span class='st_twitter_large' displayText='Tweet'></span>
-    <span class='st_googleplus_large' displayText='Google +'></span>
-    <span class='st_reddit_large' displayText='Reddit'></span>
-    <span class='st__large' displayText=''></span>
-
-    <div id="disqus_thread"></div>
-    
-
-
-  
-    <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
-  </div>
-  
-</div>
-]]></summary>
-</entry>
-<entry>
-    <title>Brownian Motion</title>
-    <link href="http://holdenlee.github.io/notebook/posts/math/probability/brownian_motion.html" />
-    <id>http://holdenlee.github.io/notebook/posts/math/probability/brownian_motion.html</id>
-    <published>2017-03-07T00:00:00Z</published>
-    <updated>2017-03-07T00:00:00Z</updated>
-    <summary type="html"><![CDATA[
-<div class="container">
-  <div id="content">
-    <div class="page header">
-      <h1>Brownian Motion</h1>
-    </div>
-    <div class="info">
-      
-       
-        <p>Posted: 2017-03-07 
-          , Modified: 2017-03-07 
-	</p>
-      
-       <p>Tags: <a href="/tags/brownian%20motion.html">brownian motion</a></p> 
-    </div>
-    
-  </div>
-  <!--/div-->
-
-  <div class="toc"> <ul>
- <li><a href="#robert-browns-new-thing">Robert Brown’s new thing</a></li>
- <li><a href="#brownian-motion-as-a-gaussian-process">Brownian motion as a Gaussian process</a><ul>
- <li><a href="#invariance-properties">2.2 Invariance properties</a></li>
- <li><a href="#rd">2.3 <span class="math inline">$\R^d$</span></a></li>
- </ul></li>
- <li><a href="#constructions-of-brownian-motion">3 Constructions of Brownian motion</a><ul>
- <li><a href="#levy-ciesielski">3.1 Levy-Ciesielski</a></li>
- <li><a href="#levys-original-argument">3.2 Levy’s original argument</a></li>
- </ul></li>
- <li><a href="#the-canonical-model">4 The canonical model</a><ul>
- <li><a href="#kolmogorovs-theorem">4.2 Kolmogorov’s Theorem</a></li>
- </ul></li>
- <li><a href="#brownian-motion-as-a-markov-process">6 Brownian motion as a Markov process</a></li>
- <li><a href="#brownian-motion-and-transition-semigroups">7 Brownian motion and transition semigroups</a><ul>
- <li><a href="#the-generator">7.2 The generator</a></li>
- </ul></li>
- <li><a href="#the-pde-connection">8 The PDE connection</a></li>
- </ul> </div>
-
-  <div class="blog-main">
-    <p>Notes from Schilling, Partzsch.</p>
-<h2 id="robert-browns-new-thing">Robert Brown’s new thing</h2>
-<p>A particle</p>
-<ul>
-<li>starts at <span class="math inline">\(x=0\)</span>.</li>
-<li>at times <span class="math inline">\(k\De t\)</span>, move <span class="math inline">\(\De x\)</span> units to L or R with equal probability.</li>
-</ul>
-<p>Let <span class="math inline">\(X_t\)</span> be position at time <span class="math inline">\(t\in [0,T]\)</span>.</p>
-<ul>
-<li><span class="math inline">\(\Var(X_t)=\si^2 T\)</span> where <span class="math inline">\(\fc{(\De x)^2}{\De t}=\si^2\)</span>.</li>
-<li>CLT: <span class="math inline">\(X_T \to \sqrt T \si N(0,1)\)</span>.</li>
-</ul>
-<strong>Definition</strong>. A <span class="math inline">\(d\)</span>-dimensional Brownian motion <span class="math inline">\(B=(B_t)_{t\ge 0}\)</span> is a stochastic process indexed by <span class="math inline">\([0,\iy)\)</span>,
-<span class="math display">\[\begin{align}
-B_0(\om)&amp;=0\\
-B_{t_n}-B_{t_{n-1}},\ldots, B_{t_1}-B_{t_0} &amp; \text{ independent}, 0=t_0\le t_1&lt;\cdots &lt; t_n\\
-B_t - B_s &amp;\sim B_{t+h} - B_{s+h}\\
-B_t &amp;= N(0,t)^{\ot d}\\
-t&amp;\mapsto B_t(\om) \text{ continuous.}
-\end{align}\]</span>
-<p>Note the last property is implied by the previous.</p>
-<h2 id="brownian-motion-as-a-gaussian-process">Brownian motion as a Gaussian process</h2>
-<p>Characteristic function of Gaussian: <span class="math display">\[
-\E e^{i\an{\xi,\Ga}} = e^{i \E\an{\xi, \Ga} - \rc \Var\an{\xi, \Ga}} = e^{i\an{\xi, \Ga}} = e^{i\an{\xi, m} - \rc 2\an{\xi, \Si\xi}}.
-\]</span></p>
-<ul>
-<li><span class="math inline">\(B_t\)</span> is Gaussian with mean 0, variance <span class="math inline">\(t\)</span>. <span class="math inline">\(\E e^{\ze B_t} = e^{t\ze^2/2}\)</span>.</li>
-<li><span class="math inline">\(\E (B_t^{2k}) = t^k \fc{2^k \Ga(k+\rc 2)}{\sqrt \pi}\)</span>.</li>
-<li><span class="math inline">\(\Cov(B_s,B_t) = \min(s,t)\)</span>.</li>
-</ul>
-<p><span class="math inline">\((X_t)_{t\ge 0}\)</span> is a Gaussian process if for all <span class="math inline">\(0\le t_1&lt;t_2&lt;\cdots\)</span>, <span class="math inline">\((X_{t_1},\ldots, X_{t_n})\)</span> is a Gaussian random vector.</p>
-<p><strong>Theorem</strong>. <span class="math inline">\((B_t)_{t\ge 0}\)</span> is a Gaussian process. The covariance of <span class="math inline">\((B_{t_1},\ldots, B_{t_n})\)</span> is <span class="math inline">\(C = (\min(t_j,t_k))_{j,k}\)</span>.</p>
-<p><em>Proof</em>. Linearly transform <span class="math inline">\((t_1-t_0,t_2-t_1,\ldots)\)</span>.</p>
-<p>Converse: If the covariance matrices are given by the above and <span class="math inline">\((X_t)_{t\ge 0}\)</span> has continuous sample paths, then <span class="math inline">\((X_t)_{t\ge 0}\)</span> is 1-D Brownian.</p>
-<h3 id="invariance-properties">2.2 Invariance properties</h3>
-<ul>
-<li>Reflection <span class="math inline">\(-B_t\)</span></li>
-<li>Renewal <span class="math inline">\(W(t) = B(t+a)-B(a)\)</span>.</li>
-<li>Markov property: <span class="math inline">\(B(t):0\le t\le a\)</span> independent to <span class="math inline">\(W(t), t\ge 0\)</span>.</li>
-<li>Time inversion <span class="math inline">\(W_t=B_{a-t}-B_a\)</span>.</li>
-<li>Scaling <span class="math inline">\(B_{ct}\sim c^{\rc 2}B_t\)</span>.</li>
-<li>Projective reflection <span class="math inline">\(W(t) = tB(\rc t)\)</span></li>
-</ul>
-<h3 id="rd">2.3 <span class="math inline">\(\R^d\)</span></h3>
-<p><span class="math inline">\(B_t\)</span> is <span class="math inline">\(BM^d\)</span> iff its coordinates are <span class="math inline">\(BM^1\)</span>.</p>
-<p><em>Proof</em>. Forward: Show increments are independent—characteristic function factorizes.</p>
-<p><span class="math inline">\(Q\)</span>-Brownian motion: <span class="math inline">\(X_t-X_s\sim N(0,(t-s)Q)\)</span>, <span class="math inline">\(s&lt;t\)</span>.</p>
-<h2 id="constructions-of-brownian-motion">3 Constructions of Brownian motion</h2>
-<h3 id="levy-ciesielski">3.1 Levy-Ciesielski</h3>
-<p>Write paths as random series wrt complete orthonormal system of <span class="math inline">\(L^2([0,1],dt)\)</span>. Let <span class="math inline">\((G_n)_{n\ge 0}\)</span> be sequence of <span class="math inline">\(N(0,1)\)</span> variables. <span class="math display">\[
-W_N(t):=\sumz n{N-1} G_n\an{\one_{[0,t)}, \phi_n}_{L^2}.
-\]</span></p>
-<p><strong>Theorem</strong>. <span class="math inline">\(\lim_{N\to \iy} W_N(t)\)</span> is Brownian motion.</p>
-<p><em>Proof</em>.</p>
-<ul>
-<li>Convergence: <span class="math inline">\(\E [W_N(t)^2] \to t\)</span>.</li>
-<li>Covariances correct: <span class="math inline">\(\E[(W(t)-W(s))(W(v)-W(u))] = \an{\one_{[s,t)}, \one_{[u,v)}}\)</span>.</li>
-<li>Continuity of <span class="math inline">\(t\mapsto W(t,\om)\)</span>: Proof for a specific system: Haar functions <span class="math inline">\(H_n\)</span>.
-<ul>
-<li>(? Uniform convergence <span class="math inline">\(\liminf_{n,N\to \iy} \ve{W_{2^N}-W_{2^n}}_{L^{\iy}(t)}=0\)</span>. By Arzela-Ascoli (?) there is convergent subsequence.</li>
-</ul></li>
-</ul>
-<!-- * (Invariance - translation is orthonormal transformation?) (not necessary)-->
-<h3 id="levys-original-argument">3.2 Levy’s original argument</h3>
-<h2 id="the-canonical-model">4 The canonical model</h2>
-<p>Identify <span class="math inline">\(\Om\)</span> (in <span class="math inline">\((\Om, A, \Pj)\)</span>) as a subset of <span class="math inline">\((\R^d)^I\)</span>, actually <span class="math inline">\(C_{(0)}\)</span> consisting of continuous <span class="math inline">\(w:[0,\iy)\to \R^d\)</span>, <span class="math inline">\(w(0)=0\)</span>.</p>
-<p>Consider the product <span class="math inline">\(\si\)</span>-algebra <span class="math display">\[
-B^I(\R^d) = \si\set{\pi_t^{-1}(B)}{B\in B(\R^d), t\in I} = \si\set{\pi_t}{t\in I}.
-\]</span> Consider the intersection with <span class="math inline">\(C_{(0)}\)</span>, <span class="math display">\[
-C_{(0)}\cap B^T(\R^d) = \si(\pi_t|_{C_{(0)}}:t\in I).
-\]</span> <span class="math inline">\(C_{(0)}\)</span> is complete separable metric space with metric of locally uniform convergence <span class="math inline">\(\rh(w,v)=\sumo n{\iy} (1\wedge \sup_{0\le t\le n} |w(t)-v(t)|)2^{-n}\)</span>.</p>
-<p>The finite-dimensional distributions uniquely determine <span class="math inline">\(\mu\)</span> (cylinder sets generate). <span class="math inline">\(\mu\)</span> is <strong>Wiener measure</strong>, the space is the <strong>path space</strong>.</p>
-<p><strong>Theorem</strong> <span class="math inline">\((C_{(0)}, B(C_{(0)}), \mu)\)</span>: <span class="math inline">\((\pi_t)_{t\ge 0}\)</span> is Brownian motion (<strong>canonical model of Brownian motion</strong>). <!-- *-stable generator? --></p>
-<p>Some properties</p>
-<ul>
-<li><span class="math inline">\(\Ga\in B^I(\R^d)\)</span> is determined by countably many indices: for every <span class="math inline">\(\Ga\in B^I(\R^d)\)</span> there exists countable <span class="math inline">\(S\sub I\)</span>, such that <span class="math inline">\(f\in (\R^d)^I, w\in \Ga, f|_S=w|_S \implies f\in \Ga\)</span>. <em>Proof</em>. <span class="math inline">\(\set{\Ga \subeq (\R^d)^I}{\pat{holds for some countable }S}\)</span> is a <span class="math inline">\(\si\)</span>-algebra.</li>
-<li><span class="math inline">\(C_{(0)}\nin B^{[0,\iy)}\nin B^I (\R^d)\)</span>. Proof: can’t enforce continuity using values at countably many points. (What is the point of this? Saying we can’t work in <span class="math inline">\(B^I(\R^d)\)</span>, have to work in <span class="math inline">\(\cap C_{(0)}\)</span>?)</li>
-</ul>
-<h3 id="kolmogorovs-theorem">4.2 Kolmogorov’s Theorem</h3>
-<p><strong>Theorem</strong>. Let <span class="math inline">\(I\subeq [0,\iy)\)</span>, <span class="math inline">\(p_{t_1,\ldots, t_n}\)</span> be probability measures defined on <span class="math inline">\((\R^d)^n\)</span>. If the family is consistent (<span class="math inline">\(p_t(C) = p_{t_{\si}} (C_\si)\)</span> and <span class="math inline">\(p_{t_{1:n-1},t_n}(C_{1:n-1}\times \R^d) = p_{t_{1:n-1}} (C_{1:n-1})\)</span>), then there exists <span class="math inline">\(\mu\)</span> on <span class="math inline">\(((\R^d)^I, B^I(\R^d))\)</span>, <span class="math inline">\(p_{t_{1:n}}(C) = \mu(\pi_{t_{1:n}}^{-1}(C))\)</span>.</p>
-<p>Corollary: can construct canonical process for any family of consistent finite dimensional probability distributions.</p>
-<p>(Still not too clear on it sufficing to consider finite-dim projections…)</p>
-<p>Can use this theorem to construct BM. Continuity follows from Theorem 4.11.</p>
-<h2 id="brownian-motion-as-a-markov-process">6 Brownian motion as a Markov process</h2>
-<p>(I’m confused about what more 6.1 says. Is this related to stopping times? <span class="math inline">\(F_t\)</span> is info up to time <span class="math inline">\(t\)</span>?)</p>
-<p>Let <span class="math display">\[
-\Pj^x(B_{t_i}\in A_i:1\le i\le n) = \Pj(B_{t_i}+x\in A_i:1\le i\le n).
-\]</span></p>
-<h2 id="brownian-motion-and-transition-semigroups">7 Brownian motion and transition semigroups</h2>
-Linear operators: transition semigroup and resolvent
-<span class="math display">\[\begin{align}
-P_t u(x) &amp;= \E^x u(B_t)\\
-U_\al u(x) &amp;= \E^x \ba{\iiy u(B_t)e^{-\al t}\,dt}
-\end{align}\]</span>
-<p>A semigroup <span class="math inline">\((P_t)_{t\ge 0}\)</span> on a Banach space is family of linear operators <span class="math inline">\(P_t:B\to B, t\ge 0\)</span>, satisfying <span class="math inline">\(P_tP_s=P_{t+s}\)</span>, <span class="math inline">\(P_0=\id\)</span>.</p>
-<p>Banach spaces:</p>
-<ul>
-<li><span class="math inline">\(B_b\)</span>: Borel measurable <span class="math inline">\(\R^d\to \R\)</span> with uniform norm <span class="math inline">\(\ved_{\iy}\)</span>.</li>
-<li><span class="math inline">\(C_\iy\)</span>: continuous functions vanishing at infinity with uniform norm <span class="math inline">\(\ved_{\iy}\)</span>.</li>
-</ul>
-<p>Lemma 7.2. <span class="math inline">\((B_t)_{t\ge 0}\)</span> is uniformly stochastically continuous, <span class="math display">\[ \lim_{t\to 0}\sup_{x\in \R^d} \Pj^x (|B_t-x|&gt;\de)=0\]</span> for all <span class="math inline">\(\de&gt;0\)</span>.</p>
-<p>Properties</p>
-<ol type="1">
-<li>Conservative <span class="math inline">\(P_t1=1\)</span>.</li>
-<li>Contraction on <span class="math inline">\(B_b\)</span>: <span class="math inline">\(\ve{P_t u}_\iy \le \ve{u}_{\iy}\)</span>, <span class="math inline">\(u\in B_b\)</span></li>
-<li>Positive preserving: <span class="math inline">\(u\ge 0\implies P_tu\ge 0\)</span>, <span class="math inline">\(u\in B_b\)</span>.</li>
-<li>Sub-Markovian: <span class="math inline">\(0\le u\le 1\)</span>, <span class="math inline">\(u\in B_b\implies 0\le P_tu\le 1\)</span>.</li>
-<li>Feller: <span class="math inline">\(u\in C_\iy\implies P_t u\in C_\iy\)</span>.</li>
-<li>Strongly continuous on <span class="math inline">\(C_\iy\)</span>: <span class="math inline">\(u\in C_\iy\implies \lim_{t\to 0}\ve{P_tu-u}_\iy = 0\)</span>.</li>
-<li>Strong Feller: <span class="math inline">\(u\in B_b\implies P_tu\in C_b\)</span>.</li>
-</ol>
-<p>(1-4 is Markov, 2-4 is sub-Markov, 2-6 is Feller, 2-4+7 is strong Feller.)</p>
-<p>7.5: <span class="math display">\[\Pj^x(B_{t_i}\in C_i:1\le i\le n) = P_{t_1}[\one_{C_1} P_{t_2-t_1}[\one_{C_2}\cdots ]].\]</span></p>
-<p>This gives a way to construct a Markov process from a semigroup of operators. (Apply to indicator functions.) A Feller semigroup has a corresponding Feller process.</p>
-<h3 id="the-generator">7.2 The generator</h3>
-<p>Motivation: If <span class="math inline">\(\phi:[0,\iy)\to \R\)</span>, additive, <span class="math inline">\(\phi(0)=1\)</span>, then <span class="math inline">\(\phi(t) = e^{at}\)</span>, <span class="math inline">\(a=\ddd t^{+}\phi(t)|_{t=0}\)</span>.</p>
-<strong>Definition</strong>. Let <span class="math inline">\((P_t)_{t\ge 0}\)</span> be Feller semigroup on <span class="math inline">\(C_\iy(\R^d)\)</span>. Then
-<span class="math display">\[\begin{align}
-Au :&amp;= \lim_{t\to 0} \fc{P_t u-u}t\\
-D(A) :&amp;= \set{u\in C_\iy(\R^d)}{\exists g\in C_\iy(\R^d), \lim_{t\to 0} \ve{\fc{P_tu-u}t-g}_{\iy}=0}
-\end{align}\]</span>
-<p>is the infinitesimal generator of <span class="math inline">\((P_t)_{t\ge 0}\)</span>. <span class="math inline">\(A\)</span> is a function <span class="math inline">\(A:D(A)\to C_\iy(\R^d)\)</span>.</p>
-<p>Ex. for <span class="math inline">\(BM^d\)</span>, <span class="math inline">\(P_tu(x) = \E^xu(B_t)\)</span>, <span class="math inline">\(A=\rc 2 \De\)</span> on <span class="math inline">\(C_\iy^2(\R^d)\)</span>. Proof: Taylor expansion.</p>
-Lemma 7.10. Let <span class="math inline">\(P_t\)</span> be Feller semigroup with generator <span class="math inline">\(A\)</span>. <span class="math inline">\(P_t\)</span> and <span class="math inline">\(\int_0^t P_s\cdot\,ds\)</span> are <span class="math inline">\(D(A)\to D(A)\)</span>.
-<span class="math display">\[\begin{align}
-\ddd tP_tu &amp;= AP_tu = P_tAu\\
-P_t u - u &amp;= A\int_0^t P_su\,ds.
-\end{align}\]</span>
-<p><em>Proof.</em> Use: <span class="math inline">\(P_t\)</span> is contraction to get <span class="math inline">\(\ddd t^+\)</span>. Use this and strong continuity to get <span class="math inline">\(\ddd t^-\)</span>. Fubini’s Theorem for part 2.</p>
-<p>Corollary 7.11. Let <span class="math inline">\((P_t)_{t\ge 0}\)</span> be Feller semigroup with generator <span class="math inline">\(A\)</span>.</p>
-<ol type="1">
-<li><span class="math inline">\(D(A)\)</span> is dense in <span class="math inline">\(C_\iy(\R^d)\)</span>.</li>
-<li><span class="math inline">\(A\)</span> is a closed operator.</li>
-<li>If <span class="math inline">\((T_t)_{t\ge 0}\)</span> is also Feller with generator <span class="math inline">\(A\)</span>, <span class="math inline">\(P_t=T_t\)</span>.</li>
-</ol>
-<p><em>Proof</em>.</p>
-<ol type="1">
-<li><span class="math inline">\(\ep^{-1}\int_0^\ep P_su\,ds\to u\)</span>. (Decay it a little!)</li>
-<li>If <span class="math inline">\(u_n\to u\)</span>, <span class="math inline">\(Au_n\to w\)</span>, then <span class="math inline">\(Au=w\)</span>.</li>
-<li><span class="math inline">\(\ddd sP_{t-s} T_su = 0\)</span>.</li>
-</ol>
-<p><strong>Proposition 7.13</strong>. Let <span class="math inline">\(P_t\)</span> be Feller. Then <span class="math inline">\(\al U_\al\)</span> is conservative, contraction on <span class="math inline">\(B_b\)</span>, positivity preserving, Feller, strongly continuous on <span class="math inline">\(C_\iy\)</span>. Moreover</p>
-<ol type="1">
-<li><span class="math inline">\((U_\al)_{\al&gt;0}\)</span> is resolvent: <span class="math inline">\(U_\al = (\al \id -A)^{-1}\)</span>.</li>
-<li>Resolvent equation <span class="math inline">\(U_\al u - U_\be u = (\be-\al) U_\be U_\al u\)</span>, <span class="math inline">\(u\in B_b\)</span>.</li>
-<li>There is 1-to-1 relationship between <span class="math inline">\((P_t)\)</span> and <span class="math inline">\((U_\al)\)</span>.</li>
-<li><span class="math inline">\((U_\al)\)</span> is sub-Markovian iff <span class="math inline">\((P_t)\)</span> is sub-Markovian.</li>
-</ol>
-<p>(Intuition for (1). <span class="math inline">\(\iiy e^{(A-\al I) t}u\,dt = (A-\al I)^{-1}\)</span>.)</p>
-<p>Example 7.14. For Brownian motion <span class="math display">\[
-U_\al u(x) = \begin{cases}
-\int \fc{e^{-\sqrt{2\al}y}{\sqrt{2\al}}u(x+y)\dy,&amp;d=1\\
-\int \rc{\pi^{\fc d2}}\pf{\al}{2y^2}^{\fc d4-\rc2} K_{\fc d2-1}(\sqrt{2\al}y) u(x+y)\dy,&amp;d\ge 2.
-\end{cases}
-\]</span></p>
-<p>Determining domain of generator:</p>
-<p><strong>Theorem</strong>. If <span class="math inline">\((A', D(A'))\)</span> extends <span class="math inline">\((A,D(A))\)</span>, and for any <span class="math inline">\(u\in D(A)\)</span>, <span class="math inline">\(A'u=u\implies u=0\)</span>&lt; then <span class="math inline">\((A,D(A))=(A', D(A'))\)</span>. (? I don’t get this.)</p>
-<h2 id="the-pde-connection">8 The PDE connection</h2>
-<blockquote>
-<p>For many classical PDE problems probability theory yields concrete representation formulae for the solutions in the form of expected values of a Brownian functional. These formulae can be used to get generalized solutions of PDEs (which require less smoothness of the initial/boundary data or the boundary itself) and they are amenable to Monte-Carlo simulations</p>
-</blockquote>
-<p><strong>Lemma</strong> 8.1. <span class="math inline">\(f\in D(\De)\)</span>, <span class="math inline">\(u(t,x):=\E^x f(B_t)\)</span>. <span class="math inline">\(u\)</span> is unique bounded solution of heat equation with initial value <span class="math inline">\(f\)</span>.</p>
-<p><em>Proof</em>. Laplace transform and IbP. Use uniqueness of resolvent operator.</p>
-
-  </div>
-
-    
-
-    <!-- Extension : Sharing buttons @ www.sharethis.com -->
-    <span class='st_facebook_large' displayText='Facebook'></span>
-    <span class='st_twitter_large' displayText='Tweet'></span>
-    <span class='st_googleplus_large' displayText='Google +'></span>
-    <span class='st_reddit_large' displayText='Reddit'></span>
-    <span class='st__large' displayText=''></span>
-
-    <div id="disqus_thread"></div>
-    
-
-
-  
-    <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
-  </div>
-  
-</div>
-]]></summary>
-</entry>
-<entry>
-    <title>Tensorflow setup</title>
-    <link href="http://holdenlee.github.io/notebook/posts/tcs/machine_learning/neural_nets/tensorflow.html" />
-    <id>http://holdenlee.github.io/notebook/posts/tcs/machine_learning/neural_nets/tensorflow.html</id>
-    <published>2017-03-03T00:00:00Z</published>
-    <updated>2017-03-03T00:00:00Z</updated>
-    <summary type="html"><![CDATA[
-<div class="container">
-  <div id="content">
-    <div class="page header">
-      <h1>Tensorflow setup</h1>
-    </div>
-    <div class="info">
-      
-       
-        <p>Posted: 2017-03-03 
-          , Modified: 2017-03-03 
-	</p>
-      
-       <p>Tags: <a href="/tags/neural%20nets.html">neural nets</a>, <a href="/tags/programming.html">programming</a>, <a href="/tags/tensorflow.html">tensorflow</a></p> 
-    </div>
-    
-  </div>
-  <!--/div-->
-
-  <div class="toc"> <ul>
- <li><a href="#setting-up-tensorflow-project">Setting up tensorflow project</a></li>
- <li><a href="#tensorboard">Tensorboard</a></li>
- <li><a href="#restoring">Restoring</a></li>
- <li><a href="#sessions-and-graphs">Sessions and graphs</a></li>
- <li><a href="#scopes">Scopes</a></li>
- <li><a href="#questions-to-figure-out">Questions to figure out</a></li>
- </ul> </div>
-
-  <div class="blog-main">
-    <h2 id="setting-up-tensorflow-project">Setting up tensorflow project</h2>
-<pre><code>sudo apt-get install python-pip python-dev python-virtualenv 
-virtualenv --system-site-packages ~/tensorflow
-source ~/tensorflow/bin/activate # do every time
-pip3 install --upgrade tensorflow-gpu</code></pre>
-<p>With keras (<a href="http://www.pyimagesearch.com/2016/11/14/installing-keras-with-tensorflow-backend/">tutorial</a>)</p>
-<pre><code>virtualenv --system-site-packages ~/keras_tf
-source ~/keras_tf/bin/activate # do every time
-#mkvirtualenv keras_tf
-#workon keras_tf
-pip install --upgrade tensorflow-gpu
-pip install numpy scipy
-pip install scikit-learn
-pip install pillow
-pip install h5py
-pip install keras</code></pre>
-<p>To exit, <code>deactivate</code>.</p>
-<p>Cleverhans: at <code>holdenl</code></p>
-<pre><code>git clone https://github.com/openai/cleverhans
-export PYTHONPATH=&quot;/home/optml/holdenl/cleverhans&quot;:$PYTHONPATH # do every time
-pip install matplotlib</code></pre>
-<p>For cycles, <code>export PYTHONPATH=&quot;/u/holdenl/code/cleverhans&quot;:$PYTHONPATH # do every time</code></p>
-<p>Cycles: do every time</p>
-<pre><code>export PYTHONPATH=&quot;/u/holdenl/code/cleverhans&quot;:$PYTHONPATH # do every time
-source ~/keras_tf/bin/activate # do every time</code></pre>
-<h2 id="tensorboard">Tensorboard</h2>
-<p>Do <code>ssh</code> linking port 6006:</p>
-<pre><code>ssh -t -t -L 6006:localhost:6006 holdenl@portal.cs.princeton.edu &quot;ssh -L 6006:localhost:6006 optml@optml.cs.princeton.edu&quot;</code></pre>
-<p>Run tensorboard.</p>
-<pre><code>tensorboard --logdir=tf-slim/train/</code></pre>
-<h2 id="restoring">Restoring</h2>
-<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">restorer <span class="op">=</span> tf.train.Saver()
-<span class="cf">with</span> tf.Session() <span class="im">as</span> sess:
-	<span class="co"># Restore variables from disk. #tf-slim/</span>
-	restorer.restore(sess, <span class="st">&quot;./tf-slim/train/model.ckpt-20000&quot;</span>)
-	<span class="bu">print</span>(<span class="st">&quot;Model restored.&quot;</span>)
-	<span class="bu">print</span>(<span class="st">&quot;test accuracy </span><span class="sc">%g</span><span class="st">&quot;</span><span class="op">%</span>accuracy.<span class="bu">eval</span>(feed_dict<span class="op">=</span>{
-            x: mnist.test.images, y_: mnist.test.labels, keep_prob: <span class="fl">1.0</span>}, session<span class="op">=</span>sess))</code></pre></div>
-<h2 id="sessions-and-graphs">Sessions and graphs</h2>
-<p>A graph is just the skeleton. A session is when the graph is actually run.</p>
-<p>Two ways to run a session:</p>
-<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">sess <span class="op">=</span> tf.Session()
-sess.run(tf.global_variables_initializer())
-accuracy.<span class="bu">eval</span>(feed_dict<span class="op">=</span>{
-	x:batch[<span class="dv">0</span>], y_: batch[<span class="dv">1</span>], keep_prob: <span class="fl">1.0</span>}, session<span class="op">=</span>sess)</code></pre></div>
-<p>Second way: (Probably this is preferred because “with” invokes some magic.)</p>
-<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">sess <span class="op">=</span> tf.Session()
-<span class="cf">with</span> tf.Session() <span class="im">as</span> sess:
-	...</code></pre></div>
-<h2 id="scopes">Scopes</h2>
-<pre><code>with tf.variable_scope(&quot;conv1&quot;):</code></pre>
-<h2 id="questions-to-figure-out">Questions to figure out</h2>
-<ul>
-<li>What CPU/GPU is actually used?</li>
-<li>How do virtual environments work?</li>
-</ul>
-
-  </div>
-
-    
-
-    <!-- Extension : Sharing buttons @ www.sharethis.com -->
-    <span class='st_facebook_large' displayText='Facebook'></span>
-    <span class='st_twitter_large' displayText='Tweet'></span>
-    <span class='st_googleplus_large' displayText='Google +'></span>
-    <span class='st_reddit_large' displayText='Reddit'></span>
-    <span class='st__large' displayText=''></span>
-
-    <div id="disqus_thread"></div>
-    
-
-
-  
-    <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
-  </div>
-  
-</div>
-]]></summary>
-</entry>
-<entry>
-    <title>Adversarial experiments</title>
-    <link href="http://holdenlee.github.io/notebook/posts/tcs/machine_learning/neural_nets/adversarial_experiments.html" />
-    <id>http://holdenlee.github.io/notebook/posts/tcs/machine_learning/neural_nets/adversarial_experiments.html</id>
-    <published>2017-03-02T00:00:00Z</published>
-    <updated>2017-03-02T00:00:00Z</updated>
-    <summary type="html"><![CDATA[
-<div class="container">
-  <div id="content">
-    <div class="page header">
-      <h1>Adversarial experiments</h1>
-    </div>
-    <div class="info">
-      
-       
-        <p>Posted: 2017-03-02 
-          , Modified: 2017-03-02 
-	</p>
-      
-       <p>Tags: <a href="/tags/neural%20nets.html">neural nets</a>, <a href="/tags/uncertainty.html">uncertainty</a>, <a href="/tags/aaml.html">aaml</a></p> 
-    </div>
-    
-  </div>
-  <!--/div-->
-
-  <div class="toc"> <ul>
- <li><a href="#results">Results</a></li>
- <li><a href="#todo">Todo</a><ul>
- <li><a href="#nice-things">Nice things</a></li>
- </ul></li>
- <li><a href="#done">Done</a></li>
- </ul> </div>
-
-  <div class="blog-main">
-    <p>See <a href="https://github.com/holdenlee/adversarial">github</a>.</p>
-<h2 id="results">Results</h2>
-<p>Trained for 100 epochs. Accuracy (out of 1)</p>
-<table>
-<thead>
-<tr class="header">
-<th>Mixture\Attack</th>
-<th>0.3 fgs</th>
-<th>0.5 fgs</th>
-<th>1.0 fgs (sanity check)</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>1</td>
-<td>?</td>
-<td>?</td>
-<td>?</td>
-</tr>
-<tr class="even">
-<td>10</td>
-<td>?</td>
-<td>?</td>
-<td>?</td>
-</tr>
-<tr class="odd">
-<td>100</td>
-<td>?</td>
-<td>?</td>
-<td>?</td>
-</tr>
-</tbody>
-</table>
-<h2 id="todo">Todo</h2>
-<ul>
-<li>Look at which samples are misclassified by which networks: are they the same or different?
-<ul>
-<li>Jaccard similarity</li>
-<li>How about if you train an ensemble together on regular examples?</li>
-</ul></li>
-<li>Baselines
-<ul>
-<li>How transferable are adversarial examples between the 100 networks?</li>
-<li>How well does majority do against adversarial example against the mixture?</li>
-</ul></li>
-<li>Does clamping help?</li>
-<li>Examine activations of adversarial examples in hidden layer. Do they look different for adversarial examples?</li>
-<li>What are the weights given to the networks in the mixture? How does this change over time?</li>
-<li>Try training with independent updates, multiplicative weights.
-<ul>
-<li>(Check YZ’s code.)</li>
-<li>Try sleeping, etc. - regularize more strongly so that weights don’t become too small/large.</li>
-</ul></li>
-<li>Hyperparameter search</li>
-<li>Autoencoder idea</li>
-<li>Regularization/Lipschitz/wavelet idea</li>
-<li>Is pretraining necessary?</li>
-<li>Compare 100 networks to 1 network with 100x size. Which does better?</li>
-</ul>
-<h3 id="nice-things">Nice things</h3>
-<ul>
-<li>Set up tensorboard to show histograms, real and adversarial images, etc.</li>
-<li>Run with many different settings.</li>
-</ul>
-<h2 id="done">Done</h2>
-<ul>
-<li>Port over to own training loop.</li>
-<li>End - save</li>
-<li>Output accuracies, etc. over time as list.</li>
-<li>Plotting!</li>
 </ul>
 
   </div>
