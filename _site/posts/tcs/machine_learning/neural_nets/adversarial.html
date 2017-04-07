@@ -103,6 +103,7 @@
 
   <div class="blog-main">
     <p>See <a href="adversarial_experiments.html">my experiments</a>.</p>
+<p>See also <a href="confidence.html">confidence</a>.</p>
 <h2 id="introduction">Introduction</h2>
 <h3 id="statement">Statement</h3>
 <p>Neural networks can be easily fooled—ex. an adversary adding a small amount of noise can change the classification from “dog” to “cat” with high confidence. It can be fooled even by a weak adversary with just black-box access!</p>
@@ -114,8 +115,14 @@
 <li>Sleeping in NN</li>
 <li>Use some kind of calibration. I have a suspicion that cross-entropy simply doesn’t generalize because losses are unbounded.</li>
 <li>Active learning</li>
-<li>Make Lipschitz/other regularization. Give noisy example with the kind of noise you want to be resistant against.</li>
+<li>Make Lipschitz/other regularization. Give noisy example with the kind of noise you want to be resistant against. (ex. use wavelet basis in convolution)</li>
 <li>Boosting</li>
+<li><span class="math inline">\(\iy\to 2\)</span> norm. SDP relaxation, etc. (Jacob S)</li>
+<li>Path norm SGD.</li>
+<li>Quantization. Can we still get adversarial examples if all values are rounded to 0 or 1? (both during training and test) (Maybe adversarial for <span class="math inline">\(L^1\)</span> norm now, change the coordinates with largest gradient.)</li>
+<li>PCA. Can we just kill coefficients of large components? Can we train adversarially against these?</li>
+<li>Enforce sparsity (or recover manifold) in hidden layers.</li>
+<li>“How much more does it cost to train this example correctly?”</li>
 </ul>
 <h3 id="blog-posts">Blog posts</h3>
 <ul>

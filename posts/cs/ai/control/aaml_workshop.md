@@ -1,5 +1,5 @@
 ---
-title: Alignment for advanced machine learning systems
+title: AAML workshop
 published: 2017-04-01
 modified: 2017-04-01
 tags: ai safety, machine learning

@@ -7,7 +7,9 @@ type: research
 showTOC: True
 ---
 
-See [my experiments](adversarial_experiments.html).
+See [my experiments](adversarial_experiments.html). 
+
+See also [confidence](confidence.html).
 
 # Introduction
 
@@ -24,8 +26,14 @@ Ideas:
 * Sleeping in NN
 * Use some kind of calibration. I have a suspicion that cross-entropy simply doesn't generalize because losses are unbounded.
 * Active learning
-* Make Lipschitz/other regularization. Give noisy example with the kind of noise you want to be resistant against.
+* Make Lipschitz/other regularization. Give noisy example with the kind of noise you want to be resistant against. (ex. use wavelet basis in convolution)
 * Boosting
+* $\iy\to 2$ norm. SDP relaxation, etc. (Jacob S)
+* Path norm SGD.
+* Quantization. Can we still get adversarial examples if all values are rounded to 0 or 1? (both during training and test) (Maybe adversarial for $L^1$ norm now, change the coordinates with largest gradient.)
+* PCA. Can we just kill coefficients of large components? Can we train adversarially against these?
+* Enforce sparsity (or recover manifold) in hidden layers.
+* "How much more does it cost to train this example correctly?"
 
 ## Blog posts
 
@@ -118,7 +126,6 @@ Fast gradient doesn't work with ensemble.
 * Choose 2 orthogonal directions, one being a gradient direction. There are up to 21 different regions
 	* Boundaries align well.
 	* Boundary diameter along gradient direction smaller. (Even in the direction of increasing the prediction probability!)
-	
 	
 # Questions
 

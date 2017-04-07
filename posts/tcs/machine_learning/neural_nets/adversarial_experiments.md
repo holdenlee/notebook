@@ -29,16 +29,18 @@ Trained for 100 epochs. Accuracy (out of 1)
 	* How transferable are adversarial examples between the 100 networks?
 	* How well does majority do against adversarial example against the mixture?
 * Does clamping help?
-* Examine activations of adversarial examples in hidden layer. Do they look different for adversarial examples?
+* Examine activations of adversarial examples in hidden layer. Do they look different for adversarial examples? (cf. Dan: max softmax)
 * What are the weights given to the networks in the mixture? How does this change over time?
 * Try training with independent updates, multiplicative weights.
 	* (Check YZ's code.)
 	* Try sleeping, etc. - regularize more strongly so that weights don't become too small/large.
-* Hyperparameter search
 * Autoencoder idea
 * Regularization/Lipschitz/wavelet idea
 * Is pretraining necessary?
 * Compare 100 networks to 1 network with 100x size. Which does better?
+* Correlation between correct classifications for independent networks
+* Correlation between gradients for different networks
+* Adversarial examples for autoencoders?
 
 ## Nice things
 
@@ -51,3 +53,8 @@ Trained for 100 epochs. Accuracy (out of 1)
 * End - save
 * Output accuracies, etc. over time as list.
 * Plotting!
+* Hyperparameter search
+* Correlation between correct classifications
+
+# Experiments 4/5/17
+
