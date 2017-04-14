@@ -88,8 +88,11 @@
   <div class="toc"> <ul>
  <li><a href="#results">Results</a></li>
  <li><a href="#todo">Todo</a><ul>
+ <li><a href="#to-solve-the-problem">To solve the problem</a></li>
+ <li><a href="#exploratory">Exploratory</a></li>
  <li><a href="#nice-things">Nice things</a></li>
  </ul></li>
+ <li><a href="#half-done">Half-done</a></li>
  <li><a href="#done">Done</a></li>
  <li><a href="#experiments-4517">Experiments 4/5/17</a></li>
  </ul> </div>
@@ -129,31 +132,43 @@
 </tbody>
 </table>
 <h2 id="todo">Todo</h2>
+<h3 id="to-solve-the-problem">To solve the problem</h3>
 <ul>
-<li>Look at which samples are misclassified by which networks: are they the same or different?
+<li><span class="math inline">\(L^1\)</span> regularization
 <ul>
-<li>Jaccard similarity</li>
-<li>How about if you train an ensemble together on regular examples?</li>
-</ul></li>
-<li>Baselines
+<li>Multiplicative weights
 <ul>
-<li>How transferable are adversarial examples between the 100 networks?</li>
-<li>How well does majority do against adversarial example against the mixture?</li>
-</ul></li>
-<li>Does clamping help?</li>
-<li>Examine activations of adversarial examples in hidden layer. Do they look different for adversarial examples? (cf. Dan: max softmax)</li>
-<li>What are the weights given to the networks in the mixture? How does this change over time?</li>
-<li>Try training with independent updates, multiplicative weights.
-<ul>
+<li>Try training with independent updates, multiplicative weights.</li>
 <li>(Check YZ’s code.)</li>
 <li>Try sleeping, etc. - regularize more strongly so that weights don’t become too small/large.</li>
 </ul></li>
+</ul></li>
+<li>Posterior over parameters - use to estimate class of new example
+<ul>
+<li>Fisher information or Langevin</li>
+<li>If this fails, it suggests the objective is wrong. The net with smallest objective value (including any implicit regularization) does NOT generalize. Try a different regularization.</li>
+</ul></li>
 <li>Autoencoder idea</li>
-<li>Regularization/Lipschitz/wavelet idea</li>
+<li>Regularization/Lipschitz/wavelet idea
+<ul>
+<li>Problem: wavelet would penalize rotation; it’s hard to do rotation invariance</li>
+</ul></li>
+<li>Take top <span class="math inline">\(k\)</span> only.</li>
+<li>Normalization (batch normalization? vs. just normalize current)</li>
+<li>Train with confidence, uncertainty - vote to abstain</li>
+<li>Path norm</li>
+</ul>
+<h3 id="exploratory">Exploratory</h3>
+<ul>
+<li>Baselines
+<ul>
+<li>How transferable are adversarial examples between the 100 networks? DO THIS</li>
+<li>How well does majority do against adversarial example against the mixture?</li>
+</ul></li>
+<li>Examine activations of adversarial examples in hidden layer. Do they look different for adversarial examples? (cf. Dan: max softmax)</li>
+<li>What are the weights given to the networks in the mixture? How does this change over time?</li>
 <li>Is pretraining necessary?</li>
 <li>Compare 100 networks to 1 network with 100x size. Which does better?</li>
-<li>Correlation between correct classifications for independent networks</li>
-<li>Correlation between gradients for different networks</li>
 <li>Adversarial examples for autoencoders?</li>
 </ul>
 <h3 id="nice-things">Nice things</h3>
@@ -161,8 +176,19 @@
 <li>Set up tensorboard to show histograms, real and adversarial images, etc.</li>
 <li>Run with many different settings.</li>
 </ul>
+<h2 id="half-done">Half-done</h2>
+<ul>
+<li>Look at which samples are misclassified by which networks: are they the same or different?
+<ul>
+<li>Jaccard similarity</li>
+<li>How about if you train an ensemble together on regular examples?</li>
+</ul></li>
+<li>Does clamping help?</li>
+</ul>
 <h2 id="done">Done</h2>
 <ul>
+<li>Correlation between correct classifications for independent networks (correlated, ~0.3)</li>
+<li>Correlation between gradients for different networks (not correlated)</li>
 <li>Port over to own training loop.</li>
 <li>End - save</li>
 <li>Output accuracies, etc. over time as list.</li>
