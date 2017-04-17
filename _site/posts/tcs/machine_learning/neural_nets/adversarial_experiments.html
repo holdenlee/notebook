@@ -134,15 +134,14 @@
 <h2 id="todo">Todo</h2>
 <h3 id="to-solve-the-problem">To solve the problem</h3>
 <ul>
-<li><span class="math inline">\(L^1\)</span> regularization
-<ul>
+<li>L1 regularization + adversarial training</li>
 <li>Multiplicative weights
 <ul>
 <li>Try training with independent updates, multiplicative weights.</li>
 <li>(Check YZ’s code.)</li>
 <li>Try sleeping, etc. - regularize more strongly so that weights don’t become too small/large.</li>
 </ul></li>
-</ul></li>
+<li>Forcing filters to be far apart</li>
 <li>Posterior over parameters - use to estimate class of new example
 <ul>
 <li>Fisher information or Langevin</li>
@@ -152,17 +151,19 @@
 <li>Regularization/Lipschitz/wavelet idea
 <ul>
 <li>Problem: wavelet would penalize rotation; it’s hard to do rotation invariance</li>
+<li>Penalize by derivative?</li>
 </ul></li>
 <li>Take top <span class="math inline">\(k\)</span> only.</li>
 <li>Normalization (batch normalization? vs. just normalize current)</li>
 <li>Train with confidence, uncertainty - vote to abstain</li>
 <li>Path norm</li>
+<li>Boosting</li>
 </ul>
 <h3 id="exploratory">Exploratory</h3>
 <ul>
 <li>Baselines
 <ul>
-<li>How transferable are adversarial examples between the 100 networks? DO THIS</li>
+<li>How transferable are adversarial examples between the 100 networks? Very.</li>
 <li>How well does majority do against adversarial example against the mixture?</li>
 </ul></li>
 <li>Examine activations of adversarial examples in hidden layer. Do they look different for adversarial examples? (cf. Dan: max softmax)</li>
@@ -170,6 +171,8 @@
 <li>Is pretraining necessary?</li>
 <li>Compare 100 networks to 1 network with 100x size. Which does better?</li>
 <li>Adversarial examples for autoencoders?</li>
+<li>View filters of adversarially trained - is it better? (Filters of normally trained net don’t look very enlightening.)</li>
+<li>Are adversarial examples harder to train on? No - gets 93+% accuracy after 1 epoch, same as before. (What if you combine adversarial and normal?)</li>
 </ul>
 <h3 id="nice-things">Nice things</h3>
 <ul>
@@ -195,6 +198,7 @@
 <li>Plotting!</li>
 <li>Hyperparameter search</li>
 <li>Correlation between correct classifications</li>
+<li><span class="math inline">\(L^1\)</span> regularization</li>
 </ul>
 <h2 id="experiments-4517">Experiments 4/5/17</h2>
 

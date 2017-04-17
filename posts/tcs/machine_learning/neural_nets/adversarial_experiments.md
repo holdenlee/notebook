@@ -24,32 +24,37 @@ Trained for 100 epochs. Accuracy (out of 1)
 
 ## To solve the problem
 
-* $L^1$ regularization
-    * Multiplicative weights
-	    * Try training with independent updates, multiplicative weights.
-		* (Check YZ's code.)
-		* Try sleeping, etc. - regularize more strongly so that weights don't become too small/large.
+* L1 regularization + adversarial training
+* Multiplicative weights
+	* Try training with independent updates, multiplicative weights.
+	* (Check YZ's code.)
+	* Try sleeping, etc. - regularize more strongly so that weights don't become too small/large.
+* Forcing filters to be far apart
 * Posterior over parameters - use to estimate class of new example
 	* Fisher information or Langevin
 	* If this fails, it suggests the objective is wrong. The net with smallest objective value (including any implicit regularization) does NOT generalize. Try a different regularization.
 * Autoencoder idea 
 * Regularization/Lipschitz/wavelet idea
     * Problem: wavelet would penalize rotation; it's hard to do rotation invariance
+	* Penalize by derivative?
 * Take top $k$ only.
 * Normalization (batch normalization? vs. just normalize current)
 * Train with confidence, uncertainty - vote to abstain
 * Path norm
+* Boosting
 
 ## Exploratory
 
 * Baselines
-	* How transferable are adversarial examples between the 100 networks? DO THIS
+	* How transferable are adversarial examples between the 100 networks? Very.
 	* How well does majority do against adversarial example against the mixture?
 * Examine activations of adversarial examples in hidden layer. Do they look different for adversarial examples? (cf. Dan: max softmax)
 * What are the weights given to the networks in the mixture? How does this change over time?
 * Is pretraining necessary?
 * Compare 100 networks to 1 network with 100x size. Which does better?
 * Adversarial examples for autoencoders?
+* View filters of adversarially trained - is it better? (Filters of normally trained net don't look very enlightening.)
+* Are adversarial examples harder to train on? No - gets 93+% accuracy after 1 epoch, same as before. (What if you combine adversarial and normal?)
 
 ## Nice things
 
@@ -73,6 +78,7 @@ Trained for 100 epochs. Accuracy (out of 1)
 * Plotting!
 * Hyperparameter search
 * Correlation between correct classifications
+* $L^1$ regularization
 
 # Experiments 4/5/17
 
