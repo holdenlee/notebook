@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+
+  <meta name="description" content="Holden Lee's Research Notebook">
+  <meta name="author" content="Holden Lee">
+    
+  <title>Lob's Theorem</title>
+
+  <!-- Bootstrap core CSS -->
+  <link href="../../../../bootstrap/css/bootstrap.min.css" rel="stylesheet">
+
+  <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+  <!-- <link href="../../assets/css/ie10-viewport-bug-workaround.css" rel="stylesheet"> -->
+
+  <!-- Custom styles for this template -->
+  <link href="../../../../css/blog.css" rel="stylesheet">
+  <link href="../../../../css/default.css" rel="stylesheet">
+
+  <!-- Extension : Footnotes -->
+  <link href="../../../../footnotes/css/footnotes.css" rel="stylesheet">
+
+  <!-- Extension : InlineDisqussions @ https://github.com/tsi/inlineDisqussions -->
+  
+
+  <!-- Extension : Collapsible lists @ http://code.stephenmorley.org/javascript/collapsible-lists/-->
+  <link href="../../../../collapsible_lists/css/collapsible.css" rel="stylesheet">
+  <script type="text/javascript" src="../../../../collapsible_lists/js/CollapsibleLists.js"></script>
+
+</head>
+
+<body>
+
+<!-- Navigation bar. navbar-inverse is black, navbar-default is white.-->
+<!-- To make a button active (pressed), use <li class="active"> -->
+<div id="header">
+  <nav class="navbar navbar-inverse navbar-fixed-top">
+    <div class="container">
+      <div class="navbar-header">
+        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+          <span class="sr-only">Toggle navigation</span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="../../../../">Notebook</a>
+      </div>
+      <div id="navbar" class="collapse navbar-collapse">
+        <ul class="nav navbar-nav">
+          <li><a href="../../../../">Home</a></li>
+          <li><a href="../../../../sitemap.html">Sitemap</a></li>
+<!-- TODO: Distinguish between PAPERS, RESEARCH QUESTIONS, BOOKS -->
+<!-- TODO: make this part a for loop over main pages -->
+        </ul>
+      </div><!--/.nav-collapse -->
+    </div>
+  </nav>
+</div>
+<!-- Content -->
+<!--div id="content">
+  <h1>Mental Wilderness</h1>-->
+
+
+
+<div class="container">
+  <div id="content">
+    <div class="page header">
+      <h1>Lob's Theorem</h1>
+    </div>
+    <div class="info">
+      
+       
+        <p>Posted: 2016-08-19 
+          , Modified: 2016-08-19 
+	</p>
+      
+       <p>Tags: <a href="../../../../tags/ai%20safety.html">ai safety</a>, <a href="../../../../tags/logic.html">logic</a></p> 
+    </div>
+    
+  </div>
+  <!--/div-->
+
+  <div class="toc"> <ul>
+ <li><a href="#proof">Proof</a></li>
+ <li><a href="#questions">Questions:</a></li>
+ </ul> </div>
+
+  <div class="blog-main">
+    <p>Does PA claim to be sound? (More standard notation: <span class="math inline">\(\square X\)</span> for <span class="math inline">\(PA[X]\)</span>.) <span class="math display">\[PA[PA[X]\implies X]\]</span> No. Then PA would be inconsistent. (Why?) <span class="math display">\[PA[PA[X]\implies X]\implies PA[X].\]</span> (Converse is obviously true.)</p>
+<p>Alas, this means we can’t prove PA sound with respect to any important class of statements. (?)</p>
+<p>Lob’s sentence: L says “If a proof of L exists, then C.” <span class="math display">\[L = \square L \implies C\]</span> (?If we assume <span class="math inline">\(\square L \implies L\)</span>, then <span class="math inline">\(\square L \implies C\)</span>. Assuming <span class="math inline">\(\neg \square L\)</span> doesn’t give anything.)</p>
+<p>cf. “If this sentence is true, then Santa Claus exists.”<a href="#fn1" class="footnoteRef" id="fnref1"><sup>1</sup></a></p>
+<p>For a sentence to refer to itself, it must contain a self-replicating recipe - when the recipe is executed, it produces a copy of the complete sentence, including the recipe itself</p>
+<p>Generalities about Lob.</p>
+<ol type="1">
+<li>The difference between truth and provability. If we defined <span class="math inline">\(\square\)</span> correctly, <span class="math inline">\(\square S \to S\)</span> looks to always be true. However, it’s not provable, unless <span class="math inline">\(S\)</span> is provable!</li>
+<li><span class="math inline">\(\square\)</span> seems like negation in some way. (Cf. proof by contradiction)</li>
+<li>We would want PA on occassion to assert its own soundness. But no, it only asserts its soundness on statements that are actually provable.</li>
+<li><span class="math inline">\(\square (\square S \to S)\)</span> only when <span class="math inline">\(S\)</span> is provable.</li>
+<li>It seems bizarre!</li>
+</ol>
+<h2 id="proof">Proof</h2>
+<p>Note:</p>
+<ul>
+<li><span class="math inline">\(\implies\)</span> means a deduction rule. From <span class="math inline">\(A\)</span> you can deduce <span class="math inline">\(B\)</span>. <span class="math inline">\(A\implies B\)</span> is not a statement within PA, it is within the meta-logic you’re defining everything in (which can be PA if you want!). (But you can consider <span class="math inline">\(A\to B\)</span>, which is a statement in PA.)</li>
+<li><span class="math inline">\(\to\)</span> is a statement in PA. <span class="math inline">\(\to\)</span> is turned into <span class="math inline">\(\implies\)</span> by MP.</li>
+</ul>
+<p>I’m not distinguishing between <span class="math inline">\(PA \vdash X\)</span> and <span class="math inline">\(\square X\)</span>. They are equivalent (in the meta-logic).</p>
+<p>Use</p>
+<ol type="1">
+<li>(A1) <span class="math inline">\(\square X \implies \square \square X\)</span>. This takes work to prove. Show that given a proof of <span class="math inline">\(X\)</span>, you can turn it into a proof that a proof of <span class="math inline">\(X\)</span> exist! Mind-bending.</li>
+<li>(A2) <span class="math inline">\(\square (\square X \to \square \square X)\)</span>. (A1) is provable.</li>
+<li>(A3) <span class="math inline">\(\square (\square (A \to B) \to (\square A \to \square B))\)</span>. This is straightforward: if you have a proof of <span class="math inline">\(A\)</span>, and a proof of <span class="math inline">\(A\to B\)</span>, you can make a proof of <span class="math inline">\(B\)</span> by joining the proofs together and adding a modus ponens at the end. You can furthermore prove this within PA.</li>
+<li>(MP) <span class="math inline">\(\square A, \square (A\to B)\implies \square B\)</span>. The non-meta version of the above.</li>
+<li>(B1) <span class="math inline">\(\square (A\to B), \square (B\to C), \implies \square (A\to C)\)</span>.</li>
+<li>(B2) <span class="math inline">\(\square (A\to B), \square (A\to (B\to C)), \implies \square (A\to C)\)</span>.</li>
+</ol>
+<p>Let <span class="math inline">\(L=\square L \to C\)</span>. If <span class="math inline">\(L\)</span> is provable, then <span class="math inline">\(C\)</span>.</p>
+<ol type="1">
+<li><span class="math inline">\(\square (\square L \lra \square (\square L \to C))\)</span>. Unpack the box.</li>
+<li><span class="math inline">\(\square (\square C\to C)\)</span>. Lob’s hypothesis. <!--We aim to show that if $L$ is provable, then we can prove $C$ is provable, and hence $C$ is provable.--></li>
+<li><span class="math inline">\(\square (\square (\square L \to C) \to (\square(\square L)\to \square C))\)</span> by A3.</li>
+<li><span class="math inline">\(\square( \square L \to (\square (\square L)\to \square C))\)</span>. I.e., we distributed the <span class="math inline">\(\square\)</span> in (1). If <span class="math inline">\(\square L\)</span> and <span class="math inline">\(\square \square L\)</span>, then <span class="math inline">\(C\)</span>. But this means we can get <span class="math inline">\(C\)</span> from just <span class="math inline">\(\square L\)</span>, because of A2!</li>
+<li>Use A2.</li>
+<li><span class="math inline">\(\square (\square L \to \square C)\)</span>.</li>
+<li><span class="math inline">\(\square (\square L \to C)\)</span>.</li>
+<li><span class="math inline">\(\square\square (\square L \to C)\)</span>.</li>
+<li><span class="math inline">\(\square\square L\)</span>. KEY! To prove <span class="math inline">\(L\)</span>, you just have to prove <span class="math inline">\(\square L \to C\)</span>, by definition of <span class="math inline">\(L\)</span>! So you get <span class="math inline">\(\square\square L\)</span> for free! (Not <span class="math inline">\(\square L\)</span>.) How did we get <span class="math inline">\(\square\square L\)</span>? We used Lob’s hypothesis and A2.</li>
+<li><span class="math inline">\(\square C\)</span>.</li>
+</ol>
+<h2 id="questions">Questions:</h2>
+<ul>
+<li>What happens if we add the axiom <span class="math inline">\(\square X \implies X\)</span>? What might break? Is Proofs can now include the statement “<span class="math inline">\(\square X \implies X\)</span>”?</li>
+<li>“if PA asserted its own soundness (in general), PA would become inconsistent.” Does this just mean we can’t add this axiom, or that it being provable leads to a contradiction? (Can you get this from “This theorem is unprovable” type things?)</li>
+<li>Undefinability of truth: no predicate True such that <span class="math inline">\(True(X)\text{ xor } True(\neg X)\)</span> and <span class="math inline">\(True(X)\implies X\)</span>. Or: if you extend with primitive “True” you get a contradiction.</li>
+</ul>
+<p>Intuition: If a program doesn’t have native support for meta-programming, then you can’t program in meta-programming. Here, I mean: take a data structure and splice it into the program itself. (But you could always write a compiler in the language, and apply the compiler to the string…)</p>
+<p>This setting is different. To prove something, you have to write down the entire proof. You aren’t allowed to make a program that writes down the proof. Ex. you want to show <span class="math inline">\(\forall x, P(x)\)</span>. You are not allowed to write down a program that given <span class="math inline">\(x\)</span>, spits out a proof of <span class="math inline">\(x\)</span>.</p>
+<p>If you try the recursive fix, it’s not clear that the language is still consistent. Perhaps now <span class="math inline">\(\square \perp\)</span>, and hence <span class="math inline">\(\perp\)</span>!</p>
+<section class="footnotes">
+<hr />
+<ol>
+<li id="fn1"><p>Confused ramblings (wrong?) This sentence is true—even if Santa Claus doesn’t exist! The problem with provability logic - why you can’t just add in <span class="math inline">\(\square X \implies X\)</span> as an axiom—is that you can now prove both <span class="math inline">\(X, \neg X\)</span> by constructing Lob’s sentence! Reflection doesn’t work—it’s not that simple! You have to design a logic to make reflection not inconsistent!<a href="#fnref1">↩</a></p></li>
+</ol>
+</section>
+
+  </div>
+
+    
+
+    <!-- Extension : Sharing buttons @ www.sharethis.com -->
+    <span class="st_facebook_large" displayText="Facebook"></span>
+    <span class="st_twitter_large" displayText="Tweet"></span>
+    <span class="st_googleplus_large" displayText="Google +"></span>
+    <span class="st_reddit_large" displayText="Reddit"></span>
+    <span class="st__large" displayText></span>
+
+    <div id="disqus_thread"></div>
+    
+
+
+  
+    <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+  </div>
+  
+</div>
+
+
+<!-- Footer -->
+<div id="footer">
+  <div class="container">
+    Built with
+    <a href="http://jaspervdj.be/hakyll">Hakyll</a> 
+    using 
+    <a href="http://www.getbootstrap.com">Bootstrap</a>, 
+    <a href="http://www.disqus.com">Disqus</a>,
+    <a href="http://ignorethecode.net/blog/2010/04/20/footnotes/">Footnotes.js</a>,
+    <a href="http://highlightjs.org/">Highlight.js</a>, 
+    <a href="http://www.mathjax.org">MathJax</a>, 
+    and <a href="http://www.sharethis.com">ShareThis</a>.
+  </div>
+</div>
+</body>
+
+</html>
+
+<!-- SCRIPTS -->
+<!-- jQuery-->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+<script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
+
+<script src="../../../../bootstrap/js/bootstrap.min.js"></script>
+
+<!-- Extension : Highlight.js @ https://highlightjs.org/ -->
+<!-- Syntax highlighting tomorrow-night-bright, agate-->
+<link rel="stylesheet" href="../../../../highlight/css/tomorrow-night-bright.css">
+<script src="../../../../highlight/js/highlight.pack.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+
+<!-- Extension : MathJax @ https://docs.mathjax.org/en/v2.5-latest/tex.html -->
+<!-- MathJax/config/local/local.js contains macros. Need to provide entire URL-->
+<script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML,http://holdenlee.github.io/notebook/MathJax/config/local/local"></script>
+
+<!-- Extension : Footnotes @ http://ignorethecode.net/blog/2010/04/20/footnotes/ -->
+<script src="../../../../footnotes/js/footnotes.js"></script>
+
+<!-- Extension : Disqus @ http://disqus.com -->
+<!-- Extension : InlineDisqussions @ https://github.com/tsi/inlineDisqussions -->
+
+<script src="../../../../disqus/js/disqus.js"></script>
+
+
+
+<!-- Extension : Google Analytics -->
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-73261814-1', 'auto');
+  ga('send', 'pageview');
+
+</script>
+

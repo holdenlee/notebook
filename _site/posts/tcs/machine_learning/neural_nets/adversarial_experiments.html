@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+
+  <meta name="description" content="Holden Lee's Research Notebook">
+  <meta name="author" content="Holden Lee">
+    
+  <title>Adversarial experiments</title>
+
+  <!-- Bootstrap core CSS -->
+  <link href="../../../../bootstrap/css/bootstrap.min.css" rel="stylesheet">
+
+  <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+  <!-- <link href="../../assets/css/ie10-viewport-bug-workaround.css" rel="stylesheet"> -->
+
+  <!-- Custom styles for this template -->
+  <link href="../../../../css/blog.css" rel="stylesheet">
+  <link href="../../../../css/default.css" rel="stylesheet">
+
+  <!-- Extension : Footnotes -->
+  <link href="../../../../footnotes/css/footnotes.css" rel="stylesheet">
+
+  <!-- Extension : InlineDisqussions @ https://github.com/tsi/inlineDisqussions -->
+  
+
+  <!-- Extension : Collapsible lists @ http://code.stephenmorley.org/javascript/collapsible-lists/-->
+  <link href="../../../../collapsible_lists/css/collapsible.css" rel="stylesheet">
+  <script type="text/javascript" src="../../../../collapsible_lists/js/CollapsibleLists.js"></script>
+
+</head>
+
+<body>
+
+<!-- Navigation bar. navbar-inverse is black, navbar-default is white.-->
+<!-- To make a button active (pressed), use <li class="active"> -->
+<div id="header">
+  <nav class="navbar navbar-inverse navbar-fixed-top">
+    <div class="container">
+      <div class="navbar-header">
+        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+          <span class="sr-only">Toggle navigation</span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="../../../../">Notebook</a>
+      </div>
+      <div id="navbar" class="collapse navbar-collapse">
+        <ul class="nav navbar-nav">
+          <li><a href="../../../../">Home</a></li>
+          <li><a href="../../../../sitemap.html">Sitemap</a></li>
+<!-- TODO: Distinguish between PAPERS, RESEARCH QUESTIONS, BOOKS -->
+<!-- TODO: make this part a for loop over main pages -->
+        </ul>
+      </div><!--/.nav-collapse -->
+    </div>
+  </nav>
+</div>
+<!-- Content -->
+<!--div id="content">
+  <h1>Mental Wilderness</h1>-->
+
+
+
+<div class="container">
+  <div id="content">
+    <div class="page header">
+      <h1>Adversarial experiments</h1>
+    </div>
+    <div class="info">
+      
+       
+        <p>Posted: 2017-03-02 
+          , Modified: 2017-03-02 
+	</p>
+      
+       <p>Tags: <a href="../../../../tags/neural%20nets.html">neural nets</a>, <a href="../../../../tags/uncertainty.html">uncertainty</a>, <a href="../../../../tags/aaml.html">aaml</a></p> 
+    </div>
+    
+  </div>
+  <!--/div-->
+
+  <div class="toc"> <ul>
+ <li><a href="#results">Results</a></li>
+ <li><a href="#todo">Todo</a><ul>
+ <li><a href="#to-solve-the-problem">To solve the problem</a></li>
+ <li><a href="#exploratory">Exploratory</a></li>
+ <li><a href="#nice-things">Nice things</a></li>
+ </ul></li>
+ <li><a href="#half-done">Half-done</a></li>
+ <li><a href="#done">Done</a></li>
+ <li><a href="#experiments-4517">Experiments 4/5/17</a></li>
+ </ul> </div>
+
+  <div class="blog-main">
+    <p>See <a href="https://github.com/holdenlee/adversarial">github</a>.</p>
+<h2 id="results">Results</h2>
+<p>Trained for 100 epochs. Accuracy (out of 1)</p>
+<table>
+<thead>
+<tr class="header">
+<th>Mixture\Attack</th>
+<th>0.3 fgs</th>
+<th>0.5 fgs</th>
+<th>1.0 fgs (sanity check)</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>1</td>
+<td>?</td>
+<td>?</td>
+<td>?</td>
+</tr>
+<tr class="even">
+<td>10</td>
+<td>?</td>
+<td>?</td>
+<td>?</td>
+</tr>
+<tr class="odd">
+<td>100</td>
+<td>?</td>
+<td>?</td>
+<td>?</td>
+</tr>
+</tbody>
+</table>
+<h2 id="todo">Todo</h2>
+<h3 id="to-solve-the-problem">To solve the problem</h3>
+<ul>
+<li>L1 regularization + adversarial training</li>
+<li>Multiplicative weights
+<ul>
+<li>Try training with independent updates, multiplicative weights.</li>
+<li>(Check YZ’s code.)</li>
+<li>Try sleeping, etc. - regularize more strongly so that weights don’t become too small/large.</li>
+</ul></li>
+<li>Forcing filters to be far apart</li>
+<li>Posterior over parameters - use to estimate class of new example
+<ul>
+<li>Fisher information or Langevin</li>
+<li>If this fails, it suggests the objective is wrong. The net with smallest objective value (including any implicit regularization) does NOT generalize. Try a different regularization.</li>
+</ul></li>
+<li>Autoencoder idea</li>
+<li>Regularization/Lipschitz/wavelet idea
+<ul>
+<li>Problem: wavelet would penalize rotation; it’s hard to do rotation invariance</li>
+<li>Penalize by derivative?</li>
+</ul></li>
+<li>Take top <span class="math inline">\(k\)</span> only.</li>
+<li>Normalization (batch normalization? vs. just normalize current)</li>
+<li>Train with confidence, uncertainty - vote to abstain</li>
+<li>Path norm</li>
+<li>Boosting</li>
+</ul>
+<h3 id="exploratory">Exploratory</h3>
+<ul>
+<li>Baselines
+<ul>
+<li>How transferable are adversarial examples between the 100 networks? Very.</li>
+<li>How well does majority do against adversarial example against the mixture?</li>
+</ul></li>
+<li>Examine activations of adversarial examples in hidden layer. Do they look different for adversarial examples? (cf. Dan: max softmax)</li>
+<li>What are the weights given to the networks in the mixture? How does this change over time?</li>
+<li>Is pretraining necessary?</li>
+<li>Compare 100 networks to 1 network with 100x size. Which does better?</li>
+<li>Adversarial examples for autoencoders?</li>
+<li>View filters of adversarially trained - is it better? (Filters of normally trained net don’t look very enlightening.)</li>
+<li>Are adversarial examples harder to train on? No - gets 93+% accuracy after 1 epoch, same as before. (What if you combine adversarial and normal?)</li>
+</ul>
+<h3 id="nice-things">Nice things</h3>
+<ul>
+<li>Set up tensorboard to show histograms, real and adversarial images, etc.</li>
+<li>Run with many different settings.</li>
+</ul>
+<h2 id="half-done">Half-done</h2>
+<ul>
+<li>Look at which samples are misclassified by which networks: are they the same or different?
+<ul>
+<li>Jaccard similarity</li>
+<li>How about if you train an ensemble together on regular examples?</li>
+</ul></li>
+<li>Does clamping help?</li>
+</ul>
+<h2 id="done">Done</h2>
+<ul>
+<li>Correlation between correct classifications for independent networks (correlated, ~0.3)</li>
+<li>Correlation between gradients for different networks (not correlated)</li>
+<li>Port over to own training loop.</li>
+<li>End - save</li>
+<li>Output accuracies, etc. over time as list.</li>
+<li>Plotting!</li>
+<li>Hyperparameter search</li>
+<li>Correlation between correct classifications</li>
+<li><span class="math inline">\(L^1\)</span> regularization</li>
+</ul>
+<h2 id="experiments-4517">Experiments 4/5/17</h2>
+
+  </div>
+
+    
+
+    <!-- Extension : Sharing buttons @ www.sharethis.com -->
+    <span class="st_facebook_large" displayText="Facebook"></span>
+    <span class="st_twitter_large" displayText="Tweet"></span>
+    <span class="st_googleplus_large" displayText="Google +"></span>
+    <span class="st_reddit_large" displayText="Reddit"></span>
+    <span class="st__large" displayText></span>
+
+    <div id="disqus_thread"></div>
+    
+
+
+  
+    <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+  </div>
+  
+</div>
+
+
+<!-- Footer -->
+<div id="footer">
+  <div class="container">
+    Built with
+    <a href="http://jaspervdj.be/hakyll">Hakyll</a> 
+    using 
+    <a href="http://www.getbootstrap.com">Bootstrap</a>, 
+    <a href="http://www.disqus.com">Disqus</a>,
+    <a href="http://ignorethecode.net/blog/2010/04/20/footnotes/">Footnotes.js</a>,
+    <a href="http://highlightjs.org/">Highlight.js</a>, 
+    <a href="http://www.mathjax.org">MathJax</a>, 
+    and <a href="http://www.sharethis.com">ShareThis</a>.
+  </div>
+</div>
+</body>
+
+</html>
+
+<!-- SCRIPTS -->
+<!-- jQuery-->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+<script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
+
+<script src="../../../../bootstrap/js/bootstrap.min.js"></script>
+
+<!-- Extension : Highlight.js @ https://highlightjs.org/ -->
+<!-- Syntax highlighting tomorrow-night-bright, agate-->
+<link rel="stylesheet" href="../../../../highlight/css/tomorrow-night-bright.css">
+<script src="../../../../highlight/js/highlight.pack.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+
+<!-- Extension : MathJax @ https://docs.mathjax.org/en/v2.5-latest/tex.html -->
+<!-- MathJax/config/local/local.js contains macros. Need to provide entire URL-->
+<script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML,http://holdenlee.github.io/notebook/MathJax/config/local/local"></script>
+
+<!-- Extension : Footnotes @ http://ignorethecode.net/blog/2010/04/20/footnotes/ -->
+<script src="../../../../footnotes/js/footnotes.js"></script>
+
+<!-- Extension : Disqus @ http://disqus.com -->
+<!-- Extension : InlineDisqussions @ https://github.com/tsi/inlineDisqussions -->
+
+<script src="../../../../disqus/js/disqus.js"></script>
+
+
+
+<!-- Extension : Google Analytics -->
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-73261814-1', 'auto');
+  ga('send', 'pageview');
+
+</script>
+

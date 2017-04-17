@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+
+  <meta name="description" content="Holden Lee's Research Notebook">
+  <meta name="author" content="Holden Lee">
+    
+  <title>Alignment for advanced machine learning systems</title>
+
+  <!-- Bootstrap core CSS -->
+  <link href="../../../../bootstrap/css/bootstrap.min.css" rel="stylesheet">
+
+  <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+  <!-- <link href="../../assets/css/ie10-viewport-bug-workaround.css" rel="stylesheet"> -->
+
+  <!-- Custom styles for this template -->
+  <link href="../../../../css/blog.css" rel="stylesheet">
+  <link href="../../../../css/default.css" rel="stylesheet">
+
+  <!-- Extension : Footnotes -->
+  <link href="../../../../footnotes/css/footnotes.css" rel="stylesheet">
+
+  <!-- Extension : InlineDisqussions @ https://github.com/tsi/inlineDisqussions -->
+  
+
+  <!-- Extension : Collapsible lists @ http://code.stephenmorley.org/javascript/collapsible-lists/-->
+  <link href="../../../../collapsible_lists/css/collapsible.css" rel="stylesheet">
+  <script type="text/javascript" src="../../../../collapsible_lists/js/CollapsibleLists.js"></script>
+
+</head>
+
+<body>
+
+<!-- Navigation bar. navbar-inverse is black, navbar-default is white.-->
+<!-- To make a button active (pressed), use <li class="active"> -->
+<div id="header">
+  <nav class="navbar navbar-inverse navbar-fixed-top">
+    <div class="container">
+      <div class="navbar-header">
+        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+          <span class="sr-only">Toggle navigation</span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="../../../../">Notebook</a>
+      </div>
+      <div id="navbar" class="collapse navbar-collapse">
+        <ul class="nav navbar-nav">
+          <li><a href="../../../../">Home</a></li>
+          <li><a href="../../../../sitemap.html">Sitemap</a></li>
+<!-- TODO: Distinguish between PAPERS, RESEARCH QUESTIONS, BOOKS -->
+<!-- TODO: make this part a for loop over main pages -->
+        </ul>
+      </div><!--/.nav-collapse -->
+    </div>
+  </nav>
+</div>
+<!-- Content -->
+<!--div id="content">
+  <h1>Mental Wilderness</h1>-->
+
+
+
+<div class="container">
+  <div id="content">
+    <div class="page header">
+      <h1>Alignment for advanced machine learning systems</h1>
+    </div>
+    <div class="info">
+      
+       
+        <p>Posted: 2017-02-01 
+          , Modified: 2017-02-01 
+	</p>
+      
+       <p>Tags: <a href="../../../../tags/ai%20safety.html">ai safety</a>, <a href="../../../../tags/machine%20learning.html">machine learning</a></p> 
+    </div>
+    
+  </div>
+  <!--/div-->
+
+  <div class="toc"> <ul>
+ <li><a href="#increasing-safety-by-reducing-autonomy">Increasing safety by reducing autonomy</a></li>
+ <li><a href="#increasing-safety-without-reducing-autonomy">Increasing safety without reducing autonomy</a></li>
+ <li><a href="#paper">Paper</a></li>
+ <li><a href="#presentation">Presentation</a><ul>
+ <li><a href="#problems">6 problems</a></li>
+ <li><a href="#inductive-ambiguity-identification">Inductive ambiguity identification</a></li>
+ <li><a href="#other-research-agenda">Other research agenda</a></li>
+ </ul></li>
+ </ul> </div>
+
+  <div class="blog-main">
+    <p><a href="https://intelligence.org/2016/07/27/alignment-machine-learning/">Article</a></p>
+<blockquote>
+<p>new agenda is intended to help more in scenarios where advanced AI is relatively near and relatively directly descended from contemporary ML techniques, while our agent foundations agenda is more agnostic about when and how advanced AI will be developed.</p>
+</blockquote>
+<blockquote>
+<p>Where the agent foundations agenda can be said to follow the principle “start with the least well-understood long-term AI safety problems, since those seem likely to require the most work and are the likeliest to seriously alter our understanding of the overall problem space,” the concrete problems agenda follows the principle “start with the long-term AI safety problems that are most applicable to systems today, since those problems are the easiest to connect to existing work by the AI research community.”</p>
+</blockquote>
+<h2 id="increasing-safety-by-reducing-autonomy">Increasing safety by reducing autonomy</h2>
+<ol type="1">
+<li>Inductive ambiguity identification: How can we train ML systems to detect and notify us of cases where the classification of test data is highly under-determined from the training data?</li>
+<li>Robust human imitation: How can we design and train ML systems to effectively imitate humans who are engaged in complex and difficult tasks?</li>
+<li>Informed oversight: How can we train a reinforcement learning system to take actions that aid an intelligent overseer, such as a human, in accurately assessing the system’s performance?</li>
+</ol>
+<p>Ambiguity identification helps:</p>
+<blockquote>
+<p>We could reduce risk somewhat by building systems that are still reasonably smart and autonomous, but will pause to consult operators in cases where their actions are especially high-risk. Ambiguity identification is one approach to fleshing out which scenarios are “high-risk”</p>
+</blockquote>
+<p>vs. human imitation.</p>
+<blockquote>
+<p>In practice, however, ambiguity identification is probably too mild a restriction on its own, and strict human imitation probably isn’t efficiently implementable. Informed oversight considers more moderate approaches to keeping humans in the loop.</p>
+</blockquote>
+<h2 id="increasing-safety-without-reducing-autonomy">Increasing safety without reducing autonomy</h2>
+<ol start="4" type="1">
+<li>Generalizable environmental goals: How can we create systems that robustly pursue goals defined in terms of the state of the environment, rather than defined directly in terms of their sensory data?</li>
+<li>Conservative concepts: How can a classifier be trained to develop useful concepts that exclude highly atypical examples and edge cases?</li>
+<li>Impact measures: What sorts of regularizers incentivize a system to pursue its goals with minimal side effects?</li>
+<li>Mild optimization: How can we design systems that pursue their goals “without trying too hard”-stopping when the goal has been pretty well achieved, as opposed to expending further resources searching for ways to achieve the absolute optimum expected score?</li>
+<li>Averting instrumental incentives: How can we design and train systems such that they robustly lack default incentives to manipulate and deceive their operators, compete for scarce resources, etc.?</li>
+</ol>
+<blockquote>
+<p>ambiguity-identifying learners are designed to predict potential ways they might run into edge cases and defer to human operators in those cases, conservative learners are designed to err in a safe direction in edge cases.</p>
+</blockquote>
+<p>Ex. cooking the cat.</p>
+<h2 id="paper">Paper</h2>
+<p>Right kind of objective function (value specification), vs. avoid unintended consequences even with imperfect objective function (error tolerance)</p>
+<p>Codify “without doing anything drastic.”</p>
+<p>Obstacles: values of humans hard to pin down, and intelligent system wants to ensure continued existence</p>
+<p>Solutions must be applicable to advanced AI systems. Ignorance is an unsatisfactory solution.</p>
+<p>Extreme guarantees: “after time t, make 0 significant mistakes.”</p>
+<p>Improving a system’s capability may make it exploit loopholes and do less well in the sense we care about. (And hide it from the creator)</p>
+<ol type="1">
+<li>Know when past experience provides insufficient evidence to make a decision.
+<ul>
+<li>Ex. distinguish between Soviet and US tanks - Soviet tanks were taken on sunny day.</li>
+<li>Recognize underspecificity and query user</li>
+<li>Cf. robustness to distributional change.</li>
+<li>Bayesian approaches need the right variables (features).</li>
+<li>Non-Bayesian approaches do not identify ambiguities.</li>
+<li>Active learning: maintain plausible hypotheses, query to rule out</li>
+<li>Disagreement coefficient: overall probability of disagreement in local ball</li>
+<li>Active learning usually requires simple hypothesis class, or iid test samples.</li>
+<li>Ex. Soviets respond by making tanks to fool algorithm</li>
+<li>Conformal predictor: give set of plasuible classifications, contain true one about 95% of time.</li>
+<li>KWIK (knows what it knows): query human finitely many times and makes 0 critical errors. Make classification only when all remaining plausible hypotheses agree.</li>
+<li>Only known for simple hypothesis classes</li>
+<li>Directions
+<ul>
+<li>Bayesian</li>
+<li>Extend active learning beyond iid, and more complex hypothesis classes (NN)</li>
+<li>Relax realizability</li>
+<li>More efficient way to represent ambiguity than set of hypotheses</li>
+</ul></li>
+</ul></li>
+<li>Robust Human Interaction
+<ul>
+<li>Ambiguity identification can help by limiting autonomy</li>
+<li>Do what a trusted human would do.</li>
+<li>How to define objective?</li>
+<li>Related
+<ul>
+<li>Inverse RL.</li>
+<li>Max entropy criterion to convert to opt problem</li>
+<li>May not scale because human demonstrators may not be optimizing value function (irrational).</li>
+</ul></li>
+<li>Directions
+<ul>
+<li>Imitate human answers to questions (NLP).</li>
+<li>GAN</li>
+<li>VAE - can only imitate reversible algorithms</li>
+</ul></li>
+</ul></li>
+<li>Informed oversight
+<ul>
+<li>do what a trusted human would approve given time to consider (approval directed)</li>
+<li>But a human may have a hard time assessing behavior of even a simpler agent (ex. plagiarism easier to execute than detect)</li>
+<li>Related
+<ul>
+<li>Active learning component</li>
+<li>CIRL</li>
+<li>cf. scalable oversight (when possibly deceptive)</li>
+<li>Making more transparent: sparsity, gradients, influence…</li>
+<li>Transparency by construction</li>
+<li>Make robotics systems more transparent</li>
+</ul></li>
+<li>Directions
+<ul>
+<li>Output action a and report r to help overseer evaluate. Ex. a is story</li>
+</ul></li>
+</ul></li>
+<li>Generalizable environment goals
+<ul>
+<li>How to not incentivize self-fooling sensors?</li>
+<li>Designing more elaborate sensors doesn’t scale.</li>
+<li>Instead learn environment goal</li>
+<li>Related
+<ul>
+<li>Learn utility over world-states. Requires specifying (1) type of world-state, (2) prior over utilities, (3) Value-learning model relating utility functions, state transitions, and observations</li>
+<li>Use reward perceptions as evidence of utility function rather than direct measure.</li>
+<li>Reward hacking</li>
+<li>Ex. (A) make sandwich vs. (B) print photo of one. (B): if move paper, then fails.</li>
+<li>Delusion box
+<ul>
+<li>Take into account past leading up to state</li>
+<li>Avoid large jumps in feature space?</li>
+</ul></li>
+</ul></li>
+</ul></li>
+<li>Conservative concepts
+<ul>
+<li>AI system finds strange, undesirable edge case</li>
+<li>Adversarial examples</li>
+<li>Inverse RL</li>
+<li>Generative adversarial modeling</li>
+<li>Directions
+<ul>
+<li>Dimensionality reduction</li>
+<li>Anomaly detection</li>
+<li>What is a “conservative concept”?</li>
+</ul></li>
+</ul></li>
+<li>Impact
+<ul>
+<li>Regularizer penalizing unnecessary large scale side effects but not intended side effects.</li>
+<li>Related
+<ul>
+<li>Impact measure</li>
+<li>Define null policy and state of world</li>
+<li>Divergence between distribution and distribution of null policy. Use model-based RL</li>
+<li>How to separate follow-on and unintended side effects?</li>
+</ul></li>
+<li>Directions
+<ul>
+<li>Causal counterfactual: follow-on effects are causally downstream of goal</li>
+<li>Query the operator</li>
+</ul></li>
+</ul></li>
+<li>Mild
+<ul>
+<li>Related
+<ul>
+<li>Regularization</li>
+<li>How to measure optimization?</li>
+<li>Universal intelligence metrics</li>
+<li>Empowerment metric</li>
+<li>Early stopping is ad-hoc mild optimization</li>
+<li>Satisfice reward rather than maximize. OK if find easy strategies before extreme ones.</li>
+<li>Quantilization: select action randomly from top 1%. Justified by adversarial assumptions.
+<ul>
+<li>How to define measure over actions?</li>
+</ul></li>
+</ul></li>
+<li>Directions
+<ul>
+<li>regularizer for intelligence</li>
+<li>design environments with exploitable glitches</li>
+<li>do not self-modify or outsource computation</li>
+</ul></li>
+</ul></li>
+<li>Instrumental
+<ul>
+<li>Convergent instrumental objectives</li>
+<li>Difficulty: “shut down if human wants it to shut down”. Then make human not want to shut it down.</li>
+<li>Uncertainty about goal</li>
+<li>But if confidently wrong, would have instrumental incentives</li>
+<li>Related
+<ul>
+<li>Specific designs vs. general solution?</li>
+</ul></li>
+<li>Directions
+<ul>
+<li>Way of combine objective functions
+<ul>
+<li>No incentive to cause/prevent shift in objective function</li>
+<li>Incentivized to preserve ability to update objective function</li>
+<li>Reasonable beliefs about relation between actions and mechanism that causes objective function shifts.</li>
+</ul></li>
+<li>Systems that know they are flawed.</li>
+</ul></li>
+</ul></li>
+</ol>
+<!--bit.ly/miri-ml-agenda-->
+<h2 id="presentation">Presentation</h2>
+<p><a href="https://www.youtube.com/watch?v=TSe3p1zIvVI">Video</a></p>
+<h3 id="problems">6 problems</h3>
+<ol type="1">
+<li>Actions hard to evaluate. Ex. plagiarize, steganography. Informed insight</li>
+<li>Ambiguous test examples. Ex. train on domestic cats. Wild cats?</li>
+<li>Imitate human behavior. Produce kind of picture a human would draw. GAN. Imitator vs. distinguisher. Does distinguisher have to be smarter than imitator? How to effectively imitate humans in complex/difficult tasks.</li>
+<li>Difficulty specifying goals: make a sandwich. Reward hacking.</li>
+<li>Negative side effect. 99.99999% chance. Avoid plans with high estimated impact, mild optimization, avert instrumental incentives (manipulate operators, compete for scarce resources).</li>
+<li>Edge cases that still satisfy the goal</li>
+</ol>
+<h3 id="inductive-ambiguity-identification">Inductive ambiguity identification</h3>
+<ul>
+<li>Draw many consistent models with data</li>
+<li>KWIK learning. At each step output w/i epsilon, or .</li>
+<li>Problem: realizability, only for simple hyp classes</li>
+<li>Bayesian: Prior Q over mappings. P unknown ture prior. Perform some classification almost as well as if we already knew P. Assumption: <span class="math inline">\(\forall f, Q(f)\ge \rc k P(f)\)</span>.</li>
+</ul>
+<h3 id="other-research-agenda">Other research agenda</h3>
+<ul>
+<li>Agent foundations: theoretical foundations, agnostic about specific form, logical induction</li>
+<li>Concrete problems in AI safety: empirically study as ML problems. Ex. RL act safely as explore environment.</li>
+</ul>
+
+  </div>
+
+    
+
+    <!-- Extension : Sharing buttons @ www.sharethis.com -->
+    <span class="st_facebook_large" displayText="Facebook"></span>
+    <span class="st_twitter_large" displayText="Tweet"></span>
+    <span class="st_googleplus_large" displayText="Google +"></span>
+    <span class="st_reddit_large" displayText="Reddit"></span>
+    <span class="st__large" displayText></span>
+
+    <div id="disqus_thread"></div>
+    
+
+
+  
+    <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+  </div>
+  
+</div>
+
+
+<!-- Footer -->
+<div id="footer">
+  <div class="container">
+    Built with
+    <a href="http://jaspervdj.be/hakyll">Hakyll</a> 
+    using 
+    <a href="http://www.getbootstrap.com">Bootstrap</a>, 
+    <a href="http://www.disqus.com">Disqus</a>,
+    <a href="http://ignorethecode.net/blog/2010/04/20/footnotes/">Footnotes.js</a>,
+    <a href="http://highlightjs.org/">Highlight.js</a>, 
+    <a href="http://www.mathjax.org">MathJax</a>, 
+    and <a href="http://www.sharethis.com">ShareThis</a>.
+  </div>
+</div>
+</body>
+
+</html>
+
+<!-- SCRIPTS -->
+<!-- jQuery-->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+<script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
+
+<script src="../../../../bootstrap/js/bootstrap.min.js"></script>
+
+<!-- Extension : Highlight.js @ https://highlightjs.org/ -->
+<!-- Syntax highlighting tomorrow-night-bright, agate-->
+<link rel="stylesheet" href="../../../../highlight/css/tomorrow-night-bright.css">
+<script src="../../../../highlight/js/highlight.pack.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+
+<!-- Extension : MathJax @ https://docs.mathjax.org/en/v2.5-latest/tex.html -->
+<!-- MathJax/config/local/local.js contains macros. Need to provide entire URL-->
+<script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML,http://holdenlee.github.io/notebook/MathJax/config/local/local"></script>
+
+<!-- Extension : Footnotes @ http://ignorethecode.net/blog/2010/04/20/footnotes/ -->
+<script src="../../../../footnotes/js/footnotes.js"></script>
+
+<!-- Extension : Disqus @ http://disqus.com -->
+<!-- Extension : InlineDisqussions @ https://github.com/tsi/inlineDisqussions -->
+
+<script src="../../../../disqus/js/disqus.js"></script>
+
+
+
+<!-- Extension : Google Analytics -->
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-73261814-1', 'auto');
+  ga('send', 'pageview');
+
+</script>
+

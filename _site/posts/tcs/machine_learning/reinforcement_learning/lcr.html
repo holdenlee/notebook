@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+
+  <meta name="description" content="Holden Lee's Research Notebook">
+  <meta name="author" content="Holden Lee">
+    
+  <title>Linear convex regulator</title>
+
+  <!-- Bootstrap core CSS -->
+  <link href="../../../../bootstrap/css/bootstrap.min.css" rel="stylesheet">
+
+  <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+  <!-- <link href="../../assets/css/ie10-viewport-bug-workaround.css" rel="stylesheet"> -->
+
+  <!-- Custom styles for this template -->
+  <link href="../../../../css/blog.css" rel="stylesheet">
+  <link href="../../../../css/default.css" rel="stylesheet">
+
+  <!-- Extension : Footnotes -->
+  <link href="../../../../footnotes/css/footnotes.css" rel="stylesheet">
+
+  <!-- Extension : InlineDisqussions @ https://github.com/tsi/inlineDisqussions -->
+  
+
+  <!-- Extension : Collapsible lists @ http://code.stephenmorley.org/javascript/collapsible-lists/-->
+  <link href="../../../../collapsible_lists/css/collapsible.css" rel="stylesheet">
+  <script type="text/javascript" src="../../../../collapsible_lists/js/CollapsibleLists.js"></script>
+
+</head>
+
+<body>
+
+<!-- Navigation bar. navbar-inverse is black, navbar-default is white.-->
+<!-- To make a button active (pressed), use <li class="active"> -->
+<div id="header">
+  <nav class="navbar navbar-inverse navbar-fixed-top">
+    <div class="container">
+      <div class="navbar-header">
+        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+          <span class="sr-only">Toggle navigation</span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="../../../../">Notebook</a>
+      </div>
+      <div id="navbar" class="collapse navbar-collapse">
+        <ul class="nav navbar-nav">
+          <li><a href="../../../../">Home</a></li>
+          <li><a href="../../../../sitemap.html">Sitemap</a></li>
+<!-- TODO: Distinguish between PAPERS, RESEARCH QUESTIONS, BOOKS -->
+<!-- TODO: make this part a for loop over main pages -->
+        </ul>
+      </div><!--/.nav-collapse -->
+    </div>
+  </nav>
+</div>
+<!-- Content -->
+<!--div id="content">
+  <h1>Mental Wilderness</h1>-->
+
+
+
+<div class="container">
+  <div id="content">
+    <div class="page header">
+      <h1>Linear convex regulator</h1>
+    </div>
+    <div class="info">
+      
+       
+        <p>Posted: 2016-12-14 
+          , Modified: 2016-12-14 
+	</p>
+      
+       <p>Tags: <a href="../../../../tags/none.html">none</a></p> 
+    </div>
+    
+  </div>
+  <!--/div-->
+
+  <div class="toc"> <ul>
+ <li><a href="#linear-quadratic-regulator">Linear quadratic regulator</a></li>
+ <li><a href="#linear-convex-regulator">Linear convex regulator</a></li>
+ <li><a href="#problem">Problem</a></li>
+ <li><a href="#convex-optimization">Convex optimization</a><ul>
+ <li><a href="#re">Re</a></li>
+ </ul></li>
+ </ul> </div>
+
+  <div class="blog-main">
+    <p>Project evolved from <a href="continuous.html">Continuous MDP</a>.</p>
+<h2 id="linear-quadratic-regulator">Linear quadratic regulator</h2>
+The linear quadratic regulator is
+<span class="math display">\[\begin{align}
+\dot x &amp; = Ax + Ba = f(x,a)\\
+r(x,a) &amp; = -c(x,a) = -\rc2 x^TQx - \rc 2 a^Ta\\
+\pat{Total reward} &amp;= \int_0^T r(x(t), a(t))\,dt.
+\end{align}\]</span>
+<p>The optimal action (for fixed horizon <span class="math inline">\(T\)</span>, take <span class="math inline">\(T= \iy\)</span> to get the infinite-horizon case) is given by <span class="math display">\[
+a = -P_{t}x
+\]</span> where <span class="math inline">\(P_{t}\)</span> satisfies the matrix Riccati equation. For the infinite horizon case, take <span class="math inline">\(T=\iy\)</span> and find that <span class="math inline">\(a=-Px\)</span> where <!-- , and $P_{-\iy}$ is the steady-state solution, which can be solved by solving --> <span class="math inline">\(P\)</span> is the solution to an algebraic Riccati equation, which has an expression in terms of eigenvalues of <span class="math inline">\(\matt{A}{BB^T}{Q}{-A^T}\)</span>.</p>
+<h2 id="linear-convex-regulator">Linear convex regulator</h2>
+Generalize this to
+<span class="math display">\[\begin{align}
+\dot x &amp; = Ax + Ba = f(x,a)\\
+r(x,a) &amp; = -c(x,a) = -g(x) - a^Ta\\
+\pat{Total reward} &amp;= \int_0^T r(x(t), a(t))\,dt.
+\end{align}\]</span>
+<p>For example, take <span class="math inline">\(g\)</span> to be a convex function.</p>
+<p>Idea: Approximate <span class="math inline">\(g\)</span> locally with a quadratic function and then make the action that optimizes the linear quadratic system.</p>
+<h2 id="problem">Problem</h2>
+The starting point is the linear quadratic regulator, which is well-understood. The linear quadratic regulator is (here <span class="math inline">\(x\in \mathbb R^n, a\in \mathbb R^k\)</span>)
+<span class="math display">\[\begin{align}
+\dot x &amp; = Ax + Ba = f(x,a)\\
+r(x,a) &amp; = -c(x,a) = -\frac12 x^TQx - \rc2 a^Ta\\
+x(0) &amp;= x_0\\
+V_t(x,a(\cdot)) &amp;= \int_t^T r(x(t), a(t))\,dt, \quad x(t) = x, \dot x = f(x,a).
+\end{align}\]</span>
+<p>The problem to find the function <span class="math inline">\(a(t)\)</span> that maximizes <span class="math inline">\(V_{t}(x,a)\)</span>. Especially we care about when <span class="math inline">\(T\to \iy\)</span>. There are two ways to solve this problem:</p>
+<ol type="1">
+<li><p>Use Pontryagrin’s maximal principle to write this as a Hamiltonian system. One can show the optimal control has the form <span class="math inline">\(a(t) = -P(t)x(t)\)</span>. Get a differential equation in <span class="math inline">\(P(t)\)</span> which is the matrix Riccati equation.</p>
+For infinite-horizon, the optimal control is <span class="math inline">\(a= -Px\)</span> independent of time. (Reparameterizing <span class="math inline">\([0,\iy)\)</span> as <span class="math inline">\((-\iy, 0]\)</span>, the solution <span class="math inline">\(P\)</span> is the limit <span class="math inline">\(\lim_{t\to \iy}P(-t)\)</span>. <!-- can be solved for explicitly. Then $a=-Px$ is the optimal action when the time horizon is infinite.--></li>
+<li><p>Use the Bellman-Jacobi-Hamilton equation. Let <span class="math inline">\(v(x,t) = \max_{a(\cdot)} V_{t}(x,a(\cdot))\)</span>. Then <span class="math inline">\(v\)</span> satisfies <span class="math inline">\(v_t + \max_a [r(x,a) + (\nabla_x v)^T f(x,a)]=0\)</span>. <span class="math inline">\(v(x,t)=-x^TK(t)x\)</span> is quadratic in <span class="math inline">\(x\)</span>, <span class="math inline">\(a\)</span> is linear in <span class="math inline">\(x\)</span>, and we also get a matrix Riccati equation in <span class="math inline">\(K\)</span>.</p>
+<p>For infinite-horizon, reparameterizing <span class="math inline">\([0,\iy)\)</span> as <span class="math inline">\((-\iy, 0]\)</span>, the solution <span class="math inline">\(v\)</span> is a steady-state solution, <span class="math inline">\(\max_a [r(x,a) + (\nabla_x v)^T f(x,a)]=0\)</span>.</p></li>
+</ol>
+<p>We want to generalize <span class="math inline">\(\rc 2 x^TQx\)</span>, e.g. to <span class="math inline">\(g(x)\)</span>. Suppose that <span class="math inline">\(g\)</span> is convex. In general it’s infeasible to solve for the optimal action (you can only numerically approximate the solution, which is infeasible in high dimension); the question is whether we can find a simple policy <span class="math inline">\(a\)</span> that approximates the optimal action (e.g. up to a constant factor depending on properties of <span class="math inline">\(g\)</span>). For example <span class="math inline">\(a(x)\)</span> could be chosen based on a quadratic approximation of <span class="math inline">\(g\)</span>. For a particular choice of <span class="math inline">\(a(x)\)</span>, the value satisfies <span class="math display">\[ -g(x) - \rc2 a^Ta + (\nb_x v)^T f(x,a) = 0
+\]</span> and for the optimal choice <span class="math inline">\(a(x) = B^T(\nb_x v)\)</span> the value satisfies <span class="math display">\[
+-g(x) + \rc 2 (\nb_x v^*)^T BB^T (\nb_x v^*) + (\nb_x v^*)^T Ax=0
+\]</span> We’d have to relate <span class="math inline">\(v\)</span> and <span class="math inline">\(v^*\)</span> in some way.</p>
+<h2 id="convex-optimization">Convex optimization</h2>
+<p>Fix <span class="math inline">\(x_1\)</span>. Letting actions be <span class="math inline">\(a_1,a_2,...\)</span> and the recurrence be <span class="math inline">\(x_{n+1} =Ax_n+Ba_n\)</span> we want</p>
+<span class="math display">\[\begin{align}
+&amp;\quad
+\min_{a_1} [g(x_1) + ||a_1||^2 + \min_{a_2} [g(Ax_1+Ba_1) + ||a_2||^2 + ...]] \\
+&amp;=
+\min_{a_1,...,a_T} g(x_1) + ||a_1||^2 + g(Ax_1+Ba_1) + ||a_2||^2 + g(A^2x_1 + ABa_1 + Ba_2) +...
+\end{align}\]</span>
+<p>and the objective is jointly convex because we are assuming g is convex, and a convex function composed with a linear function is convex.</p>
+<h3 id="re">Re</h3>
+<p>Optimizing this function in various settings with various algorithms (like alternating minimization) sound pretty plausible given that it’s convex.</p>
+<p>The observation above seems to suggest that for any loss function and any dynamics, if we believe that the non-convex optimization can converge to some good minimum, then this whole problem is solved. But of course, in practice, the dynamics and loss function are not known, and we can only observe the state transition and loss value for the state that we have reached.</p>
+<p>So the situation here is a bit analogous to the situation we faced for offline optimization v.s. online learning and bandits. Our “offline” case (or full observation case) is tractable and we need to extend this to the “online” or “bandit” case where we don’t know the model (i.e. dynamics). Because the full observation case is tractable, I felt that there are ways to extend it to partial observation case using similar exploration-exploitation intuition in bandit.</p>
+<!--
+# Email
+
+Hi ...,
+
+I'm trying to develop a way to approximate an optimal control for some general class of control problems. This involves understanding some differential equations. I don't really have intuition or have a good idea of whether what we're trying to do is feasible. Would you have time to talk? Just getting some qualitative understanding or knowing what tools are available would be great!
+
+-->
+
+  </div>
+
+    
+
+    <!-- Extension : Sharing buttons @ www.sharethis.com -->
+    <span class="st_facebook_large" displayText="Facebook"></span>
+    <span class="st_twitter_large" displayText="Tweet"></span>
+    <span class="st_googleplus_large" displayText="Google +"></span>
+    <span class="st_reddit_large" displayText="Reddit"></span>
+    <span class="st__large" displayText></span>
+
+    <div id="disqus_thread"></div>
+    
+
+
+  
+    <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+  </div>
+  
+</div>
+
+
+<!-- Footer -->
+<div id="footer">
+  <div class="container">
+    Built with
+    <a href="http://jaspervdj.be/hakyll">Hakyll</a> 
+    using 
+    <a href="http://www.getbootstrap.com">Bootstrap</a>, 
+    <a href="http://www.disqus.com">Disqus</a>,
+    <a href="http://ignorethecode.net/blog/2010/04/20/footnotes/">Footnotes.js</a>,
+    <a href="http://highlightjs.org/">Highlight.js</a>, 
+    <a href="http://www.mathjax.org">MathJax</a>, 
+    and <a href="http://www.sharethis.com">ShareThis</a>.
+  </div>
+</div>
+</body>
+
+</html>
+
+<!-- SCRIPTS -->
+<!-- jQuery-->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+<script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
+
+<script src="../../../../bootstrap/js/bootstrap.min.js"></script>
+
+<!-- Extension : Highlight.js @ https://highlightjs.org/ -->
+<!-- Syntax highlighting tomorrow-night-bright, agate-->
+<link rel="stylesheet" href="../../../../highlight/css/tomorrow-night-bright.css">
+<script src="../../../../highlight/js/highlight.pack.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+
+<!-- Extension : MathJax @ https://docs.mathjax.org/en/v2.5-latest/tex.html -->
+<!-- MathJax/config/local/local.js contains macros. Need to provide entire URL-->
+<script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML,http://holdenlee.github.io/notebook/MathJax/config/local/local"></script>
+
+<!-- Extension : Footnotes @ http://ignorethecode.net/blog/2010/04/20/footnotes/ -->
+<script src="../../../../footnotes/js/footnotes.js"></script>
+
+<!-- Extension : Disqus @ http://disqus.com -->
+<!-- Extension : InlineDisqussions @ https://github.com/tsi/inlineDisqussions -->
+
+<script src="../../../../disqus/js/disqus.js"></script>
+
+
+
+<!-- Extension : Google Analytics -->
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-73261814-1', 'auto');
+  ga('send', 'pageview');
+
+</script>
+

@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+
+  <meta name="description" content="Holden Lee's Research Notebook">
+  <meta name="author" content="Holden Lee">
+    
+  <title>Neural nets as kernel space</title>
+
+  <!-- Bootstrap core CSS -->
+  <link href="../../../../bootstrap/css/bootstrap.min.css" rel="stylesheet">
+
+  <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+  <!-- <link href="../../assets/css/ie10-viewport-bug-workaround.css" rel="stylesheet"> -->
+
+  <!-- Custom styles for this template -->
+  <link href="../../../../css/blog.css" rel="stylesheet">
+  <link href="../../../../css/default.css" rel="stylesheet">
+
+  <!-- Extension : Footnotes -->
+  <link href="../../../../footnotes/css/footnotes.css" rel="stylesheet">
+
+  <!-- Extension : InlineDisqussions @ https://github.com/tsi/inlineDisqussions -->
+  
+
+  <!-- Extension : Collapsible lists @ http://code.stephenmorley.org/javascript/collapsible-lists/-->
+  <link href="../../../../collapsible_lists/css/collapsible.css" rel="stylesheet">
+  <script type="text/javascript" src="../../../../collapsible_lists/js/CollapsibleLists.js"></script>
+
+</head>
+
+<body>
+
+<!-- Navigation bar. navbar-inverse is black, navbar-default is white.-->
+<!-- To make a button active (pressed), use <li class="active"> -->
+<div id="header">
+  <nav class="navbar navbar-inverse navbar-fixed-top">
+    <div class="container">
+      <div class="navbar-header">
+        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+          <span class="sr-only">Toggle navigation</span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="../../../../">Notebook</a>
+      </div>
+      <div id="navbar" class="collapse navbar-collapse">
+        <ul class="nav navbar-nav">
+          <li><a href="../../../../">Home</a></li>
+          <li><a href="../../../../sitemap.html">Sitemap</a></li>
+<!-- TODO: Distinguish between PAPERS, RESEARCH QUESTIONS, BOOKS -->
+<!-- TODO: make this part a for loop over main pages -->
+        </ul>
+      </div><!--/.nav-collapse -->
+    </div>
+  </nav>
+</div>
+<!-- Content -->
+<!--div id="content">
+  <h1>Mental Wilderness</h1>-->
+
+
+
+<div class="container">
+  <div id="content">
+    <div class="page header">
+      <h1>Neural nets as kernel space</h1>
+    </div>
+    <div class="info">
+      
+       
+        <p>Posted: 2017-03-23 
+          , Modified: 2017-03-23 
+	</p>
+      
+       <p>Tags: <a href="../../../../tags/neural%20net.html">neural net</a></p> 
+    </div>
+    
+  </div>
+  <!--/div-->
+
+  <div class="toc"> <ul>
+ <li><a href="#things-this-could-explain">Things this could explain</a></li>
+ <li><a href="#for-neural-nets">For neural nets</a></li>
+ <li><a href="#followup">Followup</a></li>
+ <li><a href="#thoughts-33017">Thoughts 3/30/17</a></li>
+ </ul> </div>
+
+  <div class="blog-main">
+    <p>I think that I can place neural networks with non-steep and well-separated sigmoids as low-norm elements of a RKHS, and that this will explain and unify some learning results.</p>
+<p>Precise details to be ironed out. First, choice of RKHS:</p>
+<ul>
+<li>Sobolev space <span class="math inline">\(H^{\fc n2}(\R^n)\)</span>, or</li>
+<li><span class="math inline">\(L^2(\R^n)\)</span> or <span class="math inline">\(H^1(\R^n)\)</span> with bandlimited constraint.</li>
+<li>Quotient out by constant functions? Allow a sigmoid <span class="math inline">\(\to 1\)</span> at infinity as kernel?</li>
+</ul>
+<p>For the bandlimiting, there are 2 technical steps, with parameters to vary.</p>
+<ul>
+<li>Convolve by Gaussian (or ball indicator) in Fourier space, or multiplying by Gaussian (or FT of ball indicator) in ordinary space.</li>
+<li>cutting off Fourier spectrum - how does this influence? I.e. what is Fourier decay? Expect exponential - so get <span class="math inline">\(\ln \prc{\ep}\)</span> in exponent.</li>
+</ul>
+<p>Expect exponential dependence on steepness.</p>
+<h2 id="things-this-could-explain">Things this could explain</h2>
+<ul>
+<li>Kalai’s result on learning smooth NN.</li>
+<li>Learning linear separator with margin.</li>
+<li>Exponential dependence on dimension or <span class="math inline">\(\rc{\ep}\)</span> (what exactly?) for agnostically learning halfspace, etc.</li>
+</ul>
+<h2 id="for-neural-nets">For neural nets</h2>
+<ul>
+<li>Learn 2-NN with linear output, under some conditions (ex. incoherence)</li>
+<li>Maybe can learn 2-NN with sigmoid/majority output, by boosting (cf. majority of majorities).</li>
+</ul>
+<h2 id="followup">Followup</h2>
+<ul>
+<li>What is relationship to gradient descent?</li>
+</ul>
+<h2 id="thoughts-33017">Thoughts 3/30/17</h2>
+<ul>
+<li>How to get something for convolutional neural nets?
+<ul>
+<li>As an easier question, think about having filters over the entire image, rather than a grid.</li>
+<li>Think of periodic case even.</li>
+<li>Then this works by Fourier transform over <span class="math inline">\(\R^\N\)</span> (suitably weighted).</li>
+<li>Problem: the simplest convnet is more complicated than this, includes maxpool and then fc. How to deal with maxpool? What if you don’t do maxpool? Sigmoid and then average, or weighted average?</li>
+<li>Kernel on Fourier transform space. (See how well FT matches…)</li>
+<li>See [ZLW16]</li>
+</ul></li>
+<li>Overcomplete bases
+<ul>
+<li>Can define RKHS norm by giving norm when written in terms of basis element.</li>
+<li>Can’t define norm with overcomplete set of elements.</li>
+<li>Can we define some kind of norm and do something kernel-like with overcomplete basis?
+<ul>
+<li>Project from larger space?</li>
+</ul></li>
+<li>Cf. wanting symmetries beyond translation</li>
+<li>Cf. wavelets offer a natural overcomplete basis respecting symmetries</li>
+<li>Perhaps first thing to do is just try wavelet regularization on MNIST.</li>
+<li>If you want to use nonconvolutional kernel method on images, you should first convert to Fourier or wavelet basis. Probably wavelet (except that’s not quite a basis). (Multiply by log size.) (This doesn’t give you translation invariance, just resets the norm.)</li>
+</ul></li>
+<li>Three kernels
+<ul>
+<li>Fourier-based.</li>
+<li><span class="math inline">\(\rc{2-\an{x,y}}\)</span>.</li>
+<li>Arccosine.</li>
+</ul></li>
+<li>I’m super-confused about why toggling just one parameter <span class="math inline">\(n\)</span> changes the number of layers. <span class="math inline">\(K^{(n)}(x,y)=\fc{n-1}n + \fc{1/n}{(n+1) - n\an{x,y}}\)</span>.</li>
+<li>Idea to prove NN separation for Lipschitz layers: Show a function that has exponentially higher norm in terms of <span class="math inline">\(l-1\)</span> norm than <span class="math inline">\(l\)</span>. Problem: norm required to express neural net also increases super-exponentially in dimension.</li>
+<li>Improper tensor decomp using same method (use case?) cf. Livni’s poly network</li>
+<li>Barron functions form a convex set… The reason why it’s intractable is that it’s infinite-dimensional. Hilbert spaces are infinite-dimensional, but the representor theorem saves you.</li>
+<li>Can you cut down representation (after using representor theorem) by sampling? Keep norm, but be cruder? (Pick some elements and rescale.)</li>
+<li>Using kernel representation at first level of neural network? Do some kind of AM? How to mix nonparametric and parametric? Power and limit of kernel coming from its nonparametricity.</li>
+</ul>
+
+  </div>
+
+    
+
+    <!-- Extension : Sharing buttons @ www.sharethis.com -->
+    <span class="st_facebook_large" displayText="Facebook"></span>
+    <span class="st_twitter_large" displayText="Tweet"></span>
+    <span class="st_googleplus_large" displayText="Google +"></span>
+    <span class="st_reddit_large" displayText="Reddit"></span>
+    <span class="st__large" displayText></span>
+
+    <div id="disqus_thread"></div>
+    
+
+
+  
+    <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+  </div>
+  
+</div>
+
+
+<!-- Footer -->
+<div id="footer">
+  <div class="container">
+    Built with
+    <a href="http://jaspervdj.be/hakyll">Hakyll</a> 
+    using 
+    <a href="http://www.getbootstrap.com">Bootstrap</a>, 
+    <a href="http://www.disqus.com">Disqus</a>,
+    <a href="http://ignorethecode.net/blog/2010/04/20/footnotes/">Footnotes.js</a>,
+    <a href="http://highlightjs.org/">Highlight.js</a>, 
+    <a href="http://www.mathjax.org">MathJax</a>, 
+    and <a href="http://www.sharethis.com">ShareThis</a>.
+  </div>
+</div>
+</body>
+
+</html>
+
+<!-- SCRIPTS -->
+<!-- jQuery-->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+<script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
+
+<script src="../../../../bootstrap/js/bootstrap.min.js"></script>
+
+<!-- Extension : Highlight.js @ https://highlightjs.org/ -->
+<!-- Syntax highlighting tomorrow-night-bright, agate-->
+<link rel="stylesheet" href="../../../../highlight/css/tomorrow-night-bright.css">
+<script src="../../../../highlight/js/highlight.pack.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+
+<!-- Extension : MathJax @ https://docs.mathjax.org/en/v2.5-latest/tex.html -->
+<!-- MathJax/config/local/local.js contains macros. Need to provide entire URL-->
+<script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML,http://holdenlee.github.io/notebook/MathJax/config/local/local"></script>
+
+<!-- Extension : Footnotes @ http://ignorethecode.net/blog/2010/04/20/footnotes/ -->
+<script src="../../../../footnotes/js/footnotes.js"></script>
+
+<!-- Extension : Disqus @ http://disqus.com -->
+<!-- Extension : InlineDisqussions @ https://github.com/tsi/inlineDisqussions -->
+
+<script src="../../../../disqus/js/disqus.js"></script>
+
+
+
+<!-- Extension : Google Analytics -->
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-73261814-1', 'auto');
+  ga('send', 'pageview');
+
+</script>
+

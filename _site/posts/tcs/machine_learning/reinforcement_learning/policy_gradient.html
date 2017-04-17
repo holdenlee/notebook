@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+
+  <meta name="description" content="Holden Lee's Research Notebook">
+  <meta name="author" content="Holden Lee">
+    
+  <title>Policy gradient</title>
+
+  <!-- Bootstrap core CSS -->
+  <link href="../../../../bootstrap/css/bootstrap.min.css" rel="stylesheet">
+
+  <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+  <!-- <link href="../../assets/css/ie10-viewport-bug-workaround.css" rel="stylesheet"> -->
+
+  <!-- Custom styles for this template -->
+  <link href="../../../../css/blog.css" rel="stylesheet">
+  <link href="../../../../css/default.css" rel="stylesheet">
+
+  <!-- Extension : Footnotes -->
+  <link href="../../../../footnotes/css/footnotes.css" rel="stylesheet">
+
+  <!-- Extension : InlineDisqussions @ https://github.com/tsi/inlineDisqussions -->
+  
+
+  <!-- Extension : Collapsible lists @ http://code.stephenmorley.org/javascript/collapsible-lists/-->
+  <link href="../../../../collapsible_lists/css/collapsible.css" rel="stylesheet">
+  <script type="text/javascript" src="../../../../collapsible_lists/js/CollapsibleLists.js"></script>
+
+</head>
+
+<body>
+
+<!-- Navigation bar. navbar-inverse is black, navbar-default is white.-->
+<!-- To make a button active (pressed), use <li class="active"> -->
+<div id="header">
+  <nav class="navbar navbar-inverse navbar-fixed-top">
+    <div class="container">
+      <div class="navbar-header">
+        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+          <span class="sr-only">Toggle navigation</span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="../../../../">Notebook</a>
+      </div>
+      <div id="navbar" class="collapse navbar-collapse">
+        <ul class="nav navbar-nav">
+          <li><a href="../../../../">Home</a></li>
+          <li><a href="../../../../sitemap.html">Sitemap</a></li>
+<!-- TODO: Distinguish between PAPERS, RESEARCH QUESTIONS, BOOKS -->
+<!-- TODO: make this part a for loop over main pages -->
+        </ul>
+      </div><!--/.nav-collapse -->
+    </div>
+  </nav>
+</div>
+<!-- Content -->
+<!--div id="content">
+  <h1>Mental Wilderness</h1>-->
+
+
+
+<div class="container">
+  <div id="content">
+    <div class="page header">
+      <h1>Policy gradient</h1>
+    </div>
+    <div class="info">
+      
+       
+        <p>Posted: 2016-11-22 
+          , Modified: 2016-11-22 
+	</p>
+      
+       <p>Tags: <a href="../../../../tags/reinforcement%20learning.html">reinforcement learning</a></p> 
+    </div>
+    
+  </div>
+  <!--/div-->
+
+  <div class="toc"> <ul>
+ <li><a href="#setup">Setup</a></li>
+ <li><a href="#computation">Computation</a></li>
+ <li><a href="#questions-notes">Questions, notes</a></li>
+ </ul> </div>
+
+  <div class="blog-main">
+    <p>[SASM00] Policy gradient methods for RL with function approximation</p>
+<p>A version of policy iteration with arbitrary differentiable function converges to a locally optimal policy.</p>
+<p>Problems with the value-function approach</p>
+<ul>
+<li>finds deterministic policies.</li>
+<li>a small change in estimated vaue of action can change the action selected. (obstacles for convergence guarantees)</li>
+</ul>
+<p><span class="math display">\[\De \te \approx \al \pdd{\rh}{\te}.\]</span></p>
+<h2 id="setup">Setup</h2>
+<p>The policy is parameterized by <span class="math inline">\(\te\)</span>, and gives probabilities of making action <span class="math inline">\(a\)</span> in state <span class="math inline">\(s\)</span>, <span class="math display">\[
+\pi_\te(a|s) = \Pj_\te(a|s).
+\]</span> Before, we considered the value at every state. Here, it’s more convenient to consider the value of a fixed start state, which we’ll denote by <span class="math inline">\(\rh\)</span>.</p>
+There are 2 ways we can have an expression for <span class="math inline">\(\rh\)</span>.
+
+<p>Consider two settings.</p>
+<ol type="1">
+<li>Average reward setting. Here we want to maximize <span class="math inline">\(\lim_{T\to \iy} \rc{T}\sumz t{T-1} R_t\)</span>. Then let <span class="math inline">\(d_\te\)</span> be the stationary distribution: <span class="math inline">\(d_\te(s)\)</span> is the probability of being at state <span class="math inline">\(s\)</span> under policy <span class="math inline">\(\pi_\te\)</span>.</li>
+<li>Discounted reward setting. Here we want to maximize <span class="math inline">\(\sumz t{\iy} \ga^t R_t\)</span>. Now <span class="math inline">\(d_\te\)</span> has to take into account the discounting, so <span class="math display">\[ d_\te (s) = \sumz t{\iy} \ga^t \Pj (s_t = s).\]</span></li>
+</ol>
+We also have to change our definition of <span class="math inline">\(Q\)</span> for the average reward setting - otherwise all the <span class="math inline">\(Q\)</span>’s would be the same! In the two cases, define
+<span class="math display">\[\begin{align}
+Q^{\pi}(s,a) &amp;= \sumz t{\iy} \E[R_t - \rh_\pi | s_0=s,a_0=a, \te]\\
+Q^{\pi}(s,a) &amp;= \E\ba{\sumz k{\iy} \ga^{k} R_{t+k} | s_t=s, a_t=a, \pi}.
+\end{align}\]</span>
+<p>The second is the usual definition of the <span class="math inline">\(Q\)</span>-function. Think of the first as “advantage” of starting at <span class="math inline">\((s,a)\)</span>. It converges because working out with matrices, <span class="math display">\[
+\E R_t = \rh_\te + O_{s,a} \pa{\la^t}
+\]</span> where <span class="math inline">\(\la\)</span> is the second-largest eigenvalue of the transition matrix (besides 1). So instead of discounting to make <span class="math inline">\(Q\)</span> converge, we subtract the mean to make <span class="math inline">\(Q\)</span> converge. Define <span class="math inline">\(V^\pi(s) = \max_a Q^\pi(s,a)\)</span>.</p>
+<p>Then (for continuous spaces replace <span class="math inline">\(\sum\)</span> with <span class="math inline">\(\int\)</span>) <span class="math display">\[\rh_\te = \sum_s d_\te(s) \sum_{a} Q^\te(s,a) \pi_\te(a|s) \]</span> (Whenever something depends on the policy <span class="math inline">\(\pi_\te\)</span>, we write <span class="math inline">\(\te\)</span> as shorthand: <span class="math inline">\(Q^{\te} = Q^{\pi_\te}\)</span>.</p>
+<h2 id="computation">Computation</h2>
+<p>We need to calculate the derivative. Naively using the product rule, we would need <span class="math inline">\(\nb_\te d_\te(s)\)</span> which we don’t have a way of estimating. But we can derive an expression that doesn’t include this term! To do this we differentiate the Bellman equation for <span class="math inline">\(V\)</span> (which implicitly includes <span class="math inline">\(\rh\)</span>).</p>
+<p><strong>Lemma 1</strong>. <span class="math display">\[
+\nb_\te \rh_\te = \sum_s d_\te(s) \sum_a \nb_\te \pi(s|a) Q^\te(s,a).
+\]</span></p>
+<em>Proof</em>. Our strategy is to write the one-step expansion of <span class="math inline">\(Q^\te\)</span> <!-- , and find there's a term that cancels with $\nb_\te \pi_\te(a|s)$.--> Let <span class="math inline">\(R(s,a)\)</span> be the one-step reward of action <span class="math inline">\(a\)</span> in state <span class="math inline">\(s\)</span>. We write the proof for the undiscounted case.
+<span class="math display">\[\begin{align}
+\nb_\te V^\te (s)
+&amp;= \sum_a \pa{
+(\nb_\te \pi_\te(a|s)) Q^\te(s,a) 
++
+\pi_\te(a|s) (\nb_te Q^\te(s,a))}
+&amp;= 
+\sum_a (\nb_\te \pi_\te (a|s)) Q^\te(s,a) 
++ \pi(a|s) \nb_\te\pa{\E R(s,a) - \rh_\te + \sum_{s'} \Pj(s'|s,a) V^{\te}(s')}\\
+\nb_\te \rh_\te &amp;= \pa{\sum_a \nb_\te \pi_\te (a|s)) Q^\te(s,a) +  + \pi(a|s) \sum_{s'} \nb_\te V^{\te} (s') \Pj(s'|s,a) }- \nb_\te V^{\te}(s)
+\end{align}\]</span>
+This is unsatisfactory because we can’t estimate <span class="math inline">\(\nb_\te V^{\te}(s')\)</span> for every <span class="math inline">\(s'\)</span>. But there is a combination of these we can estimate, namely the stationary distribution. So multiply by <span class="math inline">\(d_\te(s)\)</span> and sum.
+<span class="math display">\[\begin{align}
+\nb_\te \rh_\te &amp;= \pa{\sum_{s} d_\te(s) \pa{\sum_a(\nb_\te \pi_\te(a|s)) Q^{\te}(s,a)} + \cancel{d_\te(s) \pa{\sum_a\pi(a|s) \sum_{s'} \nb_\te V^{\te}(s') \Pj(s'|s,a)}} - \cancel{\nb_\te V_\te(s)}}.
+\end{align}\]</span>
+<p>We have to replace <span class="math inline">\(Q^\te\)</span> by an estimate. This doesn’t correspond to an update rule directly, because we can’t estimate <span class="math inline">\(\nb_\te(s|a)\)</span>.</p>
+We estimate of <span class="math inline">\(Q^\te\)</span> by a function approximation, updating by <span class="math inline">\(\nb_w (\wh Q^\te(s,a) - f_w(s,a))^2\)</span> given a sample <span class="math inline">\((s,a)\)</span>. This converges to a local min where (<span class="math inline">\(\wh Q^\te\)</span> is an unbiased estimator)
+<span class="math display">\[\begin{align}
+\E \nb_w \pa{\wh Q^{\te} (s,a) - f_w(s,a)} &amp;=0\\
+\sum_s d_\te(s) \sum_a \pi_\te(s|a) (Q^\te(s,a) - f_w(s,a)) &amp;=0
+\end{align}\]</span>
+<p>We would like to be able to replace <span class="math inline">\(Q^\te(s,a)\)</span> in Lemma 1 with the approximation <span class="math inline">\(f_w(s,a)\)</span>. In order to do this we need the error to be 0: <span class="math display">\[
+\sum_s d^{\pi}(s) \pa{
+\sum_a (\nb_\te \pi_\te(s|a)) Q^\te(s,a) - \nb_\te\pi(s|a) f_w(s,a)
+}
+\]</span> In order for these to match up, we need <span class="math display">\[
+\nb_w f_w(s,a) = \fc{\nb_\te \pi(s|a)}{\pi(s|a)} = \nb_\te(\ln \pi(s|a)).
+\]</span></p>
+<p><strong>Question</strong>: Do people wait until convergence, or do they do alternating minimization in practice? Does alternating minimization converge?</p>
+Work out the loglinear case:
+<span class="math display">\[\begin{align}
+\pi(s|a) &amp;= \fc{e^{\te^T \phi_a(s)}}{\sum_b e^{\te^T\phi_b(s)}}\\
+\nb_\te \ln \pi(s|a) &amp;= \phi_a(s) - \fc{\sum_b e^{\te^T\phi_b(s)} \phi_b(s)}{\sum_b e^{\te^T \phi_b(s)}}\\
+&amp;= \phi_a(s) - \sum_b \pi(s|b) \phi_b(s).
+\end{align}\]</span>
+<p>So take <span class="math display">\[
+f_w(s,a) = w^T ( \phi_a(s) - \sum_b \pi(s|b) \phi_b(s)).
+\]</span></p>
+<p>How well does this parametrization work, compared to Q-learning by FA?</p>
+<h2 id="questions-notes">Questions, notes</h2>
+<ol type="1">
+<li>Does the LP formulation give a way to understand the derivative? In terms of slack constraints, etc.</li>
+<li>How nonconvex is this? What does the optimization landscape look like? Ex. take 2-action, 3-action case, random transition matrices, some kind of grouping together of states. See <a href="POMDP.html">POMDP</a></li>
+<li>Try to prove intractability - see POMDP. The parametrization there is a slice of the product of simplices, rather than a subspace in logspace. But you can relate it to optimizing rational functions this way. The main reason I suspect intractability is that the degree can be as large as number of parameters…</li>
+</ol>
+Minimizing cross-entropy for loglinear is a convex problem. Minimize perplexity for distribution <span class="math inline">\(\Pj(y|x)\)</span> with distribution <span class="math display">\[
+\wh P(y|x) = \fc{e^{\te_y^T\phi(x)}}{\sum_{y'} e^{\te_{y'}^T \phi(x)}}.
+\]</span> To show convexity, we need to show log of partition function is convex. Reducing to 1-variable case,
+<span class="math display">\[\begin{align}
+f &amp;= \ln \sum_i e^{a_i+b_i\te}\\
+f_\te &amp; = \E b_i\\
+f_{\te\te} &amp;= \E b_i^2 - \pa{\E b_i}^2 \ge 0.
+\end{align}\]</span>
+
+  </div>
+
+    
+
+    <!-- Extension : Sharing buttons @ www.sharethis.com -->
+    <span class="st_facebook_large" displayText="Facebook"></span>
+    <span class="st_twitter_large" displayText="Tweet"></span>
+    <span class="st_googleplus_large" displayText="Google +"></span>
+    <span class="st_reddit_large" displayText="Reddit"></span>
+    <span class="st__large" displayText></span>
+
+    <div id="disqus_thread"></div>
+    
+
+
+  
+    <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+  </div>
+  
+</div>
+
+
+<!-- Footer -->
+<div id="footer">
+  <div class="container">
+    Built with
+    <a href="http://jaspervdj.be/hakyll">Hakyll</a> 
+    using 
+    <a href="http://www.getbootstrap.com">Bootstrap</a>, 
+    <a href="http://www.disqus.com">Disqus</a>,
+    <a href="http://ignorethecode.net/blog/2010/04/20/footnotes/">Footnotes.js</a>,
+    <a href="http://highlightjs.org/">Highlight.js</a>, 
+    <a href="http://www.mathjax.org">MathJax</a>, 
+    and <a href="http://www.sharethis.com">ShareThis</a>.
+  </div>
+</div>
+</body>
+
+</html>
+
+<!-- SCRIPTS -->
+<!-- jQuery-->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+<script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
+
+<script src="../../../../bootstrap/js/bootstrap.min.js"></script>
+
+<!-- Extension : Highlight.js @ https://highlightjs.org/ -->
+<!-- Syntax highlighting tomorrow-night-bright, agate-->
+<link rel="stylesheet" href="../../../../highlight/css/tomorrow-night-bright.css">
+<script src="../../../../highlight/js/highlight.pack.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+
+<!-- Extension : MathJax @ https://docs.mathjax.org/en/v2.5-latest/tex.html -->
+<!-- MathJax/config/local/local.js contains macros. Need to provide entire URL-->
+<script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML,http://holdenlee.github.io/notebook/MathJax/config/local/local"></script>
+
+<!-- Extension : Footnotes @ http://ignorethecode.net/blog/2010/04/20/footnotes/ -->
+<script src="../../../../footnotes/js/footnotes.js"></script>
+
+<!-- Extension : Disqus @ http://disqus.com -->
+<!-- Extension : InlineDisqussions @ https://github.com/tsi/inlineDisqussions -->
+
+<script src="../../../../disqus/js/disqus.js"></script>
+
+
+
+<!-- Extension : Google Analytics -->
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-73261814-1', 'auto');
+  ga('send', 'pageview');
+
+</script>
+

@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+
+  <meta name="description" content="Holden Lee's Research Notebook">
+  <meta name="author" content="Holden Lee">
+    
+  <title>Approximation theory and approximation practice</title>
+
+  <!-- Bootstrap core CSS -->
+  <link href="../../../../bootstrap/css/bootstrap.min.css" rel="stylesheet">
+
+  <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+  <!-- <link href="../../assets/css/ie10-viewport-bug-workaround.css" rel="stylesheet"> -->
+
+  <!-- Custom styles for this template -->
+  <link href="../../../../css/blog.css" rel="stylesheet">
+  <link href="../../../../css/default.css" rel="stylesheet">
+
+  <!-- Extension : Footnotes -->
+  <link href="../../../../footnotes/css/footnotes.css" rel="stylesheet">
+
+  <!-- Extension : InlineDisqussions @ https://github.com/tsi/inlineDisqussions -->
+  
+
+  <!-- Extension : Collapsible lists @ http://code.stephenmorley.org/javascript/collapsible-lists/-->
+  <link href="../../../../collapsible_lists/css/collapsible.css" rel="stylesheet">
+  <script type="text/javascript" src="../../../../collapsible_lists/js/CollapsibleLists.js"></script>
+
+</head>
+
+<body>
+
+<!-- Navigation bar. navbar-inverse is black, navbar-default is white.-->
+<!-- To make a button active (pressed), use <li class="active"> -->
+<div id="header">
+  <nav class="navbar navbar-inverse navbar-fixed-top">
+    <div class="container">
+      <div class="navbar-header">
+        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+          <span class="sr-only">Toggle navigation</span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="../../../../">Notebook</a>
+      </div>
+      <div id="navbar" class="collapse navbar-collapse">
+        <ul class="nav navbar-nav">
+          <li><a href="../../../../">Home</a></li>
+          <li><a href="../../../../sitemap.html">Sitemap</a></li>
+<!-- TODO: Distinguish between PAPERS, RESEARCH QUESTIONS, BOOKS -->
+<!-- TODO: make this part a for loop over main pages -->
+        </ul>
+      </div><!--/.nav-collapse -->
+    </div>
+  </nav>
+</div>
+<!-- Content -->
+<!--div id="content">
+  <h1>Mental Wilderness</h1>-->
+
+
+
+<div class="container">
+  <div id="content">
+    <div class="page header">
+      <h1>Approximation theory and approximation practice</h1>
+    </div>
+    <div class="info">
+      
+       
+        <p>Posted: 2016-08-08 
+          , Modified: 2016-08-08 
+	</p>
+      
+       <p>Tags: <a href="../../../../tags/none.html">none</a></p> 
+    </div>
+    
+  </div>
+  <!--/div-->
+
+  <div class="toc"> <ul>
+ <li><a href="#introduction">1 Introduction</a></li>
+ <li><a href="#chebyshev-points-and-interpolation">2 Chebyshev points and interpolation</a></li>
+ <li><a href="#chebyshev-polynomials-and-series">3 Chebyshev polynomials and series</a></li>
+ <li><a href="#interpolation-projection-and-aliasing">4 Interpolation, projection, and aliasing</a></li>
+ <li><a href="#barycentric-interpolation-formula">5 Barycentric interpolation formula</a></li>
+ <li><a href="#weierstrass-approximation-theorem">6 Weierstrass Approximation Theorem</a></li>
+ <li><a href="#convergence-for-differentiable-functions">7 Convergence for differentiable functions</a></li>
+ <li><a href="#convergence-for-analytic-functions">8 Convergence for analytic functions</a></li>
+ <li><a href="#gibbs-phenomenon">9 Gibbs Phenomenon</a></li>
+ <li><a href="#best-approximation">10 Best approximation</a></li>
+ <li><a href="#hermite-integral-formula">11 Hermite integral formula</a></li>
+ <li><a href="#potential-theory-and-applications">12 Potential theory and applications</a></li>
+ <li><a href="#equispaced-points-runge-phenomenon">13 Equispaced points, Runge phenomenon</a></li>
+ <li><a href="#discussion-of-high-order-interpolation">14 Discussion of high-order interpolation</a></li>
+ <li><a href="#lebesgue-constants">15 Lebesgue constants</a></li>
+ </ul> </div>
+
+  <div class="blog-main">
+    <h2 id="introduction">1 Introduction</h2>
+<h2 id="chebyshev-points-and-interpolation">2 Chebyshev points and interpolation</h2>
+Define <strong>Chebyshev points</strong> of parameter <span class="math inline">\(n\)</span> to be <span class="math inline">\(x_j\)</span> where
+<span class="math display">\[\begin{align}
+\te_j &amp;= \fc{j\pi }n\\
+z_j &amp; = e^{\pi j/n}, &amp;0\le j\le n\\
+x_j &amp; = \Re (z_j) = \fc{z_j+z_j^{-1}}2 = \cos\te_j.
+\end{align}\]</span>
+<p>Write</p>
+<div class="sourceCode"><pre class="sourceCode matlab"><code class="sourceCode matlab">xx=chebpts(n+<span class="fl">1</span>)</code></pre></div>
+<p>(Note: from now on we will reverse the order of the <span class="math inline">\(x_j\)</span>, to go from left to right.)</p>
+<p>The <strong>Chebyshev interpolant</strong> of <span class="math inline">\((f_j)\)</span> is the unique polynomial of degree (<span class="math inline">\(\le\)</span>) <span class="math inline">\(n\)</span> going through points <span class="math inline">\(x_j,f_j\)</span>. To construct the interpolant for a function,</p>
+<div class="sourceCode"><pre class="sourceCode matlab"><code class="sourceCode matlab">x = chebfun(<span class="st">'x'</span>);
+f = (function of x);
+p=chebfun(f,n+<span class="fl">1</span>); hold on, plot(p,<span class="st">'.-'</span>)</code></pre></div>
+<p>(Note: <code>x</code> is like a vector here. So you must write <code>.*</code> for multiplication, etc.) <code>.-</code> makes it point out the Chebyshev interpolation points.</p>
+<h2 id="chebyshev-polynomials-and-series">3 Chebyshev polynomials and series</h2>
+<p>Define <a href="chebyshev.html">Chebyshev polynomials</a>.</p>
+The following are Chebyshev, Laurent, and Fourier expansions.
+<span class="math display">\[\begin{align}
+f(x) &amp;\approx \sumz kn a_kT_k(x), &amp;&amp; x&amp;\in [-1,1]\\
+F(z) &amp;= \rc 2 \sumz kn a_k(z^k+z^{-k}) &amp; f(x)&amp;=F\pf{z+z^{-1}}2&amp;|z|&amp;=1\\
+\cF (\te) &amp;\approx \rc 2 \sumz kn a_k(e^{ik\te} + e^{-ik\te})&amp; \te&amp;\in [-\pi,\pi]
+\end{align}\]</span>
+<p>One can expand a polynomial in Chebyshev basis using the FFT or Fast Cosine Transform.</p>
+<p>Chebyshev series: If <span class="math inline">\(f\)</span> is Lipschitz continuous on <span class="math inline">\([-1,1]\)</span>, it has a unique representation <span class="math display">\[f(x)=\sumz k\iy a_k T_k(x),\quad a_k = \fc2\pi \int_{-1}^1 \fc{f(x)T_k(x)}{\sqrt{1-x^2}} \dx. \]</span></p>
+<em>Proof</em>.
+<span class="math display">\[\begin{align}
+a_k &amp;= \rc{2\pi i} \oint_{|z|=1} (z^{-1+k}+z^{-1-k})F(z)\,dz\\
+&amp;= \rc{\pi i} \int_{|z|=1} z^{-1}T_k(x) F(z)\,dz\\
+&amp;=-\rc{\pi}\fc{f(x)T_k(x)}{\Im z}\,dz &amp; dx&amp;=\rc 2 \pf{z-z^{-1}}{2z}dz = \rc2 i z^{-1}\Im z\\
+&amp;=\fc2\pi \int_{-1}^1 \fc{f(x)T_k(x)}{\sqrt{1-x^2}} \dx.
+\end{align}\]</span>
+<p>Orthonormality: <span class="math display">\[ \fc 2\pi\int_{-1}^1 \fc{T_l(x)T_k(x)}{\sqrt{1-x^2}} = \de_{kl}.\]</span></p>
+<h2 id="interpolation-projection-and-aliasing">4 Interpolation, projection, and aliasing</h2>
+<p>There are 2 ways to approximate <span class="math inline">\(f\)</span> by a Chebyshev expansion.</p>
+<ol type="1">
+<li>Interpolation of Chebyshev points <span class="math inline">\(p_n\)</span></li>
+<li>Truncation of Chebyshev expansion <span class="math inline">\(f_n\)</span></li>
+</ol>
+<p>In computation, <span class="math inline">\(p_n\)</span> are usually almost as good and easier to evaluate.</p>
+<p><strong>Theorem</strong> (aliasing). <span class="math inline">\(T_k\)</span> takes the same value on the <span class="math inline">\((n+1)\)</span>-point Chebyshev grid as <span class="math inline">\(T_m\)</span>, <span class="math inline">\(m=|(k+n-1)\bmod{2n} - (n-1)|\)</span>. (i.e., <span class="math inline">\(T_m\)</span> takes the same value as <span class="math inline">\(T_k\)</span> with <span class="math inline">\(k=2jn\pm m\)</span>.)</p>
+<p><em>Proof</em>. Look at <span class="math inline">\(2n\)</span>th roots of unity.</p>
+<strong>Theorem</strong> (aliasing for Chebyshev coefficients). Let <span class="math inline">\(a_k,c_k\)</span> be Chebyshev coefficients of <span class="math inline">\(f\)</span> and <span class="math inline">\(p_n\)</span>. Then
+<span class="math display">\[\begin{align}
+c_k &amp;= \sum_{i\in \{2jn\pm k\}\cap \N} a_i.
+\end{align}\]</span>
+<p>So <span class="math display">\[f(x)-p_n(x) = \sum_{k=n+1}^{\iy} a_k(T_k(x) - T_{m(k,n)}(x)).\]</span></p>
+<p>In Chebfun, to get truncation, interpolation use</p>
+<div class="sourceCode"><pre class="sourceCode matlab"><code class="sourceCode matlab">a = chebpoly(f) <span class="co">% truncation/projection</span>
+fn = chebfun(f, <span class="st">'trunc'</span>, n+<span class="fl">1</span>) <span class="co">% truncation</span>
+pn = chebfun(f, n+<span class="fl">1</span>)
+c = chebpoly(pn) <span class="co">% interpolation</span></code></pre></div>
+<h2 id="barycentric-interpolation-formula">5 Barycentric interpolation formula</h2>
+<p>How to evaluate a Chebyshev interpolant?</p>
+<ul>
+<li><span class="math inline">\(O(n\ln n)\)</span> for single point evaluation: Compute coefficients and use the series.</li>
+<li><span class="math inline">\(O(n)\)</span> work, stable: Barycentric interpolation formula.</li>
+</ul>
+<p>Lagrange interpolation:</p>
+<span class="math display">\[\begin{align}
+p(x) &amp;= \sumz jn f_jl_j(x)\\
+l_j(x) &amp;=\fc{\prod_{k\ne j}(x-x_k)}{\prod_{k\ne j} (x_j-x_k)}
+\end{align}\]</span>
+<p>The computation of <span class="math inline">\(l_j\)</span> is unstable and takes <span class="math inline">\(O(n^2)\)</span> operations.</p>
+Modified Lagrange formula (first barycentric formula)
+<span class="math display">\[\begin{align}
+p(x) &amp;= l(x) \sumz jn \fc{\la_j}{x-x_j} f_j\\
+l(x) &amp;= \prod_{k=0}^{n} (x-x_k)\\
+\la_j &amp;= \rc{\prod_{k\ne j}(x_j-x_k)} = \rc{l'(x_j)}.
+\end{align}\]</span>
+<p>This takes <span class="math inline">\(O(n)\)</span> operations to evaluate. (Computing the weights takes <span class="math inline">\(O(n^2)\)</span> but only needs to be done once.)</p>
+<p><strong>Theorem</strong> (Barycentric interpolation formula). <span class="math display">\[p(x) = \left. \sumz jn \fc{\la_j f_j}{x-x_j} \right/ \sumz jn \fc{\la_j}{x-x_j}.\]</span></p>
+<p><em>Proof</em>. Note <span class="math inline">\(\sumz jn l_j(n)=1\)</span>. so just replace the <span class="math inline">\(l_j\)</span> by <span class="math inline">\(\fc{\la_j}{x-x_j}\)</span> and then normalize afterwards.</p>
+<p>For Chebyshev points <span class="math inline">\(\la_j = (-1)^j \fc{2^{n-1}}{n} (1-\rc 2(j=0\text{ or }n))\)</span>. Obtain <span class="math display">\[p(x) = \left. \sumz jn' \fc{(-1)^jf_j}{x-x_k}\right/\sumz jn' \fc{(-1)^j}{x-x_k}
+\]</span> where <span class="math inline">\(\sum'\)</span> means that the first and last terms are multiplied by <span class="math inline">\(\rc2\)</span>.</p>
+<em>Proof</em>.
+<span class="math display">\[\begin{align}
+l(x) &amp;= (x-x_0)\cdots (x-x_n)\\
+&amp; = (z^{2n}-1)(z^2-1)(z^{-n-1}-1) \rc{2^{n+1}} &amp; x=\fc{z+z^{-1}}2\\
+&amp;= \rc{2^n} \pa{\fc{x^{n+1}+x^{-(n+1)}}2 - \fc{x^{n-1}+x^{-(n-1)}}}\\
+\la_j &amp;=\rc{l'(x_j)}  = \fc{2^n}{T_{n+1}'(x_j) - T_{n-1}'(x_j)} = \fc{2^n}{2n(-1)^j(1+(j=0\text{ or }n))}
+\end{align}\]</span>
+<p>by using the recurrence relation to compute the derivatives.</p>
+<p>This is stable, whereas polynomial interpolation via Vandemonde is exponentially unstable.</p>
+<p>Warning:</p>
+<ul>
+<li>This is unstable for extrapolation.</li>
+<li>The type 1 barycentric formula is stable.</li>
+<li>The barycentric formulas are forward stable; the 1st barycentric formula is backwards stable.</li>
+<li>Use the 1st formula for points far from Chebyshev.</li>
+<li>The 1st formula is not scale-invariant.</li>
+</ul>
+<h2 id="weierstrass-approximation-theorem">6 Weierstrass Approximation Theorem</h2>
+<p><strong>Theorem</strong> (Weierstrass approximtion). A continuous function on <span class="math inline">\([-1,1]\)</span> can be arbitrarily well-approximated in <span class="math inline">\(L^{\iy}\)</span> by polynomials.</p>
+<p><em>Proof</em>. Extend <span class="math inline">\(f\)</span> to be continuous with compact support. Take <span class="math inline">\(f\)</span> as initial data for <span class="math inline">\(u_t=u_{xx}\)</span>. The solution is <span class="math inline">\(f*e^{-\fc{x^2}{4t}}/\sqrt{2\pi t}\)</span>. For <span class="math inline">\(t&gt;0\)</span> this is analytic and has uniformly convergent Taylor series.</p>
+<p>Bernstein’s proof is a discrete analogue replacing diffusion by a random walk.</p>
+<p><strong>Theorem</strong> (Mergelyan). If <span class="math inline">\(f\)</span> is continuous on compact simply connected <span class="math inline">\(K\sub \C\)</span> and analytic in <span class="math inline">\(K^{\circ}\)</span>, then <span class="math inline">\(f\)</span> can be approximated on <span class="math inline">\(K\)</span> by polynomials.</p>
+<h2 id="convergence-for-differentiable-functions">7 Convergence for differentiable functions</h2>
+<p>(Bounded variation means <span class="math inline">\(\ve{f'}_1&lt;\iy\)</span> where <span class="math inline">\(f'\)</span> is interpreted in the distributional sense.)</p>
+If <span class="math inline">\(f^{(k)}, k\le v-1\)</span> is absolutely continuous and <span class="math inline">\(f^{(v)}\)</span> has bounded variation, then
+<span class="math display">\[\begin{align}
+a_k &amp;\le \fc{2V}{\pi k\fp{v+1}} &amp;\le \fc{2V}{\pi (k-v)^{v+1}}\\
+\ve{f-f_n}_\iy &amp;\le \sum_{k=n+1}^\iy |a_k| \le \fc{2V}{\pi v(n-v)^v}\\
+\ve{f-p_n}_\iy &amp;\le \sum_{k=n+1}^{\iy} 2|a_k|\le \fc{4V}{\pi v(n-v)^v}
+\end{align}\]</span>
+<em>Proof</em>.
+<span class="math display">\[\begin{align}
+a_k &amp;= \rc{\pi i}\int_{|z|} f(\rc 2(z+z^{-1})) z^{k-1}\,dz\\
+&amp;=-\rc{\pi i} \int_{|z|=1} f'(\rc 2 (z+z^{-1}))\fc{z^k}{k}\dx\\
+|a_k| &amp;\le \fc{2}\pi \int_{-1}^1 |f'\Im\fc{z^k}{k}|\dx.
+\end{align}\]</span>
+<p>For <span class="math inline">\(v&gt;0\)</span>, integrate by parts <span class="math inline">\(v+1\)</span> times to get <span class="math display">\[(-1)^{v+1} \rc{\pi i}\int_{|z|=1} f^{(v+1)}(\rc 2 (z+z^{-1})) f_{v, k}(z)\dx\]</span> where <span class="math inline">\(f_{0,k}(z) = \fc{z^k}{k}\)</span> and <span class="math inline">\(f_{n+1,k} = \int f_{n,k} \fc{1-z^{-2}}2\)</span>.</p>
+<h2 id="convergence-for-analytic-functions">8 Convergence for analytic functions</h2>
+If the analytic continuation of <span class="math inline">\(f\)</span> to the open Bernstein ellipse <span class="math inline">\(\pa{z\mapsto \fc{z+z^{-1}}2}B_\rh\)</span> satisfies <span class="math inline">\(f\le M\)</span>, then
+<span class="math display">\[\begin{align}
+|a_k| &amp;\le 2M\rh^{-k}\\
+\ve{f-f_n}&amp;\le \fc{2M\rh^{-n}}{\rh - 1}\\
+\ve{f-p_n}&amp;\le \fc{4M\rh^{-n}}{\rh - 1}.
+\end{align}\]</span>
+<p><em>Proof</em>. <span class="math inline">\(a_k = \ab{\rc{\pi i}\int_{|z|=\rh} z^{-1-k} F(z)\,dz}\)</span>.</p>
+<p>Converse: If there exist <span class="math inline">\(q_n\)</span>, <span class="math inline">\(\ve{f-q_n}\le C\rh^{-n}\)</span>, then <span class="math inline">\(f\)</span> is continuable to the Bernstein ellipse <span class="math inline">\(E_\rh\)</span>.</p>
+<p><em>Proof</em>. Write <span class="math inline">\(f=q_0+(q_1-q_0)+\cdots\)</span>. Use the estimate <span class="math inline">\(\deg p\le d\implies \ve{p}_{L^{\iy}(E_\rh)}\le \rh^d \ve{p}_{L^{\iy}[-1,1]}\)</span>. Proof: Let <span class="math inline">\(q(z) = \fc{p(z)}{(z+\sqrt{z^2-1})^d}\)</span>. This is analytic on <span class="math inline">\(\C\cup \{\iy\}\bs [-1,1]\)</span>. (Why is it well-defined?) (It is defined at <span class="math inline">\(\iy\)</span> because taking <span class="math inline">\(z\leftarrow \rc z\)</span> we get <span class="math inline">\(\fc{p_{\text{rev}}(z)}{(1+\sqrt{1-z^2})^d}\)</span>.) The maximum is attained at the boundary <span class="math inline">\([-1,1]\)</span> where the absolute value is 1.</p>
+<h2 id="gibbs-phenomenon">9 Gibbs Phenomenon</h2>
+<p>At discontinuities, the overshoot of a Chebyshev approximation does not <span class="math inline">\(\to 0\)</span> as <span class="math inline">\(n\to \iy\)</span>.</p>
+For Chebyshev interpolants of <span class="math inline">\(\sgn(x)\)</span> on <span class="math inline">\([-1,1]\)</span>,
+<span class="math display">\[\begin{align}
+\lim_{n\to \iy,n\text{ odd}} \ve{p_n}_\iy &amp;\approx1.282...\\
+\lim_{n\to \iy,n\text{ even}} \ve{p_n}_\iy &amp;\approx1.066...
+\end{align}\]</span>
+<p>For Chebyshev projections, <span class="math display">\[\lim_{n\to \iy} \ve{f_n} = \fc 2\pi \int_0^\pi \fc{\sin x}x\dx.\]</span></p>
+<p>Intuition: <span class="math inline">\(p(x) = \sum_{j=(n+1)/2}^n l_j(x)\)</span>. This is an alternating series which in the limit has finite nonzero sum.</p>
+<p>Notes:</p>
+<ul>
+<li>Note even though each prtial sum is continuous, a series may converge pointwise to a discontinuous limit.</li>
+<li>Gibbs oscillations decay slowly at rate <span class="math inline">\(O(k^{v+1})\)</span> if <span class="math inline">\(f^{(v)}\)</span> has a jump.</li>
+<li>This is an algebraic rate of decay, while splins have exponential decay.</li>
+<li>We can get exponential decay by splitting up the function and approximating each piece separately.</li>
+</ul>
+<h2 id="best-approximation">10 Best approximation</h2>
+<p><strong>Theorem</strong>. A continuous <span class="math inline">\(f\)</span> on <span class="math inline">\([-1,1]\)</span> has a unique best approximation <span class="math inline">\(p^*\in \cP_n\)</span>. It is uniquely characterized by <span class="math inline">\(f-p\)</span> equioscillating in <span class="math inline">\(\ge n+2\)</span> extreme points.</p>
+<p><em>Proof</em>. The minimum is attained because it lies in <span class="math inline">\(\{\ve{f-p}\le \ve{f}\}\)</span>. (<span class="math inline">\(L^\iy\)</span> norms.) If <span class="math inline">\(p,q\)</span> satisfy the condition, and <span class="math inline">\(\ve{f-q}&lt; \ve{f_p}\)</span>, then <span class="math inline">\(p-q\)</span> has <span class="math inline">\(n+1\)</span> zeros. If it doesn’t equioscillate, perturb by <span class="math inline">\((x_1-x)\cdots (x_k-x)\)</span>. (If <span class="math inline">\(\ve{f-q}=\ve{f-p}\)</span>, use the following argument: suppose <span class="math inline">\(p\)</span> has equioscillation extreme points <span class="math inline">\(x_{0:n+1}\)</span>. Induct on: <span class="math inline">\(p-q\)</span> has <span class="math inline">\(\ge j\)</span> roots in <span class="math inline">\([x_0,x_j]\)</span>. Suppose this is first violated at <span class="math inline">\(k\)</span> and obtain a contradiction.)</p>
+<h2 id="hermite-integral-formula">11 Hermite integral formula</h2>
+<p><strong>Theorem</strong>. Let <span class="math inline">\(f\)</span> be analytic in a region <span class="math inline">\(\Om\)</span> containing distinct points <span class="math inline">\(x_0,\ldots, x_n\)</span> and <span class="math inline">\(\Ga\)</span> be a contour in <span class="math inline">\(\Om\)</span> looping once around them. The polynomial interpolant of degree <span class="math inline">\(\le n\)</span> to <span class="math inline">\(f\)</span> at <span class="math inline">\(\{x_j\}\)</span> is <span class="math display">\[p(x) = \rc{2\pi i} \int_{\Ga} \fc{f(t)(l(t)-l(x))}{l(t)(t-x)}\,dt\]</span> and if <span class="math inline">\(x\)</span> is enclosed by <span class="math inline">\(\Ga\)</span>, the error is <span class="math display">\[f(x) - p(x) = \rc{2\pi i}\int_{\Ga} \fc{l(x)}{l(t)} \fc{f(t)}{t-x}\,dt.\]</span></p>
+<p>This is useful because it gives an estimate for the error in terms of “analyticity” of <span class="math inline">\(f\)</span>. If <span class="math inline">\(f\)</span> is analytic on a larger region, we can take <span class="math inline">\(\Ga\)</span> to be bigger, and the ratio <span class="math inline">\(\fc{l(x)}{l(t)} = \prod_{j=0}^n \fc{x-x_j}{t-x_j}\)</span> is smaller. This also tells us a property we desire for the interpolation points: they should make <span class="math inline">\(l(x)\)</span> small. (We shouldn’t have to go far away to make the ratio <span class="math inline">\(\fc{l(x)}{l(t)}\)</span> small.)</p>
+<p><em>Proof</em>.</p>
+<ol type="1">
+<li>Let <span class="math inline">\(\Ga_j\)</span> enclose <span class="math inline">\(x_j\)</span> only, and not <span class="math inline">\(x\)</span> By Cauchy, <span class="math display">\[l_j(x) = \fc{l(x)}{l'(x_j)(x-x_j)} = \Res_{x_j}\pf{l(x)}{l(t)(x-t)}\,dt = \rc{2\pi i} \int_{\Ga_j} \fc{l(x)}{l(t)(x-t)}\,dt.\]</span></li>
+<li>Similarly, if <span class="math inline">\(\Ga'\)</span> encloses all <span class="math inline">\(x_j\)</span> but not <span class="math inline">\(x\)</span>, <span class="math display">\[\rc{2\pi i} \int_{\Ga'} \fc{l(x)f(t)}{l(t)(x-t)}\,dt = \sum_j \Res_{x_j} \pf{l(x)f(t)}{l(t)(x-t)} =\sum_j f(x_j)\ell_j(x)=p(x).\]</span></li>
+<li>If <span class="math inline">\(\Ga\)</span> encloses all <span class="math inline">\(x_j,x\)</span>, then this adds <span class="math inline">\(\Res_x\pf{l(x)f(t)}{l(t)(x-t)} = -f(x)\)</span>, so <span class="math display">\[p(x) - f(x) = \rc{2\pi i}\int_{\Ga} \fc{l(x)}{l(t)} \fc{f(t)}{x-t}\,dt.\]</span></li>
+<li>For the first equation, note <span class="math inline">\(f(x) = \rc{2\pi i}\int_\Ga \fc{l(t)f(t)}{l(t)(t-x)}\)</span>.</li>
+</ol>
+<h2 id="potential-theory-and-applications">12 Potential theory and applications</h2>
+<span class="math display">\[\begin{align}
+\ga_n(x,t) &amp;= \prod_{j=0}^n \pf{|t-x_j|}{|x-x_j|}^{\rc{n+1}}\\
+\af{l(x)}{l(t)} &amp;= \ga_n(x,t)^{-n-1}\\
+\al_n &amp;= \min_{x\in X, t\in \Ga} \ga_n(x,t)\\
+\log\ga_n(x,t) &amp;= \ub{\rc{n+1}\sumz jn \log |t-x_j|}{u_n(t)} - \ub{\rc{n+1} \sumz jn \log |x-x_j|}{u_n(s)} \le \al_{n}^{-(n+1)}\\
+\log\al_n&amp;= \min_{t\in \G}u_n(t) - \max_{x\in X}u_n(x).
+\end{align}\]</span>
+<p>We want to lower bound <span class="math inline">\(\al_n\)</span> to get exponential convergence.</p>
+<p>Think of <span class="math inline">\(u\)</span> as a discrete approximation for a continuous potential <span class="math display">\[u(s) = \int_{-1}^1 \ln |s-\tau| \,d\mu(\tau).\]</span> On <span class="math inline">\([-1,1]\)</span>, equally spaced grids converge to <span class="math inline">\(\mu(\tau)=\rc2\)</span> and Chebyshev grids converge to <span class="math inline">\(\mu(\tau) = \rc{\pi \sqrt{1-\tau^2}}\)</span> in weak*.</p>
+<p><em>Key property</em>. The Chebyshev measure generates constant potential on <span class="math inline">\([-1,1]\)</span>, and so minimizes <span class="math inline">\(I(\mu)\)</span> (proof omitted).</p>
+<p>Some alterntive views.</p>
+<ul>
+<li>It’s 1 unit of charge in equilibrium, minimal-energy distributoin, where the potential function is logarithmic. The energy is <span class="math display">\[ I(\mu) = -\int_{-1}^1 \int_{-1}^1 \log |s-\tau|\,d\mu(\tau)\,d\mu(s).\]</span></li>
+<li><span class="math inline">\(u\)</span> is the functiton in the complex <span class="math inline">\(s\)</span>-plane that is harmonic outside <span class="math inline">\([-1,1]\)</span>, approaches a constant value <span class="math inline">\(s\to [-1,1]\)</span>, and is <span class="math inline">\(\log|s|+O(s^{-1})\)</span> (to make total amount of charge 1). To solve this, find a conformal map mapping the exterior of the interval to the exterior of a disk, <span class="math display">\[\phi(s) = \rc2 (s+i\sqrt{1-s^2}).\]</span> The solution there is <span class="math inline">\(\log|z|\)</span>. Map it back to get <span class="math inline">\(u(s) = \log |s+i\sqrt{1-s^2}|-\log 2\)</span>.
+<ul>
+<li>From this we wee that the equipotentials are the Bernstein ellipses: <span class="math inline">\(\rh=2e^{u_0}\)</span> gives <span class="math inline">\(u(s)=u_0\)</span>.</li>
+</ul></li>
+</ul>
+<p>The capacity is <span class="math inline">\(\min_\mu I(\mu)\)</span>; for <span class="math inline">\([-1,1]\)</span> it is <span class="math inline">\(\log 2\)</span>. (Each grid point is at an average distance of <span class="math inline">\(\rc2\)</span> from the others in geometric mean.)</p>
+<p>How to generalize to other regions (compact sets of <span class="math inline">\(\C\)</span>)?</p>
+<ul>
+<li>Fekete points: <span class="math inline">\(\prod_{j\ne k} |x_j-x_k|^{\fc{2}{n(n+1)}}\)</span> as large as possible. (This decreases to <span class="math inline">\(c(E)\)</span>.) This is mathematically nice but computationally difficult.</li>
+<li>Fejer points: <span class="math inline">\(\phi^{-1}(\{z_j\})\)</span> where <span class="math inline">\(z_j\)</span> are equally spaced around the unit circle, where <span class="math inline">\(\phi\)</span> maps the exterior of <span class="math inline">\(E\)</span> to the exterior of the unit circle.</li>
+<li>Leja points: greedy approximations to Fekete poits. Pick <span class="math inline">\(x_i\)</span> successively maximizing <span class="math inline">\(\prod_{j=0}^{n-1}|x_j-x_n|\)</span> at each step.</li>
+</ul>
+<p><strong>Theorem</strong>. Let <span class="math inline">\(f\in C([-1,1])\)</span>. Let <span class="math inline">\(\rh\)</span> be the parameter of the largest Bernstein ellipse <span class="math inline">\(E_\rh\)</span> where <span class="math inline">\(f\)</span> can be analytically continued, and <span class="math inline">\(p_n\)</span> be the interpolants to any sequence of grids with <span class="math inline">\(\lim_{n\to \iy}(\sup_{x\in [-1,1]}|l(x)|)^{\rc n}\)</span>. Then <span class="math inline">\(\lim_{n\to \iy} \ve{f-p_n}^{\rc n} = \rh^{-1}\)</span>.</p>
+<h2 id="equispaced-points-runge-phenomenon">13 Equispaced points, Runge phenomenon</h2>
+<p>Interpolation at equally spaced points can diverge exponentially (at the edges). Why? <span class="math inline">\([-1,1]\)</span> is far from being a level curve. The curve <span class="math inline">\(l(x)=l(t)\)</span> is a “football”; <span class="math inline">\(f\)</span> needs to be analytic inside this football for convergence. The football goes to <span class="math inline">\(\approx .526i\)</span>. Ex. <span class="math inline">\(f=\rc{1+25x^2}\)</span> is not analytic inside, so the interpolants diverge.</p>
+<p>Even if convergence should take place in theory (<span class="math inline">\(f\)</span> is analytic in the football), rounding errors can be amplified by <span class="math inline">\(O(2^n)\)</span> causing divergence in practice.</p>
+<h2 id="discussion-of-high-order-interpolation">14 Discussion of high-order interpolation</h2>
+<p>Much of the literature is skeptical of high-order interpolation because people saw it doesn’t work for equispaced point. However, Chebyshev interpolation does work.</p>
+<p>2 important issues:</p>
+<ol type="1">
+<li>Conditioning of the problem: interpolation points must be properly spaced, so the interpolant does not depend sensitively on the data. Ill-conditioning can lead to Runge phenomenon.</li>
+<li>Stability of the algorithm: Interpolation algorithm must be stable (e.g. barycentric interpolation formula) even when the problem is well-conditioned. Vandermonde is very poorly conditioned.</li>
+</ol>
+<h2 id="lebesgue-constants">15 Lebesgue constants</h2>
+<p>The <strong>Lebesgue constant</strong> of a set of points <span class="math inline">\(S\sub [-1,1]\)</span> is <span class="math display">\[\La = \sup_f\fc{\ve{p}}{\ve{f}} = \sup_{x\in [-1,1]} \ub{\sumo jn |l_j(x)|}{\la(x)}\]</span> where <span class="math inline">\(p\)</span> is the interpolant of <span class="math inline">\(f\)</span> through <span class="math inline">\(S\)</span>.</p>
+<p>The largest possible interpolation error is at least <span class="math inline">\(\La-1\)</span>, and the interpolation error is at most <span class="math inline">\((\La+1) \ve{f-p^*}\)</span>.</p>
+<p>More generally, define the Lebesgue constant of any linear projection by <span class="math inline">\(\sup_f \fc{\ve{Lf}}{\ve{f}}\)</span>. Then <span class="math inline">\(\ve{f-p}\le (\La+1)\ve{f-p^*}\)</span>.</p>
+<p>No set of interpolation points can lead to convergence for all <span class="math inline">\(C([-1,1])\)</span> (PROOF?) so <span class="math inline">\(\lim_{n\to \iy} \La_n\)</span>.</p>
+<p><strong>Theorem</strong>.</p>
+<ol type="1">
+<li>Lebesgue constants for <span class="math inline">\(|S|=n+1\)</span> satisfy <span class="math inline">\(\La_n \ge \fc{2}{\pi}\log (n+1) + \fc{2}\pi (\ga + \log \pf{4}{\pi})\)</span>.</li>
+<li>For Chebyshev points, <span class="math inline">\(\La_n\le \fc{2}{\pi}\log (n+1) +1\)</span>.</li>
+<li>For equispaced points, <span class="math inline">\(\La_n&gt;\fc{2^{n-2}}{n^2}\)</span>.</li>
+<li>For Chebyshev projection, <span class="math inline">\(\La_n =\rc{2\pi}\int_{-\pi}^{\pi} \af{\sin((n+1/2)t)}{\sin(t/2)}\,dt\sim \fc{4}{\pi^2}\log n\)</span>.</li>
+</ol>
+<p>Instructive: Plot <span class="math inline">\(\la(x)\)</span> for equispaced and Chebyshev points.</p>
+<p>Intuition: The fastest a Lagrange polynomial can decay is <span class="math inline">\(O\prc{x}\)</span>, and adding up these alternating tails with alternating coefficients gives a harmonic series.</p>
+<p>Related: For Taylor projection of <span class="math inline">\(f\)</span> analytic on the unit disc, Landau constants <span class="math inline">\(\La_n \sim \rc{\pi}\log n\)</span>.</p>
+
+  </div>
+
+    
+
+    <!-- Extension : Sharing buttons @ www.sharethis.com -->
+    <span class="st_facebook_large" displayText="Facebook"></span>
+    <span class="st_twitter_large" displayText="Tweet"></span>
+    <span class="st_googleplus_large" displayText="Google +"></span>
+    <span class="st_reddit_large" displayText="Reddit"></span>
+    <span class="st__large" displayText></span>
+
+    <div id="disqus_thread"></div>
+    
+
+
+  
+    <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+  </div>
+  
+</div>
+
+
+<!-- Footer -->
+<div id="footer">
+  <div class="container">
+    Built with
+    <a href="http://jaspervdj.be/hakyll">Hakyll</a> 
+    using 
+    <a href="http://www.getbootstrap.com">Bootstrap</a>, 
+    <a href="http://www.disqus.com">Disqus</a>,
+    <a href="http://ignorethecode.net/blog/2010/04/20/footnotes/">Footnotes.js</a>,
+    <a href="http://highlightjs.org/">Highlight.js</a>, 
+    <a href="http://www.mathjax.org">MathJax</a>, 
+    and <a href="http://www.sharethis.com">ShareThis</a>.
+  </div>
+</div>
+</body>
+
+</html>
+
+<!-- SCRIPTS -->
+<!-- jQuery-->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+<script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
+
+<script src="../../../../bootstrap/js/bootstrap.min.js"></script>
+
+<!-- Extension : Highlight.js @ https://highlightjs.org/ -->
+<!-- Syntax highlighting tomorrow-night-bright, agate-->
+<link rel="stylesheet" href="../../../../highlight/css/tomorrow-night-bright.css">
+<script src="../../../../highlight/js/highlight.pack.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+
+<!-- Extension : MathJax @ https://docs.mathjax.org/en/v2.5-latest/tex.html -->
+<!-- MathJax/config/local/local.js contains macros. Need to provide entire URL-->
+<script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML,http://holdenlee.github.io/notebook/MathJax/config/local/local"></script>
+
+<!-- Extension : Footnotes @ http://ignorethecode.net/blog/2010/04/20/footnotes/ -->
+<script src="../../../../footnotes/js/footnotes.js"></script>
+
+<!-- Extension : Disqus @ http://disqus.com -->
+<!-- Extension : InlineDisqussions @ https://github.com/tsi/inlineDisqussions -->
+
+<script src="../../../../disqus/js/disqus.js"></script>
+
+
+
+<!-- Extension : Google Analytics -->
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-73261814-1', 'auto');
+  ga('send', 'pageview');
+
+</script>
+

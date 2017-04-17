@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+
+  <meta name="description" content="Holden Lee's Research Notebook">
+  <meta name="author" content="Holden Lee">
+    
+  <title>Inverse RL</title>
+
+  <!-- Bootstrap core CSS -->
+  <link href="../../../../bootstrap/css/bootstrap.min.css" rel="stylesheet">
+
+  <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+  <!-- <link href="../../assets/css/ie10-viewport-bug-workaround.css" rel="stylesheet"> -->
+
+  <!-- Custom styles for this template -->
+  <link href="../../../../css/blog.css" rel="stylesheet">
+  <link href="../../../../css/default.css" rel="stylesheet">
+
+  <!-- Extension : Footnotes -->
+  <link href="../../../../footnotes/css/footnotes.css" rel="stylesheet">
+
+  <!-- Extension : InlineDisqussions @ https://github.com/tsi/inlineDisqussions -->
+  
+
+  <!-- Extension : Collapsible lists @ http://code.stephenmorley.org/javascript/collapsible-lists/-->
+  <link href="../../../../collapsible_lists/css/collapsible.css" rel="stylesheet">
+  <script type="text/javascript" src="../../../../collapsible_lists/js/CollapsibleLists.js"></script>
+
+</head>
+
+<body>
+
+<!-- Navigation bar. navbar-inverse is black, navbar-default is white.-->
+<!-- To make a button active (pressed), use <li class="active"> -->
+<div id="header">
+  <nav class="navbar navbar-inverse navbar-fixed-top">
+    <div class="container">
+      <div class="navbar-header">
+        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+          <span class="sr-only">Toggle navigation</span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="../../../../">Notebook</a>
+      </div>
+      <div id="navbar" class="collapse navbar-collapse">
+        <ul class="nav navbar-nav">
+          <li><a href="../../../../">Home</a></li>
+          <li><a href="../../../../sitemap.html">Sitemap</a></li>
+<!-- TODO: Distinguish between PAPERS, RESEARCH QUESTIONS, BOOKS -->
+<!-- TODO: make this part a for loop over main pages -->
+        </ul>
+      </div><!--/.nav-collapse -->
+    </div>
+  </nav>
+</div>
+<!-- Content -->
+<!--div id="content">
+  <h1>Mental Wilderness</h1>-->
+
+
+
+<div class="container">
+  <div id="content">
+    <div class="page header">
+      <h1>Inverse RL</h1>
+    </div>
+    <div class="info">
+      
+       
+        <p>Posted: 2017-04-03 
+          , Modified: 2017-04-03 
+	</p>
+      
+       <p>Tags: <a href="../../../../tags/reinforcement%20learning.html">reinforcement learning</a></p> 
+    </div>
+    
+  </div>
+  <!--/div-->
+
+  <div class="toc"> <ul>
+ <li><a href="#nr00-inverse-reinforcement-learning">[NR00] Inverse reinforcement learning</a></li>
+ <li><a href="#hdar16-cooperative-inverse-reinforcement-learning">[HDAR16] Cooperative inverse reinforcement learning</a><ul>
+ <li><a href="#formalism">Formalism</a></li>
+ <li><a href="#simple-approximation-scheme">Simple approximation scheme</a></li>
+ <li><a href="#future-work">Future work</a></li>
+ </ul></li>
+ <li><a href="#other-papers">Other papers</a></li>
+ </ul> </div>
+
+  <div class="blog-main">
+    <h2 id="nr00-inverse-reinforcement-learning">[NR00] Inverse reinforcement learning</h2>
+<p>Compute constraints that characterize set of reward functions so observed behavior maximizes reward. Use max-margin heuristic.</p>
+<h2 id="hdar16-cooperative-inverse-reinforcement-learning">[HDAR16] Cooperative inverse reinforcement learning</h2>
+<p>Human knows reward function. Robot does not. Robot payoff is human reward.</p>
+<p>IRL: <span class="math inline">\(\Pj(u|\te, x_0) \propto e^{U_\te(x_0,u)}\)</span>.</p>
+<ul>
+<li>Reduction to POMDP and sufficient statistics</li>
+<li>Apprenticeship learning and suboptimality of IRL-like solutions (because H can use a suboptimal action to convey more information to R).</li>
+</ul>
+<p>Desiderata:</p>
+<ol type="1">
+<li>Leverage action to improve learning.</li>
+<li>Human is not uninterested expert, but cooperative teacher.</li>
+</ol>
+<h3 id="formalism">Formalism</h3>
+<ul>
+<li><span class="math inline">\(\Te\)</span>: static reward parameters observed by <span class="math inline">\(H\)</span>.</li>
+<li><span class="math inline">\(R: S\times A^H\times A^R\times \Te \to \R\)</span>, reward.</li>
+<li><span class="math inline">\(\ga\)</span>: discount</li>
+</ul>
+<p>At time <span class="math inline">\(t\)</span>, observe <span class="math inline">\(s_t\)</span> and select action <span class="math inline">\(a_t^H, a_t^R\)</span>. Both achieve reward <span class="math inline">\(r_t=R(s_t,a_t^H, a_t^R;\te)\)</span>.</p>
+<p>Note: decentralized POMDP - compute optimal joint policy is NEXP-complete.</p>
+<p>Here, private info is restricted to <span class="math inline">\(\te\)</span>, so reduction to coordination-POMDP does not blow up state space. (<span class="math inline">\(|S_C|=|S||\Te|\)</span>). (State is tuple or world state, reward parameters, and R’s belief.)</p>
+<p>Belief about <span class="math inline">\(\te\)</span> is sufficient statistic for optimal behavior. <span class="math inline">\((\pi^{H*},\pi^{R*})\)</span> depends only on current state and R’s belief.</p>
+<p>Apprenticeship learning: imitate demonstrations.</p>
+<p>ACIRL: 2 phases, human and robot takes turns; then robot acts independently (deployment).</p>
+<p>Ex. With linear dependence on <span class="math inline">\(\te\)</span>, in deployment, optimal policy is to maximize reward induced by mean.</p>
+<p>DBE (demonstration by expert): greedily maximizes immediate reward. Best response is to compute posterior over <span class="math inline">\(\te\)</span>.</p>
+<p>There exist ACIRL games where <span class="math inline">\(br(br(\pi^E))\ne \pi^E\)</span>.</p>
+<!--Human objective $U_\te(x_0,u_R,u_H)$.-->
+<ul>
+<li>? Seems to require human knowing how robot learns. Unrealistic teaching assumption.</li>
+<li>? Is reward observed by robot? No.</li>
+</ul>
+<h3 id="simple-approximation-scheme">Simple approximation scheme</h3>
+<p>Suppose reward is <span class="math inline">\(\phi(s)^T\te\)</span>.</p>
+<p><span class="math display">\[\tau^H = \amax_\tau \phi(\tau)^T \te - \eta\ve{\phi_\te-\phi(\tau)}^2.\]</span></p>
+<p>Optimal <span class="math inline">\(\pi^R\)</span> under DBE tries to match observed feature counts. (<strong>I don’t get this.</strong>.)</p>
+<h3 id="future-work">Future work</h3>
+<p>Coordination problem.</p>
+<h2 id="other-papers">Other papers</h2>
+<ul>
+<li>[RA07], [Z…08]: <span class="math inline">\(\pi^H\)</span> is noisy expert. Bayesian approach: prior on rewards, vs. prior on reward functions.</li>
+<li>[Nat…10] observe cooperating multiple actors.</li>
+<li>[Wau…11], [KS15]: infer payoffs from observed behavior in general.</li>
+<li>[Fer…14], hidden-goal MDP, goal unobserved. Human as part of environment</li>
+<li>[CL12] Teach learner reward for MDP.</li>
+<li>[DS13] Motion best communicating agent’s intention.</li>
+</ul>
+
+  </div>
+
+    
+
+    <!-- Extension : Sharing buttons @ www.sharethis.com -->
+    <span class="st_facebook_large" displayText="Facebook"></span>
+    <span class="st_twitter_large" displayText="Tweet"></span>
+    <span class="st_googleplus_large" displayText="Google +"></span>
+    <span class="st_reddit_large" displayText="Reddit"></span>
+    <span class="st__large" displayText></span>
+
+    <div id="disqus_thread"></div>
+    
+
+
+  
+    <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+  </div>
+  
+</div>
+
+
+<!-- Footer -->
+<div id="footer">
+  <div class="container">
+    Built with
+    <a href="http://jaspervdj.be/hakyll">Hakyll</a> 
+    using 
+    <a href="http://www.getbootstrap.com">Bootstrap</a>, 
+    <a href="http://www.disqus.com">Disqus</a>,
+    <a href="http://ignorethecode.net/blog/2010/04/20/footnotes/">Footnotes.js</a>,
+    <a href="http://highlightjs.org/">Highlight.js</a>, 
+    <a href="http://www.mathjax.org">MathJax</a>, 
+    and <a href="http://www.sharethis.com">ShareThis</a>.
+  </div>
+</div>
+</body>
+
+</html>
+
+<!-- SCRIPTS -->
+<!-- jQuery-->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+<script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
+
+<script src="../../../../bootstrap/js/bootstrap.min.js"></script>
+
+<!-- Extension : Highlight.js @ https://highlightjs.org/ -->
+<!-- Syntax highlighting tomorrow-night-bright, agate-->
+<link rel="stylesheet" href="../../../../highlight/css/tomorrow-night-bright.css">
+<script src="../../../../highlight/js/highlight.pack.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+
+<!-- Extension : MathJax @ https://docs.mathjax.org/en/v2.5-latest/tex.html -->
+<!-- MathJax/config/local/local.js contains macros. Need to provide entire URL-->
+<script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML,http://holdenlee.github.io/notebook/MathJax/config/local/local"></script>
+
+<!-- Extension : Footnotes @ http://ignorethecode.net/blog/2010/04/20/footnotes/ -->
+<script src="../../../../footnotes/js/footnotes.js"></script>
+
+<!-- Extension : Disqus @ http://disqus.com -->
+<!-- Extension : InlineDisqussions @ https://github.com/tsi/inlineDisqussions -->
+
+<script src="../../../../disqus/js/disqus.js"></script>
+
+
+
+<!-- Extension : Google Analytics -->
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-73261814-1', 'auto');
+  ga('send', 'pageview');
+
+</script>
+

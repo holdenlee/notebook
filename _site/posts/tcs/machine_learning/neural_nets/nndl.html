@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+
+  <meta name="description" content="Holden Lee's Research Notebook">
+  <meta name="author" content="Holden Lee">
+    
+  <title>Neural nets learn dictionaries</title>
+
+  <!-- Bootstrap core CSS -->
+  <link href="../../../../bootstrap/css/bootstrap.min.css" rel="stylesheet">
+
+  <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+  <!-- <link href="../../assets/css/ie10-viewport-bug-workaround.css" rel="stylesheet"> -->
+
+  <!-- Custom styles for this template -->
+  <link href="../../../../css/blog.css" rel="stylesheet">
+  <link href="../../../../css/default.css" rel="stylesheet">
+
+  <!-- Extension : Footnotes -->
+  <link href="../../../../footnotes/css/footnotes.css" rel="stylesheet">
+
+  <!-- Extension : InlineDisqussions @ https://github.com/tsi/inlineDisqussions -->
+  
+
+  <!-- Extension : Collapsible lists @ http://code.stephenmorley.org/javascript/collapsible-lists/-->
+  <link href="../../../../collapsible_lists/css/collapsible.css" rel="stylesheet">
+  <script type="text/javascript" src="../../../../collapsible_lists/js/CollapsibleLists.js"></script>
+
+</head>
+
+<body>
+
+<!-- Navigation bar. navbar-inverse is black, navbar-default is white.-->
+<!-- To make a button active (pressed), use <li class="active"> -->
+<div id="header">
+  <nav class="navbar navbar-inverse navbar-fixed-top">
+    <div class="container">
+      <div class="navbar-header">
+        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+          <span class="sr-only">Toggle navigation</span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="../../../../">Notebook</a>
+      </div>
+      <div id="navbar" class="collapse navbar-collapse">
+        <ul class="nav navbar-nav">
+          <li><a href="../../../../">Home</a></li>
+          <li><a href="../../../../sitemap.html">Sitemap</a></li>
+<!-- TODO: Distinguish between PAPERS, RESEARCH QUESTIONS, BOOKS -->
+<!-- TODO: make this part a for loop over main pages -->
+        </ul>
+      </div><!--/.nav-collapse -->
+    </div>
+  </nav>
+</div>
+<!-- Content -->
+<!--div id="content">
+  <h1>Mental Wilderness</h1>-->
+
+
+
+<div class="container">
+  <div id="content">
+    <div class="page header">
+      <h1>Neural nets learn dictionaries</h1>
+    </div>
+    <div class="info">
+      
+       
+        <p>Posted: 2016-10-10 
+          , Modified: 2016-10-10 
+	</p>
+      
+       <p>Tags: <a href="../../../../tags/dictionary%20learning.html">dictionary learning</a>, <a href="../../../../tags/neural%20nets.html">neural nets</a></p> 
+    </div>
+    
+  </div>
+  <!--/div-->
+
+  <div class="toc"> <ul>
+ <li><a href="#result">Result</a></li>
+ <li><a href="#proof">Proof</a></li>
+ <li><a href="#further-directions">Further directions</a></li>
+ </ul> </div>
+
+  <div class="blog-main">
+    <p><a href="https://dl.dropboxusercontent.com/u/27883775/wiki/math/pdfs/nndl.pdf">writeup</a></p>
+<h2 id="result">Result</h2>
+<p>General idea: when each row of <span class="math inline">\(B\)</span> is sufficiently close to the row of <span class="math inline">\(A^T\)</span>, gradient descent converges until <span class="math inline">\(B\)</span> is very close to <span class="math inline">\(A^T\)</span>.</p>
+<p>PROBLEM: I’ve done a lot of the calculations for neural nets learning dictionaries, and am getting stuck on the following: it appears that the gradient of the entire matrix is correlated with the right direction, but individual rows may not be (so a row may get far away until it no longer decodes correctly).</p>
+<h2 id="proof">Proof</h2>
+<h2 id="further-directions">Further directions</h2>
+<ul>
+<li>What are the dynamics of the dictionary vectors learned? If we start them randomly, will they converge to the <span class="math inline">\(A_{\bullet i}\)</span> or combinations of the <span class="math inline">\(A_{\bullet i}\)</span>? Will they not be useless? Will they be far apart? (What if you simply do some sampling of <span class="math inline">\(Ah\)</span>?)</li>
+<li>Agnostic dictionary learning. Suppose we learn a good dictionary. Can we guarantee that it will do well in classification?</li>
+<li>Would a local min for this neural net be good? Generalization follows from Rademacher, so we just care about driving down the cost.</li>
+<li>What weird properties does a NP-hard distribution for DL have—is there a simple way to exclude those?</li>
+<li>Not overcomplete, but sparse + noise (e.g. componentwise). (If not overcomplete, then a linear classifier works. But thresholding could remove the noise, while averaging wouldn’t (ex. averaging could amplify it, though slowerly than linearly, <span class="math inline">\(\sqrt n\)</span>).)</li>
+<li>If don’t get <span class="math inline">\(b^Th\)</span> but only <span class="math inline">\(\sgn(b^Th)\)</span>.</li>
+<li>Provable convolutional DL. (The difficulty is that translates that are close by overlap and are not close to orthogonal.)
+<ul>
+<li>More general (mathematical) problem is DL under various invariances. Perhaps assuming locality of the filter and separation in distance of the nonzero patches (ex. different copies of the same filter don’t overlap).</li>
+<li>What if we add rotation?</li>
+<li>Can’t do recovery by multiplying by transpose… (Multiplying by transpose doesn’t correspond to recovery.) Inverse is badly conditioned… Only allow sum of delta functions? Maybe represent as <span class="math inline">\(\al\de_\be\)</span>?</li>
+<li>Think of this as a kind of sparsity… Have both <span class="math inline">\(\al,\be\)</span> be nodes in the NN? Have location of max when max pooling?
+<ul>
+<li>Ex. angle: instead of having <span class="math inline">\(\R^{\mathbb S^1}\)</span>, represent by <span class="math inline">\(\R \times \bS^1\)</span> (delta function at one location, the max). But can’t combine values in <span class="math inline">\(\bS^1\)</span> with values in <span class="math inline">\(\R\)</span>. Still need some kernel parametrized by <span class="math inline">\(\bS\times \bS\)</span>. How are absolute vs. relative locations separated and kept? Kernel written as sum of simple basis functions?</li>
+</ul></li>
+<li>(Use less precision in training than evaluation? Prevent too many parameters.)</li>
+<li>Interpolation… lowpass filter?</li>
+</ul></li>
+</ul>
+
+  </div>
+
+    
+
+    <!-- Extension : Sharing buttons @ www.sharethis.com -->
+    <span class="st_facebook_large" displayText="Facebook"></span>
+    <span class="st_twitter_large" displayText="Tweet"></span>
+    <span class="st_googleplus_large" displayText="Google +"></span>
+    <span class="st_reddit_large" displayText="Reddit"></span>
+    <span class="st__large" displayText></span>
+
+    <div id="disqus_thread"></div>
+    
+
+
+  
+    <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+  </div>
+  
+</div>
+
+
+<!-- Footer -->
+<div id="footer">
+  <div class="container">
+    Built with
+    <a href="http://jaspervdj.be/hakyll">Hakyll</a> 
+    using 
+    <a href="http://www.getbootstrap.com">Bootstrap</a>, 
+    <a href="http://www.disqus.com">Disqus</a>,
+    <a href="http://ignorethecode.net/blog/2010/04/20/footnotes/">Footnotes.js</a>,
+    <a href="http://highlightjs.org/">Highlight.js</a>, 
+    <a href="http://www.mathjax.org">MathJax</a>, 
+    and <a href="http://www.sharethis.com">ShareThis</a>.
+  </div>
+</div>
+</body>
+
+</html>
+
+<!-- SCRIPTS -->
+<!-- jQuery-->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+<script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
+
+<script src="../../../../bootstrap/js/bootstrap.min.js"></script>
+
+<!-- Extension : Highlight.js @ https://highlightjs.org/ -->
+<!-- Syntax highlighting tomorrow-night-bright, agate-->
+<link rel="stylesheet" href="../../../../highlight/css/tomorrow-night-bright.css">
+<script src="../../../../highlight/js/highlight.pack.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+
+<!-- Extension : MathJax @ https://docs.mathjax.org/en/v2.5-latest/tex.html -->
+<!-- MathJax/config/local/local.js contains macros. Need to provide entire URL-->
+<script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML,http://holdenlee.github.io/notebook/MathJax/config/local/local"></script>
+
+<!-- Extension : Footnotes @ http://ignorethecode.net/blog/2010/04/20/footnotes/ -->
+<script src="../../../../footnotes/js/footnotes.js"></script>
+
+<!-- Extension : Disqus @ http://disqus.com -->
+<!-- Extension : InlineDisqussions @ https://github.com/tsi/inlineDisqussions -->
+
+<script src="../../../../disqus/js/disqus.js"></script>
+
+
+
+<!-- Extension : Google Analytics -->
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-73261814-1', 'auto');
+  ga('send', 'pageview');
+
+</script>
+
