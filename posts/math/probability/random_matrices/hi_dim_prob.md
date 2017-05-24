@@ -9,7 +9,7 @@ showTOC: True
 
 Based on Ramon von Handel's ORF570 notes.
 
-#Introduction
+# Introduction
 
 Themes:
 
@@ -17,9 +17,9 @@ Themes:
 * suprema
 * universality
 
-#Variance bounds and Poincare inequalities
+# Variance bounds and Poincare inequalities
 
-##2.1
+## 2.1
 
 Trivial bound:
 $$ \Var[f(X)]\le \rc4 (\sup f - \inf f)^2 \qquad \Var[f(x)] \le \E[(f(X)-\inf f)^2].$$
@@ -69,9 +69,9 @@ Inequalities in this section are roughly of the following form (Poincare inequal
 $$\Var(f) \le \E[\ve{\nb f}^2].$$
 "The validity of a Poincar´e inequality for a given distribution is intimately connected the convergence rate of a Markov process that admits that distribution as a stationary measure."
 
-##Markov semigroups
+## Markov semigroups
 
-A **Markov process** satisfies: For every bounded measurable $f$ and $s,t\in \R_+$, here is abounded measurable $P_sf$ such that
+A **Markov process** satisfies: For every bounded measurable $f$ and $s,t\in \R_+$, here is a bounded measurable $P_sf$ such that
 $$\E[f(X_{t+s})|\{X_r\}_{r\le t}] = (P_s f)(X_t).$$
 $\mu$ is **stationary** if $\mu(P_tf)=\mu(f)$ for all $t\in \R_+$, bounded measurable $f$.
 
@@ -171,7 +171,7 @@ Tensorization using Poincare inequality:
     $$\de_i P_t f=e^{-t} \sum_{I\nin i} (1-e^{-t})^{|I|} e^{-t(n-1-|I|)} \int \de_i f\prod_{i\in I}\mu_i(dx_i)$$
 	so $\cE(P_tf,P_tf) \le \ka(f) e^{-2t}$.
 
-##2.4 Variance identities and exponential ergodicity
+## 2.4 Variance identities and exponential ergodicity
 
 We prove the Poincare inequality.
 

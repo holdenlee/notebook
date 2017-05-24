@@ -8,8 +8,206 @@
         <name>Holden Lee</name>
         <email>oldheneel@gmail.com</email>
     </author>
-    <updated>2017-04-16T00:00:00Z</updated>
+    <updated>2017-05-24T00:00:00Z</updated>
     <entry>
+    <title>(TPGB17) The space of transferable adversarial examples</title>
+    <link href="http://holdenlee.github.io/notebook/posts/tcs/machine_learning/neural_nets/TPGB17.html" />
+    <id>http://holdenlee.github.io/notebook/posts/tcs/machine_learning/neural_nets/TPGB17.html</id>
+    <published>2017-05-24T00:00:00Z</published>
+    <updated>2017-05-24T00:00:00Z</updated>
+    <summary type="html"><![CDATA[
+<div class="container">
+  <div id="content">
+    <div class="page header">
+      <h1>(TPGB17) The space of transferable adversarial examples</h1>
+    </div>
+    <div class="info">
+      
+       
+        <p>Posted: 2017-05-24 
+          , Modified: 2017-05-24 
+	</p>
+      
+       <p>Tags: <a href="/tags/neural%20nets.html">neural nets</a>, <a href="/tags/aaml.html">aaml</a></p> 
+    </div>
+    
+  </div>
+  <!--/div-->
+
+  <div class="toc"> <ul>
+ <li><a href="#adversarial-subspaces">Adversarial subspaces</a></li>
+ <li><a href="#decision-boundaries">Decision boundaries</a><ul>
+ <li><a href="#experiments">Experiments</a></li>
+ </ul></li>
+ <li><a href="#limits-of-transferability">Limits of transferability</a></li>
+ </ul> </div>
+
+  <div class="blog-main">
+    <!--
+See also 
+
+* [intro to problem](adversarial.html).
+* [my experiments](adversarial_experiments.html). 
+* [confidence](confidence.html).
+-->
+<h2 id="adversarial-subspaces">Adversarial subspaces</h2>
+<ul>
+<li>Introduces methods for discovering a subspace of adversarial perturbations.
+<ul>
+<li>MNIST: 25 dimensions</li>
+</ul></li>
+<li>Distance traveled before reaching decision boundary is on average larger than distance separating decision boundaries of 2 models in that direction. (This doesn’t seem surprising.)</li>
+</ul>
+<p>Recall that FGSM is <span class="math display">\[
+x^* = x + \ep \nv{\nb_x J(x,y)}.
+\]</span></p>
+<p>Techniques:</p>
+<ul>
+<li>Solve optimization problem multiple times, constraining the next direction to be orthogonal to the previous. <strong>GAAS works well, others don’t.</strong>
+<ul>
+<li>Second-order approximation of loss function <span class="math inline">\(\max_{\ve{r}\le \ep} g^T r + \rc 2 r^T H r\)</span>.</li>
+<li>Convex optimization: Write an LP for the region where <span class="math inline">\(f\)</span> is piecewise linear, and throw in orthogonality condition.</li>
+<li>GAAS (gradient aligned adversarial subspace): Find orthogonal <span class="math inline">\(r_1,\ldots, r_k\)</span> with <span class="math display">\[\ve{r_i}_2\le \ep, \quad r_i^T \nb_x J(x,y)\ge \ga.\]</span> (Think of a right-angled simplex with vertex at <span class="math inline">\(x\)</span>. We can compute how many there are given desired <span class="math inline">\(\fc{g^Tr_i}{\ve{g}_2}\)</span>: <span class="math inline">\(\min\{\ff{1}{\al^2}, d\}\)</span>.)</li>
+<li>JSMA: partition most salient features into <span class="math inline">\(k\)</span> bins; use these <span class="math inline">\(k\)</span> sets to get <span class="math inline">\(k\)</span> orthogonal perturbations.</li>
+</ul></li>
+</ul>
+<p>For DNN, get 44 directions, 25 of which transfer. For CNN, get 15 directions, 2 of which transfer.</p>
+<h2 id="decision-boundaries">Decision boundaries</h2>
+<p>Adversarial training does not significantly displace decision boundary.</p>
+<p>Define unit norm directions <span class="math display">\[
+d(f,x) := \fc{x'-x}{\ve{x'-x}}
+\]</span> where <span class="math inline">\(x'\)</span> is defined differently in 3 cases:</p>
+<ol type="1">
+<li>Legitimate direction <span class="math inline">\(d_{leg}\)</span>: <span class="math inline">\(x'\)</span> is closest data point with different class label.</li>
+<li>Adversarial example <span class="math inline">\(d_{adv}\)</span>: adversarial example generated from <span class="math inline">\(x\)</span>.</li>
+<li><span class="math inline">\(d_{rand}\)</span> random <span class="math inline">\(x'\)</span> in input domain that is classified differently.</li>
+</ol>
+<p>Define minimum distance <span class="math display">\[
+MD_d(f,x) = \amin_{\ep&gt;0} f(x+\ep \cdot d) \ne f(x)
+\]</span> and interboundary distance as <span class="math display">\[
+ID_d(f_1,f_2,x) = 
+|MD_d(f_1,x) - MD_d (f_2,x)|
+\]</span></p>
+<h3 id="experiments">Experiments</h3>
+<p>Transfer from</p>
+<ul>
+<li>logistic regression (LR)</li>
+<li>support vector machine (SVM)</li>
+<li>DNN</li>
+</ul>
+<p>Defenses only prevent white-box attacks by reducing reliability of 1st order approximations (gradient masking).</p>
+<h2 id="limits-of-transferability">Limits of transferability</h2>
+<p>This hypothesis is false: If 2 models achieve low error while exhibiting low robustness, then adversarial examples transfer between models.</p>
+<p>Ex. Adversarial examples on MNIST don’t transfer between linear and quadratic models.</p>
+Model-agnostic perturbation: For a fixed feature mapping <span class="math inline">\(\phi\)</span>, define <span class="math inline">\(\de_\phi\)</span> as difference in intra-class means, and the adversarial direction <span class="math inline">\(r_\phi\)</span> for <span class="math inline">\((x,y)\)</span>,
+<span class="math display">\[\begin{align}
+\de_\phi:&amp;=\rc 2 (\E_{\mu_{+1}} [\phi(x)]
+- \E_{\mu_{-1}}[\phi(x)])\\
+r_\phi:&amp;= - \ep y \wh \de_\phi.
+\end{align}\]</span>
+<p>If <span class="math inline">\(f(x) = w^T\phi(x)+b\)</span>, and <span class="math inline">\(\De:=\wh w^T \wh\de_\phi\)</span> is large, and <span class="math inline">\(\phi\)</span> is “pseudo-linear” (<span class="math inline">\(\phi(x+r)-\phi(x)\approx r_\phi\)</span>) then <span class="math inline">\(x+r\)</span> transfers to <span class="math inline">\(f\)</span>.</p>
+<p>TLDR: shift points in direction of difference of class means; this transfers well.</p>
+<p>Can models with access to same set of input features learn representations that don’t transfer?</p>
+<p>There’s a simple (but not very informative…) example where this works: MNIST with XOR artifacts trained on linear and quadratic.</p>
+
+  </div>
+
+    
+
+    <!-- Extension : Sharing buttons @ www.sharethis.com -->
+    <span class='st_facebook_large' displayText='Facebook'></span>
+    <span class='st_twitter_large' displayText='Tweet'></span>
+    <span class='st_googleplus_large' displayText='Google +'></span>
+    <span class='st_reddit_large' displayText='Reddit'></span>
+    <span class='st__large' displayText=''></span>
+
+    <div id="disqus_thread"></div>
+    
+
+
+  
+    <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+  </div>
+  
+</div>
+]]></summary>
+</entry>
+<entry>
+    <title>Weekly summary 2017-04-29</title>
+    <link href="http://holdenlee.github.io/notebook/posts/summaries/2017-04-29.html" />
+    <id>http://holdenlee.github.io/notebook/posts/summaries/2017-04-29.html</id>
+    <published>2017-04-25T00:00:00Z</published>
+    <updated>2017-04-25T00:00:00Z</updated>
+    <summary type="html"><![CDATA[
+<div class="container">
+  <div id="content">
+    <div class="page header">
+      <h1>Weekly summary 2017-04-29</h1>
+    </div>
+    <div class="info">
+      
+       
+        <p>Posted: 2017-04-25 
+          , Modified: 2017-04-25 
+	</p>
+      
+       <p>Tags: <a href="/tags/none.html">none</a></p> 
+    </div>
+    
+  </div>
+  <!--/div-->
+
+  <div class="toc"> <ul>
+ <li><a href="#day-by-day">Day by day</a></li>
+ </ul> </div>
+
+  <div class="blog-main">
+    <h2 id="day-by-day">Day by day</h2>
+<ul>
+<li><p>Mon. 4-24: If I can bound <span class="math display">\[
+\an{\mathcal L g, \an{\nb f, \nb g}} \ll \an{\mathcal L g, \mathcal L g}
+\]</span> independent of <span class="math inline">\(f\)</span>, then I can argue that for small <span class="math inline">\(\de\)</span>, eigenvectors for Langevin on <span class="math inline">\((1-\de)f\)</span> are close to eigenvectors for Langevin on <span class="math inline">\(f\)</span>. (One has to be careful with <a href="/posts/math/algebra/linear/matrix_analysis/perturbation.html">which eigenspaces to work with</a>.)</p>
+I don’t know how to do this. The best I can do is
+<span class="math display">\[\begin{align}
+\an{f, \mathcal L_\mu f}_\mu &amp;\le -k \ve{f}_\mu^2\\
+\implies \an{f, \mathcal L_{\mu'} f}_{\mu'} &amp;\le -\fc{k}{1+O(\de)}\ve{f}_{\mu'}^2.
+\end{align}\]</span>
+where <span class="math inline">\(\mu'\)</span> is for <span class="math inline">\((1-\de)f\)</span>, which gives an angle between eigenspaces of <span class="math inline">\(1+O\pf{\la_k}{\la_l}\)</span> where <span class="math inline">\(\la_k,\la_l\)</span> are the threshold values for the eigenspaces. This does NOT go to 1. I need something that goes to 1.</li>
+<li>Tue. 4-25:
+<ul>
+<li>Perceptron writeup.</li>
+<li>Experiment with semi-random features.
+<ul>
+<li>Distribution is normal, square loss. (But maybe square loss is just a proxy?)</li>
+<li>Doesn’t seem to work: loss on batch of 100 is on order of 20, even with 50 nodes.</li>
+</ul></li>
+<li>Can estimate gaussian robustly given samples from something with <span class="math inline">\(L^\iy\)</span> distance (in log space) <span class="math inline">\(h\)</span> with <span class="math inline">\(\wt O (h^2)\)</span> samples. Can we extend this to convex things?</li>
+</ul></li>
+</ul>
+
+  </div>
+
+    
+
+    <!-- Extension : Sharing buttons @ www.sharethis.com -->
+    <span class='st_facebook_large' displayText='Facebook'></span>
+    <span class='st_twitter_large' displayText='Tweet'></span>
+    <span class='st_googleplus_large' displayText='Google +'></span>
+    <span class='st_reddit_large' displayText='Reddit'></span>
+    <span class='st__large' displayText=''></span>
+
+    <div id="disqus_thread"></div>
+    
+
+
+  
+    <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+  </div>
+  
+</div>
+]]></summary>
+</entry>
+<entry>
     <title>Adversarial thoughts</title>
     <link href="http://holdenlee.github.io/notebook/posts/tcs/machine_learning/neural_nets/adversarial_thoughts.html" />
     <id>http://holdenlee.github.io/notebook/posts/tcs/machine_learning/neural_nets/adversarial_thoughts.html</id>
@@ -819,328 +1017,6 @@ I(s) = d(R, f(s)).
 <ul>
 <li>E. Hazan, K. Levi, and S. Shalev-Shwartz. On graduated optimization for stochastic non-convex problems</li>
 </ul>
-
-  </div>
-
-    
-
-    <!-- Extension : Sharing buttons @ www.sharethis.com -->
-    <span class='st_facebook_large' displayText='Facebook'></span>
-    <span class='st_twitter_large' displayText='Tweet'></span>
-    <span class='st_googleplus_large' displayText='Google +'></span>
-    <span class='st_reddit_large' displayText='Reddit'></span>
-    <span class='st__large' displayText=''></span>
-
-    <div id="disqus_thread"></div>
-    
-
-
-  
-    <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
-  </div>
-  
-</div>
-]]></summary>
-</entry>
-<entry>
-    <title>Learning to model structures and data</title>
-    <link href="http://holdenlee.github.io/notebook/posts/tcs/complexity/model.html" />
-    <id>http://holdenlee.github.io/notebook/posts/tcs/complexity/model.html</id>
-    <published>2017-03-12T00:00:00Z</published>
-    <updated>2017-03-12T00:00:00Z</updated>
-    <summary type="html"><![CDATA[
-<div class="container">
-  <div id="content">
-    <div class="page header">
-      <h1>Learning to model structures and data</h1>
-    </div>
-    <div class="info">
-      
-       
-        <p>Posted: 2017-03-12 
-          , Modified: 2016-03-12 
-	</p>
-      
-       <p>Tags: <a href="/tags/pseudorandomness.html">pseudorandomness</a>, <a href="/tags/structure.html">structure</a></p> 
-    </div>
-    
-  </div>
-  <!--/div-->
-
-  <div class="toc"> <ul>
- <li><a href="#miscellaneous-notes">Miscellaneous notes</a></li>
- <li><a href="#what-does-this-say-for-learning">What does this say for learning?</a></li>
- </ul> </div>
-
-  <div class="blog-main">
-    <h2 id="miscellaneous-notes">Miscellaneous notes</h2>
-<ul>
-<li>Boosting:
-<ul>
-<li>Generic boosting theorem</li>
-<li>Easiest to state when assume access to whole distribution. Otherwise, have to sample and assume something about VC dimension to generalize. (See old 511 notes. Actual argument works with <span class="math inline">\(\Pi_H(m)\)</span>, is there some reason we need to do that?)</li>
-<li>Hardcore lemma</li>
-<li>Strong version: Either allow real-number predictions, or think of real-number output as flipping a coin with that probability. This can save the vital factor of 2 compared to worst-case.</li>
-<li>I don’t get the potential argument.</li>
-<li>I do get the multiplicative weights argument of BHK, but there are some things to be careful about.
-<ul>
-<li>Familiar with MW with divergence applied to it.</li>
-<li>How to make non-worst case? Is this already covered?</li>
-<li>What about the AdaBoost improvement - algorithmically speaking, it makes sense to adapt weight based on number correct/wrong. Can you not redo the analysis here?</li>
-<li>Important: need to keep track of density of <span class="math inline">\(\de\)</span>.</li>
-<li>Do we need to cap the weights at 1? What problem is this trying to solve? What happens if we don’t?</li>
-</ul></li>
-</ul></li>
-<li>Dense model theorem
-<ul>
-<li>Got <span class="math inline">\(\de''\)</span> (<span class="math inline">\(\wh \de\)</span>) part</li>
-<li>Lots of algebra/<span class="math inline">\(\ep\)</span>’s and <span class="math inline">\(\de\)</span>’s here. I’m missing an additive factor of <span class="math inline">\(\de^2\)</span> (<span class="math inline">\(\fc{\de}{1+\de}\)</span> instead of <span class="math inline">\(\de\)</span>)…</li>
-<li>Todo: Understand example that shows optimality</li>
-</ul></li>
-<li>Weak regularity
-<ul>
-<li>Why do we need the condition on no cut having too many edges? Counterexample if this is not satisfied? Is there a statement that’s not “X or Y”?</li>
-<li>What subroutines are required for the algorithmic version?</li>
-<li>Note that the points are <span class="math inline">\(V\times V\)</span>, or edges in the complete graph. Tests are <span class="math inline">\(A\not\cap B\)</span>. (These are not the points.)</li>
-<li>Get directly from algorithmic DMT?</li>
-</ul></li>
-<li>Other things
-<ul>
-<li>Low-complexity approximation</li>
-<li>Computational entropy</li>
-<li>Structure theorem (my understanding is that the dense model theorem gives up if it finds a hot spot, while structure attempts to find all the hot spots because it’s iterative).</li>
-</ul></li>
-</ul>
-<h2 id="what-does-this-say-for-learning">What does this say for learning?</h2>
-<ul>
-<li>Relax “tests” to “functions”, perhaps <span class="math inline">\([0,1]\)</span>-functions. Does everything still go through?</li>
-<li>Does this give a GAN formulation? Note that the dense model/structure theorem breaks into regions of constant density, and you get handle on the probability distribution, while in GAN, you have a generative model, not an assignment of probabilities. Can you make a GAN which knows about its probabilities? Is this a Bayesian NN?</li>
-<li>Does this jibe with the greedy algorithmic version of Barron’s Theorem? Is the process of finding the best <span class="math inline">\(h\)</span> (if <span class="math inline">\(H\)</span> is linear thresholds/sigmoids/1-dimensional functions) correspond to finding the best new node? Can we make this convex? What if we just want weak learning here?</li>
-</ul>
-
-  </div>
-
-    
-
-    <!-- Extension : Sharing buttons @ www.sharethis.com -->
-    <span class='st_facebook_large' displayText='Facebook'></span>
-    <span class='st_twitter_large' displayText='Tweet'></span>
-    <span class='st_googleplus_large' displayText='Google +'></span>
-    <span class='st_reddit_large' displayText='Reddit'></span>
-    <span class='st__large' displayText=''></span>
-
-    <div id="disqus_thread"></div>
-    
-
-
-  
-    <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
-  </div>
-  
-</div>
-]]></summary>
-</entry>
-<entry>
-    <title>Stochastic calculus</title>
-    <link href="http://holdenlee.github.io/notebook/posts/math/probability/stochastic_calculus.html" />
-    <id>http://holdenlee.github.io/notebook/posts/math/probability/stochastic_calculus.html</id>
-    <published>2017-03-08T00:00:00Z</published>
-    <updated>2017-03-08T00:00:00Z</updated>
-    <summary type="html"><![CDATA[
-<div class="container">
-  <div id="content">
-    <div class="page header">
-      <h1>Stochastic calculus</h1>
-    </div>
-    <div class="info">
-      
-       
-        <p>Posted: 2017-03-08 
-          , Modified: 2017-03-08 
-	</p>
-      
-       <p>Tags: <a href="/tags/stochastic%20calculus.html">stochastic calculus</a></p> 
-    </div>
-    
-  </div>
-  <!--/div-->
-
-  <div class="toc"> <ul>
- <li><a href="#section">4</a><ul>
- <li><a href="#ito-integral">4.2 Ito integral</a></li>
- <li><a href="#some-elementary-properties">4.3 Some elementary properties</a></li>
- <li><a href="#ito-calculus">4.4 Ito calculus</a></li>
- <li><a href="#girsanovs-theorem">4.5 Girsanov’s theorem</a></li>
- <li><a href="#martingale-representation-theorem">4.6 Martingale representation theorem</a></li>
- </ul></li>
- <li><a href="#stochastic-differential-equations">5 Stochastic differential equations</a><ul>
- <li><a href="#sde-existence-and-uniqueness">5.1 SDE existence and uniqueness</a></li>
- <li><a href="#markov-property-and-kolmogorovs-equations">5.2 Markov property and Kolmogorov’s equations</a></li>
- </ul></li>
- </ul> </div>
-
-  <div class="blog-main">
-    <h2 id="section">4</h2>
-<p>Stieltjes function can be defined in terms of simple functions first, <span class="math inline">\(I(f_n) = \sum_i f_n(t_i^n) (g(t_{i+1}^n) - g(t_i^n))\)</span>.</p>
-<p>What’s wrong with the Stieltjes integral? If <span class="math inline">\(g\)</span> has infinite variation on <span class="math inline">\([0,1]\)</span>, then there exist simple functions <span class="math inline">\(f_n\to f\)</span> uniformly such that <span class="math inline">\(I(f_n)\)</span> diverges.</p>
-<p><em>Proof</em>. Take a partition so that <span class="math inline">\(\sum |g({t_{i+1}}) - g(t_i)|\to \iy\)</span>, <span class="math inline">\(h_n(t_i) = \sign(g(t_{i+1})-g(t_i))\)</span>.</p>
-<p>But when <span class="math inline">\(g\)</span> is a Wiener process, this example would have to choose <span class="math inline">\(h_n\)</span> adaptively to it. If <span class="math inline">\(h_n\)</span> is nonrandom, this is not a problem. There are certain sample paths of <span class="math inline">\(W_t\)</span> for which the integral diverges, but the set of such sample paths has probability 0! But we would like to integrate random processes.</p>
-<p>The lemma cheated by looking into the future!</p>
-<ol type="1">
-<li>We only define stochastic integrals with repect to <span class="math inline">\(W_t\)</span> of stochastic processes which are <span class="math inline">\(\mathcal F_t\)</span>-adapted.</li>
-<li>Even though finite variation of <span class="math inline">\(W_t\)</span> is a.s. infinite, quadratic variation is finite, <span class="math inline">\(\sum_{t_i\in \pi_n} (W_{t_{i+1}}-W_{t_i})^2\to 1\)</span> in probability. Define stochastic integrals as limits in <span class="math inline">\(L^2\)</span>. By independence of increments, <span class="math display">\[
-\E [ I(f_n)^2] = \int_0^1 f_n(s)^2\,ds.
-\]</span></li>
-</ol>
-<p>Wiener integral: <span class="math inline">\(f_n\to f\)</span> in <span class="math inline">\(L^2([0,1])\)</span>. Then <span class="math inline">\(\E[(I(f_n)-I(f_m))^2]\to 0\)</span>, so <span class="math inline">\(I(f_n)\)</span> converges to some <span class="math inline">\(I(f)\)</span>. Note: choosing <span class="math inline">\(f_n\)</span> so <span class="math inline">\(\sumo n{\iy} \int_0^1 (f_n(s)-f(s))^2\,ds&lt;\iy\)</span>, can define as a.s. limit (CHECK). Counterexample: take wavelet, divide by <span class="math inline">\(\sqrt{\ln \prc{n}}\)</span>.</p>
-<h3 id="ito-integral">4.2 Ito integral</h3>
-<p>!! Note the Ito integral is ITSELF a random variable over the probability measure underlying the Wiener process. You can take a <span class="math inline">\(\E\)</span> over Brownian motions.</p>
-<ol type="1">
-<li>Let <span class="math inline">\(\{X_t^n\}_{t\in [0,T]}\)</span> be a simple, square-integrable, <span class="math inline">\(F_t\)</span>-adapted stochastic process. Define <span class="math inline">\(I(X^n) = \int_0^T X_t^n \,dW_t = \sumz iN X_{t_i}^N (W_{t_{i+1}} - W_{t_i})\)</span>.</li>
-<li>Ito isometry: <span class="math inline">\(X_{t_i}^n\)</span> is independent of <span class="math inline">\(W_{t_{i+1}} - W_{t_i}\)</span>, so <span class="math display">\[ \E\ba{\pa{\int_0^T X_t^n \,dW_t}^2} = \E\ba{\int_0^T (X_t^n)^2\,dt}.\]</span> Succinctly, <span class="math display">\[\ve{I(X_\cdot^n)}_{2,\Pj} = \ve{X_\cdot^n}_{2,\mu_T\times \Pj}.\]</span> I.e., <span class="math inline">\(I:L^2(\mu_T\times \Pj)\to L^2(\Pj)\)</span> preserves <span class="math inline">\(L^2\)</span> distance when applied to <span class="math inline">\(F_t\)</span> adapted simple integrands.</li>
-<li>Extend to <span class="math inline">\(X_\cdot^n \to X_\cdot\)</span> in <span class="math inline">\(L^2(\mu_T\times \Pj)\)</span>.</li>
-<li>Let <span class="math inline">\(X_\cdot\in L^2(\mu_T\times \Pj)\)</span> be <span class="math inline">\(F_t\)</span>-adapted. Then there exists a sequence of <span class="math inline">\(F_t\)</span>_adapted simple <span class="math inline">\(X_\cdot^n\to X\)</span>. <!--DCT-->
-<ul>
-<li>Continuous and bounded sample paths: uniform continuity, DCT.</li>
-<li>Bounded and progressively measurable (?): <span class="math inline">\(X^\ep_\cdot \to X^\ep\)</span>, where <span class="math inline">\(X_t^\ep = \rc\ep\int_{t-\ep}^t X_{\max\{s,0\}}\,ds\)</span>.</li>
-<li>Progressively measurable: <span class="math inline">\(X_t I_{|X_t|\le M}\)</span>. DCT.</li>
-</ul></li>
-</ol>
-<p>Ex. <span class="math inline">\(W_T^2 = 2\int_0^T W_t\,dW_t+T\)</span>.</p>
-<p>Now what?</p>
-<ol type="1">
-<li>Consider Ito integral itself as a stochastic process, <span class="math inline">\(t\mapsto \int_0^t X_s\,dW_s\)</span>.
-<ul>
-<li>For <span class="math inline">\(t\le T\)</span>, define <span class="math inline">\(I_t(X_\cdot^n) = I(X_\cdot^n I_{\le t})\)</span>.</li>
-<li><span class="math inline">\(I_t(X_\cdot^n)\)</span> is a <span class="math inline">\(F_t\)</span>-martingale.</li>
-<li>Ito integral can be chosen to have continuous sample paths. (Pf. Discontinuous paths live on null set. Use subsequence argument and Borel-Cantelli.) …</li>
-</ul></li>
-<li>Extend the class of integrable processes, to have nice closure properties. (Product of 2 integrals can be expressed as a integral.)
-<ul>
-<li>Note we don’t want to define <span class="math inline">\(I_\iy\)</span>, only for every <span class="math inline">\(t\in [0,\iy)\)</span>.</li>
-<li>Localization: to define on <span class="math inline">\([0,\iy)\)</span>, define it on every interval <span class="math inline">\([0,T]\)</span>. Require <span class="math inline">\(X_{[0,T]}\in L^2(\mu_T\times \Pj)\)</span> for every <span class="math inline">\(T&lt;\iy\)</span>, i.e. <span class="math inline">\(X\in \bigcap_{T&lt;\iy} L^2(\mu_T\times \Pj)\)</span>.</li>
-<li>Check local property: <span class="math inline">\(I_t(X_\cdot)\)</span> does not depend on which <span class="math inline">\(T&gt;t\)</span> we choose.</li>
-<li>Behavior under stopping: <span class="math inline">\(X_t\)</span> is <span class="math inline">\(F_t\)</span>-adapted in <span class="math inline">\(\bigcap_{T&lt;\iy} L^2(\mu_T\times \Pj)\)</span>, <span class="math inline">\(\tau\)</span> is <span class="math inline">\(F_t\)</span>-stopping time. Then <span class="math inline">\(I_{\min(t,\tau)}(X_\cdot) = I_t(X_\cdot I_{&lt;\tau})\)</span>. Pf. Let <span class="math inline">\(\tau^n\)</span> be <span class="math inline">\(\tau\)</span> rounded upwards to the earliest jump time.</li>
-<li>Localizing sequence for <span class="math inline">\(X_t\)</span>: <span class="math inline">\(F_t\)</span>-stopping times <span class="math inline">\(\tau_n\nearrow \iy\)</span>, <span class="math inline">\(\E\ba{\int_0^{\tau_n} X_t^2\,dt}&lt;\iy\)</span>. “Allow localization intervals to be random.” This is independent of localizing sequence (4.2.10, CHECK).</li>
-<li>There is a natural cloass of integrands whose elements admit localizing sequence: <span class="math inline">\(A_T(X_\cdot) = \int_0^T X_t^2&lt;\iy\)</span> a.s. for all <span class="math inline">\(T&lt;\iy\)</span>. Let <span class="math inline">\(\tau_n=\inf\set{t\le n}{A_t(X_{\cdot})\ge n}\)</span>.</li>
-</ul></li>
-</ol>
-<p>Finally: Let <span class="math inline">\(X_t\)</span> be any <span class="math inline">\(F_t\)</span>-adapted stochastic process with <span class="math inline">\(\Pj\ba{\int_0^T X_t^2\,dt&lt;\iy}=1\)</span> for all <span class="math inline">\(T&lt;\iy\)</span>. Then Ito integral <span class="math inline">\(I_t(X_\cdot)\)</span> is uniquely defined by localization and choice of continuous modification as <span class="math inline">\(F_t\)</span>-adapted stochastic process on <span class="math inline">\([0,\iy)\)</span> with continuous sample paths.</p>
-<h3 id="some-elementary-properties">4.3 Some elementary properties</h3>
-<ol type="1">
-<li>Linearity</li>
-<li>Stopping time <span class="math inline">\(\int_0^{\min(t,\tau)} X_s\,dW_s = \int_0^t X_s I_{&lt;\tau}\,dW_s\)</span>.</li>
-<li>If <span class="math inline">\(X\in \bigcap_{T&lt;\iy} L^2(\mu_T\times \Pj)\)</span> then <span class="math inline">\(\E[]=0\)</span> and <span class="math inline">\(\E[()^2] = \E[\int_0^TX_t^2\,dt]\)</span>.</li>
-<li><span class="math inline">\(X^n\to X\)</span> in <span class="math inline">\(L^2(\mu_T\times \Pj)\)</span> means <span class="math inline">\(I_t(X_\cdot^n) \to I_t(X_\cdot)\)</span> in <span class="math inline">\(L^2(\Pj)\)</span>. If convergence fast enough, a.s.</li>
-<li><span class="math inline">\(X_t\)</span> is <span class="math inline">\(F_t\)</span>-local martingale if there exists <span class="math inline">\(\tau_n\nearrow \iy\)</span> (reducing sequence), <span class="math inline">\(X_{\min(t,\tau_n)}\)</span> is martingale. Any Ito integral is a local martingale. (Take a localizing sequence.)</li>
-</ol>
-<h3 id="ito-calculus">4.4 Ito calculus</h3>
-<p>Setup</p>
-<ul>
-<li><span class="math inline">\((\Om, F, \{F_t\}_{t\in [0,\iy)}, \Pj)\)</span></li>
-<li><span class="math inline">\(W_t\)</span> is <span class="math inline">\(m\)</span>-dimensional <span class="math inline">\(F_t\)</span>-Wiener process.</li>
-<li>Ito process <span class="math inline">\(X_t^i = X_0^i + \int_0^t F_s^i\,ds + \sumo jm \int_0^t G_s^{ij}\,dW_s^j\)</span>.
-<ul>
-<li><span class="math inline">\(\int_0^t |F_s^i|\,ds&lt;\iy\)</span> a.s.</li>
-<li><span class="math inline">\(\int_0^t (G_s^{ij})^2\,ds&lt;\iy\)</span> a.s.</li>
-<li>Shorthand: <span class="math inline">\(X_t=X_0+\int_0^t F_s\,ds + \int_0^t G_s\,dW_s\)</span>.</li>
-</ul></li>
-</ul>
-<strong>Theorem</strong> (Ito rule): <span class="math inline">\(u(t,x)\)</span> is <span class="math inline">\(C^1\)</span> in <span class="math inline">\(t\)</span> and <span class="math inline">\(C^2\)</span> in <span class="math inline">\(x\)</span>. Then <span class="math inline">\(u(t,X_t)\)</span> is Ito.
-<span class="math display">\[\begin{align}
-u(t,X_t) &amp;= u(0,X_0) + \sumo in \sumo km \int_0^t u_i(s,X_s) G_s^{ik} \,dW_s^k\\
-&amp;\quad + \int_0^t\ba{u'(s,X_s)+\sumo in u_i(s,X_s)F_s^i + \rc 2 \sum_{i,j=1}^n\sumo km u_{ij}(s,X_s)G_s^{ik}G_s^{jk}}\,ds\\
-&amp;=u(0,X_0) + \int_0^t (\nb u)^T G \,dW + \int_0^t u'(s,X_s) + (\nb u)^TF_s + \rc 2 \Tr(G_s^T (\nb^2 u) G_s)\,ds.
-\end{align}\]</span>
-<p>Alternate notation: <span class="math inline">\(dX_t = F_t\,dt + G_t\,dW_t\)</span>, <span class="math display">\[
-du(t,X_t) = u'(t,X_t)\,dt + \pl u(t,X_t)\,dX_t + \rc 2 \Tr(\pl^2 u(t,X_t)dX_t(dX_t)^*),
-\]</span> where <span class="math inline">\(dW_t^i \,dW_t^j=\de_{ij}\,dt\)</span> and other derivatives are 0.</p>
-<p>First two terms are chain rule. When stochastic integrals are present, we evidently need to take a second-order term into account as well.</p>
-<p>Cor. Ito processes form an algebra.</p>
-<h3 id="girsanovs-theorem">4.5 Girsanov’s theorem</h3>
-<p>What happens to Wiener process under change of measure? We can often simplify a problem by changing to a more convenient probability measure.</p>
-<p><strong>Theorem</strong> (Girsanov). Let <span class="math inline">\(W_t\)</span> be <span class="math inline">\(m\)</span>-dimensional <span class="math inline">\(\mathcal F_t\)</span>-Wiener on <span class="math inline">\((\Om, \mathcal F, \{\mathcal F_t\}_{t\in [0,T]}, \Pj)\)</span>, <span class="math inline">\(X_t=\int_0^t F_s\,ds + W_t\)</span> be Ito, <span class="math inline">\(F_t\)</span> Ito integrable, <span class="math display">\[
-\La = \exp\pa{-\int_0^T (F_s)^* dW_s - \rc 2\int_0^T \ve{F_s}^2\,ds},
-\]</span> Novikov’s condition <span class="math inline">\(\E_{\Pj} \ba{\exp\pa{\rc 2\int_0^T \ve{F_s}^2\,ds}}&lt;\iy\)</span>. THen <span class="math inline">\(\{X_t\}_{t\in [0,T]}\)</span> is <span class="math inline">\(\mathcal F_t\)</span>-Wiener under <span class="math inline">\(\mathbb Q(A) = \E_\Pj (\Ga I_A)\)</span>.</p>
-<p>Intuition (discrete case): If <span class="math inline">\(d\Pj\)</span> is the probability measure of standard gaussian, and <span class="math inline">\(d\mathbb Q\)</span> is probability measure where <span class="math inline">\(a_k+\xi_k\)</span> are standard gaussian (<span class="math inline">\(a_k\)</span> is predictable process), write <span class="math inline">\(d\mathbb Q\)</span> wrt <span class="math inline">\(d\Pj\)</span>. <span class="math display">\[
-\fc{d\mathbb Q}{d\mathbb P} = \prod\fc{e^{-(\xi_i+a_i)^2/2}}{e^{-\xi_i^2/2}} = \exp\ba{\sumo kn \pa{-a_k \xi_k - \rc 2a_k^2}}.
-\]</span></p>
-<p>READ PROOF.</p>
-<h3 id="martingale-representation-theorem">4.6 Martingale representation theorem</h3>
-<p>Gives converse to Ito integral. Every martingale <span class="math inline">\(\{M_t\}_{t\in [0,T]}\)</span> with <span class="math inline">\(M_T\in L^2(\Pj)\)</span> is the Ito integral of a unique process in <span class="math inline">\(L^2(\mu_T\times \Pj)\)</span>.</p>
-<p><strong>Theorem</strong>.</p>
-<ol type="1">
-<li>(Martingale representation) Let <span class="math inline">\(M_t\)</span> be <span class="math inline">\(\mathcal F_t^W = \si\set{W_s}{s\le t}\)</span>-martingale, <span class="math inline">\(M_T\in L^2(\Pj)\)</span>. For a unique <span class="math inline">\(\mathcal F_t^W\)</span>-adapted process <span class="math inline">\(\{H_t\}_{t\in [0,T]}\)</span> in <span class="math inline">\(L^2(\mu_T\times \Pj)\)</span>, <span class="math inline">\(M_t=M_0 + \int_0^t H_s\,dW_s\)</span> a.s.</li>
-<li>(Ito representation, more general) Let <span class="math inline">\(X\)</span> be <span class="math inline">\(\mathcal F_T^W\)</span>-measurable rv in <span class="math inline">\(L^2(\Pj)\)</span>. Then for … <span class="math inline">\(X=\E X + \int_0^T H_s\,dW_s\)</span> a.s. <!--can differentiate --></li>
-</ol>
-<p><em>Proof</em>.</p>
-<ol type="1">
-<li>Show that any <span class="math inline">\(X\)</span> can be approximated arbitrarily well by Ito integral, <span class="math inline">\(\ve{X-I_T(H_\cdot^\ep)}_2&lt; \ep\)</span>.
-<ol type="1">
-<li>Identify class of random variables that can approximatate <span class="math inline">\(X\)</span> arbitrarily well. <span class="math inline">\(S=\set{f(W_{t_1},\ldots, W_{t_n})}{n&lt;\iy, t_1,\ldots, t_n\in [0,T], f\in C_0^\iy}\)</span>.
-<ul>
-<li>Show this holds if allow Borel-measurable <span class="math inline">\(f\)</span>. Filter by slicing into intervals <span class="math inline">\(2^{-n}\)</span>, <span class="math inline">\(X^n = f(W_{2^{-n}T},\ldots, W_T)\)</span>.
-<ul>
-<li>Levy’s upward theorem: let <span class="math inline">\(X\in L^2(\Pj)\)</span> be <span class="math inline">\(G\)</span>-measurable, <span class="math inline">\(G=\si\{G_n\}\)</span>. Then <span class="math inline">\(\E[X|G_n]\to X\)</span> a.s. and in <span class="math inline">\(L^2(\Pj)\)</span>.</li>
-</ul></li>
-<li>Any Borel function can be approximated arbitrarily well by <span class="math inline">\(f^n\in C^\iy\)</span>.</li>
-</ul></li>
-<li>Show any rv in this class can be represented as Ito integral
-<ul>
-<li>Ito’s rule: <span class="math display">\[g(t,W_t) = g(0,0) + \int_0^t (g_s + \rc2 g_{xx}) (s,W_s)\,ds + \int_0^t g_x (s,W_s)\,dW_s.\]</span> Solve the heat equation for <span class="math inline">\(g\)</span>, <span class="math inline">\(g = \rc{\sqrt{2\pi (t-s)}}\int_{-\iy}^{\iy} f(y) e^{-(x-y)^2/(2(t-s))} \dy\)</span>. Still works for multivariate.</li>
-</ul></li>
-</ol></li>
-<li>Take limits.</li>
-</ol>
-<h2 id="stochastic-differential-equations">5 Stochastic differential equations</h2>
-<p>Existence, uniqueness, Markov property.</p>
-<p>Kolmogorov forward (Fokker-Planck) and backward equations.</p>
-<h3 id="sde-existence-and-uniqueness">5.1 SDE existence and uniqueness</h3>
-<span class="math display">\[\begin{align}
-dX_t &amp;= b(t,X_t)dt + \si(t,X_t) dW_t, &amp; X_0=x\\
-\iff 
-X_t &amp;= x+\int_0^t b(s,X_s) \,ds + \int_0^t \si(s,X_s)\,dW_s.
-\end{align}\]</span>
-<p>Ex. <span class="math inline">\(dX_t = AX_t dt + B\,dW_t\)</span>, <span class="math inline">\(X_0=x\)</span> has solution <span class="math display">\[
-X_t = e^{At}x + \int_0^t e^{A(t-s)}B\,dW_s.
-\]</span></p>
-<p><strong>Theorem</strong>. Suppose</p>
-<ol type="1">
-<li><span class="math inline">\(X_0\in L^2(\Pj)\)</span></li>
-<li><span class="math inline">\(b,\si\)</span> Lipschitz uniformly on <span class="math inline">\([0,T]\)</span> (in <span class="math inline">\(x\)</span>).</li>
-<li><span class="math inline">\(\ve{b(t,0)}, \ve{\si(t,0)}\)</span> bounded on <span class="math inline">\(t\in [0,T]\)</span>.</li>
-</ol>
-<p>Then there exists solution <span class="math inline">\(X_t\)</span>, and <span class="math inline">\(b(t,X_t),\si(t,X_t)\in L^2(\mu_T\times \Pj)\)</span>, and it is unique a.s.</p>
-<h3 id="markov-property-and-kolmogorovs-equations">5.2 Markov property and Kolmogorov’s equations</h3>
-<p>A large class of Markov processes with continuous sample paths can be obtained as solution of appropriate SDE.</p>
-<p><strong>Theorem</strong>. Suppose conditions hold. Then <span class="math inline">\(X_t\)</span> is <span class="math inline">\(\mathcal F_t\)</span>-Markov process. (Actually it satisfies the strong Markov property, even with random stopping times.)</p>
-<p><em>Proof</em>. Calculate <span class="math inline">\(X_t-X_s\)</span>. Note <span class="math inline">\(W_{r+s}-W_s\)</span> is Wiener. <span class="math inline">\(Y_r=X_{r+s}\)</span> satisfies a SDE… ?</p>
-<p>Assume <span class="math inline">\(b, \si\)</span> independent of <span class="math inline">\(t\)</span>. Markov property gives <span class="math inline">\(\E[f(X_t)|\mathcal F_s] = g_{t-s}(X_s)\)</span>. This suggests <span class="math inline">\(\ddd t P_t f = \mathcal L P_tf\)</span>.</p>
-<p><strong>Theorem</strong> (Kolmogorov backward equation). For <span class="math inline">\(g\in C^2\)</span>, <span class="math display">\[
-\mathcal Lg = b^T\nb g + \rc 2 \Tr(\si^T \nb^2 g \si).
-\]</span> If <span class="math inline">\(u(t,x)\)</span> is <span class="math inline">\(C^1\)</span> in <span class="math inline">\(t\)</span>, <span class="math inline">\(C^2\)</span> in <span class="math inline">\(x\)</span>, <span class="math inline">\(f\in C^2\)</span> such that <span class="math display">\[
-u_t=\mathcal L u, \quad u(0,x)=f(x)
-\]</span> then <span class="math inline">\(u(t,x)=P_tf(x)\)</span>.</p>
-<p>(Note we can write this backwards as <span class="math inline">\(v_t + \mathcal Lv = 0\)</span>, <span class="math inline">\(v(T,x)=f(x)\)</span>.)</p>
-<p>(Note: in principle we would like to define <span class="math inline">\(\E[f(X_t)|\mathcal F_s] =: u(t-s,X_s)\)</span> and show <span class="math inline">\(u\)</span> satisfies the PDE. This is more technical because we need to show smoothness or interpret the PDE in a weak sense.)</p>
-<p><em>Proof</em>. Ito’srule on <span class="math inline">\(Y_r=v(r,X_r)\)</span>. (The Ito integral <span class="math inline">\(\int_0^t (\nb v)^T G\,dW_s\)</span> is a “local martingale” here.) Take <span class="math inline">\(\E[\cdot |\mathcal F_s]\)</span> and the martingale part disappears.</p>
-<p>Forwards equation: If law of <span class="math inline">\(X_t\)</span> is absolutely continuous, <span class="math inline">\(\E[f(X_t)] = \int_{\R^n} f(y)p_t(y)\dy\)</span> for some <span class="math inline">\(p\)</span>, and more generally, <span class="math display">\[
-\E[f(X_t)|\mathcal F_s] = \int_{\R^n} f(y) p_{t-s}(X_s,y)\dy.
-\]</span> Can <span class="math inline">\(p\)</span> be obtained as solution to PDE?</p>
-<p>“Kolmogorov forward equation is dual of backward equation”: <span class="math inline">\(\int fp_t = \int P_tfp_0\)</span>.</p>
-<p><strong>Theorem</strong> (Kolmogorov forward, Fokker-Planck): Assume niceness of the SDE, and <span class="math inline">\(b\in C^1, \si\in C^2\)</span>, <span class="math inline">\(\rh\in C^2\)</span>, <span class="math display">\[
-\mathcal L^* \rh = -\sumo in \pd{x^i}(b^i\rh) + \rc2 \suij n \sumo km \pd{{}^2}{x^i\pl x^j} (\si^{ik}\si^{ij}\rh),
-\]</span> <span class="math inline">\(p_t\)</span> exists, <span class="math inline">\(C^1\)</span> in <span class="math inline">\(t\)</span>, <span class="math inline">\(C^2\)</span> in <span class="math inline">\(x\)</span>. Then <span class="math display">\[(p_t)_t = \mathcal L^* p_t, \quad t\in [0,T].\]</span></p>
-<p><em>Proof</em>.</p>
-<ol type="1">
-<li>Write Ito’s rule for <span class="math inline">\(f\)</span>.</li>
-<li>Take <span class="math inline">\(\E\)</span> so the martingale disappears.</li>
-<li>Substitute definition of <span class="math inline">\(p_t(y)\)</span>, integrate by parts to take <span class="math inline">\(\mathcal L\)</span> from <span class="math inline">\(\mathcal L f\)</span> to <span class="math inline">\(\mathcal L^* p_s\)</span>. This holds for all <span class="math inline">\(f\)</span> so remove the <span class="math inline">\(f\)</span>.</li>
-<li>Take time derivative.</li>
-</ol>
-<blockquote>
-<p>As a rule of thumb, the backward equation is very well behaved, and will often have a solution provided only that f is sufficiently smooth; the forward equation is much less well behaved and requires stronger conditions on the coefficients</p>
-</blockquote>
 
   </div>
 
