@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+
+  <meta name="description" content="Holden Lee's Research Notebook">
+  <meta name="author" content="Holden Lee">
+    
+  <title>(TPGB17) The space of transferable adversarial examples</title>
+
+  <!-- Bootstrap core CSS -->
+  <link href="../../../../bootstrap/css/bootstrap.min.css" rel="stylesheet">
+
+  <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+  <!-- <link href="../../assets/css/ie10-viewport-bug-workaround.css" rel="stylesheet"> -->
+
+  <!-- Custom styles for this template -->
+  <link href="../../../../css/blog.css" rel="stylesheet">
+  <link href="../../../../css/default.css" rel="stylesheet">
+
+  <!-- Extension : Footnotes -->
+  <link href="../../../../footnotes/css/footnotes.css" rel="stylesheet">
+
+  <!-- Extension : InlineDisqussions @ https://github.com/tsi/inlineDisqussions -->
+  
+
+  <!-- Extension : Collapsible lists @ http://code.stephenmorley.org/javascript/collapsible-lists/-->
+  <link href="../../../../collapsible_lists/css/collapsible.css" rel="stylesheet">
+  <script type="text/javascript" src="../../../../collapsible_lists/js/CollapsibleLists.js"></script>
+
+</head>
+
+<body>
+
+<!-- Navigation bar. navbar-inverse is black, navbar-default is white.-->
+<!-- To make a button active (pressed), use <li class="active"> -->
+<div id="header">
+  <nav class="navbar navbar-inverse navbar-fixed-top">
+    <div class="container">
+      <div class="navbar-header">
+        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+          <span class="sr-only">Toggle navigation</span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="../../../../">Notebook</a>
+      </div>
+      <div id="navbar" class="collapse navbar-collapse">
+        <ul class="nav navbar-nav">
+          <li><a href="../../../../">Home</a></li>
+          <li><a href="../../../../sitemap.html">Sitemap</a></li>
+<!-- TODO: Distinguish between PAPERS, RESEARCH QUESTIONS, BOOKS -->
+<!-- TODO: make this part a for loop over main pages -->
+        </ul>
+      </div><!--/.nav-collapse -->
+    </div>
+  </nav>
+</div>
+<!-- Content -->
+<!--div id="content">
+  <h1>Mental Wilderness</h1>-->
+
+
+
+<div class="container">
+  <div id="content">
+    <div class="page header">
+      <h1>(TPGB17) The space of transferable adversarial examples</h1>
+    </div>
+    <div class="info">
+      
+       
+        <p>Posted: 2017-05-24 
+          , Modified: 2017-05-24 
+	</p>
+      
+       <p>Tags: <a href="../../../../tags/neural%20nets.html">neural nets</a>, <a href="../../../../tags/aaml.html">aaml</a></p> 
+    </div>
+    
+  </div>
+  <!--/div-->
+
+  <div class="toc"> <ul>
+ <li><a href="#adversarial-subspaces">Adversarial subspaces</a></li>
+ <li><a href="#decision-boundaries">Decision boundaries</a><ul>
+ <li><a href="#experiments">Experiments</a></li>
+ </ul></li>
+ <li><a href="#limits-of-transferability">Limits of transferability</a></li>
+ </ul> </div>
+
+  <div class="blog-main">
+    <!--
+See also 
+
+* [intro to problem](adversarial.html).
+* [my experiments](adversarial_experiments.html). 
+* [confidence](confidence.html).
+-->
+<h2 id="adversarial-subspaces">Adversarial subspaces</h2>
+<ul>
+<li>Introduces methods for discovering a subspace of adversarial perturbations.
+<ul>
+<li>MNIST: 25 dimensions</li>
+</ul></li>
+<li>Distance traveled before reaching decision boundary is on average larger than distance separating decision boundaries of 2 models in that direction. (This doesn’t seem surprising.)</li>
+</ul>
+<p>Recall that FGSM is <span class="math display">\[
+x^* = x + \ep \nv{\nb_x J(x,y)}.
+\]</span></p>
+<p>Techniques:</p>
+<ul>
+<li>Solve optimization problem multiple times, constraining the next direction to be orthogonal to the previous. <strong>GAAS works well, others don’t.</strong>
+<ul>
+<li>Second-order approximation of loss function <span class="math inline">\(\max_{\ve{r}\le \ep} g^T r + \rc 2 r^T H r\)</span>.</li>
+<li>Convex optimization: Write an LP for the region where <span class="math inline">\(f\)</span> is piecewise linear, and throw in orthogonality condition.</li>
+<li>GAAS (gradient aligned adversarial subspace): Find orthogonal <span class="math inline">\(r_1,\ldots, r_k\)</span> with <span class="math display">\[\ve{r_i}_2\le \ep, \quad r_i^T \nb_x J(x,y)\ge \ga.\]</span> (Think of a right-angled simplex with vertex at <span class="math inline">\(x\)</span>. We can compute how many there are given desired <span class="math inline">\(\fc{g^Tr_i}{\ve{g}_2}\)</span>: <span class="math inline">\(\min\{\ff{1}{\al^2}, d\}\)</span>.)</li>
+<li>JSMA: partition most salient features into <span class="math inline">\(k\)</span> bins; use these <span class="math inline">\(k\)</span> sets to get <span class="math inline">\(k\)</span> orthogonal perturbations.</li>
+</ul></li>
+</ul>
+<p>For DNN, get 44 directions, 25 of which transfer. For CNN, get 15 directions, 2 of which transfer.</p>
+<h2 id="decision-boundaries">Decision boundaries</h2>
+<p>Adversarial training does not significantly displace decision boundary.</p>
+<p>Define unit norm directions <span class="math display">\[
+d(f,x) := \fc{x'-x}{\ve{x'-x}}
+\]</span> where <span class="math inline">\(x'\)</span> is defined differently in 3 cases:</p>
+<ol type="1">
+<li>Legitimate direction <span class="math inline">\(d_{leg}\)</span>: <span class="math inline">\(x'\)</span> is closest data point with different class label.</li>
+<li>Adversarial example <span class="math inline">\(d_{adv}\)</span>: adversarial example generated from <span class="math inline">\(x\)</span>.</li>
+<li><span class="math inline">\(d_{rand}\)</span> random <span class="math inline">\(x'\)</span> in input domain that is classified differently.</li>
+</ol>
+<p>Define minimum distance <span class="math display">\[
+MD_d(f,x) = \amin_{\ep&gt;0} f(x+\ep \cdot d) \ne f(x)
+\]</span> and interboundary distance as <span class="math display">\[
+ID_d(f_1,f_2,x) = 
+|MD_d(f_1,x) - MD_d (f_2,x)|
+\]</span></p>
+<h3 id="experiments">Experiments</h3>
+<p>Transfer from</p>
+<ul>
+<li>logistic regression (LR)</li>
+<li>support vector machine (SVM)</li>
+<li>DNN</li>
+</ul>
+<p>Defenses only prevent white-box attacks by reducing reliability of 1st order approximations (gradient masking).</p>
+<h2 id="limits-of-transferability">Limits of transferability</h2>
+<p>This hypothesis is false: If 2 models achieve low error while exhibiting low robustness, then adversarial examples transfer between models.</p>
+<p>Ex. Adversarial examples on MNIST don’t transfer between linear and quadratic models.</p>
+Model-agnostic perturbation: For a fixed feature mapping <span class="math inline">\(\phi\)</span>, define <span class="math inline">\(\de_\phi\)</span> as difference in intra-class means, and the adversarial direction <span class="math inline">\(r_\phi\)</span> for <span class="math inline">\((x,y)\)</span>,
+<span class="math display">\[\begin{align}
+\de_\phi:&amp;=\rc 2 (\E_{\mu_{+1}} [\phi(x)]
+- \E_{\mu_{-1}}[\phi(x)])\\
+r_\phi:&amp;= - \ep y \wh \de_\phi.
+\end{align}\]</span>
+<p>If <span class="math inline">\(f(x) = w^T\phi(x)+b\)</span>, and <span class="math inline">\(\De:=\wh w^T \wh\de_\phi\)</span> is large, and <span class="math inline">\(\phi\)</span> is “pseudo-linear” (<span class="math inline">\(\phi(x+r)-\phi(x)\approx r_\phi\)</span>) then <span class="math inline">\(x+r\)</span> transfers to <span class="math inline">\(f\)</span>.</p>
+<p>TLDR: shift points in direction of difference of class means; this transfers well.</p>
+<p>Can models with access to same set of input features learn representations that don’t transfer?</p>
+<p>There’s a simple (but not very informative…) example where this works: MNIST with XOR artifacts trained on linear and quadratic.</p>
+
+  </div>
+
+    
+
+    <!-- Extension : Sharing buttons @ www.sharethis.com -->
+    <span class="st_facebook_large" displayText="Facebook"></span>
+    <span class="st_twitter_large" displayText="Tweet"></span>
+    <span class="st_googleplus_large" displayText="Google +"></span>
+    <span class="st_reddit_large" displayText="Reddit"></span>
+    <span class="st__large" displayText></span>
+
+    <div id="disqus_thread"></div>
+    
+
+
+  
+    <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+  </div>
+  
+</div>
+
+
+<!-- Footer -->
+<div id="footer">
+  <div class="container">
+    Built with
+    <a href="http://jaspervdj.be/hakyll">Hakyll</a> 
+    using 
+    <a href="http://www.getbootstrap.com">Bootstrap</a>, 
+    <a href="http://www.disqus.com">Disqus</a>,
+    <a href="http://ignorethecode.net/blog/2010/04/20/footnotes/">Footnotes.js</a>,
+    <a href="http://highlightjs.org/">Highlight.js</a>, 
+    <a href="http://www.mathjax.org">MathJax</a>, 
+    and <a href="http://www.sharethis.com">ShareThis</a>.
+  </div>
+</div>
+</body>
+
+</html>
+
+<!-- SCRIPTS -->
+<!-- jQuery-->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+<script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
+
+<script src="../../../../bootstrap/js/bootstrap.min.js"></script>
+
+<!-- Extension : Highlight.js @ https://highlightjs.org/ -->
+<!-- Syntax highlighting tomorrow-night-bright, agate-->
+<link rel="stylesheet" href="../../../../highlight/css/tomorrow-night-bright.css">
+<script src="../../../../highlight/js/highlight.pack.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+
+<!-- Extension : MathJax @ https://docs.mathjax.org/en/v2.5-latest/tex.html -->
+<!-- MathJax/config/local/local.js contains macros. Need to provide entire URL-->
+<script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML,http://holdenlee.github.io/notebook/MathJax/config/local/local"></script>
+
+<!-- Extension : Footnotes @ http://ignorethecode.net/blog/2010/04/20/footnotes/ -->
+<script src="../../../../footnotes/js/footnotes.js"></script>
+
+<!-- Extension : Disqus @ http://disqus.com -->
+<!-- Extension : InlineDisqussions @ https://github.com/tsi/inlineDisqussions -->
+
+<script src="../../../../disqus/js/disqus.js"></script>
+
+
+
+<!-- Extension : Google Analytics -->
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-73261814-1', 'auto');
+  ga('send', 'pageview');
+
+</script>
+
