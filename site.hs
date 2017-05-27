@@ -64,7 +64,8 @@ main = hakyll $ do
           >>= relativizeUrls
 
     --CATEGORIES (exclude uncategorized items)
-    (treeMap, categories) <- buildNestedCategories (postPattern .&&. (complement "posts/*.md") .&&. hasNoVersion) (fromCapture "posts/**/index.html")
+    (pt, categories) <- makePostTreeAndCategories (postPattern .&&. (complement "posts/*.md") .&&. hasNoVersion) (fromCapture "posts/**/index.html")
+        --buildNestedCategories (postPattern .&&. (complement "posts/*.md") .&&. hasNoVersion) (fromCapture "posts/**/index.html")
     tagsRules categories $ \tag pattern -> do
       let title = "Posts in category \"" ++ tag ++ "\""
       route idRoute
@@ -107,7 +108,6 @@ main = hakyll $ do
       route idRoute
       compile $ do
         let mapCtx = constField "title" "Sitemap" <> basicCtx
-        let pt = makePostTree treeMap
         outline <- compileTree (blankTOCCtx <> postCtx) pt
         makeItem outline
           >>= loadAndApplyTemplate "templates/post.html" mapCtx

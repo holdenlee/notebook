@@ -33,24 +33,20 @@ getNestedCategory = return . return . joinPath . tail . splitPath . takeDirector
 buildNestedCategories' :: MonadMetadata m => Pattern -> (String -> Identifier) -> m Tags
 buildNestedCategories' = buildTagsWith getNestedCategory
 
-buildNestedCategories :: MonadMetadata m => Pattern -> (String -> Identifier) -> m ([([String], [Identifier])], Tags)
-buildNestedCategories pat f = do
+
+makePostTreeAndCategories :: MonadMetadata m => Pattern -> (String -> Identifier) -> m (FunTree [String] [Identifier], Tags)
+makePostTreeAndCategories pat f = do
   categories <- buildNestedCategories' pat f
-  let tagsMapList = nestCategories $ tagsMap categories
-  let tagsMap' = tagsMapList & ((mapped . _1) %~ joinPath)
-  let treeMap = treeCategories $ tagsMap categories
-  let treeMap' = M.toList $ M.fromList treeMap <> (M.map (const []) $ M.fromList tagsMapList)
-  return (treeMap', categories{tagsMap = tagsMap'})
-
-treeCategories :: [(String, [Identifier])] -> [([String], [Identifier])]
-treeCategories = ((mapped . _1) %~ splitPath) .&
-                 ((mapped . _1 . mapped) %~ removeTrailingSlash)
-
-nestCategories :: [(String, [Identifier])] -> [([String], [Identifier])]
-nestCategories = (((mapped . _1) %~ splitPath) >=>
-                 (\(li, y) -> map (,y) (tail $ inits li))) .&
-                 ((mapped . _1) %~ removeTrailingSlashList) .&
-                 reduce
+  let tm = tagsMap categories
+  let ft = for' tm (([], M.empty)::FunTree [String] [Identifier]) (\(path, addresses) ft0 -> 
+                                      let 
+                                          path' = map removeTrailingSlash $ splitPath path
+                                          is = tail $ inits path'
+                                      in ft0 & foldIterate (\i m1 -> insertBranch (init i) i m1) is
+                                             & insertNodes' path' (addresses))
+  let dirs = M.keys (snd ft) :: [[String]]
+  let tags = map (\x -> (joinPath x, getAllChildren x ft)) dirs
+  return (ft, categories{tagsMap = tags})              
 
 (.&):: (a -> b) -> (b -> c) -> (a -> c) 
 (.&) = flip (.)
@@ -61,19 +57,6 @@ reduce = M.toList . M.map mconcat . MM.toMap . MM.fromList
 
 removeTrailingSlash :: String -> String
 removeTrailingSlash = reverse . (\li -> if head li == '/' then tail li else li) . reverse
-
-removeTrailingSlashList :: [String] -> [String]
-removeTrailingSlashList = reverse . (ix 0 %~ removeTrailingSlash) . reverse
-
-makePostTree :: [([String], [Identifier])] -> FunTree [String] [Identifier]
-makePostTree li =
-  for li ([], M.singleton [] ([], [])) (\(li, ids) (rt, m) ->
---note I'm assuming there are no uncategorized posts. Otherwise you have to add a check here if li is already in the map
-    (rt, m & M.insert li (ids, [])
--- careful here: if it's nothing we have to init it. This doesn't work for > 2 nestings
-           & at (li & reversed %~ tail) %~ (\case 
-                                              Nothing -> Just ([],[li])
-                                              Just (x, li') -> Just (x, li:li'))))
 
 --type FunTree l b = (l, M.Map l (b,[l]))
 compileTree :: Context String -> FunTree [String] [Identifier] -> Compiler String
