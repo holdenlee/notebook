@@ -65,8 +65,12 @@ compileTree ctx p@(rt, m) = do
   let ls = sortBy (\x y -> compare (map (map toLower) x) (map (map toLower) y)) ls'
   --note we must put `.&&. hasNoVersion`, otherwise it tries and fails to load the toc.
   listItemString <- loadAll $ ((foldl (.||.) "" (map (fromGlob . toFilePath) li)) .&&. hasNoVersion)
+--  listItemTitles <- forM listItemString (flip getMetadataField "title" . itemIdentifier)
+  --sort by first
+--  let listItemStringSorted = map snd $ sortBy (\x y -> compare (map toLower $ fst x) (map toLower $ fst y)) $ zip listItemTitles listItemString
+  listItemStringSorted <- sortByField (map toLower) "title" listItemString
 --(flip loadAllSnapshots) "content"  $ foldl (.||.) "" (map (fromGlob . toFilePath) li)
-  postItems <- applyTemplateList postItemTemplate ctx listItemString
+  postItems <- applyTemplateList postItemTemplate ctx listItemStringSorted
   childrenListStrings <- mapM (compileTree ctx) (map (,m) ls)
   let childrenOutline = mconcat $ zipWith (\catPath str -> printf "<li><b>%s</b> %s </li>" (last catPath) str) ls childrenListStrings
   -- \catPath str -> "<li><b>"++(last catPath)++"</b>"++postItems++"</li>"
