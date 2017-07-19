@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+
+  <meta name="description" content="Holden Lee's Research Notebook">
+  <meta name="author" content="Holden Lee">
+    
+  <title>(AR17) Provable benefits of representation learning</title>
+
+  <!-- Bootstrap core CSS -->
+  <link href="../../../../bootstrap/css/bootstrap.min.css" rel="stylesheet">
+
+  <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+  <!-- <link href="../../assets/css/ie10-viewport-bug-workaround.css" rel="stylesheet"> -->
+
+  <!-- Custom styles for this template -->
+  <link href="../../../../css/blog.css" rel="stylesheet">
+  <link href="../../../../css/default.css" rel="stylesheet">
+
+  <!-- Extension : Footnotes -->
+  <link href="../../../../footnotes/css/footnotes.css" rel="stylesheet">
+
+  <!-- Extension : InlineDisqussions @ https://github.com/tsi/inlineDisqussions -->
+  
+
+  <!-- Extension : Collapsible lists @ http://code.stephenmorley.org/javascript/collapsible-lists/-->
+  <link href="../../../../collapsible_lists/css/collapsible.css" rel="stylesheet">
+  <script type="text/javascript" src="../../../../collapsible_lists/js/CollapsibleLists.js"></script>
+
+</head>
+
+<body>
+
+<!-- Navigation bar. navbar-inverse is black, navbar-default is white.-->
+<!-- To make a button active (pressed), use <li class="active"> -->
+<div id="header">
+  <nav class="navbar navbar-inverse navbar-fixed-top">
+    <div class="container">
+      <div class="navbar-header">
+        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+          <span class="sr-only">Toggle navigation</span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="../../../../">Notebook</a>
+      </div>
+      <div id="navbar" class="collapse navbar-collapse">
+        <ul class="nav navbar-nav">
+          <li><a href="../../../../">Home</a></li>
+          <li><a href="../../../../sitemap.html">Sitemap</a></li>
+<!-- TODO: Distinguish between PAPERS, RESEARCH QUESTIONS, BOOKS -->
+<!-- TODO: make this part a for loop over main pages -->
+        </ul>
+      </div><!--/.nav-collapse -->
+    </div>
+  </nav>
+</div>
+<!-- Content -->
+<!--div id="content">
+  <h1>Mental Wilderness</h1>-->
+
+
+
+<div class="container">
+  <div id="content">
+    <div class="page header">
+      <h1>(AR17) Provable benefits of representation learning</h1>
+    </div>
+    <div class="info">
+      
+       
+        <p>Posted: 2017-07-18 
+          , Modified: 2017-07-18 
+	</p>
+      
+       <p>Tags: <a href="../../../../tags/representation%20learning.html">representation learning</a></p> 
+    </div>
+    
+  </div>
+  <!--/div-->
+
+  <div class="toc"> <ul>
+ <li><a href="#intro">Intro</a></li>
+ <li><a href="#section">2</a><ul>
+ <li><a href="#section-1">2.2</a></li>
+ </ul></li>
+ <li><a href="#section-2">3</a><ul>
+ <li><a href="#section-3">3.1</a></li>
+ <li><a href="#section-4">3.2</a></li>
+ </ul></li>
+ <li><a href="#section-5">4</a><ul>
+ <li><a href="#section-6">4.1</a></li>
+ <li><a href="#section-7">4.2</a></li>
+ </ul></li>
+ <li><a href="#section-8">5</a><ul>
+ <li><a href="#lower-bounds-for-nearest-neighbors">5.1 Lower bounds for nearest neighbors</a></li>
+ <li><a href="#section-9">5.3</a></li>
+ </ul></li>
+ <li><a href="#notes">Notes</a></li>
+ </ul> </div>
+
+  <div class="blog-main">
+    <h2 id="intro">Intro</h2>
+<ul>
+<li>Contributions
+<ul>
+<li>Formalizes representation learning, unifying disparate settings.</li>
+<li>Quantifies “utility” from representation learning.</li>
+<li>Prove separation results between representation learning and simpler algorithms.</li>
+</ul></li>
+<li>“Bayes+”</li>
+<li>Why representation learning?
+<ul>
+<li>Allows semi-supervised learning.</li>
+<li>Simpler methods need too many samples.</li>
+<li>Provably better than manifold learning in some cases.</li>
+</ul></li>
+<li>The framework
+<ul>
+<li>Many-to-one map <span class="math inline">\(x\mapsto h\)</span>. <span class="math inline">\(h\)</span> is “high-level” representation.</li>
+<li>Generative model <span class="math inline">\(h\to x\)</span>.</li>
+<li>Similarity in the latent space (of <span class="math inline">\(h\)</span>) is more informative.</li>
+<li>Defintion: A <span class="math inline">\((\ga,\be)\)</span>-valid decoder has <span class="math inline">\(\Pj(\ve{f(x)-h}\le (1-\ga) \ve{h})\ge \be\)</span>. (Think of <span class="math inline">\(\ga,\be\approx 1\)</span>.)</li>
+<li>Utility: If <span class="math inline">\(C\)</span> is <span class="math inline">\(\al\)</span>-Lipschitz, <span class="math inline">\(\ve{C(f(x)) - C(h)}_\iy\le (1-\ga)\al \ve{h}\)</span>.</li>
+</ul></li>
+<li>Examples
+<ul>
+<li>Clustering</li>
+<li>Manifold</li>
+<li>Kernel learning</li>
+</ul></li>
+<li>Non-examples
+<ul>
+<li>Nearest neighbor (provably weaker in some settings)</li>
+<li>LSH - this preserves distance, which is not our goal.</li>
+</ul></li>
+<li>Contrast [HM16], which is assumption-free and basically lossless compression. (ex. Lempel-Ziv) This notion is different, ex. allows throwing away noise.</li>
+<li>Compare to the usual: Maximize log probability (MLE), then <span class="math inline">\(\amax_h p_\te(h|x)\)</span>.
+<ul>
+<li>Unlike Bayesian which gives a distribution over <span class="math inline">\(h\)</span>, we output single <span class="math inline">\(h\)</span>.</li>
+</ul></li>
+</ul>
+<h2 id="section">2</h2>
+<h3 id="section-1">2.2</h3>
+<ul>
+<li>Encoder exists <span class="math inline">\(\implies\)</span> given <span class="math inline">\(x\)</span>, <span class="math inline">\(h\)</span> is concentrated around <span class="math inline">\(f(x)\)</span>, almost uniquely defined.</li>
+<li>Having concentration is stronger than just being able to do inference.</li>
+</ul>
+<h2 id="section-2">3</h2>
+<h3 id="section-3">3.1</h3>
+<p>Topic modeling</p>
+<ul>
+<li><span class="math inline">\(k\)</span> topices</li>
+<li>Each distribution on <span class="math inline">\(M\)</span> words. <span class="math inline">\(A_i\in \R^M\)</span>.</li>
+<li>Mixture coefficients <span class="math inline">\(h_i\)</span>.</li>
+<li>Draw bag of words <span class="math inline">\(x\sim \sum h_i A_i\)</span>, <span class="math inline">\(x\in \Z^N\)</span>.</li>
+</ul>
+<h3 id="section-4">3.2</h3>
+<p>Loglinear model: (continued below)</p>
+<p><span class="math display">\[p(x,h) = p(h)p(x|h).\]</span></p>
+<h2 id="section-5">4</h2>
+<h3 id="section-6">4.1</h3>
+<p>Topic modeling: want <span class="math inline">\(\ell_\iy\to \ell_1\)</span> condition number to be small.</p>
+<h3 id="section-7">4.2</h3>
+<ul>
+<li><span class="math inline">\(h\in \R^d\)</span> randomly on unit sphere.</li>
+<li><span class="math inline">\(\Pj(x|h)\propto e^{\an{W_x,h}}\)</span>.
+<ul>
+<li><span class="math inline">\(W_x = Bv\)</span>, <span class="math inline">\(B=O(1)\)</span>, <span class="math inline">\(v\sim N(0,I)\)</span>.</li>
+</ul></li>
+<li>Take <span class="math inline">\(f(x) = \nv{\sum_i W_{x_i}}\)</span>.</li>
+</ul>
+<h2 id="section-8">5</h2>
+<h3 id="lower-bounds-for-nearest-neighbors">5.1 Lower bounds for nearest neighbors</h3>
+<ul>
+<li><span class="math inline">\(M\)</span> movies, <span class="math inline">\(k\)</span> genres
+<ul>
+<li><span class="math inline">\(\ve{h}_0 = s\)</span>, <span class="math inline">\(h\in \{0,1\}^k\)</span></li>
+<li>Draw movies <span class="math inline">\(\ve{x}_0=T\)</span>.</li>
+</ul></li>
+<li>For <span class="math inline">\(T\ll \sqrt m\)</span>, can’t learn using NN because
+<ul>
+<li>Users will share few movies in common.</li>
+<li>Users who share movies won’t share genres. (Construct example where some movies belong to all genres.)</li>
+</ul></li>
+</ul>
+<h3 id="section-9">5.3</h3>
+<ul>
+<li><span class="math inline">\(k\)</span> genres</li>
+<li><span class="math inline">\(T=\Om(\ln M)\)</span> ratings per user</li>
+<li><span class="math inline">\(s\)</span> genres per user</li>
+<li><span class="math inline">\(\ell(h) = \sgn(\an{w,2h-1})\)</span>.</li>
+</ul>
+<p>Can do semi-supervised learning by doing representation learn using [AKM16]. (S4.1)</p>
+<h2 id="notes">Notes</h2>
+<ul>
+<li>Check Thm. 4.1 using [AKM16] - review “condition number”.</li>
+<li>Check Thm. 5.1. Look up background on NN.</li>
+<li>Check Thm. 5.4.</li>
+</ul>
+
+  </div>
+
+    
+
+    <!-- Extension : Sharing buttons @ www.sharethis.com -->
+    <span class="st_facebook_large" displayText="Facebook"></span>
+    <span class="st_twitter_large" displayText="Tweet"></span>
+    <span class="st_googleplus_large" displayText="Google +"></span>
+    <span class="st_reddit_large" displayText="Reddit"></span>
+    <span class="st__large" displayText></span>
+
+    <div id="disqus_thread"></div>
+    
+
+
+  
+    <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+  </div>
+  
+</div>
+
+
+<!-- Footer -->
+<div id="footer">
+  <div class="container">
+    Built with
+    <a href="http://jaspervdj.be/hakyll">Hakyll</a> 
+    using 
+    <a href="http://www.getbootstrap.com">Bootstrap</a>, 
+    <a href="http://www.disqus.com">Disqus</a>,
+    <a href="http://ignorethecode.net/blog/2010/04/20/footnotes/">Footnotes.js</a>,
+    <a href="http://highlightjs.org/">Highlight.js</a>, 
+    <a href="http://www.mathjax.org">MathJax</a>, 
+    and <a href="http://www.sharethis.com">ShareThis</a>.
+  </div>
+</div>
+</body>
+
+</html>
+
+<!-- SCRIPTS -->
+<!-- jQuery-->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+<script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
+
+<script src="../../../../bootstrap/js/bootstrap.min.js"></script>
+
+<!-- Extension : Highlight.js @ https://highlightjs.org/ -->
+<!-- Syntax highlighting tomorrow-night-bright, agate-->
+<link rel="stylesheet" href="../../../../highlight/css/tomorrow-night-bright.css">
+<script src="../../../../highlight/js/highlight.pack.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+
+<!-- Extension : MathJax @ https://docs.mathjax.org/en/v2.5-latest/tex.html -->
+<!-- MathJax/config/local/local.js contains macros. Need to provide entire URL-->
+<script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML,http://holdenlee.github.io/notebook/MathJax/config/local/local"></script>
+
+<!-- Extension : Footnotes @ http://ignorethecode.net/blog/2010/04/20/footnotes/ -->
+<script src="../../../../footnotes/js/footnotes.js"></script>
+
+<!-- Extension : Disqus @ http://disqus.com -->
+<!-- Extension : InlineDisqussions @ https://github.com/tsi/inlineDisqussions -->
+
+<script src="../../../../disqus/js/disqus.js"></script>
+
+
+
+<!-- Extension : Google Analytics -->
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-73261814-1', 'auto');
+  ga('send', 'pageview');
+
+</script>
+

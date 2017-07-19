@@ -8,8 +8,420 @@
         <name>Holden Lee</name>
         <email>oldheneel@gmail.com</email>
     </author>
-    <updated>2017-05-24T00:00:00Z</updated>
+    <updated>2017-07-19T00:00:00Z</updated>
     <entry>
+    <title>(HKY17) Hyperparameter Optimization - A Spectral Approach</title>
+    <link href="http://holdenlee.github.io/notebook/posts/tcs/machine_learning/optimization/HKY17.html" />
+    <id>http://holdenlee.github.io/notebook/posts/tcs/machine_learning/optimization/HKY17.html</id>
+    <published>2017-07-19T00:00:00Z</published>
+    <updated>2017-07-19T00:00:00Z</updated>
+    <summary type="html"><![CDATA[
+<div class="container">
+  <div id="content">
+    <div class="page header">
+      <h1>(HKY17) Hyperparameter Optimization - A Spectral Approach</h1>
+    </div>
+    <div class="info">
+      
+       
+        <p>Posted: 2017-07-19 
+          , Modified: 2017-07-19 
+	</p>
+      
+       <p>Tags: <a href="/tags/hyperparameters.html">hyperparameters</a></p> 
+    </div>
+    
+  </div>
+  <!--/div-->
+
+  <div class="toc"> <ul>
+ <li><a href="#compressed-sensing-for-orthonormal-polynomials">Compressed sensing for orthonormal polynomials</a></li>
+ <li><a href="#harmonica">Harmonica</a></li>
+ <li><a href="#questions">Questions</a></li>
+ </ul> </div>
+
+  <div class="blog-main">
+    <p>The main theorem (Alg. 1, Thm. 6) is a theorem on learning Fourier-concentrated functions with much better sample complexity than [LMN93], using compressed sensing applied to orthonormal polynomials. Apply this theorem to the loss as a function of hyperparameters (A.g. 2, Harmonica). (Note this is heuristic.)</p>
+<h2 id="compressed-sensing-for-orthonormal-polynomials">Compressed sensing for orthonormal polynomials</h2>
+<p>An orthonormal family with respect to distribution <span class="math inline">\(D\)</span> has <span class="math inline">\(\EE_D[\psi_i (X) \psi_j(X)]=\de_{ij}\)</span>.</p>
+<ul>
+<li><span class="math inline">\(s\)</span>-sparse: <span class="math inline">\(L_0(f)\le s\)</span></li>
+<li><span class="math inline">\((\ep,d)\)</span> concentrated: <span class="math inline">\(\ve{f - \pi_{\{\psi_{i}\}_{i\in S}}(f)}_2\le \ep\)</span>.</li>
+<li><span class="math inline">\((\ep,d,s)\)</span>-bounded: additionally, <span class="math inline">\(\ve{f}_1\le s\)</span>.</li>
+<li>Note we can approximate <span class="math inline">\(L_1(f)\le s\)</span> to <span class="math inline">\(\ep\)</span> with <span class="math inline">\(L_0(g)\le \fc{s^2}{\ep}\)</span>. (Sampling. Cf. Barron proof)</li>
+</ul>
+<p>LASSO: With appropriate <span class="math inline">\(\la\)</span>, <span class="math display">\[
+\min_{x\in \R^n} [\ve{x}_1 + \la \ve{Ax-y}_2^2]
+\]</span></p>
+<p>For <span class="math inline">\(z^1,\ldots, z^m\sim D\)</span>, <span class="math inline">\(A_{ij}=\psi_j(z^i)\)</span>, <span class="math inline">\(y=Ax+e\)</span>, <span class="math inline">\(\ve{e}_2\le \eta\sqrt m\)</span>, <span class="math inline">\(x^*\)</span> solving LASSO, <span class="math display">\[
+\Pj(\ve{x-x^*}_2\le C \fc{\si_s(x)_1}{\sqrt s}+d\eta) \ge 1-\de
+\]</span> where <span class="math inline">\(\si_s(x)_1=\min\set{\ve{x-z}_1}{z\text{ is s-sparse}}\)</span>, <span class="math inline">\(c,d\)</span> constants, with <span class="math inline">\(m\ge CK^2 s \poly\log(K,s,N,\rc{\de})\)</span> samples.</p>
+<p>Apply for low-degree recovery: if <span class="math inline">\(f\)</span> is (<span class="math inline">\(\ep,d,s\)</span>)-bounded, then using this finds <span class="math inline">\(g\equiv_\ep f\)</span> in time <span class="math inline">\(O(n^d)\)</span>, with <span class="math inline">\(T=\wt O(K^2s^2 \ln N/\ep)\)</span> samples. (? <span class="math inline">\(\ep\)</span> outside)</p>
+<p>(LMN93 needs <span class="math inline">\(\Om\pf{NL_\iy(f)^2}{\ep}\)</span> samples.) (? What is <span class="math inline">\(N\)</span> here? Number of orthonormal polys. Shouldn’t it be <span class="math inline">\(n^d\)</span>?)</p>
+<h2 id="harmonica">Harmonica</h2>
+<p>Apply in stages, with some degree <span class="math inline">\(d\)</span> and sparsity <span class="math inline">\(s\)</span>. Note this can involve at most <span class="math inline">\(ds\)</span> variables. Suppose the approximation <span class="math inline">\(g\)</span> to <span class="math inline">\(f\)</span> only involves variables in <span class="math inline">\(J\)</span>.</p>
+<p>Take the best <span class="math inline">\(t\)</span> solutions <span class="math inline">\(x_i*\)</span> to <span class="math inline">\(g\)</span> on <span class="math inline">\(J\)</span>, and now apply to <span class="math inline">\(\rc t \sumo it f_{J \leftarrow x_i^*}(x)\)</span>.</p>
+<h2 id="questions">Questions</h2>
+<ul>
+<li>Why does multiple stages help?</li>
+</ul>
+
+  </div>
+
+    
+
+    <!-- Extension : Sharing buttons @ www.sharethis.com -->
+    <span class='st_facebook_large' displayText='Facebook'></span>
+    <span class='st_twitter_large' displayText='Tweet'></span>
+    <span class='st_googleplus_large' displayText='Google +'></span>
+    <span class='st_reddit_large' displayText='Reddit'></span>
+    <span class='st__large' displayText=''></span>
+
+    <div id="disqus_thread"></div>
+    
+
+
+  
+    <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+  </div>
+  
+</div>
+]]></summary>
+</entry>
+<entry>
+    <title>(AR17) Provable benefits of representation learning</title>
+    <link href="http://holdenlee.github.io/notebook/posts/tcs/machine_learning/representation/AR17.html" />
+    <id>http://holdenlee.github.io/notebook/posts/tcs/machine_learning/representation/AR17.html</id>
+    <published>2017-07-18T00:00:00Z</published>
+    <updated>2017-07-18T00:00:00Z</updated>
+    <summary type="html"><![CDATA[
+<div class="container">
+  <div id="content">
+    <div class="page header">
+      <h1>(AR17) Provable benefits of representation learning</h1>
+    </div>
+    <div class="info">
+      
+       
+        <p>Posted: 2017-07-18 
+          , Modified: 2017-07-18 
+	</p>
+      
+       <p>Tags: <a href="/tags/representation%20learning.html">representation learning</a></p> 
+    </div>
+    
+  </div>
+  <!--/div-->
+
+  <div class="toc"> <ul>
+ <li><a href="#intro">Intro</a></li>
+ <li><a href="#section">2</a><ul>
+ <li><a href="#section-1">2.2</a></li>
+ </ul></li>
+ <li><a href="#section-2">3</a><ul>
+ <li><a href="#section-3">3.1</a></li>
+ <li><a href="#section-4">3.2</a></li>
+ </ul></li>
+ <li><a href="#section-5">4</a><ul>
+ <li><a href="#section-6">4.1</a></li>
+ <li><a href="#section-7">4.2</a></li>
+ </ul></li>
+ <li><a href="#section-8">5</a><ul>
+ <li><a href="#lower-bounds-for-nearest-neighbors">5.1 Lower bounds for nearest neighbors</a></li>
+ <li><a href="#section-9">5.3</a></li>
+ </ul></li>
+ <li><a href="#notes">Notes</a></li>
+ </ul> </div>
+
+  <div class="blog-main">
+    <h2 id="intro">Intro</h2>
+<ul>
+<li>Contributions
+<ul>
+<li>Formalizes representation learning, unifying disparate settings.</li>
+<li>Quantifies “utility” from representation learning.</li>
+<li>Prove separation results between representation learning and simpler algorithms.</li>
+</ul></li>
+<li>“Bayes+”</li>
+<li>Why representation learning?
+<ul>
+<li>Allows semi-supervised learning.</li>
+<li>Simpler methods need too many samples.</li>
+<li>Provably better than manifold learning in some cases.</li>
+</ul></li>
+<li>The framework
+<ul>
+<li>Many-to-one map <span class="math inline">\(x\mapsto h\)</span>. <span class="math inline">\(h\)</span> is “high-level” representation.</li>
+<li>Generative model <span class="math inline">\(h\to x\)</span>.</li>
+<li>Similarity in the latent space (of <span class="math inline">\(h\)</span>) is more informative.</li>
+<li>Defintion: A <span class="math inline">\((\ga,\be)\)</span>-valid decoder has <span class="math inline">\(\Pj(\ve{f(x)-h}\le (1-\ga) \ve{h})\ge \be\)</span>. (Think of <span class="math inline">\(\ga,\be\approx 1\)</span>.)</li>
+<li>Utility: If <span class="math inline">\(C\)</span> is <span class="math inline">\(\al\)</span>-Lipschitz, <span class="math inline">\(\ve{C(f(x)) - C(h)}_\iy\le (1-\ga)\al \ve{h}\)</span>.</li>
+</ul></li>
+<li>Examples
+<ul>
+<li>Clustering</li>
+<li>Manifold</li>
+<li>Kernel learning</li>
+</ul></li>
+<li>Non-examples
+<ul>
+<li>Nearest neighbor (provably weaker in some settings)</li>
+<li>LSH - this preserves distance, which is not our goal.</li>
+</ul></li>
+<li>Contrast [HM16], which is assumption-free and basically lossless compression. (ex. Lempel-Ziv) This notion is different, ex. allows throwing away noise.</li>
+<li>Compare to the usual: Maximize log probability (MLE), then <span class="math inline">\(\amax_h p_\te(h|x)\)</span>.
+<ul>
+<li>Unlike Bayesian which gives a distribution over <span class="math inline">\(h\)</span>, we output single <span class="math inline">\(h\)</span>.</li>
+</ul></li>
+</ul>
+<h2 id="section">2</h2>
+<h3 id="section-1">2.2</h3>
+<ul>
+<li>Encoder exists <span class="math inline">\(\implies\)</span> given <span class="math inline">\(x\)</span>, <span class="math inline">\(h\)</span> is concentrated around <span class="math inline">\(f(x)\)</span>, almost uniquely defined.</li>
+<li>Having concentration is stronger than just being able to do inference.</li>
+</ul>
+<h2 id="section-2">3</h2>
+<h3 id="section-3">3.1</h3>
+<p>Topic modeling</p>
+<ul>
+<li><span class="math inline">\(k\)</span> topices</li>
+<li>Each distribution on <span class="math inline">\(M\)</span> words. <span class="math inline">\(A_i\in \R^M\)</span>.</li>
+<li>Mixture coefficients <span class="math inline">\(h_i\)</span>.</li>
+<li>Draw bag of words <span class="math inline">\(x\sim \sum h_i A_i\)</span>, <span class="math inline">\(x\in \Z^N\)</span>.</li>
+</ul>
+<h3 id="section-4">3.2</h3>
+<p>Loglinear model: (continued below)</p>
+<p><span class="math display">\[p(x,h) = p(h)p(x|h).\]</span></p>
+<h2 id="section-5">4</h2>
+<h3 id="section-6">4.1</h3>
+<p>Topic modeling: want <span class="math inline">\(\ell_\iy\to \ell_1\)</span> condition number to be small.</p>
+<h3 id="section-7">4.2</h3>
+<ul>
+<li><span class="math inline">\(h\in \R^d\)</span> randomly on unit sphere.</li>
+<li><span class="math inline">\(\Pj(x|h)\propto e^{\an{W_x,h}}\)</span>.
+<ul>
+<li><span class="math inline">\(W_x = Bv\)</span>, <span class="math inline">\(B=O(1)\)</span>, <span class="math inline">\(v\sim N(0,I)\)</span>.</li>
+</ul></li>
+<li>Take <span class="math inline">\(f(x) = \nv{\sum_i W_{x_i}}\)</span>.</li>
+</ul>
+<h2 id="section-8">5</h2>
+<h3 id="lower-bounds-for-nearest-neighbors">5.1 Lower bounds for nearest neighbors</h3>
+<ul>
+<li><span class="math inline">\(M\)</span> movies, <span class="math inline">\(k\)</span> genres
+<ul>
+<li><span class="math inline">\(\ve{h}_0 = s\)</span>, <span class="math inline">\(h\in \{0,1\}^k\)</span></li>
+<li>Draw movies <span class="math inline">\(\ve{x}_0=T\)</span>.</li>
+</ul></li>
+<li>For <span class="math inline">\(T\ll \sqrt m\)</span>, can’t learn using NN because
+<ul>
+<li>Users will share few movies in common.</li>
+<li>Users who share movies won’t share genres. (Construct example where some movies belong to all genres.)</li>
+</ul></li>
+</ul>
+<h3 id="section-9">5.3</h3>
+<ul>
+<li><span class="math inline">\(k\)</span> genres</li>
+<li><span class="math inline">\(T=\Om(\ln M)\)</span> ratings per user</li>
+<li><span class="math inline">\(s\)</span> genres per user</li>
+<li><span class="math inline">\(\ell(h) = \sgn(\an{w,2h-1})\)</span>.</li>
+</ul>
+<p>Can do semi-supervised learning by doing representation learn using [AKM16]. (S4.1)</p>
+<h2 id="notes">Notes</h2>
+<ul>
+<li>Check Thm. 4.1 using [AKM16] - review “condition number”.</li>
+<li>Check Thm. 5.1. Look up background on NN.</li>
+<li>Check Thm. 5.4.</li>
+</ul>
+
+  </div>
+
+    
+
+    <!-- Extension : Sharing buttons @ www.sharethis.com -->
+    <span class='st_facebook_large' displayText='Facebook'></span>
+    <span class='st_twitter_large' displayText='Tweet'></span>
+    <span class='st_googleplus_large' displayText='Google +'></span>
+    <span class='st_reddit_large' displayText='Reddit'></span>
+    <span class='st__large' displayText=''></span>
+
+    <div id="disqus_thread"></div>
+    
+
+
+  
+    <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+  </div>
+  
+</div>
+]]></summary>
+</entry>
+<entry>
+    <title>(AKV17) A sparse recovery view of sentence embeddings, bag of n-grams, and LSTMs</title>
+    <link href="http://holdenlee.github.io/notebook/posts/tcs/machine_learning/nlp/BONGs.html" />
+    <id>http://holdenlee.github.io/notebook/posts/tcs/machine_learning/nlp/BONGs.html</id>
+    <published>2017-07-18T00:00:00Z</published>
+    <updated>2017-07-18T00:00:00Z</updated>
+    <summary type="html"><![CDATA[
+<div class="container">
+  <div id="content">
+    <div class="page header">
+      <h1>(AKV17) A sparse recovery view of sentence embeddings, bag of n-grams, and LSTMs</h1>
+    </div>
+    <div class="info">
+      
+       
+        <p>Posted: 2017-07-18 
+          , Modified: 2017-07-18 
+	</p>
+      
+       <p>Tags: <a href="/tags/sparse%20recovery.html">sparse recovery</a>, <a href="/tags/n-grams.html">n-grams</a>, <a href="/tags/lstm.html">lstm</a></p> 
+    </div>
+    
+  </div>
+  <!--/div-->
+
+  <div class="toc"></div>
+
+  <div class="blog-main">
+    <ul>
+<li>LSTMs can do as well as linear classification over BonGs.</li>
+<li>Calderbank: SVM can do as well given compressed <span class="math inline">\(Ax\)</span> instead of <span class="math inline">\(x\)</span>, if <span class="math inline">\(A\)</span> is RIP.
+<ul>
+<li>But word vectors are not RIP, not even statistically.</li>
+</ul></li>
+<li>Basis pursuit/LASSO does better on word embeddings than random embeddings, even though word embeddings aren’t incoherent/RIP.
+<ul>
+<li>What’s a good explanation? Word vectors in sentence are often linearly separable from other vectors - why?</li>
+<li>MP/OMP does worse on word embeddings.</li>
+</ul></li>
+</ul>
+<p>(RIP stronger than incoherency? Ex. incoherency can have linear dependencies… Incoherency gives something like statistical RIP?)</p>
+
+  </div>
+
+    
+
+    <!-- Extension : Sharing buttons @ www.sharethis.com -->
+    <span class='st_facebook_large' displayText='Facebook'></span>
+    <span class='st_twitter_large' displayText='Tweet'></span>
+    <span class='st_googleplus_large' displayText='Google +'></span>
+    <span class='st_reddit_large' displayText='Reddit'></span>
+    <span class='st__large' displayText=''></span>
+
+    <div id="disqus_thread"></div>
+    
+
+
+  
+    <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+  </div>
+  
+</div>
+]]></summary>
+</entry>
+<entry>
+    <title>Weekly summary 2017-07-22</title>
+    <link href="http://holdenlee.github.io/notebook/posts/summaries/2017-07-22.html" />
+    <id>http://holdenlee.github.io/notebook/posts/summaries/2017-07-22.html</id>
+    <published>2017-07-18T00:00:00Z</published>
+    <updated>2017-07-18T00:00:00Z</updated>
+    <summary type="html"><![CDATA[
+<div class="container">
+  <div id="content">
+    <div class="page header">
+      <h1>Weekly summary 2017-07-22</h1>
+    </div>
+    <div class="info">
+      
+       
+        <p>Posted: 2017-07-18 
+          , Modified: 2017-07-18 
+	</p>
+      
+       <p>Tags: <a href="/tags/none.html">none</a></p> 
+    </div>
+    
+  </div>
+  <!--/div-->
+
+  <div class="toc"> <ul>
+ <li><a href="#current-projects">Current projects</a></li>
+ <li><a href="#reading">Reading</a></li>
+ <li><a href="#explorations">Explorations</a></li>
+ </ul> </div>
+
+  <div class="blog-main">
+    <h2 id="current-projects">Current projects</h2>
+<ul>
+<li>Langevin (Mon)</li>
+<li>EGNN</li>
+<li>NLP: (Mon)
+<ul>
+<li>BoNGs: make recovery work for <span class="math inline">\(n\)</span>-grams, <span class="math inline">\(n\ge 2\)</span>.</li>
+<li>Treegrams
+<ul>
+<li>cf. Sida Wang</li>
+<li>hyperdim vectors</li>
+</ul></li>
+<li>document embedding (axioms?)</li>
+<li>GANs for BoNGs</li>
+</ul></li>
+<li>Long-term memory (COLT open problem) (Tue)
+<ul>
+<li>For convex optimization</li>
+<li>Tue: this seems difficult because of “bottleneck” of probability <span class="math inline">\(\ll \rc{\poly(n)}\)</span>. Next step: familiarize with lower-bound techniques and try to prove lower bound.</li>
+</ul></li>
+<li>Reinforcement learning (experiments - what to do?)</li>
+</ul>
+<h2 id="reading">Reading</h2>
+<ul>
+<li><a href="https://workflowy.com/#/cc7e392e4fff">Do GANs learn?</a></li>
+<li><a href="../tcs/machine_learning/representation/AR17.md">Representation learning</a></li>
+<li>BONGs</li>
+<li>Hyperparameter tuning</li>
+</ul>
+<h2 id="explorations">Explorations</h2>
+<ul>
+<li>Further on temperature varying and Langevin
+<ul>
+<li>RAISE estimator - similar criterion?
+<ul>
+<li>“Multiplicative” weights</li>
+</ul></li>
+<li>Other settings where annealing helps. Analogue on Boolean cube.</li>
+<li>Tensor decomposition.
+<ul>
+<li>Beyond the homotopy method.</li>
+<li>[MR16]</li>
+</ul></li>
+</ul></li>
+<li>Co-training - predict one part from other. Relating to/extending CCA.</li>
+<li>RL - kernel?</li>
+</ul>
+
+  </div>
+
+    
+
+    <!-- Extension : Sharing buttons @ www.sharethis.com -->
+    <span class='st_facebook_large' displayText='Facebook'></span>
+    <span class='st_twitter_large' displayText='Tweet'></span>
+    <span class='st_googleplus_large' displayText='Google +'></span>
+    <span class='st_reddit_large' displayText='Reddit'></span>
+    <span class='st__large' displayText=''></span>
+
+    <div id="disqus_thread"></div>
+    
+
+
+  
+    <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+  </div>
+  
+</div>
+]]></summary>
+</entry>
+<entry>
     <title>(TPGB17) The space of transferable adversarial examples</title>
     <link href="http://holdenlee.github.io/notebook/posts/tcs/machine_learning/neural_nets/TPGB17.html" />
     <id>http://holdenlee.github.io/notebook/posts/tcs/machine_learning/neural_nets/TPGB17.html</id>
@@ -621,401 +1033,6 @@ where <span class="math inline">\(\mu'\)</span> is for <span class="math inline"
 <li>Read CIRL.</li>
 <li>Experiment with mixture. (cf. sleeping in NN)</li>
 <li>Impact measure ideas/experiment.</li>
-</ul>
-
-  </div>
-
-    
-
-    <!-- Extension : Sharing buttons @ www.sharethis.com -->
-    <span class='st_facebook_large' displayText='Facebook'></span>
-    <span class='st_twitter_large' displayText='Tweet'></span>
-    <span class='st_googleplus_large' displayText='Google +'></span>
-    <span class='st_reddit_large' displayText='Reddit'></span>
-    <span class='st__large' displayText=''></span>
-
-    <div id="disqus_thread"></div>
-    
-
-
-  
-    <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
-  </div>
-  
-</div>
-]]></summary>
-</entry>
-<entry>
-    <title>AAML workshop</title>
-    <link href="http://holdenlee.github.io/notebook/posts/cs/ai/control/aaml_workshop.html" />
-    <id>http://holdenlee.github.io/notebook/posts/cs/ai/control/aaml_workshop.html</id>
-    <published>2017-04-01T00:00:00Z</published>
-    <updated>2017-04-01T00:00:00Z</updated>
-    <summary type="html"><![CDATA[
-<div class="container">
-  <div id="content">
-    <div class="page header">
-      <h1>AAML workshop</h1>
-    </div>
-    <div class="info">
-      
-       
-        <p>Posted: 2017-04-01 
-          , Modified: 2017-04-01 
-	</p>
-      
-       <p>Tags: <a href="/tags/ai%20safety.html">ai safety</a>, <a href="/tags/machine%20learning.html">machine learning</a></p> 
-    </div>
-    
-  </div>
-  <!--/div-->
-
-  <div class="toc"> <ul>
- <li><a href="#inductive-ambiguity">Inductive ambiguity</a><ul>
- <li><a href="#formalization">Formalization</a></li>
- </ul></li>
- <li><a href="#environment-goals">Environment goals</a><ul>
- <li><a href="#level-1">Level 1</a></li>
- <li><a href="#level-2">Level 2</a></li>
- <li><a href="#philosophy-view">Philosophy view</a></li>
- </ul></li>
- <li><a href="#impact-measure">Impact measure</a></li>
- <li><a href="#learning-utility-function">Learning utility function</a></li>
- </ul> </div>
-
-  <div class="blog-main">
-    <p>See</p>
-<ul>
-<li><a href="alignment_ml.html">Alignment</a></li>
-<li><a href="concrete.html">Concrete problems</a></li>
-</ul>
-<p><a href="https://workflowy.com/#/4296816d1051">Workflowy notes (private)</a></p>
-<h2 id="inductive-ambiguity">Inductive ambiguity</h2>
-<p>What’s the problem with KWIK?</p>
-<ul>
-<li>Too restrictive - many things with small VC dimension can take exponentially many samples with KWIK. (In some sense this is necessary, cf. if only one example is 1.)</li>
-<li>Requires realizability.</li>
-</ul>
-<h3 id="formalization">Formalization</h3>
-<p>Dimensions to vary</p>
-<ul>
-<li>Supervised, then test; vs. online/active</li>
-<li>How do you measure supervision? KWIK penalized by 1 for each time it asks user. We can e.g. instead be content with decaying rate of asking.</li>
-</ul>
-<p>Filter class <span class="math inline">\(F\)</span> and hypothesis class <span class="math inline">\(H\)</span>. Suppose there exists <span class="math inline">\(f,h\)</span> such that <span class="math inline">\(fh(x)=y, 1-y, \perp\)</span> with probability <span class="math inline">\(p, 0, 1-p\)</span>. We want to find <span class="math inline">\(\wh f\wh h\)</span> with <span class="math inline">\(\wh f \wh h(x)=y,1-y, \perp\)</span> with probabilities <span class="math inline">\(p+\ep, \ep', 1-p-\ep-\ep'\)</span> with <span class="math inline">\(\ep'\ll \ep\)</span>.</p>
-<p>Neural net anomaly detection:</p>
-<ul>
-<li>RBF</li>
-<li>only predict around points seen</li>
-<li>[HG17] A BASELINE FOR DETECTING MISCLASSIFIED AND OUT-OF-DISTRIBUTION EXAMPLES IN NEURAL NETWORKS</li>
-</ul>
-<h2 id="environment-goals">Environment goals</h2>
-<p>2-3 levels of problem.</p>
-<ol type="1">
-<li>Human can evaluate/give accurate feedback.</li>
-<li>Human can evaluate, but agent can prevent human from giving feedback.</li>
-<li>Human cannot evaluate.</li>
-</ol>
-<p>(Lump 2 and 3 together.)</p>
-<h3 id="level-1">Level 1</h3>
-<p>This is easiest for formalize and tackle as a theory problem. Assume there is a distinguishing function (conservative concept?) that excludes all bad outcomes.</p>
-<p>Under human distribution of actions, reward given corresponds to value.</p>
-<p>But after gaming (ex. realizing human only checks in 1 place to check room is clean), agent leaves human distribution of actions, and inferred/represented reward stops corresponding to value. Either from maintaining multiple hypothesis of reward function, or human feedback, it realizes this.</p>
-<p>Going back and forth, can continuously improve. Can it generalize over human pushback?</p>
-<p>Alternative: have separate agent/part of agent that acts as predictor - holds model of world, job is to predict, e.g., whether there’s a strawberry.</p>
-<p>Question: can’t you just embed the “plagiarism” problem in here?</p>
-<p>Maybe the problem considered here is more concrete: There’s a better notion of what a strawberry/plate is than a good story.</p>
-<h3 id="level-2">Level 2</h3>
-<p>Note that “putting self in simulation” is a relative term. It means “fooling all its sensors.” If it has a world-model, this means the harder task of fooling the world-model. (Think of world-model itself as a sensor system.) (Maybe the world-model asks for proofs?)</p>
-<p>Why can’t you just have a world model or adversarial predictor? Problem if there is no good evaluator.</p>
-<p>This contains the conservative concept problem and the reward hacking problem. (I think.) Solving the informed oversight problem is sufficient.</p>
-<ul>
-<li>Conservative concept: a human non-evaluable task means that every hypothesis class we could train with human-curated data, we could not distinguish between the real and fake thing. There is impossibile without access to the agent’s internal state.</li>
-<li>Reward hacking: how not just to keep hitting reward button. Related to shutdown problem—preventing human from changing its reward, for instance.</li>
-<li>Informed oversight: give human a human-understandable transcript that would help make a decision about whether value achieved (ex. “I put myself in a simulation.”). This is sufficient.</li>
-</ul>
-<h3 id="philosophy-view">Philosophy view</h3>
-<p>It is impossible to refer to the physical world. Our mapping from physical actions to mental representations is many-to-one; many ways of moving our arm all get translated into a mental story of “picking up the strawberry.” There are many ways to execute this task.</p>
-<p>We only live in our own conceptual space. This space is highly bound/coupled to actual physics. (There’s no glitch in the universe that if I move my arm in a specific way, Konami code, I shut down the universe.) Any way I move my arm is roughly the same.</p>
-<p>The AI solves tasks within its own conceptual space. We can evaluate that the AI is doing the right thing insofar as it is transparent, we can look at its world model, point at the concept of “strawberry” and see that it’s close enough to our own. We can solve “environmental goals” if the intersection of ontologies is nonempty, and the goal is within that intersection.</p>
-<h2 id="impact-measure">Impact measure</h2>
-<p>Measure 1: get back to what would have happened under null. <span class="math display">\[
-I(s) = \min_{\pi} D_{KL}(P_{t_1}^{\phi}(\bullet | s)|| P_{t_2}^\pi(\bullet | s'))
-\]</span></p>
-<p>Measure 2: stay similar to trusted region <span class="math inline">\(R\)</span>. Let <span class="math inline">\(f:X\to Y\)</span> be mapping to feature space. <span class="math display">\[
-I(s) = d(R, f(s)).
-\]</span> For example, <span class="math inline">\(R=\{f(s_0)\}\)</span> and <span class="math inline">\(d=\ved_2\)</span>.</p>
-<p>Measure 3: train <span class="math inline">\(I\)</span> on examples, conservatively (ex. RBF) on good examples <span class="math inline">\((s_i,0)\)</span>, and bad examples, <span class="math inline">\((s_j,&gt;0)\)</span>. Also can encode prior information, e.g. about things that are neutral.</p>
-<h2 id="learning-utility-function">Learning utility function</h2>
-<p>Probability of <span class="math inline">\((x_i,y_i)\)</span> under <span class="math inline">\(p_{\te_1}\)</span> and <span class="math inline">\(p_{\te_2}\)</span>, where <span class="math inline">\(p_i=1\)</span> if <span class="math inline">\((x_i,y_i)\sim D_1\)</span> and 0 if <span class="math inline">\(\sim D_2\)</span>. <span class="math display">\[
-\sumo in p_i p_{\te_1}(y_i|x_i) + \sumo in (1-p_i) p_{\te_2}p(y_i|x_i).
-\]</span> Max log likelihood. Do EM with <span class="math inline">\(p\)</span>’s and <span class="math inline">\((x,y)\)</span>’s.</p>
-<p>Version 2: Use IRL: keep track of best guess nets, or sets of valid hypotheses. Keep track of posterior probabilities of each net. (Update in online fashion.) Update posterior probabilities assuming Markovian switching (cf. DP in HMM, sleeping experts), and gradient descent on parameters.</p>
-
-  </div>
-
-    
-
-    <!-- Extension : Sharing buttons @ www.sharethis.com -->
-    <span class='st_facebook_large' displayText='Facebook'></span>
-    <span class='st_twitter_large' displayText='Tweet'></span>
-    <span class='st_googleplus_large' displayText='Google +'></span>
-    <span class='st_reddit_large' displayText='Reddit'></span>
-    <span class='st__large' displayText=''></span>
-
-    <div id="disqus_thread"></div>
-    
-
-
-  
-    <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
-  </div>
-  
-</div>
-]]></summary>
-</entry>
-<entry>
-    <title>Neural nets as kernel space</title>
-    <link href="http://holdenlee.github.io/notebook/posts/tcs/machine_learning/neural_nets/nn_kernel.html" />
-    <id>http://holdenlee.github.io/notebook/posts/tcs/machine_learning/neural_nets/nn_kernel.html</id>
-    <published>2017-03-23T00:00:00Z</published>
-    <updated>2017-03-23T00:00:00Z</updated>
-    <summary type="html"><![CDATA[
-<div class="container">
-  <div id="content">
-    <div class="page header">
-      <h1>Neural nets as kernel space</h1>
-    </div>
-    <div class="info">
-      
-       
-        <p>Posted: 2017-03-23 
-          , Modified: 2017-03-23 
-	</p>
-      
-       <p>Tags: <a href="/tags/neural%20net.html">neural net</a></p> 
-    </div>
-    
-  </div>
-  <!--/div-->
-
-  <div class="toc"> <ul>
- <li><a href="#things-this-could-explain">Things this could explain</a></li>
- <li><a href="#for-neural-nets">For neural nets</a></li>
- <li><a href="#followup">Followup</a></li>
- <li><a href="#thoughts-33017">Thoughts 3/30/17</a></li>
- </ul> </div>
-
-  <div class="blog-main">
-    <p>I think that I can place neural networks with non-steep and well-separated sigmoids as low-norm elements of a RKHS, and that this will explain and unify some learning results.</p>
-<p>Precise details to be ironed out. First, choice of RKHS:</p>
-<ul>
-<li>Sobolev space <span class="math inline">\(H^{\fc n2}(\R^n)\)</span>, or</li>
-<li><span class="math inline">\(L^2(\R^n)\)</span> or <span class="math inline">\(H^1(\R^n)\)</span> with bandlimited constraint.</li>
-<li>Quotient out by constant functions? Allow a sigmoid <span class="math inline">\(\to 1\)</span> at infinity as kernel?</li>
-</ul>
-<p>For the bandlimiting, there are 2 technical steps, with parameters to vary.</p>
-<ul>
-<li>Convolve by Gaussian (or ball indicator) in Fourier space, or multiplying by Gaussian (or FT of ball indicator) in ordinary space.</li>
-<li>cutting off Fourier spectrum - how does this influence? I.e. what is Fourier decay? Expect exponential - so get <span class="math inline">\(\ln \prc{\ep}\)</span> in exponent.</li>
-</ul>
-<p>Expect exponential dependence on steepness.</p>
-<h2 id="things-this-could-explain">Things this could explain</h2>
-<ul>
-<li>Kalai’s result on learning smooth NN.</li>
-<li>Learning linear separator with margin.</li>
-<li>Exponential dependence on dimension or <span class="math inline">\(\rc{\ep}\)</span> (what exactly?) for agnostically learning halfspace, etc.</li>
-</ul>
-<h2 id="for-neural-nets">For neural nets</h2>
-<ul>
-<li>Learn 2-NN with linear output, under some conditions (ex. incoherence)</li>
-<li>Maybe can learn 2-NN with sigmoid/majority output, by boosting (cf. majority of majorities).</li>
-</ul>
-<h2 id="followup">Followup</h2>
-<ul>
-<li>What is relationship to gradient descent?</li>
-</ul>
-<h2 id="thoughts-33017">Thoughts 3/30/17</h2>
-<ul>
-<li>How to get something for convolutional neural nets?
-<ul>
-<li>As an easier question, think about having filters over the entire image, rather than a grid.</li>
-<li>Think of periodic case even.</li>
-<li>Then this works by Fourier transform over <span class="math inline">\(\R^\N\)</span> (suitably weighted).</li>
-<li>Problem: the simplest convnet is more complicated than this, includes maxpool and then fc. How to deal with maxpool? What if you don’t do maxpool? Sigmoid and then average, or weighted average?</li>
-<li>Kernel on Fourier transform space. (See how well FT matches…)</li>
-<li>See [ZLW16]</li>
-</ul></li>
-<li>Overcomplete bases
-<ul>
-<li>Can define RKHS norm by giving norm when written in terms of basis element.</li>
-<li>Can’t define norm with overcomplete set of elements.</li>
-<li>Can we define some kind of norm and do something kernel-like with overcomplete basis?
-<ul>
-<li>Project from larger space?</li>
-</ul></li>
-<li>Cf. wanting symmetries beyond translation</li>
-<li>Cf. wavelets offer a natural overcomplete basis respecting symmetries</li>
-<li>Perhaps first thing to do is just try wavelet regularization on MNIST.</li>
-<li>If you want to use nonconvolutional kernel method on images, you should first convert to Fourier or wavelet basis. Probably wavelet (except that’s not quite a basis). (Multiply by log size.) (This doesn’t give you translation invariance, just resets the norm.)</li>
-</ul></li>
-<li>Three kernels
-<ul>
-<li>Fourier-based.</li>
-<li><span class="math inline">\(\rc{2-\an{x,y}}\)</span>.</li>
-<li>Arccosine.</li>
-</ul></li>
-<li>I’m super-confused about why toggling just one parameter <span class="math inline">\(n\)</span> changes the number of layers. <span class="math inline">\(K^{(n)}(x,y)=\fc{n-1}n + \fc{1/n}{(n+1) - n\an{x,y}}\)</span>.</li>
-<li>Idea to prove NN separation for Lipschitz layers: Show a function that has exponentially higher norm in terms of <span class="math inline">\(l-1\)</span> norm than <span class="math inline">\(l\)</span>. Problem: norm required to express neural net also increases super-exponentially in dimension.</li>
-<li>Improper tensor decomp using same method (use case?) cf. Livni’s poly network</li>
-<li>Barron functions form a convex set… The reason why it’s intractable is that it’s infinite-dimensional. Hilbert spaces are infinite-dimensional, but the representor theorem saves you.</li>
-<li>Can you cut down representation (after using representor theorem) by sampling? Keep norm, but be cruder? (Pick some elements and rescale.)</li>
-<li>Using kernel representation at first level of neural network? Do some kind of AM? How to mix nonparametric and parametric? Power and limit of kernel coming from its nonparametricity.</li>
-</ul>
-
-  </div>
-
-    
-
-    <!-- Extension : Sharing buttons @ www.sharethis.com -->
-    <span class='st_facebook_large' displayText='Facebook'></span>
-    <span class='st_twitter_large' displayText='Tweet'></span>
-    <span class='st_googleplus_large' displayText='Google +'></span>
-    <span class='st_reddit_large' displayText='Reddit'></span>
-    <span class='st__large' displayText=''></span>
-
-    <div id="disqus_thread"></div>
-    
-
-
-  
-    <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
-  </div>
-  
-</div>
-]]></summary>
-</entry>
-<entry>
-    <title>Weekly summary 2017-03-18</title>
-    <link href="http://holdenlee.github.io/notebook/posts/summaries/2017-03-18.html" />
-    <id>http://holdenlee.github.io/notebook/posts/summaries/2017-03-18.html</id>
-    <published>2017-03-18T00:00:00Z</published>
-    <updated>2017-03-18T00:00:00Z</updated>
-    <summary type="html"><![CDATA[
-<div class="container">
-  <div id="content">
-    <div class="page header">
-      <h1>Weekly summary 2017-03-18</h1>
-    </div>
-    <div class="info">
-      
-       
-        <p>Posted: 2017-03-18 
-          , Modified: 2017-03-18 
-	</p>
-      
-       <p>Tags: <a href="/tags/none.html">none</a></p> 
-    </div>
-    
-  </div>
-  <!--/div-->
-
-  <div class="toc"> <ul>
- <li><a href="#adversarial-training">Adversarial training</a></li>
- <li><a href="#langevin-monte-carlo">Langevin Monte Carlo</a></li>
- <li><a href="#using-barrons-theorem">Using Barron’s Theorem</a></li>
- <li><a href="#entropy-regularizer-for-svm">Entropy regularizer for SVM</a></li>
- <li><a href="#generalization">Generalization</a></li>
- <li><a href="#rl">RL</a></li>
- </ul> </div>
-
-  <div class="blog-main">
-    <h2 id="adversarial-training">Adversarial training</h2>
-<ul>
-<li><a href="../tcs/machine_learning/neural_nets/adversarial_experiments.html">Experiments</a></li>
-</ul>
-<h2 id="langevin-monte-carlo">Langevin Monte Carlo</h2>
-<ul>
-<li>Learn background. (OV14, Villani book, Ledoux book.)</li>
-<li>Langevin papers.</li>
-<li>Extending [AH16].</li>
-</ul>
-<h2 id="using-barrons-theorem">Using Barron’s Theorem</h2>
-<p>See <a href="../tcs/machine_learning/neural_nets/barron_musings.html">musings</a>.</p>
-<h2 id="entropy-regularizer-for-svm">Entropy regularizer for SVM</h2>
-<h2 id="generalization">Generalization</h2>
-<h2 id="rl">RL</h2>
-<p>Come up with project. Concrete problems in AI safety?</p>
-
-  </div>
-
-    
-
-    <!-- Extension : Sharing buttons @ www.sharethis.com -->
-    <span class='st_facebook_large' displayText='Facebook'></span>
-    <span class='st_twitter_large' displayText='Tweet'></span>
-    <span class='st_googleplus_large' displayText='Google +'></span>
-    <span class='st_reddit_large' displayText='Reddit'></span>
-    <span class='st__large' displayText=''></span>
-
-    <div id="disqus_thread"></div>
-    
-
-
-  
-    <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
-  </div>
-  
-</div>
-]]></summary>
-</entry>
-<entry>
-    <title>Langevin dynamics</title>
-    <link href="http://holdenlee.github.io/notebook/posts/tcs/machine_learning/probabilistic/langevin.html" />
-    <id>http://holdenlee.github.io/notebook/posts/tcs/machine_learning/probabilistic/langevin.html</id>
-    <published>2017-03-15T00:00:00Z</published>
-    <updated>2017-03-15T00:00:00Z</updated>
-    <summary type="html"><![CDATA[
-<div class="container">
-  <div id="content">
-    <div class="page header">
-      <h1>Langevin dynamics</h1>
-    </div>
-    <div class="info">
-      
-       
-        <p>Posted: 2017-03-15 
-          , Modified: 2017-03-15 
-	</p>
-      
-       <p>Tags: <a href="/tags/langevin.html">langevin</a>, <a href="/tags/sampling.html">sampling</a></p> 
-    </div>
-    
-  </div>
-  <!--/div-->
-
-  <div class="toc"> <ul>
- <li><a href="#references">References</a><ul>
- <li><a href="#other">Other</a></li>
- </ul></li>
- </ul> </div>
-
-  <div class="blog-main">
-    <h2 id="references">References</h2>
-<ul>
-<li>Book: Analysis and geometry of Markov diffusion operators</li>
-<li>C. Villani. Topics in Optimal Transportation, volume 58 of Graduate Studies in Mathematics</li>
-<li>[OV14] GENERALIZATION OF AN INEQUALITY BY TALAGRAND, AND LINKS WITH THE LOGARITHMIC SOBOLEV INEQUALITY</li>
-<li>[GM90] Recursive stochastic algorithms for global optimization in R^d</li>
-<li>[RT96] Exponential convergence of Langevin distributions and their discrete</li>
-<li>[D14] Theoretical guarantees for approximate sampling from smooth and log-concave densities</li>
-<li>[ZLC17] A Hitting Time Analysis of Stochastic Gradient Langevin Dynamics</li>
-<li>[RRT17] Non-Convex Learning via Stochastic Gradient Langevin Dynamics - A Nonasymptotic Analysis</li>
-</ul>
-<p>See also: Stochastic calculus, Brownian motion, [AH] on sampling</p>
-<h3 id="other">Other</h3>
-<ul>
-<li>E. Hazan, K. Levi, and S. Shalev-Shwartz. On graduated optimization for stochastic non-convex problems</li>
 </ul>
 
   </div>
