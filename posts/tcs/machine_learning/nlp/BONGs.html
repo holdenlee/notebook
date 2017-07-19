@@ -10,7 +10,7 @@
   <meta name="description" content="Holden Lee's Research Notebook">
   <meta name="author" content="Holden Lee">
     
-  <title>Posts in category "tcs\machine_learning\optimization"</title>
+  <title>(AKV17) A sparse recovery view of sentence embeddings, bag of n-grams, and LSTMs</title>
 
   <!-- Bootstrap core CSS -->
   <link href="../../../../bootstrap/css/bootstrap.min.css" rel="stylesheet">
@@ -70,127 +70,56 @@
 <div class="container">
   <div id="content">
     <div class="page header">
-      <h1>Posts in category "tcs\machine_learning\optimization"</h1>
+      <h1>(AKV17) A sparse recovery view of sentence embeddings, bag of n-grams, and LSTMs</h1>
     </div>
     <div class="info">
       
+       
+        <p>Posted: 2017-07-18 
+          , Modified: 2017-07-18 
+	</p>
       
-      
+       <p>Tags: <a href="../../../../tags/sparse%20recovery.html">sparse recovery</a>, <a href="../../../../tags/n-grams.html">n-grams</a>, <a href="../../../../tags/lstm.html">lstm</a></p> 
     </div>
     
   </div>
   <!--/div-->
 
-  
+  <div class="toc"></div>
 
   <div class="blog-main">
     <ul>
-    
-        <li>
-            <a href="../../../../posts/tcs/machine_learning/optimization/HKY17.html">(HKY17) Hyperparameter Optimization - A Spectral Approach</a> (2017-07-19)
-        </li>
-    
-        <li>
-            <a href="../../../../posts/tcs/machine_learning/optimization/multiplicative_update.html">The Blessing and the Curse of the Multiplicative Updates</a> (2017-02-12)
-        </li>
-    
-        <li>
-            <a href="../../../../posts/tcs/machine_learning/optimization/legendre_transform.html">Legendre transform</a> (2016-12-28)
-        </li>
-    
-        <li>
-            <a href="../../../../posts/tcs/machine_learning/optimization/hierarchies.html">Hierarchies of convex relaxations</a> (2016-12-28)
-        </li>
-    
-        <li>
-            <a href="../../../../posts/tcs/machine_learning/optimization/HMR16.html">(HMR16) Gradient descent learns linear dynamical systems</a> (2016-12-27)
-        </li>
-    
-        <li>
-            <a href="../../../../posts/tcs/machine_learning/optimization/bco.html">Bandit convex optimization</a> (2016-10-11)
-        </li>
-    
-        <li>
-            <a href="../../../../posts/tcs/machine_learning/optimization/generalization.html">Generalization of neural nets</a> (2016-10-10)
-        </li>
-    
-        <li>
-            <a href="../../../../posts/tcs/machine_learning/optimization/SV16.html">(SV16) The mixing time of the Dikin walk in a polytope - a simple proof</a> (2016-09-07)
-        </li>
-    
-        <li>
-            <a href="../../../../posts/tcs/machine_learning/optimization/ellipsoid.html">Ellipsoid method</a> (2016-08-30)
-        </li>
-    
-        <li>
-            <a href="../../../../posts/tcs/machine_learning/optimization/ipm.html">Interior point methods</a> (2016-08-26)
-        </li>
-    
-        <li>
-            <a href="../../../../posts/tcs/machine_learning/optimization/distribution_of_critical_points.html">Distribution of critical points</a> (2016-08-13)
-        </li>
-    
-        <li>
-            <a href="../../../../posts/tcs/machine_learning/optimization/sampling.html">Sampling</a> (2016-05-17)
-        </li>
-    
-        <li>
-            <a href="../../../../posts/tcs/machine_learning/optimization/constrained.html">Constrained optimization</a> (2016-04-28)
-        </li>
-    
-        <li>
-            <a href="../../../../posts/tcs/machine_learning/optimization/convexity.html">Convexity</a> (2016-04-23)
-        </li>
-    
-        <li>
-            <a href="../../../../posts/tcs/machine_learning/optimization/convex_problems.html">Convex problems</a> (2016-04-23)
-        </li>
-    
-        <li>
-            <a href="../../../../posts/tcs/machine_learning/optimization/second-order.html">Second-order methods</a> (2016-04-22)
-        </li>
-    
-        <li>
-            <a href="../../../../posts/tcs/machine_learning/optimization/AO15.html">(AO15) Linear coupling</a> (2016-03-06)
-        </li>
-    
-        <li>
-            <a href="../../../../posts/tcs/machine_learning/optimization/mirror-descent.html">Mirror descent</a> (2016-03-05)
-        </li>
-    
-        <li>
-            <a href="../../../../posts/tcs/machine_learning/optimization/AGD.html">Accelerated Gradient descent</a> (2016-03-05)
-        </li>
-    
-        <li>
-            <a href="../../../../posts/tcs/machine_learning/optimization/sgd_variance_reduction.html">SGD Variance Reduction</a> (2016-03-04)
-        </li>
-    
-        <li>
-            <a href="../../../../posts/tcs/machine_learning/optimization/sdp-duality.html">SDP duality</a> (2016-03-04)
-        </li>
-    
-        <li>
-            <a href="../../../../posts/tcs/machine_learning/optimization/duality.html">Duality</a> (2016-03-04)
-        </li>
-    
-        <li>
-            <a href="../../../../posts/tcs/machine_learning/optimization/convex_optimization.html">Convex optimization</a> (2016-03-04)
-        </li>
-    
-        <li>
-            <a href="../../../../posts/tcs/machine_learning/optimization/GD.html">Gradient descent</a> (2016-03-04)
-        </li>
-    
+<li>LSTMs can do as well as linear classification over BonGs.</li>
+<li>Calderbank: SVM can do as well given compressed <span class="math inline">\(Ax\)</span> instead of <span class="math inline">\(x\)</span>, if <span class="math inline">\(A\)</span> is RIP.
+<ul>
+<li>But word vectors are not RIP, not even statistically.</li>
+</ul></li>
+<li>Basis pursuit/LASSO does better on word embeddings than random embeddings, even though word embeddings aren’t incoherent/RIP.
+<ul>
+<li>What’s a good explanation? Word vectors in sentence are often linearly separable from other vectors - why?</li>
+<li>MP/OMP does worse on word embeddings.</li>
+</ul></li>
 </ul>
-
-
+<p>(RIP stronger than incoherency? Ex. incoherency can have linear dependencies… Incoherency gives something like statistical RIP?)</p>
 
   </div>
 
     
 
+    <!-- Extension : Sharing buttons @ www.sharethis.com -->
+    <span class="st_facebook_large" displayText="Facebook"></span>
+    <span class="st_twitter_large" displayText="Tweet"></span>
+    <span class="st_googleplus_large" displayText="Google +"></span>
+    <span class="st_reddit_large" displayText="Reddit"></span>
+    <span class="st__large" displayText></span>
 
+    <div id="disqus_thread"></div>
+    
+
+
+  
+    <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+  </div>
   
 </div>
 
@@ -235,6 +164,9 @@
 
 <!-- Extension : Disqus @ http://disqus.com -->
 <!-- Extension : InlineDisqussions @ https://github.com/tsi/inlineDisqussions -->
+
+<script src="../../../../disqus/js/disqus.js"></script>
+
 
 
 <!-- Extension : Google Analytics -->

@@ -10,7 +10,7 @@
   <meta name="description" content="Holden Lee's Research Notebook">
   <meta name="author" content="Holden Lee">
     
-  <title>Posts in category "tcs\machine_learning\optimization"</title>
+  <title>(HKY17) Hyperparameter Optimization - A Spectral Approach</title>
 
   <!-- Bootstrap core CSS -->
   <link href="../../../../bootstrap/css/bootstrap.min.css" rel="stylesheet">
@@ -70,127 +70,71 @@
 <div class="container">
   <div id="content">
     <div class="page header">
-      <h1>Posts in category "tcs\machine_learning\optimization"</h1>
+      <h1>(HKY17) Hyperparameter Optimization - A Spectral Approach</h1>
     </div>
     <div class="info">
       
+       
+        <p>Posted: 2017-07-19 
+          , Modified: 2017-07-19 
+	</p>
       
-      
+       <p>Tags: <a href="../../../../tags/hyperparameters.html">hyperparameters</a></p> 
     </div>
     
   </div>
   <!--/div-->
 
-  
+  <div class="toc"> <ul>
+ <li><a href="#compressed-sensing-for-orthonormal-polynomials">Compressed sensing for orthonormal polynomials</a></li>
+ <li><a href="#harmonica">Harmonica</a></li>
+ <li><a href="#questions">Questions</a></li>
+ </ul> </div>
 
   <div class="blog-main">
-    <ul>
-    
-        <li>
-            <a href="../../../../posts/tcs/machine_learning/optimization/HKY17.html">(HKY17) Hyperparameter Optimization - A Spectral Approach</a> (2017-07-19)
-        </li>
-    
-        <li>
-            <a href="../../../../posts/tcs/machine_learning/optimization/multiplicative_update.html">The Blessing and the Curse of the Multiplicative Updates</a> (2017-02-12)
-        </li>
-    
-        <li>
-            <a href="../../../../posts/tcs/machine_learning/optimization/legendre_transform.html">Legendre transform</a> (2016-12-28)
-        </li>
-    
-        <li>
-            <a href="../../../../posts/tcs/machine_learning/optimization/hierarchies.html">Hierarchies of convex relaxations</a> (2016-12-28)
-        </li>
-    
-        <li>
-            <a href="../../../../posts/tcs/machine_learning/optimization/HMR16.html">(HMR16) Gradient descent learns linear dynamical systems</a> (2016-12-27)
-        </li>
-    
-        <li>
-            <a href="../../../../posts/tcs/machine_learning/optimization/bco.html">Bandit convex optimization</a> (2016-10-11)
-        </li>
-    
-        <li>
-            <a href="../../../../posts/tcs/machine_learning/optimization/generalization.html">Generalization of neural nets</a> (2016-10-10)
-        </li>
-    
-        <li>
-            <a href="../../../../posts/tcs/machine_learning/optimization/SV16.html">(SV16) The mixing time of the Dikin walk in a polytope - a simple proof</a> (2016-09-07)
-        </li>
-    
-        <li>
-            <a href="../../../../posts/tcs/machine_learning/optimization/ellipsoid.html">Ellipsoid method</a> (2016-08-30)
-        </li>
-    
-        <li>
-            <a href="../../../../posts/tcs/machine_learning/optimization/ipm.html">Interior point methods</a> (2016-08-26)
-        </li>
-    
-        <li>
-            <a href="../../../../posts/tcs/machine_learning/optimization/distribution_of_critical_points.html">Distribution of critical points</a> (2016-08-13)
-        </li>
-    
-        <li>
-            <a href="../../../../posts/tcs/machine_learning/optimization/sampling.html">Sampling</a> (2016-05-17)
-        </li>
-    
-        <li>
-            <a href="../../../../posts/tcs/machine_learning/optimization/constrained.html">Constrained optimization</a> (2016-04-28)
-        </li>
-    
-        <li>
-            <a href="../../../../posts/tcs/machine_learning/optimization/convexity.html">Convexity</a> (2016-04-23)
-        </li>
-    
-        <li>
-            <a href="../../../../posts/tcs/machine_learning/optimization/convex_problems.html">Convex problems</a> (2016-04-23)
-        </li>
-    
-        <li>
-            <a href="../../../../posts/tcs/machine_learning/optimization/second-order.html">Second-order methods</a> (2016-04-22)
-        </li>
-    
-        <li>
-            <a href="../../../../posts/tcs/machine_learning/optimization/AO15.html">(AO15) Linear coupling</a> (2016-03-06)
-        </li>
-    
-        <li>
-            <a href="../../../../posts/tcs/machine_learning/optimization/mirror-descent.html">Mirror descent</a> (2016-03-05)
-        </li>
-    
-        <li>
-            <a href="../../../../posts/tcs/machine_learning/optimization/AGD.html">Accelerated Gradient descent</a> (2016-03-05)
-        </li>
-    
-        <li>
-            <a href="../../../../posts/tcs/machine_learning/optimization/sgd_variance_reduction.html">SGD Variance Reduction</a> (2016-03-04)
-        </li>
-    
-        <li>
-            <a href="../../../../posts/tcs/machine_learning/optimization/sdp-duality.html">SDP duality</a> (2016-03-04)
-        </li>
-    
-        <li>
-            <a href="../../../../posts/tcs/machine_learning/optimization/duality.html">Duality</a> (2016-03-04)
-        </li>
-    
-        <li>
-            <a href="../../../../posts/tcs/machine_learning/optimization/convex_optimization.html">Convex optimization</a> (2016-03-04)
-        </li>
-    
-        <li>
-            <a href="../../../../posts/tcs/machine_learning/optimization/GD.html">Gradient descent</a> (2016-03-04)
-        </li>
-    
+    <p>The main theorem (Alg. 1, Thm. 6) is a theorem on learning Fourier-concentrated functions with much better sample complexity than [LMN93], using compressed sensing applied to orthonormal polynomials. Apply this theorem to the loss as a function of hyperparameters (A.g. 2, Harmonica). (Note this is heuristic.)</p>
+<h2 id="compressed-sensing-for-orthonormal-polynomials">Compressed sensing for orthonormal polynomials</h2>
+<p>An orthonormal family with respect to distribution <span class="math inline">\(D\)</span> has <span class="math inline">\(\EE_D[\psi_i (X) \psi_j(X)]=\de_{ij}\)</span>.</p>
+<ul>
+<li><span class="math inline">\(s\)</span>-sparse: <span class="math inline">\(L_0(f)\le s\)</span></li>
+<li><span class="math inline">\((\ep,d)\)</span> concentrated: <span class="math inline">\(\ve{f - \pi_{\{\psi_{i}\}_{i\in S}}(f)}_2\le \ep\)</span>.</li>
+<li><span class="math inline">\((\ep,d,s)\)</span>-bounded: additionally, <span class="math inline">\(\ve{f}_1\le s\)</span>.</li>
+<li>Note we can approximate <span class="math inline">\(L_1(f)\le s\)</span> to <span class="math inline">\(\ep\)</span> with <span class="math inline">\(L_0(g)\le \fc{s^2}{\ep}\)</span>. (Sampling. Cf. Barron proof)</li>
 </ul>
-
-
+<p>LASSO: With appropriate <span class="math inline">\(\la\)</span>, <span class="math display">\[
+\min_{x\in \R^n} [\ve{x}_1 + \la \ve{Ax-y}_2^2]
+\]</span></p>
+<p>For <span class="math inline">\(z^1,\ldots, z^m\sim D\)</span>, <span class="math inline">\(A_{ij}=\psi_j(z^i)\)</span>, <span class="math inline">\(y=Ax+e\)</span>, <span class="math inline">\(\ve{e}_2\le \eta\sqrt m\)</span>, <span class="math inline">\(x^*\)</span> solving LASSO, <span class="math display">\[
+\Pj(\ve{x-x^*}_2\le C \fc{\si_s(x)_1}{\sqrt s}+d\eta) \ge 1-\de
+\]</span> where <span class="math inline">\(\si_s(x)_1=\min\set{\ve{x-z}_1}{z\text{ is s-sparse}}\)</span>, <span class="math inline">\(c,d\)</span> constants, with <span class="math inline">\(m\ge CK^2 s \poly\log(K,s,N,\rc{\de})\)</span> samples.</p>
+<p>Apply for low-degree recovery: if <span class="math inline">\(f\)</span> is (<span class="math inline">\(\ep,d,s\)</span>)-bounded, then using this finds <span class="math inline">\(g\equiv_\ep f\)</span> in time <span class="math inline">\(O(n^d)\)</span>, with <span class="math inline">\(T=\wt O(K^2s^2 \ln N/\ep)\)</span> samples. (? <span class="math inline">\(\ep\)</span> outside)</p>
+<p>(LMN93 needs <span class="math inline">\(\Om\pf{NL_\iy(f)^2}{\ep}\)</span> samples.) (? What is <span class="math inline">\(N\)</span> here? Number of orthonormal polys. Shouldn’t it be <span class="math inline">\(n^d\)</span>?)</p>
+<h2 id="harmonica">Harmonica</h2>
+<p>Apply in stages, with some degree <span class="math inline">\(d\)</span> and sparsity <span class="math inline">\(s\)</span>. Note this can involve at most <span class="math inline">\(ds\)</span> variables. Suppose the approximation <span class="math inline">\(g\)</span> to <span class="math inline">\(f\)</span> only involves variables in <span class="math inline">\(J\)</span>.</p>
+<p>Take the best <span class="math inline">\(t\)</span> solutions <span class="math inline">\(x_i*\)</span> to <span class="math inline">\(g\)</span> on <span class="math inline">\(J\)</span>, and now apply to <span class="math inline">\(\rc t \sumo it f_{J \leftarrow x_i^*}(x)\)</span>.</p>
+<h2 id="questions">Questions</h2>
+<ul>
+<li>Why does multiple stages help?</li>
+</ul>
 
   </div>
 
     
 
+    <!-- Extension : Sharing buttons @ www.sharethis.com -->
+    <span class="st_facebook_large" displayText="Facebook"></span>
+    <span class="st_twitter_large" displayText="Tweet"></span>
+    <span class="st_googleplus_large" displayText="Google +"></span>
+    <span class="st_reddit_large" displayText="Reddit"></span>
+    <span class="st__large" displayText></span>
 
+    <div id="disqus_thread"></div>
+    
+
+
+  
+    <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+  </div>
   
 </div>
 
@@ -235,6 +179,9 @@
 
 <!-- Extension : Disqus @ http://disqus.com -->
 <!-- Extension : InlineDisqussions @ https://github.com/tsi/inlineDisqussions -->
+
+<script src="../../../../disqus/js/disqus.js"></script>
+
 
 
 <!-- Extension : Google Analytics -->
