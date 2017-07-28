@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+
+  <meta name="description" content="Holden Lee's Research Notebook">
+  <meta name="author" content="Holden Lee">
+    
+  <title>Annealed importance sampling</title>
+
+  <!-- Bootstrap core CSS -->
+  <link href="../../../../bootstrap/css/bootstrap.min.css" rel="stylesheet">
+
+  <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+  <!-- <link href="../../assets/css/ie10-viewport-bug-workaround.css" rel="stylesheet"> -->
+
+  <!-- Custom styles for this template -->
+  <link href="../../../../css/blog.css" rel="stylesheet">
+  <link href="../../../../css/default.css" rel="stylesheet">
+
+  <!-- Extension : Footnotes -->
+  <link href="../../../../footnotes/css/footnotes.css" rel="stylesheet">
+
+  <!-- Extension : InlineDisqussions @ https://github.com/tsi/inlineDisqussions -->
+  
+
+  <!-- Extension : Collapsible lists @ http://code.stephenmorley.org/javascript/collapsible-lists/-->
+  <link href="../../../../collapsible_lists/css/collapsible.css" rel="stylesheet">
+  <script type="text/javascript" src="../../../../collapsible_lists/js/CollapsibleLists.js"></script>
+
+</head>
+
+<body>
+
+<!-- Navigation bar. navbar-inverse is black, navbar-default is white.-->
+<!-- To make a button active (pressed), use <li class="active"> -->
+<div id="header">
+  <nav class="navbar navbar-inverse navbar-fixed-top">
+    <div class="container">
+      <div class="navbar-header">
+        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+          <span class="sr-only">Toggle navigation</span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="../../../../">Notebook</a>
+      </div>
+      <div id="navbar" class="collapse navbar-collapse">
+        <ul class="nav navbar-nav">
+          <li><a href="../../../../">Home</a></li>
+          <li><a href="../../../../sitemap.html">Sitemap</a></li>
+<!-- TODO: Distinguish between PAPERS, RESEARCH QUESTIONS, BOOKS -->
+<!-- TODO: make this part a for loop over main pages -->
+        </ul>
+      </div><!--/.nav-collapse -->
+    </div>
+  </nav>
+</div>
+<!-- Content -->
+<!--div id="content">
+  <h1>Mental Wilderness</h1>-->
+
+
+
+<div class="container">
+  <div id="content">
+    <div class="page header">
+      <h1>Annealed importance sampling</h1>
+    </div>
+    <div class="info">
+      
+       
+        <p>Posted: 2017-07-20 
+          , Modified: 2017-07-20 
+	</p>
+      
+       <p>Tags: <a href="../../../../tags/sampling.html">sampling</a>, <a href="../../../../tags/annealing.html">annealing</a>, <a href="../../../../tags/temperature.html">temperature</a></p> 
+    </div>
+    
+  </div>
+  <!--/div-->
+
+  <div class="toc"> <ul>
+ <li><a href="#papers">Papers</a></li>
+ <li><a href="#log-p">log p</a></li>
+ <li><a href="#elbo">ELBO</a></li>
+ <li><a href="#ais">AIS</a></li>
+ <li><a href="#raise">RAISE</a></li>
+ <li><a href="#notes">Notes</a></li>
+ </ul> </div>
+
+  <div class="blog-main">
+    <h2 id="papers">Papers</h2>
+<ul>
+<li>[N98] Annealed Importance Sampling</li>
+<li>[BGS14] Accurate and Conservative Estimates of MRF Log-likelihood using Reverse Annealing</li>
+<li>[WBSG17] ON THE QUANTITATIVE ANALYSIS OF DECODER-BASED GENERATIVE MODELS</li>
+</ul>
+<h2 id="log-p">log p</h2>
+<p>We can get an unbiased estimator for <span class="math inline">\(p(x)\)</span>, say <span class="math inline">\(\wh p\)</span>. But we often want <span class="math inline">\(\ln p(x)\)</span>. We use Jensen’s inequality and Markov’s inequality. So <span class="math inline">\(\ln \wh p\)</span> is a probabilistic lower bound. <span class="math display">\[
+\E[\ln \wh p] \le \ln p\implies \quad \Pj(\ln \wh p&gt; \ln p + b) &lt;e^{-b}.
+\]</span> (This is true no matter what the variance is. However, this can be a very loose bound. There is no good way of estimating <span class="math inline">\(\E \ln X\)</span> from draws of <span class="math inline">\(X\)</span> (why not?). Oddly, there is a good way of estimating <span class="math inline">\(\E e^X\)</span> from <span class="math inline">\(X\)</span> by power series expansion. (Power series for <span class="math inline">\(\ln\)</span> is terrible over long distances.))</p>
+<p>Note this is prone to overestimation with little indication anything is wrong.</p>
+<h2 id="elbo">ELBO</h2>
+<p>Goal: posterior distribution <span class="math display">\[
+p(z|x,\al) = \fc{p(z,x|\al)}{\int_z p(z,x|\al)}.
+\]</span> Pick a family of distributions with variational parameters <span class="math inline">\(q(z_{1:m}|\nu)\)</span>. Use <span class="math inline">\(q\)</span> with fitted parameters as proxy.</p>
+<p>So want to minimize <span class="math inline">\(KL(q||p)\)</span>.</p>
+<p>Why <span class="math inline">\(q||p\)</span>, not <span class="math inline">\(p||q\)</span>?</p>
+<ul>
+<li>q high, p low is bad. Don’t want to make impossible events happen!</li>
+<li>q low, p high is not so bad.</li>
+</ul>
+<span class="math display">\[\begin{align}
+KL(q||p) &amp;=\EE_q\ba{\ln \fc{q(z)}{p(z|x)}}\\
+\ln p &amp;=\ln \int \EE_{z\sim q}\ba{\fc{p(x,z)}{q(z)}}\\
+&amp; \ge \EE_q \ln p(x,z) - \EE_q [\ln q] :=ELBO\\
+KL(q||p) &amp;=-ELBO - \ln p(x)
+\end{align}\]</span>
+<p><span class="math inline">\(\ln p\)</span> doesn’t depend on <span class="math inline">\(q\)</span>.</p>
+<h2 id="ais">AIS</h2>
+<p>Given annealed distributions <span class="math inline">\(p_i\propto f_i\)</span>, <span class="math inline">\(p_K=p\)</span> with Markov chains <span class="math inline">\(M_i\)</span> (with transition kernels <span class="math inline">\(T_i\)</span>), to estimate <span class="math inline">\(Z=Z_K\)</span>,</p>
+<ul>
+<li>Sample from <span class="math inline">\(p_0\)</span>.</li>
+<li>Let <span class="math inline">\(w=Z_0\)</span>.</li>
+<li>For <span class="math inline">\(k=1:K\)</span>
+<ul>
+<li><span class="math inline">\(w\leftarrow w \fc{f_k(x_{k-1})}{f_{k-1}(x_{k-1})}\)</span></li>
+<li><span class="math inline">\(x_k \sim T_k(\cdot |x_{k-1})\)</span>.</li>
+</ul></li>
+<li>Estimate is <span class="math inline">\(w\)</span>.</li>
+</ul>
+<p>For probabilistic neural nets, use Gibbs sampler (alternately sample <span class="math inline">\(h\)</span> and <span class="math inline">\(x\)</span>) as transition.</p>
+<p>Think of this as proposing the distribution given by applying the <span class="math inline">\(T_i\)</span> in sequence.</p>
+<p>Giving a stochastic lower bound for <span class="math inline">\(Z\)</span> means we overestimate log-likelihood.</p>
+<h2 id="raise">RAISE</h2>
+<p>Go the other way using samples from the target distribution This gives a probabilistic lower bound on <span class="math inline">\(\fc{Z_0}{Z}\)</span>, so a probabilistic upper bound on <span class="math inline">\(Z\)</span>, so we underestimate log-likelihood.</p>
+<p><span class="math inline">\(p(h|v)\)</span> needs to be tractable. ((z|x) in above notation)</p>
+<p>For intractable <span class="math inline">\(p(h|v)\)</span> combine the AIS (fixing <span class="math inline">\(v\)</span>) and RAISE steps to get a single estimate. See Algorithm 3 for details.</p>
+<h2 id="notes">Notes</h2>
+<ul>
+<li>Is RAISE a provable (stochastic) upper bound? Even in the intractable case?</li>
+<li>I’m surprised AIS/RAISE match so closely. Does this mean partition function calculation for deep belief nets is in practice tractable???</li>
+<li>I think AIS can have large variance. It seems better to do the “evolutionary multiplicative update” thing. Does that have provable guarantees under similar conditions as Langevin annealing? Can AIS fail where this works? (Ex. continuously miss the high-prob stuff, stepping into the low-ratios between layers.)
+<ul>
+<li>Does this give a better bound in practice? I.e. larger estimate for <span class="math inline">\(Z\)</span>? (Warning: not quite unbiased anymore…)</li>
+</ul></li>
+</ul>
+
+  </div>
+
+    
+
+    <!-- Extension : Sharing buttons @ www.sharethis.com -->
+    <span class="st_facebook_large" displayText="Facebook"></span>
+    <span class="st_twitter_large" displayText="Tweet"></span>
+    <span class="st_googleplus_large" displayText="Google +"></span>
+    <span class="st_reddit_large" displayText="Reddit"></span>
+    <span class="st__large" displayText></span>
+
+    <div id="disqus_thread"></div>
+    
+
+
+  
+    <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+  </div>
+  
+</div>
+
+
+<!-- Footer -->
+<div id="footer">
+  <div class="container">
+    Built with
+    <a href="http://jaspervdj.be/hakyll">Hakyll</a> 
+    using 
+    <a href="http://www.getbootstrap.com">Bootstrap</a>, 
+    <a href="http://www.disqus.com">Disqus</a>,
+    <a href="http://ignorethecode.net/blog/2010/04/20/footnotes/">Footnotes.js</a>,
+    <a href="http://highlightjs.org/">Highlight.js</a>, 
+    <a href="http://www.mathjax.org">MathJax</a>, 
+    and <a href="http://www.sharethis.com">ShareThis</a>.
+  </div>
+</div>
+</body>
+
+</html>
+
+<!-- SCRIPTS -->
+<!-- jQuery-->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+<script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
+
+<script src="../../../../bootstrap/js/bootstrap.min.js"></script>
+
+<!-- Extension : Highlight.js @ https://highlightjs.org/ -->
+<!-- Syntax highlighting tomorrow-night-bright, agate-->
+<link rel="stylesheet" href="../../../../highlight/css/tomorrow-night-bright.css">
+<script src="../../../../highlight/js/highlight.pack.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+
+<!-- Extension : MathJax @ https://docs.mathjax.org/en/v2.5-latest/tex.html -->
+<!-- MathJax/config/local/local.js contains macros. Need to provide entire URL-->
+<script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML,http://holdenlee.github.io/notebook/MathJax/config/local/local"></script>
+
+<!-- Extension : Footnotes @ http://ignorethecode.net/blog/2010/04/20/footnotes/ -->
+<script src="../../../../footnotes/js/footnotes.js"></script>
+
+<!-- Extension : Disqus @ http://disqus.com -->
+<!-- Extension : InlineDisqussions @ https://github.com/tsi/inlineDisqussions -->
+
+<script src="../../../../disqus/js/disqus.js"></script>
+
+
+
+<!-- Extension : Google Analytics -->
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-73261814-1', 'auto');
+  ga('send', 'pageview');
+
+</script>
+
