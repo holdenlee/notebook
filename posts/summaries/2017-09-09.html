@@ -88,7 +88,10 @@
   <div class="toc"> <ul>
  <li><a href="#current-projects">Current projects</a></li>
  <li><a href="#sidelined">Sidelined</a></li>
- <li><a href="#logic-learning-with-kiran">Logic learning (with Kiran)</a></li>
+ <li><a href="#logic-learning-with-kiran">Logic learning (with Kiran)</a><ul>
+ <li><a href="#misc">Misc</a></li>
+ </ul></li>
+ <li><a href="#neuroscience-reading">Neuroscience reading</a></li>
  <li><a href="#aisfp-preparation">AISFP preparation</a></li>
  </ul> </div>
 
@@ -171,6 +174,37 @@
 <li>[TH] Unsupervised learning of probabilistic context-free grammar using iterative biclustering</li>
 <li>[CTC] Automatic Learning of Context-Free Grammar</li>
 </ul></li>
+</ul>
+<p>Code</p>
+<ul>
+<li><a href="https://github.com/holdenlee/learn-grammar">learn-grammar</a></li>
+<li><a href="https://github.com/holdenlee/Blocks">Blocks</a></li>
+<li><a href="https://github.com/holdenlee/MathGrammar">MathGrammar</a></li>
+</ul>
+<h3 id="misc">Misc</h3>
+<p>Instead of a log-linear model with features from (logical forms, canonical utterances), have something more principled.</p>
+<p>Semantic Parsing via Paraphrasing</p>
+<p>Agenda-based parsing: reduce from n^3</p>
+<p>Unanimous Prediction for 100% Precision with Application to Learning Semantic Mappings: certainty</p>
+<p>Learning Executable Semantic Parsers for Natural Language Understanding: score derivations with log-linear (survey)</p>
+<p>Bringing machine learning and compositional semantics together (survey)</p>
+<p>Simpler Context-Dependent Logical Forms via Model Projections: add context dependence.</p>
+<p>Inferring Logical Forms From Denotations: getting consistent logical forms</p>
+<p>Building a Semantic Parser Overnight: entire pipeline, with crowdsourcing</p>
+<p>“To generate candidate logical forms, we use a simple beam search” - it seems better to parse, keep top from beam search, and then convert?</p>
+<p>moral: throw in lots of features</p>
+<p>Paraphrasing and transformations</p>
+<p>The cat was chased by a dog. The cat was bitten.</p>
+<p>If CFG doesn’t have too much “latent”, everything is close to surface, then have hope? Prevents combinatorial blowup of possible hidden states/transitions.</p>
+<p><a href="https://www.uio.no/studier/emner/matnat/ifi/INF2820/v12/undervisningsmateriale/unification.pdf">Beyond CFGs</a></p>
+<p>Have a superset of the right rules. Now use gradient update to find which best explain it. Also would like to match things that transform, like “You want x.” and “What do you want?”</p>
+<h2 id="neuroscience-reading">Neuroscience reading</h2>
+<ul>
+<li>https://www.ncbi.nlm.nih.gov/pmc/articles/PMC5021692/ - the brain optimizing cost functions, ie the generalization of gradient descent, as a hypothesis for how local neuron wiring is learned.</li>
+<li>http://www.cell.com/neuron/abstract/S0896-6273(17)30509-3 - this is the one that takes these others and generalizes them to the whole brain, in particular this explains how complicated architectures in deep learning can be used to understand the large scale functional architecture of the brain</li>
+<li>http://physrev.physiology.org/content/physrev/95/3/853.full.pdf - overview of the human reward system</li>
+<li>http://www.nature.com/neuro/journal/v19/n3/abs/nn.4244.html - comparing supervised deep learning to the (unsupervised probably) vision system</li>
+<li>http://rstb.royalsocietypublishing.org/content/371/1705/20160278 - actually physically modeling readings from the brain with the functional statistics from deep learning models trained on the same tasks</li>
 </ul>
 <h2 id="aisfp-preparation">AISFP preparation</h2>
 <ul>
