@@ -179,7 +179,67 @@ Consider trigrams for example. The independence assumption is that conditioned o
 > as long as the margins on training examples are large. Margins are closely related
 > to norms of parameter vectors.
 
-#Scraps
+# 12 IO algorithm
+
+Consider CFG in Chomsky normal form with potential function $\psi(r)$.
+
+(Q: complexity of turning into CNF?)
+
+Nonnegative potential function $\psi$,
+$$
+\psi(t) = \pa{\prod_{\an{A\to BC, i, k, j}\in t} \psi(A\to BC, i, k, j)}
+\pa{\prod_{\an{A,i}\in t} \psi(A,i)}.
+$$
+
+Ex. 
+
+1. probabilities
+1. $\psi(r) = \exp(v^T\phi(r))$. (TODO read on this)
+
+Letting $T$ be the set of all possible parse trees. Calculate
+
+1. $Z=\sum_{t\in T} \psi(t)$.
+2. For all rules $r$, $\mu(r) = \sum_{t\in T, r\in t}\psi(t)$ (Note: only include rule once for each tree. Why?)
+3. For nonterminals $A\in N$, for $i,j$ such that $1\le i\le j\le n$, $\mu(A,i,j)=\sum_{t\in T:(A,i,j)\in t}\psi(t)$ - contains nonterminal $A$ spanning words $x_{i:j}$ in the input.
+
+Algorithm (DP)
+
+1. $\al(A,i,i)=\psi(A,i)$ if $A\to x_i$ is in CFG, 0 else
+2. $\al(A,i,j) = \sum_{A\to BC\in R} \sum_{k=i}^{j-1} \psi(A\to BC, i,k,j)\al(B,i,k) \al(C,k+1,j)$
+3. $\be(S,1,n)=1$, $\be(A\ne S,1,n)=0$.
+4. $\be(A,i,j) = \sum_{B\to CA\in R}\sumo k{i-1} \psi(B\to CA, k, i-1,j)\al(C,k,i-1)\be(B,k,j) + \sum_{B\to AC\in R} \sum_{k=j+1}^n \psi(B\to AC, i, j, k) \al(C,j+1,k)\be(B,i,k)$.
+
+\begin{align}
+Z&=\al(S,1,n)\\
+\mu(A,i,j) &= \al(A,i,j) \be(A,i,j)\\
+\mu(A,i) &= \mu(A,i,i)\\
+\mu(A\to BC, i,k,j) &= \be(A,i,j)\psi(A\to BC,i,k,j) \al(B,i,k)\al(C,k+1,j).
+\end{align}
+
+Note (here $T(A,i,j)$ is set of trees *rooted* in $A$, $O(A,i,j)$ is set of outside trees with nonterminal $A$ and span $x_i,\ldots, x_j$)
+\begin{align}
+\al(A,i,j) &=\sum_{t\in T(A,i,j)} \psi(t)\\
+\be(A,i,j) &=\sum_{t\in O(A,i,j)}\psi(t).
+\end{align}
+
+## EM algorithm for PCFGs
+
+(How to do in online fashion? Instead take "gradient steps", actually multiplicative updates.)
+
+\begin{align}
+q^t(A\to \ga) &= \fc{f(A\to \ga)}{\sum_{A\to \ga\in R} f(A\to \ga)}\\
+\text{count}(A\to BC) &= \sum_{i,k,j} \fc{\mu(A\to BC,i,k,j)}{Z}\\
+\text{count}(A\to x) &= \sum_{i:x_i=x} \fc{\mu(A,i)}{Z}.
+\end{align}
+
+Once count calculated,
+\begin{align}
+f^{t-1}(r) &=\sumo in \text{count}_{i}(r)\\
+q^t(A\to \ga) &= \fc{f^{t-1}(A\to \ga)}{\sum_{A\to \ga\in R} f^{t-1}(A\to \ga)}.
+\end{align}
+Output $q^T(r)$.
+
+# Scraps
 
 Can we extract simple features/algorithms out of neural nets?
 

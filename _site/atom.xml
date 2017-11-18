@@ -8,8 +8,120 @@
         <name>Holden Lee</name>
         <email>oldheneel@gmail.com</email>
     </author>
-    <updated>2017-09-05T00:00:00Z</updated>
+    <updated>2017-10-04T00:00:00Z</updated>
     <entry>
+    <title>Learning grammar</title>
+    <link href="http://holdenlee.github.io/notebook/posts/tcs/machine_learning/nlp/learning_grammar.html" />
+    <id>http://holdenlee.github.io/notebook/posts/tcs/machine_learning/nlp/learning_grammar.html</id>
+    <published>2017-10-04T00:00:00Z</published>
+    <updated>2017-10-04T00:00:00Z</updated>
+    <summary type="html"><![CDATA[
+<div class="container">
+  <div id="content">
+    <div class="page header">
+      <h1>Learning grammar</h1>
+    </div>
+    <div class="info">
+      
+       
+        <p>Posted: 2017-10-04 
+          , Modified: 2017-10-04 
+	</p>
+      
+       <p>Tags: <a href="/tags/nlp.html">nlp</a></p> 
+    </div>
+    
+  </div>
+  <!--/div-->
+
+  <div class="toc"> <ul>
+ <li><a href="#code">Code</a><ul>
+ <li><a href="#my-code">My code</a></li>
+ </ul></li>
+ <li><a href="#previous-work-on-grammar">Previous work on grammar</a></li>
+ <li><a href="#conversations">Conversations</a><ul>
+ <li><a href="#pcfg">PCFG</a></li>
+ <li><a href="#sentence-transformations">Sentence transformations</a></li>
+ </ul></li>
+ <li><a href="#talk-with-sida-10-4">Talk with Sida (10-4)</a></li>
+ </ul> </div>
+
+  <div class="blog-main">
+    <p>See also</p>
+<ul>
+<li>Weekly summary <a href="posts/summaries/2017-09-09.html">2017-09-09</a></li>
+<li><a href="percy_liang.html">Percy Liang</a></li>
+<li><a href="language_games.html">Language games</a></li>
+<li><a href="nlp.html#io-algorithm">IO algorithm</a></li>
+</ul>
+<h2 id="code">Code</h2>
+<p><a href="https://worksheets.codalab.org/worksheets/0xbf8f4f5b42e54eba9921f7654b3c5c5d/">Naturalizing PL</a></p>
+<h3 id="my-code">My code</h3>
+<ul>
+<li><a href="https://github.com/holdenlee/Blocks">Blocks grammar</a></li>
+<li><a href="https://github.com/holdenlee/learn-grammar">Learn grammar</a></li>
+<li><a href="https://github.com/holdenlee/MathGrammar">Math grammar</a></li>
+</ul>
+<h2 id="previous-work-on-grammar">Previous work on grammar</h2>
+<ul>
+<li>[TH] Unsupervised learning of probabilistic context-free grammar using iterative biclustering</li>
+<li>[CTC] Automatic Learning of Context-Free Grammar</li>
+<li>Chris Manning’s notes <a href="http://www.cs.columbia.edu/~mcollins/io.pdf">Inside-outside</a></li>
+<li>Spectral approaches (knowing CFG)</li>
+<li><a href="https://www.uio.no/studier/emner/matnat/ifi/INF2820/v12/undervisningsmateriale/unification.pdf">Unification</a> (?)</li>
+</ul>
+<h2 id="conversations">Conversations</h2>
+<h3 id="pcfg">PCFG</h3>
+<ul>
+<li>it’s not so easy - adding the minimum number of rules often results in the wrong rules</li>
+<li>[Greedy] doesn’t really work</li>
+<li>for example, suppose you have sentences NV (noun verb) and NVN (noun verb noun, i.e., subject verb object)</li>
+<li>it would learn S-&gt;NV from the first and then V-&gt;VN from the second.</li>
+<li>but this isn’t right because the second rule can give V-&gt;VN-&gt;VNN-&gt;VNNN…</li>
+<li>the right thing would be to have a VP (verb phrase), and S -&gt; N VP, VP-&gt; V N, but this is an extra symbol it would have to come up with</li>
+<li>I wonder what would happen if I threw in all possible rules for a PCFG and then just did gradient descent on the probabilities. Ex. if I have 10 symbols then to get all rules A-&gt;BC I would need 1000 parameters. It would be doable (though it wouldn’t scale well) to keep all of them.</li>
+<li>having more symbols than required is like overparametrization, which helps avoid local minima when doing gradient descent</li>
+<li>rn it seems like it will always be possible to generate ungrammatical things; either that or you will have poor rule diversity</li>
+<li>yeah we really want to not have ungrammatical things maybe a lot of rules will have probability close to 0 and we can remove them</li>
+<li>also I just realized that HMMs are a special case of PCFGs (hidden) -&gt; (observed) (hidden) so maybe the right thing to do is some kind of EM algorithm?</li>
+</ul>
+<h3 id="sentence-transformations">Sentence transformations</h3>
+<ul>
+<li>WH-movement is the way you transform sentences into questions. “You want x.” -&gt; “What do you want []” where x disappears and leaves a hole.</li>
+<li>The CFG doesn’t capture very well what’s going on because it’s better thought of as a transformation of the whole sentence</li>
+<li>anyway I’m pretty sure you can also model that with a CFG, it would just have a longer description length than our intuitive notion of what’s going on</li>
+</ul>
+<h2 id="talk-with-sida-10-4">Talk with Sida (10-4)</h2>
+<p>Some notes:</p>
+<ul>
+<li>It would be interesting to formally compare using a CCG parser to using a floating parser on a benchmark task. (The first is really learning a grammar and mapping to logical forms, while the second is doing a search over logical forms and scoring based on features. The first is probably more complex to get working. The second suffers from an exponential explosion of logical forms.)</li>
+<li>Building a system that could give grammatical utterances (ex. give commands to the user in SHRDLURN) is a good goal.</li>
+<li>Sida is working on a system for data visualization that can take commands in natural language; it learns by demonstration.</li>
+</ul>
+
+  </div>
+
+    
+
+    <!-- Extension : Sharing buttons @ www.sharethis.com -->
+    <span class='st_facebook_large' displayText='Facebook'></span>
+    <span class='st_twitter_large' displayText='Tweet'></span>
+    <span class='st_googleplus_large' displayText='Google +'></span>
+    <span class='st_reddit_large' displayText='Reddit'></span>
+    <span class='st__large' displayText=''></span>
+
+    <div id="disqus_thread"></div>
+    
+
+
+  
+    <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+  </div>
+  
+</div>
+]]></summary>
+</entry>
+<entry>
     <title>Weekly summary 2017-09-09</title>
     <link href="http://holdenlee.github.io/notebook/posts/summaries/2017-09-09.html" />
     <id>http://holdenlee.github.io/notebook/posts/summaries/2017-09-09.html</id>
@@ -37,7 +149,10 @@
   <div class="toc"> <ul>
  <li><a href="#current-projects">Current projects</a></li>
  <li><a href="#sidelined">Sidelined</a></li>
- <li><a href="#logic-learning-with-kiran">Logic learning (with Kiran)</a></li>
+ <li><a href="#logic-learning-with-kiran">Logic learning (with Kiran)</a><ul>
+ <li><a href="#misc">Misc</a></li>
+ </ul></li>
+ <li><a href="#neuroscience-reading">Neuroscience reading</a></li>
  <li><a href="#aisfp-preparation">AISFP preparation</a></li>
  </ul> </div>
 
@@ -120,6 +235,37 @@
 <li>[TH] Unsupervised learning of probabilistic context-free grammar using iterative biclustering</li>
 <li>[CTC] Automatic Learning of Context-Free Grammar</li>
 </ul></li>
+</ul>
+<p>Code</p>
+<ul>
+<li><a href="https://github.com/holdenlee/learn-grammar">learn-grammar</a></li>
+<li><a href="https://github.com/holdenlee/Blocks">Blocks</a></li>
+<li><a href="https://github.com/holdenlee/MathGrammar">MathGrammar</a></li>
+</ul>
+<h3 id="misc">Misc</h3>
+<p>Instead of a log-linear model with features from (logical forms, canonical utterances), have something more principled.</p>
+<p>Semantic Parsing via Paraphrasing</p>
+<p>Agenda-based parsing: reduce from n^3</p>
+<p>Unanimous Prediction for 100% Precision with Application to Learning Semantic Mappings: certainty</p>
+<p>Learning Executable Semantic Parsers for Natural Language Understanding: score derivations with log-linear (survey)</p>
+<p>Bringing machine learning and compositional semantics together (survey)</p>
+<p>Simpler Context-Dependent Logical Forms via Model Projections: add context dependence.</p>
+<p>Inferring Logical Forms From Denotations: getting consistent logical forms</p>
+<p>Building a Semantic Parser Overnight: entire pipeline, with crowdsourcing</p>
+<p>“To generate candidate logical forms, we use a simple beam search” - it seems better to parse, keep top from beam search, and then convert?</p>
+<p>moral: throw in lots of features</p>
+<p>Paraphrasing and transformations</p>
+<p>The cat was chased by a dog. The cat was bitten.</p>
+<p>If CFG doesn’t have too much “latent”, everything is close to surface, then have hope? Prevents combinatorial blowup of possible hidden states/transitions.</p>
+<p><a href="https://www.uio.no/studier/emner/matnat/ifi/INF2820/v12/undervisningsmateriale/unification.pdf">Beyond CFGs</a></p>
+<p>Have a superset of the right rules. Now use gradient update to find which best explain it. Also would like to match things that transform, like “You want x.” and “What do you want?”</p>
+<h2 id="neuroscience-reading">Neuroscience reading</h2>
+<ul>
+<li>https://www.ncbi.nlm.nih.gov/pmc/articles/PMC5021692/ - the brain optimizing cost functions, ie the generalization of gradient descent, as a hypothesis for how local neuron wiring is learned.</li>
+<li>http://www.cell.com/neuron/abstract/S0896-6273(17)30509-3 - this is the one that takes these others and generalizes them to the whole brain, in particular this explains how complicated architectures in deep learning can be used to understand the large scale functional architecture of the brain</li>
+<li>http://physrev.physiology.org/content/physrev/95/3/853.full.pdf - overview of the human reward system</li>
+<li>http://www.nature.com/neuro/journal/v19/n3/abs/nn.4244.html - comparing supervised deep learning to the (unsupervised probably) vision system</li>
+<li>http://rstb.royalsocietypublishing.org/content/371/1705/20160278 - actually physically modeling readings from the brain with the functional statistics from deep learning models trained on the same tasks</li>
 </ul>
 <h2 id="aisfp-preparation">AISFP preparation</h2>
 <ul>
@@ -930,152 +1076,6 @@ where <span class="math inline">\(\mu'\)</span> is for <span class="math inline"
 <li>Can estimate gaussian robustly given samples from something with <span class="math inline">\(L^\iy\)</span> distance (in log space) <span class="math inline">\(h\)</span> with <span class="math inline">\(\wt O (h^2)\)</span> samples. Can we extend this to convex things?</li>
 </ul></li>
 </ul>
-
-  </div>
-
-    
-
-    <!-- Extension : Sharing buttons @ www.sharethis.com -->
-    <span class='st_facebook_large' displayText='Facebook'></span>
-    <span class='st_twitter_large' displayText='Tweet'></span>
-    <span class='st_googleplus_large' displayText='Google +'></span>
-    <span class='st_reddit_large' displayText='Reddit'></span>
-    <span class='st__large' displayText=''></span>
-
-    <div id="disqus_thread"></div>
-    
-
-
-  
-    <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
-  </div>
-  
-</div>
-]]></summary>
-</entry>
-<entry>
-    <title>Adversarial thoughts</title>
-    <link href="http://holdenlee.github.io/notebook/posts/tcs/machine_learning/neural_nets/adversarial_thoughts.html" />
-    <id>http://holdenlee.github.io/notebook/posts/tcs/machine_learning/neural_nets/adversarial_thoughts.html</id>
-    <published>2017-04-16T00:00:00Z</published>
-    <updated>2017-04-16T00:00:00Z</updated>
-    <summary type="html"><![CDATA[
-<div class="container">
-  <div id="content">
-    <div class="page header">
-      <h1>Adversarial thoughts</h1>
-    </div>
-    <div class="info">
-      
-       
-        <p>Posted: 2017-04-16 
-          , Modified: 2017-04-16 
-	</p>
-      
-       <p>Tags: <a href="/tags/neural%20nets.html">neural nets</a>, <a href="/tags/uncertainty.html">uncertainty</a>, <a href="/tags/aaml.html">aaml</a></p> 
-    </div>
-    
-  </div>
-  <!--/div-->
-
-  <div class="toc"> <ul>
- <li><a href="#not-surprising">Not surprising</a></li>
- <li><a href="#a-formalization">A formalization</a></li>
- <li><a href="#a-key-question">A key question</a></li>
- <li><a href="#several-subproblems">Several subproblems</a></li>
- <li><a href="#hypotheses-and-approaches">Hypotheses and approaches</a><ul>
- <li><a href="#glue-approach">Glue approach</a></li>
- <li><a href="#mixture">Mixture</a></li>
- <li><a href="#sampling-from-nns">Sampling from NN’s</a></li>
- <li><a href="#regularization">Regularization</a></li>
- <li><a href="#conditioning">Conditioning</a></li>
- <li><a href="#thresholding-and-quantization">Thresholding and quantization</a></li>
- <li><a href="#is-the-first-layer-the-problem">Is the first layer the problem?</a></li>
- <li><a href="#conservative-concepts-and-detection">Conservative concepts and detection</a></li>
- <li><a href="#more-human-approaches">More human approaches</a></li>
- </ul></li>
- </ul> </div>
-
-  <div class="blog-main">
-    <p>See also</p>
-<ul>
-<li><a href="adversarial.html">intro to problem</a>.</li>
-<li><a href="adversarial_experiments.html">my experiments</a>.</li>
-<li><a href="confidence.html">confidence</a>.</li>
-</ul>
-<p>Some explanations for adversarial examples.</p>
-<h2 id="not-surprising">Not surprising</h2>
-<p>Firstly, I think adversarial examples aren’t very surprising: we shouldn’t expect neural nets to do well against an adversary if we didn’t train against it. Neural nets will do the “laziest” thing, which does not involve the “broader” conceptual class we want them to learn (ex. everything close to a ‘5’ is also a ‘5’); vanilla training doesn’t communicate to them this broader class.</p>
-<p>That said, why can’t neural nets do well after adversarial training?</p>
-<h2 id="a-formalization">A formalization</h2>
-<p>Let <span class="math inline">\(A_a\)</span> be a set of “adversarial” modifications to inputs <span class="math inline">\(x\)</span>. We say that an algorithm adversarially-PAC learns <span class="math inline">\((x,y)\sim D\)</span> if after poly samples and time, it produces <span class="math inline">\(f\in F\)</span> such that <span class="math display">\[
-\Pj_{x,y} (\max_a L(f(A_a(x)), y)\ne y) \le
-\ep
-\]</span> in the realizable case, or <span class="math display">\[
-\Pj_{x,y} (\max_a L(f(A_a(x)), y)\ne y) \le
-\min_{f\in F} \Pj_{x,y} (\max_a L(f(A_a(x)), y)\ne y) + \ep
-\]</span> in the agnostic case, where <span class="math inline">\(L\)</span> is the loss function (ex. 0-1).</p>
-<p>We probably also want to assume access to an oracle, which given <span class="math inline">\(f\)</span> and <span class="math inline">\(x\)</span>, produces some <span class="math inline">\(a\)</span> that maximizes <span class="math inline">\(L(f(A_a(x)),y)\)</span>.</p>
-<p>Some work has been done here: see Yishay Mansour, Robust learning and inference. Cf. also boosting vs. game theory.</p>
-<p>Example: <span class="math inline">\(A_a(x) = x+a\)</span>, restricted to <span class="math inline">\(\ve{a}\le \ep\)</span>.</p>
-<p>Now there are settings where the adversarial setting isn’t harder - for example, for SVM, in the above example, if there is still a margin <span class="math inline">\(\ga\)</span> between positive and negative examples even after adversarial perturbation, then we’ll make at most <span class="math inline">\(\rc{\ga^2}\)</span> mistakes by perceptron analysis, which doesn’t care about the distribution.</p>
-<p>But this is not the case for neural nets. (The fact that we can get training error to 0 suggests that there may be some “margin” at play (cf. Telgarsky). However, we <em>can’t</em> get to 0 training error if we include adversarial examples!)</p>
-<p>Can we study a toy example here like dictionary learning? Generate <span class="math inline">\(Ah = x\)</span>, there is a SVM <span class="math inline">\(\sign(w^Th)=y\)</span>. Make it robust to <span class="math inline">\(+a\)</span>.</p>
-<p>(This doesn’t seem to capture what’s going on though in <span class="math inline">\(L^2\)</span> - here the adversary’s best bet is to change in the direction <span class="math inline">\(a_i\)</span> where <span class="math inline">\(i=\amax_i |w_i|\)</span>, which would in fact change the sign of <span class="math inline">\(w^Th\)</span>.)</p>
-<h2 id="a-key-question">A key question</h2>
-<p>It’s not surprising that adversarial examples exist. A better question is why we can’t “train them away” by normal training methods, and what can we do to fix this.</p>
-<p>I think there are 2 possibilities.</p>
-<ol type="1">
-<li>There exists a neural network, with reasonable parameter sizes (under whatever regularization we are using), that can do well on most adversarial inputs. The issue is that using our optimization methods aren’t finding these parameters.</li>
-<li>There is something fundamentally limited about the (typical) neural net architecture that doesn’t capture human concept boundaries.</li>
-</ol>
-<p>The “margin” analysis above is in favor of (2). (1) could still be true if there are e.g. exponentially more choices of parameters that would do well on normal examples than choices that also do well on the adversarial examples. But this isn’t enough to explain it, because adversarial training stalls eventually.</p>
-<h2 id="several-subproblems">Several subproblems</h2>
-<p>We can talk about <span class="math inline">\(L^\iy\)</span> or <span class="math inline">\(L^2\)</span> adversarial examples. Also whatever threshold we choose, there shouldn’t be human-adversarial examples below that threshold. (I don’t think this is so much of an issue now.)</p>
-<h2 id="hypotheses-and-approaches">Hypotheses and approaches</h2>
-<h3 id="glue-approach">Glue approach</h3>
-<p>Just take a hodgepodge of things that reduce adversarial examples, including things that detect and reject adversarial examples. For example,</p>
-<ul>
-<li>check if it has abnormally large coefficients for singular vectors for small singular values.</li>
-<li>train a detector for adversarial examples on the internal representation.</li>
-</ul>
-<p>However, this would be an arms race: likely, for many of these, you can find adversarial examples that pass the test (ex. restrict search to top singular vectors). If this were not the case, that would be <em>very interesting</em>.</p>
-<p>Are there things like clipping, normalizing, that you do on input before feeding into the network that could help? (Ex. can damping the smaller singular vectors help?)</p>
-<p>These are interesting questions but not as satisfying an approach.</p>
-<h3 id="mixture">Mixture</h3>
-<p>This doesn’t seem to help.</p>
-<p>One question: after doing adversarial training for a while, does the NN still do well against the <em>original</em> adversarial examples? If not, then it’s catastrophically forgetting. If it is forgetting, this should be easy to fix.</p>
-<h3 id="sampling-from-nns">Sampling from NN’s</h3>
-<p>Train a bunch of NN’s on the real examples and then use majority vote.</p>
-<p>Problem: this doesn’t work.</p>
-<p>Are we somehow not exploring the space of NN’s which do well on the real examples? Can we use Fisher information, Langevin to sample better?</p>
-<p>Probably we can’t do much better. Also the existence of a universal perturbation and the fact that adversarial examples from a “linear” model transfer suggest that most NN’s which do well on real examples suffer from the same adversarial examples. (cf. there being exponentially more NN’s which are weak against these adversarial examples, then good.)</p>
-<h3 id="regularization">Regularization</h3>
-<p>The objective/regularization is wrong. Ex. we should be encouraging sparsity, using exponentiated gradient/multiplicative weights, etc.</p>
-<h3 id="conditioning">Conditioning</h3>
-<p>Perhaps the Lipschitz constant is just really large. Can we train a NN to have small Lipschitz constant in the correct norm? (Note this can be challenging because for example the <span class="math inline">\(\iy\to 2\)</span> norm is difficult to compute; even approximating it takes a linear program, which is too computationally intensive to do at every step.)</p>
-<p>Also if we can’t find a NN with small Lipschitz constant why not? Does it not exist or is there something wrong with the geometry of the optimization problem?</p>
-<p>Path norm, batch normalization seem attractive here.</p>
-<h3 id="thresholding-and-quantization">Thresholding and quantization</h3>
-<p>ReLUs seem like a very bad idea - the adversary can just keep increasing. But is the problem more for</p>
-<ul>
-<li>ReLU(x) where <span class="math inline">\(x\)</span> is large, or</li>
-<li>ReLU(x) where <span class="math inline">\(x\)</span> is small?</li>
-</ul>
-<p>The first suggests capping - having <span class="math inline">\(y=ReLU(x)\)</span> grow unlimitedly is a bad idea. (We still have the same problem for sigmoids.) The second suggests that we are getting past thresholds by adding a lot of correlated noise, so we should zero out small ReLU(x)’s.</p>
-<p>In the brain we don’t have thresholds exceeded by contributions from hundreds of neurons - there’s some kind of attenuation or normalization (of activations because of limited energy?) that prevents this. What if we just take the top <span class="math inline">\(k\)</span> activations? (During training or testing?)</p>
-<p>What about quantization/binarization? For MNIST, binarizing all pixels to be 0 or 1 is fine, and helps against adversarial examples (because small norm changes don’t have much effect - although you should consider other attacks here!). But this is in some sense cheating because MNIST is basically black-white. Can we binarize/quantize intermediate features?</p>
-<h3 id="is-the-first-layer-the-problem">Is the first layer the problem?</h3>
-<p>I.e. are we just screwed after the first layer because it somehow destroyed the input?</p>
-<p>Ex. consider the toy problem of dictionary learning. If the layers of a NN were <em>really</em> doing sparse coding, would this be a problem? I.e. does sparse coding suffer from the same problem? Or are NN really <em>not</em> doing sparse coding? While we sort-of say it is, I don’t think it is at all! For the convolutional NN, the convolution <em>isn’t</em> computing <span class="math inline">\(h\)</span> such that <span class="math inline">\(Ah=x\)</span>. In fact, the overlaps between different patches might make things badly conditioned.</p>
-<p>If we actually did DL on the first layer, then solved the sparse recovery problem for every input, would we still have the same problem?</p>
-<h3 id="conservative-concepts-and-detection">Conservative concepts and detection</h3>
-<p>Have the network be able to “abstain” (like a confidence score). This should be similar in principle to training detection between real and adversarial examples.</p>
-<p>What if we use RBF’s on the first layer? Even something like pretraining to find the right RBF’s, and keeping them fixed. The idea is that RBF’s are very conservative. Maybe we’ll need the <span class="math inline">\(L^\iy\)</span> analogue if we’re protecting against that…</p>
-<h3 id="more-human-approaches">More human approaches</h3>
-<p>A vital thing that’s missing in current NN’s is back-and-forth between higher and lower layers. Humans can reinterpret lower-level data when they see a higher-level pattern.</p>
-<p>Also humans have some kind of idea of a “prototype” of a digit - another instance must have its curves match up with that prototype in some fashion. There are these ideas of strokes, etc. Something hierarchical, probabilistic model? cf. Tenenbaum.</p>
-<p>It may be that there needs to be something fundamentally new in the architecture - something more principled. Anything from neuroscience?</p>
 
   </div>
 

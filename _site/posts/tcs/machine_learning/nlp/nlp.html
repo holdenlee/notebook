@@ -95,6 +95,9 @@
  <li><a href="#log-linear-models">7 Log-linear models</a></li>
  <li><a href="#memms-maximum-entropy-markov-models-log-linear-tagging-models">MEMMs (Maximum entropy Markov models = Log-linear tagging models)</a></li>
  <li><a href="#crfs">CRFs</a></li>
+ <li><a href="#io-algorithm">12 IO algorithm</a><ul>
+ <li><a href="#em-algorithm-for-pcfgs">EM algorithm for PCFGs</a></li>
+ </ul></li>
  <li><a href="#scraps">Scraps</a></li>
  </ul> </div>
 
@@ -221,6 +224,55 @@ Features may include
 <blockquote>
 <p>There are close connections to support vector machines, where linear models are learned in very high dimensional spaces, with good generalization guarantees hold as long as the margins on training examples are large. Margins are closely related to norms of parameter vectors.</p>
 </blockquote>
+<h2 id="io-algorithm">12 IO algorithm</h2>
+<p>Consider CFG in Chomsky normal form with potential function <span class="math inline">\(\psi(r)\)</span>.</p>
+<p>(Q: complexity of turning into CNF?)</p>
+<p>Nonnegative potential function <span class="math inline">\(\psi\)</span>, <span class="math display">\[
+\psi(t) = \pa{\prod_{\an{A\to BC, i, k, j}\in t} \psi(A\to BC, i, k, j)}
+\pa{\prod_{\an{A,i}\in t} \psi(A,i)}.
+\]</span></p>
+<p>Ex.</p>
+<ol type="1">
+<li>probabilities</li>
+<li><span class="math inline">\(\psi(r) = \exp(v^T\phi(r))\)</span>. (TODO read on this)</li>
+</ol>
+<p>Letting <span class="math inline">\(T\)</span> be the set of all possible parse trees. Calculate</p>
+<ol type="1">
+<li><span class="math inline">\(Z=\sum_{t\in T} \psi(t)\)</span>.</li>
+<li>For all rules <span class="math inline">\(r\)</span>, <span class="math inline">\(\mu(r) = \sum_{t\in T, r\in t}\psi(t)\)</span> (Note: only include rule once for each tree. Why?)</li>
+<li>For nonterminals <span class="math inline">\(A\in N\)</span>, for <span class="math inline">\(i,j\)</span> such that <span class="math inline">\(1\le i\le j\le n\)</span>, <span class="math inline">\(\mu(A,i,j)=\sum_{t\in T:(A,i,j)\in t}\psi(t)\)</span> - contains nonterminal <span class="math inline">\(A\)</span> spanning words <span class="math inline">\(x_{i:j}\)</span> in the input.</li>
+</ol>
+<p>Algorithm (DP)</p>
+<ol type="1">
+<li><span class="math inline">\(\al(A,i,i)=\psi(A,i)\)</span> if <span class="math inline">\(A\to x_i\)</span> is in CFG, 0 else</li>
+<li><span class="math inline">\(\al(A,i,j) = \sum_{A\to BC\in R} \sum_{k=i}^{j-1} \psi(A\to BC, i,k,j)\al(B,i,k) \al(C,k+1,j)\)</span></li>
+<li><span class="math inline">\(\be(S,1,n)=1\)</span>, <span class="math inline">\(\be(A\ne S,1,n)=0\)</span>.</li>
+<li><span class="math inline">\(\be(A,i,j) = \sum_{B\to CA\in R}\sumo k{i-1} \psi(B\to CA, k, i-1,j)\al(C,k,i-1)\be(B,k,j) + \sum_{B\to AC\in R} \sum_{k=j+1}^n \psi(B\to AC, i, j, k) \al(C,j+1,k)\be(B,i,k)\)</span>.</li>
+</ol>
+<span class="math display">\[\begin{align}
+Z&amp;=\al(S,1,n)\\
+\mu(A,i,j) &amp;= \al(A,i,j) \be(A,i,j)\\
+\mu(A,i) &amp;= \mu(A,i,i)\\
+\mu(A\to BC, i,k,j) &amp;= \be(A,i,j)\psi(A\to BC,i,k,j) \al(B,i,k)\al(C,k+1,j).
+\end{align}\]</span>
+Note (here <span class="math inline">\(T(A,i,j)\)</span> is set of trees <em>rooted</em> in <span class="math inline">\(A\)</span>, <span class="math inline">\(O(A,i,j)\)</span> is set of outside trees with nonterminal <span class="math inline">\(A\)</span> and span <span class="math inline">\(x_i,\ldots, x_j\)</span>)
+<span class="math display">\[\begin{align}
+\al(A,i,j) &amp;=\sum_{t\in T(A,i,j)} \psi(t)\\
+\be(A,i,j) &amp;=\sum_{t\in O(A,i,j)}\psi(t).
+\end{align}\]</span>
+<h3 id="em-algorithm-for-pcfgs">EM algorithm for PCFGs</h3>
+<p>(How to do in online fashion? Instead take “gradient steps”, actually multiplicative updates.)</p>
+<span class="math display">\[\begin{align}
+q^t(A\to \ga) &amp;= \fc{f(A\to \ga)}{\sum_{A\to \ga\in R} f(A\to \ga)}\\
+\text{count}(A\to BC) &amp;= \sum_{i,k,j} \fc{\mu(A\to BC,i,k,j)}{Z}\\
+\text{count}(A\to x) &amp;= \sum_{i:x_i=x} \fc{\mu(A,i)}{Z}.
+\end{align}\]</span>
+Once count calculated,
+<span class="math display">\[\begin{align}
+f^{t-1}(r) &amp;=\sumo in \text{count}_{i}(r)\\
+q^t(A\to \ga) &amp;= \fc{f^{t-1}(A\to \ga)}{\sum_{A\to \ga\in R} f^{t-1}(A\to \ga)}.
+\end{align}\]</span>
+<p>Output <span class="math inline">\(q^T(r)\)</span>.</p>
 <h2 id="scraps">Scraps</h2>
 <p>Can we extract simple features/algorithms out of neural nets?</p>
 <p>Extracting code from a neural net may be NP-hard?</p>
