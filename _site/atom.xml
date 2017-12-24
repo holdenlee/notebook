@@ -8,8 +8,60 @@
         <name>Holden Lee</name>
         <email>oldheneel@gmail.com</email>
     </author>
-    <updated>2017-10-04T00:00:00Z</updated>
+    <updated>2017-12-24T00:00:00Z</updated>
     <entry>
+    <title>Control theory</title>
+    <link href="http://holdenlee.github.io/notebook/posts/tcs/machine_learning/reinforcement_learning/control.html" />
+    <id>http://holdenlee.github.io/notebook/posts/tcs/machine_learning/reinforcement_learning/control.html</id>
+    <published>2017-12-24T00:00:00Z</published>
+    <updated>2017-12-24T00:00:00Z</updated>
+    <summary type="html"><![CDATA[
+<div class="container">
+  <div id="content">
+    <div class="page header">
+      <h1>Control theory</h1>
+    </div>
+    <div class="info">
+      
+       
+        <p>Posted: 2017-12-24 
+          , Modified: 2016-12-24 
+	</p>
+      
+       <p>Tags: <a href="/tags/control.html">control</a></p> 
+    </div>
+    
+  </div>
+  <!--/div-->
+
+  <div class="toc"></div>
+
+  <div class="blog-main">
+    <p><a href="https://www.dropbox.com/s/5gpwsa1g03t3mf7/control.md?dl=0">Notes</a>.</p>
+
+  </div>
+
+    
+
+    <!-- Extension : Sharing buttons @ www.sharethis.com -->
+    <span class='st_facebook_large' displayText='Facebook'></span>
+    <span class='st_twitter_large' displayText='Tweet'></span>
+    <span class='st_googleplus_large' displayText='Google +'></span>
+    <span class='st_reddit_large' displayText='Reddit'></span>
+    <span class='st__large' displayText=''></span>
+
+    <div id="disqus_thread"></div>
+    
+
+
+  
+    <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+  </div>
+  
+</div>
+]]></summary>
+</entry>
+<entry>
     <title>Learning grammar</title>
     <link href="http://holdenlee.github.io/notebook/posts/tcs/machine_learning/nlp/learning_grammar.html" />
     <id>http://holdenlee.github.io/notebook/posts/tcs/machine_learning/nlp/learning_grammar.html</id>
@@ -1001,81 +1053,6 @@ r_\phi:&amp;= - \ep y \wh \de_\phi.
 <p>TLDR: shift points in direction of difference of class means; this transfers well.</p>
 <p>Can models with access to same set of input features learn representations that don’t transfer?</p>
 <p>There’s a simple (but not very informative…) example where this works: MNIST with XOR artifacts trained on linear and quadratic.</p>
-
-  </div>
-
-    
-
-    <!-- Extension : Sharing buttons @ www.sharethis.com -->
-    <span class='st_facebook_large' displayText='Facebook'></span>
-    <span class='st_twitter_large' displayText='Tweet'></span>
-    <span class='st_googleplus_large' displayText='Google +'></span>
-    <span class='st_reddit_large' displayText='Reddit'></span>
-    <span class='st__large' displayText=''></span>
-
-    <div id="disqus_thread"></div>
-    
-
-
-  
-    <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
-  </div>
-  
-</div>
-]]></summary>
-</entry>
-<entry>
-    <title>Weekly summary 2017-04-29</title>
-    <link href="http://holdenlee.github.io/notebook/posts/summaries/2017-04-29.html" />
-    <id>http://holdenlee.github.io/notebook/posts/summaries/2017-04-29.html</id>
-    <published>2017-04-25T00:00:00Z</published>
-    <updated>2017-04-25T00:00:00Z</updated>
-    <summary type="html"><![CDATA[
-<div class="container">
-  <div id="content">
-    <div class="page header">
-      <h1>Weekly summary 2017-04-29</h1>
-    </div>
-    <div class="info">
-      
-       
-        <p>Posted: 2017-04-25 
-          , Modified: 2017-04-25 
-	</p>
-      
-       <p>Tags: <a href="/tags/none.html">none</a></p> 
-    </div>
-    
-  </div>
-  <!--/div-->
-
-  <div class="toc"> <ul>
- <li><a href="#day-by-day">Day by day</a></li>
- </ul> </div>
-
-  <div class="blog-main">
-    <h2 id="day-by-day">Day by day</h2>
-<ul>
-<li><p>Mon. 4-24: If I can bound <span class="math display">\[
-\an{\mathcal L g, \an{\nb f, \nb g}} \ll \an{\mathcal L g, \mathcal L g}
-\]</span> independent of <span class="math inline">\(f\)</span>, then I can argue that for small <span class="math inline">\(\de\)</span>, eigenvectors for Langevin on <span class="math inline">\((1-\de)f\)</span> are close to eigenvectors for Langevin on <span class="math inline">\(f\)</span>. (One has to be careful with <a href="/posts/math/algebra/linear/matrix_analysis/perturbation.html">which eigenspaces to work with</a>.)</p>
-I don’t know how to do this. The best I can do is
-<span class="math display">\[\begin{align}
-\an{f, \mathcal L_\mu f}_\mu &amp;\le -k \ve{f}_\mu^2\\
-\implies \an{f, \mathcal L_{\mu'} f}_{\mu'} &amp;\le -\fc{k}{1+O(\de)}\ve{f}_{\mu'}^2.
-\end{align}\]</span>
-where <span class="math inline">\(\mu'\)</span> is for <span class="math inline">\((1-\de)f\)</span>, which gives an angle between eigenspaces of <span class="math inline">\(1+O\pf{\la_k}{\la_l}\)</span> where <span class="math inline">\(\la_k,\la_l\)</span> are the threshold values for the eigenspaces. This does NOT go to 1. I need something that goes to 1.</li>
-<li>Tue. 4-25:
-<ul>
-<li>Perceptron writeup.</li>
-<li>Experiment with semi-random features.
-<ul>
-<li>Distribution is normal, square loss. (But maybe square loss is just a proxy?)</li>
-<li>Doesn’t seem to work: loss on batch of 100 is on order of 20, even with 50 nodes.</li>
-</ul></li>
-<li>Can estimate gaussian robustly given samples from something with <span class="math inline">\(L^\iy\)</span> distance (in log space) <span class="math inline">\(h\)</span> with <span class="math inline">\(\wt O (h^2)\)</span> samples. Can we extend this to convex things?</li>
-</ul></li>
-</ul>
 
   </div>
 

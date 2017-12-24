@@ -213,8 +213,9 @@ Corollary 7.11. Let $(P_t)_{t\ge 0}$ be Feller semigroup with generator $A$.
 
 Example 7.14. For Brownian motion
 $$
-U_\al u(x) = \begin{cases}
-\int \fc{e^{-\sqrt{2\al}y}{\sqrt{2\al}}u(x+y)\dy,&d=1\\
+U_\al u(x) = 
+\begin{cases}
+\int \fc{e^{-\sqrt{2\al}y}}{\sqrt{2\al}}u(x+y)\dy,&d=1\\
 \int \rc{\pi^{\fc d2}}\pf{\al}{2y^2}^{\fc d4-\rc2} K_{\fc d2-1}(\sqrt{2\al}y) u(x+y)\dy,&d\ge 2.
 \end{cases}
 $$
