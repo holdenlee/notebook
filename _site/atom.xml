@@ -8,8 +8,163 @@
         <name>Holden Lee</name>
         <email>oldheneel@gmail.com</email>
     </author>
-    <updated>2017-12-24T00:00:00Z</updated>
+    <updated>2018-01-01T00:00:00Z</updated>
     <entry>
+    <title>Combinatory Categorial Grammar</title>
+    <link href="http://holdenlee.github.io/notebook/posts/tcs/machine_learning/nlp/ccg.html" />
+    <id>http://holdenlee.github.io/notebook/posts/tcs/machine_learning/nlp/ccg.html</id>
+    <published>2018-01-01T00:00:00Z</published>
+    <updated>2018-01-01T00:00:00Z</updated>
+    <summary type="html"><![CDATA[
+<div class="container">
+  <div id="content">
+    <div class="page header">
+      <h1>Combinatory Categorial Grammar</h1>
+    </div>
+    <div class="info">
+       <div class="subtitle"><p>How we all speak in functions</p></div> 
+       
+        <p>Posted: 2018-01-01 
+          , Modified: 2018-01-01 
+	</p>
+      
+       <p>Tags: <a href="/tags/language.html">language</a>, <a href="/tags/grammar.html">grammar</a>, <a href="/tags/CCG.html">CCG</a>, <a href="/tags/NLP.html">NLP</a></p> 
+    </div>
+    
+  </div>
+  <!--/div-->
+
+  <div class="toc"> <ul>
+ <li><a href="#todo">Todo</a></li>
+ <li><a href="#blog-post">Blog post</a></li>
+ <li><a href="#example-math-grammar">Example: Math grammar</a></li>
+ <li><a href="#english">English</a><ul>
+ <li><a href="#more-on-multiple-arguments-and-prepositions">More on multiple arguments, and prepositions</a><ul>
+ <li><a href="#aside-other-languages">Aside: other languages</a></li>
+ </ul></li>
+ </ul></li>
+ <li><a href="#what-else-to-say">What else to say?</a></li>
+ </ul> </div>
+
+  <div class="blog-main">
+    <p><a href="https://docs.google.com/document/d/1fOOnfYQRWUgvEHg_vI9S9J2Nc2_RJprNwvyhAeClkXM/edit">googledoc</a> <a href="https://github.com/holdenlee/learn-grammar">code</a></p>
+<h2 id="todo">Todo</h2>
+<ul>
+<li>Read papers.</li>
+<li>Implement “identity”</li>
+<li>Implement prepositional phrases.</li>
+<li>Think about higher-level functions, or less exact matches with AST (like lambda x: f(x,c)). cf. nouns as functions/filters.</li>
+<li>SHAPES/CLEVR: import data, make AST, try it.</li>
+</ul>
+<h2 id="blog-post">Blog post</h2>
+<p>(Background: it will help to know about functions in programming, and grammar, ex. CFG’s.)</p>
+<p><a href="https://dynalist.io/d/80BlcNrzxATvu5wf__C99MZe#z=E-IW9yTDg90oQYxVhl6-PR3k">DL</a></p>
+<p>We’re doing functional programming every day in our natural speech without thinking about it.</p>
+<p>Combinatory categorial grammar is one view of grammar that looks at parts of speech not just as tags but as “types”, like the kind of types you get in programming languages, including function types.</p>
+<p>If you’re not familiar with functional programming, don’t worry. “Function” here means the same as it does in math: something that takes input(s) and gives an output. A given function can’t just take <em>any</em> input - it has to take input of a given “type”.</p>
+<p>I will give a very simplified account of CCG’s, and touch on some subtleties and give references at the end.</p>
+<h2 id="example-math-grammar">Example: Math grammar</h2>
+<p>Math is a good playground for thinking of parsing natural language, because every math statement has a well-defined logical form associated with it. In contrast, it’s not clear what a “logical representation” of a arbitrary sentence such as “Carefully put the bag on the table” is.</p>
+<p>So let’s jump right in with some math expressions. Our goal is to formalize a notion of grammar that we can use to program a computer to parse a sentence into a logical form.</p>
+<p>With this goal in mind, let’s look at some expressions.</p>
+<p><a href="https://github.com/holdenlee/MathGrammar">MathGrammar</a></p>
+<blockquote>
+<p>even prime number</p>
+</blockquote>
+<p>What does this mean? It means that we take the set of all numbers (here “number” means “natural number”), <em>filter</em> it for prime numbers, and then <em>filter</em> that for even numbers. “Even” and “prime” are adjectives, but here it makes sense to think of them as <em>functions</em> <code>Number -&gt; Boolean</code>. <code>Even</code> consumes a number as input and returns <code>True</code> if it is even and <code>False</code> otherwise. So this is saying</p>
+<pre><code>filter isEven (filter isPrime) [1..]</code></pre>
+<p>What about this?</p>
+<blockquote>
+<p>smallest even number that is greater than 6</p>
+</blockquote>
+<h2 id="english">English</h2>
+<p>Let’s consider sentences built up of nouns, verbs, and adjectives. Instead of “parts of speech”, we’ll talk about “types” (or “categories”). One of the types will be <code>NP</code> for Noun (Phrase), and another will be <code>S</code> for sentence.</p>
+<p>How do verbs and adjectives fit in?</p>
+<p>(We want the types to <em>carry the information</em> about how the words and phrases combine. In a CFG, the grammar is defined by rules such as <code>S -&gt; NP VP</code>. In a CCG, once we say how individual words and phrases parse, the rest is taken care of - i.e. we only need to specify the terminal rules and the rest is determined.)</p>
+<p>Well, an adjective takes a noun (phrase) as input, and the output is still a noun phrase, so we can think of it as a function <code>NP-&gt;NP</code>.</p>
+<p>In CCG’s, this is represented as the type <code>NP/NP</code>. This means that it takes a <code>NP</code> argument from the right and returns a <code>NP</code>.</p>
+<p>The function application rules in a CCG are:</p>
+<ol type="1">
+<li><code>A/B:f B:x</code> becomes <code>A:f(x)</code>.</li>
+<li><code>B:x A\B:f</code> becomes <code>A:f(x)</code>.</li>
+</ol>
+<p>Verbs have more variety - they aren’t all the same type. First consider an intransitive verb. If we give it a subject (on the left), then it becomes a complete sentence. So the type is <code>S\NP</code>.</p>
+<p><span class="math display">\[
+\ub{\text{I}}{\text{NP}}\, \ub{\text{sleep}}{\text{S\NP}}.
+\]</span></p>
+<p>Now a transitive verb takes an object on the right and a subject to the left.</p>
+<p><span class="math display">\[
+\ub{\text{I}}{\text{NP}}\,\ub{\text{eat}}{\text{(S\NP)/NP}}\,\ub{\text{artichokes}}{\text{NP}}
+\implies
+\ub{\text{I}}{\text{NP}}\, \ub{\text{eat artichokes}}{\text{S\NP}}.
+\]</span></p>
+<p>Some verbs like <code>give</code> take both direct and indirect objects: “I give him flowers.” What would the type be? It has 3 arguments.</p>
+<p>(Bonus question: can you think of an English verb which can be thought of as having 4 arguments (without needing any prepositions)? Answer<a href="#fn1" class="footnoteRef" id="fnref1"><sup>1</sup></a>)</p>
+<h3 id="more-on-multiple-arguments-and-prepositions">More on multiple arguments, and prepositions</h3>
+<p>You may ask: why does “eat” consume the object first, before the subject? (No pun intended.) It seems that there’s a kind of symmetry here: we should allow “eat” to either consume the subject or the object first. Consider the sentences:</p>
+<blockquote>
+<p>I cook food and eat it.</p>
+<p>I cook and Ben eats food.</p>
+</blockquote>
+<p>In the first sentence we want “cook food” to parse as <code>S\NP</code>; it combines with another <code>S\NP</code> (eat it) to be a single <code>S\NP</code>. In the second sentence we want “I cook” to parse as <code>S/NP</code>; it combines with another such to be a single <code>S/NP</code>, and then consumes <code>food</code>. (Note “and” effectively functions as <code>((*\*)/*)</code> where <code>*</code> is any type, like NP.)</p>
+<p>There is another rule called lifting [?] which takes care of this, though I wonder if things could be simplified by introducing “symmetric” arugments.</p>
+<p>There are cases when it is NOT symmetric. For example, we can’t flip the two arguments in an intransitive verb.</p>
+<blockquote>
+<p>I give him flowers.</p>
+<p>*I give flowers him.</p>
+</blockquote>
+<p>However, if we use prepositions we are more free to order the arguments.</p>
+<blockquote>
+<p>I give flowers to him.</p>
+</blockquote>
+<p>Many verbs also have optional prepositional phrases to go with them - they’re like named optional arguments. You could imagine a more elaborate grammar which takes into account prepositional phrases. See (ref) for details; we’ll jkeep it simple.</p>
+<h4 id="aside-other-languages">Aside: other languages</h4>
+<p>Lojban is a constructed language that aims to be logical by thinking of verbs <em>as</em> functions taking a set number of arguments. However, I think that it doesn’t do this correctly. Lojban is missing prepositions - or rather, it has prepositions, but the prepositions just mark the location of the arguments (so you can reorder them), not their purpose (ex. prepositions like “to” are reused between many phrases, but has a certain set of meanings). This means there’s a lot of memorization involved.</p>
+<p>On the other hand, Japanese is a very logical language when it comes to prepositions (particles). Pretty much everything is marked by prepositions.</p>
+<h2 id="what-else-to-say">What else to say?</h2>
+<ul>
+<li>The lambda terms.</li>
+<li>Building the blocks world language. To make things simple, I’ll let the types match exactly the types in the logical expression. (Although you can put it in the same framework, for example, <code>Act</code> is <code>S</code> here, you can think of <code>Set</code> and <code>Color</code> as subtypes of <code>NP</code>, etc.)
+<ul>
+<li>Ex. <code>Add : (Act/Set)/Color</code>.</li>
+</ul></li>
+<li>Math example (take from Percy Liang paper)
+<ul>
+<li>If you can say math language, you know the basics of functional programming…</li>
+</ul></li>
+<li>An overview of ZC, and learning CCG’s.</li>
+<li>List of papers.</li>
+</ul>
+<section class="footnotes">
+<hr />
+<ol>
+<li id="fn1"><p>“bet” as in “I bet you five dollars she’ll win.” Here, <code>bet : ((((S\NP)/NP)/NP)/S)</code><a href="#fnref1">↩</a></p></li>
+</ol>
+</section>
+
+  </div>
+
+    
+
+    <!-- Extension : Sharing buttons @ www.sharethis.com -->
+    <span class='st_facebook_large' displayText='Facebook'></span>
+    <span class='st_twitter_large' displayText='Tweet'></span>
+    <span class='st_googleplus_large' displayText='Google +'></span>
+    <span class='st_reddit_large' displayText='Reddit'></span>
+    <span class='st__large' displayText=''></span>
+
+    <div id="disqus_thread"></div>
+    
+
+
+  
+    <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+  </div>
+  
+</div>
+]]></summary>
+</entry>
+<entry>
     <title>Control theory</title>
     <link href="http://holdenlee.github.io/notebook/posts/tcs/machine_learning/reinforcement_learning/control.html" />
     <id>http://holdenlee.github.io/notebook/posts/tcs/machine_learning/reinforcement_learning/control.html</id>
@@ -930,129 +1085,6 @@ KL(q||p) &amp;=-ELBO - \ln p(x)
 <li>Co-training - predict one part from other. Relating to/extending CCA.</li>
 <li>RL - kernel?</li>
 </ul>
-
-  </div>
-
-    
-
-    <!-- Extension : Sharing buttons @ www.sharethis.com -->
-    <span class='st_facebook_large' displayText='Facebook'></span>
-    <span class='st_twitter_large' displayText='Tweet'></span>
-    <span class='st_googleplus_large' displayText='Google +'></span>
-    <span class='st_reddit_large' displayText='Reddit'></span>
-    <span class='st__large' displayText=''></span>
-
-    <div id="disqus_thread"></div>
-    
-
-
-  
-    <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
-  </div>
-  
-</div>
-]]></summary>
-</entry>
-<entry>
-    <title>(TPGB17) The space of transferable adversarial examples</title>
-    <link href="http://holdenlee.github.io/notebook/posts/tcs/machine_learning/neural_nets/TPGB17.html" />
-    <id>http://holdenlee.github.io/notebook/posts/tcs/machine_learning/neural_nets/TPGB17.html</id>
-    <published>2017-05-24T00:00:00Z</published>
-    <updated>2017-05-24T00:00:00Z</updated>
-    <summary type="html"><![CDATA[
-<div class="container">
-  <div id="content">
-    <div class="page header">
-      <h1>(TPGB17) The space of transferable adversarial examples</h1>
-    </div>
-    <div class="info">
-      
-       
-        <p>Posted: 2017-05-24 
-          , Modified: 2017-05-24 
-	</p>
-      
-       <p>Tags: <a href="/tags/neural%20nets.html">neural nets</a>, <a href="/tags/aaml.html">aaml</a></p> 
-    </div>
-    
-  </div>
-  <!--/div-->
-
-  <div class="toc"> <ul>
- <li><a href="#adversarial-subspaces">Adversarial subspaces</a></li>
- <li><a href="#decision-boundaries">Decision boundaries</a><ul>
- <li><a href="#experiments">Experiments</a></li>
- </ul></li>
- <li><a href="#limits-of-transferability">Limits of transferability</a></li>
- </ul> </div>
-
-  <div class="blog-main">
-    <!--
-See also 
-
-* [intro to problem](adversarial.html).
-* [my experiments](adversarial_experiments.html). 
-* [confidence](confidence.html).
--->
-<h2 id="adversarial-subspaces">Adversarial subspaces</h2>
-<ul>
-<li>Introduces methods for discovering a subspace of adversarial perturbations.
-<ul>
-<li>MNIST: 25 dimensions</li>
-</ul></li>
-<li>Distance traveled before reaching decision boundary is on average larger than distance separating decision boundaries of 2 models in that direction. (This doesn’t seem surprising.)</li>
-</ul>
-<p>Recall that FGSM is <span class="math display">\[
-x^* = x + \ep \nv{\nb_x J(x,y)}.
-\]</span></p>
-<p>Techniques:</p>
-<ul>
-<li>Solve optimization problem multiple times, constraining the next direction to be orthogonal to the previous. <strong>GAAS works well, others don’t.</strong>
-<ul>
-<li>Second-order approximation of loss function <span class="math inline">\(\max_{\ve{r}\le \ep} g^T r + \rc 2 r^T H r\)</span>.</li>
-<li>Convex optimization: Write an LP for the region where <span class="math inline">\(f\)</span> is piecewise linear, and throw in orthogonality condition.</li>
-<li>GAAS (gradient aligned adversarial subspace): Find orthogonal <span class="math inline">\(r_1,\ldots, r_k\)</span> with <span class="math display">\[\ve{r_i}_2\le \ep, \quad r_i^T \nb_x J(x,y)\ge \ga.\]</span> (Think of a right-angled simplex with vertex at <span class="math inline">\(x\)</span>. We can compute how many there are given desired <span class="math inline">\(\fc{g^Tr_i}{\ve{g}_2}\)</span>: <span class="math inline">\(\min\{\ff{1}{\al^2}, d\}\)</span>.)</li>
-<li>JSMA: partition most salient features into <span class="math inline">\(k\)</span> bins; use these <span class="math inline">\(k\)</span> sets to get <span class="math inline">\(k\)</span> orthogonal perturbations.</li>
-</ul></li>
-</ul>
-<p>For DNN, get 44 directions, 25 of which transfer. For CNN, get 15 directions, 2 of which transfer.</p>
-<h2 id="decision-boundaries">Decision boundaries</h2>
-<p>Adversarial training does not significantly displace decision boundary.</p>
-<p>Define unit norm directions <span class="math display">\[
-d(f,x) := \fc{x'-x}{\ve{x'-x}}
-\]</span> where <span class="math inline">\(x'\)</span> is defined differently in 3 cases:</p>
-<ol type="1">
-<li>Legitimate direction <span class="math inline">\(d_{leg}\)</span>: <span class="math inline">\(x'\)</span> is closest data point with different class label.</li>
-<li>Adversarial example <span class="math inline">\(d_{adv}\)</span>: adversarial example generated from <span class="math inline">\(x\)</span>.</li>
-<li><span class="math inline">\(d_{rand}\)</span> random <span class="math inline">\(x'\)</span> in input domain that is classified differently.</li>
-</ol>
-<p>Define minimum distance <span class="math display">\[
-MD_d(f,x) = \amin_{\ep&gt;0} f(x+\ep \cdot d) \ne f(x)
-\]</span> and interboundary distance as <span class="math display">\[
-ID_d(f_1,f_2,x) = 
-|MD_d(f_1,x) - MD_d (f_2,x)|
-\]</span></p>
-<h3 id="experiments">Experiments</h3>
-<p>Transfer from</p>
-<ul>
-<li>logistic regression (LR)</li>
-<li>support vector machine (SVM)</li>
-<li>DNN</li>
-</ul>
-<p>Defenses only prevent white-box attacks by reducing reliability of 1st order approximations (gradient masking).</p>
-<h2 id="limits-of-transferability">Limits of transferability</h2>
-<p>This hypothesis is false: If 2 models achieve low error while exhibiting low robustness, then adversarial examples transfer between models.</p>
-<p>Ex. Adversarial examples on MNIST don’t transfer between linear and quadratic models.</p>
-Model-agnostic perturbation: For a fixed feature mapping <span class="math inline">\(\phi\)</span>, define <span class="math inline">\(\de_\phi\)</span> as difference in intra-class means, and the adversarial direction <span class="math inline">\(r_\phi\)</span> for <span class="math inline">\((x,y)\)</span>,
-<span class="math display">\[\begin{align}
-\de_\phi:&amp;=\rc 2 (\E_{\mu_{+1}} [\phi(x)]
-- \E_{\mu_{-1}}[\phi(x)])\\
-r_\phi:&amp;= - \ep y \wh \de_\phi.
-\end{align}\]</span>
-<p>If <span class="math inline">\(f(x) = w^T\phi(x)+b\)</span>, and <span class="math inline">\(\De:=\wh w^T \wh\de_\phi\)</span> is large, and <span class="math inline">\(\phi\)</span> is “pseudo-linear” (<span class="math inline">\(\phi(x+r)-\phi(x)\approx r_\phi\)</span>) then <span class="math inline">\(x+r\)</span> transfers to <span class="math inline">\(f\)</span>.</p>
-<p>TLDR: shift points in direction of difference of class means; this transfers well.</p>
-<p>Can models with access to same set of input features learn representations that don’t transfer?</p>
-<p>There’s a simple (but not very informative…) example where this works: MNIST with XOR artifacts trained on linear and quadratic.</p>
 
   </div>
 
