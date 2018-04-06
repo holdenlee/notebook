@@ -8,8 +8,210 @@
         <name>Holden Lee</name>
         <email>oldheneel@gmail.com</email>
     </author>
-    <updated>2018-01-01T00:00:00Z</updated>
+    <updated>2018-04-05T00:00:00Z</updated>
     <entry>
+    <title>(CW17) Adversarial Examples Are Not Easily Detected - Bypassing Ten Detection Methods</title>
+    <link href="http://holdenlee.github.io/notebook/posts/tcs/machine_learning/neural_nets/CW17.html" />
+    <id>http://holdenlee.github.io/notebook/posts/tcs/machine_learning/neural_nets/CW17.html</id>
+    <published>2018-04-05T00:00:00Z</published>
+    <updated>2018-04-05T00:00:00Z</updated>
+    <summary type="html"><![CDATA[
+<div class="container">
+  <div id="content">
+    <div class="page header">
+      <h1>(CW17) Adversarial Examples Are Not Easily Detected - Bypassing Ten Detection Methods</h1>
+    </div>
+    <div class="info">
+      
+       
+        <p>Posted: 2018-04-05 
+          , Modified: 2018-04-05 
+	</p>
+      
+       <p>Tags: <a href="/tags/neural%20nets.html">neural nets</a>, <a href="/tags/adversarial%20examples.html">adversarial examples</a></p> 
+    </div>
+    
+  </div>
+  <!--/div-->
+
+  <div class="toc"> <ul>
+ <li><a href="#takeaways">Takeaways</a><ul>
+ <li><a href="#recommendations-for-defenses">Recommendations for defenses</a></li>
+ </ul></li>
+ <li><a href="#attack-models">Attack models</a><ul>
+ <li><a href="#carlini-and-wagners-attack">Carlini and Wagner’s attack</a></li>
+ </ul></li>
+ <li><a href="#the-10-defenses">The 10 defenses</a></li>
+ <li><a href="#more-on-mmd-defense">More on MMD defense</a></li>
+ </ul> </div>
+
+  <div class="blog-main">
+    <p>Carlini and Wagner defeat 10 proposed methods of detecting adversarial examples for neural networks.</p>
+<p>It seems easier produce a detector for adversarial examples (where you don’t have to classify then correctly) than classify them correctly, so this is a strong result.</p>
+<h2 id="takeaways">Takeaways</h2>
+<ul>
+<li>Randomization can increase the distortion required to fool the detector. The most effective defense was one which used dropout.</li>
+<li>Defenses which work on MNIST do not necessarily work on CIFAR, etc. MNIST has properties which make it easier to defend.</li>
+<li>Detectors based on neural networks were the least effective (possibly because you can easily take gradients through them).</li>
+<li>Defenses operating on the raw pixel values are ineffective.</li>
+</ul>
+<h3 id="recommendations-for-defenses">Recommendations for defenses</h3>
+<p>They recommend:</p>
+<ul>
+<li>Evaluate using a strong attack - do not just use FGSM (which only takes 1 step). For many of the defenses considered, a black-box attack using C&amp;W’s (strong) attack succeeds.</li>
+<li>Demonstrate white-box attacks fail.</li>
+<li>Report false positive and true positive rates</li>
+<li>Evaluate on more than MNIST.</li>
+<li>Release source code!</li>
+</ul>
+<h2 id="attack-models">Attack models</h2>
+<p>They consider 3 attack models, in order of increasing power:</p>
+<ol type="1">
+<li>Zero-knowledge (black box): the attacker has no knowledge of what the detector is. (Attack: take another neural net trained on the same data and make adversarial examples against it.)</li>
+<li>Limited-knowledge: the attacker knows the architecture of the detector, but not the weights/the examples that it was trained on. (The attacker can train the same architecture on another sample from the same distribution, and craft adversarial examples against that.)</li>
+<li>Perfect-knowledge (white box): the attacker knows everything (all the parameters, so they can take gradients, etc.).</li>
+</ol>
+<h3 id="carlini-and-wagners-attack">Carlini and Wagner’s attack</h3>
+<p>Known as “C&amp;W’s attack”.</p>
+<p>In words: given <span class="math inline">\(x\)</span>, and given a target class <span class="math inline">\(t\)</span>, find <span class="math inline">\(x'\)</span> that is</p>
+<ul>
+<li>close to <span class="math inline">\(x\)</span> (in <span class="math inline">\(L^2\)</span> norm)</li>
+<li>and the difference between the <span class="math inline">\(Z(x')_t\)</span> (the predicted logit for class <span class="math inline">\(t\)</span> for <span class="math inline">\(x'\)</span>) and the largest remaining class is as large as possible.</li>
+</ul>
+<p>There is a tradeoff as you can weight these two objectives differently (do a binary search to find the best tradeoff).</p>
+In symbols (needs a parameter <span class="math inline">\(c\)</span> and <span class="math inline">\(\ka\)</span>)
+<span class="math display">\[\begin{align}
+&amp;\min_{x'}\ba{\ve{x'-x}_2^2 + c\ell(x')}\\
+\ell(x') :&amp;= \max
+\pa{
+\max
+\set{Z(x')_i}{i\ne t}
+-Z(x')_t,-\kappa
+}
+\end{align}\]</span>
+<h2 id="the-10-defenses">The 10 defenses</h2>
+<p>There are 3 defenses that use neural nets, 3 that use PCA, 2 that are statistical.</p>
+<p>The table records how the attacks do. (A means attack succeeds, D means defense succeeds.)</p>
+<table style="width:39%;">
+<colgroup>
+<col style="width: 7%" />
+<col style="width: 7%" />
+<col style="width: 7%" />
+<col style="width: 7%" />
+<col style="width: 8%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Defense (citation number in paper)</th>
+<th>Description</th>
+<th>Zero-Knowledge</th>
+<th>Limited-Knowledge</th>
+<th>Perfect-Knowledge</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>[15] (NN)</td>
+<td>Train for (N+1)-way classification, additional class for adversarial examples.</td>
+<td>D</td>
+<td>A</td>
+<td>A</td>
+</tr>
+<tr class="even">
+<td>[12] (NN)</td>
+<td>Train a NN to classify between real/adversarial. (Reduce to [15].)</td>
+<td>D</td>
+<td>A</td>
+<td>A</td>
+</tr>
+<tr class="odd">
+<td>[18] (NN)</td>
+<td>Train a detection network that takes input from intermediate layers.</td>
+<td>D (mostly)</td>
+<td>A</td>
+<td>A</td>
+</tr>
+<tr class="even">
+<td>[19] (PCA)</td>
+<td>Authors noted that coefficients of adversarial examples for small principal components were unusually large - but this is an artifact of MNIST: border pixels are often 0 for real examples and nonzero for adversarial examples. Attack: restrict adversary to top k PC’s.</td>
+<td>-</td>
+<td>-</td>
+<td>A</td>
+</tr>
+<tr class="odd">
+<td>[4] (PCA)</td>
+<td>Dimensionality reduction: project to top k PC’s, then feed through rest of network. Attack: restrict adversary to top k PC’s.</td>
+<td>-</td>
+<td>-</td>
+<td>A</td>
+</tr>
+<tr class="even">
+<td>[24] (PCA)</td>
+<td>Do PCA on inner convolutional layers. Each layer has a detector which is a SVM on the coefficients in the PCA basis. Accept only if ALL detectors accept. Result: when trained against C&amp;W’s attack, SVM fails to separate real and adversarial examples well.</td>
+<td>-</td>
+<td>-</td>
+<td>A</td>
+</tr>
+<tr class="odd">
+<td>[11] (Stat)</td>
+<td>Model final layer activations as a gaussian mixture model; reject if probability density is small on the data point. Attack: add clamped “negative log likelihood” term to the objective function of the attacker.</td>
+<td>A (CIFAR), D (MNIST)</td>
+<td>A</td>
+<td>A</td>
+</tr>
+<tr class="even">
+<td>[15] (Stat)</td>
+<td>Attempts to detect whether the test distribution is different from the training distribution (ex. the test distribution is adversarial) using the MMD statistical test (see more below). This is defeated by a black-box attack!</td>
+<td>A</td>
+<td>A</td>
+<td>A</td>
+</tr>
+<tr class="odd">
+<td>[11] (Randomization)</td>
+<td>Apply dropout. Repeat many times with different randomization. Idea is that for real inputs, different trials will tend to agree; if there is too large a discrepancy between different trials, reject.</td>
+<td>D</td>
+<td>D/A (need huge distortion to attack)</td>
+<td>A (but need +80% distortion)</td>
+</tr>
+<tr class="even">
+<td>[24]</td>
+<td>Apply mean blur on 3x3 patches</td>
+<td>D</td>
+<td>-</td>
+<td>A</td>
+</tr>
+</tbody>
+</table>
+<h2 id="more-on-mmd-defense">More on MMD defense</h2>
+<p>(See [15] (Stat) in table above.)</p>
+<p>Note that this defense takes a set of examples and tests whether it’s drawn from the same distribution as the train data - it doesn’t operate on a per-example basis. (So it also doesn’t “produce” a discriminator, it’s really a hypothesis test on distributions.)</p>
+<p>The test considered in the paper only operates on the <em>inputs</em>, not hidden layer activations (potentially, considering the hidden layers can help! But it doesn’t seem like this was done.).</p>
+<p>The MMD operates as follows. Given a class of functions (e.g. they use a (ball in) Gaussian kernel space), find the function for which <span class="math inline">\(\hat \E f(x_i) - \hat \E f(y_i)\)</span> is largest where <span class="math inline">\(\{x_i\}\)</span> and <span class="math inline">\(\{y_i\}\)</span> are the two samples and <span class="math inline">\(\hat \E\)</span> means average. If this is significantly larger than when <span class="math inline">\(x_i,y_i\)</span> are drawn from the same distribution (the training distribution), then reject the hypothesis that they are drawn from the same distribution; otherwise fail to reject.</p>
+<p>The authors found the defense successful against FGSM, JSMA, but Carlini and Wagner broke it with C&amp;W’s attack.</p>
+
+  </div>
+
+    
+
+    <!-- Extension : Sharing buttons @ www.sharethis.com -->
+    <span class='st_facebook_large' displayText='Facebook'></span>
+    <span class='st_twitter_large' displayText='Tweet'></span>
+    <span class='st_googleplus_large' displayText='Google +'></span>
+    <span class='st_reddit_large' displayText='Reddit'></span>
+    <span class='st__large' displayText=''></span>
+
+    <div id="disqus_thread"></div>
+    
+
+
+  
+    <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+  </div>
+  
+</div>
+]]></summary>
+</entry>
+<entry>
     <title>Combinatory Categorial Grammar</title>
     <link href="http://holdenlee.github.io/notebook/posts/tcs/machine_learning/nlp/ccg.html" />
     <id>http://holdenlee.github.io/notebook/posts/tcs/machine_learning/nlp/ccg.html</id>
@@ -138,7 +340,7 @@
 <section class="footnotes">
 <hr />
 <ol>
-<li id="fn1"><p>“bet” as in “I bet you five dollars she’ll win.” Here, <code>bet : ((((S\NP)/NP)/NP)/S)</code><a href="#fnref1">↩</a></p></li>
+<li id="fn1"><p>“bet” as in “I bet you five dollars she’ll win.” Here, <code>bet : ((((S\NP)/S)/NP)/NP)</code><a href="#fnref1">↩</a></p></li>
 </ol>
 </section>
 
@@ -982,109 +1184,6 @@ KL(q||p) &amp;=-ELBO - \ln p(x)
 </ul></li>
 </ul>
 <p>(RIP stronger than incoherency? Ex. incoherency can have linear dependencies… Incoherency gives something like statistical RIP?)</p>
-
-  </div>
-
-    
-
-    <!-- Extension : Sharing buttons @ www.sharethis.com -->
-    <span class='st_facebook_large' displayText='Facebook'></span>
-    <span class='st_twitter_large' displayText='Tweet'></span>
-    <span class='st_googleplus_large' displayText='Google +'></span>
-    <span class='st_reddit_large' displayText='Reddit'></span>
-    <span class='st__large' displayText=''></span>
-
-    <div id="disqus_thread"></div>
-    
-
-
-  
-    <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
-  </div>
-  
-</div>
-]]></summary>
-</entry>
-<entry>
-    <title>Weekly summary 2017-07-22</title>
-    <link href="http://holdenlee.github.io/notebook/posts/summaries/2017-07-22.html" />
-    <id>http://holdenlee.github.io/notebook/posts/summaries/2017-07-22.html</id>
-    <published>2017-07-18T00:00:00Z</published>
-    <updated>2017-07-18T00:00:00Z</updated>
-    <summary type="html"><![CDATA[
-<div class="container">
-  <div id="content">
-    <div class="page header">
-      <h1>Weekly summary 2017-07-22</h1>
-    </div>
-    <div class="info">
-      
-       
-        <p>Posted: 2017-07-18 
-          , Modified: 2017-07-18 
-	</p>
-      
-       <p>Tags: <a href="/tags/none.html">none</a></p> 
-    </div>
-    
-  </div>
-  <!--/div-->
-
-  <div class="toc"> <ul>
- <li><a href="#current-projects">Current projects</a></li>
- <li><a href="#reading">Reading</a></li>
- <li><a href="#explorations">Explorations</a></li>
- </ul> </div>
-
-  <div class="blog-main">
-    <h2 id="current-projects">Current projects</h2>
-<ul>
-<li>Langevin (Mon)</li>
-<li>EGNN</li>
-<li>NLP: (Mon)
-<ul>
-<li>BoNGs: make recovery work for <span class="math inline">\(n\)</span>-grams, <span class="math inline">\(n\ge 2\)</span>.</li>
-<li>Treegrams
-<ul>
-<li>cf. Sida Wang</li>
-<li>hyperdim vectors</li>
-</ul></li>
-<li>document embedding (axioms?)</li>
-<li>GANs for BoNGs</li>
-</ul></li>
-<li>Long-term memory (COLT open problem) (Tue)
-<ul>
-<li>For convex optimization</li>
-<li>Tue: this seems difficult because of “bottleneck” of probability <span class="math inline">\(\ll \rc{\poly(n)}\)</span>. Next step: familiarize with lower-bound techniques and try to prove lower bound.</li>
-</ul></li>
-<li>Reinforcement learning (experiments - what to do?)</li>
-</ul>
-<h2 id="reading">Reading</h2>
-<ul>
-<li><a href="https://workflowy.com/#/cc7e392e4fff">Do GANs learn?</a></li>
-<li><a href="../tcs/machine_learning/representation/AR17.md">Representation learning</a></li>
-<li>BONGs</li>
-<li>Hyperparameter tuning</li>
-</ul>
-<h2 id="explorations">Explorations</h2>
-<ul>
-<li>Further on temperature varying and Langevin
-<ul>
-<li>AIS/RAISE estimator - similar criterion?
-<ul>
-<li>See [BGS14] Accurate and Conservative Estimates of MRF Log-likelihood using Reverse Annealing</li>
-<li>“Multiplicative” weights</li>
-</ul></li>
-<li>Other settings where annealing helps. Analogue on Boolean cube.</li>
-<li>Tensor decomposition.
-<ul>
-<li>Beyond the homotopy method.</li>
-<li>[MR16]</li>
-</ul></li>
-</ul></li>
-<li>Co-training - predict one part from other. Relating to/extending CCA.</li>
-<li>RL - kernel?</li>
-</ul>
 
   </div>
 

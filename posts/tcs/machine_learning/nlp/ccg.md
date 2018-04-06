@@ -90,7 +90,7 @@ Some verbs like `give` take both direct and indirect objects: "I give him flower
 
 (Bonus question: can you think of an English verb which can be thought of as having 4 arguments (without needing any prepositions)? Answer[^ans])
 
-[^ans]: "bet" as in "I bet you five dollars she'll win." Here, `bet : ((((S\NP)/NP)/NP)/S)`
+[^ans]: "bet" as in "I bet you five dollars she'll win." Here, `bet : ((((S\NP)/S)/NP)/NP)`
 
 ## More on multiple arguments, and prepositions
 
