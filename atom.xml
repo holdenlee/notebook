@@ -8,8 +8,124 @@
         <name>Holden Lee</name>
         <email>oldheneel@gmail.com</email>
     </author>
-    <updated>2018-04-05T00:00:00Z</updated>
+    <updated>2018-11-07T00:00:00Z</updated>
     <entry>
+    <title>Weekly summary 2018-11-10</title>
+    <link href="http://holdenlee.github.io/notebook/posts/summaries/2018-11-07.html" />
+    <id>http://holdenlee.github.io/notebook/posts/summaries/2018-11-07.html</id>
+    <published>2018-11-07T00:00:00Z</published>
+    <updated>2018-11-07T00:00:00Z</updated>
+    <summary type="html"><![CDATA[
+<div class="container">
+  <div id="content">
+    <div class="page header">
+      <h1>Weekly summary 2018-11-10</h1>
+    </div>
+    <div class="info">
+      
+       
+        <p>Posted: 2018-11-07 
+          , Modified: 2018-11-07 
+	</p>
+      
+       <p>Tags: <a href="/tags/none.html">none</a></p> 
+    </div>
+    
+  </div>
+  <!--/div-->
+
+  <div class="toc"> <ul>
+ <li><a href="#projects">Projects</a></li>
+ </ul> </div>
+
+  <div class="blog-main">
+    <h2 id="projects">Projects</h2>
+<ul>
+<li>Multimodal sampling
+<ul>
+<li>Show mixing for Dirichlet process sampling. (This is a basic distribution and Markov chain, which is often combined with other things, e.g. in Dirichlet process mixture models.)</li>
+<li>Show that Gibbs sampling (keep track of cluster membership, sample from mean, and then re-cluster) with merge/split succeeds for mixture of Gaussians.
+<ul>
+<li>Big problem: how to do merge/split step.
+<ul>
+<li>In general this is NP-hard. (2-means is NP-hard.)</li>
+<li>Use a good enough proposal distribution, like 1 step of Gibbs in each coordinate.</li>
+</ul></li>
+<li>First do the well-separated case. Instead of canonical paths, use a “Lyapunov function” argument to show that it’s on average getting closer to the right clustering.</li>
+<li>Note I keep track of the cluster assignments, not the means. The cluster assignments can “integrate out” the mixing coefficients, not so with the means (?). (My original idea was to do Gibbs with each mean, hoping it’s a tractable multimodal distribution (mixture of gaussians)</li>
+</ul></li>
+<li>Tensor decomposition
+<ul>
+<li>Overcomplete tensor decomposition (noiseless), [GM16]</li>
+<li><span class="math inline">\(\la u^{\ot 3} + \rc{\sqrt n}W\)</span>, [ADGM16]</li>
+<li>Simply flattening out doesn’t seem to work, because it doesn’t increase the “attraction region.”</li>
+<li>Can try convolving with gaussian on the sphere to flatten local minima (but will this increase attraction region? do we need that?)</li>
+<li>Check previous notebook first (around 2017/9)</li>
+</ul></li>
+<li>Short-term long-term memory (Koolen &amp; Warmuth’s problem)
+<ul>
+<li>This is like clustering but with an exponential factor that disincentivizes switches at adjacent times (the graph is a line). Does that make it easier or harder? Seems like it could be easier since you don’t effectively get <span class="math inline">\(2^n\)</span> possible splits. The split step is simple, you can check all possibilities. (Problem: if local is a lot better than the global… but maybe if generative model is true this won’t be true?)</li>
+<li>Use log-concavity.</li>
+<li>Or: do sequential MC, e.g. with particle filters, estimating Z.
+<ul>
+<li>In the generative case, each correct mode will have enough mass (?).</li>
+</ul></li>
+</ul></li>
+<li>Other possibilities
+<ul>
+<li>Dictionary learning, sparse coding (?). Problem: if not incoherent, can get stuck in local min?</li>
+<li>Sparse logistic regression. Phase transitions, hardness results - check them out.</li>
+<li>Inspire NN training.
+<ul>
+<li>Split/merge or delete/add.</li>
+</ul></li>
+</ul></li>
+</ul></li>
+<li>Online sampling
+<ul>
+<li>See followups.</li>
+<li>Experiments.</li>
+<li>For discrete distributions (main thing: need <span class="math inline">\(f\)</span>’s to change slowly, OK with Gibbs sampling coordinate-by-coordinate, not OK with bipartite Gibbs sampling)</li>
+<li>Understand RBM training, how can we help there? What’s the right way to take the stochastic gradient there and can we reduce the variance? (may not satisfy above conditions…)</li>
+<li>Check out ICML paper on stochastic gradient Gibbs sampling.</li>
+</ul></li>
+<li>LDS
+<ul>
+<li>Main obstacle was “projection to random subspace”, use the insight that directions are almost orthogonal</li>
+<li>Identification, using Laplace instead of Fourier, <span class="citation" data-cites="Musco">@Musco</span></li>
+</ul></li>
+<li>Compositional function spaces: <a href="https://dynalist.io/d/80BlcNrzxATvu5wf__C99MZe#z=Hn0y1aMB_FTQLK7GhugDO15S">dynalist</a></li>
+<li>Probabilistic model for grammar</li>
+<li>Things to clarify
+<ul>
+<li>The relationship between sampling and optimization (see [RN], Cesa-Bianchi…)</li>
+<li>What is a Bayesian relaxation? What are examples of its use? (Check out “sleeping” - is it an example?) Relationship between the finite (ex. k-means) and infinite (ex. CRP) versions.</li>
+</ul></li>
+</ul>
+
+  </div>
+
+    
+
+    <!-- Extension : Sharing buttons @ www.sharethis.com -->
+    <span class='st_facebook_large' displayText='Facebook'></span>
+    <span class='st_twitter_large' displayText='Tweet'></span>
+    <span class='st_googleplus_large' displayText='Google +'></span>
+    <span class='st_reddit_large' displayText='Reddit'></span>
+    <span class='st__large' displayText=''></span>
+
+    <div id="disqus_thread"></div>
+    
+
+
+  
+    <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+  </div>
+  
+</div>
+]]></summary>
+</entry>
+<entry>
     <title>(CW17) Adversarial Examples Are Not Easily Detected - Bypassing Ten Detection Methods</title>
     <link href="http://holdenlee.github.io/notebook/posts/tcs/machine_learning/neural_nets/CW17.html" />
     <id>http://holdenlee.github.io/notebook/posts/tcs/machine_learning/neural_nets/CW17.html</id>
@@ -1120,70 +1236,6 @@ KL(q||p) &amp;=-ELBO - \ln p(x)
 <li>Check Thm. 5.1. Look up background on NN.</li>
 <li>Check Thm. 5.4.</li>
 </ul>
-
-  </div>
-
-    
-
-    <!-- Extension : Sharing buttons @ www.sharethis.com -->
-    <span class='st_facebook_large' displayText='Facebook'></span>
-    <span class='st_twitter_large' displayText='Tweet'></span>
-    <span class='st_googleplus_large' displayText='Google +'></span>
-    <span class='st_reddit_large' displayText='Reddit'></span>
-    <span class='st__large' displayText=''></span>
-
-    <div id="disqus_thread"></div>
-    
-
-
-  
-    <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
-  </div>
-  
-</div>
-]]></summary>
-</entry>
-<entry>
-    <title>(AKV17) A sparse recovery view of sentence embeddings, bag of n-grams, and LSTMs</title>
-    <link href="http://holdenlee.github.io/notebook/posts/tcs/machine_learning/nlp/BONGs.html" />
-    <id>http://holdenlee.github.io/notebook/posts/tcs/machine_learning/nlp/BONGs.html</id>
-    <published>2017-07-18T00:00:00Z</published>
-    <updated>2017-07-18T00:00:00Z</updated>
-    <summary type="html"><![CDATA[
-<div class="container">
-  <div id="content">
-    <div class="page header">
-      <h1>(AKV17) A sparse recovery view of sentence embeddings, bag of n-grams, and LSTMs</h1>
-    </div>
-    <div class="info">
-      
-       
-        <p>Posted: 2017-07-18 
-          , Modified: 2017-07-18 
-	</p>
-      
-       <p>Tags: <a href="/tags/sparse%20recovery.html">sparse recovery</a>, <a href="/tags/n-grams.html">n-grams</a>, <a href="/tags/lstm.html">lstm</a></p> 
-    </div>
-    
-  </div>
-  <!--/div-->
-
-  <div class="toc"></div>
-
-  <div class="blog-main">
-    <ul>
-<li>LSTMs can do as well as linear classification over BonGs.</li>
-<li>Calderbank: SVM can do as well given compressed <span class="math inline">\(Ax\)</span> instead of <span class="math inline">\(x\)</span>, if <span class="math inline">\(A\)</span> is RIP.
-<ul>
-<li>But word vectors are not RIP, not even statistically.</li>
-</ul></li>
-<li>Basis pursuit/LASSO does better on word embeddings than random embeddings, even though word embeddings aren’t incoherent/RIP.
-<ul>
-<li>What’s a good explanation? Word vectors in sentence are often linearly separable from other vectors - why?</li>
-<li>MP/OMP does worse on word embeddings.</li>
-</ul></li>
-</ul>
-<p>(RIP stronger than incoherency? Ex. incoherency can have linear dependencies… Incoherency gives something like statistical RIP?)</p>
 
   </div>
 
